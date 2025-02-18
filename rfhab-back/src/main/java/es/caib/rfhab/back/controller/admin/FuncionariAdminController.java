@@ -1,0 +1,454 @@
+package es.caib.rfhab.back.controller.admin;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.ejb.EJB;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.fundaciobit.genapp.common.StringKeyValue;
+import org.fundaciobit.genapp.common.i18n.I18NException;
+import org.fundaciobit.genapp.common.query.Field;
+import org.fundaciobit.genapp.common.query.GroupByItem;
+import org.fundaciobit.genapp.common.query.Where;
+import org.fundaciobit.genapp.common.query.selectcolumn.Select6Values;
+import org.fundaciobit.genapp.common.utils.Utils;
+import org.fundaciobit.genapp.common.web.form.AdditionalButton;
+import org.fundaciobit.genapp.common.web.form.AdditionalButtonStyle;
+import org.fundaciobit.genapp.common.web.form.AdditionalField;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.ModelAndView;
+
+import es.caib.rfhab.back.controller.webdb.FuncionariController;
+import es.caib.rfhab.back.form.webdb.FuncionariFilterForm;
+import es.caib.rfhab.back.form.webdb.FuncionariForm;
+import es.caib.rfhab.back.security.LoginInfo;
+import es.caib.rfhab.ejb.FuncionariRolService;
+import es.caib.rfhab.ejb.UnitatService;
+import es.caib.rfhab.logic.ActivitatLogicaService;
+import es.caib.rfhab.logic.AutoritzacioLogicaService;
+import es.caib.rfhab.logic.FuncionariLogicaService;
+import es.caib.rfhab.logic.HistoricLogicaService;
+import es.caib.rfhab.logic.LlocLogicaService;
+import es.caib.rfhab.logic.utils.HistoricFuncionariDAO;
+import es.caib.rfhab.model.entity.Activitat;
+import es.caib.rfhab.model.entity.Autoritzacio;
+import es.caib.rfhab.model.entity.Funcionari;
+import es.caib.rfhab.model.entity.Historic;
+import es.caib.rfhab.model.entity.Lloc;
+import es.caib.rfhab.model.entity.Rol;
+import es.caib.rfhab.model.fields.FuncionariFields;
+import es.caib.rfhab.model.fields.FuncionariLlocQueryPath;
+import es.caib.rfhab.model.fields.FuncionariRolFields;
+import es.caib.rfhab.model.fields.LlocFields;
+import es.caib.rfhab.model.fields.RolFields;
+import es.caib.rfhab.persistence.FuncionariJPA;
+import es.caib.rfhab.persistence.HistoricJPA;
+import es.caib.rfhab.persistence.LlocJPA;
+import es.caib.rfhab.persistence.RolJPA;
+import es.caib.rfhab.persistence.UnitatJPA;
+
+@Controller
+@RequestMapping(value = "/admin/funcionari")
+@SessionAttributes(types = { FuncionariForm.class, FuncionariFilterForm.class })
+public class FuncionariAdminController extends FuncionariController {
+
+	@EJB(mappedName = FuncionariLogicaService.JNDI_NAME)
+	protected FuncionariLogicaService funcionariEJB;
+
+	@EJB(mappedName = LlocLogicaService.JNDI_NAME)
+	protected LlocLogicaService llocEJB;
+
+	@EJB(mappedName = FuncionariRolService.JNDI_NAME)
+	protected FuncionariRolService funcionariRolEJB;
+
+	@EJB(mappedName = UnitatService.JNDI_NAME)
+	protected UnitatService unitatEJB;
+
+	@EJB(mappedName = HistoricLogicaService.JNDI_NAME)
+	protected HistoricLogicaService historicEjb;
+
+	@EJB(mappedName = ActivitatLogicaService.JNDI_NAME)
+	protected ActivitatLogicaService activitatEJB;
+
+	@EJB(mappedName = AutoritzacioLogicaService.JNDI_NAME)
+	protected AutoritzacioLogicaService autoritzacioEJB;
+
+	@Override
+	public String getTileForm() {
+		return "funcionariFormAdmin";
+	}
+
+	@Override
+	public String getTileList() {
+		return "funcionariListAdmin";
+	}
+
+	@Override
+	public FuncionariForm getFuncionariForm(FuncionariJPA _jpa, boolean __isView, HttpServletRequest request,
+			ModelAndView mav) throws I18NException {
+
+		if (_jpa != null && _jpa.getFuncionariID() > 0) {
+
+			// Obtenir els Rols que té assignats el funcionari
+			List<Rol> rolsItems = funcionariEJB.getRolsByFuncionariIDv2(_jpa.getFuncionariID());
+			mav.addObject("rolItems", rolsItems);
+
+			// Obtenir les activitats que té assignades el funcionari
+			List<Activitat> activitatsFuncionari = activitatEJB.getActivitatsByFuncionariID(_jpa.getFuncionariID());
+			mav.addObject("activitatItems", activitatsFuncionari);
+
+			// Obtenir el lloc de feina assignat al funcionari
+			List<Lloc> llocsFuncionari = llocEJB.getLlocByFuncionariID(_jpa.getFuncionariID(), true);
+			if (llocsFuncionari != null) {
+				mav.addObject("llocItems", llocsFuncionari);
+			}
+
+			// Obtenir el historic de canvis
+			List<Select6Values<Long, String, String, String, String, Timestamp>> historicItems = historicEjb
+					.getHistoricByFuncionariId(_jpa.getFuncionariID());
+			mav.addObject("historicItems", historicItems);
+
+			List<Autoritzacio> autoritzacionsFuncionari = new ArrayList<Autoritzacio>();
+			// Obtenir les autoritzacions associades al perfil del lloc de feina. False si
+			// algún lloc no ho és.
+			boolean isOamr = true;
+			for (Lloc lloc : llocsFuncionari) {
+				if (lloc.getPersonalOamr() == 0) {
+					isOamr = false;
+					break;
+				}
+			}
+			mav.addObject("isOamr", isOamr);
+
+			// Obtenir les autoritzacions associades al lloc de feina especificament
+			for (Lloc lloc : llocsFuncionari) {
+				List<Autoritzacio> autoritzacionsLloc = autoritzacioEJB.getAutoritzacionsByLlocID(lloc.getLlocID());
+				autoritzacionsLloc.forEach(x -> System.out.println("Autoritzacio LLOC: " + x.getAutoritzacioID()));
+				autoritzacionsFuncionari.addAll(autoritzacionsLloc);
+			}
+
+			// Obtenir les autoritzacions que té assignades el funcionari especificament
+			List<Autoritzacio> autoritzacionsFuncionariFunc = autoritzacioEJB.getAutoritzacionsByFuncionariID(_jpa.getFuncionariID());
+			autoritzacionsFuncionariFunc.forEach( x -> System.out.println("Autoritzacio FUNCIONARI: " + x.getAutoritzacioID()));
+			autoritzacionsFuncionari.addAll(autoritzacionsFuncionariFunc);
+
+			autoritzacionsFuncionari.forEach(x -> System.out
+					.println("Autoritzacio: " + x.getAutoritzacioID() + " " + x.getCai() + " " + x.getCodiSia()));
+
+			mav.addObject("autoritzacioItems", autoritzacionsFuncionari);
+
+		}
+
+		FuncionariForm funcionariForm = super.getFuncionariForm(_jpa, __isView, request, mav);
+
+		if (funcionariForm.isNou()) {
+			funcionariForm.getFuncionari().setDataCreacio(new Timestamp(System.currentTimeMillis()));
+
+			funcionariForm.setDeleteButtonVisible(false);
+		}
+
+		funcionariForm.addReadOnlyField(DATACREACIO);
+		funcionariForm.addHiddenField(DATABAIXA);
+		funcionariForm.addHiddenField(ENTITATID);
+
+		mav.addObject("funcionari", _jpa);
+		
+		funcionariForm.setAttachedAdditionalJspCode(true);
+
+		/*
+		 * // Afegim la columna ENTITAT AdditionalField<String,String> adfield = new
+		 * AdditionalField<String,String>();
+		 * adfield.setCodeName(EntitatFields._TABLE_TRANSLATION);
+		 * adfield.setPosition(1); final Field<String> ENTITAT_NOM = new
+		 * RoleUsuariEntitatQueryPath().USUARIENTITAT().ENTITAT().NOM();
+		 * adfield.setValueField(ENTITAT_NOM); adfield.setValueMap(null);
+		 * adfield.setOrderBy(ENTITAT_NOM);
+		 * 
+		 * roleUsuariEntitatFilterForm.addAdditionalField(adfield);
+		 */
+
+		return funcionariForm;
+	}
+
+	@Override
+	public FuncionariFilterForm getFuncionariFilterForm(Integer pagina, ModelAndView mav, HttpServletRequest request)
+			throws I18NException {
+
+		FuncionariFilterForm funcionariFilterForm = super.getFuncionariFilterForm(pagina, mav, request);
+
+		if (funcionariFilterForm.isNou()) {
+
+			funcionariFilterForm.addHiddenField(FUNCIONARIID);
+			funcionariFilterForm.addHiddenField(DATACREACIO);
+			funcionariFilterForm.addHiddenField(TIPUSIDENTIFICADOR);
+			funcionariFilterForm.addHiddenField(IDENTIFICADOR);
+			funcionariFilterForm.addHiddenField(CORREU);
+			funcionariFilterForm.addHiddenField(OBSERVACIONS);
+			funcionariFilterForm.addHiddenField(DATABAIXA);
+
+			{
+				// Afegir filtres adicionals
+				List<Field<?>> newFilterBy = new ArrayList<Field<?>>(funcionariFilterForm.getDefaultFilterByFields());
+				newFilterBy.remove(LlocFields.PERSONALOAMR);
+				newFilterBy.remove(FuncionariFields.IDENTIFICADOR);
+				funcionariFilterForm.setFilterByFields(newFilterBy);
+				
+
+			}
+
+			{
+				AdditionalField<Long, String> adfield = new AdditionalField<Long, String>();
+				adfield.setCodeName(LlocFields.CODILLOC.codeLabel);
+				adfield.setPosition(1);
+				adfield.setOrderBy(LlocFields.CODILLOC);
+				adfield.setEscapeXml(false);
+				adfield.setValueMap(new HashMap<Long, String>());
+				funcionariFilterForm.addAdditionalField(adfield);
+			}
+
+			{
+				AdditionalField<Long, String> adfield2 = new AdditionalField<Long, String>();
+				adfield2.setCodeName(LlocFields.UNITATID.codeLabel);
+				adfield2.setPosition(2);
+				adfield2.setOrderBy(LlocFields.UNITATID);
+				adfield2.setEscapeXml(false);
+				adfield2.setValueMap(new HashMap<Long, String>());
+				funcionariFilterForm.addAdditionalField(adfield2);
+			}
+
+			{
+				AdditionalField<Long, String> adfield3 = new AdditionalField<Long, String>();
+				adfield3.setCodeName(LlocFields.PERSONALOAMR.codeLabel);
+				adfield3.setPosition(3);
+				adfield3.setOrderBy(LlocFields.PERSONALOAMR);
+				adfield3.setEscapeXml(false);
+				adfield3.setSearchBy(LlocFields.PERSONALOAMR);
+				adfield3.setGroupBy(LlocFields.PERSONALOAMR);
+				adfield3.setValueMap(new HashMap<Long, String>());
+				funcionariFilterForm.addAdditionalField(adfield3);
+
+				Set<Field<?>> hiddenFields = new HashSet<Field<?>>(
+						Arrays.asList(FuncionariFields.ALL_FUNCIONARI_FIELDS));
+				hiddenFields.add(LlocFields.PERSONALOAMR);
+				hiddenFields.forEach(x -> log.info("hiddenFields item: " + x.javaName));
+
+			}
+
+			{
+				AdditionalField<Long, String> adfield4 = new AdditionalField<Long, String>();
+				adfield4.setCodeName(RolFields._TABLE_TRANSLATION);
+				adfield4.setPosition(4);
+				adfield4.setOrderBy(RolFields.CODI);
+				adfield4.setEscapeXml(false);
+				adfield4.setValueMap(new HashMap<Long, String>());
+				funcionariFilterForm.addAdditionalField(adfield4);
+			}
+
+			funcionariFilterForm.setOrderBy(FuncionariFields.LLINATGE1.sqlName);
+			funcionariFilterForm.setOrderAsc(true);
+
+		}
+
+		funcionariFilterForm.setDeleteButtonVisible(false);
+		funcionariFilterForm.setVisibleMultipleSelection(false);
+		funcionariFilterForm.setDeleteSelectedButtonVisible(false);
+		funcionariFilterForm.setViewButtonVisible(false);
+		funcionariFilterForm.setAttachedAdditionalJspCode(true);
+
+		// funcionariFilterForm.setActionsRenderer(FuncionariFilterForm.ACTIONS_RENDERER_DROPDOWN_BUTTON);
+
+		return funcionariFilterForm;
+
+	}
+
+	@Override
+	public Where getAdditionalCondition(HttpServletRequest request) throws I18NException {
+		
+		final Where defaultCondition = super.getAdditionalCondition(request);
+		
+		// filtrar per entitat
+		LoginInfo loginInfo = LoginInfo.getInstance();
+		
+		System.out.println("================================================");
+		System.out.println("ENTITAT ACTUAL: => " + loginInfo.getEntitatIDActual());
+		System.out.println("ENTITAT ID ACTUAL: => " + loginInfo.getEntitatID());
+		System.out.println("================================================");
+		
+		Where w1 = null; 
+		if (loginInfo.getEntitatIDActual() != null && loginInfo.getEntitatIDActual() > 0) {
+			w1 = FuncionariFields.ENTITATID.equal(loginInfo.getEntitatIDActual());
+		}
+				
+		// filtrar per personalOamr
+		Map<String, String[]> parametros = request.getParameterMap();
+		boolean personalOamr = false;
+		for (Map.Entry<String, String[]> entry : parametros.entrySet()) {
+			System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+			if ("lloc.personalOamr".equals(entry.getKey())) {
+				personalOamr = (entry.getValue()[0].equals("1") ? true : false);
+				break;
+			}
+		}
+
+		if (personalOamr) {
+			System.out.println("Where: IS PERSONAL OAMR");
+			//Where w2 = new FuncionariLlocQueryPath().LLOC().PERSONALOAMR().greaterThan(0);
+			//if (w1 != null)
+			//	w1 = Where.AND(w1, w2);
+			//else
+			//	w1 = w2;
+		}
+
+		if (w1 != null)
+			return Where.AND(defaultCondition, w1);
+		else
+			return defaultCondition;
+	}
+
+	@Override
+	public void delete(HttpServletRequest request, Funcionari funcionari) throws I18NException {
+
+		HistoricJPA historic = new HistoricJPA();
+		historic.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+		historic.setFuncionariID(funcionari.getFuncionariID());
+		historic.setNumeroCai("CAI");
+		historic.setUsuariID(LoginInfo.getInstance().getUsuariPersona().getUsuariID());
+		historic.setObservacions("Funcionari eliminat");
+		historicEjb.create(historic);
+
+		funcionari.setDataBaixa(new Timestamp(System.currentTimeMillis()));
+		funcionariEjb.update(funcionari);
+
+	}
+
+	@Override
+	public Map<Field<?>, GroupByItem> fillReferencesForList(FuncionariFilterForm filterForm, HttpServletRequest request,
+			ModelAndView mav, List<Funcionari> list, List<GroupByItem> groupItems) throws I18NException {
+
+		Map<Field<?>, GroupByItem> groupByItemsMap = new HashMap<Field<?>, GroupByItem>();
+
+		groupByItemsMap = super.fillReferencesForList(filterForm, request, mav, list, groupItems);
+
+		Map<String, String> _tmpPersonalOamr;
+		List<StringKeyValue> _listPersonalOamr;
+
+		// Field PersonalOamr
+		{
+			_listPersonalOamr = getReferenceListForPersonalOamr(request, mav, filterForm, list, groupByItemsMap, null);
+			_tmpPersonalOamr = Utils.listToMap(_listPersonalOamr);
+			filterForm.setMapOfValuesForTipusIdentificador(_tmpPersonalOamr);
+			if (filterForm.getGroupByFields().contains(LlocFields.PERSONALOAMR)) {
+				fillValuesToGroupByItems(_tmpPersonalOamr, groupByItemsMap, LlocFields.PERSONALOAMR, false);
+			}
+			;
+		}
+
+		return groupByItemsMap;
+	}
+
+	public List<StringKeyValue> getReferenceListForPersonalOamr(HttpServletRequest request, ModelAndView mav,
+			FuncionariFilterForm funcionariFilterForm, List<Funcionari> list,
+			Map<Field<?>, GroupByItem> _groupByItemsMap, Where where) throws I18NException {
+
+		System.out.println("getReferenceListForPersonalOamr");
+
+		if (funcionariFilterForm.isHiddenField(LlocFields.PERSONALOAMR)
+				&& !funcionariFilterForm.isGroupByField(LlocFields.PERSONALOAMR)
+				&& !funcionariFilterForm.isFilterByField(LlocFields.PERSONALOAMR)) {
+			System.out.println("getReferenceListForPersonalOamr => EMPTY_STRING");
+
+			return EMPTY_STRINGKEYVALUE_LIST;
+		}
+
+		List<StringKeyValue> __tmp = new java.util.ArrayList<StringKeyValue>();
+		__tmp.add(new StringKeyValue("0", "No"));
+		__tmp.add(new StringKeyValue("1", "Sí"));
+		return __tmp;
+
+	}
+	
+	
+	@Override
+	public String editarFuncionariPost(@ModelAttribute FuncionariForm funcionariForm,
+		      BindingResult result, SessionStatus status, HttpServletRequest request,
+		      HttpServletResponse response) throws I18NException {
+		
+		String numeroCai = (!Utils.isEmpty(request.getParameter("numerocai"))) ? request.getParameter("numerocai") : "";
+				
+		Funcionari funcionariModificat = funcionariEJB.updateAndHistory(funcionariForm.getFuncionari(), numeroCai, LoginInfo.getInstance().getUsuariPersona().getUsuariID());
+		
+		return super.editarFuncionariPost(funcionariForm, result, status, request, response);
+		
+	}
+	
+
+	@Override
+	public void postList(HttpServletRequest request, ModelAndView mav, FuncionariFilterForm filterForm,
+			List<Funcionari> list) throws I18NException {
+
+		Map<Long, String> mapFuncionari = (Map<Long, String>) filterForm.getAdditionalField(1).getValueMap();
+		Map<Long, String> mapFuncionari2 = (Map<Long, String>) filterForm.getAdditionalField(2).getValueMap();
+		Map<Long, String> mapFuncionari3 = (Map<Long, String>) filterForm.getAdditionalField(3).getValueMap();
+		Map<Long, String> mapFuncionari4 = (Map<Long, String>) filterForm.getAdditionalField(4).getValueMap();
+
+		mapFuncionari.clear();
+		mapFuncionari2.clear();
+		mapFuncionari3.clear();
+		mapFuncionari4.clear();
+
+		HashMap<Long, LlocJPA> placesOcupades = llocEJB
+				.getAllLlocsOcupats(LoginInfo.getInstance().getEntitatIDActual());
+
+		for (Funcionari funcionari : list) {
+
+			final Long funcionariID = funcionari.getFuncionariID();
+
+			LlocJPA lloc = placesOcupades.get(funcionariID);
+			if (lloc != null) {
+				mapFuncionari.put(funcionariID, lloc.getCodiLloc());
+				mapFuncionari2.put(funcionariID, unitatEJB.findByPrimaryKey(lloc.getUnitatID()).getCodi());
+				mapFuncionari3.put(funcionariID, ((lloc.getPersonalOamr() > 0) ? "<i class=\"fa fa-check\"></i>"
+						: "<i class=\"fa fa-times\"></i>"));
+			} else {
+				mapFuncionari.put(funcionariID, "");
+				mapFuncionari2.put(funcionariID, "");
+				mapFuncionari3.put(funcionariID, "<i class=\"fa fa-times\"></i>");
+			}
+
+			Boolean funcionarioHasRol = (funcionariRolEJB
+					.count(FuncionariRolFields.FUNCIONARIID.equal(funcionariID)) > 0);
+
+			if (funcionarioHasRol) {
+				List<RolJPA> rolsFuncionari = funcionariEJB.getRolsByFuncionariID(funcionariID);
+				String rolsFuncionariStr = "";
+				for (RolJPA rol : rolsFuncionari) {
+					rolsFuncionariStr += "<span class='badge badge-secondary' title='"
+							+ rol.getNom().getTraduccio(LoginInfo.getInstance().getLanguage()).getValor() + "'>"
+							+ rol.getCodi() + "</span>";
+				}
+
+				mapFuncionari4.put(funcionariID, rolsFuncionariStr);
+
+				if (filterForm.isNou())
+					filterForm.addAdditionalButtonByPK(funcionariID,
+							new AdditionalButton("far fa-check-square", "rol.assignarrol",
+									"/admin/funcionarirol/assignar/" + funcionariID, AdditionalButtonStyle.INFO));
+			} 
+		}
+
+	}
+
+}

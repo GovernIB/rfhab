@@ -1,0 +1,115 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "API REST EXTERNA de RFHab - Exemple de Servei Securitzat",
+    "description" : "Conjunt de Serveis REST de RFHab per ser accedits emprant autenticació",
+    "contact" : {
+      "name" : "Departament de Govern Digital a la Fundació Bit",
+      "url" : "https://governdigital.fundaciobit.org",
+      "email" : "otae@fundaciobit.org"
+    },
+    "license" : {
+      "name" : "European Union Public Licence (EUPL v1.2)",
+      "url" : "https://joinup.ec.europa.eu/sites/default/files/custom-page/attachment/eupl_v1.2_es.pdf"
+    },
+    "version" : "1.0-SNAPSHOT"
+  },
+  "externalDocs" : {
+    "description" : "Java Client (GovernIB Github)",
+    "url" : "https://github.com/GovernIB/rfhab/tree/rfhab-1.0/rfhab-api-externa-client-exemplesecure-v1"
+  },
+  "servers" : [ {
+    "url" : "/rfhabapi/externa"
+  }, {
+    "url" : "http://localhost:8080/rfhabapi/externa"
+  }, {
+    "url" : "https://dev.caib.es/rfhabapi/externa"
+  }, {
+    "url" : "https://proves.caib.es/rfhabapi/externa"
+  }, {
+    "url" : "https://se.caib.es/rfhabapi/externa"
+  }, {
+    "url" : "https://www.caib.es/rfhabapi/externa"
+  } ],
+  "tags" : [ {
+    "name" : "ExempleSeguritzat",
+    "description" : "Exemple de Servei Securitzat"
+  } ],
+  "paths" : {
+    "/secure/exempleseguritzat/echo" : {
+      "get" : {
+        "tags" : [ "ExempleSeguritzat" ],
+        "summary" : "Fa un ECHO",
+        "operationId" : "echo",
+        "parameters" : [ {
+          "name" : "echoInput",
+          "in" : "query",
+          "description" : "Cadena a retornar",
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "hola caracola"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Respon el valor enviat per paràmetre",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "510" : {
+            "description" : "Només s'utilitza per crear fitxer de constants...",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ConstantsWs"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "BasicAuth" : [ ]
+        } ]
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "ConstantsWs" : {
+        "required" : [ "ROLE_EJB_BASIC_ACCESS", "ROLE_EJB_FULL_ACCESS", "ROLE_EJB_WS_ACCESS" ],
+        "type" : "object",
+        "properties" : {
+          "ROLE_EJB_FULL_ACCESS" : {
+            "type" : "string",
+            "description" : "Constant ROLE_EJB_FULL_ACCESS",
+            "readOnly" : true,
+            "default" : "RFH_SUPER"
+          },
+          "ROLE_EJB_BASIC_ACCESS" : {
+            "type" : "integer",
+            "description" : "Constant ROLE_EJB_BASIC_ACCESS",
+            "format" : "int32",
+            "readOnly" : true
+          },
+          "ROLE_EJB_WS_ACCESS" : {
+            "type" : "integer",
+            "description" : "Constant ROLE_EJB_WS_ACCESS",
+            "format" : "int32",
+            "readOnly" : true
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "BasicAuth" : {
+        "type" : "http",
+        "scheme" : "basic"
+      }
+    }
+  }
+}

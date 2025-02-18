@@ -1,0 +1,32 @@
+.nav-tabs2 {
+	display:none !important;
+}
+
+#dropdownSubMenu2 {
+	left:auto !important;
+	right: 10px !important; 
+}
+
+#footer{
+	margin-top: 15px !important;
+}
+
+#footer .col-4 img{
+	width: 100px;
+}
+
+header {
+	margin-bottom: 15px !important;
+}
+
+header .logoGovern img {
+	width: 160px;
+}
+
+header nav.fixed-top{
+	box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
+}
+
+.custom-submenu {
+	display: none !important;
+}

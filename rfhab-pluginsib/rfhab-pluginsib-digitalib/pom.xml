@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>rfhab-pluginsib-digitalib</artifactId>
+
+	<groupId>es.caib.rfhab.pluginsib</groupId>
+	<version>1.0.0</version>
+	<packaging>jar</packaging>
+
+	<name>RFHAB PluginsIB - DigitalIB</name>
+
+	<parent>
+		<artifactId>
+			caib-artifacts-github-governib-distribution-with-jdk11-jboss72</artifactId>
+		<groupId>es.caib.maven</groupId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+
+	<properties>
+		<slf4j.version>1.5.11</slf4j.version>
+		<maven.test.skip>false</maven.test.skip>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>github_governib_maven</id>
+			<name>GitHub GovernIB Maven Repository</name>
+			<url>https://governib.github.io/maven/maven/</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>es.caib.rfhab</groupId>
+			<artifactId>rfhab-commons</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>es.caib.digitalib</groupId>
+			<artifactId>digitalib-api-interna-client-apimassivescanwebsimple-v1</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.fundaciobit.pluginsib.core.v3</groupId>
+			<artifactId>pluginsib-core</artifactId>
+			<scope>provided</scope>
+            <version>3.0.0-SNAPSHOT</version>
+		</dependency>
+
+	</dependencies>
+
+</project>

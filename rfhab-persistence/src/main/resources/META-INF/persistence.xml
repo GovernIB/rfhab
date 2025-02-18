@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- FITXER AUTOGENERAT -->
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+             http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
+             version="2.2">
+    <persistence-unit name="rfhabPU" transaction-type="JTA">
+        <provider>es.caib.rfhab.hibernate.CustomHibernatePersistenceProvider</provider>
+        <jta-data-source>java:jboss/datasources/rfhabDS</jta-data-source>
+        
+		<class>es.caib.rfhab.persistence.ActivitatJPA</class>
+		<class>es.caib.rfhab.persistence.AutoritzacioJPA</class>
+		<class>es.caib.rfhab.persistence.EntitatJPA</class>
+		<class>es.caib.rfhab.persistence.FitxerJPA</class>
+		<class>es.caib.rfhab.persistence.FuncionariJPA</class>
+		<class>es.caib.rfhab.persistence.FuncionariLlocJPA</class>
+		<class>es.caib.rfhab.persistence.FuncionariRolJPA</class>
+		<class>es.caib.rfhab.persistence.HistoricJPA</class>
+		<class>es.caib.rfhab.persistence.HistoricLlocJPA</class>
+		<class>es.caib.rfhab.persistence.IdiomaJPA</class>
+		<class>es.caib.rfhab.persistence.LlocJPA</class>
+		<class>es.caib.rfhab.persistence.PluginJPA</class>
+		<class>es.caib.rfhab.persistence.RolJPA</class>
+		<class>es.caib.rfhab.persistence.ScanWebJPA</class>
+		<class>es.caib.rfhab.persistence.TraduccioJPA</class>
+		<class>es.caib.rfhab.persistence.TraduccioMapJPA</class>
+		<class>es.caib.rfhab.persistence.UnitatJPA</class>
+		<class>es.caib.rfhab.persistence.UsuariJPA</class>
+		<class>es.caib.rfhab.persistence.UsuariEntitatJPA</class>
+
+        <!-- Activar cache només per aquelles entitats on volguem expressament -->
+        <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+        <!-- Sempre activar la validació de les propietats -->
+        <validation-mode>CALLBACK</validation-mode>
+
+    </persistence-unit>
+</persistence>

@@ -1,0 +1,13 @@
+﻿<datasources>
+    ...
+    <datasource jndi-name="java:jboss/datasources/rfhabDS" pool-name="rfhabDS" enabled="true"
+                use-java-context="true">
+        <connection-url>jdbc:postgresql://localhost:5432/rfhab</connection-url>
+        <driver>postgresql</driver>
+        <security>
+            <user-name>rfhab</user-name>
+            <password>rfhab</password>
+        </security>
+    </datasource>
+    ...
+</datasources>

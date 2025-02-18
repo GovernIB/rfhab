@@ -1,0 +1,17 @@
+create sequence rfh_activitat_seq start with 1000 increment by  1;
+create sequence rfh_autoritzacio_seq start with 1000 increment by  1;
+create sequence rfh_digitalib_seq start with 1000 increment by  1;
+create sequence rfh_entitat_seq start with 1000 increment by  1;
+create sequence rfh_fitxer_seq start with 1000 increment by  1;
+create sequence rfh_funcionari_seq start with 1000 increment by  1;
+create sequence rfh_funcionarilloc_seq start with 1000 increment by  1;
+create sequence rfh_funcionarirol_seq start with 1000 increment by  1;
+create sequence rfh_historic_seq start with 1000 increment by  1;
+create sequence rfh_historiclloc_seq start with 1000 increment by  1;
+create sequence rfh_lloc_seq start with 1000 increment by  1;
+create sequence rfh_plugin_seq start with 1000 increment by  1;
+create sequence rfh_rol_seq start with 1000 increment by  1;
+create sequence rfh_traduccio_seq start with 1000 increment by  1;
+create sequence rfh_unitat_seq start with 1000 increment by  1;
+create sequence rfh_usuari_seq start with 1000 increment by  1;
+create sequence rfh_usuarientitat_seq start with 1000 increment by  1;

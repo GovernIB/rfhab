@@ -1,5 +1,16 @@
+# Directoris de resultat del Maven
+target/
+
+# Fitxers de projecte de Eclipse
+.classpath
+.project
+.settings/
+
 # Compiled class file
 *.class
+
+# Fitxers de backup
+*.bak
 
 # Log file
 *.log
@@ -22,3 +33,10 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+# Client de Dir3Caib
+rfhab-pluginsib-dir3caib-client/
+rfhab-api-rolsac-client/
+
+# Fitxers generats amb sqlgenerator
+scripts/sqlgenerator/*.sql

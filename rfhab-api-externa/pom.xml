@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>rfhab</artifactId>
+        <groupId>es.caib.rfhab</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <artifactId>rfhab-api-externa</artifactId>
+    <packaging>war</packaging>
+    <name>RFHab - API Rest - Externa Server</name>
+    <properties>
+        <auth.method>BASIC</auth.method>
+        <client.default.package>es.caib.rfhab.apiexterna.client</client.default.package>
+    </properties>
+
+    <dependencies>
+        <!-- Especificacions i llibreries proporcionades per JBoss -->
+        <dependency>
+            <groupId>org.jboss.spec</groupId>
+            <artifactId>jboss-javaee-8.0</artifactId>
+            <type>pom</type>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Altres mòduls del projecte -->
+        <dependency>
+            <groupId>es.caib.rfhab</groupId>
+            <artifactId>rfhab-commons</artifactId>
+            <version>1.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>es.caib.rfhab</groupId>
+            <artifactId>rfhab-persistence</artifactId>
+            <version>1.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>es.caib.rfhab</groupId>
+            <artifactId>rfhab-ejb</artifactId>
+            <version>1.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Anotacions de documentació de openapi -->
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <!-- <version>2.1.13</version> -->
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+            <artifactId>jackson-jaxrs-json-provider</artifactId>
+        </dependency>
+
+        <dependency>
+            <artifactId>pluginsib-utils-rest</artifactId>
+            <groupId>org.fundaciobit.pluginsib.utils</groupId>
+            <version>${pluginsib.utils.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.fundaciobit.pluginsib.utils</groupId>
+            <artifactId>pluginsib-utils-swagger-ui-configurable-webjar</artifactId>
+            <version>${pluginsib.utils.version}</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <!-- Genera el descriptor openapi.json de forma estàtica, després 
+                el posarem l'arrel del WAR -->
+            <!-- https://github.com/swagger-api/swagger-core/tree/master/modules/swagger-maven-plugin -->
+            <plugin>
+
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-maven-plugin</artifactId>
+                <version>2.2.15</version>
+                
+                <configuration>
+                    <outputFormat>JSON</outputFormat>
+                    <prettyPrint>TRUE</prettyPrint>
+                    <outputPath>${project.basedir}/openapi/</outputPath>                   
+                </configuration>
+                
+                <executions>
+                    <execution>
+                        <id>openapi_externa_1</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>resolve</goal>
+                        </goals>
+                        <configuration>
+                            <contextId>Exemple Externa Public</contextId>
+                            <outputFileName>openapi_externa_public</outputFileName>
+                            <resourcePackages>
+                                <package>es.caib.rfhab.api.externa.config</package>
+                                <package>es.caib.rfhab.api.externa.all</package>
+                            </resourcePackages>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>openapi_externa_2</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>resolve</goal>
+                        </goals>
+                        <configuration>
+                            <contextId>Exemple Externa Seguretat</contextId>
+                            <outputFileName>openapi_externa_secure</outputFileName>
+                            <resourcePackages>
+                                <package>es.caib.rfhab.api.externa.config</package>
+                                <package>es.caib.rfhab.api.externa.secure</package>
+                            </resourcePackages>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Genera el Client Rest per Java a partir del fitxer openapi.json -->
+            <plugin>
+
+                <!-- https://openapi-generator.tech/docs/generators/java/ -->
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>7.3.0</version>
+                <executions>
+                    <execution>
+                        <id>openapi_externa_1</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/openapi/openapi_externa_public.json</inputSpec>
+                            <generatorName>java</generatorName>
+                            <skipValidateSpec>true</skipValidateSpec>
+                            <configHelp>java</configHelp>
+                            <library>resteasy</library>
+                            <!--    ** AMOLLA AJUDA D'AQUEST PLUGIN PER PANTALLA***  -->
+                            <!-- <configHelp>true</configHelp> -->
+                            <addCompileSourceRoot>false</addCompileSourceRoot>
+                            <output>${project.basedir}/../rfhab-api-externa-client-exemplepublic-v1</output>
+                            <apiPackage>${client.default.package}.exemplepublic.v1.api</apiPackage>
+                            <modelPackage>${client.default.package}.exemplepublic.v1.model</modelPackage>
+                            <invokerPackage>${client.default.package}.exemplepublic.v1.services</invokerPackage>
+                            <generateModelTests>false</generateModelTests>
+                            <configOptions>
+                                <groupId>es.caib.rfhab</groupId>
+                                <artifactId>rfhab-api-externa-client-exemplepublic-v1</artifactId>
+                                <artifactVersion>1.0-SNAPSHOT</artifactVersion>
+                                <artifactDescription>rfhab - API Rest - Externa Client - Exemple Public v1</artifactDescription>
+                                <dateLibrary>java8</dateLibrary>
+                                <useTags>true</useTags>
+                                <hideGenerationTimestamp>true</hideGenerationTimestamp>
+                                <java11>true</java11>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>openapi_externa_2</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/openapi/openapi_externa_secure.json</inputSpec>
+                            <generatorName>java</generatorName>
+                            <skipValidateSpec>true</skipValidateSpec>
+                            <configHelp>java</configHelp>
+                            <library>resteasy</library>
+                            <!--    ** AMOLLA AJUDA D'AQUEST PLUGIN PER PANTALLA***  -->
+                            <!-- <configHelp>true</configHelp> -->
+                            <addCompileSourceRoot>false</addCompileSourceRoot>
+                            <output>${project.basedir}/../rfhab-api-externa-client-exemplesecure-v1</output>
+                            <apiPackage>${client.default.package}.exemplesecure.v1.api</apiPackage>
+                            <modelPackage>${client.default.package}.exemplesecure.v1.model</modelPackage>
+                            <invokerPackage>${client.default.package}.exemplesecure.v1.services</invokerPackage>
+                            <generateModelTests>false</generateModelTests>
+                            <configOptions>
+                                <groupId>es.caib.rfhab</groupId>
+                                <artifactId>rfhab-api-externa-client-exemplesecure-v1</artifactId>
+                                <artifactVersion>1.0-SNAPSHOT</artifactVersion>
+                                <artifactDescription>rfhab - API Rest - Externa Client - Exemple Secure v1</artifactDescription>
+                                <dateLibrary>java8</dateLibrary>
+                                <useTags>true</useTags>
+                                <hideGenerationTimestamp>true</hideGenerationTimestamp>
+                                <java11>true</java11>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <includeProjectDependencies>false</includeProjectDependencies>
+                    <includePluginDependencies>true</includePluginDependencies>
+                    <executableDependency>
+                        <artifactId>pluginsib-utils-rest</artifactId>
+                        <groupId>org.fundaciobit.pluginsib.utils</groupId>
+                    </executableDependency>
+                    <mainClass>
+                        org.fundaciobit.pluginsib.utils.rest.pomadaptertojboss72.AdaptApiClientPomToJboss72</mainClass>
+                    <arguments>
+                        <argument>${project.basedir}</argument>
+                    </arguments>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <artifactId>pluginsib-utils-rest</artifactId>
+                        <groupId>org.fundaciobit.pluginsib.utils</groupId>
+                        <version>${pluginsib.utils.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            
+
+            <!-- Inclou el openapi.json i el swagger-ui dins el war -->
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
+                    <webResources>
+                        <resource>
+                            <directory>${project.basedir}/openapi</directory>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+</project>

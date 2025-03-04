@@ -38,5 +38,15 @@ replay_pid*
 rfhab-pluginsib-dir3caib-client/
 rfhab-api-rolsac-client/
 
+# Fitxers openapi autogenerats al compilar
+rfhab-api-interna/openapi/*.json
+
+# Clients api interna i externa
+rfhab-api-externa-client*
+rfhab-api-interna-client*
+
 # Fitxers generats amb sqlgenerator
 scripts/sqlgenerator/*.sql
+
+# Executables personals
+*.bat

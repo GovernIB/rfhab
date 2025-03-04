@@ -280,7 +280,6 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 
 						// Enregistrament de la transaccio amb digitalIB
 						
-						result.getStatus().getStatus()
 						if (result.getScannedFile() != null) {
 
 							String format = result.getScannedFileInfo().getFormatFile();

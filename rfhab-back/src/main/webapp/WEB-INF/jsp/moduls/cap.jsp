@@ -213,14 +213,14 @@
 							<c:if test="${fn:contains(url, '/admin/')}">
 
 								<a class="dropdown-item"
-									href="<c:url value="/admin/funcionari/list"/>"> <i
-									class="fa fa-user"></i> <fmt:message
-										key="menu.admin.funcionaris" />
-								</a>
-								<a class="dropdown-item"
 									href="<c:url value="/admin/lloc/list"/>"> <i
 									class="fas fa-desktop"></i> <fmt:message
 										key="menu.admin.places" />
+								</a>
+								<a class="dropdown-item"
+									href="<c:url value="/admin/funcionari/list"/>"> <i
+									class="fa fa-user"></i> <fmt:message
+										key="menu.admin.funcionaris" />
 								</a>
 								<a class="dropdown-item" href="<c:url value="/admin/rol/list"/>">
 									<i class="fas fa-key"></i> <fmt:message key="menu.admin.rols" />

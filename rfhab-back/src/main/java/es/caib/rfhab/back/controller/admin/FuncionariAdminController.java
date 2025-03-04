@@ -23,6 +23,7 @@ import org.fundaciobit.genapp.common.utils.Utils;
 import org.fundaciobit.genapp.common.web.form.AdditionalButton;
 import org.fundaciobit.genapp.common.web.form.AdditionalButtonStyle;
 import org.fundaciobit.genapp.common.web.form.AdditionalField;
+import org.fundaciobit.genapp.common.web.i18n.I18NUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -42,15 +43,12 @@ import es.caib.rfhab.logic.AutoritzacioLogicaService;
 import es.caib.rfhab.logic.FuncionariLogicaService;
 import es.caib.rfhab.logic.HistoricLogicaService;
 import es.caib.rfhab.logic.LlocLogicaService;
-import es.caib.rfhab.logic.utils.HistoricFuncionariDAO;
 import es.caib.rfhab.model.entity.Activitat;
 import es.caib.rfhab.model.entity.Autoritzacio;
 import es.caib.rfhab.model.entity.Funcionari;
-import es.caib.rfhab.model.entity.Historic;
 import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.entity.Rol;
 import es.caib.rfhab.model.fields.FuncionariFields;
-import es.caib.rfhab.model.fields.FuncionariLlocQueryPath;
 import es.caib.rfhab.model.fields.FuncionariRolFields;
 import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.model.fields.RolFields;
@@ -58,7 +56,6 @@ import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.HistoricJPA;
 import es.caib.rfhab.persistence.LlocJPA;
 import es.caib.rfhab.persistence.RolJPA;
-import es.caib.rfhab.persistence.UnitatJPA;
 
 @Controller
 @RequestMapping(value = "/admin/funcionari")
@@ -376,6 +373,27 @@ public class FuncionariAdminController extends FuncionariController {
 		List<StringKeyValue> __tmp = new java.util.ArrayList<StringKeyValue>();
 		__tmp.add(new StringKeyValue("0", "No"));
 		__tmp.add(new StringKeyValue("1", "Sí"));
+		return __tmp;
+
+	}
+
+	@Override
+	public List<StringKeyValue> getReferenceListForTipusIdentificador(HttpServletRequest request, ModelAndView mav, Where where)  throws I18NException {
+
+		System.out.println("getReferenceListForTipusIdentificador");
+
+		List<StringKeyValue> __tmp = new java.util.ArrayList<StringKeyValue>();
+		__tmp.add(new StringKeyValue("0" , I18NUtils.tradueix("tipusidentificacio.0")));
+		__tmp.add(new StringKeyValue("1" , I18NUtils.tradueix("tipusidentificacio.1")));
+		__tmp.add(new StringKeyValue("2" , I18NUtils.tradueix("tipusidentificacio.2")));
+		__tmp.add(new StringKeyValue("3" , I18NUtils.tradueix("tipusidentificacio.3")));
+		__tmp.add(new StringKeyValue("4" , I18NUtils.tradueix("tipusidentificacio.4")));
+
+		System.out.println(I18NUtils.tradueix("tipusidentificacio.0"));
+		System.out.println(I18NUtils.tradueix("tipusidentificacio.1"));
+		System.out.println(I18NUtils.tradueix("tipusidentificacio.2"));
+
+		System.out.println("FI getReferenceListForTipusIdentificador");
 		return __tmp;
 
 	}

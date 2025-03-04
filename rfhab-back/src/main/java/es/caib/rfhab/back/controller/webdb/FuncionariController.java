@@ -599,6 +599,8 @@ public java.lang.Long stringToPK(String value) {
     __tmp.add(new StringKeyValue("0" , "0"));
     __tmp.add(new StringKeyValue("1" , "1"));
     __tmp.add(new StringKeyValue("2" , "2"));
+    __tmp.add(new StringKeyValue("3" , "3"));
+    __tmp.add(new StringKeyValue("4" , "4"));
     return __tmp;
   }
 

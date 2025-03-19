@@ -177,18 +177,23 @@ public class UnitatJPA implements Unitat {
 
 
 
-  @Override
-  public boolean equals(Object __obj) {
-  boolean __result;
-    if (__obj != null && __obj instanceof Unitat) {
-      Unitat __instance = (Unitat)__obj;
-      __result = true;
-      __result = __result && (this.getUnitatID() == __instance.getUnitatID()) ;
-    } else {
-      __result = false;
+    @Override
+    public boolean equals(Object __obj) {
+        boolean __result;
+        if (__obj != null && __obj instanceof Unitat) {
+            Unitat __instance = (Unitat)__obj;
+            __result = true;
+            __result = __result && (this.getUnitatID() == __instance.getUnitatID()) ;
+        } else {
+            __result = false;
+        }
+        return __result;
     }
-    return __result;
-  }
+
+    @Override
+    public int hashCode() {
+        return (String.valueOf(this.getUnitatID())).hashCode();
+    }
 
 // EXP  Field:unitatid | Table: rfh_entitat | Type: 0  
 

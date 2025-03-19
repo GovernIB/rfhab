@@ -63,7 +63,7 @@ public class ScanWebJPA implements ScanWeb {
     @Type(type = "org.hibernate.type.TextType")
     java.lang.String missatge;
 
-    @Column(name="usuariid",length = 19)
+    @Column(name="usuariid",nullable = false,length = 19)
     java.lang.Long usuariID;
 
     @Column(name="datacreacio",length = 29,precision = 6)
@@ -108,10 +108,11 @@ public class ScanWebJPA implements ScanWeb {
     this.entitatID=entitatID;
 }
   /** Constructor dels valors Not Null */
-  public ScanWebJPA(long digitalID , long status , long fitxerID , long entitatID) {
+  public ScanWebJPA(long digitalID , long status , long fitxerID , java.lang.Long usuariID , long entitatID) {
     this.digitalID=digitalID;
     this.status=status;
     this.fitxerID=fitxerID;
+    this.usuariID=usuariID;
     this.entitatID=entitatID;
 }
   public ScanWebJPA(ScanWeb __bean) {
@@ -217,18 +218,23 @@ public class ScanWebJPA implements ScanWeb {
 
 
 
-  @Override
-  public boolean equals(Object __obj) {
-  boolean __result;
-    if (__obj != null && __obj instanceof ScanWeb) {
-      ScanWeb __instance = (ScanWeb)__obj;
-      __result = true;
-      __result = __result && (this.getDigitalID() == __instance.getDigitalID()) ;
-    } else {
-      __result = false;
+    @Override
+    public boolean equals(Object __obj) {
+        boolean __result;
+        if (__obj != null && __obj instanceof ScanWeb) {
+            ScanWeb __instance = (ScanWeb)__obj;
+            __result = true;
+            __result = __result && (this.getDigitalID() == __instance.getDigitalID()) ;
+        } else {
+            __result = false;
+        }
+        return __result;
     }
-    return __result;
-  }
+
+    @Override
+    public int hashCode() {
+        return (String.valueOf(this.getDigitalID())).hashCode();
+    }
 
 // IMP Field:fitxerid | Table: rfh_fitxer | Type: 1  
 
@@ -247,7 +253,7 @@ public class ScanWebJPA implements ScanWeb {
 // IMP Field:usuariid | Table: rfh_usuari | Type: 1  
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuariid", referencedColumnName ="usuariID", nullable = true, insertable=false, updatable=false, foreignKey=@ForeignKey(name="rfh_scanweb_usuari_usuariid_fk"))
+    @JoinColumn(name = "usuariid", referencedColumnName ="usuariID", nullable = false, insertable=false, updatable=false, foreignKey=@ForeignKey(name="rfh_scanweb_usuari_usuariid_fk"))
     private UsuariJPA usuari;
 
     public UsuariJPA getUsuari() {

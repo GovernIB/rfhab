@@ -3,6 +3,7 @@ package es.caib.rfhab.back.form.webdb;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
@@ -193,6 +194,7 @@ public class UnitatFilterForm extends RFHabBaseFilterForm implements UnitatField
     this.superiorVersioDesde = __toClone.superiorVersioDesde;
     this.superiorVersioFins = __toClone.superiorVersioFins;
     this.estat = __toClone.estat;
+    this.mapOfValuesForEstat = __toClone.mapOfValuesForEstat;
   }
   
   /* ========= UTILS ========== */
@@ -227,6 +229,18 @@ public class UnitatFilterForm extends RFHabBaseFilterForm implements UnitatField
    // -----------------------
    // Maps de referencies.
    // -----------------------
+  private Map<String, String> mapOfValuesForEstat;
+
+  public Map<String, String> getMapOfValuesForEstat() {
+    return this.mapOfValuesForEstat;
+  }
+
+  public void setMapOfValuesForEstat(Map<String, String> mapOfValuesForEstat) {
+    this.mapOfValuesForEstat = mapOfValuesForEstat;
+  }
+
+
+
 
    // --------------------------------
    // Camps traduibles de referencies.

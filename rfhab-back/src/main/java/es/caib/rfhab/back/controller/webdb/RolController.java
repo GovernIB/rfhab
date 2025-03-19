@@ -18,7 +18,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +35,7 @@ import es.caib.rfhab.back.validator.webdb.RolWebValidator;
 import es.caib.rfhab.persistence.RolJPA;
 import es.caib.rfhab.model.entity.Rol;
 import es.caib.rfhab.model.fields.*;
+import org.fundaciobit.genapp.common.web.menuoptions.MenuOption;
 
 /**
  * Controller per gestionar un Rol
@@ -43,6 +43,7 @@ import es.caib.rfhab.model.fields.*;
  * 
  * @author GenApp
  */
+@MenuOption(labelCode="rol.rol.plural", order=120, group="WEBDB")
 @Controller
 @RequestMapping(value = "/webdb/rol")
 @SessionAttributes(types = { RolForm.class, RolFilterForm.class })
@@ -342,7 +343,6 @@ public class RolController
 
     if (rol == null) {
       createMessageWarning(request, "error.notfound", rolID);
-      new ModelAndView(new RedirectView(getRedirectWhenCancel(request, rolID), true));
       return llistatPaginat(request, response, 1);
     } else {
       ModelAndView mav = new ModelAndView(getTileForm());

@@ -53,7 +53,7 @@ public class PluginJPA implements Plugin {
     @Column(name="datacreacio",length = 29,precision = 6)
     java.sql.Timestamp dataCreacio;
 
-    @Column(name="tipus",length = 50)
+    @Column(name="tipus",nullable = false,length = 50)
     java.lang.String tipus;
 
 
@@ -86,12 +86,13 @@ public class PluginJPA implements Plugin {
     this.tipus=tipus;
 }
   /** Constructor dels valors Not Null */
-  public PluginJPA(long pluginID , java.lang.String nom , java.lang.String descripcio , long entitatID , boolean actiu) {
+  public PluginJPA(long pluginID , java.lang.String nom , java.lang.String descripcio , long entitatID , boolean actiu , java.lang.String tipus) {
     this.pluginID=pluginID;
     this.nom=nom;
     this.descripcio=descripcio;
     this.entitatID=entitatID;
     this.actiu=actiu;
+    this.tipus=tipus;
 }
   public PluginJPA(Plugin __bean) {
     this.setPluginID(__bean.getPluginID());
@@ -170,18 +171,23 @@ public class PluginJPA implements Plugin {
 
 
 
-  @Override
-  public boolean equals(Object __obj) {
-  boolean __result;
-    if (__obj != null && __obj instanceof Plugin) {
-      Plugin __instance = (Plugin)__obj;
-      __result = true;
-      __result = __result && (this.getPluginID() == __instance.getPluginID()) ;
-    } else {
-      __result = false;
+    @Override
+    public boolean equals(Object __obj) {
+        boolean __result;
+        if (__obj != null && __obj instanceof Plugin) {
+            Plugin __instance = (Plugin)__obj;
+            __result = true;
+            __result = __result && (this.getPluginID() == __instance.getPluginID()) ;
+        } else {
+            __result = false;
+        }
+        return __result;
     }
-    return __result;
-  }
+
+    @Override
+    public int hashCode() {
+        return (String.valueOf(this.getPluginID())).hashCode();
+    }
 
 // IMP Field:entitatid | Table: rfh_entitat | Type: 1  
 

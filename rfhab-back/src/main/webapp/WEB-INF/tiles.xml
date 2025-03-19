@@ -201,15 +201,6 @@
         <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/funcionariLlocList.jsp" />
     </definition>
     
-    <definition name="funcionariRolFormAdmin" extends="admin">
-        <put-attribute name="titol" value="funcionariRol.funcionariRol" />
-        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/funcionariRolForm.jsp" />
-    </definition>
-    
-    <definition name="funcionariRolListAdmin" extends="admin">
-        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/funcionariRolList.jsp" />
-    </definition>
-    
     <definition name="historicFormAdmin" extends="admin">
         <put-attribute name="titol" value="historic.historic" />
         <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/historicForm.jsp" />
@@ -368,16 +359,6 @@
     </definition>
 
 
-    <definition name="funcionariRolFormWebDB" extends="webdb">
-        <put-attribute name="titol" value="funcionariRol.funcionariRol" />
-        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/funcionariRolForm.jsp" />
-    </definition>
-    
-    <definition name="funcionariRolListWebDB" extends="webdb">
-        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/funcionariRolList.jsp" />
-    </definition>
-
-
     <definition name="historicFormWebDB" extends="webdb">
         <put-attribute name="titol" value="historic.historic" />
         <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/historicForm.jsp" />
@@ -415,6 +396,16 @@
     
     <definition name="llocListWebDB" extends="webdb">
         <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/llocList.jsp" />
+    </definition>
+
+
+    <definition name="llocRolFormWebDB" extends="webdb">
+        <put-attribute name="titol" value="llocRol.llocRol" />
+        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/llocRolForm.jsp" />
+    </definition>
+    
+    <definition name="llocRolListWebDB" extends="webdb">
+        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/llocRolList.jsp" />
     </definition>
 
 

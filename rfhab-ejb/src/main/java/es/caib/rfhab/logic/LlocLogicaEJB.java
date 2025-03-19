@@ -20,12 +20,18 @@ import es.caib.rfhab.ejb.FuncionariLlocService;
 import es.caib.rfhab.ejb.FuncionariService;
 import es.caib.rfhab.ejb.HistoricLlocService;
 import es.caib.rfhab.ejb.LlocEJB;
+import es.caib.rfhab.ejb.LlocRolService;
+import es.caib.rfhab.ejb.LlocService;
+import es.caib.rfhab.ejb.RolService;
 import es.caib.rfhab.logic.utils.HistoricLlocDAO;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.FuncionariLloc;
 import es.caib.rfhab.model.entity.Lloc;
+import es.caib.rfhab.model.entity.LlocRol;
+import es.caib.rfhab.model.entity.Rol;
 import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.FuncionariLlocFields;
+import es.caib.rfhab.model.fields.LlocRolFields;
 import es.caib.rfhab.persistence.HistoricLlocJPA;
 import es.caib.rfhab.persistence.LlocJPA;
 
@@ -46,6 +52,12 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 
 	@EJB(mappedName = FuncionariService.JNDI_NAME)
 	FuncionariService funcionariEjb;
+
+	@EJB(mappedName = LlocRolService.JNDI_NAME)
+	LlocRolService llocRolEjb;
+
+	@EJB(mappedName = RolService.JNDI_NAME)
+	RolService rolEjb;
 
 	@Override
 	@PermitAll
@@ -282,6 +294,59 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 			log.error(e.getMessage());
 			throw new I18NException(e.getMessage());
 		}
+	}
+
+	@Override
+	@PermitAll
+	public List<Funcionari> getFuncionarisByLlocID(Long llocId) throws I18NException {
+
+		if (llocId != null) {
+
+			Where w = FuncionariLlocFields.LLOCID.equal(llocId);
+
+			List<FuncionariLloc> funcionarisLlocs = funcionariLlocEjb.select(w);
+
+			if (funcionarisLlocs.size() > 0) {
+				List<Funcionari> llistaFuncionaris = new ArrayList<Funcionari>(funcionarisLlocs.size());
+				for (FuncionariLloc fl : funcionarisLlocs) {
+					Funcionari funcionari = funcionariEjb.findByPrimaryKey(fl.getFuncionariID());
+					if (funcionari != null) {
+						llistaFuncionaris.add(funcionari);
+					}
+				}
+				return llistaFuncionaris;
+			}
+
+		}
+		return new ArrayList<Funcionari>();
+
+	}
+
+	@Override
+	@PermitAll
+	public List<Rol> getRolsByLlocID(Long llocId) throws I18NException {
+
+		if (llocId != null){
+
+
+			Where w = LlocRolFields.LLOCID.equal(llocId);
+
+			List<LlocRol> llocsRols = llocRolEjb.select(w);
+
+			if (llocsRols.size() > 0) {
+				List<Rol> llistaRols = new ArrayList<Rol>(llocsRols.size());
+				for (LlocRol lr : llocsRols) {
+					Rol rol = rolEjb.findByPrimaryKey(lr.getRolID());
+					if (rol != null) {
+						llistaRols.add(rol);
+					}
+				}
+				return llistaRols;
+			}
+
+		}
+		return new ArrayList<Rol>();
+
 	}
 
 }

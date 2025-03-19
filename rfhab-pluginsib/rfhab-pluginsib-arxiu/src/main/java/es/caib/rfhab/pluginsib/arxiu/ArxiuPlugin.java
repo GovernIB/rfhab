@@ -13,7 +13,6 @@ import es.caib.rfhab.model.entity.Fitxer;
 import es.caib.rfhab.pluginsib.arxiu.model.DocumentInfo;
 import es.caib.pluginsib.arxiu.api.ContingutArxiu;
 import es.caib.pluginsib.arxiu.api.ContingutOrigen;
-import es.caib.pluginsib.arxiu.api.ContingutTipus;
 import es.caib.pluginsib.arxiu.api.Document;
 import es.caib.pluginsib.arxiu.api.DocumentEstat;
 import es.caib.pluginsib.arxiu.api.DocumentEstatElaboracio;
@@ -25,15 +24,12 @@ import es.caib.pluginsib.arxiu.api.Expedient;
 import es.caib.pluginsib.arxiu.api.ExpedientEstat;
 import es.caib.pluginsib.arxiu.api.ExpedientMetadades;
 import es.caib.pluginsib.arxiu.api.Firma;
-import es.caib.pluginsib.arxiu.api.FirmaTipus;
 import es.caib.pluginsib.arxiu.api.IArxiuPlugin;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Properties;
 
 import javax.inject.Inject;

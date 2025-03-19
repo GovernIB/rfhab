@@ -16,6 +16,8 @@ import org.fundaciobit.genapp.common.i18n.I18NCommonUtils;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import es.caib.rfhab.commons.utils.Version;
 
+import org.fundaciobit.pluginsib.utils.rest.RestException;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.info.Contact;
@@ -55,7 +57,7 @@ import io.swagger.v3.oas.annotations.media.Content;
                 url = "https://github.com/GovernIB/rfhab/tree/rfhab-1.0/rfhab-api-interna-client-exemplepublic-v1"))
 public class ExemplePublicService {
 
-    protected static Logger log = Logger.getLogger(ExemplePublicService.class);
+    protected final Logger log = Logger.getLogger(ExemplePublicService.class);
 
     public static final String TAG_NAME = "Versio";
 
@@ -71,7 +73,7 @@ public class ExemplePublicService {
     @ApiResponses(
             value = {
                     @ApiResponse(
-                            responseCode = "404",
+                            responseCode = "400",
                             description = "Paràmetres incorrectes",
                             content = @Content(mediaType = MediaType.APPLICATION_JSON)),
                     @ApiResponse(
@@ -80,19 +82,20 @@ public class ExemplePublicService {
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON,
                                     schema = @Schema(implementation = ExemplePojo.class))) })
-    public Response versio(
+    public ExemplePojo versio(
 
             @Parameter(
                     description = "Codi de l'idioma",
                     required = false,
-                    example = "ca",
+                    examples = { @io.swagger.v3.oas.annotations.media.ExampleObject(name = "Català", value = "ca"),
+                                 @io.swagger.v3.oas.annotations.media.ExampleObject(name = "Castellano", value = "es")},
                     schema = @Schema(implementation = String.class)) 
-                                @Pattern(regexp = "^ca|es$") @QueryParam("idioma") String idioma) {
+                                @Pattern(regexp = "^ca|es$") @QueryParam("idioma") String idioma) throws RestException {
 
         try {
             ExemplePojo exemple = new ExemplePojo(new Version().getVersion() + "_" + idioma);
 
-            return Response.ok().entity(exemple).build();
+            return exemple;
 
         } catch (Throwable th) {
 
@@ -106,7 +109,7 @@ public class ExemplePublicService {
 
             log.error("Error cridada api rest 'versio': " + msg, th);
 
-            return Response.status(Response.Status.BAD_REQUEST).entity("{ \"error\" : " + "\"" + msg + "\" }").build();
+            throw new RestException(msg);
 
         }
     }

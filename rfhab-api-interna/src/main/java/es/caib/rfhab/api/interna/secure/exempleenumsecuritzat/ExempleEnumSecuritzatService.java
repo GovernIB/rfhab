@@ -194,13 +194,13 @@ public class ExempleEnumSecuritzatService extends RestUtils {
                             description = "No Autenticat",
                             content = { @Content(
                                     mediaType = MediaType.APPLICATION_JSON,
-                                    schema = @Schema(implementation = String.class)) }),
+                                    schema = @Schema(implementation = RestExceptionInfo.class)) }),
                     @ApiResponse(
                             responseCode = "403",
                             description = "No Autoritzat",
                             content = { @Content(
                                     mediaType = MediaType.APPLICATION_JSON,
-                                    schema = @Schema(implementation = String.class)) }),
+                                    schema = @Schema(implementation = RestExceptionInfo.class)) }),
                     @ApiResponse(
                             responseCode = "500",
                             description = "Error no controlat",
@@ -222,7 +222,7 @@ public class ExempleEnumSecuritzatService extends RestUtils {
                     required = true,
                     example = "ca",
                     schema = @Schema(implementation = String.class)) @Pattern(
-                            regexp = "^ca|es$") @QueryParam("langError") String langError) {
+                            regexp = "^ca|es$") @QueryParam("langError") String langError) throws RestException {
 
         langError = checkLanguage(langError);
 
@@ -236,8 +236,7 @@ public class ExempleEnumSecuritzatService extends RestUtils {
 
                 case 1:
                     // Simula un error en els paràmetres
-                    throw new RestException("El codi de notificacio 'notificationCode' no està registrat.",
-                            Status.BAD_REQUEST);
+                    throw new RestException("El codi de notificacio 'notificationCode' no està registrat.", Status.BAD_REQUEST);
 
                 case 2:
                     return generateMessageResult(SendMessageResultCode.UNKNOWN_ERROR,
@@ -325,13 +324,13 @@ public class ExempleEnumSecuritzatService extends RestUtils {
                     description = "EFIB: No Autenticat",
                     content = { @Content(
                             mediaType = RestUtils.MIME_APPLICATION_JSON,
-                            schema = @Schema(implementation = String.class)) }),
+                            schema = @Schema(implementation = RestExceptionInfo.class)) }),
             @ApiResponse(
                     responseCode = "403",
                     description = "EFIB: No Autoritzat",
                     content = { @Content(
                             mediaType = RestUtils.MIME_APPLICATION_JSON,
-                            schema = @Schema(implementation = String.class)) }),
+                            schema = @Schema(implementation = RestExceptionInfo.class)) }),
             @ApiResponse(
                     responseCode = "500",
                     description = "EFIB: Error durant la consulta de les dades obertes",

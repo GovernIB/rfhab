@@ -23,7 +23,6 @@ import es.caib.rfhab.back.form.webdb.UsuariForm;
 import es.caib.rfhab.logic.UsuariEntitatLogicaService;
 import es.caib.rfhab.model.entity.Usuari;
 import es.caib.rfhab.model.fields.EntitatFields;
-import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.model.fields.UsuariEntitatFields;
 import es.caib.rfhab.persistence.EntitatJPA;
 import es.caib.rfhab.persistence.UsuariEntitatJPA;

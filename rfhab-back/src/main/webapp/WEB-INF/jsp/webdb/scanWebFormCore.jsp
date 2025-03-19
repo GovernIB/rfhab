@@ -289,7 +289,7 @@
         <tr id="scanWeb_usuariID_rowid">
           <td id="scanWeb_usuariID_columnlabelid">
             <label>
-              <fmt:message key="${(empty __theForm.labels[ScanWebFields.USUARIID])?'scanWeb.usuariID':__theForm.labels[ScanWebFields.USUARIID]}" />
+              <fmt:message key="${(empty __theForm.labels[ScanWebFields.USUARIID])?'scanWeb.usuariID':__theForm.labels[ScanWebFields.USUARIID]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[ScanWebFields.USUARIID]}">
               <i class="fas fa-info-circle" title="${__theForm.help[ScanWebFields.USUARIID]}" ></i>
@@ -310,15 +310,6 @@
                   <c:set var="containEmptyValue"  value="true" />
                 </c:if>
             </c:forEach>
-            <%-- El camp pot ser null, per la qual cosa afegim una entrada buida si no s'ha definit abans --%>
-            <c:if test="${not containEmptyValue}">
-              <c:if test="${empty __theForm.scanWeb.usuariID }">
-                  <form:option value="" selected="true" ></form:option>
-              </c:if>
-              <c:if test="${not empty __theForm.scanWeb.usuariID }">
-                  <form:option value="" ></form:option>
-              </c:if>
-            </c:if>
           </form:select>
           </c:if>
            </td>

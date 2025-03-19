@@ -16,7 +16,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +33,7 @@ import es.caib.rfhab.back.validator.webdb.TraduccioWebValidator;
 import es.caib.rfhab.persistence.TraduccioJPA;
 import es.caib.rfhab.model.entity.Traduccio;
 import es.caib.rfhab.model.fields.*;
+import org.fundaciobit.genapp.common.web.menuoptions.MenuOption;
 
 /**
  * Controller per gestionar un Traduccio
@@ -41,6 +41,7 @@ import es.caib.rfhab.model.fields.*;
  * 
  * @author GenApp
  */
+@MenuOption(labelCode="traduccio.traduccio.plural", order=140, group="WEBDB")
 @Controller
 @RequestMapping(value = "/webdb/traduccio")
 @SessionAttributes(types = { TraduccioForm.class, TraduccioFilterForm.class })
@@ -302,7 +303,6 @@ public class TraduccioController
 
     if (traduccio == null) {
       createMessageWarning(request, "error.notfound", traduccioID);
-      new ModelAndView(new RedirectView(getRedirectWhenCancel(request, traduccioID), true));
       return llistatPaginat(request, response, 1);
     } else {
       ModelAndView mav = new ModelAndView(getTileForm());

@@ -18,7 +18,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +35,7 @@ import es.caib.rfhab.back.validator.webdb.AutoritzacioWebValidator;
 import es.caib.rfhab.persistence.AutoritzacioJPA;
 import es.caib.rfhab.model.entity.Autoritzacio;
 import es.caib.rfhab.model.fields.*;
+import org.fundaciobit.genapp.common.web.menuoptions.MenuOption;
 
 /**
  * Controller per gestionar un Autoritzacio
@@ -43,6 +43,7 @@ import es.caib.rfhab.model.fields.*;
  * 
  * @author GenApp
  */
+@MenuOption(labelCode="autoritzacio.autoritzacio.plural", order=10, group="WEBDB")
 @Controller
 @RequestMapping(value = "/webdb/autoritzacio")
 @SessionAttributes(types = { AutoritzacioForm.class, AutoritzacioFilterForm.class })
@@ -355,7 +356,6 @@ public class AutoritzacioController
 
     if (autoritzacio == null) {
       createMessageWarning(request, "error.notfound", autoritzacioID);
-      new ModelAndView(new RedirectView(getRedirectWhenCancel(request, autoritzacioID), true));
       return llistatPaginat(request, response, 1);
     } else {
       ModelAndView mav = new ModelAndView(getTileForm());

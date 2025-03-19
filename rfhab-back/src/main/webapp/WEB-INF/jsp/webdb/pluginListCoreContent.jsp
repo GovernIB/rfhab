@@ -67,7 +67,10 @@
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,PluginFields.TIPUS)}">
           <td>
-          ${plugin.tipus}
+          <c:set var="tmp">${plugin.tipus}</c:set>
+          <c:if test="${not empty tmp}">
+          ${__theFilterForm.mapOfValuesForTipus[tmp]}
+          </c:if>
           </td>
         </c:if>
 

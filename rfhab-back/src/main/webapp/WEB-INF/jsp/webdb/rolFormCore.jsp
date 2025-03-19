@@ -95,7 +95,7 @@
         <tr id="rol_entitatID_rowid">
           <td id="rol_entitatID_columnlabelid">
             <label>
-              <fmt:message key="${(empty __theForm.labels[RolFields.ENTITATID])?'rol.entitatID':__theForm.labels[RolFields.ENTITATID]}" />
+              <fmt:message key="${(empty __theForm.labels[RolFields.ENTITATID])?'rol.entitatID':__theForm.labels[RolFields.ENTITATID]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[RolFields.ENTITATID]}">
               <i class="fas fa-info-circle" title="${__theForm.help[RolFields.ENTITATID]}" ></i>

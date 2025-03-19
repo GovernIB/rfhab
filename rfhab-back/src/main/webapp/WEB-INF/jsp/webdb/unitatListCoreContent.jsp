@@ -71,7 +71,10 @@
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UnitatFields.ESTAT)}">
           <td>
-          ${unitat.estat}
+          <c:set var="tmp">${unitat.estat}</c:set>
+          <c:if test="${not empty tmp}">
+          ${__theFilterForm.mapOfValuesForEstat[tmp]}
+          </c:if>
           </td>
         </c:if>
 

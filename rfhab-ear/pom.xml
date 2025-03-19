@@ -340,18 +340,6 @@
 	
 	
     <profiles>
-            <!-- Garantir que es fixa la variable d'entorn JBOSS_HOME -->
-        <profile>
-            <id>fix JBOSS_HOME</id>
-            <activation>
-                <property>
-                    <name>!env.JBOSS_HOME</name>
-                </property>
-            </activation>
-            <properties>
-                <env.JBOSS_HOME>HA DE FIXAR LA VARIABLE D'ENTORN JBOSS_HOME</env.JBOSS_HOME>
-            </properties>
-        </profile>
         <profile>
           <id>revisionnumber</id>
           <build>

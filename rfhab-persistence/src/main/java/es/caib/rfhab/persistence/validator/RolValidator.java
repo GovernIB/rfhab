@@ -40,6 +40,10 @@ public class RolValidator<I extends Rol>
         "genapp.validation.required",
         new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(CODI)));
 
+    __vr.rejectIfEmptyOrWhitespace(__target__,ENTITATID, 
+        "genapp.validation.required",
+        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(ENTITATID)));
+
     // Check size
     if (__vr.getFieldErrorCount(CODI) == 0) {
       java.lang.String __codi = __target__.getCodi();

@@ -12,11 +12,11 @@ public final class RFHabJPADaoManagers implements IRFHabDaoManagers{
    private final FitxerJPAManager rfh_fitxer;
    private final FuncionariJPAManager rfh_funcionari;
    private final FuncionariLlocJPAManager rfh_funcionarilloc;
-   private final FuncionariRolJPAManager rfh_funcionarirol;
    private final HistoricJPAManager rfh_historic;
    private final HistoricLlocJPAManager rfh_historiclloc;
    private final IdiomaJPAManager rfh_idioma;
    private final LlocJPAManager rfh_lloc;
+   private final LlocRolJPAManager rfh_llocrol;
    private final PluginJPAManager rfh_plugin;
    private final RolJPAManager rfh_rol;
    private final ScanWebJPAManager rfh_digitalib;
@@ -32,11 +32,11 @@ public final class RFHabJPADaoManagers implements IRFHabDaoManagers{
     this.rfh_fitxer = new FitxerJPAManager(__em);
     this.rfh_funcionari = new FuncionariJPAManager(__em);
     this.rfh_funcionarilloc = new FuncionariLlocJPAManager(__em);
-    this.rfh_funcionarirol = new FuncionariRolJPAManager(__em);
     this.rfh_historic = new HistoricJPAManager(__em);
     this.rfh_historiclloc = new HistoricLlocJPAManager(__em);
     this.rfh_idioma = new IdiomaJPAManager(__em);
     this.rfh_lloc = new LlocJPAManager(__em);
+    this.rfh_llocrol = new LlocRolJPAManager(__em);
     this.rfh_plugin = new PluginJPAManager(__em);
     this.rfh_rol = new RolJPAManager(__em);
     this.rfh_digitalib = new ScanWebJPAManager(__em);
@@ -70,10 +70,6 @@ public final class RFHabJPADaoManagers implements IRFHabDaoManagers{
         return this.rfh_funcionarilloc;
     };
 
-    public IFuncionariRolManager getFuncionariRolManager() {
-        return this.rfh_funcionarirol;
-    };
-
     public IHistoricManager getHistoricManager() {
         return this.rfh_historic;
     };
@@ -88,6 +84,10 @@ public final class RFHabJPADaoManagers implements IRFHabDaoManagers{
 
     public ILlocManager getLlocManager() {
         return this.rfh_lloc;
+    };
+
+    public ILlocRolManager getLlocRolManager() {
+        return this.rfh_llocrol;
     };
 
     public IPluginManager getPluginManager() {

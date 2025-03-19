@@ -47,12 +47,13 @@ public class PluginBean implements Plugin {
     this.tipus=tipus;
 }
   /** Constructor dels valors Not Null */
-  public PluginBean(long pluginID , java.lang.String nom , java.lang.String descripcio , long entitatID , boolean actiu) {
+  public PluginBean(long pluginID , java.lang.String nom , java.lang.String descripcio , long entitatID , boolean actiu , java.lang.String tipus) {
     this.pluginID=pluginID;
     this.nom=nom;
     this.descripcio=descripcio;
     this.entitatID=entitatID;
     this.actiu=actiu;
+    this.tipus=tipus;
 }
   public PluginBean(Plugin __bean) {
     this.setPluginID(__bean.getPluginID());

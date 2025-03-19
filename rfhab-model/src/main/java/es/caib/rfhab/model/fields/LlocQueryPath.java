@@ -98,6 +98,20 @@ public class LlocQueryPath extends org.fundaciobit.genapp.common.query.QueryPath
   }
 */
 
+/* L'ús d'aquest camp (OneToMany) llança una exception:
+ [Illegal attempt to dereference a collection]
+
+ // TODO Solució dins el mètode testOneByOneDirect de la classe TestJPA 
+
+  public LlocRolQueryPath LLOCROLS() {
+    return new LlocRolQueryPath(new QueryPath() {
+      public String getQueryPath() {
+          return LlocQueryPath.this.getQueryPath() + "llocRols" + ".";
+      }
+    });
+  }
+*/
+
   public EntitatQueryPath ENTITAT() {
     return new EntitatQueryPath(new QueryPath() {
       public String getQueryPath() {

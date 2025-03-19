@@ -119,20 +119,6 @@ public class FuncionariQueryPath extends org.fundaciobit.genapp.common.query.Que
 
  // TODO Solució dins el mètode testOneByOneDirect de la classe TestJPA 
 
-  public FuncionariRolQueryPath FUNCIONARIROLS() {
-    return new FuncionariRolQueryPath(new QueryPath() {
-      public String getQueryPath() {
-          return FuncionariQueryPath.this.getQueryPath() + "funcionariRols" + ".";
-      }
-    });
-  }
-*/
-
-/* L'ús d'aquest camp (OneToMany) llança una exception:
- [Illegal attempt to dereference a collection]
-
- // TODO Solució dins el mètode testOneByOneDirect de la classe TestJPA 
-
   public HistoricQueryPath HISTORICS() {
     return new HistoricQueryPath(new QueryPath() {
       public String getQueryPath() {

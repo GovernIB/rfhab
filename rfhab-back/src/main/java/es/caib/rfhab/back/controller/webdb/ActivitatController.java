@@ -18,7 +18,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +35,7 @@ import es.caib.rfhab.back.validator.webdb.ActivitatWebValidator;
 import es.caib.rfhab.persistence.ActivitatJPA;
 import es.caib.rfhab.model.entity.Activitat;
 import es.caib.rfhab.model.fields.*;
+import org.fundaciobit.genapp.common.web.menuoptions.MenuOption;
 
 /**
  * Controller per gestionar un Activitat
@@ -43,6 +43,7 @@ import es.caib.rfhab.model.fields.*;
  * 
  * @author GenApp
  */
+@MenuOption(labelCode="activitat.activitat.plural", order=0, group="WEBDB")
 @Controller
 @RequestMapping(value = "/webdb/activitat")
 @SessionAttributes(types = { ActivitatForm.class, ActivitatFilterForm.class })
@@ -375,7 +376,6 @@ public class ActivitatController
 
     if (activitat == null) {
       createMessageWarning(request, "error.notfound", activitatID);
-      new ModelAndView(new RedirectView(getRedirectWhenCancel(request, activitatID), true));
       return llistatPaginat(request, response, 1);
     } else {
       ModelAndView mav = new ModelAndView(getTileForm());

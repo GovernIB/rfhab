@@ -40,7 +40,7 @@ public class RolJPA implements Rol {
     @Column(name="datacreacio",length = 29,precision = 6)
     java.sql.Timestamp dataCreacio;
 
-    @Column(name="entitatid",length = 19)
+    @Column(name="entitatid",nullable = false,length = 19)
     java.lang.Long entitatID;
 
 
@@ -63,12 +63,6 @@ public class RolJPA implements Rol {
     this.codi=codi;
     this.dataCreacio=dataCreacio;
     this.entitatID=entitatID;
-}
-  /** Constructor dels valors Not Null */
-  public RolJPA(long rolID , java.lang.Long nomID , java.lang.String codi) {
-    this.rolID=rolID;
-    this.nomID=nomID;
-    this.codi=codi;
 }
   public RolJPA(Rol __bean) {
     this.setRolID(__bean.getRolID());
@@ -115,29 +109,34 @@ public class RolJPA implements Rol {
 
 
 
-  @Override
-  public boolean equals(Object __obj) {
-  boolean __result;
-    if (__obj != null && __obj instanceof Rol) {
-      Rol __instance = (Rol)__obj;
-      __result = true;
-      __result = __result && (this.getRolID() == __instance.getRolID()) ;
-    } else {
-      __result = false;
+    @Override
+    public boolean equals(Object __obj) {
+        boolean __result;
+        if (__obj != null && __obj instanceof Rol) {
+            Rol __instance = (Rol)__obj;
+            __result = true;
+            __result = __result && (this.getRolID() == __instance.getRolID()) ;
+        } else {
+            __result = false;
+        }
+        return __result;
     }
-    return __result;
-  }
 
-// EXP  Field:rolid | Table: rfh_funcionarirol | Type: 0  
+    @Override
+    public int hashCode() {
+        return (String.valueOf(this.getRolID())).hashCode();
+    }
+
+// EXP  Field:rolid | Table: rfh_llocrol | Type: 0  
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "rol")
-    private Set<FuncionariRolJPA> funcionariRols = new HashSet<FuncionariRolJPA>(0);
-    public  Set<FuncionariRolJPA> getFuncionariRols() {
-    return this.funcionariRols;
+    private Set<LlocRolJPA> llocRols = new HashSet<LlocRolJPA>(0);
+    public  Set<LlocRolJPA> getLlocRols() {
+    return this.llocRols;
   }
 
-    public void setFuncionariRols(Set<FuncionariRolJPA> funcionariRols) {
-      this.funcionariRols = funcionariRols;
+    public void setLlocRols(Set<LlocRolJPA> llocRols) {
+      this.llocRols = llocRols;
     }
 
 
@@ -204,9 +203,9 @@ public class RolJPA implements Rol {
     __tmp = toJPA(__jpa);
     __alreadyCopied.put(__jpa, __tmp);
     // Copia de beans complexes (EXP)
-    if(!"FuncionariRolJPA".equals(origenJPA) 
-       && ( !org.fundaciobit.genapp.common.utils.Utils.isEmpty(__jpa.funcionariRols) || org.hibernate.Hibernate.isInitialized(__jpa.getFuncionariRols())) ) {
-      __tmp.setFuncionariRols(FuncionariRolJPA.copyJPA(__jpa.getFuncionariRols(), __alreadyCopied,"RolJPA"));
+    if(!"LlocRolJPA".equals(origenJPA) 
+       && ( !org.fundaciobit.genapp.common.utils.Utils.isEmpty(__jpa.llocRols) || org.hibernate.Hibernate.isInitialized(__jpa.getLlocRols())) ) {
+      __tmp.setLlocRols(LlocRolJPA.copyJPA(__jpa.getLlocRols(), __alreadyCopied,"RolJPA"));
     }
     // Copia de beans complexes (IMP)
     if(!"TraduccioJPA".equals(origenJPA) && 

@@ -50,6 +50,9 @@ lang = ${lang} <br/>
  	nif= ${loginInfo.usuariPersona.nif} <br/> 
   <br/>
 </c:if>
+<c:if test="${empty loginInfo.usuariPersona}">
+	Error carregant Plugin UserInfo. Revisar logs per mes informacio.<br/>
+</c:if>
 
 <c:if test="${rfh:isDesenvolupament()}">
 Only in Development Mode

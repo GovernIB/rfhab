@@ -4,7 +4,6 @@ import es.caib.rfhab.back.security.LoginInfo;
 import es.caib.rfhab.commons.utils.Configuracio;
 
 import org.apache.log4j.Logger;
-import org.fundaciobit.genapp.common.web.HtmlUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,7 +68,7 @@ public class PrincipalController {
 			
 			if ("admin".equals(pipella)) {
 				loginInfo.setRolActual("admin");
-				return new ModelAndView(new RedirectView("/admin/funcionari/list", true));
+				return new ModelAndView(new RedirectView("/admin/lloc/list", true));
 			}
 			
 			if ("super".equals(pipella)) {

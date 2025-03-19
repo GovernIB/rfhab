@@ -159,6 +159,7 @@ public class PluginFilterForm extends RFHabBaseFilterForm implements PluginField
     this.dataCreacioFins = __toClone.dataCreacioFins;
     this.tipus = __toClone.tipus;
     this.mapOfEntitatForEntitatID = __toClone.mapOfEntitatForEntitatID;
+    this.mapOfValuesForTipus = __toClone.mapOfValuesForTipus;
   }
   
   /* ========= UTILS ========== */
@@ -201,6 +202,18 @@ public class PluginFilterForm extends RFHabBaseFilterForm implements PluginField
 
   public void setMapOfEntitatForEntitatID(Map<String, String> mapOfEntitatForEntitatID) {
     this.mapOfEntitatForEntitatID = mapOfEntitatForEntitatID;
+  }
+
+
+
+  private Map<String, String> mapOfValuesForTipus;
+
+  public Map<String, String> getMapOfValuesForTipus() {
+    return this.mapOfValuesForTipus;
+  }
+
+  public void setMapOfValuesForTipus(Map<String, String> mapOfValuesForTipus) {
+    this.mapOfValuesForTipus = mapOfValuesForTipus;
   }
 
 

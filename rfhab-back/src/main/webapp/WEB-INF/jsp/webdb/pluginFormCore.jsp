@@ -209,16 +209,29 @@
         <tr id="plugin_tipus_rowid">
           <td id="plugin_tipus_columnlabelid">
             <label>
-              <fmt:message key="${(empty __theForm.labels[PluginFields.TIPUS])?'plugin.tipus':__theForm.labels[PluginFields.TIPUS]}" />
+              <fmt:message key="${(empty __theForm.labels[PluginFields.TIPUS])?'plugin.tipus':__theForm.labels[PluginFields.TIPUS]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[PluginFields.TIPUS]}">
               <i class="fas fa-info-circle" title="${__theForm.help[PluginFields.TIPUS]}" ></i>
               </c:if>
             </td>
           <td id="plugin_tipus_columnvalueid">
-            <form:errors path="plugin.tipus" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,PluginFields.TIPUS)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,PluginFields.TIPUS)? ' uneditable-input' : ''}"  style="" maxlength="50" path="plugin.tipus"   />
-
+          <form:errors path="plugin.tipus" cssClass="errorField alert alert-danger" />
+          <c:if test="${gen:contains(__theForm.readOnlyFields ,PluginFields.TIPUS)}" >
+          <form:hidden path="plugin.tipus"/>
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.plugin.tipus,__theForm.listOfValuesForTipus)}"  />
+          </c:if>
+          <c:if test="${!gen:contains(__theForm.readOnlyFields ,PluginFields.TIPUS)}" >
+          <c:set var="containEmptyValue"  value="false" />
+          <form:select id="plugin_tipus"  onchange="if(typeof onChangeTipus == 'function') {  onChangeTipus(this); };"  cssClass="form-control col-md-9-optional" path="plugin.tipus">
+            <c:forEach items="${__theForm.listOfValuesForTipus}" var="tmp">
+                <form:option value="${tmp.key}">${tmp.value}</form:option>
+                <c:if test="${empty tmp.key}">
+                  <c:set var="containEmptyValue"  value="true" />
+                </c:if>
+            </c:forEach>
+          </form:select>
+          </c:if>
            </td>
         </tr>
         </c:if>

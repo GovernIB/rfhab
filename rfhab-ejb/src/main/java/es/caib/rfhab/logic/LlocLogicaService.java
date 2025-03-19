@@ -11,6 +11,7 @@ import es.caib.rfhab.ejb.LlocService;
 import es.caib.rfhab.logic.utils.HistoricLlocDAO;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.Lloc;
+import es.caib.rfhab.model.entity.Rol;
 import es.caib.rfhab.persistence.HistoricLlocJPA;
 import es.caib.rfhab.persistence.LlocJPA;
 
@@ -36,4 +37,8 @@ public interface LlocLogicaService extends LlocService{
 	public List<Lloc> getLlocByFuncionariID(Long funcionariId, boolean current) throws I18NException;
 	
 	public HistoricLlocDAO fromJson(String json) throws I18NException;
+
+	public List<Funcionari> getFuncionarisByLlocID(Long llocId) throws I18NException;
+
+	public List<Rol> getRolsByLlocID(Long llocId) throws I18NException;
 }

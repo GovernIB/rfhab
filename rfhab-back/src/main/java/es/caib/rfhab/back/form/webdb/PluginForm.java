@@ -20,6 +20,7 @@ public class PluginForm extends RFHabBaseForm {
     super(__toClone);
       this.plugin = __toClone.plugin;
     this.listOfEntitatForEntitatID = __toClone.listOfEntitatForEntitatID;
+    this.listOfValuesForTipus = __toClone.listOfValuesForTipus;
   }
   
   public PluginForm(PluginJPA plugin, boolean nou) {
@@ -43,6 +44,18 @@ public class PluginForm extends RFHabBaseForm {
 
   public void setListOfEntitatForEntitatID(List<StringKeyValue> listOfEntitatForEntitatID) {
     this.listOfEntitatForEntitatID = listOfEntitatForEntitatID;
+  }
+
+
+
+  private List<StringKeyValue> listOfValuesForTipus;
+
+  public List<StringKeyValue> getListOfValuesForTipus() {
+    return this.listOfValuesForTipus;
+  }
+
+  public void setListOfValuesForTipus(List<StringKeyValue> listOfValuesForTipus) {
+    this.listOfValuesForTipus = listOfValuesForTipus;
   }
 
 

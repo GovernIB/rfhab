@@ -18,7 +18,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +35,7 @@ import es.caib.rfhab.back.validator.webdb.UsuariEntitatWebValidator;
 import es.caib.rfhab.persistence.UsuariEntitatJPA;
 import es.caib.rfhab.model.entity.UsuariEntitat;
 import es.caib.rfhab.model.fields.*;
+import org.fundaciobit.genapp.common.web.menuoptions.MenuOption;
 
 /**
  * Controller per gestionar un UsuariEntitat
@@ -43,6 +43,7 @@ import es.caib.rfhab.model.fields.*;
  * 
  * @author GenApp
  */
+@MenuOption(labelCode="usuariEntitat.usuariEntitat.plural", order=180, group="WEBDB")
 @Controller
 @RequestMapping(value = "/webdb/usuariEntitat")
 @SessionAttributes(types = { UsuariEntitatForm.class, UsuariEntitatFilterForm.class })
@@ -358,7 +359,6 @@ public class UsuariEntitatController
 
     if (usuariEntitat == null) {
       createMessageWarning(request, "error.notfound", usuariEntitatID);
-      new ModelAndView(new RedirectView(getRedirectWhenCancel(request, usuariEntitatID), true));
       return llistatPaginat(request, response, 1);
     } else {
       ModelAndView mav = new ModelAndView(getTileForm());

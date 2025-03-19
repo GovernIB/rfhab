@@ -9,11 +9,11 @@ public interface IRFHabDaoManagers {
 	public IFitxerManager getFitxerManager();
 	public IFuncionariManager getFuncionariManager();
 	public IFuncionariLlocManager getFuncionariLlocManager();
-	public IFuncionariRolManager getFuncionariRolManager();
 	public IHistoricManager getHistoricManager();
 	public IHistoricLlocManager getHistoricLlocManager();
 	public IIdiomaManager getIdiomaManager();
 	public ILlocManager getLlocManager();
+	public ILlocRolManager getLlocRolManager();
 	public IPluginManager getPluginManager();
 	public IRolManager getRolManager();
 	public IScanWebManager getScanWebManager();

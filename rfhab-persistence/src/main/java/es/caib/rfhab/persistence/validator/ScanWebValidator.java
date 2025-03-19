@@ -36,6 +36,10 @@ public class ScanWebValidator<I extends ScanWeb>
         "genapp.validation.required",
         new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(STATUS)));
 
+    __vr.rejectIfEmptyOrWhitespace(__target__,USUARIID, 
+        "genapp.validation.required",
+        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(USUARIID)));
+
     __vr.rejectIfEmptyOrWhitespace(__target__,ENTITATID, 
         "genapp.validation.required",
         new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(ENTITATID)));
@@ -107,15 +111,13 @@ public class ScanWebValidator<I extends ScanWeb>
     // Fields with References to Other tables 
     if (__vr.getFieldErrorCount(USUARIID) == 0) {
       java.lang.Long __usuariid = __target__.getUsuariID();
-      if (__usuariid != null ) {
-        Long __count_ = null;
-        try { __count_ = __usuariManager.count(UsuariFields.USUARIID.equal(__usuariid)); } catch(org.fundaciobit.genapp.common.i18n.I18NException e) { e.printStackTrace(); };
-        if (__count_ == null || __count_ == 0) {        
-          __vr.rejectValue(USUARIID, "error.notfound",
+      Long __count_ = null;
+      try { __count_ = __usuariManager.count(UsuariFields.USUARIID.equal(__usuariid)); } catch(org.fundaciobit.genapp.common.i18n.I18NException e) { e.printStackTrace(); };
+      if (__count_ == null || __count_ == 0) {        
+        __vr.rejectValue(USUARIID, "error.notfound",
          new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("usuari.usuari"),
          new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("usuari.usuariID"),
          new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(__usuariid)));
-        }
       }
     }
 

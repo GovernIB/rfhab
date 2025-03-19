@@ -3,13 +3,12 @@ package es.caib.rfhab.api.interna.secure.funcionari;
 import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.ejb.ActivitatService;
 import es.caib.rfhab.logic.FuncionariLogicaService;
-import es.caib.rfhab.logic.utils.TipusActivitat;
 import es.caib.rfhab.model.entity.Activitat;
 import es.caib.rfhab.persistence.ActivitatJPA;
 import es.caib.rfhab.persistence.RolJPA;
 
-import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
@@ -220,8 +219,10 @@ public class FuncionariRestService extends RestUtils {
 			// check funcionarID
 			long funcionariId = funcionariEjb.getFuncionariID(numero, usuari, entitatId);
 			
-			// obtain rols 
-			List<RolJPA> rolsFuncionari = funcionariEjb.getRolsByFuncionariID(funcionariId);
+			// TODO els rols ja no estan assignats a un funcionari sino a un lloc de feina
+			// obtain rols
+			List<RolJPA> rolsFuncionari = new ArrayList<RolJPA>();
+			// List<RolJPA> rolsFuncionari = funcionariEjb.getRolsByFuncionariID(funcionariId);
 			
 			return mapper.writeValueAsString(rolsFuncionari);
 			

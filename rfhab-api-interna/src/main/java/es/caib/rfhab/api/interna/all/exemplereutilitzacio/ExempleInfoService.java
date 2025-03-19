@@ -64,7 +64,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 //@SecurityScheme(type = SecuritySchemeType.HTTP, name = ExempleInfoService.SECURITY_NAME, scheme = "basic")
 public class ExempleInfoService extends RestUtils {
 
-    protected static Logger log = Logger.getLogger(ExempleInfoService.class);
+    protected final Logger log = Logger.getLogger(ExempleInfoService.class);
 
     // Descomentar aquest codi si es vol securitzar el servei
     // protected static final String SECURITY_NAME = "BasicAuth";
@@ -93,23 +93,8 @@ public class ExempleInfoService extends RestUtils {
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON,
                                     schema = @Schema(implementation = LlistaDeExempleInfoPaginada.class))),
-                    // Descomentar aquest codi si es vol securitzar el servei
-                    /*
                     @ApiResponse(
                             responseCode = "400",
-                            description = "Paràmetres incorrectes",
-                            content = { @Content(
-                                    mediaType = MediaType.APPLICATION_JSON,
-                                    schema = @Schema(implementation = RestExceptionInfo.class)) }),
-                    @ApiResponse(
-                            responseCode = "401",
-                            description = "No Autenticat",
-                            content = { @Content(
-                                    mediaType = MediaType.APPLICATION_JSON,
-                                    schema = @Schema(implementation = String.class)) }),
-                    */
-                    @ApiResponse(
-                            responseCode = "404",
                             description = "Paràmetres incorrectes",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON,

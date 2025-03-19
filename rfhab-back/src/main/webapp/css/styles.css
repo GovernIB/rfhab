@@ -140,7 +140,6 @@ a:hover{
 	.dropdown-menu {
 		float: none;
 		padding: 0;
-		margin-top: -3px;
 	}
 	a.nav-link.mobil:hover {
 		color: #000 !important;
@@ -166,7 +165,7 @@ a:hover{
 	body {
 		padding-top: 4rem !important;
 	}
-	.logoEntitat {
+	.logoGovern {
 		margin-right: 10px !important;
 		margin-left: 10px !important;
 	}
@@ -199,7 +198,7 @@ a:hover{
 	body {
 		padding-top: 4rem !important;
 	}
-	.logoEntitat {
+	.logoGovern {
 		margin-right: 5px !important;
 		margin-left: 5px !important;
 	}
@@ -260,7 +259,7 @@ a:hover{
 	content: '\e024\0000a0' !important;
 }
 .bg-aplicacio{
-	background-color: #ffffff !important;
+	background-color: #4dba79 !important;
 	padding-left: 0px;
 	padding-right: 0px;
 }
@@ -282,11 +281,12 @@ a:hover{
 .menuGovern span, strong{
 	font-size: 1em;
 }
-.logoEntitat {
+.logoGovern{
 	float: left;
-	padding: 0 1rem;
+	margin-right: 20px;
+	margin-left: 5px;
 }
-.imatgeGovern {
+.imatgeGovern{
 	width: 50px;
 }
 .iconoCapsalera{
@@ -313,7 +313,7 @@ a:hover{
 .mobil{
 	margin-left: auto!important;
 	padding-right: 20px;
-	padding-top: 10px;
+	padding-top: 10px !important;
 }
 .navbar-nav.mobil{
 	padding-top: 10px;
@@ -491,68 +491,5 @@ a.iconoXarxes{
 .page-link:focus, .page-link:hover {
 	color: #000;
 }
-.btn { margin-left:10px; }
-#GroupDiv { font-size:90%; }
-#FilterDiv { font-size:90%; }
-#filterDiv .page-header .btn { padding: 1px 5px; }
-#filterDiv .page-header .input-prepend, #filterDiv .page-header .input-group { margin-right: 10px; }
-.badge { margin-right: 5px; }
 
 
-/* Nou disseny */
-#FilterDiv {
-	padding: 0.5rem !important;
-	margin-bottom: 1.25rem !important;
-	min-width: 41rem;
-	background-image: linear-gradient(45deg, #999 25%, transparent 25%, transparent 50%, #999
-		50%, #999 75%, transparent 75%, #fff);
-	background-size: 3px 3px;
-}
-
-#page-header {
-	padding-top: 0.5rem;
-}
-
-.btn-filtre {
-	margin-left: 3px;
-	padding: 0.25rem 0.75rem;
-}
-
-.filtre-div {
-	min-width: 28rem;
-	max-width: 45rem;
-	margin: 0.5rem 2rem 0.5rem 0.5rem;
-	width: 40% !important;
-}
-
-.group-item {
-	width: 48%;
-}
-
-.form-control {
-	padding: 0.25rem 0.75rem !important;
-}
-
-.form-group {
-	margin-left: 0rem;
-}
-
-#btn-clean {
-	background: #FDFFFC;
-	border-color: #888888;
-}
-
-#btn-reset {
-	background: #FF9523;
-	border-color: #FF9523;
-}
-
-/* #btn-submit {
-	background: #246EB9;
-	border-color: #246EB9;
-	color: #FDFFFC;
-}
- */
-.search-query {
-	width: 100% !important;
-}

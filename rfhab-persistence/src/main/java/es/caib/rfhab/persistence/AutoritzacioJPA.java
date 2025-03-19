@@ -201,18 +201,23 @@ public class AutoritzacioJPA implements Autoritzacio {
 
 
 
-  @Override
-  public boolean equals(Object __obj) {
-  boolean __result;
-    if (__obj != null && __obj instanceof Autoritzacio) {
-      Autoritzacio __instance = (Autoritzacio)__obj;
-      __result = true;
-      __result = __result && (this.getAutoritzacioID() == __instance.getAutoritzacioID()) ;
-    } else {
-      __result = false;
+    @Override
+    public boolean equals(Object __obj) {
+        boolean __result;
+        if (__obj != null && __obj instanceof Autoritzacio) {
+            Autoritzacio __instance = (Autoritzacio)__obj;
+            __result = true;
+            __result = __result && (this.getAutoritzacioID() == __instance.getAutoritzacioID()) ;
+        } else {
+            __result = false;
+        }
+        return __result;
     }
-    return __result;
-  }
+
+    @Override
+    public int hashCode() {
+        return (String.valueOf(this.getAutoritzacioID())).hashCode();
+    }
 
 // EXP  Field:autoritzacioid | Table: rfh_activitat | Type: 0  
 

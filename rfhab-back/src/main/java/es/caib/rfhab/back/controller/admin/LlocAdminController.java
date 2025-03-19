@@ -35,6 +35,7 @@ import es.caib.rfhab.logic.LlocLogicaService;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.HistoricLloc;
 import es.caib.rfhab.model.entity.Lloc;
+import es.caib.rfhab.model.entity.Rol;
 import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.FuncionariLlocFields;
 import es.caib.rfhab.model.fields.LlocFields;
@@ -93,10 +94,9 @@ public class LlocAdminController extends LlocController {
 				llocFilterForm.addAdditionalField(adfield);
 			}
 
-			llocFilterForm.addAdditionalButton(new AdditionalButton(" fas fa-long-arrow-alt-left", "tornar",
-					getContextWeb() + "/tornar", AdditionalButtonStyle.SECONDARY));
 		}
 		
+		llocFilterForm.setDeleteButtonVisible(false);
 		llocFilterForm.setDeleteSelectedButtonVisible(false);
 		llocFilterForm.setVisibleMultipleSelection(false);
 				
@@ -127,6 +127,31 @@ public class LlocAdminController extends LlocController {
 			
 		}else {
 			
+			
+			// Pipella Funcionari - Obtenir tots els funcionaris relacionats amb el lloc
+
+			List<Funcionari> funcionaris =  llocLogicaEjb.getFuncionarisByLlocID(_jpa.getLlocID());
+
+			log.info("funcionaris per lloc: " + funcionaris.size());
+			funcionaris.forEach( funcionari -> {
+				log.info(funcionari.getNom() + " " + funcionari.getLlinatge1() + " " + funcionari.getLlinatge2() + " " + funcionari.getUsuari());
+			});
+			log.info("fi funcionaris per lloc");
+
+			mav.addObject("funcionaris", funcionaris);
+
+
+			// Pipella Rols - Obtenir tots els rols relacionats amb el lloc
+			List<Rol> llistaRols = llocLogicaEjb.getRolsByLlocID(_jpa.getLlocID());
+			llistaRols.forEach( rol -> {
+				log.info("Rol: " + rol.getCodi());
+			});
+			mav.addObject("rols", llistaRols);
+
+			// Pipella Autoritzacions - Obtenir tots els procediments relacionats amb el lloc
+
+
+			// Pipella Històric - Obtenir tots els canvis realitzats al lloc de feina
 			List<Select6Values<Long, String, String, String, String, Timestamp>> historic = historicLlocEjb.getHistoricByLlocId(_jpa.getLlocID());
 			log.info("HistoricLloc.size: " + historic.size());
 
@@ -134,6 +159,7 @@ public class LlocAdminController extends LlocController {
 	            log.info("HistoricLloc: " + x.getValue1() + " " + x.getValue2() + " " + x.getValue3() + " " + x.getValue4() + " " + x.getValue5() + " " + x.getValue6()));
 	        
 			mav.addObject("historic", historic);
+
 		}
 		
 		llocForm.addAdditionalButton(new AdditionalButton(" fas fa-long-arrow-alt-left", "tornar",
@@ -176,11 +202,17 @@ public class LlocAdminController extends LlocController {
 
 		for (Lloc lloc : list) {
 			if (!llocsOcupats.contains(lloc.getLlocID())) {
-				filterForm.addAdditionalButtonByPK(lloc.getLlocID(),
-						new AdditionalButton("fa fa-user-plus", "lloc.assignarfuncionari",
-								"/admin/funcionarilloc/assignar/{0}", AdditionalButtonStyle.SECONDARY));
-			}else {
 				
+				// Botó per assignar funcionari
+				filterForm.addAdditionalButtonByPK(lloc.getLlocID(), new AdditionalButton("fa fa-user-plus", "lloc.assignarfuncionari","/admin/funcionarilloc/assignar/{0}", AdditionalButtonStyle.SECONDARY));
+
+				// Botó per desassignar funcionari
+				filterForm.addAdditionalButtonByPK(lloc.getLlocID(), new AdditionalButton("fa fa-user-times", "lloc.treurefuncionari", "/admin/funcionarilloc/treure/{0}", AdditionalButtonStyle.INFO));
+
+				// Botó per donar de baixa un lloc de feina
+				filterForm.addAdditionalButtonByPK(lloc.getLlocID(), new AdditionalButton("fa fa-pause", "lloc.baixa", "/admin/lloc/{0}/delete", AdditionalButtonStyle.DANGER));
+
+			}else {
 				Funcionari f = llistaFuncionarisActius.get(lloc.getLlocID());
 				String nom = f.getNom() + " " + f.getLlinatge1() + " " + f.getLlinatge2() + " (" + f.getUsuari() + ")";
 				mapFuncionari.put(lloc.getLlocID(), nom);

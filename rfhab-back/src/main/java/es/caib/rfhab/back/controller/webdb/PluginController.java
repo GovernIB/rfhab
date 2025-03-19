@@ -18,7 +18,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +35,7 @@ import es.caib.rfhab.back.validator.webdb.PluginWebValidator;
 import es.caib.rfhab.persistence.PluginJPA;
 import es.caib.rfhab.model.entity.Plugin;
 import es.caib.rfhab.model.fields.*;
+import org.fundaciobit.genapp.common.web.menuoptions.MenuOption;
 
 /**
  * Controller per gestionar un Plugin
@@ -43,6 +43,7 @@ import es.caib.rfhab.model.fields.*;
  * 
  * @author GenApp
  */
+@MenuOption(labelCode="plugin.plugin.plural", order=110, group="WEBDB")
 @Controller
 @RequestMapping(value = "/webdb/plugin")
 @SessionAttributes(types = { PluginForm.class, PluginFilterForm.class })
@@ -195,6 +196,16 @@ public class PluginController
 
       fillValuesToGroupByItemsBoolean("genapp.checkbox", groupByItemsMap, ACTIU);
 
+    // Field tipus
+    {
+      _listSKV = getReferenceListForTipus(request, mav, filterForm, list, groupByItemsMap, null);
+      _tmp = Utils.listToMap(_listSKV);
+      filterForm.setMapOfValuesForTipus(_tmp);
+      if (filterForm.getGroupByFields().contains(TIPUS)) {
+        fillValuesToGroupByItems(_tmp, groupByItemsMap, TIPUS, false);
+      };
+    }
+
 
     return groupByItemsMap;
   }
@@ -211,6 +222,7 @@ public class PluginController
     java.util.Map<Field<?>, java.util.Map<String, String>> __mapping;
     __mapping = new java.util.HashMap<Field<?>, java.util.Map<String, String>>();
     __mapping.put(ENTITATID, filterForm.getMapOfEntitatForEntitatID());
+    __mapping.put(TIPUS, filterForm.getMapOfValuesForTipus());
     exportData(request, response, dataExporterID, filterForm,
           list, allFields, __mapping, PRIMARYKEY_FIELDS);
   }
@@ -266,6 +278,15 @@ public class PluginController
           java.util.Collections.sort(_listSKV, STRINGKEYVALUE_COMPARATOR);
       }
       pluginForm.setListOfEntitatForEntitatID(_listSKV);
+    }
+    // Comprovam si ja esta definida la llista
+    if (pluginForm.getListOfValuesForTipus() == null) {
+      List<StringKeyValue> _listSKV = getReferenceListForTipus(request, mav, pluginForm, null);
+
+      if(_listSKV != null && !_listSKV.isEmpty()) { 
+          java.util.Collections.sort(_listSKV, STRINGKEYVALUE_COMPARATOR);
+      }
+      pluginForm.setListOfValuesForTipus(_listSKV);
     }
     
   }
@@ -334,7 +355,6 @@ public class PluginController
 
     if (plugin == null) {
       createMessageWarning(request, "error.notfound", pluginID);
-      new ModelAndView(new RedirectView(getRedirectWhenCancel(request, pluginID), true));
       return llistatPaginat(request, response, 1);
     } else {
       ModelAndView mav = new ModelAndView(getTileForm());
@@ -614,6 +634,39 @@ public java.lang.Long stringToPK(String value) {
   public List<StringKeyValue> getReferenceListForEntitatID(HttpServletRequest request,
        ModelAndView mav, Where where)  throws I18NException {
     return entitatRefList.getReferenceList(EntitatFields.ENTITATID, where );
+  }
+
+
+  public List<StringKeyValue> getReferenceListForTipus(HttpServletRequest request,
+       ModelAndView mav, PluginForm pluginForm, Where where)  throws I18NException {
+    if (pluginForm.isHiddenField(TIPUS)) {
+      return EMPTY_STRINGKEYVALUE_LIST;
+    }
+    return getReferenceListForTipus(request, mav, where);
+  }
+
+
+  public List<StringKeyValue> getReferenceListForTipus(HttpServletRequest request,
+       ModelAndView mav, PluginFilterForm pluginFilterForm,
+       List<Plugin> list, Map<Field<?>, GroupByItem> _groupByItemsMap, Where where)  throws I18NException {
+    if (pluginFilterForm.isHiddenField(TIPUS)
+       && !pluginFilterForm.isGroupByField(TIPUS)
+       && !pluginFilterForm.isFilterByField(TIPUS)) {
+      return EMPTY_STRINGKEYVALUE_LIST;
+    }
+    Where _w = null;
+    return getReferenceListForTipus(request, mav, Where.AND(where,_w));
+  }
+
+
+  public List<StringKeyValue> getReferenceListForTipus(HttpServletRequest request,
+       ModelAndView mav, Where where)  throws I18NException {
+    List<StringKeyValue> __tmp = new java.util.ArrayList<StringKeyValue>();
+    __tmp.add(new StringKeyValue("0" , "0"));
+    __tmp.add(new StringKeyValue("1" , "1"));
+    __tmp.add(new StringKeyValue("2" , "2"));
+    __tmp.add(new StringKeyValue("3" , "3"));
+    return __tmp;
   }
 
 

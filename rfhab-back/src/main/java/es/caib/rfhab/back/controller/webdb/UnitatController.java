@@ -1,5 +1,7 @@
 package es.caib.rfhab.back.controller.webdb;
 
+import org.fundaciobit.genapp.common.StringKeyValue;
+import org.fundaciobit.genapp.common.utils.Utils;
 import org.fundaciobit.genapp.common.web.i18n.I18NUtils;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.query.GroupByItem;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +35,7 @@ import es.caib.rfhab.back.validator.webdb.UnitatWebValidator;
 import es.caib.rfhab.persistence.UnitatJPA;
 import es.caib.rfhab.model.entity.Unitat;
 import es.caib.rfhab.model.fields.*;
+import org.fundaciobit.genapp.common.web.menuoptions.MenuOption;
 
 /**
  * Controller per gestionar un Unitat
@@ -41,6 +43,7 @@ import es.caib.rfhab.model.fields.*;
  * 
  * @author GenApp
  */
+@MenuOption(labelCode="unitat.unitat.plural", order=160, group="WEBDB")
 @Controller
 @RequestMapping(value = "/webdb/unitat")
 @SessionAttributes(types = { UnitatForm.class, UnitatFilterForm.class })
@@ -173,6 +176,19 @@ public class UnitatController
       groupByItemsMap.put(groupByItem.getField(),groupByItem);
     }
 
+    Map<String, String> _tmp;
+    List<StringKeyValue> _listSKV;
+
+    // Field estat
+    {
+      _listSKV = getReferenceListForEstat(request, mav, filterForm, list, groupByItemsMap, null);
+      _tmp = Utils.listToMap(_listSKV);
+      filterForm.setMapOfValuesForEstat(_tmp);
+      if (filterForm.getGroupByFields().contains(ESTAT)) {
+        fillValuesToGroupByItems(_tmp, groupByItemsMap, ESTAT, false);
+      };
+    }
+
 
     return groupByItemsMap;
   }
@@ -188,6 +204,7 @@ public class UnitatController
 
     java.util.Map<Field<?>, java.util.Map<String, String>> __mapping;
     __mapping = new java.util.HashMap<Field<?>, java.util.Map<String, String>>();
+    __mapping.put(ESTAT, filterForm.getMapOfValuesForEstat());
     exportData(request, response, dataExporterID, filterForm,
           list, allFields, __mapping, PRIMARYKEY_FIELDS);
   }
@@ -235,6 +252,15 @@ public class UnitatController
 
   public void fillReferencesForForm(UnitatForm unitatForm,
     HttpServletRequest request, ModelAndView mav) throws I18NException {
+    // Comprovam si ja esta definida la llista
+    if (unitatForm.getListOfValuesForEstat() == null) {
+      List<StringKeyValue> _listSKV = getReferenceListForEstat(request, mav, unitatForm, null);
+
+      if(_listSKV != null && !_listSKV.isEmpty()) { 
+          java.util.Collections.sort(_listSKV, STRINGKEYVALUE_COMPARATOR);
+      }
+      unitatForm.setListOfValuesForEstat(_listSKV);
+    }
     
   }
 
@@ -302,7 +328,6 @@ public class UnitatController
 
     if (unitat == null) {
       createMessageWarning(request, "error.notfound", unitatID);
-      new ModelAndView(new RedirectView(getRedirectWhenCancel(request, unitatID), true));
       return llistatPaginat(request, response, 1);
     } else {
       ModelAndView mav = new ModelAndView(getTileForm());
@@ -543,6 +568,38 @@ public java.lang.Long stringToPK(String value) {
 
   public boolean isActiveFormView() {
     return isActiveFormEdit();
+  }
+
+
+  public List<StringKeyValue> getReferenceListForEstat(HttpServletRequest request,
+       ModelAndView mav, UnitatForm unitatForm, Where where)  throws I18NException {
+    if (unitatForm.isHiddenField(ESTAT)) {
+      return EMPTY_STRINGKEYVALUE_LIST;
+    }
+    return getReferenceListForEstat(request, mav, where);
+  }
+
+
+  public List<StringKeyValue> getReferenceListForEstat(HttpServletRequest request,
+       ModelAndView mav, UnitatFilterForm unitatFilterForm,
+       List<Unitat> list, Map<Field<?>, GroupByItem> _groupByItemsMap, Where where)  throws I18NException {
+    if (unitatFilterForm.isHiddenField(ESTAT)
+       && !unitatFilterForm.isGroupByField(ESTAT)
+       && !unitatFilterForm.isFilterByField(ESTAT)) {
+      return EMPTY_STRINGKEYVALUE_LIST;
+    }
+    Where _w = null;
+    return getReferenceListForEstat(request, mav, Where.AND(where,_w));
+  }
+
+
+  public List<StringKeyValue> getReferenceListForEstat(HttpServletRequest request,
+       ModelAndView mav, Where where)  throws I18NException {
+    List<StringKeyValue> __tmp = new java.util.ArrayList<StringKeyValue>();
+    __tmp.add(new StringKeyValue("0" , "0"));
+    __tmp.add(new StringKeyValue("1" , "1"));
+    __tmp.add(new StringKeyValue("2" , "2"));
+    return __tmp;
   }
 
 

@@ -18,7 +18,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +35,7 @@ import es.caib.rfhab.back.validator.webdb.FuncionariLlocWebValidator;
 import es.caib.rfhab.persistence.FuncionariLlocJPA;
 import es.caib.rfhab.model.entity.FuncionariLloc;
 import es.caib.rfhab.model.fields.*;
+import org.fundaciobit.genapp.common.web.menuoptions.MenuOption;
 
 /**
  * Controller per gestionar un FuncionariLloc
@@ -43,6 +43,7 @@ import es.caib.rfhab.model.fields.*;
  * 
  * @author GenApp
  */
+@MenuOption(labelCode="funcionariLloc.funcionariLloc.plural", order=50, group="WEBDB")
 @Controller
 @RequestMapping(value = "/webdb/funcionariLloc")
 @SessionAttributes(types = { FuncionariLlocForm.class, FuncionariLlocFilterForm.class })
@@ -355,7 +356,6 @@ public class FuncionariLlocController
 
     if (funcionariLloc == null) {
       createMessageWarning(request, "error.notfound", funcionarillocID);
-      new ModelAndView(new RedirectView(getRedirectWhenCancel(request, funcionarillocID), true));
       return llistatPaginat(request, response, 1);
     } else {
       ModelAndView mav = new ModelAndView(getTileForm());

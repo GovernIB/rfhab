@@ -131,18 +131,23 @@ public class HistoricLlocJPA implements HistoricLloc {
 
 
 
-  @Override
-  public boolean equals(Object __obj) {
-  boolean __result;
-    if (__obj != null && __obj instanceof HistoricLloc) {
-      HistoricLloc __instance = (HistoricLloc)__obj;
-      __result = true;
-      __result = __result && (this.getHistoricllocID() == __instance.getHistoricllocID()) ;
-    } else {
-      __result = false;
+    @Override
+    public boolean equals(Object __obj) {
+        boolean __result;
+        if (__obj != null && __obj instanceof HistoricLloc) {
+            HistoricLloc __instance = (HistoricLloc)__obj;
+            __result = true;
+            __result = __result && (this.getHistoricllocID() == __instance.getHistoricllocID()) ;
+        } else {
+            __result = false;
+        }
+        return __result;
     }
-    return __result;
-  }
+
+    @Override
+    public int hashCode() {
+        return (String.valueOf(this.getHistoricllocID())).hashCode();
+    }
 
 // IMP Field:llocid | Table: rfh_lloc | Type: 1  
 

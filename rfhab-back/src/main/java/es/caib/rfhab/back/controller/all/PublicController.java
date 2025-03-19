@@ -2,7 +2,6 @@ package es.caib.rfhab.back.controller.all;
 
 import org.apache.log4j.Logger;
 
-import org.fundaciobit.genapp.common.web.HtmlUtils;
 import org.springframework.context.i18n.LocaleContextHolder;
 
 import es.caib.rfhab.commons.utils.Version;

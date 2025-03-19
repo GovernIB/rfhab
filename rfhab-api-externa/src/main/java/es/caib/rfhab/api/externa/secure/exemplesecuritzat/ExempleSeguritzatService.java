@@ -13,6 +13,9 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.log4j.Logger;
 import es.caib.rfhab.commons.utils.Constants;
 
+import org.fundaciobit.pluginsib.utils.rest.RestExceptionInfo;
+import org.fundaciobit.pluginsib.utils.rest.RestException;
+
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
@@ -80,12 +83,30 @@ public class ExempleSeguritzatService {
             description = "Respon el valor enviat per paràmetre",
             content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = String.class))),
         @ApiResponse(
+                responseCode = "400",
+                description = "Paràmetres incorrectes",
+                content = { @Content(
+                        mediaType = MediaType.APPLICATION_JSON,
+                        schema = @Schema(implementation = RestExceptionInfo.class)) }),
+        @ApiResponse(
+                responseCode = "401",
+                description = "No Autenticat",
+                content = { @Content(
+                        mediaType = MediaType.APPLICATION_JSON,
+                        schema = @Schema(implementation = RestExceptionInfo.class)) }),
+        @ApiResponse(
+                responseCode = "403",
+                description = "No Autoritzat",
+                content = { @Content(
+                        mediaType = MediaType.APPLICATION_JSON,
+                        schema = @Schema(implementation = RestExceptionInfo.class)) }),
+        @ApiResponse(
             responseCode = "510",
             description = "Només s'utilitza per crear fitxer de constants...",
             content = { @Content(
                     mediaType = MediaType.APPLICATION_JSON,
                     schema = @Schema(implementation = ConstantsWs.class)) }) })
-    public Response echo(@Parameter(
+    public String echo(@Parameter(
             description = "Cadena a retornar",
             required = false,
             example = "hola caracola",
@@ -96,11 +117,11 @@ public class ExempleSeguritzatService {
         try {
             final String echoOutput = new String(echoInput);
 
-            return Response.ok().entity(echoOutput).build();
+            return echoOutput;
 
         } catch (Exception e) {
-            log.error("Error cridada api rest estadistiques accessos: " + e.getMessage());
-            return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
+            log.error("Error cridada api rest echo(): " + e.getMessage());
+            throw new RestException( e.getMessage(), Status.INTERNAL_SERVER_ERROR);
         }
 
     }

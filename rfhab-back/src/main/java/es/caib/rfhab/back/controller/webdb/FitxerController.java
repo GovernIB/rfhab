@@ -16,7 +16,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
@@ -302,7 +301,6 @@ public class FitxerController
 
     if (fitxer == null) {
       createMessageWarning(request, "error.notfound", fitxerID);
-      new ModelAndView(new RedirectView(getRedirectWhenCancel(request, fitxerID), true));
       return llistatPaginat(request, response, 1);
     } else {
       ModelAndView mav = new ModelAndView(getTileForm());

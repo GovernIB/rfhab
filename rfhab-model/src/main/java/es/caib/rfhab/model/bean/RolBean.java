@@ -34,12 +34,6 @@ public class RolBean implements Rol {
     this.dataCreacio=dataCreacio;
     this.entitatID=entitatID;
 }
-  /** Constructor dels valors Not Null */
-  public RolBean(long rolID , java.lang.Long nomID , java.lang.String codi) {
-    this.rolID=rolID;
-    this.nomID=nomID;
-    this.codi=codi;
-}
   public RolBean(Rol __bean) {
     this.setRolID(__bean.getRolID());
     this.setNomID(__bean.getNomID());

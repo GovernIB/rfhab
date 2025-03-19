@@ -2,11 +2,9 @@ package es.caib.rfhab.api.interna.secure.activitat;
 
 import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.ejb.ActivitatService;
-import es.caib.rfhab.logic.utils.TipusActivitat;
 import es.caib.rfhab.model.entity.Activitat;
 import es.caib.rfhab.persistence.ActivitatJPA;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 import javax.annotation.security.RolesAllowed;

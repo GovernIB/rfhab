@@ -36,7 +36,6 @@ import es.caib.rfhab.back.controller.webdb.FuncionariController;
 import es.caib.rfhab.back.form.webdb.FuncionariFilterForm;
 import es.caib.rfhab.back.form.webdb.FuncionariForm;
 import es.caib.rfhab.back.security.LoginInfo;
-import es.caib.rfhab.ejb.FuncionariRolService;
 import es.caib.rfhab.ejb.UnitatService;
 import es.caib.rfhab.logic.ActivitatLogicaService;
 import es.caib.rfhab.logic.AutoritzacioLogicaService;
@@ -49,7 +48,6 @@ import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.entity.Rol;
 import es.caib.rfhab.model.fields.FuncionariFields;
-import es.caib.rfhab.model.fields.FuncionariRolFields;
 import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.model.fields.RolFields;
 import es.caib.rfhab.persistence.FuncionariJPA;
@@ -67,9 +65,6 @@ public class FuncionariAdminController extends FuncionariController {
 
 	@EJB(mappedName = LlocLogicaService.JNDI_NAME)
 	protected LlocLogicaService llocEJB;
-
-	@EJB(mappedName = FuncionariRolService.JNDI_NAME)
-	protected FuncionariRolService funcionariRolEJB;
 
 	@EJB(mappedName = UnitatService.JNDI_NAME)
 	protected UnitatService unitatEJB;
@@ -100,7 +95,8 @@ public class FuncionariAdminController extends FuncionariController {
 		if (_jpa != null && _jpa.getFuncionariID() > 0) {
 
 			// Obtenir els Rols que té assignats el funcionari
-			List<Rol> rolsItems = funcionariEJB.getRolsByFuncionariIDv2(_jpa.getFuncionariID());
+			List<Rol> rolsItems = new ArrayList<Rol>();
+			// TODO REVISAR funcionariEJB.getRolsByFuncionariIDv2(_jpa.getFuncionariID());
 			mav.addObject("rolItems", rolsItems);
 
 			// Obtenir les activitats que té assignades el funcionari
@@ -360,12 +356,9 @@ public class FuncionariAdminController extends FuncionariController {
 			FuncionariFilterForm funcionariFilterForm, List<Funcionari> list,
 			Map<Field<?>, GroupByItem> _groupByItemsMap, Where where) throws I18NException {
 
-		System.out.println("getReferenceListForPersonalOamr");
-
 		if (funcionariFilterForm.isHiddenField(LlocFields.PERSONALOAMR)
 				&& !funcionariFilterForm.isGroupByField(LlocFields.PERSONALOAMR)
 				&& !funcionariFilterForm.isFilterByField(LlocFields.PERSONALOAMR)) {
-			System.out.println("getReferenceListForPersonalOamr => EMPTY_STRING");
 
 			return EMPTY_STRINGKEYVALUE_LIST;
 		}
@@ -380,20 +373,12 @@ public class FuncionariAdminController extends FuncionariController {
 	@Override
 	public List<StringKeyValue> getReferenceListForTipusIdentificador(HttpServletRequest request, ModelAndView mav, Where where)  throws I18NException {
 
-		System.out.println("getReferenceListForTipusIdentificador");
-
 		List<StringKeyValue> __tmp = new java.util.ArrayList<StringKeyValue>();
 		__tmp.add(new StringKeyValue("0" , I18NUtils.tradueix("tipusidentificacio.0")));
 		__tmp.add(new StringKeyValue("1" , I18NUtils.tradueix("tipusidentificacio.1")));
 		__tmp.add(new StringKeyValue("2" , I18NUtils.tradueix("tipusidentificacio.2")));
 		__tmp.add(new StringKeyValue("3" , I18NUtils.tradueix("tipusidentificacio.3")));
 		__tmp.add(new StringKeyValue("4" , I18NUtils.tradueix("tipusidentificacio.4")));
-
-		System.out.println(I18NUtils.tradueix("tipusidentificacio.0"));
-		System.out.println(I18NUtils.tradueix("tipusidentificacio.1"));
-		System.out.println(I18NUtils.tradueix("tipusidentificacio.2"));
-
-		System.out.println("FI getReferenceListForTipusIdentificador");
 		return __tmp;
 
 	}
@@ -446,11 +431,14 @@ public class FuncionariAdminController extends FuncionariController {
 				mapFuncionari3.put(funcionariID, "<i class=\"fa fa-times\"></i>");
 			}
 
-			Boolean funcionarioHasRol = (funcionariRolEJB
-					.count(FuncionariRolFields.FUNCIONARIID.equal(funcionariID)) > 0);
 
+			Boolean funcionarioHasRol = false;
+			/* (funcionariRolEJB
+					.count(FuncionariRolFields.FUNCIONARIID.equal(funcionariID)) > 0);
+			*/
 			if (funcionarioHasRol) {
-				List<RolJPA> rolsFuncionari = funcionariEJB.getRolsByFuncionariID(funcionariID);
+				List<RolJPA> rolsFuncionari = new ArrayList<RolJPA>();
+				// funcionariEJB.getRolsByFuncionariID(funcionariID);
 				String rolsFuncionariStr = "";
 				for (RolJPA rol : rolsFuncionari) {
 					rolsFuncionariStr += "<span class='badge badge-secondary' title='"

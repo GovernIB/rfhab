@@ -226,18 +226,23 @@ public class FuncionariJPA implements Funcionari {
 
 
 
-  @Override
-  public boolean equals(Object __obj) {
-  boolean __result;
-    if (__obj != null && __obj instanceof Funcionari) {
-      Funcionari __instance = (Funcionari)__obj;
-      __result = true;
-      __result = __result && (this.getFuncionariID() == __instance.getFuncionariID()) ;
-    } else {
-      __result = false;
+    @Override
+    public boolean equals(Object __obj) {
+        boolean __result;
+        if (__obj != null && __obj instanceof Funcionari) {
+            Funcionari __instance = (Funcionari)__obj;
+            __result = true;
+            __result = __result && (this.getFuncionariID() == __instance.getFuncionariID()) ;
+        } else {
+            __result = false;
+        }
+        return __result;
     }
-    return __result;
-  }
+
+    @Override
+    public int hashCode() {
+        return (String.valueOf(this.getFuncionariID())).hashCode();
+    }
 
 // EXP  Field:funcionariid | Table: rfh_activitat | Type: 0  
 
@@ -275,19 +280,6 @@ public class FuncionariJPA implements Funcionari {
 
     public void setFuncionariLlocs(Set<FuncionariLlocJPA> funcionariLlocs) {
       this.funcionariLlocs = funcionariLlocs;
-    }
-
-
-// EXP  Field:funcionariid | Table: rfh_funcionarirol | Type: 0  
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "funcionari")
-    private Set<FuncionariRolJPA> funcionariRols = new HashSet<FuncionariRolJPA>(0);
-    public  Set<FuncionariRolJPA> getFuncionariRols() {
-    return this.funcionariRols;
-  }
-
-    public void setFuncionariRols(Set<FuncionariRolJPA> funcionariRols) {
-      this.funcionariRols = funcionariRols;
     }
 
 
@@ -358,10 +350,6 @@ public class FuncionariJPA implements Funcionari {
     if(!"AutoritzacioJPA".equals(origenJPA) 
        && ( !org.fundaciobit.genapp.common.utils.Utils.isEmpty(__jpa.autoritzacios) || org.hibernate.Hibernate.isInitialized(__jpa.getAutoritzacios())) ) {
       __tmp.setAutoritzacios(AutoritzacioJPA.copyJPA(__jpa.getAutoritzacios(), __alreadyCopied,"FuncionariJPA"));
-    }
-    if(!"FuncionariRolJPA".equals(origenJPA) 
-       && ( !org.fundaciobit.genapp.common.utils.Utils.isEmpty(__jpa.funcionariRols) || org.hibernate.Hibernate.isInitialized(__jpa.getFuncionariRols())) ) {
-      __tmp.setFuncionariRols(FuncionariRolJPA.copyJPA(__jpa.getFuncionariRols(), __alreadyCopied,"FuncionariJPA"));
     }
     if(!"ActivitatJPA".equals(origenJPA) 
        && ( !org.fundaciobit.genapp.common.utils.Utils.isEmpty(__jpa.activitats) || org.hibernate.Hibernate.isInitialized(__jpa.getActivitats())) ) {

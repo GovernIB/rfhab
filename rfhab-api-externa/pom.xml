@@ -31,19 +31,19 @@
         <dependency>
             <groupId>es.caib.rfhab</groupId>
             <artifactId>rfhab-commons</artifactId>
-            <version>1.0.0</version>
+            <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>es.caib.rfhab</groupId>
             <artifactId>rfhab-persistence</artifactId>
-            <version>1.0.0</version>
+            <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>es.caib.rfhab</groupId>
             <artifactId>rfhab-ejb</artifactId>
-            <version>1.0.0</version>
+            <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -51,7 +51,6 @@
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-annotations</artifactId>
-            <!-- <version>2.1.13</version> -->
             <scope>provided</scope>
         </dependency>
 
@@ -63,7 +62,7 @@
         <dependency>
             <artifactId>pluginsib-utils-rest</artifactId>
             <groupId>org.fundaciobit.pluginsib.utils</groupId>
-            <version>${pluginsib.utils.version}</version>
+            <version>${pluginsib.utils.rest.version}</version>
         </dependency>
 
         <dependency>
@@ -155,7 +154,7 @@
                                 <groupId>es.caib.rfhab</groupId>
                                 <artifactId>rfhab-api-externa-client-exemplepublic-v1</artifactId>
                                 <artifactVersion>1.0-SNAPSHOT</artifactVersion>
-                                <artifactDescription>rfhab - API Rest - Externa Client - Exemple Public v1</artifactDescription>
+                                <artifactDescription>RFHab - API Rest - Externa Client - Exemple Public v1</artifactDescription>
                                 <dateLibrary>java8</dateLibrary>
                                 <useTags>true</useTags>
                                 <hideGenerationTimestamp>true</hideGenerationTimestamp>
@@ -187,7 +186,7 @@
                                 <groupId>es.caib.rfhab</groupId>
                                 <artifactId>rfhab-api-externa-client-exemplesecure-v1</artifactId>
                                 <artifactVersion>1.0-SNAPSHOT</artifactVersion>
-                                <artifactDescription>rfhab - API Rest - Externa Client - Exemple Secure v1</artifactDescription>
+                                <artifactDescription>RFHab - API Rest - Externa Client - Exemple Secure v1</artifactDescription>
                                 <dateLibrary>java8</dateLibrary>
                                 <useTags>true</useTags>
                                 <hideGenerationTimestamp>true</hideGenerationTimestamp>
@@ -227,7 +226,7 @@
                     <dependency>
                         <artifactId>pluginsib-utils-rest</artifactId>
                         <groupId>org.fundaciobit.pluginsib.utils</groupId>
-                        <version>${pluginsib.utils.version}</version>
+                        <version>${pluginsib.utils.rest.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -238,6 +237,9 @@
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
+					<packagingExcludes>
+						**/jboss-jaxrs-api_2.1_spec*redhat*.jar,
+					</packagingExcludes>
                     <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
                     <webResources>
                         <resource>

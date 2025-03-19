@@ -56,10 +56,11 @@ public class ScanWebBean implements ScanWeb {
     this.entitatID=entitatID;
 }
   /** Constructor dels valors Not Null */
-  public ScanWebBean(long digitalID , long status , long fitxerID , long entitatID) {
+  public ScanWebBean(long digitalID , long status , long fitxerID , java.lang.Long usuariID , long entitatID) {
     this.digitalID=digitalID;
     this.status=status;
     this.fitxerID=fitxerID;
+    this.usuariID=usuariID;
     this.entitatID=entitatID;
 }
   public ScanWebBean(ScanWeb __bean) {

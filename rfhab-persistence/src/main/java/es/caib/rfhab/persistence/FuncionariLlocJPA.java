@@ -143,18 +143,23 @@ public class FuncionariLlocJPA implements FuncionariLloc {
 
 
 
-  @Override
-  public boolean equals(Object __obj) {
-  boolean __result;
-    if (__obj != null && __obj instanceof FuncionariLloc) {
-      FuncionariLloc __instance = (FuncionariLloc)__obj;
-      __result = true;
-      __result = __result && (this.getFuncionarillocID() == __instance.getFuncionarillocID()) ;
-    } else {
-      __result = false;
+    @Override
+    public boolean equals(Object __obj) {
+        boolean __result;
+        if (__obj != null && __obj instanceof FuncionariLloc) {
+            FuncionariLloc __instance = (FuncionariLloc)__obj;
+            __result = true;
+            __result = __result && (this.getFuncionarillocID() == __instance.getFuncionarillocID()) ;
+        } else {
+            __result = false;
+        }
+        return __result;
     }
-    return __result;
-  }
+
+    @Override
+    public int hashCode() {
+        return (String.valueOf(this.getFuncionarillocID())).hashCode();
+    }
 
 // IMP Field:llocid | Table: rfh_lloc | Type: 1  
 

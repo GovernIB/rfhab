@@ -18,7 +18,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +35,7 @@ import es.caib.rfhab.back.validator.webdb.LlocWebValidator;
 import es.caib.rfhab.persistence.LlocJPA;
 import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.fields.*;
+import org.fundaciobit.genapp.common.web.menuoptions.MenuOption;
 
 /**
  * Controller per gestionar un Lloc
@@ -43,6 +43,7 @@ import es.caib.rfhab.model.fields.*;
  * 
  * @author GenApp
  */
+@MenuOption(labelCode="lloc.lloc.plural", order=90, group="WEBDB")
 @Controller
 @RequestMapping(value = "/webdb/lloc")
 @SessionAttributes(types = { LlocForm.class, LlocFilterForm.class })
@@ -375,7 +376,6 @@ public class LlocController
 
     if (lloc == null) {
       createMessageWarning(request, "error.notfound", llocID);
-      new ModelAndView(new RedirectView(getRedirectWhenCancel(request, llocID), true));
       return llistatPaginat(request, response, 1);
     } else {
       ModelAndView mav = new ModelAndView(getTileForm());

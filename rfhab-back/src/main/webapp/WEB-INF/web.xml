@@ -144,7 +144,6 @@
             <web-resource-name>rfhab_back-public</web-resource-name>            
             <url-pattern>/applet/*</url-pattern>
             <url-pattern>/css/*</url-pattern>
-            <url-pattern>/fonts/*</url-pattern>
             <url-pattern>/img/*</url-pattern>
             <url-pattern>/js/*</url-pattern>
             <url-pattern>/doc/*</url-pattern>

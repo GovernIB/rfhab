@@ -45,10 +45,10 @@ public class RolQueryPath extends org.fundaciobit.genapp.common.query.QueryPath 
 
  // TODO Solució dins el mètode testOneByOneDirect de la classe TestJPA 
 
-  public FuncionariRolQueryPath FUNCIONARIROLS() {
-    return new FuncionariRolQueryPath(new QueryPath() {
+  public LlocRolQueryPath LLOCROLS() {
+    return new LlocRolQueryPath(new QueryPath() {
       public String getQueryPath() {
-          return RolQueryPath.this.getQueryPath() + "funcionariRols" + ".";
+          return RolQueryPath.this.getQueryPath() + "llocRols" + ".";
       }
     });
   }

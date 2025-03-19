@@ -17,7 +17,6 @@
     </properties>
 
     <dependencies>
-        <!-- Especificacions i llibreries proporcionades per JBoss -->
         <dependency>
             <groupId>org.jboss.spec</groupId>
             <artifactId>jboss-javaee-8.0</artifactId>
@@ -33,19 +32,19 @@
         <dependency>
             <groupId>es.caib.rfhab</groupId>
             <artifactId>rfhab-commons</artifactId>
-            <version>1.0.0</version>
+            <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>es.caib.rfhab</groupId>
             <artifactId>rfhab-persistence</artifactId>
-            <version>1.0.0</version>
+            <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>es.caib.rfhab</groupId>
             <artifactId>rfhab-ejb</artifactId>
-            <version>1.0.0</version>
+            <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
         
@@ -70,7 +69,7 @@
         <dependency>
             <artifactId>pluginsib-utils-rest</artifactId>
             <groupId>org.fundaciobit.pluginsib.utils</groupId>
-            <version>${pluginsib.utils.version}</version>
+            <version>${pluginsib.utils.rest.version}</version>
         </dependency>
 
         <dependency>
@@ -140,10 +139,8 @@
                             <contextId>Exemple Interna Dades Obertes</contextId>
                             <outputFileName>openapi_interna_dadesobertes</outputFileName>
                             <resourcePackages>
-                                <package>
-                                    es.caib.rfhab.api.interna.config</package>
-                                <package>
-                                    es.caib.rfhab.api.interna.all.exemplereutilitzacio</package>
+                                <package>es.caib.rfhab.api.interna.config</package>
+                                <package>es.caib.rfhab.api.interna.all.exemplereutilitzacio</package>
                             </resourcePackages>
                         </configuration>
                     </execution>
@@ -158,7 +155,7 @@
                 <!-- https://openapi-generator.tech/docs/generators/java/ -->
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>7.3.0</version>
+                <version>7.10.0</version>
 
                 <executions>
                     <!--execution>

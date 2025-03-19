@@ -199,9 +199,31 @@
               </c:if>
             </td>
           <td id="unitat_estat_columnvalueid">
-            <form:errors path="unitat.estat" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,UnitatFields.ESTAT)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,UnitatFields.ESTAT)? ' uneditable-input' : ''}"  style="" maxlength="5" path="unitat.estat"   />
-
+          <form:errors path="unitat.estat" cssClass="errorField alert alert-danger" />
+          <c:if test="${gen:contains(__theForm.readOnlyFields ,UnitatFields.ESTAT)}" >
+          <form:hidden path="unitat.estat"/>
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.unitat.estat,__theForm.listOfValuesForEstat)}"  />
+          </c:if>
+          <c:if test="${!gen:contains(__theForm.readOnlyFields ,UnitatFields.ESTAT)}" >
+          <c:set var="containEmptyValue"  value="false" />
+          <form:select id="unitat_estat"  onchange="if(typeof onChangeEstat == 'function') {  onChangeEstat(this); };"  cssClass="form-control col-md-9-optional" path="unitat.estat">
+            <c:forEach items="${__theForm.listOfValuesForEstat}" var="tmp">
+                <form:option value="${tmp.key}">${tmp.value}</form:option>
+                <c:if test="${empty tmp.key}">
+                  <c:set var="containEmptyValue"  value="true" />
+                </c:if>
+            </c:forEach>
+            <%-- El camp pot ser null, per la qual cosa afegim una entrada buida si no s'ha definit abans --%>
+            <c:if test="${not containEmptyValue}">
+              <c:if test="${empty __theForm.unitat.estat }">
+                  <form:option value="" selected="true" ></form:option>
+              </c:if>
+              <c:if test="${not empty __theForm.unitat.estat }">
+                  <form:option value="" ></form:option>
+              </c:if>
+            </c:if>
+          </form:select>
+          </c:if>
            </td>
         </tr>
         </c:if>

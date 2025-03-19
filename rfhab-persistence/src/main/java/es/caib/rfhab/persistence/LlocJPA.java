@@ -176,18 +176,23 @@ public class LlocJPA implements Lloc {
 
 
 
-  @Override
-  public boolean equals(Object __obj) {
-  boolean __result;
-    if (__obj != null && __obj instanceof Lloc) {
-      Lloc __instance = (Lloc)__obj;
-      __result = true;
-      __result = __result && (this.getLlocID() == __instance.getLlocID()) ;
-    } else {
-      __result = false;
+    @Override
+    public boolean equals(Object __obj) {
+        boolean __result;
+        if (__obj != null && __obj instanceof Lloc) {
+            Lloc __instance = (Lloc)__obj;
+            __result = true;
+            __result = __result && (this.getLlocID() == __instance.getLlocID()) ;
+        } else {
+            __result = false;
+        }
+        return __result;
     }
-    return __result;
-  }
+
+    @Override
+    public int hashCode() {
+        return (String.valueOf(this.getLlocID())).hashCode();
+    }
 
 // EXP  Field:llocid | Table: rfh_autoritzacio | Type: 0  
 
@@ -225,6 +230,19 @@ public class LlocJPA implements Lloc {
 
     public void setHistoricLlocs(Set<HistoricLlocJPA> historicLlocs) {
       this.historicLlocs = historicLlocs;
+    }
+
+
+// EXP  Field:llocid | Table: rfh_llocrol | Type: 0  
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "lloc")
+    private Set<LlocRolJPA> llocRols = new HashSet<LlocRolJPA>(0);
+    public  Set<LlocRolJPA> getLlocRols() {
+    return this.llocRols;
+  }
+
+    public void setLlocRols(Set<LlocRolJPA> llocRols) {
+      this.llocRols = llocRols;
     }
 
 
@@ -306,6 +324,10 @@ public class LlocJPA implements Lloc {
     if(!"AutoritzacioJPA".equals(origenJPA) 
        && ( !org.fundaciobit.genapp.common.utils.Utils.isEmpty(__jpa.autoritzacios) || org.hibernate.Hibernate.isInitialized(__jpa.getAutoritzacios())) ) {
       __tmp.setAutoritzacios(AutoritzacioJPA.copyJPA(__jpa.getAutoritzacios(), __alreadyCopied,"LlocJPA"));
+    }
+    if(!"LlocRolJPA".equals(origenJPA) 
+       && ( !org.fundaciobit.genapp.common.utils.Utils.isEmpty(__jpa.llocRols) || org.hibernate.Hibernate.isInitialized(__jpa.getLlocRols())) ) {
+      __tmp.setLlocRols(LlocRolJPA.copyJPA(__jpa.getLlocRols(), __alreadyCopied,"LlocJPA"));
     }
     if(!"HistoricLlocJPA".equals(origenJPA) 
        && ( !org.fundaciobit.genapp.common.utils.Utils.isEmpty(__jpa.historicLlocs) || org.hibernate.Hibernate.isInitialized(__jpa.getHistoricLlocs())) ) {

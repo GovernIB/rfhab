@@ -96,7 +96,7 @@ public class AutoritzacioAdminController extends AutoritzacioController {
 
 	@RequestMapping(value = "/tornar", method = RequestMethod.GET)
 	public String tornar(HttpServletRequest request) {
-		return "redirect:/admin/funcionari/list/1";
+		return "redirect:/admin/lloc/list/1";
 	}
 
 	@RequestMapping(value = "/getProcediments", method = RequestMethod.GET)

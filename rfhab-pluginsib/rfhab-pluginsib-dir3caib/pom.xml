@@ -54,7 +54,7 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>es.caib.rfhab.pluginsib</groupId>
+			<groupId>es.caib.rfhab</groupId>
 			<artifactId>rfhab-pluginsib-dir3caib-client</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>

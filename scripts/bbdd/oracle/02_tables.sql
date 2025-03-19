@@ -51,7 +51,7 @@
         status number(19,0) not null,
         transactionid number(19,0),
         transactionwebid varchar2(255 char),
-        usuariid number(19,0)
+        usuariid number(19,0) not null
     );
 
     create table rfh_entitat (
@@ -96,13 +96,6 @@
         usuariid number(19,0)
     );
 
-    create table rfh_funcionarirol (
-       funcionarirolid number(19,0) not null,
-        datacreacio timestamp not null,
-        funcionariid number(19,0) not null,
-        rolid number(19,0) not null
-    );
-
     create table rfh_historic (
        historicid number(19,0) not null,
         datacreacio timestamp not null,
@@ -140,6 +133,13 @@
         unitatid number(19,0) not null
     );
 
+    create table rfh_llocrol (
+       llocrolid number(19,0) not null,
+        datacreacio timestamp not null,
+        llocid number(19,0) not null,
+        rolid number(19,0) not null
+    );
+
     create table rfh_plugin (
        pluginid number(19,0) not null,
         actiu number(1,0) not null,
@@ -149,14 +149,14 @@
         entitatid number(19,0) not null,
         nom varchar2(255 char) not null,
         properties clob,
-        tipus varchar2(50 char)
+        tipus varchar2(50 char) not null
     );
 
     create table rfh_rol (
        rolid number(19,0) not null,
         codi varchar2(50 char) not null,
         datacreacio timestamp,
-        entitatid number(19,0),
+        entitatid number(19,0) not null,
         nomid number(19,0) not null
     );
 
@@ -204,8 +204,6 @@
         entitatid number(19,0) not null,
         usuariid number(19,0) not null
     );
-
-
 
 
 

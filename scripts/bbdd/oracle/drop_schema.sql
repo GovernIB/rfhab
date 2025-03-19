@@ -13,8 +13,6 @@
 
     drop table rfh_funcionarilloc cascade constraints;
 
-    drop table rfh_funcionarirol cascade constraints;
-
     drop table rfh_historic cascade constraints;
 
     drop table rfh_historiclloc cascade constraints;
@@ -22,6 +20,8 @@
     drop table rfh_idioma cascade constraints;
 
     drop table rfh_lloc cascade constraints;
+
+    drop table rfh_llocrol cascade constraints;
 
     drop table rfh_plugin cascade constraints;
 
@@ -51,13 +51,13 @@
 
     drop sequence rfh_funcionarilloc_seq;
 
-    drop sequence rfh_funcionarirol_seq;
-
     drop sequence rfh_historic_seq;
 
     drop sequence rfh_historiclloc_seq;
 
     drop sequence rfh_lloc_seq;
+
+    drop sequence rfh_llocrol_seq;
 
     drop sequence rfh_plugin_seq;
 

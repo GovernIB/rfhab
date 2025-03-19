@@ -5,10 +5,10 @@
     grant select on rfh_fitxer_seq to www_rfhab;
     grant select on rfh_funcionari_seq to www_rfhab;
     grant select on rfh_funcionarilloc_seq to www_rfhab;
-    grant select on rfh_funcionarirol_seq to www_rfhab;
     grant select on rfh_historic_seq to www_rfhab;
     grant select on rfh_historiclloc_seq to www_rfhab;
     grant select on rfh_lloc_seq to www_rfhab;
+    grant select on rfh_llocrol_seq to www_rfhab;
     grant select on rfh_plugin_seq to www_rfhab;
     grant select on rfh_rol_seq to www_rfhab;
     grant select on rfh_traduccio_seq to www_rfhab;
@@ -22,11 +22,11 @@
     grant select,insert,delete,update on rfh_fitxer to www_rfhab;
     grant select,insert,delete,update on rfh_funcionari to www_rfhab;
     grant select,insert,delete,update on rfh_funcionarilloc to www_rfhab;
-    grant select,insert,delete,update on rfh_funcionarirol to www_rfhab;
     grant select,insert,delete,update on rfh_historic to www_rfhab;
     grant select,insert,delete,update on rfh_historiclloc to www_rfhab;
     grant select,insert,delete,update on rfh_idioma to www_rfhab;
     grant select,insert,delete,update on rfh_lloc to www_rfhab;
+    grant select,insert,delete,update on rfh_llocrol to www_rfhab;
     grant select,insert,delete,update on rfh_plugin to www_rfhab;
     grant select,insert,delete,update on rfh_rol to www_rfhab;
     grant select,insert,delete,update on rfh_traduccio to www_rfhab;

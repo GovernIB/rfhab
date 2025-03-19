@@ -5,10 +5,10 @@ create sequence rfh_entitat_seq start 1000 increment 1;
 create sequence rfh_fitxer_seq start 1000 increment 1;
 create sequence rfh_funcionari_seq start 1000 increment 1;
 create sequence rfh_funcionarilloc_seq start 1000 increment 1;
-create sequence rfh_funcionarirol_seq start 1000 increment 1;
 create sequence rfh_historic_seq start 1000 increment 1;
 create sequence rfh_historiclloc_seq start 1000 increment 1;
 create sequence rfh_lloc_seq start 1000 increment 1;
+create sequence rfh_llocrol_seq start 1000 increment 1;
 create sequence rfh_plugin_seq start 1000 increment 1;
 create sequence rfh_rol_seq start 1000 increment 1;
 create sequence rfh_traduccio_seq start 1000 increment 1;
@@ -70,7 +70,7 @@ create sequence rfh_usuarientitat_seq start 1000 increment 1;
         status int8 not null,
         transactionid int8,
         transactionwebid varchar(255),
-        usuariid int8,
+        usuariid int8 not null,
         primary key (digitalid)
     );
 
@@ -120,14 +120,6 @@ create sequence rfh_usuarientitat_seq start 1000 increment 1;
         primary key (funcionarillocid)
     );
 
-    create table rfh_funcionarirol (
-       funcionarirolid int8 not null,
-        datacreacio timestamp not null,
-        funcionariid int8 not null,
-        rolid int8 not null,
-        primary key (funcionarirolid)
-    );
-
     create table rfh_historic (
        historicid int8 not null,
         datacreacio timestamp not null,
@@ -169,6 +161,14 @@ create sequence rfh_usuarientitat_seq start 1000 increment 1;
         primary key (llocid)
     );
 
+    create table rfh_llocrol (
+       llocrolid int8 not null,
+        datacreacio timestamp not null,
+        llocid int8 not null,
+        rolid int8 not null,
+        primary key (llocrolid)
+    );
+
     create table rfh_plugin (
        pluginid int8 not null,
         actiu boolean not null,
@@ -178,7 +178,7 @@ create sequence rfh_usuarientitat_seq start 1000 increment 1;
         entitatid int8 not null,
         nom varchar(255) not null,
         properties text,
-        tipus varchar(50),
+        tipus varchar(50) not null,
         primary key (pluginid)
     );
 
@@ -186,7 +186,7 @@ create sequence rfh_usuarientitat_seq start 1000 increment 1;
        rolid int8 not null,
         codi varchar(50) not null,
         datacreacio timestamp,
-        entitatid int8,
+        entitatid int8 not null,
         nomid int8 not null,
         primary key (rolid)
     );
@@ -259,9 +259,6 @@ create index rfh_funlloc_funcionariid_fk_i on rfh_funcionarilloc (funcionariid);
 
     alter table rfh_funcionarilloc 
        add constraint rfh_funlloc_multiple_uk unique (llocid, funcionariid);
-create index rfh_funcionarirol_pk_i on rfh_funcionarirol (funcionarirolid);
-create index rfh_funrol_funcionariid_fk_i on rfh_funcionarirol (funcionariid);
-create index rfh_funcionarirol_rolid_fk_i on rfh_funcionarirol (rolid);
 create index rfh_historic_pk_i on rfh_historic (historicid);
 create index rfh_historic_funcionariid_fk_i on rfh_historic (funcionariid);
 create index rfh_historic_usuariid_fk_i on rfh_historic (usuariid);
@@ -275,6 +272,9 @@ create index rfh_lloc_unitatid_fk_i on rfh_lloc (unitatid);
 
     alter table rfh_lloc 
        add constraint UK_m23ejxgegl5k5e830vdy7jpox unique (codilloc);
+create index rfh_llocrol_pk_i on rfh_llocrol (llocrolid);
+create index rfh_llocrol_llocid_fk_i on rfh_llocrol (llocid);
+create index rfh_llocrol_rolid_fk_i on rfh_llocrol (rolid);
 create index rfh_plugin_pk_i on rfh_plugin (pluginid);
 create index rfh_plugin_entitatid_fk_i on rfh_plugin (entitatid);
 create index rfh_rol_pk_i on rfh_rol (rolid);
@@ -339,16 +339,6 @@ create index rfh_usuarient_usuariid_fk_i on rfh_usuarientitat (usuariid);
        foreign key (llocid) 
        references rfh_lloc;
 
-    alter table rfh_funcionarirol 
-       add constraint rfh_funrol_funcionari_funci_fk 
-       foreign key (funcionariid) 
-       references rfh_funcionari;
-
-    alter table rfh_funcionarirol 
-       add constraint rfh_funrol_rol_rolid_fk 
-       foreign key (rolid) 
-       references rfh_rol;
-
     alter table rfh_historic 
        add constraint rfh_historic_funcionari_f_fk 
        foreign key (funcionariid) 
@@ -378,6 +368,16 @@ create index rfh_usuarient_usuariid_fk_i on rfh_usuarientitat (usuariid);
        add constraint rfh_lloc_unitat_unitatid_fk 
        foreign key (unitatid) 
        references rfh_unitat;
+
+    alter table rfh_llocrol 
+       add constraint rfh_llocrol_lloc_llocid_fk 
+       foreign key (llocid) 
+       references rfh_lloc;
+
+    alter table rfh_llocrol 
+       add constraint rfh_llocrol_rol_rolid_fk 
+       foreign key (rolid) 
+       references rfh_rol;
 
     alter table rfh_plugin 
        add constraint rfh_plugin_entitat_entitati_fk 

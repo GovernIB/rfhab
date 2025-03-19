@@ -14,8 +14,6 @@
 
     alter table rfh_funcionarilloc add constraint rfh_funcionarilloc_pk primary key (funcionarillocid);
 
-    alter table rfh_funcionarirol add constraint rfh_funcionarirol_pk primary key (funcionarirolid);
-
     alter table rfh_historic add constraint rfh_historic_pk primary key (historicid);
 
     alter table rfh_historiclloc add constraint rfh_historiclloc_pk primary key (historicllocid);
@@ -23,6 +21,8 @@
     alter table rfh_idioma add constraint rfh_idioma_pk primary key (idiomaid);
 
     alter table rfh_lloc add constraint rfh_lloc_pk primary key (llocid);
+
+    alter table rfh_llocrol add constraint rfh_llocrol_pk primary key (llocrolid);
 
     alter table rfh_plugin add constraint rfh_plugin_pk primary key (pluginid);
 
@@ -88,16 +88,6 @@
        foreign key (llocid) 
        references rfh_lloc;
 
-    alter table rfh_funcionarirol 
-       add constraint rfh_funrol_funcionari_funci_fk 
-       foreign key (funcionariid) 
-       references rfh_funcionari;
-
-    alter table rfh_funcionarirol 
-       add constraint rfh_funrol_rol_rolid_fk 
-       foreign key (rolid) 
-       references rfh_rol;
-
     alter table rfh_historic 
        add constraint rfh_historic_funcionari_f_fk 
        foreign key (funcionariid) 
@@ -127,6 +117,16 @@
        add constraint rfh_lloc_unitat_unitatid_fk 
        foreign key (unitatid) 
        references rfh_unitat;
+
+    alter table rfh_llocrol 
+       add constraint rfh_llocrol_lloc_llocid_fk 
+       foreign key (llocid) 
+       references rfh_lloc;
+
+    alter table rfh_llocrol 
+       add constraint rfh_llocrol_rol_rolid_fk 
+       foreign key (rolid) 
+       references rfh_rol;
 
     alter table rfh_plugin 
        add constraint rfh_plugin_entitat_entitati_fk 

@@ -1,0 +1,4776 @@
+{
+  "packageName": "es.caib.rfhab",
+  "projectName": "RFHab",
+  "dataBaseInfo": {
+    "url": "jdbc:postgresql://localhost:5432/rfhab",
+    "driver": "org.postgresql.Driver",
+    "usr": "rfhab",
+    "pwd": "rfhab"
+  },
+  "modulSeguretat": "keycloak",
+  "prefix": "rfh",
+  "prefixDirectori": "rfhab-",
+  "schema": "public",
+  "tables": [
+    {
+      "name": "rfh_activitat",
+      "nameJava": "Activitat",
+      "shortName": "activitat",
+      "labels": {
+        "ca": "Activitat",
+        "es": "Actividad"
+      },
+      "labelsPlural": {
+        "ca": "Activitats",
+        "es": "Actividades"
+      },
+      "generate": true,
+      "fileMappingEntity": false,
+      "languageMappingEntity": false,
+      "translationEntity": false,
+      "translationMapEntity": false,
+      "fields": [
+        {
+          "PK": "rfh_activitat_pk",
+          "index": "rfh_activitat_pk_i",
+          "isAutoIncrement": true,
+          "sqlName": "activitatid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "ID",
+            "es": "ID"
+          },
+          "javaName": "activitatID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "defaultValue": "nextval(\u0027rfh_activitat_seq\u0027::regclass)",
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 0
+          },
+          "foreignKeys": []
+        },
+        {
+          "index": "rfh_activitat_fun_fk_i",
+          "isAutoIncrement": false,
+          "sqlName": "funcionariid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Funcionari",
+            "es": "Funcionario"
+          },
+          "javaName": "funcionariID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_act_funcionariid_fk",
+              "table": "rfh_funcionari",
+              "field": "funcionariid",
+              "type": 1
+            }
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_activitat_funcionari_fu_fk",
+              "table": "rfh_funcionari",
+              "field": "funcionariid",
+              "type": 1
+            }
+          ]
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "tipus",
+          "sqlType": 4,
+          "size": 10,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Tipus",
+            "es": "Tipo"
+          },
+          "javaName": "tipus",
+          "javaType": "int",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "minAllowedValue": "0,1,2",
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 16
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "registre",
+          "sqlType": 12,
+          "size": 50,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Registre",
+            "es": "Registro"
+          },
+          "javaName": "registre",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "tramit",
+          "sqlType": 12,
+          "size": 150,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Tràmit",
+            "es": "Trámite"
+          },
+          "javaName": "tramit",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "codisia",
+          "sqlType": 12,
+          "size": 150,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Codi SIA",
+            "es": "Código SIA"
+          },
+          "javaName": "codiSia",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "index": "rfh_activitat_autoritzaid_fk_i",
+          "isAutoIncrement": false,
+          "sqlName": "autoritzacioid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Autorització",
+            "es": "Autorización"
+          },
+          "javaName": "autoritzacioID",
+          "javaType": "java.lang.Long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_act_autoritzacioid_fk",
+              "table": "rfh_autoritzacio",
+              "field": "autoritzacioid",
+              "type": 1
+            }
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_activitat_autoritza_aut_fk",
+              "table": "rfh_autoritzacio",
+              "field": "autoritzacioid",
+              "type": 1
+            }
+          ]
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "datacreacio",
+          "sqlType": 93,
+          "size": 29,
+          "digits": 6,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Data d\u0027alta",
+            "es": "Fecha de alta"
+          },
+          "javaName": "dataCreacio",
+          "javaType": "java.sql.Timestamp",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 7
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "interessatnom",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Nom de l\u0027interessat",
+            "es": "Nombre del interesado"
+          },
+          "javaName": "interessatNom",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 2
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "interessatllinatge1",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Primer llinatge de l\u0027interessat",
+            "es": "Primer apellido del interesado"
+          },
+          "javaName": "interessatLlinatge1",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 2
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "interessatllinatge2",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Segon llinatge de l\u0027interessat",
+            "es": "Segundo apellido del interesado"
+          },
+          "javaName": "interessatLlinatge2",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 2
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "interessattipus",
+          "sqlType": 4,
+          "size": 10,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Tipus identificació interessat",
+            "es": "Tipo de identificación del interesado"
+          },
+          "javaName": "interessatTipus",
+          "javaType": "int",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 14
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "interessatidentificacio",
+          "sqlType": 12,
+          "size": 50,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Identificació interessat",
+            "es": "Identificación interesado"
+          },
+          "javaName": "interessatIdentificacio",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "representantnom",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Nom del representant",
+            "es": "Nombre del representante"
+          },
+          "javaName": "representantNom",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 2
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "representantllinatge1",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Primer llinatge del representant",
+            "es": "Primer apellido del representante"
+          },
+          "javaName": "representantLlinatge1",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 2
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "representantllinatge2",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Segon llinatge del representant",
+            "es": "Segundo apellido del representante"
+          },
+          "javaName": "representantLlinatge2",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 2
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "representanttipus",
+          "sqlType": 4,
+          "size": 10,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Tipus d\u0027identificació del representant",
+            "es": "Tipo de identificación del representante"
+          },
+          "javaName": "representantTipus",
+          "javaType": "java.lang.Integer",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 14
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "representantidentificacio",
+          "sqlType": 12,
+          "size": 50,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Identificació del representant",
+            "es": "Identificación del representante"
+          },
+          "javaName": "representantIdentificacio",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "tramitversio",
+          "sqlType": 4,
+          "size": 10,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Versió del tràmit",
+            "es": "Versión del trámite"
+          },
+          "javaName": "tramitVersio",
+          "javaType": "java.lang.Integer",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 14
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "arxiudocumentid",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Arxiu Document ID",
+            "es": "Archivo Documento ID"
+          },
+          "javaName": "arxiuDocumentID",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 2
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "arxiuexpedientid",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Arxiu Expedient ID",
+            "es": "Archivo Expediente ID"
+          },
+          "javaName": "arxiuExpedientID",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 2
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "estat",
+          "sqlType": 4,
+          "size": 10,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Estat",
+            "es": "Estado"
+          },
+          "javaName": "estat",
+          "javaType": "int",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 14
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "url",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "URL",
+            "es": "URL"
+          },
+          "javaName": "url",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 2
+          },
+          "foreignKeys": []
+        }
+      ]
+    },
+    {
+      "name": "rfh_autoritzacio",
+      "nameJava": "Autoritzacio",
+      "shortName": "autoritza",
+      "labels": {
+        "ca": "Autorització procediments",
+        "es": "Autorización procedimientos"
+      },
+      "labelsPlural": {
+        "ca": "Autoritzacions procediments",
+        "es": "Autorizaciones procedimientos"
+      },
+      "generate": true,
+      "fileMappingEntity": false,
+      "languageMappingEntity": false,
+      "translationEntity": false,
+      "translationMapEntity": false,
+      "fields": [
+        {
+          "PK": "rfh_autoritzacio_pk",
+          "index": "rfh_autoritzacio_pk_i",
+          "isAutoIncrement": true,
+          "sqlName": "autoritzacioid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "ID",
+            "es": "ID"
+          },
+          "javaName": "autoritzacioID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "defaultValue": "nextval(\u0027rfh_autoritzacio_seq\u0027::regclass)",
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 0,
+            "label": [
+              "nom"
+            ]
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_activitat_autoritza_aut_fk",
+              "table": "rfh_activitat",
+              "field": "autoritzacioid",
+              "type": 0
+            }
+          ]
+        },
+        {
+          "index": "rfh_autoritza_funid_fk_i",
+          "isAutoIncrement": false,
+          "sqlName": "llocid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Lloc de feina",
+            "es": "Plaza"
+          },
+          "javaName": "llocID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_autoritza_lloc_fd_fk",
+              "table": "rfh_lloc",
+              "field": "llocid",
+              "type": 1
+            }
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_autoritza_lloc_fd_fk",
+              "table": "rfh_lloc",
+              "field": "llocid",
+              "type": 1
+            }
+          ]
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "codisia",
+          "sqlType": 12,
+          "size": 50,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Codi SIA",
+            "es": "Código SIA"
+          },
+          "javaName": "codiSia",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "procediment",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Procediment",
+            "es": "Procedimiento"
+          },
+          "javaName": "procediment",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "cai",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Número incidència",
+            "es": "Número incidencia"
+          },
+          "javaName": "cai",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "datainici",
+          "sqlType": 91,
+          "size": 13,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Data inici",
+            "es": "Fecha inicio"
+          },
+          "javaName": "dataInici",
+          "javaType": "java.sql.Date",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 5
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "datafi",
+          "sqlType": 91,
+          "size": 13,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Data fi",
+            "es": "Fecha fin"
+          },
+          "javaName": "dataFi",
+          "javaType": "java.sql.Date",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 5
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "datacreacio",
+          "sqlType": 93,
+          "size": 29,
+          "digits": 6,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Data d\u0027alta",
+            "es": "Fecha de alta"
+          },
+          "javaName": "dataCreacio",
+          "javaType": "java.sql.Timestamp",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 7
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "observacions",
+          "sqlType": 12,
+          "size": 2147483647,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Observacions",
+            "es": "Observaciones"
+          },
+          "javaName": "observacions",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 2
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "usuariid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Usuari",
+            "es": "Usuario"
+          },
+          "javaName": "usuariID",
+          "javaType": "java.lang.Long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 14
+          },
+          "foreignKeys": []
+        },
+        {
+          "index": "rfh_autoritza_funcionariid_fk_i",
+          "isAutoIncrement": false,
+          "sqlName": "funcionariid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Funcionari",
+            "es": "Funcionario"
+          },
+          "javaName": "funcionariID",
+          "javaType": "java.lang.Long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_autoritza_fun_fd_fk",
+              "table": "rfh_funcionari",
+              "field": "funcionariid",
+              "type": 1
+            }
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_autoritza_funcionari_funcionariid_fk",
+              "table": "rfh_funcionari",
+              "field": "funcionariid",
+              "type": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "rfh_entitat",
+      "nameJava": "Entitat",
+      "shortName": "entitat",
+      "labels": {
+        "ca": "Conselleria/Ens",
+        "es": "Entidad"
+      },
+      "labelsPlural": {
+        "ca": "Conselleries/Ens",
+        "es": "Entidades"
+      },
+      "generate": true,
+      "fileMappingEntity": false,
+      "languageMappingEntity": false,
+      "translationEntity": false,
+      "translationMapEntity": false,
+      "fields": [
+        {
+          "PK": "rfh_entitat_pk",
+          "index": "rfh_entitat_pk_i",
+          "isAutoIncrement": true,
+          "sqlName": "entitatid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "ID",
+            "es": "ID"
+          },
+          "javaName": "entitatID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "defaultValue": "nextval(\u0027rfh_entitat_seq\u0027::regclass)",
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 0,
+            "label": [
+              "nom"
+            ]
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_lloc_entitat_entitatid_fk",
+              "table": "rfh_lloc",
+              "field": "entitatid",
+              "type": 0
+            },
+            {
+              "name": "rfh_plugin_entitat_entitati_fk",
+              "table": "rfh_plugin",
+              "field": "entitatid",
+              "type": 0
+            },
+            {
+              "name": "rfh_usuari_entitat_last_fk",
+              "table": "rfh_usuari",
+              "field": "darreraentitat",
+              "type": 0
+            },
+            {
+              "name": "rfh_usuarient_entitat_entit_fk",
+              "table": "rfh_usuarientitat",
+              "field": "entitatid",
+              "type": 0
+            }
+          ]
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "nom",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Nom",
+            "es": "Nombre"
+          },
+          "javaName": "nom",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "actiu",
+          "sqlType": -7,
+          "size": 1,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Actiu",
+            "es": "Activo"
+          },
+          "javaName": "actiu",
+          "javaType": "boolean",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 4
+          },
+          "foreignKeys": []
+        },
+        {
+          "index": "rfh_entitat_unitatid_fk_i",
+          "isAutoIncrement": false,
+          "sqlName": "unitatid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Unitat",
+            "es": "Unidad"
+          },
+          "javaName": "unitatID",
+          "javaType": "java.lang.Long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_entitat_unitat_uid_fk",
+              "table": "rfh_unitat",
+              "field": "unitatid",
+              "type": 1
+            }
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_entitat_unitat_unitatid_fk",
+              "table": "rfh_unitat",
+              "field": "unitatid",
+              "type": 1
+            }
+          ]
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "databaixa",
+          "sqlType": 93,
+          "size": 29,
+          "digits": 6,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Data de baixa",
+            "es": "Fecha de baja"
+          },
+          "javaName": "dataBaixa",
+          "javaType": "java.sql.Timestamp",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 7
+          },
+          "foreignKeys": []
+        }
+      ]
+    },
+    {
+      "name": "rfh_fitxer",
+      "nameJava": "Fitxer",
+      "shortName": "fitxer",
+      "labels": {
+        "de": "Datei",
+        "en": "File",
+        "ca": "Fitxer",
+        "es": "Fichero"
+      },
+      "labelsPlural": {
+        "de": "Datein",
+        "en": "Files",
+        "ca": "Fitxers",
+        "es": "Ficheros"
+      },
+      "generate": true,
+      "fileMappingEntity": true,
+      "languageMappingEntity": false,
+      "translationEntity": false,
+      "translationMapEntity": false,
+      "fields": [
+        {
+          "PK": "rfh_fitxer_pk",
+          "index": "rfh_fitxer_pk_i",
+          "isAutoIncrement": true,
+          "sqlName": "fitxerid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "de": "ID",
+            "en": "ID",
+            "ca": "ID",
+            "es": "ID"
+          },
+          "javaName": "fitxerID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "defaultValue": "nextval(\u0027rfh_fitxer_seq\u0027::regclass)",
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 0
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_scanweb_fitxer_fitxerid_fk",
+              "table": "rfh_digitalib",
+              "field": "fitxerid",
+              "type": 0
+            }
+          ]
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "nom",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "de": "Name",
+            "en": "Name",
+            "ca": "Nom",
+            "es": "Nombre"
+          },
+          "javaName": "nom",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "mime",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "de": "mime",
+            "en": "mime",
+            "ca": "Mime",
+            "es": "Mime"
+          },
+          "javaName": "mime",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "tamany",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "de": "Size",
+            "en": "Size",
+            "ca": "Tamany",
+            "es": "Tamaño"
+          },
+          "javaName": "tamany",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 14
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "descripcio",
+          "sqlType": 12,
+          "size": 1000,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "de": "Description",
+            "en": "Description",
+            "ca": "Descripció",
+            "es": "Descripción"
+          },
+          "javaName": "descripcio",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "defaultValue": "NULL::character varying",
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 2
+          },
+          "foreignKeys": []
+        }
+      ]
+    },
+    {
+      "name": "rfh_funcionari",
+      "nameJava": "Funcionari",
+      "shortName": "funcionari",
+      "labels": {
+        "ca": "Funcionari Habilitat",
+        "es": "Funcionario Habilitado"
+      },
+      "labelsPlural": {
+        "ca": "Funcionaris Habilitats",
+        "es": "Funcionarios Habilitados"
+      },
+      "generate": true,
+      "fileMappingEntity": false,
+      "languageMappingEntity": false,
+      "translationEntity": false,
+      "translationMapEntity": false,
+      "fields": [
+        {
+          "PK": "rfh_funcionari_pk",
+          "index": "rfh_funcionari_pk_i",
+          "isAutoIncrement": true,
+          "sqlName": "funcionariid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "ID",
+            "es": "ID"
+          },
+          "javaName": "funcionariID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "defaultValue": "nextval(\u0027rfh_funcionari_seq\u0027::regclass)",
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 0,
+            "label": [
+              "nom"
+            ]
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_activitat_funcionari_fu_fk",
+              "table": "rfh_activitat",
+              "field": "funcionariid",
+              "type": 0
+            },
+            {
+              "name": "rfh_autoritza_funcionari_funcionariid_fk",
+              "table": "rfh_autoritzacio",
+              "field": "funcionariid",
+              "type": 0
+            },
+            {
+              "name": "rfh_funlloc_funcionari_f_fk",
+              "table": "rfh_funcionarilloc",
+              "field": "funcionariid",
+              "type": 0
+            },
+            {
+              "name": "rfh_historic_funcionari_f_fk",
+              "table": "rfh_historic",
+              "field": "funcionariid",
+              "type": 0
+            }
+          ]
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "numero",
+          "sqlType": 4,
+          "size": 10,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Número",
+            "es": "Número"
+          },
+          "javaName": "numero",
+          "javaType": "int",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 14
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "nom",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Nom",
+            "es": "Nombre"
+          },
+          "javaName": "nom",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "llinatge1",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Llinatge 1",
+            "es": "Apellido 1"
+          },
+          "javaName": "llinatge1",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "llinatge2",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Llinatge 2",
+            "es": "Apellido 2"
+          },
+          "javaName": "llinatge2",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "tipusidentificador",
+          "sqlType": 4,
+          "size": 10,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Tipus identificació",
+            "es": "Tipo identificación"
+          },
+          "javaName": "tipusIdentificador",
+          "javaType": "int",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "minAllowedValue": "0,1,2,3,4",
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 16
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "identificador",
+          "sqlType": 12,
+          "size": 50,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Identificació",
+            "es": "Identificación"
+          },
+          "javaName": "identificador",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "usuari",
+          "sqlType": 12,
+          "size": 50,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Usuari",
+            "es": "Usuario"
+          },
+          "javaName": "usuari",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "correu",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Correu",
+            "es": "Correo"
+          },
+          "javaName": "correu",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "datacreacio",
+          "sqlType": 93,
+          "size": 29,
+          "digits": 6,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Data d\u0027alta",
+            "es": "Fecha de alta"
+          },
+          "javaName": "dataCreacio",
+          "javaType": "java.sql.Timestamp",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 7
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "observacions",
+          "sqlType": 12,
+          "size": 2147483647,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Observacions",
+            "es": "Observaciones"
+          },
+          "javaName": "observacions",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 2
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "databaixa",
+          "sqlType": 93,
+          "size": 29,
+          "digits": 6,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Data de baixa",
+            "es": "Fecha de baja"
+          },
+          "javaName": "dataBaixa",
+          "javaType": "java.sql.Timestamp",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 7
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "entitatid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Entitat",
+            "es": "Entidad"
+          },
+          "javaName": "entitatID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 14
+          },
+          "foreignKeys": []
+        }
+      ]
+    },
+    {
+      "name": "rfh_funcionarilloc",
+      "nameJava": "FuncionariLloc",
+      "shortName": "funlloc",
+      "labels": {
+        "ca": "Lloc de feina funcionari",
+        "es": "Plaza funcionario"
+      },
+      "labelsPlural": {
+        "ca": "Llocs de feina funcionaris",
+        "es": "Plazas funcionarios"
+      },
+      "generate": true,
+      "fileMappingEntity": false,
+      "languageMappingEntity": false,
+      "translationEntity": false,
+      "translationMapEntity": false,
+      "fields": [
+        {
+          "PK": "rfh_funcionarilloc_pk",
+          "index": "rfh_funcionarientitat_pk_i",
+          "isAutoIncrement": true,
+          "sqlName": "funcionarillocid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "ID",
+            "es": "ID"
+          },
+          "javaName": "funcionarillocID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "defaultValue": "nextval(\u0027rfh_funcionarilloc_seq\u0027::regclass)",
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 0
+          },
+          "foreignKeys": []
+        },
+        {
+          "index": "rfh_funcionarilloc_llocid_fk_i",
+          "isAutoIncrement": false,
+          "sqlName": "llocid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Lloc de feina",
+            "es": "Plaza"
+          },
+          "javaName": "llocID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_funlloc_lloc_llocid_fk",
+              "table": "rfh_lloc",
+              "field": "llocid",
+              "type": 1
+            }
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_funlloc_lloc_llocid_fk",
+              "table": "rfh_lloc",
+              "field": "llocid",
+              "type": 1
+            }
+          ]
+        },
+        {
+          "index": "rfh_funlloc_funcionariid_fk_i",
+          "isAutoIncrement": false,
+          "sqlName": "funcionariid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Funcionari",
+            "es": "Funcionario"
+          },
+          "javaName": "funcionariID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_funlloc_funcionari_f_fk",
+              "table": "rfh_funcionari",
+              "field": "funcionariid",
+              "type": 1
+            }
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_funlloc_funcionari_f_fk",
+              "table": "rfh_funcionari",
+              "field": "funcionariid",
+              "type": 1
+            }
+          ]
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "datainici",
+          "sqlType": 91,
+          "size": 13,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Data inici",
+            "es": "Fecha inicio"
+          },
+          "javaName": "dataInici",
+          "javaType": "java.sql.Date",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 5
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "datafi",
+          "sqlType": 91,
+          "size": 13,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Data fi",
+            "es": "Fecha fin"
+          },
+          "javaName": "dataFi",
+          "javaType": "java.sql.Date",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 5
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "datacreacio",
+          "sqlType": 93,
+          "size": 29,
+          "digits": 6,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Data d\u0027alta",
+            "es": "Fecha de alta"
+          },
+          "javaName": "dataCreacio",
+          "javaType": "java.sql.Timestamp",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 7
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "usuariid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Usuari",
+            "es": "Usuario"
+          },
+          "javaName": "usuariID",
+          "javaType": "java.lang.Long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 14
+          },
+          "foreignKeys": []
+        }
+      ],
+      "multipleUniques": [
+        {
+          "name": "rfh_funlloc_multiple_uk",
+          "sqlColumns": [
+            "llocid",
+            "funcionariid"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "rfh_historic",
+      "nameJava": "Historic",
+      "shortName": "historic",
+      "labels": {
+        "ca": "Històric",
+        "es": "Historico"
+      },
+      "labelsPlural": {
+        "ca": "Històrics",
+        "es": "Historicos"
+      },
+      "generate": true,
+      "fileMappingEntity": false,
+      "languageMappingEntity": false,
+      "translationEntity": false,
+      "translationMapEntity": false,
+      "fields": [
+        {
+          "PK": "rfh_historic_pk",
+          "index": "rfh_historic_pk_i",
+          "isAutoIncrement": true,
+          "sqlName": "historicid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "ID",
+            "es": "ID"
+          },
+          "javaName": "historicID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "defaultValue": "nextval(\u0027rfh_historic_seq\u0027::regclass)",
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 0
+          },
+          "foreignKeys": []
+        },
+        {
+          "index": "rfh_historic_funcionariid_fk_i",
+          "isAutoIncrement": false,
+          "sqlName": "funcionariid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Funcionari",
+            "es": "Funcionario"
+          },
+          "javaName": "funcionariID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_historic_funcionariid_fk",
+              "table": "rfh_funcionari",
+              "field": "funcionariid",
+              "type": 1
+            }
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_historic_funcionari_f_fk",
+              "table": "rfh_funcionari",
+              "field": "funcionariid",
+              "type": 1
+            }
+          ]
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "numerocai",
+          "sqlType": 12,
+          "size": 50,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Número CAI",
+            "es": "Número CAI"
+          },
+          "javaName": "numeroCai",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "observacions",
+          "sqlType": 12,
+          "size": 2147483647,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Observacions",
+            "es": "Observaciones"
+          },
+          "javaName": "observacions",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 2
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "datacreacio",
+          "sqlType": 93,
+          "size": 29,
+          "digits": 6,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Data alta",
+            "es": "Fecha de alta"
+          },
+          "javaName": "dataCreacio",
+          "javaType": "java.sql.Timestamp",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 7
+          },
+          "foreignKeys": []
+        },
+        {
+          "index": "rfh_historic_usuariid_fk_i",
+          "isAutoIncrement": false,
+          "sqlName": "usuariid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Usuari",
+            "es": "Usuario"
+          },
+          "javaName": "usuariID",
+          "javaType": "java.lang.Long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_historic_usuari_usuid_fk",
+              "table": "rfh_usuari",
+              "field": "usuariid",
+              "type": 1
+            }
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_historic_usuari_usuid_fk",
+              "table": "rfh_usuari",
+              "field": "usuariid",
+              "type": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "rfh_historiclloc",
+      "nameJava": "HistoricLloc",
+      "shortName": "histolloc",
+      "labels": {
+        "ca": "Històric de canvis de lloc de feina",
+        "es": "Historico de cambios de Plaza"
+      },
+      "labelsPlural": {
+        "ca": "Històric de canvis de lloc de feina",
+        "es": "Historico de cambios de Plaza"
+      },
+      "generate": true,
+      "fileMappingEntity": false,
+      "languageMappingEntity": false,
+      "translationEntity": false,
+      "translationMapEntity": false,
+      "fields": [
+        {
+          "PK": "rfh_historiclloc_pk",
+          "index": "rfh_historiclloc_pk_i",
+          "isAutoIncrement": true,
+          "sqlName": "historicllocid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "ID",
+            "es": "ID"
+          },
+          "javaName": "historicllocID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "defaultValue": "nextval(\u0027rfh_historiclloc_seq\u0027::regclass)",
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 0
+          },
+          "foreignKeys": []
+        },
+        {
+          "index": "rfh_historiclloc_llocid_fk_i",
+          "isAutoIncrement": false,
+          "sqlName": "llocid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Lloc de feina",
+            "es": "Plaza"
+          },
+          "javaName": "llocID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_historiclloc_lloc_f_fk",
+              "table": "rfh_lloc",
+              "field": "llocid",
+              "type": 1
+            }
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_histolloc_lloc_llocid_fk",
+              "table": "rfh_lloc",
+              "field": "llocid",
+              "type": 1
+            }
+          ]
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "numerocai",
+          "sqlType": 12,
+          "size": 50,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "CAI",
+            "es": "CAI"
+          },
+          "javaName": "numeroCai",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "observacions",
+          "sqlType": 12,
+          "size": 2147483647,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Observacions",
+            "es": "Observaciones"
+          },
+          "javaName": "observacions",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 2
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "datacreacio",
+          "sqlType": 93,
+          "size": 29,
+          "digits": 6,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Data alta",
+            "es": "Fecha alta"
+          },
+          "javaName": "dataCreacio",
+          "javaType": "java.sql.Timestamp",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 7
+          },
+          "foreignKeys": []
+        },
+        {
+          "index": "rfh_historiclloc_usuariid_fk_i",
+          "isAutoIncrement": false,
+          "sqlName": "usuariid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Usuari",
+            "es": "Usuario"
+          },
+          "javaName": "usuariID",
+          "javaType": "java.lang.Long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_histolloc_usuari_id_fk",
+              "table": "rfh_usuari",
+              "field": "usuariid",
+              "type": 1
+            }
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_histolloc_usuari_id_fk",
+              "table": "rfh_usuari",
+              "field": "usuariid",
+              "type": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "rfh_idioma",
+      "nameJava": "Idioma",
+      "shortName": "idioma",
+      "labels": {
+        "de": "Sprache",
+        "en": "Language",
+        "ca": "Idioma",
+        "es": "Idioma"
+      },
+      "labelsPlural": {
+        "de": "Idiom",
+        "en": "Language",
+        "ca": "Idioma",
+        "es": "Idioma"
+      },
+      "generate": true,
+      "fileMappingEntity": false,
+      "languageMappingEntity": true,
+      "translationEntity": false,
+      "translationMapEntity": false,
+      "fields": [
+        {
+          "PK": "rfh_idioma_pk",
+          "index": "rfh_idioma_pk_i",
+          "isAutoIncrement": false,
+          "sqlName": "idiomaid",
+          "sqlType": 12,
+          "size": 5,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "de": "ID",
+            "en": "ID",
+            "ca": "ID",
+            "es": "ID"
+          },
+          "javaName": "idiomaID",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 0
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_usuari_idioma_idiomaid_fk",
+              "table": "rfh_usuari",
+              "field": "idiomaid",
+              "type": 0
+            }
+          ]
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "nom",
+          "sqlType": 12,
+          "size": 50,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "de": "Name",
+            "en": "Name",
+            "ca": "Nom",
+            "es": "Nombre"
+          },
+          "javaName": "nom",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "suportat",
+          "sqlType": -7,
+          "size": 1,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "de": "suportat",
+            "en": "Suported",
+            "ca": "Suportat",
+            "es": "Suportado"
+          },
+          "javaName": "suportat",
+          "javaType": "boolean",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "defaultValue": "true",
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 4
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "ordre",
+          "sqlType": 4,
+          "size": 10,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "de": "Order",
+            "en": "Order",
+            "ca": "Ordre",
+            "es": "ordre"
+          },
+          "javaName": "ordre",
+          "javaType": "int",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "defaultValue": "0",
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 14
+          },
+          "foreignKeys": []
+        }
+      ]
+    },
+    {
+      "name": "rfh_lloc",
+      "nameJava": "Lloc",
+      "shortName": "lloc",
+      "labels": {
+        "ca": "Lloc de feina",
+        "es": "Plaza"
+      },
+      "labelsPlural": {
+        "ca": "Llocs de feina",
+        "es": "Plazas"
+      },
+      "generate": true,
+      "fileMappingEntity": false,
+      "languageMappingEntity": false,
+      "translationEntity": false,
+      "translationMapEntity": false,
+      "fields": [
+        {
+          "PK": "rfh_lloc_pk",
+          "index": "rfh_lloc_pk_i",
+          "isAutoIncrement": true,
+          "sqlName": "llocid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "ID",
+            "es": "ID"
+          },
+          "javaName": "llocID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "defaultValue": "nextval(\u0027rfh_lloc_seq\u0027::regclass)",
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 0,
+            "label": [
+              "nom"
+            ]
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_autoritza_lloc_fd_fk",
+              "table": "rfh_autoritzacio",
+              "field": "llocid",
+              "type": 0
+            },
+            {
+              "name": "rfh_funlloc_lloc_llocid_fk",
+              "table": "rfh_funcionarilloc",
+              "field": "llocid",
+              "type": 0
+            },
+            {
+              "name": "rfh_histolloc_lloc_llocid_fk",
+              "table": "rfh_historiclloc",
+              "field": "llocid",
+              "type": 0
+            },
+            {
+              "name": "rfh_llocrol_lloc_llocid_fk",
+              "table": "rfh_llocrol",
+              "field": "llocid",
+              "type": 0
+            }
+          ]
+        },
+        {
+          "unique": "rfh_lloc_codilloc_uk",
+          "isAutoIncrement": false,
+          "sqlName": "codilloc",
+          "sqlType": 12,
+          "size": 50,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Codi",
+            "es": "Código Plaza"
+          },
+          "javaName": "codiLloc",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "nom",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Nom",
+            "es": "Nombre"
+          },
+          "javaName": "nom",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "personaloamr",
+          "sqlType": 4,
+          "size": 10,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Personal OAMR",
+            "es": "Personal OAMR"
+          },
+          "javaName": "personalOamr",
+          "javaType": "int",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "minAllowedValue": "0,1",
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 16
+          },
+          "foreignKeys": []
+        },
+        {
+          "index": "rfh_lloc_entitatid_fk_i",
+          "isAutoIncrement": false,
+          "sqlName": "entitatid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Entitat",
+            "es": "Entidad"
+          },
+          "javaName": "entitatID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_lloc_entitat_entitatid_fk",
+              "table": "rfh_entitat",
+              "field": "entitatid",
+              "type": 1
+            }
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_lloc_entitat_entitatid_fk",
+              "table": "rfh_entitat",
+              "field": "entitatid",
+              "type": 1
+            }
+          ]
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "datacreacio",
+          "sqlType": 93,
+          "size": 29,
+          "digits": 6,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Data alta",
+            "es": "Fecha de alta"
+          },
+          "javaName": "dataCreacio",
+          "javaType": "java.sql.Timestamp",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 7
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "databaixa",
+          "sqlType": 93,
+          "size": 29,
+          "digits": 6,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Data baixa",
+            "es": "Fecha baja"
+          },
+          "javaName": "dataBaixa",
+          "javaType": "java.sql.Timestamp",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 7
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "observacions",
+          "sqlType": 12,
+          "size": 2147483647,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Observacions",
+            "es": "Observaciones"
+          },
+          "javaName": "observacions",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 2
+          },
+          "foreignKeys": []
+        },
+        {
+          "index": "rfh_lloc_unitatid_fk_i",
+          "isAutoIncrement": false,
+          "sqlName": "unitatid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Unitat",
+            "es": "Unidad"
+          },
+          "javaName": "unitatID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_lloc_unitat_unitatid_fk",
+              "table": "rfh_unitat",
+              "field": "unitatid",
+              "type": 1
+            }
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_lloc_unitat_unitatid_fk",
+              "table": "rfh_unitat",
+              "field": "unitatid",
+              "type": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "rfh_llocrol",
+      "nameJava": "LlocRol",
+      "shortName": "llocrol",
+      "labels": {
+        "ca": "Assignació Lloc Rol",
+        "es": "Asignación Lugar Rol"
+      },
+      "labelsPlural": {
+        "ca": "Assignacions Llocs Rols",
+        "es": "Asignaciones Lugares Roles"
+      },
+      "generate": true,
+      "fileMappingEntity": false,
+      "languageMappingEntity": false,
+      "translationEntity": false,
+      "translationMapEntity": false,
+      "fields": [
+        {
+          "PK": "rfh_llocrol_pk",
+          "index": "rfh_llocrol_pk_i",
+          "isAutoIncrement": true,
+          "sqlName": "llocrolid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "ID",
+            "es": "ID"
+          },
+          "javaName": "llocRolID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "defaultValue": "nextval(\u0027rfh_llocrol_seq\u0027::regclass)",
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 0
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "datacreacio",
+          "sqlType": 93,
+          "size": 29,
+          "digits": 6,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Data",
+            "es": "Fecha"
+          },
+          "javaName": "dataCreacio",
+          "javaType": "java.sql.Timestamp",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 7
+          },
+          "foreignKeys": []
+        },
+        {
+          "index": "rfh_llocrol_llocid_fk_i",
+          "isAutoIncrement": false,
+          "sqlName": "llocid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Lloc de feina",
+            "es": "Puesto de trabajo"
+          },
+          "javaName": "llocID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_llocrol_lloc_llocid_fk",
+              "table": "rfh_lloc",
+              "field": "llocid",
+              "type": 1
+            }
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_llocrol_lloc_llocid_fk",
+              "table": "rfh_lloc",
+              "field": "llocid",
+              "type": 1
+            }
+          ]
+        },
+        {
+          "index": "rfh_llocrol_rolid_fk_i",
+          "isAutoIncrement": false,
+          "sqlName": "rolid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Rol",
+            "es": "Rol"
+          },
+          "javaName": "rolID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_llocrol_rol_rolid_fk",
+              "table": "rfh_rol",
+              "field": "rolid",
+              "type": 1
+            }
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_llocrol_rol_rolid_fk",
+              "table": "rfh_rol",
+              "field": "rolid",
+              "type": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "rfh_plugin",
+      "nameJava": "Plugin",
+      "shortName": "plugin",
+      "labels": {
+        "ca": "Plugin",
+        "es": "Plugin"
+      },
+      "labelsPlural": {
+        "ca": "Plugins",
+        "es": "Plugins"
+      },
+      "generate": true,
+      "fileMappingEntity": false,
+      "languageMappingEntity": false,
+      "translationEntity": false,
+      "translationMapEntity": false,
+      "fields": [
+        {
+          "PK": "rfh_plugin_pk",
+          "index": "rfh_plugin_pk_i",
+          "isAutoIncrement": true,
+          "sqlName": "pluginid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "ID",
+            "es": "ID"
+          },
+          "javaName": "pluginID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "defaultValue": "nextval(\u0027rfh_plugin_seq\u0027::regclass)",
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 0,
+            "label": [
+              "nom"
+            ]
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "nom",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Nom",
+            "es": "Nombre"
+          },
+          "javaName": "nom",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "descripcio",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Descripció",
+            "es": "Descripción"
+          },
+          "javaName": "descripcio",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 2
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "classe",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Classe",
+            "es": "Clase"
+          },
+          "javaName": "classe",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "index": "rfh_plugin_entitatid_fk_i",
+          "isAutoIncrement": false,
+          "sqlName": "entitatid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Entitat",
+            "es": "Entidad"
+          },
+          "javaName": "entitatID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_plugin_entitatid_fk",
+              "table": "rfh_entitat",
+              "field": "entitatid",
+              "type": 1
+            }
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_plugin_entitat_entitati_fk",
+              "table": "rfh_entitat",
+              "field": "entitatid",
+              "type": 1
+            }
+          ]
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "properties",
+          "sqlType": 12,
+          "size": 2147483647,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Propietats",
+            "es": "Propiedades"
+          },
+          "javaName": "properties",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 2
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "actiu",
+          "sqlType": -7,
+          "size": 1,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Actiu",
+            "es": "Activo"
+          },
+          "javaName": "actiu",
+          "javaType": "boolean",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 4
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "datacreacio",
+          "sqlType": 93,
+          "size": 29,
+          "digits": 6,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Data alta",
+            "es": "Fecha de alta"
+          },
+          "javaName": "dataCreacio",
+          "javaType": "java.sql.Timestamp",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 7
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "tipus",
+          "sqlType": 12,
+          "size": 50,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Tipus",
+            "es": "Tipo"
+          },
+          "javaName": "tipus",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "minAllowedValue": "0,1,2,3",
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 16
+          },
+          "foreignKeys": []
+        }
+      ]
+    },
+    {
+      "name": "rfh_rol",
+      "nameJava": "Rol",
+      "shortName": "Rol",
+      "labels": {
+        "ca": "Habilitació",
+        "es": "Habilitación"
+      },
+      "labelsPlural": {
+        "ca": "Habilitacions",
+        "es": "Habilitaciones"
+      },
+      "generate": true,
+      "fileMappingEntity": false,
+      "languageMappingEntity": false,
+      "translationEntity": false,
+      "translationMapEntity": false,
+      "fields": [
+        {
+          "PK": "rfh_rol_pk",
+          "index": "rfh_rol_pk_i",
+          "isAutoIncrement": true,
+          "sqlName": "rolid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "ID",
+            "es": "ID"
+          },
+          "javaName": "rolID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "defaultValue": "nextval(\u0027rfh_rol_seq\u0027::regclass)",
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 0,
+            "label": [
+              "nom"
+            ]
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_llocrol_rol_rolid_fk",
+              "table": "rfh_llocrol",
+              "field": "rolid",
+              "type": 0
+            }
+          ]
+        },
+        {
+          "index": "rfh_rol_nomid_fk_i",
+          "isAutoIncrement": false,
+          "sqlName": "nomid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Nom",
+            "es": "Nombre"
+          },
+          "javaName": "nomID",
+          "javaType": "java.lang.Long",
+          "traduible": true,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_roltraduccio_nom_fk",
+              "table": "rfh_traduccio",
+              "field": "traduccioid",
+              "type": 1
+            }
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_rol_traduccio_nomid_fk",
+              "table": "rfh_traduccio",
+              "field": "traduccioid",
+              "type": 1
+            }
+          ]
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "codi",
+          "sqlType": 12,
+          "size": 50,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Codi",
+            "es": "Código"
+          },
+          "javaName": "codi",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "datacreacio",
+          "sqlType": 93,
+          "size": 29,
+          "digits": 6,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Data Creació",
+            "es": "Fecha creación"
+          },
+          "javaName": "dataCreacio",
+          "javaType": "java.sql.Timestamp",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 7
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "entitatid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Entitat",
+            "es": "Entidad"
+          },
+          "javaName": "entitatID",
+          "javaType": "java.lang.Long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 14
+          },
+          "foreignKeys": []
+        }
+      ]
+    },
+    {
+      "name": "rfh_digitalib",
+      "nameJava": "ScanWeb",
+      "shortName": "scanweb",
+      "labels": {
+        "ca": "Còpia",
+        "es": "Copia"
+      },
+      "labelsPlural": {
+        "ca": "Còpies",
+        "es": "Copias"
+      },
+      "generate": true,
+      "fileMappingEntity": false,
+      "languageMappingEntity": false,
+      "translationEntity": false,
+      "translationMapEntity": false,
+      "fields": [
+        {
+          "PK": "rfh_digitalib_pk",
+          "index": "rfh_digitalib_pk_i",
+          "isAutoIncrement": true,
+          "sqlName": "digitalid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "ID",
+            "es": "ID"
+          },
+          "javaName": "digitalID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "defaultValue": "nextval(\u0027rfh_digitalib_seq\u0027::regclass)",
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 0
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "transactionid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Transacció ID",
+            "es": "Transacción"
+          },
+          "javaName": "transactionID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 14
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "transactionwebid",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Transacció web ID",
+            "es": "Transacción web ID"
+          },
+          "javaName": "transactionWebID",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 2
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "status",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Estat",
+            "es": "Estado"
+          },
+          "javaName": "status",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 14
+          },
+          "foreignKeys": []
+        },
+        {
+          "index": "rfh_digitalib_fitxerid_fk_i",
+          "isAutoIncrement": false,
+          "sqlName": "fitxerid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Fitxer ID",
+            "es": "Fichero ID"
+          },
+          "javaName": "fitxerID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_digitalib_fitxer_id",
+              "table": "rfh_fitxer",
+              "field": "fitxerid",
+              "type": 1
+            }
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_scanweb_fitxer_fitxerid_fk",
+              "table": "rfh_fitxer",
+              "field": "fitxerid",
+              "type": 1
+            }
+          ]
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "fileinfo",
+          "sqlType": 12,
+          "size": 2147483647,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Informació del fitxer",
+            "es": "Información del fichero"
+          },
+          "javaName": "fileInfo",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": false,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 2
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "signedfileinfo",
+          "sqlType": 12,
+          "size": 2147483647,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Informació del fitxer signat",
+            "es": "Información del fichero firmado"
+          },
+          "javaName": "signedFileInfo",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 2
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "metadades",
+          "sqlType": 12,
+          "size": 2147483647,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Metadades",
+            "es": "Metadatos"
+          },
+          "javaName": "metadades",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 2
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "missatge",
+          "sqlType": 12,
+          "size": 2147483647,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Missatge",
+            "es": "Mensaje"
+          },
+          "javaName": "missatge",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 2
+          },
+          "foreignKeys": []
+        },
+        {
+          "index": "rfh_digitalib_usuariid_fk_i",
+          "isAutoIncrement": false,
+          "sqlName": "usuariid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Usuari",
+            "es": "Usuario"
+          },
+          "javaName": "usuariID",
+          "javaType": "java.lang.Long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_digitalib_usuari_id",
+              "table": "rfh_usuari",
+              "field": "usuariid",
+              "type": 1
+            }
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_scanweb_usuari_usuariid_fk",
+              "table": "rfh_usuari",
+              "field": "usuariid",
+              "type": 1
+            }
+          ]
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "datacreacio",
+          "sqlType": 93,
+          "size": 29,
+          "digits": 6,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Data Creacio",
+            "es": "Fecha creación"
+          },
+          "javaName": "dataCreacio",
+          "javaType": "java.sql.Timestamp",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 7
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "entitatid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Entitat",
+            "es": "Entidad"
+          },
+          "javaName": "entitatID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 14
+          },
+          "foreignKeys": []
+        }
+      ]
+    },
+    {
+      "name": "rfh_traduccio",
+      "nameJava": "Traduccio",
+      "shortName": "traduccio",
+      "labels": {
+        "de": "Übersetzung",
+        "en": "Translation",
+        "ca": "Traducció",
+        "es": "Traducción"
+      },
+      "labelsPlural": {
+        "de": "Translations",
+        "en": "Translations",
+        "ca": "Traduccions",
+        "es": "Traducciones"
+      },
+      "generate": true,
+      "fileMappingEntity": false,
+      "languageMappingEntity": false,
+      "translationEntity": true,
+      "translationMapEntity": false,
+      "fields": [
+        {
+          "PK": "rfh_traduccio_pk",
+          "index": "rfh_traduccio_pk_i",
+          "isAutoIncrement": true,
+          "sqlName": "traduccioid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "de": "ID",
+            "en": "ID",
+            "ca": "ID",
+            "es": "ID"
+          },
+          "javaName": "traduccioID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "descripcio": "",
+          "defaultValue": "nextval(\u0027rfh_traduccio_seq\u0027::regclass)",
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 0,
+            "label": [
+              "nom"
+            ]
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_rol_traduccio_nomid_fk",
+              "table": "rfh_rol",
+              "field": "nomid",
+              "type": 0
+            },
+            {
+              "name": "rfh_traducmap_traduccio_fk",
+              "table": "rfh_traducciomap",
+              "field": "traducciomapid",
+              "type": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "rfh_traducciomap",
+      "nameJava": "TraduccioMap",
+      "shortName": "traducmap",
+      "labels": {
+        "de": "TraduccioMap",
+        "en": "TraduccioMap",
+        "ca": "TraduccioMap",
+        "es": "TraduccioMap"
+      },
+      "labelsPlural": {
+        "de": "",
+        "en": "",
+        "ca": "",
+        "es": ""
+      },
+      "generate": true,
+      "fileMappingEntity": false,
+      "languageMappingEntity": false,
+      "translationEntity": false,
+      "translationMapEntity": true,
+      "fields": [
+        {
+          "PK": "rfh_traducmap_pk",
+          "index": "rfh_traducciomap_pk_i",
+          "isAutoIncrement": false,
+          "sqlName": "traducciomapid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "de": "ID",
+            "en": "ID",
+            "ca": "ID",
+            "es": "ID"
+          },
+          "javaName": "traduccioMapID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "descripcio": "",
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_traducmap_traduccio_fk",
+              "table": "rfh_traduccio",
+              "field": "traduccioid",
+              "type": 1
+            }
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_traducmap_traduccio_fk",
+              "table": "rfh_traduccio",
+              "field": "traduccioid",
+              "type": 1
+            }
+          ]
+        },
+        {
+          "PK": "rfh_traducmap_pk",
+          "index": "rfh_traducciomap_idiomaid_fk_i",
+          "isAutoIncrement": false,
+          "sqlName": "idiomaid",
+          "sqlType": 12,
+          "size": 10,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "de": "idiomaid",
+            "en": "idiomaID",
+            "ca": "idiomaID",
+            "es": "idiomaID"
+          },
+          "javaName": "idiomaID",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "descripcio": "",
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 0
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "valor",
+          "sqlType": 12,
+          "size": 4000,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "de": "Value",
+            "en": "Value",
+            "ca": "Valor",
+            "es": "Valor"
+          },
+          "javaName": "valor",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "descripcio": "",
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 2
+          },
+          "foreignKeys": []
+        }
+      ]
+    },
+    {
+      "name": "rfh_unitat",
+      "nameJava": "Unitat",
+      "shortName": "unitat",
+      "labels": {
+        "ca": "Unitat orgànica",
+        "es": "Unidad orgánica"
+      },
+      "labelsPlural": {
+        "ca": "Unitats orgàniques",
+        "es": "Unidades orgánicas"
+      },
+      "generate": true,
+      "fileMappingEntity": false,
+      "languageMappingEntity": false,
+      "translationEntity": false,
+      "translationMapEntity": false,
+      "fields": [
+        {
+          "PK": "rfh_unitat_pk",
+          "index": "rfh_unitat_pk_i",
+          "isAutoIncrement": true,
+          "sqlName": "unitatid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "ID",
+            "es": "ID"
+          },
+          "javaName": "unitatID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "defaultValue": "nextval(\u0027rfh_unitat_seq\u0027::regclass)",
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 0,
+            "label": [
+              "nom"
+            ]
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_entitat_unitat_unitatid_fk",
+              "table": "rfh_entitat",
+              "field": "unitatid",
+              "type": 0
+            },
+            {
+              "name": "rfh_lloc_unitat_unitatid_fk",
+              "table": "rfh_lloc",
+              "field": "unitatid",
+              "type": 0
+            }
+          ]
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "codi",
+          "sqlType": 12,
+          "size": 50,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Codi DIR3",
+            "es": "Código DIR3"
+          },
+          "javaName": "codi",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "versio",
+          "sqlType": 4,
+          "size": 10,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Versió",
+            "es": "Versión"
+          },
+          "javaName": "versio",
+          "javaType": "int",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 14
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "denominacio",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Denominació",
+            "es": "Denominación"
+          },
+          "javaName": "denominacio",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 2
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "cooficial",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Denominació cooficial",
+            "es": "Denominación cooficial"
+          },
+          "javaName": "cooficial",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 2
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "arrel",
+          "sqlType": 12,
+          "size": 50,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Unitat arrel",
+            "es": "Unidad raíz"
+          },
+          "javaName": "arrel",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "arrelversio",
+          "sqlType": 4,
+          "size": 10,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Versió unitat arrel",
+            "es": "Versión unidad raíz"
+          },
+          "javaName": "arrelVersio",
+          "javaType": "java.lang.Integer",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 14
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "superior",
+          "sqlType": 12,
+          "size": 50,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Unitat superior",
+            "es": "Unidad superior"
+          },
+          "javaName": "superior",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "superiorversio",
+          "sqlType": 4,
+          "size": 10,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Versió unitat superior",
+            "es": "Versión unidad superior"
+          },
+          "javaName": "superiorVersio",
+          "javaType": "java.lang.Integer",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 14
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "estat",
+          "sqlType": 12,
+          "size": 5,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Estat",
+            "es": "Estado"
+          },
+          "javaName": "estat",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "minAllowedValue": "0,1,2",
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 16
+          },
+          "foreignKeys": []
+        }
+      ]
+    },
+    {
+      "name": "rfh_usuari",
+      "nameJava": "Usuari",
+      "shortName": "usuari",
+      "labels": {
+        "ca": "Usuari",
+        "es": "Usuario"
+      },
+      "labelsPlural": {
+        "ca": "Usuaris",
+        "es": "Usuarios"
+      },
+      "generate": true,
+      "fileMappingEntity": false,
+      "languageMappingEntity": false,
+      "translationEntity": false,
+      "translationMapEntity": false,
+      "fields": [
+        {
+          "PK": "rfh_usuari_pk",
+          "index": "rfh_usuari_pk_i",
+          "isAutoIncrement": true,
+          "sqlName": "usuariid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "ID",
+            "es": "ID"
+          },
+          "javaName": "usuariID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "defaultValue": "nextval(\u0027rfh_usuari_seq\u0027::regclass)",
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 0,
+            "label": [
+              "nom"
+            ]
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_scanweb_usuari_usuariid_fk",
+              "table": "rfh_digitalib",
+              "field": "usuariid",
+              "type": 0
+            },
+            {
+              "name": "rfh_historic_usuari_usuid_fk",
+              "table": "rfh_historic",
+              "field": "usuariid",
+              "type": 0
+            },
+            {
+              "name": "rfh_histolloc_usuari_id_fk",
+              "table": "rfh_historiclloc",
+              "field": "usuariid",
+              "type": 0
+            },
+            {
+              "name": "rfh_usuarient_usuari_usuari_fk",
+              "table": "rfh_usuarientitat",
+              "field": "usuariid",
+              "type": 0
+            }
+          ]
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "nom",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Nom",
+            "es": "Nombre"
+          },
+          "javaName": "nom",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "llinatge1",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Llinatge 1",
+            "es": "Apellido 1"
+          },
+          "javaName": "llinatge1",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "llinatge2",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Llinatge 2",
+            "es": "Apellido 2"
+          },
+          "javaName": "llinatge2",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "nif",
+          "sqlType": 12,
+          "size": 50,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "NIF",
+            "es": "NIF"
+          },
+          "javaName": "nif",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "unique": "rfh_usuari_username_uk",
+          "isAutoIncrement": false,
+          "sqlName": "username",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "username",
+            "es": "username"
+          },
+          "javaName": "username",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "correu",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Correu",
+            "es": "Correo"
+          },
+          "javaName": "correu",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "index": "rfh_usuari_idiomaid_fk_i",
+          "isAutoIncrement": false,
+          "sqlName": "idiomaid",
+          "sqlType": 12,
+          "size": 5,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Idioma",
+            "es": "Idioma"
+          },
+          "javaName": "idiomaID",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_usuari_idiomaid_pk",
+              "table": "rfh_idioma",
+              "field": "idiomaid",
+              "type": 1
+            }
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_usuari_idioma_idiomaid_fk",
+              "table": "rfh_idioma",
+              "field": "idiomaid",
+              "type": 1
+            }
+          ]
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "actiu",
+          "sqlType": -7,
+          "size": 1,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Actiu",
+            "es": "Activo"
+          },
+          "javaName": "actiu",
+          "javaType": "boolean",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 4
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "datacreacio",
+          "sqlType": 93,
+          "size": 29,
+          "digits": 6,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Data alta",
+            "es": "Fecha alta"
+          },
+          "javaName": "dataCreacio",
+          "javaType": "java.sql.Timestamp",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 7
+          },
+          "foreignKeys": []
+        },
+        {
+          "index": "rfh_usuari_darreraentitat_fk_i",
+          "isAutoIncrement": false,
+          "sqlName": "darreraentitat",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "darrera entitat",
+            "es": "última entidad"
+          },
+          "javaName": "darreraEntitat",
+          "javaType": "java.lang.Long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_usuari_entitat_last_fk",
+              "table": "rfh_entitat",
+              "field": "entitatid",
+              "type": 1
+            }
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_usuari_entitat_last_fk",
+              "table": "rfh_entitat",
+              "field": "entitatid",
+              "type": 1
+            }
+          ]
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "databaixa",
+          "sqlType": 93,
+          "size": 29,
+          "digits": 6,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Data de baixa",
+            "es": "Fecha de baja"
+          },
+          "javaName": "dataBaixa",
+          "javaType": "java.sql.Timestamp",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 7
+          },
+          "foreignKeys": []
+        }
+      ]
+    },
+    {
+      "name": "rfh_usuarientitat",
+      "nameJava": "UsuariEntitat",
+      "shortName": "usuarient",
+      "labels": {
+        "ca": "Usuari Entitat",
+        "es": "Usuario Entidad"
+      },
+      "labelsPlural": {
+        "ca": "Usuaris Entitat",
+        "es": "Usuarios Entidad"
+      },
+      "generate": true,
+      "fileMappingEntity": false,
+      "languageMappingEntity": false,
+      "translationEntity": false,
+      "translationMapEntity": false,
+      "fields": [
+        {
+          "PK": "rfh_usuarientitat_pk",
+          "index": "rfh_usuarientitat_pk_i",
+          "isAutoIncrement": true,
+          "sqlName": "usuarientitatid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "ID",
+            "es": "ID"
+          },
+          "javaName": "usuariEntitatID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "defaultValue": "nextval(\u0027rfh_usuarientitat_seq\u0027::regclass)",
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 0
+          },
+          "foreignKeys": []
+        },
+        {
+          "index": "rfh_usuarient_entitatid_fk_i",
+          "isAutoIncrement": false,
+          "sqlName": "entitatid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Entitat",
+            "es": "Entidad"
+          },
+          "javaName": "entitatID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_usuent_entitatid_fk",
+              "table": "rfh_entitat",
+              "field": "entitatid",
+              "type": 1
+            }
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_usuarient_entitat_entit_fk",
+              "table": "rfh_entitat",
+              "field": "entitatid",
+              "type": 1
+            }
+          ]
+        },
+        {
+          "index": "rfh_usuarient_usuariid_fk_i",
+          "isAutoIncrement": false,
+          "sqlName": "usuariid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Usuari",
+            "es": "Usuario"
+          },
+          "javaName": "usuariID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_usuent_usuariid_fk",
+              "table": "rfh_usuari",
+              "field": "usuariid",
+              "type": 1
+            }
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_usuarient_usuari_usuari_fk",
+              "table": "rfh_usuari",
+              "field": "usuariid",
+              "type": 1
+            }
+          ]
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "actiu",
+          "sqlType": -7,
+          "size": 1,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Actiu",
+            "es": "Activo"
+          },
+          "javaName": "actiu",
+          "javaType": "boolean",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 4
+          },
+          "foreignKeys": []
+        }
+      ],
+      "multipleUniques": [
+        {
+          "name": "rfh_usuarient_multiple_uk",
+          "sqlColumns": [
+            "entitatid",
+            "usuariid"
+          ]
+        }
+      ]
+    }
+  ],
+  "languages": [
+    "ca",
+    "es"
+  ],
+  "generateBack": true,
+  "generateFront": false,
+  "generateApiInterna": true,
+  "generateApiExterna": true
+}

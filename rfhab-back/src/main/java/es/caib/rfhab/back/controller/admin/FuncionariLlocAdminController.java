@@ -1,12 +1,18 @@
 package es.caib.rfhab.back.controller.admin;
 
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 
+import org.fundaciobit.genapp.common.StringKeyValue;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.i18n.I18NValidationException;
+import org.fundaciobit.genapp.common.query.Field;
+import org.fundaciobit.genapp.common.query.GroupByItem;
+import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.web.form.AdditionalButton;
 import org.fundaciobit.genapp.common.web.form.AdditionalButtonStyle;
 import org.springframework.stereotype.Controller;
@@ -20,7 +26,11 @@ import es.caib.rfhab.back.controller.webdb.FuncionariLlocController;
 import es.caib.rfhab.back.form.webdb.FuncionariLlocFilterForm;
 import es.caib.rfhab.back.form.webdb.FuncionariLlocForm;
 import es.caib.rfhab.back.security.LoginInfo;
+import es.caib.rfhab.commons.utils.Utils;
 import es.caib.rfhab.ejb.HistoricLlocService;
+import es.caib.rfhab.model.entity.FuncionariLloc;
+import es.caib.rfhab.model.fields.FuncionariFields;
+import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.persistence.FuncionariLlocJPA;
 import es.caib.rfhab.persistence.HistoricLlocJPA;
 
@@ -101,9 +111,11 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 		
 		// Guardar imatge del canvi a historic de Lloc i historic de funcionari
 		
+	    final String numeroCai = (Utils.isNotEmpty(request.getParameter("numeroCai"))) ? request.getParameter("numeroCai") : ""; 
+
 		HistoricLlocJPA historicLloc = new HistoricLlocJPA();
 		historicLloc.setLlocID(funcionariLloc.getLlocID());
-		historicLloc.setNumeroCai(request.getParameter("numeroCai"));
+		historicLloc.setNumeroCai(numeroCai);
 		historicLloc.setDataCreacio(new Timestamp(System.currentTimeMillis()));
 		historicLloc.setUsuariID(LoginInfo.getInstance().getUsuariPersona().getUsuariID());
 		historicLloc.setObservacions("Nova assignació de funcionari a lloc: " + funcionariLloc.getFuncionariID() + " - " + funcionariLloc.getLlocID());
@@ -135,5 +147,27 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 	public String getRedirectWhenCancel(HttpServletRequest request, java.lang.Long historicID) {
         return "redirect:/admin/funcionari/list/1";
     }
+
+	@Override
+	public List<StringKeyValue> getReferenceListForLlocID(HttpServletRequest request,
+       ModelAndView mav, FuncionariLlocFilterForm funcionariLlocFilterForm,
+       List<FuncionariLloc> list, Map<Field<?>, GroupByItem> _groupByItemsMap, Where where)  throws I18NException {
+
+		Where w1 = LlocFields.ENTITATID.equal(LoginInfo.getInstance().getEntitatIDActual());
+
+		return super.getReferenceListForFuncionariID(request, mav, Where.AND(where, w1));
+
+	}
+
+	@Override
+	public List<StringKeyValue> getReferenceListForFuncionariID(HttpServletRequest request,
+       ModelAndView mav, FuncionariLlocForm funcionariLlocForm, Where where)  throws I18NException {
+
+		Where w1 = FuncionariFields.ENTITATID.equal(LoginInfo.getInstance().getEntitatIDActual());
+
+		return super.getReferenceListForFuncionariID(request, mav, Where.AND(where, w1));
+
+	}
+	
 
 }

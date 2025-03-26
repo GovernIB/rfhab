@@ -36,7 +36,7 @@
 
 			const optionYes = document.createElement("option");
 			optionYes.value = "1";
-			optionYes.text = "Sí";
+			optionYes.text = "Si";
 			selectElement.appendChild(optionYes);
 
 			const optionNo = document.createElement("option");

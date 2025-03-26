@@ -193,7 +193,7 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 
 	@Override
 	@PermitAll
-	public HashMap<Long, Funcionari> getCurrentFuncionarisByLloc(Long llocId) throws I18NException {
+	public HashMap<Long, Funcionari> getCurrentFuncionarisByLloc(Long llocId, Long entitatId) throws I18NException {
 
 		HashMap<Long, Funcionari> funcionaris = new HashMap<Long, Funcionari>();
 
@@ -226,8 +226,12 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 			funcionarisAssignats.add(f.getFuncionariID());
 		}
 
+		Where filtro = FuncionariFields.FUNCIONARIID.in(funcionarisAssignats);
+		if (entitatId != null && entitatId > 0){
+			filtro = Where.AND(filtro, FuncionariFields.ENTITATID.equal(entitatId));
+		}
 		List<Funcionari> llistaFuncionaris = funcionariEjb
-				.select(FuncionariFields.FUNCIONARIID.in(funcionarisAssignats));
+				.select(filtro);
 
 		for (FuncionariLloc fl : funcionarisActius) {
 			for (Funcionari f : llistaFuncionaris) {

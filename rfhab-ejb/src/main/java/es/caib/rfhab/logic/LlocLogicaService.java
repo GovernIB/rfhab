@@ -32,7 +32,7 @@ public interface LlocLogicaService extends LlocService{
 	
 	public HashMap<Long, LlocJPA> getAllLlocsOcupats(Long entitatId) throws I18NException;
 	
-	public HashMap<Long, Funcionari> getCurrentFuncionarisByLloc(Long llocId) throws I18NException;
+	public HashMap<Long, Funcionari> getCurrentFuncionarisByLloc(Long llocId, Long entitatId) throws I18NException;
 	
 	public List<Lloc> getLlocByFuncionariID(Long funcionariId, boolean current) throws I18NException;
 	

@@ -168,51 +168,35 @@
         } ]
       }
     },
-    "/secure/funcionari/habilitat" : {
+    "/secure/funcionari/habilitacions" : {
       "get" : {
         "tags" : [ "FuncionariRestService" ],
-        "summary" : "Consulta si un funcionari està habilitat per realitzar una activitat",
-        "operationId" : "FuncionariHabilitat",
+        "summary" : "Consulta les habilitacions d'un funcionari habilitat",
+        "operationId" : "Habilitacions",
         "parameters" : [ {
-          "name" : "numero",
-          "in" : "query",
-          "description" : "Número del funcionari",
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          }
-        }, {
           "name" : "usuari",
           "in" : "query",
-          "description" : "Nom de usuari del funcionari",
+          "description" : "Nom d'usuari del funcionari",
+          "required" : true,
           "schema" : {
             "type" : "array",
             "items" : {
               "type" : "string"
             }
-          }
-        }, {
-          "name" : "habilitat",
-          "in" : "query",
-          "description" : "Habilitat que es vol consultar",
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          }
+          },
+          "example" : "u12345"
         }, {
           "name" : "entitat",
           "in" : "query",
           "description" : "Codi de la entitat",
+          "required" : true,
           "schema" : {
             "type" : "array",
             "items" : {
               "type" : "string"
             }
-          }
+          },
+          "example" : "CAIB"
         } ],
         "responses" : {
           "200" : {
@@ -271,51 +255,47 @@
         } ]
       }
     },
-    "/secure/funcionari/autoritzacio" : {
+    "/secure/funcionari/autoritzat" : {
       "get" : {
         "tags" : [ "FuncionariRestService" ],
         "summary" : "Comprobar si un funcionari té permís per realitzar un trámit",
         "operationId" : "Comprobar Autorització",
         "parameters" : [ {
-          "name" : "numero",
-          "in" : "query",
-          "description" : "Número del funcionari",
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          }
-        }, {
           "name" : "usuari",
           "in" : "query",
-          "description" : "Usuari del funcionari",
+          "description" : "Usuari del funcionari habilitat",
+          "required" : true,
           "schema" : {
             "type" : "array",
             "items" : {
               "type" : "string"
             }
-          }
+          },
+          "example" : "u12345"
         }, {
           "name" : "codisia",
           "in" : "query",
           "description" : "Codi SIA",
+          "required" : true,
           "schema" : {
             "type" : "array",
             "items" : {
               "type" : "string"
             }
-          }
+          },
+          "example" : 132313
         }, {
           "name" : "entitat",
           "in" : "query",
           "description" : "Codi de la entitat",
+          "required" : true,
           "schema" : {
             "type" : "array",
             "items" : {
               "type" : "string"
             }
-          }
+          },
+          "example" : "CAIB"
         } ],
         "responses" : {
           "200" : {
@@ -374,163 +354,38 @@
         } ]
       }
     },
-    "/secure/funcionari/rols" : {
+    "/secure/funcionari/habilitat" : {
       "get" : {
         "tags" : [ "FuncionariRestService" ],
         "summary" : "Obtenir els rols associats a un funcionari",
         "operationId" : "ObtenirRolsFuncionari",
         "parameters" : [ {
-          "name" : "numero",
-          "in" : "query",
-          "description" : "Número del funcionari",
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          }
-        }, {
           "name" : "usuari",
           "in" : "query",
           "description" : "Usuari del funcionari",
+          "required" : true,
           "schema" : {
             "type" : "array",
             "items" : {
               "type" : "string"
             }
           }
+        }, {
+          "name" : "rol",
+          "in" : "query",
+          "description" : "Habilitació",
+          "required" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "example" : "COPIA"
         }, {
           "name" : "entitat",
           "in" : "query",
-          "description" : "Codi de la entitat a la que pertany el funcionari",
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Operació realitzada correctament",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "400" : {
-            "description" : "Paràmetres incorrectes",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/RestExceptionInfo"
-                }
-              }
-            }
-          },
-          "401" : {
-            "description" : "No Autenticat",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "403" : {
-            "description" : "No Autoritzat",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "500" : {
-            "description" : "Error no controlat",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/RestExceptionInfo"
-                }
-              }
-            }
-          }
-        },
-        "security" : [ {
-          "BasicAuth" : [ ]
-        } ]
-      }
-    },
-    "/secure/funcionari/activitat/registre" : {
-      "get" : {
-        "tags" : [ "FuncionariRestService" ],
-        "summary" : "Registra una activiat d'un funcionari",
-        "operationId" : "registreActivitat_1",
-        "parameters" : [ {
-          "name" : "funcionari",
-          "in" : "query",
-          "description" : "Nom usuari del funcionari que realitza la activitat",
-          "required" : true,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          }
-        }, {
-          "name" : "tipus",
-          "in" : "query",
-          "description" : "Tipus de l'activitat",
-          "required" : true,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          }
-        }, {
-          "name" : "registre",
-          "in" : "query",
-          "description" : "Número de registre associat a l'activitat",
-          "required" : true,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          }
-        }, {
-          "name" : "tramit",
-          "in" : "query",
-          "description" : "Codi del tràmit associat a l'activitat",
-          "required" : true,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          }
-        }, {
-          "name" : "codisia",
-          "in" : "query",
-          "description" : "Codi SIA associat a l'activitat",
-          "required" : true,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          }
-        }, {
-          "name" : "autoritzacio",
-          "in" : "query",
-          "description" : "Codi de l'autorització associat a l'activitat",
+          "description" : "Codi de la entitat",
           "required" : true,
           "schema" : {
             "type" : "array",

@@ -2,7 +2,7 @@
 
 document.addEventListener("DOMContentLoaded", function(event) {
 	
-	let select = document.getElementById("funcionariRol_rolID");
+	let select = document.getElementById("llocRol_rolID");
 	
 	let options = select.options;
 

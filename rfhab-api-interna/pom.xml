@@ -47,6 +47,11 @@
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>es.caib.rfhab.pluginsib</groupId>
+            <artifactId>rfhab-pluginsib-rolsac</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         
         <dependency>
 			<groupId>es.caib.rfhab</groupId>

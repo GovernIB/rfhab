@@ -246,6 +246,14 @@
         <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/rolList.jsp" />
     </definition>
     
+    <definition name="llocRolFormAdmin" extends="admin">
+        <put-attribute name="titol" value="llocRol.llocRol" />
+        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/llocRolForm.jsp" />
+    </definition>
+    
+    <definition name="llocRolListAdmin" extends="admin">
+        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/llocRolList.jsp" />
+    </definition>
     
     <definition name="option1Admin" extends="admin">
         <put-attribute name="contingut" value="/WEB-INF/jsp/admin/admin.jsp" />

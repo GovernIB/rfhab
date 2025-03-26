@@ -94,11 +94,6 @@ public class FuncionariAdminController extends FuncionariController {
 
 		if (_jpa != null && _jpa.getFuncionariID() > 0) {
 
-			// Obtenir els Rols que té assignats el funcionari
-			List<Rol> rolsItems = new ArrayList<Rol>();
-			// TODO REVISAR funcionariEJB.getRolsByFuncionariIDv2(_jpa.getFuncionariID());
-			mav.addObject("rolItems", rolsItems);
-
 			// Obtenir les activitats que té assignades el funcionari
 			List<Activitat> activitatsFuncionari = activitatEJB.getActivitatsByFuncionariID(_jpa.getFuncionariID());
 			mav.addObject("activitatItems", activitatsFuncionari);
@@ -113,35 +108,6 @@ public class FuncionariAdminController extends FuncionariController {
 			List<Select6Values<Long, String, String, String, String, Timestamp>> historicItems = historicEjb
 					.getHistoricByFuncionariId(_jpa.getFuncionariID());
 			mav.addObject("historicItems", historicItems);
-
-			List<Autoritzacio> autoritzacionsFuncionari = new ArrayList<Autoritzacio>();
-			// Obtenir les autoritzacions associades al perfil del lloc de feina. False si
-			// algún lloc no ho és.
-			boolean isOamr = true;
-			for (Lloc lloc : llocsFuncionari) {
-				if (lloc.getPersonalOamr() == 0) {
-					isOamr = false;
-					break;
-				}
-			}
-			mav.addObject("isOamr", isOamr);
-
-			// Obtenir les autoritzacions associades al lloc de feina especificament
-			for (Lloc lloc : llocsFuncionari) {
-				List<Autoritzacio> autoritzacionsLloc = autoritzacioEJB.getAutoritzacionsByLlocID(lloc.getLlocID());
-				autoritzacionsLloc.forEach(x -> System.out.println("Autoritzacio LLOC: " + x.getAutoritzacioID()));
-				autoritzacionsFuncionari.addAll(autoritzacionsLloc);
-			}
-
-			// Obtenir les autoritzacions que té assignades el funcionari especificament
-			List<Autoritzacio> autoritzacionsFuncionariFunc = autoritzacioEJB.getAutoritzacionsByFuncionariID(_jpa.getFuncionariID());
-			autoritzacionsFuncionariFunc.forEach( x -> System.out.println("Autoritzacio FUNCIONARI: " + x.getAutoritzacioID()));
-			autoritzacionsFuncionari.addAll(autoritzacionsFuncionariFunc);
-
-			autoritzacionsFuncionari.forEach(x -> System.out
-					.println("Autoritzacio: " + x.getAutoritzacioID() + " " + x.getCai() + " " + x.getCodiSia()));
-
-			mav.addObject("autoritzacioItems", autoritzacionsFuncionari);
 
 		}
 
@@ -189,6 +155,7 @@ public class FuncionariAdminController extends FuncionariController {
 			funcionariFilterForm.addHiddenField(TIPUSIDENTIFICADOR);
 			funcionariFilterForm.addHiddenField(IDENTIFICADOR);
 			funcionariFilterForm.addHiddenField(CORREU);
+			funcionariFilterForm.addHiddenField(ENTITATID);
 			funcionariFilterForm.addHiddenField(OBSERVACIONS);
 			funcionariFilterForm.addHiddenField(DATABAIXA);
 
@@ -238,16 +205,6 @@ public class FuncionariAdminController extends FuncionariController {
 				hiddenFields.add(LlocFields.PERSONALOAMR);
 				hiddenFields.forEach(x -> log.info("hiddenFields item: " + x.javaName));
 
-			}
-
-			{
-				AdditionalField<Long, String> adfield4 = new AdditionalField<Long, String>();
-				adfield4.setCodeName(RolFields._TABLE_TRANSLATION);
-				adfield4.setPosition(4);
-				adfield4.setOrderBy(RolFields.CODI);
-				adfield4.setEscapeXml(false);
-				adfield4.setValueMap(new HashMap<Long, String>());
-				funcionariFilterForm.addAdditionalField(adfield4);
 			}
 
 			funcionariFilterForm.setOrderBy(FuncionariFields.LLINATGE1.sqlName);
@@ -405,12 +362,10 @@ public class FuncionariAdminController extends FuncionariController {
 		Map<Long, String> mapFuncionari = (Map<Long, String>) filterForm.getAdditionalField(1).getValueMap();
 		Map<Long, String> mapFuncionari2 = (Map<Long, String>) filterForm.getAdditionalField(2).getValueMap();
 		Map<Long, String> mapFuncionari3 = (Map<Long, String>) filterForm.getAdditionalField(3).getValueMap();
-		Map<Long, String> mapFuncionari4 = (Map<Long, String>) filterForm.getAdditionalField(4).getValueMap();
-
+		
 		mapFuncionari.clear();
 		mapFuncionari2.clear();
 		mapFuncionari3.clear();
-		mapFuncionari4.clear();
 
 		HashMap<Long, LlocJPA> placesOcupades = llocEJB
 				.getAllLlocsOcupats(LoginInfo.getInstance().getEntitatIDActual());
@@ -431,28 +386,6 @@ public class FuncionariAdminController extends FuncionariController {
 				mapFuncionari3.put(funcionariID, "<i class=\"fa fa-times\"></i>");
 			}
 
-
-			Boolean funcionarioHasRol = false;
-			/* (funcionariRolEJB
-					.count(FuncionariRolFields.FUNCIONARIID.equal(funcionariID)) > 0);
-			*/
-			if (funcionarioHasRol) {
-				List<RolJPA> rolsFuncionari = new ArrayList<RolJPA>();
-				// funcionariEJB.getRolsByFuncionariID(funcionariID);
-				String rolsFuncionariStr = "";
-				for (RolJPA rol : rolsFuncionari) {
-					rolsFuncionariStr += "<span class='badge badge-secondary' title='"
-							+ rol.getNom().getTraduccio(LoginInfo.getInstance().getLanguage()).getValor() + "'>"
-							+ rol.getCodi() + "</span>";
-				}
-
-				mapFuncionari4.put(funcionariID, rolsFuncionariStr);
-
-				if (filterForm.isNou())
-					filterForm.addAdditionalButtonByPK(funcionariID,
-							new AdditionalButton("far fa-check-square", "rol.assignarrol",
-									"/admin/funcionarirol/assignar/" + funcionariID, AdditionalButtonStyle.INFO));
-			} 
 		}
 
 	}

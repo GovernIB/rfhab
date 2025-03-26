@@ -57,6 +57,56 @@ public class RolsacPlugin implements IRolsacPlugin {
 		super();
 	}
 
+	public HashMap<String, String> obtenirProcedimentsByDir3(String codiDir3) throws Exception {
+
+		final String endpoint = Configuracio.getRolsacEndpoint();
+		final String entitat = "procedimientos";
+		final String usuari = Configuracio.getRolsacUsername();
+		final String pass = Configuracio.getRolsacPassword();
+		
+		final RestTemplate restTemplate = new RestTemplate();
+		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(usuari, pass));
+		final HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED);
+
+		final MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
+		map.add("idioma", "es");
+		map.add("filtro", FILTRE_PROCEDIMENTS);
+		map.add("filtroOrdenacion", FILTRE_PAGINACIO);
+		map.add("codigoua", codiDir3);
+
+		final HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+		final ResponseEntity<RespuestaProcedimientos> responseProcedimientos = restTemplate
+				.postForEntity(endpoint + entitat, request, RespuestaProcedimientos.class);
+
+		if (responseProcedimientos != null && responseProcedimientos.getBody() != null) {
+			if (!responseProcedimientos.getBody().getStatus().equals("200")
+					|| (responseProcedimientos.getBody().getNumeroElementos().equals("0"))) {
+				return null;
+			} else {
+
+				final List<Procedimientos> respostaProcediments = responseProcedimientos.getBody().getResultado();
+				if (respostaProcediments != null)
+					LOG.info("S'han trobat " + respostaProcediments.size() + " procediments");
+				else
+					LOG.info("No s'han trobat procediments");
+
+				HashMap<String, String> resultats = new HashMap<String, String>();
+
+				if (respostaProcediments != null) 
+					for (Procedimientos procediment : respostaProcediments) {
+						LOG.info(procediment.getCodigo() + " " + procediment.getNombre());
+						resultats.put(String.valueOf(procediment.getCodigo()), procediment.getNombre().replace("'", "`"));
+					}
+
+				return resultats;
+			}
+		}
+		return null;
+
+	}
+
 	public HashMap<String, String> obtenirProcediments() throws Exception {
 
 		/*

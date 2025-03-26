@@ -30,17 +30,24 @@ import es.caib.rfhab.back.form.webdb.LlocFilterForm;
 import es.caib.rfhab.back.form.webdb.LlocForm;
 import es.caib.rfhab.back.security.LoginInfo;
 import es.caib.rfhab.ejb.FuncionariLlocService;
+import es.caib.rfhab.ejb.LlocRolService;
+import es.caib.rfhab.ejb.UnitatService;
 import es.caib.rfhab.logic.HistoricLlocLogicaService;
 import es.caib.rfhab.logic.LlocLogicaService;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.HistoricLloc;
 import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.entity.Rol;
+import es.caib.rfhab.model.entity.Unitat;
 import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.FuncionariLlocFields;
 import es.caib.rfhab.model.fields.LlocFields;
+import es.caib.rfhab.model.fields.LlocRolFields;
+import es.caib.rfhab.model.fields.RolFields;
+import es.caib.rfhab.model.fields.UnitatFields;
 import es.caib.rfhab.persistence.HistoricLlocJPA;
 import es.caib.rfhab.persistence.LlocJPA;
+import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
 
 /**
  * @author jagarcia
@@ -61,6 +68,14 @@ public class LlocAdminController extends LlocController {
 
 	@EJB(mappedName = FuncionariLlocService.JNDI_NAME)
 	protected FuncionariLlocService funcionariLlocEjb;
+
+	@EJB(mappedName = LlocRolService.JNDI_NAME)
+	protected LlocRolService llocRolEjb;
+
+	@EJB(mappedName = UnitatService.JNDI_NAME)
+	protected UnitatService unitatEjb;
+
+	protected RolsacPlugin rolsacPlugin = null;
 
 	@Override
 	public String getTileForm() {
@@ -84,22 +99,43 @@ public class LlocAdminController extends LlocController {
 			llocFilterForm.addHiddenField(ENTITATID);
 			llocFilterForm.addHiddenField(OBSERVACIONS);
 			llocFilterForm.addHiddenField(DATABAIXA);
+
+			{
+
+				AdditionalField<Long, String> adfield0 = new AdditionalField<Long, String>();
+				adfield0.setCodeName(UnitatFields.SUPERIOR.codeLabel);
+				adfield0.setPosition(1);
+				adfield0.setEscapeXml(false);
+				adfield0.setValueMap(new HashMap<Long, String>());
+				llocFilterForm.addAdditionalField(adfield0);
+
+			}
 			
 			{
 				AdditionalField<Long, String> adfield = new AdditionalField<Long, String>();
 				adfield.setCodeName(FuncionariFields.NOM.codeLabel);
-				adfield.setPosition(1);
+				adfield.setPosition(2);
 				adfield.setEscapeXml(false);
 				adfield.setValueMap(new HashMap<Long, String>());
 				llocFilterForm.addAdditionalField(adfield);
 			}
 
+			{
+				AdditionalField<Long, String> adfield2 = new AdditionalField<Long, String>();
+				adfield2.setCodeName(RolFields._TABLE_TRANSLATION);
+				adfield2.setPosition(3);
+				adfield2.setOrderBy(RolFields.CODI);
+				adfield2.setEscapeXml(false);
+				adfield2.setValueMap(new HashMap<Long, String>());
+				llocFilterForm.addAdditionalField(adfield2);
+			}
+
 		}
-		
+
 		llocFilterForm.setDeleteButtonVisible(false);
 		llocFilterForm.setDeleteSelectedButtonVisible(false);
 		llocFilterForm.setVisibleMultipleSelection(false);
-				
+
 		llocFilterForm.setAttachedAdditionalJspCode(true);
 
 		return llocFilterForm;
@@ -108,60 +144,79 @@ public class LlocAdminController extends LlocController {
 	@Override
 	public LlocForm getLlocForm(LlocJPA _jpa, boolean __isView, HttpServletRequest request, ModelAndView mav)
 			throws I18NException {
-		
+
 		mav.addObject("isView", __isView);
 
 		LlocForm llocForm = super.getLlocForm(_jpa, __isView, request, mav);
 
 		if (llocForm.isNou()) {
-			
+
 			mav.addObject("isNew", llocForm.isNou());
-			
+
 			llocForm.getLloc().setDataCreacio(new Timestamp(System.currentTimeMillis()));
 			llocForm.getLloc().setEntitatID(LoginInfo.getInstance().getEntitatIDActual());
-			
+
 			Long entitatId = LoginInfo.getInstance().getUsuariPersona().getDarreraEntitat();
 			llocForm.getLloc().setEntitatID(entitatId);
-			
+
 			mav.addObject("historic", new ArrayList<HistoricLloc>());
-			
-		}else {
-			
-			
+
+		} else {
+
 			// Pipella Funcionari - Obtenir tots els funcionaris relacionats amb el lloc
 
-			List<Funcionari> funcionaris =  llocLogicaEjb.getFuncionarisByLlocID(_jpa.getLlocID());
+			List<Funcionari> funcionaris = llocLogicaEjb.getFuncionarisByLlocID(_jpa.getLlocID());
 
 			log.info("funcionaris per lloc: " + funcionaris.size());
-			funcionaris.forEach( funcionari -> {
-				log.info(funcionari.getNom() + " " + funcionari.getLlinatge1() + " " + funcionari.getLlinatge2() + " " + funcionari.getUsuari());
+			funcionaris.forEach(funcionari -> {
+				log.info(funcionari.getNom() + " " + funcionari.getLlinatge1() + " " + funcionari.getLlinatge2() + " "
+						+ funcionari.getUsuari());
 			});
 			log.info("fi funcionaris per lloc");
 
 			mav.addObject("funcionaris", funcionaris);
 
-
 			// Pipella Rols - Obtenir tots els rols relacionats amb el lloc
 			List<Rol> llistaRols = llocLogicaEjb.getRolsByLlocID(_jpa.getLlocID());
-			llistaRols.forEach( rol -> {
+			llistaRols.forEach(rol -> {
 				log.info("Rol: " + rol.getCodi());
 			});
 			mav.addObject("rols", llistaRols);
 
-			// Pipella Autoritzacions - Obtenir tots els procediments relacionats amb el lloc
-
-
 			// Pipella Històric - Obtenir tots els canvis realitzats al lloc de feina
-			List<Select6Values<Long, String, String, String, String, Timestamp>> historic = historicLlocEjb.getHistoricByLlocId(_jpa.getLlocID());
+			List<Select6Values<Long, String, String, String, String, Timestamp>> historic = historicLlocEjb
+					.getHistoricByLlocId(_jpa.getLlocID());
 			log.info("HistoricLloc.size: " + historic.size());
 
-			historic.forEach( x -> 
-	            log.info("HistoricLloc: " + x.getValue1() + " " + x.getValue2() + " " + x.getValue3() + " " + x.getValue4() + " " + x.getValue5() + " " + x.getValue6()));
-	        
+			historic.forEach(x -> log.info("HistoricLloc: " + x.getValue1() + " " + x.getValue2() + " " + x.getValue3()
+					+ " " + x.getValue4() + " " + x.getValue5() + " " + x.getValue6()));
+
 			mav.addObject("historic", historic);
 
+			// Pipella Autoritzacions - procediments de Rolsac autoritzats en funció del codi DIR3 de la unitat
+			HashMap<String,String> procediments = new HashMap<String, String>();
+			if (_jpa.getUnitatID() > 0){
+				try{
+					List<Unitat> unitatsDir3 = unitatEjb.select(UnitatFields.UNITATID.equal(_jpa.getUnitatID()));
+					if (unitatsDir3.size() > 0){
+						procediments = getProcedimentsByDir3(unitatsDir3.get(0).getCodi());
+						procediments.forEach( (clave, valor) -> {  log.info("Procediment: " + clave + " - " + valor); });
+					}
+				}catch(Exception e){
+					log.error(e);
+				}
+			}
+			mav.addObject("procediments", procediments);
+		}
+
+		mav.addObject("lloc", _jpa);
+		if (_jpa.getPersonalOamr() > 0){
+			mav.addObject("isOamr", 1);
+		}else{
+			mav.addObject("isOamr", 0);
 		}
 		
+
 		llocForm.addAdditionalButton(new AdditionalButton(" fas fa-long-arrow-alt-left", "tornar",
 				getContextWeb() + "/tornar", AdditionalButtonStyle.SECONDARY));
 
@@ -185,39 +240,84 @@ public class LlocAdminController extends LlocController {
 				FuncionariLlocFields.DATAFI.isNull());
 
 		Where w3 = Where.AND(FuncionariLlocFields.DATAINICI.isNull(), FuncionariLlocFields.DATAFI.isNull());
-		
-		Where w4 = Where.AND(FuncionariLlocFields.DATAINICI.isNull(), FuncionariLlocFields.DATAFI.greaterThan(new Date(System.currentTimeMillis())));
+
+		Where w4 = Where.AND(FuncionariLlocFields.DATAINICI.isNull(),
+				FuncionariLlocFields.DATAFI.greaterThan(new Date(System.currentTimeMillis())));
 
 		Where w = Where.OR(w1, w2, w3, w4);
 
 		List<Long> llocsOcupats = funcionariLlocEjb.executeQuery(FuncionariLlocFields.LLOCID, w);
 
 		filterForm.getAdditionalButtonsByPK().clear();
+
+		Map<Long, String> mapUnitatSuperior = (Map<Long, String>) filterForm.getAdditionalField(1).getValueMap();
+		Map<Long, String> mapFuncionari = (Map<Long, String>) filterForm.getAdditionalField(2).getValueMap();
+		Map<Long, String> mapRols = (Map<Long, String>) filterForm.getAdditionalField(3).getValueMap();
 		
-		
-		Map<Long, String> mapFuncionari = (Map<Long,String>) filterForm.getAdditionalField(1).getValueMap();
+		mapUnitatSuperior.clear();
 		mapFuncionari.clear();
-		
-		HashMap<Long, Funcionari> llistaFuncionarisActius = llocLogicaEjb.getCurrentFuncionarisByLloc(0L);
+		mapRols.clear();
+
+		HashMap<Long, Funcionari> llistaFuncionarisActius = llocLogicaEjb.getCurrentFuncionarisByLloc(null, LoginInfo.getInstance().getEntitatIDActual());
 
 		for (Lloc lloc : list) {
-			if (!llocsOcupats.contains(lloc.getLlocID())) {
-				
+
+			final Long llocID = lloc.getLlocID();
+
+			if (!llocsOcupats.contains(llocID)) {
+
 				// Botó per assignar funcionari
-				filterForm.addAdditionalButtonByPK(lloc.getLlocID(), new AdditionalButton("fa fa-user-plus", "lloc.assignarfuncionari","/admin/funcionarilloc/assignar/{0}", AdditionalButtonStyle.SECONDARY));
+				filterForm.addAdditionalButtonByPK(llocID,
+						new AdditionalButton("fa fa-user-plus", "lloc.assignarfuncionari",
+								"/admin/funcionarilloc/assignar/{0}", AdditionalButtonStyle.SECONDARY));
 
+			} else {
+				Funcionari f = llistaFuncionarisActius.get(llocID);
+				if (f != null && f.getNom() != null){
+					String nom = f.getNom() + " " + f.getLlinatge1() + " " + f.getLlinatge2() + " (" + f.getUsuari() + ")";
+					mapFuncionari.put(llocID, nom);
+				}else{
+					mapFuncionari.put(llocID, "");
+				}
+				
 				// Botó per desassignar funcionari
-				filterForm.addAdditionalButtonByPK(lloc.getLlocID(), new AdditionalButton("fa fa-user-times", "lloc.treurefuncionari", "/admin/funcionarilloc/treure/{0}", AdditionalButtonStyle.INFO));
+				filterForm.addAdditionalButtonByPK(llocID, new AdditionalButton("fa fa-user-times",
+						"lloc.treurefuncionari", "/admin/funcionarilloc/treure/{0}", AdditionalButtonStyle.INFO));
 
-				// Botó per donar de baixa un lloc de feina
-				filterForm.addAdditionalButtonByPK(lloc.getLlocID(), new AdditionalButton("fa fa-pause", "lloc.baixa", "/admin/lloc/{0}/delete", AdditionalButtonStyle.DANGER));
-
-			}else {
-				Funcionari f = llistaFuncionarisActius.get(lloc.getLlocID());
-				String nom = f.getNom() + " " + f.getLlinatge1() + " " + f.getLlinatge2() + " (" + f.getUsuari() + ")";
-				mapFuncionari.put(lloc.getLlocID(), nom);
 			}
+
+			// Botó per donar de baixa un lloc de feina
+			filterForm.addAdditionalButtonByPK(llocID, new AdditionalButton("fa fa-pause", "lloc.baixa",
+					"/admin/lloc/{0}/delete", AdditionalButtonStyle.DANGER));
+
+			// Comprobam els rols assignats a un lloc de feina
+			Boolean llocHasRol = (llocRolEjb.count(LlocRolFields.LLOCID.equal(llocID)) > 0);
+
+			if (llocHasRol) {
+				List<Rol> rolsLloc = llocLogicaEjb.getRolsByLlocID(llocID);
+				String rolsLlocStr = "";
+				for (Rol rol : rolsLloc) {
+					rolsLlocStr += "<span class='badge badge-secondary'>" + rol.getCodi() + "<a href=\"#\">X</a></span>";
+				}
+				mapRols.put(llocID, rolsLlocStr);
+			}
+
+			// Unitat Superior
+			Unitat unitatAct = unitatEjb.findByPrimaryKey(lloc.getUnitatID());
+			if (unitatAct != null){
+				List<Unitat> unitatSuperior = unitatEjb.select(UnitatFields.CODI.equal(unitatAct.getSuperior()));
+				if ( unitatSuperior != null && unitatSuperior.size() > 0)
+					mapUnitatSuperior.put(llocID, unitatSuperior.get(0).getCodi() + " " + unitatSuperior.get(0).getDenominacio());
+		
+			}
+
+			// Afegir el botó d'assignar rols
+			filterForm.addAdditionalButtonByPK(llocID, 	new AdditionalButton("far fa-check-square", "rol.assignarrol",
+					"/admin/llocrol/assignar/" + llocID, AdditionalButtonStyle.INFO));
+
+
 		}
+
 		
 	}
 
@@ -257,10 +357,12 @@ public class LlocAdminController extends LlocController {
 		__tmp.add(new StringKeyValue("1", "Sí"));
 		return __tmp;
 	}
-	
+
 	@Override
-	 public void delete(HttpServletRequest request, Lloc lloc) throws I18NException {
-		
+	public void delete(HttpServletRequest request, Lloc lloc) throws I18NException {
+
+		log.info("ESBORRAR LLOC DE FEINA AMD ID " + lloc.getLlocID());
+
 		Where w1 = Where.AND(FuncionariLlocFields.DATAINICI.lessThan(new Date(System.currentTimeMillis())),
 				FuncionariLlocFields.DATAFI.greaterThan(new Date(System.currentTimeMillis())));
 
@@ -268,60 +370,75 @@ public class LlocAdminController extends LlocController {
 				FuncionariLlocFields.DATAFI.isNull());
 
 		Where w3 = Where.AND(FuncionariLlocFields.DATAINICI.isNull(), FuncionariLlocFields.DATAFI.isNull());
-		
-		Where w4 = Where.AND(FuncionariLlocFields.DATAINICI.isNull(), FuncionariLlocFields.DATAFI.greaterThan(new Date(System.currentTimeMillis())));
+
+		Where w4 = Where.AND(FuncionariLlocFields.DATAINICI.isNull(),
+				FuncionariLlocFields.DATAFI.greaterThan(new Date(System.currentTimeMillis())));
 
 		Where w = Where.OR(w1, w2, w3, w4);
-		
+
 		List<Long> llocsOcupats = funcionariLlocEjb.executeQuery(FuncionariLlocFields.LLOCID, w);
-		
+
+		llocsOcupats.forEach(item -> {
+			log.info("Lloc ocupat per: " + item );
+		});
+
 		if (llocsOcupats.size() > 0) {
 			throw new I18NException(createMessageError(request, "error.funcionariAssignat", lloc.getLlocID()));
-			
+
 		} else {
-			
-			// No es poden eliminar. Es donen de baixa insertant la data de baixa. 
+
+			// No es poden eliminar. Es donen de baixa insertant la data de baixa.
 			// llocEjb.delete(lloc);
 
 			HistoricLlocJPA historicLloc = new HistoricLlocJPA();
 			historicLloc.setLlocID(lloc.getLlocID());
 			historicLloc.setDataCreacio(new Timestamp(System.currentTimeMillis()));
 			historicLloc.setUsuariID(LoginInfo.getInstance().getUsuariPersona().getUsuariID());
-			
+
 			historicLloc.setNumeroCai("CAI");
 			historicLloc.setObservacions("Lloc Eliminat");
 			historicLlocEjb.create(historicLloc);
-			
+
 			lloc.setDataBaixa(new Timestamp(System.currentTimeMillis()));
 			llocEjb.update(lloc);
 		}
-		
-	  }
+
+	}
 
 	@RequestMapping(value = "/tornar", method = RequestMethod.GET)
 	public String tornar(HttpServletRequest request) {
 		return "redirect:/admin/funcionari/list/1";
 	}
-	
+
 	@Override
 	public Where getAdditionalCondition(HttpServletRequest request) throws I18NException {
-		
+
 		final Where defaultCondition = super.getAdditionalCondition(request);
-		
+
 		// filtrar per entitat
 		LoginInfo loginInfo = LoginInfo.getInstance();
-		
+
 		System.out.println("================================================");
 		System.out.println("ENTITAT ACTUAL: => " + loginInfo.getEntitatIDActual());
 		System.out.println("ENTITAT ID ACTUAL: => " + loginInfo.getEntitatID());
 		System.out.println("================================================");
-		
-		Where w1 = null; 
+
+		Where w1 = null;
 		if (loginInfo.getEntitatIDActual() != null && loginInfo.getEntitatIDActual() > 0) {
 			w1 = LlocFields.ENTITATID.equal(loginInfo.getEntitatIDActual());
 		}
-		
+
 		return (w1 != null) ? Where.AND(defaultCondition, w1) : defaultCondition;
+	}
+
+
+	private HashMap<String, String> getProcedimentsByDir3( String codiDir3 ) throws Exception{
+
+		if (rolsacPlugin == null)
+				rolsacPlugin = new RolsacPlugin();
+			
+		return rolsacPlugin.obtenirProcedimentsByDir3(codiDir3);
+
 	}
 
 }

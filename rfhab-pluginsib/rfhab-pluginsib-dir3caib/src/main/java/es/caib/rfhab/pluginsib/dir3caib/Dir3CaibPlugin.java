@@ -23,6 +23,8 @@ public class Dir3CaibPlugin implements IDir3CaibPlugin {
 	private DefaultApi publicApi = null;
 	private DefaultApi protectedApi = null;
 
+	//TODO: codigo?
+	//TODO: que gravi a base de dades
 	public void sincronitzar() throws I18NException {
 
 		log.info("INICI Dir3CaibPlugin: sincronitzar");
@@ -59,7 +61,7 @@ public class Dir3CaibPlugin implements IDir3CaibPlugin {
 
 		} catch (Exception e) {
 			log.error(e.getMessage());
-
+			throw new I18NException("error.sincronitzardir3caib", e);
 		}
 
 		log.info(" FI Dir3CaibPlugin: sincronitar");

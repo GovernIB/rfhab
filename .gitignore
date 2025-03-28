@@ -51,3 +51,8 @@ scripts/sqlgenerator/*.sql
 
 # Executables personals
 *.bat
+
+#### IDEs ####
+/.vscode/settings.json
+**/.settings/**
+.vscode/*.code-workspace

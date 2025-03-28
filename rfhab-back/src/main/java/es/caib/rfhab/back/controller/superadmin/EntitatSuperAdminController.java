@@ -40,9 +40,8 @@ public class EntitatSuperAdminController extends EntitatController {
 		if (entitatFilterForm.isNou()) {
 
 			entitatFilterForm
-					.addAdditionalButtonForEachItem(new AdditionalButton("fa fa-user-plus", "entitat.assignarusuari",
+					.addAdditionalButtonForEachItem(new AdditionalButton("fa fa-user-plus", "usuari.assignarusuari",
 							"/superadmin/usuariEntitat/assignar/{0}", AdditionalButtonStyle.SECONDARY));
-
 		}
 
 		entitatFilterForm.setAttachedAdditionalJspCode(true);

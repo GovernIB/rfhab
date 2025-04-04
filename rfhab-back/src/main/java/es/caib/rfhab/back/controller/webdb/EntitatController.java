@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
 
 import es.caib.rfhab.back.form.webdb.*;
 import es.caib.rfhab.back.form.webdb.EntitatForm;
@@ -36,6 +37,10 @@ import es.caib.rfhab.persistence.EntitatJPA;
 import es.caib.rfhab.model.entity.Entitat;
 import es.caib.rfhab.model.fields.*;
 import org.fundaciobit.genapp.common.web.menuoptions.MenuOption;
+import org.fundaciobit.genapp.common.web.tiles.Tile;
+import org.fundaciobit.genapp.common.web.tiles.TileAttribute;
+import org.fundaciobit.genapp.common.web.tiles.TileType;
+import es.caib.rfhab.back.utils.Tab;
 
 /**
  * Controller per gestionar un Entitat
@@ -43,10 +48,14 @@ import org.fundaciobit.genapp.common.web.menuoptions.MenuOption;
  * 
  * @author GenApp
  */
-@MenuOption(labelCode="entitat.entitat.plural", order=20, group="WEBDB")
+@MenuOption(labelCode="entitat.entitat.plural", order=20, group=Tab.MENU_WEBDB)
 @Controller
 @RequestMapping(value = "/webdb/entitat")
 @SessionAttributes(types = { EntitatForm.class, EntitatFilterForm.class })
+@Tile(name="entitatFormWebDB", contentJsp="/WEB-INF/jsp/webdb/entitatForm.jsp", extendsTile=Tab.MENU_WEBDB,
+      type=TileType.WEBDB_FORM , attributes={ @TileAttribute(name="titol", value="entitat.entitat")})
+@Tile(name="entitatListWebDB", contentJsp="/WEB-INF/jsp/webdb/entitatList.jsp", extendsTile=Tab.MENU_WEBDB,
+       type=TileType.WEBDB_LIST, attributes={ @TileAttribute(name="titol", value="entitat.entitat") })
 public class EntitatController
     extends es.caib.rfhab.back.controller.RFHabBaseController<Entitat, java.lang.Long> implements EntitatFields {
 
@@ -658,12 +667,46 @@ public java.lang.Long stringToPK(String value) {
   }
 
   public String getTileForm() {
+        try {
+            Set<Tile> rm;
+            rm=AnnotationUtils.getDeclaredRepeatableAnnotations(this.getClass(), Tile.class);
+            if (rm != null && !rm.isEmpty()) {
+                String trobada = null;
+                for (Tile tile : rm) {
+                    if (tile.type() == TileType.WEBDB_FORM) {
+                        trobada = tile.name();
+                    }
+                }
+                if (trobada != null) {
+                    return trobada;
+                }
+            }
+        } catch (Exception e) {
+            log.error("Error en el getTileForm: " + e.getMessage(), e);
+        }
     return "entitatFormWebDB";
   }
 
-  public String getTileList() {
-    return "entitatListWebDB";
-  }
+    public String getTileList() {
+        try {
+            Set<Tile> rm;
+            rm=AnnotationUtils.getDeclaredRepeatableAnnotations(this.getClass(), Tile.class);
+            if (rm != null && !rm.isEmpty()) {
+                String trobada = null;
+                for (Tile tile : rm) {
+                    if (tile.type() == TileType.WEBDB_LIST) {
+                        trobada = tile.name();
+                    }
+                }
+                if (trobada != null) {
+                    return trobada;
+                }
+            }
+        } catch (Exception e) {
+            log.error("Error en el getTileList: " + e.getMessage(), e);
+        }
+        return "entitatListWebDB";
+    }
 
   public String getSessionAttributeFilterForm() {
     return "Entitat_FilterForm_" + this.getClass().getName();

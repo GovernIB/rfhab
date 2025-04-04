@@ -239,11 +239,6 @@ public class FuncionariJPA implements Funcionari {
         return __result;
     }
 
-    @Override
-    public int hashCode() {
-        return (String.valueOf(this.getFuncionariID())).hashCode();
-    }
-
 // EXP  Field:funcionariid | Table: rfh_activitat | Type: 0  
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "funcionari")

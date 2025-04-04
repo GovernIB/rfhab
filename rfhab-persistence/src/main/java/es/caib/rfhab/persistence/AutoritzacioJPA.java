@@ -24,7 +24,7 @@ import javax.persistence.Id;
 @Table(name = "rfh_autoritzacio" , indexes = { 
         @Index(name="rfh_autoritzacio_pk_i", columnList = "autoritzacioid"),
         @Index(name="rfh_autoritza_funid_fk_i", columnList = "llocid"),
-        @Index(name="rfh_autoritza_funcionariid_fk_i", columnList = "funcionariid")})
+        @Index(name="rfh_autoritza_funcid_fk_i", columnList = "funcionariid")})
 @SequenceGenerator(name="AUTORITZACIO_SEQ", sequenceName="rfh_autoritzacio_seq", allocationSize=1, initialValue=1000)
 @javax.xml.bind.annotation.XmlRootElement
 public class AutoritzacioJPA implements Autoritzacio {
@@ -214,11 +214,6 @@ public class AutoritzacioJPA implements Autoritzacio {
         return __result;
     }
 
-    @Override
-    public int hashCode() {
-        return (String.valueOf(this.getAutoritzacioID())).hashCode();
-    }
-
 // EXP  Field:autoritzacioid | Table: rfh_activitat | Type: 0  
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "autoritzacio")
@@ -249,7 +244,7 @@ public class AutoritzacioJPA implements Autoritzacio {
 // IMP Field:funcionariid | Table: rfh_funcionari | Type: 1  
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "funcionariid", referencedColumnName ="funcionariID", nullable = true, insertable=false, updatable=false, foreignKey=@ForeignKey(name="rfh_autoritza_funcionari_funcionariid_fk"))
+    @JoinColumn(name = "funcionariid", referencedColumnName ="funcionariID", nullable = true, insertable=false, updatable=false, foreignKey=@ForeignKey(name="rfh_autoritza_funcionari_i_fk"))
     private FuncionariJPA funcionari;
 
     public FuncionariJPA getFuncionari() {

@@ -144,11 +144,6 @@ public class HistoricJPA implements Historic {
         return __result;
     }
 
-    @Override
-    public int hashCode() {
-        return (String.valueOf(this.getHistoricID())).hashCode();
-    }
-
 // IMP Field:funcionariid | Table: rfh_funcionari | Type: 1  
 
     @ManyToOne(fetch = FetchType.LAZY)

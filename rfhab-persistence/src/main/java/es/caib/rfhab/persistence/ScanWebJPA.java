@@ -231,11 +231,6 @@ public class ScanWebJPA implements ScanWeb {
         return __result;
     }
 
-    @Override
-    public int hashCode() {
-        return (String.valueOf(this.getDigitalID())).hashCode();
-    }
-
 // IMP Field:fitxerid | Table: rfh_fitxer | Type: 1  
 
     @ManyToOne(fetch = FetchType.EAGER)

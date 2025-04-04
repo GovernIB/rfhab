@@ -486,7 +486,7 @@
         <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/usuariEntitatList.jsp" />
     </definition>
 
-	<!-- ==== GENAPP MARK END -->
+<!-- ==== GENAPP MARK END -->
 
 </tiles-definitions>
 

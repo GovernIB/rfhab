@@ -122,11 +122,6 @@ public class RolJPA implements Rol {
         return __result;
     }
 
-    @Override
-    public int hashCode() {
-        return (String.valueOf(this.getRolID())).hashCode();
-    }
-
 // EXP  Field:rolid | Table: rfh_llocrol | Type: 0  
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "rol")

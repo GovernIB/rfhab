@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
 
 import es.caib.rfhab.back.form.webdb.*;
 import es.caib.rfhab.back.form.webdb.UsuariForm;
@@ -36,6 +37,10 @@ import es.caib.rfhab.persistence.UsuariJPA;
 import es.caib.rfhab.model.entity.Usuari;
 import es.caib.rfhab.model.fields.*;
 import org.fundaciobit.genapp.common.web.menuoptions.MenuOption;
+import org.fundaciobit.genapp.common.web.tiles.Tile;
+import org.fundaciobit.genapp.common.web.tiles.TileAttribute;
+import org.fundaciobit.genapp.common.web.tiles.TileType;
+import es.caib.rfhab.back.utils.Tab;
 
 /**
  * Controller per gestionar un Usuari
@@ -43,10 +48,14 @@ import org.fundaciobit.genapp.common.web.menuoptions.MenuOption;
  * 
  * @author GenApp
  */
-@MenuOption(labelCode="usuari.usuari.plural", order=170, group="WEBDB")
+@MenuOption(labelCode="usuari.usuari.plural", order=170, group=Tab.MENU_WEBDB)
 @Controller
 @RequestMapping(value = "/webdb/usuari")
 @SessionAttributes(types = { UsuariForm.class, UsuariFilterForm.class })
+@Tile(name="usuariFormWebDB", contentJsp="/WEB-INF/jsp/webdb/usuariForm.jsp", extendsTile=Tab.MENU_WEBDB,
+      type=TileType.WEBDB_FORM , attributes={ @TileAttribute(name="titol", value="usuari.usuari")})
+@Tile(name="usuariListWebDB", contentJsp="/WEB-INF/jsp/webdb/usuariList.jsp", extendsTile=Tab.MENU_WEBDB,
+       type=TileType.WEBDB_LIST, attributes={ @TileAttribute(name="titol", value="usuari.usuari") })
 public class UsuariController
     extends es.caib.rfhab.back.controller.RFHabBaseController<Usuari, java.lang.Long> implements UsuariFields {
 
@@ -721,12 +730,46 @@ public java.lang.Long stringToPK(String value) {
   }
 
   public String getTileForm() {
+        try {
+            Set<Tile> rm;
+            rm=AnnotationUtils.getDeclaredRepeatableAnnotations(this.getClass(), Tile.class);
+            if (rm != null && !rm.isEmpty()) {
+                String trobada = null;
+                for (Tile tile : rm) {
+                    if (tile.type() == TileType.WEBDB_FORM) {
+                        trobada = tile.name();
+                    }
+                }
+                if (trobada != null) {
+                    return trobada;
+                }
+            }
+        } catch (Exception e) {
+            log.error("Error en el getTileForm: " + e.getMessage(), e);
+        }
     return "usuariFormWebDB";
   }
 
-  public String getTileList() {
-    return "usuariListWebDB";
-  }
+    public String getTileList() {
+        try {
+            Set<Tile> rm;
+            rm=AnnotationUtils.getDeclaredRepeatableAnnotations(this.getClass(), Tile.class);
+            if (rm != null && !rm.isEmpty()) {
+                String trobada = null;
+                for (Tile tile : rm) {
+                    if (tile.type() == TileType.WEBDB_LIST) {
+                        trobada = tile.name();
+                    }
+                }
+                if (trobada != null) {
+                    return trobada;
+                }
+            }
+        } catch (Exception e) {
+            log.error("Error en el getTileList: " + e.getMessage(), e);
+        }
+        return "usuariListWebDB";
+    }
 
   public String getSessionAttributeFilterForm() {
     return "Usuari_FilterForm_" + this.getClass().getName();

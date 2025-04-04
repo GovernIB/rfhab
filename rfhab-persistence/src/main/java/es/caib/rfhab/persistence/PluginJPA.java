@@ -184,11 +184,6 @@ public class PluginJPA implements Plugin {
         return __result;
     }
 
-    @Override
-    public int hashCode() {
-        return (String.valueOf(this.getPluginID())).hashCode();
-    }
-
 // IMP Field:entitatid | Table: rfh_entitat | Type: 1  
 
     @ManyToOne(fetch = FetchType.LAZY)

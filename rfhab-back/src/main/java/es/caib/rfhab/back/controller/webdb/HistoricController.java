@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
 
 import es.caib.rfhab.back.form.webdb.*;
 import es.caib.rfhab.back.form.webdb.HistoricForm;
@@ -36,6 +37,10 @@ import es.caib.rfhab.persistence.HistoricJPA;
 import es.caib.rfhab.model.entity.Historic;
 import es.caib.rfhab.model.fields.*;
 import org.fundaciobit.genapp.common.web.menuoptions.MenuOption;
+import org.fundaciobit.genapp.common.web.tiles.Tile;
+import org.fundaciobit.genapp.common.web.tiles.TileAttribute;
+import org.fundaciobit.genapp.common.web.tiles.TileType;
+import es.caib.rfhab.back.utils.Tab;
 
 /**
  * Controller per gestionar un Historic
@@ -43,10 +48,14 @@ import org.fundaciobit.genapp.common.web.menuoptions.MenuOption;
  * 
  * @author GenApp
  */
-@MenuOption(labelCode="historic.historic.plural", order=60, group="WEBDB")
+@MenuOption(labelCode="historic.historic.plural", order=60, group=Tab.MENU_WEBDB)
 @Controller
 @RequestMapping(value = "/webdb/historic")
 @SessionAttributes(types = { HistoricForm.class, HistoricFilterForm.class })
+@Tile(name="historicFormWebDB", contentJsp="/WEB-INF/jsp/webdb/historicForm.jsp", extendsTile=Tab.MENU_WEBDB,
+      type=TileType.WEBDB_FORM , attributes={ @TileAttribute(name="titol", value="historic.historic")})
+@Tile(name="historicListWebDB", contentJsp="/WEB-INF/jsp/webdb/historicList.jsp", extendsTile=Tab.MENU_WEBDB,
+       type=TileType.WEBDB_LIST, attributes={ @TileAttribute(name="titol", value="historic.historic") })
 public class HistoricController
     extends es.caib.rfhab.back.controller.RFHabBaseController<Historic, java.lang.Long> implements HistoricFields {
 
@@ -718,12 +727,46 @@ public java.lang.Long stringToPK(String value) {
   }
 
   public String getTileForm() {
+        try {
+            Set<Tile> rm;
+            rm=AnnotationUtils.getDeclaredRepeatableAnnotations(this.getClass(), Tile.class);
+            if (rm != null && !rm.isEmpty()) {
+                String trobada = null;
+                for (Tile tile : rm) {
+                    if (tile.type() == TileType.WEBDB_FORM) {
+                        trobada = tile.name();
+                    }
+                }
+                if (trobada != null) {
+                    return trobada;
+                }
+            }
+        } catch (Exception e) {
+            log.error("Error en el getTileForm: " + e.getMessage(), e);
+        }
     return "historicFormWebDB";
   }
 
-  public String getTileList() {
-    return "historicListWebDB";
-  }
+    public String getTileList() {
+        try {
+            Set<Tile> rm;
+            rm=AnnotationUtils.getDeclaredRepeatableAnnotations(this.getClass(), Tile.class);
+            if (rm != null && !rm.isEmpty()) {
+                String trobada = null;
+                for (Tile tile : rm) {
+                    if (tile.type() == TileType.WEBDB_LIST) {
+                        trobada = tile.name();
+                    }
+                }
+                if (trobada != null) {
+                    return trobada;
+                }
+            }
+        } catch (Exception e) {
+            log.error("Error en el getTileList: " + e.getMessage(), e);
+        }
+        return "historicListWebDB";
+    }
 
   public String getSessionAttributeFilterForm() {
     return "Historic_FilterForm_" + this.getClass().getName();

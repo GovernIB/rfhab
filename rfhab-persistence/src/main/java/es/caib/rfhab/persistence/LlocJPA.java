@@ -189,11 +189,6 @@ public class LlocJPA implements Lloc {
         return __result;
     }
 
-    @Override
-    public int hashCode() {
-        return (String.valueOf(this.getLlocID())).hashCode();
-    }
-
 // EXP  Field:llocid | Table: rfh_autoritzacio | Type: 0  
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "lloc")

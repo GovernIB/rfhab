@@ -144,11 +144,6 @@ public class HistoricLlocJPA implements HistoricLloc {
         return __result;
     }
 
-    @Override
-    public int hashCode() {
-        return (String.valueOf(this.getHistoricllocID())).hashCode();
-    }
-
 // IMP Field:llocid | Table: rfh_lloc | Type: 1  
 
     @ManyToOne(fetch = FetchType.LAZY)

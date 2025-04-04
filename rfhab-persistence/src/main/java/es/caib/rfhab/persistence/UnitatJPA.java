@@ -190,11 +190,6 @@ public class UnitatJPA implements Unitat {
         return __result;
     }
 
-    @Override
-    public int hashCode() {
-        return (String.valueOf(this.getUnitatID())).hashCode();
-    }
-
 // EXP  Field:unitatid | Table: rfh_entitat | Type: 0  
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "unitat")

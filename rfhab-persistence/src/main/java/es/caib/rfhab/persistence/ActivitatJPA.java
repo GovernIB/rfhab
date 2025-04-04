@@ -367,11 +367,6 @@ public class ActivitatJPA implements Activitat {
         return __result;
     }
 
-    @Override
-    public int hashCode() {
-        return (String.valueOf(this.getActivitatID())).hashCode();
-    }
-
 // IMP Field:funcionariid | Table: rfh_funcionari | Type: 1  
 
     @ManyToOne(fetch = FetchType.LAZY)

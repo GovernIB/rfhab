@@ -107,11 +107,6 @@ public class LlocRolJPA implements LlocRol {
         return __result;
     }
 
-    @Override
-    public int hashCode() {
-        return (String.valueOf(this.getLlocRolID())).hashCode();
-    }
-
 // IMP Field:llocid | Table: rfh_lloc | Type: 1  
 
     @ManyToOne(fetch = FetchType.LAZY)

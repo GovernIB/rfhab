@@ -935,7 +935,7 @@
           "foreignKeys": []
         },
         {
-          "index": "rfh_autoritza_funcionariid_fk_i",
+          "index": "rfh_autoritza_funcid_fk_i",
           "isAutoIncrement": false,
           "sqlName": "funcionariid",
           "sqlType": -5,
@@ -966,7 +966,7 @@
           },
           "foreignKeys": [
             {
-              "name": "rfh_autoritza_funcionari_funcionariid_fk",
+              "name": "rfh_autoritza_funcionari_i_fk",
               "table": "rfh_funcionari",
               "field": "funcionariid",
               "type": 1
@@ -1390,7 +1390,7 @@
               "type": 0
             },
             {
-              "name": "rfh_autoritza_funcionari_funcionariid_fk",
+              "name": "rfh_autoritza_funcionari_i_fk",
               "table": "rfh_autoritzacio",
               "field": "funcionariid",
               "type": 0

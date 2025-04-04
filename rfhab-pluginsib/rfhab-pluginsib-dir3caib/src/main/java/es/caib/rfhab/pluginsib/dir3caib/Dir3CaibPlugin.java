@@ -61,7 +61,7 @@ public class Dir3CaibPlugin implements IDir3CaibPlugin {
 
 		} catch (Exception e) {
 			log.error(e.getMessage());
-			throw new I18NException("error.sincronitzardir3caib", e);
+			throw new I18NException(e, "error.sincronitzardir3caib");
 		}
 
 		log.info(" FI Dir3CaibPlugin: sincronitar");

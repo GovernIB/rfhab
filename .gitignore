@@ -1,17 +1,6 @@
-# Directoris de resultat del Maven
-target/
-
-# Fitxers de projecte de Eclipse
-.classpath
-.project
-.settings/
-.vscode/
-
+#### Java ####
 # Compiled class file
 *.class
-
-# Fitxers de backup
-*.bak
 
 # Log file
 *.log
@@ -35,6 +24,42 @@ target/
 hs_err_pid*
 replay_pid*
 
+
+#### Maven ####
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+# https://github.com/takari/maven-wrapper#usage-without-binary-jar
+.mvn/wrapper/maven-wrapper.jar
+
+# Eclipse m2e generated files
+# Eclipse Core
+.project
+# JDT-specific (Eclipse Java Development Tools)
+.classpath
+
+
+#### Genapp ####
+rungenapp/lastconfig.properties
+
+#### Tests ####
+
+#### IDEs ####
+/.vscode/settings.json
+**/.settings/**
+.vscode/rfhab-1.0.code-workspace
+
+#### Certificats ####
+installCerts.bat
+log.txt
+pemfiles/
+
 # Client de Dir3Caib
 rfhab-pluginsib-dir3caib-client/
 rfhab-api-rolsac-client/
@@ -47,12 +72,4 @@ rfhab-api-externa-client*
 rfhab-api-interna-client*
 
 # Fitxers generats amb sqlgenerator
-scripts/sqlgenerator/*.sql
-
-# Executables personals
-*.bat
-
-#### IDEs ####
-/.vscode/settings.json
-**/.settings/**
-.vscode/*.code-workspace
+# scripts/sqlgenerator/*.sql

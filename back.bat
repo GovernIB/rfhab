@@ -1,0 +1,1 @@
+compile.bat -pl rfhab-back,rfhab-ear -Denforcer.skip=true 

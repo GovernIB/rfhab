@@ -153,7 +153,7 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
        ModelAndView mav, FuncionariLlocFilterForm funcionariLlocFilterForm,
        List<FuncionariLloc> list, Map<Field<?>, GroupByItem> _groupByItemsMap, Where where)  throws I18NException {
 
-		Where w1 = LlocFields.ENTITATID.equal(LoginInfo.getInstance().getEntitatIDActual());
+		Where w1 = FuncionariFields.ENTITATID.equal(LoginInfo.getInstance().getEntitatIDActual());
 
 		return super.getReferenceListForFuncionariID(request, mav, Where.AND(where, w1));
 

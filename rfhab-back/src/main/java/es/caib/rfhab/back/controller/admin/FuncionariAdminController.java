@@ -93,20 +93,21 @@ public class FuncionariAdminController extends FuncionariController {
 			ModelAndView mav) throws I18NException {
 
 		if (_jpa != null && _jpa.getFuncionariID() > 0) {
+			long funcionariID = _jpa.getFuncionariID();
 
 			// Obtenir les activitats que té assignades el funcionari
-			List<Activitat> activitatsFuncionari = activitatEJB.getActivitatsByFuncionariID(_jpa.getFuncionariID());
+			List<Activitat> activitatsFuncionari = activitatEJB.getActivitatsByFuncionariID(funcionariID);
 			mav.addObject("activitatItems", activitatsFuncionari);
 
 			// Obtenir el lloc de feina assignat al funcionari
-			List<Lloc> llocsFuncionari = llocEJB.getLlocByFuncionariID(_jpa.getFuncionariID(), true);
+			List<Lloc> llocsFuncionari = llocEJB.getLlocByFuncionariID(funcionariID, true);
 			if (llocsFuncionari != null) {
 				mav.addObject("llocItems", llocsFuncionari);
 			}
 
 			// Obtenir el historic de canvis
 			List<Select6Values<Long, String, String, String, String, Timestamp>> historicItems = historicEjb
-					.getHistoricByFuncionariId(_jpa.getFuncionariID());
+					.getHistoricByFuncionariId(funcionariID);
 			mav.addObject("historicItems", historicItems);
 
 		}
@@ -114,17 +115,26 @@ public class FuncionariAdminController extends FuncionariController {
 		FuncionariForm funcionariForm = super.getFuncionariForm(_jpa, __isView, request, mav);
 
 		if (funcionariForm.isNou()) {
-			funcionariForm.getFuncionari().setDataCreacio(new Timestamp(System.currentTimeMillis()));
+			FuncionariJPA funcionari = funcionariForm.getFuncionari();
+			funcionari.setDataCreacio(new Timestamp(System.currentTimeMillis()));
 
 			funcionariForm.setDeleteButtonVisible(false);
+			
+			LoginInfo loginInfo = LoginInfo.getInstance();
+			Long entitatIDActual = loginInfo.getEntitatIDActual();
+			log.info("ENTITAT ID ACTUAL: => " + entitatIDActual);
+			if (entitatIDActual != null && entitatIDActual > 0) {
+				funcionari.setEntitatID(entitatIDActual);
+			}
 		}
 
 		funcionariForm.addReadOnlyField(DATACREACIO);
 		funcionariForm.addHiddenField(DATABAIXA);
-		funcionariForm.addHiddenField(ENTITATID);
+		// funcionariForm.addHiddenField(ENTITATID);
+		funcionariForm.addReadOnlyField(FuncionariFields.ENTITATID);
 
 		mav.addObject("funcionari", _jpa);
-		
+
 		funcionariForm.setAttachedAdditionalJspCode(true);
 
 		/*
@@ -165,7 +175,6 @@ public class FuncionariAdminController extends FuncionariController {
 				newFilterBy.remove(LlocFields.PERSONALOAMR);
 				newFilterBy.remove(FuncionariFields.IDENTIFICADOR);
 				funcionariFilterForm.setFilterByFields(newFilterBy);
-				
 
 			}
 
@@ -226,22 +235,23 @@ public class FuncionariAdminController extends FuncionariController {
 
 	@Override
 	public Where getAdditionalCondition(HttpServletRequest request) throws I18NException {
-		
+
 		final Where defaultCondition = super.getAdditionalCondition(request);
-		
+
 		// filtrar per entitat
 		LoginInfo loginInfo = LoginInfo.getInstance();
-		
+
 		System.out.println("================================================");
-		System.out.println("ENTITAT ACTUAL: => " + loginInfo.getEntitatIDActual());
+		Long entitatIDActual = loginInfo.getEntitatIDActual();
+		System.out.println("ENTITAT ACTUAL: => " + entitatIDActual);
 		System.out.println("ENTITAT ID ACTUAL: => " + loginInfo.getEntitatID());
 		System.out.println("================================================");
-		
-		Where w1 = null; 
-		if (loginInfo.getEntitatIDActual() != null && loginInfo.getEntitatIDActual() > 0) {
-			w1 = FuncionariFields.ENTITATID.equal(loginInfo.getEntitatIDActual());
+
+		Where w1 = null;
+		if (entitatIDActual != null && entitatIDActual > 0) {
+			w1 = FuncionariFields.ENTITATID.equal(entitatIDActual);
 		}
-				
+
 		// filtrar per personalOamr
 		Map<String, String[]> parametros = request.getParameterMap();
 		boolean personalOamr = false;
@@ -255,11 +265,12 @@ public class FuncionariAdminController extends FuncionariController {
 
 		if (personalOamr) {
 			System.out.println("Where: IS PERSONAL OAMR");
-			//Where w2 = new FuncionariLlocQueryPath().LLOC().PERSONALOAMR().greaterThan(0);
-			//if (w1 != null)
-			//	w1 = Where.AND(w1, w2);
-			//else
-			//	w1 = w2;
+			// Where w2 = new
+			// FuncionariLlocQueryPath().LLOC().PERSONALOAMR().greaterThan(0);
+			// if (w1 != null)
+			// w1 = Where.AND(w1, w2);
+			// else
+			// w1 = w2;
 		}
 
 		if (w1 != null)
@@ -328,32 +339,32 @@ public class FuncionariAdminController extends FuncionariController {
 	}
 
 	@Override
-	public List<StringKeyValue> getReferenceListForTipusIdentificador(HttpServletRequest request, ModelAndView mav, Where where)  throws I18NException {
+	public List<StringKeyValue> getReferenceListForTipusIdentificador(HttpServletRequest request, ModelAndView mav,
+			Where where) throws I18NException {
 
 		List<StringKeyValue> __tmp = new java.util.ArrayList<StringKeyValue>();
-		__tmp.add(new StringKeyValue("0" , I18NUtils.tradueix("tipusidentificacio.0")));
-		__tmp.add(new StringKeyValue("1" , I18NUtils.tradueix("tipusidentificacio.1")));
-		__tmp.add(new StringKeyValue("2" , I18NUtils.tradueix("tipusidentificacio.2")));
-		__tmp.add(new StringKeyValue("3" , I18NUtils.tradueix("tipusidentificacio.3")));
-		__tmp.add(new StringKeyValue("4" , I18NUtils.tradueix("tipusidentificacio.4")));
+		__tmp.add(new StringKeyValue("0", I18NUtils.tradueix("tipusidentificacio.0")));
+		__tmp.add(new StringKeyValue("1", I18NUtils.tradueix("tipusidentificacio.1")));
+		__tmp.add(new StringKeyValue("2", I18NUtils.tradueix("tipusidentificacio.2")));
+		__tmp.add(new StringKeyValue("3", I18NUtils.tradueix("tipusidentificacio.3")));
+		__tmp.add(new StringKeyValue("4", I18NUtils.tradueix("tipusidentificacio.4")));
 		return __tmp;
 
 	}
-	
-	
+
 	@Override
 	public String editarFuncionariPost(@ModelAttribute FuncionariForm funcionariForm,
-		      BindingResult result, SessionStatus status, HttpServletRequest request,
-		      HttpServletResponse response) throws I18NException {
-		
+			BindingResult result, SessionStatus status, HttpServletRequest request,
+			HttpServletResponse response) throws I18NException {
+
 		String numeroCai = (!Utils.isEmpty(request.getParameter("numerocai"))) ? request.getParameter("numerocai") : "";
-				
-		Funcionari funcionariModificat = funcionariEJB.updateAndHistory(funcionariForm.getFuncionari(), numeroCai, LoginInfo.getInstance().getUsuariPersona().getUsuariID());
-		
+
+		Funcionari funcionariModificat = funcionariEJB.updateAndHistory(funcionariForm.getFuncionari(), numeroCai,
+				LoginInfo.getInstance().getUsuariPersona().getUsuariID());
+
 		return super.editarFuncionariPost(funcionariForm, result, status, request, response);
-		
+
 	}
-	
 
 	@Override
 	public void postList(HttpServletRequest request, ModelAndView mav, FuncionariFilterForm filterForm,
@@ -362,7 +373,7 @@ public class FuncionariAdminController extends FuncionariController {
 		Map<Long, String> mapFuncionari = (Map<Long, String>) filterForm.getAdditionalField(1).getValueMap();
 		Map<Long, String> mapFuncionari2 = (Map<Long, String>) filterForm.getAdditionalField(2).getValueMap();
 		Map<Long, String> mapFuncionari3 = (Map<Long, String>) filterForm.getAdditionalField(3).getValueMap();
-		
+
 		mapFuncionari.clear();
 		mapFuncionari2.clear();
 		mapFuncionari3.clear();

@@ -9,11 +9,16 @@ import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 
 import org.fundaciobit.genapp.common.i18n.I18NException;
+import org.fundaciobit.genapp.common.query.Where;
+import org.fundaciobit.genapp.common.web.HtmlUtils;
 import org.fundaciobit.genapp.common.web.form.AdditionalButton;
 import org.fundaciobit.genapp.common.web.form.AdditionalButtonStyle;
 import org.fundaciobit.genapp.common.web.form.AdditionalField;
+import org.fundaciobit.genapp.common.web.i18n.I18NUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -88,12 +93,12 @@ public class UsuariSuperAdminController extends UsuariController {
 			usuariFilterForm.addHiddenField(DATACREACIO);
 			usuariFilterForm.addHiddenField(IDIOMAID);
 			usuariFilterForm.addHiddenField(DARRERAENTITAT);
-			
+
 			usuariFilterForm.addAdditionalButtonForEachItem(
 					new AdditionalButton("fa fa-building", "usuari.assignarentitat",
 							"/superadmin/usuariEntitat/assignarUsuari/{0}", AdditionalButtonStyle.SECONDARY));
 		}
-		
+
 		{
 			AdditionalField<Long, String> adfield = new AdditionalField<Long, String>();
 			adfield.setCodeName(UsuariEntitatFields.ENTITATID.codeLabel);
@@ -115,26 +120,51 @@ public class UsuariSuperAdminController extends UsuariController {
 	public void postList(HttpServletRequest request, ModelAndView mav, UsuariFilterForm filterForm, List<Usuari> list)
 			throws I18NException {
 
-		
-		Map<Long, String> mapEntitat = (Map<Long,String>) filterForm.getAdditionalField(1).getValueMap();
-		
+		Map<Long, String> mapEntitat = (Map<Long, String>) filterForm.getAdditionalField(1).getValueMap();
+
 		mapEntitat.clear();
-		
+
 		for (Usuari usuari : list) {
-			
+
 			final Long usuariID = usuari.getUsuariID();
-			
+
 			List<EntitatJPA> entitats = usuariEntitatEJB.findAllByUsuariIdWithEntitat(usuariID);
-			
+
 			String entitatHtml = "";
 			for (EntitatJPA entitat : entitats) {
-				entitatHtml +="<span class='badge badge-secondary'>" + entitat.getNom() + "</span>";
+				String urlborrar = request.getContextPath() + getContextWeb() + "/entitat/delete" + "?usuariID="
+						+ usuariID + "&entitatID="
+						+ entitat.getEntitatID();
+				String botoEsborrarTitle = I18NUtils.tradueix("usuari.entitat.botoEsborrar");
+				String botoEsborrar = "<a style='margin-left:5px;' href='" + urlborrar + "' title='" + botoEsborrarTitle
+						+ "' alt='" + botoEsborrarTitle
+						+ "'><i class='fas fa-times' style='color:white;'></i></a>";
+				entitatHtml += "<span class='badge badge-secondary'>" + entitat.getNom() + botoEsborrar + "</span>";
 			}
-			
+
 			mapEntitat.put(usuariID, entitatHtml);
-			
 		}
-	
 	}
 
+	@RequestMapping(value = "/entitat/delete", method = RequestMethod.GET)
+	public String esborrarEntitatAssociada(HttpServletRequest request, @RequestParam("usuariID") Long usuariID,
+			@RequestParam("entitatID") Long entitatID) throws I18NException {
+		log.info("Esborrant l'entitat associada a l'usuari " + usuariID + " i entitat " + entitatID);
+
+		if (usuariID == null || entitatID == null) {
+			log.error("UsuariID o EntitatID no vàlid");
+			throw new I18NException("error.usuariEntitat.noValid");
+		}
+		usuariEntitatEJB.delete(Where.AND(UsuariEntitatFields.USUARIID.equal(usuariID),
+				UsuariEntitatFields.ENTITATID.equal(entitatID)));
+
+		String missatgeBorrat = I18NUtils.tradueix("usuari.entitat.borrat",
+				new String[] { entitatID.toString(), usuariID.toString() });
+		HtmlUtils.saveMessageInfo(request, missatgeBorrat);
+		log.info(missatgeBorrat);
+
+		String redireccio = "redirect:" + getContextWeb() + "/list/1";
+		log.info("Redirigint cap a " + redireccio);
+		return redireccio;
+	}
 }

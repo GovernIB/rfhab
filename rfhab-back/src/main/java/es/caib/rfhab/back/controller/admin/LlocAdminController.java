@@ -20,6 +20,7 @@ import org.fundaciobit.genapp.common.web.form.AdditionalButton;
 import org.fundaciobit.genapp.common.web.form.AdditionalButtonStyle;
 import org.fundaciobit.genapp.common.web.form.AdditionalField;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -29,16 +30,19 @@ import es.caib.rfhab.back.controller.webdb.LlocController;
 import es.caib.rfhab.back.form.webdb.LlocFilterForm;
 import es.caib.rfhab.back.form.webdb.LlocForm;
 import es.caib.rfhab.back.security.LoginInfo;
+import es.caib.rfhab.ejb.EntitatService;
 import es.caib.rfhab.ejb.FuncionariLlocService;
 import es.caib.rfhab.ejb.LlocRolService;
 import es.caib.rfhab.ejb.UnitatService;
 import es.caib.rfhab.logic.HistoricLlocLogicaService;
 import es.caib.rfhab.logic.LlocLogicaService;
+import es.caib.rfhab.model.entity.Entitat;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.HistoricLloc;
 import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.entity.Rol;
 import es.caib.rfhab.model.entity.Unitat;
+import es.caib.rfhab.model.fields.EntitatFields;
 import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.FuncionariLlocFields;
 import es.caib.rfhab.model.fields.LlocFields;
@@ -75,6 +79,9 @@ public class LlocAdminController extends LlocController {
 	@EJB(mappedName = UnitatService.JNDI_NAME)
 	protected UnitatService unitatEjb;
 
+	@EJB(mappedName = EntitatService.JNDI_NAME)
+	protected EntitatService entitatEjb;
+
 	protected RolsacPlugin rolsacPlugin = null;
 
 	@Override
@@ -110,7 +117,7 @@ public class LlocAdminController extends LlocController {
 				llocFilterForm.addAdditionalField(adfield0);
 
 			}
-			
+
 			{
 				AdditionalField<Long, String> adfield = new AdditionalField<Long, String>();
 				adfield.setCodeName(FuncionariFields.NOM.codeLabel);
@@ -153,16 +160,18 @@ public class LlocAdminController extends LlocController {
 
 			mav.addObject("isNew", llocForm.isNou());
 
-			llocForm.getLloc().setDataCreacio(new Timestamp(System.currentTimeMillis()));
-			llocForm.getLloc().setEntitatID(LoginInfo.getInstance().getEntitatIDActual());
-
-			Long entitatId = LoginInfo.getInstance().getUsuariPersona().getDarreraEntitat();
-			llocForm.getLloc().setEntitatID(entitatId);
+			LlocJPA lloc = llocForm.getLloc();
+			lloc.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+			lloc.setEntitatID(LoginInfo.getInstance().getEntitatIDActual());
 
 			mav.addObject("historic", new ArrayList<HistoricLloc>());
-
+			List<StringKeyValue> unitatsEntitat = getReferenceListForUnitatID(request, mav, llocForm, null);
+			llocForm.setListOfUnitatForUnitatID(unitatsEntitat);
+			if (unitatsEntitat.size() > 0) {
+				lloc.setUnitatID(Long.parseLong(unitatsEntitat.get(0).key));
+			}
+			log.info("Unitat ID seleccionada: " + lloc.getUnitatID());
 		} else {
-
 			// Pipella Funcionari - Obtenir tots els funcionaris relacionats amb el lloc
 
 			List<Funcionari> funcionaris = llocLogicaEjb.getFuncionarisByLlocID(_jpa.getLlocID());
@@ -193,34 +202,38 @@ public class LlocAdminController extends LlocController {
 
 			mav.addObject("historic", historic);
 
-			// Pipella Autoritzacions - procediments de Rolsac autoritzats en funció del codi DIR3 de la unitat
-			HashMap<String,String> procediments = new HashMap<String, String>();
-			if (_jpa.getUnitatID() > 0){
-				try{
+			// Pipella Autoritzacions - procediments de Rolsac autoritzats en funció del
+			// codi DIR3 de la unitat
+			HashMap<String, String> procediments = new HashMap<String, String>();
+			if (_jpa.getUnitatID() > 0) {
+				try {
 					List<Unitat> unitatsDir3 = unitatEjb.select(UnitatFields.UNITATID.equal(_jpa.getUnitatID()));
-					if (unitatsDir3.size() > 0){
+					if (unitatsDir3.size() > 0) {
 						procediments = getProcedimentsByDir3(unitatsDir3.get(0).getCodi());
-						procediments.forEach( (clave, valor) -> {  log.info("Procediment: " + clave + " - " + valor); });
+						procediments.forEach((clave, valor) -> {
+							log.info("Procediment: " + clave + " - " + valor);
+						});
 					}
-				}catch(Exception e){
+				} catch (Exception e) {
 					log.error(e);
 				}
 			}
 			mav.addObject("procediments", procediments);
 		}
 
+		// TODO: comentar a Toni Nadal per què està empleant _jpa tot es temps? És
+		// legacy de quan no hi havia isNou??
 		mav.addObject("lloc", _jpa);
-		if (_jpa.getPersonalOamr() > 0){
+		if (_jpa != null && _jpa.getPersonalOamr() > 0) {
 			mav.addObject("isOamr", 1);
-		}else{
+		} else {
 			mav.addObject("isOamr", 0);
 		}
-		
 
 		llocForm.addAdditionalButton(new AdditionalButton(" fas fa-long-arrow-alt-left", "tornar",
 				getContextWeb() + "/tornar", AdditionalButtonStyle.SECONDARY));
 
-		llocForm.addHiddenField(ENTITATID);
+		llocForm.addReadOnlyField(ENTITATID);
 		llocForm.addReadOnlyField(DATACREACIO);
 
 		llocForm.setCancelButtonVisible(false);
@@ -253,12 +266,13 @@ public class LlocAdminController extends LlocController {
 		Map<Long, String> mapUnitatSuperior = (Map<Long, String>) filterForm.getAdditionalField(1).getValueMap();
 		Map<Long, String> mapFuncionari = (Map<Long, String>) filterForm.getAdditionalField(2).getValueMap();
 		Map<Long, String> mapRols = (Map<Long, String>) filterForm.getAdditionalField(3).getValueMap();
-		
+
 		mapUnitatSuperior.clear();
 		mapFuncionari.clear();
 		mapRols.clear();
 
-		HashMap<Long, Funcionari> llistaFuncionarisActius = llocLogicaEjb.getCurrentFuncionarisByLloc(null, LoginInfo.getInstance().getEntitatIDActual());
+		HashMap<Long, Funcionari> llistaFuncionarisActius = llocLogicaEjb.getCurrentFuncionarisByLloc(null,
+				LoginInfo.getInstance().getEntitatIDActual());
 
 		for (Lloc lloc : list) {
 
@@ -273,13 +287,14 @@ public class LlocAdminController extends LlocController {
 
 			} else {
 				Funcionari f = llistaFuncionarisActius.get(llocID);
-				if (f != null && f.getNom() != null){
-					String nom = f.getNom() + " " + f.getLlinatge1() + " " + f.getLlinatge2() + " (" + f.getUsuari() + ")";
+				if (f != null && f.getNom() != null) {
+					String nom = f.getNom() + " " + f.getLlinatge1() + " " + f.getLlinatge2() + " (" + f.getUsuari()
+							+ ")";
 					mapFuncionari.put(llocID, nom);
-				}else{
+				} else {
 					mapFuncionari.put(llocID, "");
 				}
-				
+
 				// Botó per desassignar funcionari
 				filterForm.addAdditionalButtonByPK(llocID, new AdditionalButton("fa fa-user-times",
 						"lloc.treurefuncionari", "/admin/funcionarilloc/treure/{0}", AdditionalButtonStyle.INFO));
@@ -297,33 +312,37 @@ public class LlocAdminController extends LlocController {
 				List<Rol> rolsLloc = llocLogicaEjb.getRolsByLlocID(llocID);
 				String rolsLlocStr = "";
 				for (Rol rol : rolsLloc) {
-					rolsLlocStr += "<span class='badge badge-secondary'>" + rol.getCodi() + "<a href=\"#\">X</a></span>";
+					rolsLlocStr += "<span class='badge badge-secondary'>" + rol.getCodi()
+							+ "<a href=\"#\">X</a></span>";
 				}
 				mapRols.put(llocID, rolsLlocStr);
 			}
 
 			// Unitat Superior
 			Unitat unitatAct = unitatEjb.findByPrimaryKey(lloc.getUnitatID());
-			if (unitatAct != null){
+			if (unitatAct != null) {
 				List<Unitat> unitatSuperior = unitatEjb.select(UnitatFields.CODI.equal(unitatAct.getSuperior()));
-				if ( unitatSuperior != null && unitatSuperior.size() > 0)
-					mapUnitatSuperior.put(llocID, unitatSuperior.get(0).getCodi() + " " + unitatSuperior.get(0).getDenominacio());
-		
+				if (unitatSuperior != null && unitatSuperior.size() > 0)
+					mapUnitatSuperior.put(llocID,
+							unitatSuperior.get(0).getCodi() + " " + unitatSuperior.get(0).getDenominacio());
+
 			}
 
 			// Afegir el botó d'assignar rols
-			filterForm.addAdditionalButtonByPK(llocID, 	new AdditionalButton("far fa-check-square", "rol.assignarrol",
+			filterForm.addAdditionalButtonByPK(llocID, new AdditionalButton("far fa-check-square", "rol.assignarrol",
 					"/admin/llocrol/assignar/" + llocID, AdditionalButtonStyle.INFO));
 
-
 		}
+	}
 
-		
+	public void preValidate(HttpServletRequest request, LlocForm llocForm, BindingResult result) throws I18NException {
+		LlocJPA lloc = llocForm.getLloc();
+		lloc.setEntitatID(Long.parseLong(request.getParameter("lloc.entitatID")));
 	}
 
 	@Override
 	public LlocJPA create(HttpServletRequest request, LlocJPA lloc) throws I18NException, I18NValidationException {
-
+		lloc.setEntitatID(Long.parseLong(request.getParameter("lloc.entitatID")));
 		LlocJPA newLloc = super.create(request, lloc);
 
 		/*
@@ -379,9 +398,10 @@ public class LlocAdminController extends LlocController {
 		List<Long> llocsOcupats = funcionariLlocEjb.executeQuery(FuncionariLlocFields.LLOCID, w);
 
 		llocsOcupats.forEach(item -> {
-			log.info("Lloc ocupat per: " + item );
+			log.info("Lloc ocupat per: " + item);
 		});
 
+		// TODO:revisar
 		if (llocsOcupats.size() > 0) {
 			throw new I18NException(createMessageError(request, "error.funcionariAssignat", lloc.getLlocID()));
 
@@ -407,7 +427,8 @@ public class LlocAdminController extends LlocController {
 
 	@RequestMapping(value = "/tornar", method = RequestMethod.GET)
 	public String tornar(HttpServletRequest request) {
-		return "redirect:/admin/funcionari/list/1";
+		log.info("Redirigint cap a " + "redirect:" + getContextWeb() + "/list/1");
+		return "redirect:" + getContextWeb() + "/list/1";
 	}
 
 	@Override
@@ -431,14 +452,86 @@ public class LlocAdminController extends LlocController {
 		return (w1 != null) ? Where.AND(defaultCondition, w1) : defaultCondition;
 	}
 
-
-	private HashMap<String, String> getProcedimentsByDir3( String codiDir3 ) throws Exception{
+	private HashMap<String, String> getProcedimentsByDir3(String codiDir3) throws Exception {
 
 		if (rolsacPlugin == null)
-				rolsacPlugin = new RolsacPlugin();
-			
+			rolsacPlugin = new RolsacPlugin();
+
 		return rolsacPlugin.obtenirProcedimentsByDir3(codiDir3);
 
 	}
 
+	@Override
+	public List<StringKeyValue> getReferenceListForUnitatID(HttpServletRequest request,
+			ModelAndView mav, LlocForm llocForm, Where where) throws I18NException {
+		if (llocForm.isHiddenField(UNITATID)) {
+			return EMPTY_STRINGKEYVALUE_LIST;
+		}
+		return getUnitatsByEntitatArrel(mav, llocForm);
+	}
+
+	// @Override
+	// public List<StringKeyValue> getReferenceListForUnitatID(HttpServletRequest
+	// request,
+	// ModelAndView mav, Where where) throws I18NException {
+	// return unitatRefList.getReferenceList(UnitatFields.UNITATID, where);
+	// }
+
+	public List<StringKeyValue> getUnitatsByEntitatArrel(
+			ModelAndView mav, LlocForm llocForm) throws I18NException {
+		List<StringKeyValue> unitatsResult = new ArrayList<>();
+
+		LlocJPA lloc = llocForm.getLloc();
+		Entitat entitat = entitatEjb.findByPrimaryKey(lloc.getEntitatID());
+		if (entitat == null) {
+			log.info("No hi ha entitat associada al lloc de feina");
+			return EMPTY_STRINGKEYVALUE_LIST;
+		}
+		Unitat unitatArrel = unitatEjb.findByPrimaryKey(entitat.getUnitatID());
+		if (unitatArrel == null) {
+			log.info("No hi ha unitat associada a l'entitat seleccionada");
+			return EMPTY_STRINGKEYVALUE_LIST;
+		}
+
+		List<Unitat> referenciades = findAllReferencingUnitats(unitatEjb.select(), unitatArrel.getCodi());
+
+		for (Unitat u : referenciades) {
+			// System.out.println("Unitat referenciada: " + u.getCodi());
+			unitatsResult.add(new StringKeyValue(String.valueOf(u.getUnitatID()),
+					u.getCodi() + " " + u.getCooficial() + " " + u.getDenominacio()));
+		}
+		mav.addObject("unitats", referenciades);
+		List<Entitat> entitats = entitatEjb.select(EntitatFields.UNITATID
+				.in(unitatsResult.stream().map(u -> Long.parseLong(u.key)).toArray(Long[]::new)));
+		mav.addObject("entitats", entitats);
+
+		return unitatsResult;
+	}
+
+	public static List<Unitat> findAllReferencingUnitats(List<Unitat> unitats, String codiInicial) {
+		List<Unitat> result = new ArrayList<>();
+		List<String> codisPendents = new ArrayList<>();
+		codisPendents.add(codiInicial);
+		boolean entitatArrelAfegida = false;
+
+		while (!codisPendents.isEmpty()) {
+			String codiActual = codisPendents.remove(0);
+
+			for (Unitat unitat : unitats) {
+				// aquí només hauria d'entrar un pic per afegir la unitat "arrel". LLevar si no
+				// es vol aquesta unitat. Però revisar el jsp perquè no està preparat per això,
+				// ja que cerca l'entitat "arrel" dins el llistat d'unitats.
+				if (!entitatArrelAfegida && codiInicial.equals(unitat.getCodi())) {
+					result.add(0, unitat);
+					entitatArrelAfegida = true;
+				}
+				if (codiActual.equals(unitat.getSuperior())) {
+					result.add(unitat);
+					codisPendents.add(unitat.getCodi());
+				}
+			}
+		}
+
+		return result;
+	}
 }

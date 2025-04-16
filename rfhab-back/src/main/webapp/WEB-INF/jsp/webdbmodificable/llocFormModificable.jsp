@@ -165,6 +165,102 @@
 
 
 <script type="text/javascript">
+	function displayOptionsFromSelect(element) {
+		let txt = "All options: ";
+		for (let i = 0; i < element.length; i++) {
+			txt =
+			txt + "\n" + element.options[i].text + " - " + element.options[i].value;
+		}
+		return txt;
+	}
+
+	function findUnitatByArrel(unitats, unitatId) {
+		// Cerca la unitat amb el unitatId especificat
+		let unitatTrobada = unitats.find(unitat => unitat.unitatID === unitatId);
+		if (unitatTrobada) {
+			// Obté el valor de "arrel" de la unitat trobada
+			let arrel = unitatTrobada.arrel;
+			if (arrel) {
+				// Cerca i retorna la unitat amb el "codi" igual al valor de "arrel"
+				return unitats.find(unitat => unitat.codi === arrel) || null;
+			}
+		}
+		// Retorna null si no es troba cap unitat que compleixi els criteris
+		return null;
+	}
+
+	function findUnitatMare(unitats, unitatId) {
+		// Cerca la unitat inicial amb el unitatId especificat
+		let unitatMare = unitats.find(unitat => unitat.unitatID === unitatId);
+		let unitatActual = unitatMare;
+
+		// Itera fins que no hi hagi més "mares" (és a dir, fins que el camp "superior" sigui null o no es trobi cap coincidència)
+		while (unitatActual && unitatActual.superior) {
+			unitatActual = unitats.find(unitat => unitat.codi === unitatActual.superior);
+			if(unitatActual != null){
+				unitatMare = unitatActual; // Actualitza la unitat mare si es troba una nova unitat
+			}
+		}
+
+		// Retorna l'última unitat trobada (la "mare")
+		return unitatMare || null;
+	}
+
+	function findAllReferencingUnitats(unitats, codiInicial) {
+		let result = [];
+		let codisPendents = [codiInicial]; // Inicialitza amb el codi inicial
+
+		while (codisPendents.length > 0) {
+			let codiActual = codisPendents.shift(); // Extreu el primer codi de la llista
+
+			// Cerca les unitats que tenen el camp "superior" igual al codi actual
+			unitats.forEach(unitat => {
+				if (unitat.superior === codiActual) {
+					result.push(unitat); // Afegeix la unitat al resultat
+					codisPendents.push(unitat.codi); // Afegeix el codi de la unitat trobada per continuar la cerca
+				}
+			});
+		}
+
+		return result; // Retorna totes les unitats trobades
+	}
+
+	let unitats = [];
+	<c:forEach items="${unitats}" var="item">
+		unitats.push({
+			"unitatID": +"${item.unitatID}",
+			"codi": "${item.codi}",
+			"arrel": "${item.arrel}",
+			"superior": "${item.superior}"
+		});
+	</c:forEach>
+	let entitats = [];
+	<c:forEach items="${entitats}" var="item">
+		entitats.push({
+			"entitatID": +"${item.entitatID}",
+			"unitatID": "${item.unitatID}",
+			"nom": "${item.nom}"
+		});
+	</c:forEach>
+
+	function onChangeUnitatID(event) {
+		let unitatIdSeleccionat = +event.value;
+		let resultat = findUnitatMare(unitats, unitatIdSeleccionat);
+
+		if (resultat) {
+			console.log("Unitat trobada: ", resultat);
+		} else {
+			console.log("No s'ha trobat cap unitat amb el codi " + unitatIdSeleccionat + " a l'arrel.");
+		}
+
+		let llocEntitatUnitatId = resultat ? resultat.unitatID : null; // Obté el unitatID de la unitat trobada
+		let entitatTrobada = entitats.find(entitat => entitat.unitatID == llocEntitatUnitatId);
+		let entitatId = entitatTrobada ? entitatTrobada.entitatID : null;
+		document.getElementById("lloc.entitatID").value = entitatId;
+		document.querySelector('[id="lloc.entitatID"]+input').value = entitatTrobada?.nom;
+		// document.querySelector('[id="lloc.entitatID"]+input').value = "${gen:findValue(entitatId,__theForm.listOfEntitatForEntitatID)}";
+	}
+	
 	document
 			.addEventListener(
 					"DOMContentLoaded",

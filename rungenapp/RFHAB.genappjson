@@ -2775,6 +2775,7 @@
           "showInWebList": true,
           "showInReferenceList": false,
           "transientField": false,
+          "maxAllowedValue": "search",
           "filter": false,
           "orderBy": 0,
           "groupBy": false,

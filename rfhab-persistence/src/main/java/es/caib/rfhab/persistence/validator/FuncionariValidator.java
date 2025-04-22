@@ -137,6 +137,17 @@ public class FuncionariValidator<I extends Funcionari>
       // ====== Check Unique MULTIPLES - NOU =======
 
       // Check Unique - no PK
+      if (__vr.getFieldErrorCount(IDENTIFICADOR) == 0) {
+        java.lang.String __identificador = __target__.getIdentificador();
+        Long __count_ = null;
+        try { __count_ = __funcionariManager.count(org.fundaciobit.genapp.common.query.Where.AND(IDENTIFICADOR.equal(__identificador))); } catch(org.fundaciobit.genapp.common.i18n.I18NException e) { e.printStackTrace(); };
+        if (__count_ == null || __count_ != 0) {        
+            __vr.rejectValue(IDENTIFICADOR, "genapp.validation.unique",
+                new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(__identificador)),
+                     new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(IDENTIFICADOR)));
+        }
+      }
+
       // Check Unique - PK no AutoIncrement amb UNA SOLA PK 
     } else {
       // ================ UPDATE
@@ -144,6 +155,18 @@ public class FuncionariValidator<I extends Funcionari>
       // ====== Check Unique MULTIPLES - EDIT  =======
 
       // Check Unique - no PK
+      if (__vr.getFieldErrorCount(IDENTIFICADOR) == 0 && __vr.getFieldErrorCount(FUNCIONARIID) == 0) {
+        java.lang.String __identificador = __target__.getIdentificador();
+        java.lang.Long __funcionariid = __target__.getFuncionariID();
+        Long __count_ = null;
+        try { __count_ = __funcionariManager.count(org.fundaciobit.genapp.common.query.Where.AND(IDENTIFICADOR.equal(__identificador), FUNCIONARIID.notEqual(__funcionariid))); } catch(org.fundaciobit.genapp.common.i18n.I18NException e) { e.printStackTrace(); };
+        if (__count_ == null || __count_ != 0) {        
+            __vr.rejectValue(IDENTIFICADOR, "genapp.validation.unique",
+                new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(__identificador)),
+                     new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(IDENTIFICADOR)));
+        }
+      }
+
     }
 
     // Fields with References to Other tables 

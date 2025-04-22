@@ -253,6 +253,8 @@ create index rfh_entitat_pk_i on rfh_entitat (entitatid);
 create index rfh_entitat_unitatid_fk_i on rfh_entitat (unitatid);
 create index rfh_fitxer_pk_i on rfh_fitxer (fitxerid);
 create index rfh_funcionari_pk_i on rfh_funcionari (funcionariid);
+   alter table rfh_funcionari
+      add constraint rfh_funcionari_identific_uk unique (identificador);
 create index rfh_funcionarientitat_pk_i on rfh_funcionarilloc (funcionarillocid);
 create index rfh_funcionarilloc_llocid_fk_i on rfh_funcionarilloc (llocid);
 create index rfh_funlloc_funcionariid_fk_i on rfh_funcionarilloc (funcionariid);
@@ -271,7 +273,7 @@ create index rfh_lloc_entitatid_fk_i on rfh_lloc (entitatid);
 create index rfh_lloc_unitatid_fk_i on rfh_lloc (unitatid);
 
     alter table rfh_lloc 
-       add constraint UK_m23ejxgegl5k5e830vdy7jpox unique (codilloc);
+       add constraint rfh_lloc_codilloc_uk unique (codilloc);
 create index rfh_llocrol_pk_i on rfh_llocrol (llocrolid);
 create index rfh_llocrol_llocid_fk_i on rfh_llocrol (llocid);
 create index rfh_llocrol_rolid_fk_i on rfh_llocrol (rolid);
@@ -286,7 +288,7 @@ create index rfh_usuari_idiomaid_fk_i on rfh_usuari (idiomaid);
 create index rfh_usuari_darreraentitat_fk_i on rfh_usuari (darreraentitat);
 
     alter table rfh_usuari 
-       add constraint UK_bcg3fr6ce1dcpv6i6etn9ban7 unique (username);
+       add constraint rfh_usuari_username_uk unique (username);
 create index rfh_usuarientitat_pk_i on rfh_usuarientitat (usuarientitatid);
 create index rfh_usuarient_entitatid_fk_i on rfh_usuarientitat (entitatid);
 create index rfh_usuarient_usuariid_fk_i on rfh_usuarientitat (usuariid);

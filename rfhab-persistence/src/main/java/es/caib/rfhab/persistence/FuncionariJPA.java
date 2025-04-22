@@ -44,7 +44,7 @@ public class FuncionariJPA implements Funcionari {
     @Column(name="tipusidentificador",nullable = false,length = 10)
     int tipusIdentificador;
 
-    @Column(name="identificador",nullable = false,length = 50)
+    @Column(name="identificador",nullable = false,unique = true,length = 50)
     java.lang.String identificador;
 
     @Column(name="usuari",nullable = false,length = 50)

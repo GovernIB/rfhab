@@ -253,6 +253,8 @@ create index rfh_entitat_pk_i on rfh_entitat (entitatid);
 create index rfh_entitat_unitatid_fk_i on rfh_entitat (unitatid);
 create index rfh_fitxer_pk_i on rfh_fitxer (fitxerid);
 create index rfh_funcionari_pk_i on rfh_funcionari (funcionariid);
+   alter table rfh_funcionari
+      add constraint rfh_funcionari_identific_uk unique (identificador);
 create index rfh_funcionarientitat_pk_i on rfh_funcionarilloc (funcionarillocid);
 create index rfh_funcionarilloc_llocid_fk_i on rfh_funcionarilloc (llocid);
 create index rfh_funlloc_funcionariid_fk_i on rfh_funcionarilloc (funcionariid);

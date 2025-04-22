@@ -1536,6 +1536,7 @@
           "foreignKeys": []
         },
         {
+          "unique": "rfh_funcionari_identific_uk",
           "isAutoIncrement": false,
           "sqlName": "identificador",
           "sqlType": 12,

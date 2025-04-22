@@ -167,14 +167,17 @@
 
  -- INICI UNIQUEs
 
+   alter table rfh_funcionari
+      add constraint rfh_funcionari_identific_uk unique (identificador);
+
     alter table rfh_funcionarilloc 
        add constraint rfh_funlloc_multiple_uk unique (llocid, funcionariid);
 
     alter table rfh_lloc 
-       add constraint UK_m23ejxgegl5k5e830vdy7jpox unique (codilloc);
+       add constraint rfh_lloc_codilloc_uk unique (codilloc);
 
     alter table rfh_usuari 
-       add constraint UK_bcg3fr6ce1dcpv6i6etn9ban7 unique (username);
+       add constraint rfh_usuari_username_uk unique (username);
 
     alter table rfh_usuarientitat 
        add constraint rfh_usuarient_multiple_uk unique (entitatid, usuariid);

@@ -161,6 +161,8 @@
 					"DOMContentLoaded",
 					function(event) {
 
+						document.getElementById("funcionari.numero").placeholder = '${FUNCIONARI_NUMERO_PLACEHOLDER}';
+
 						if ("true" != "${isView}") {
 
 							var nouTr = document.createElement("tr");
@@ -180,11 +182,6 @@
 									.getElementById("funcionari_tableid");
 							var cos = taula.getElementsByTagName("tbody")[0];
 							cos.appendChild(nouTr);
-
 						}
-
-					});
-
-
-		
+					});		
 </script>

@@ -55,7 +55,7 @@ public class FuncionariJPAManager
         return list.toArray(new Funcionari[list.size()]);
     };
 
-    public Funcionari create( int _numero_, java.lang.String _nom_, java.lang.String _llinatge1_, java.lang.String _llinatge2_, int _tipusIdentificador_, java.lang.String _identificador_, java.lang.String _usuari_, java.lang.String _correu_, java.sql.Timestamp _dataCreacio_, java.lang.String _observacions_, java.sql.Timestamp _dataBaixa_, long _entitatID_) throws I18NException {
+    public Funcionari create( java.lang.String _numero_, java.lang.String _nom_, java.lang.String _llinatge1_, java.lang.String _llinatge2_, int _tipusIdentificador_, java.lang.String _identificador_, java.lang.String _usuari_, java.lang.String _correu_, java.sql.Timestamp _dataCreacio_, java.lang.String _observacions_, java.sql.Timestamp _dataBaixa_, long _entitatID_) throws I18NException {
         FuncionariJPA __bean =  new FuncionariJPA(_numero_,_nom_,_llinatge1_,_llinatge2_,_tipusIdentificador_,_identificador_,_usuari_,_correu_,_dataCreacio_,_observacions_,_dataBaixa_,_entitatID_);
         return create(__bean);
     }

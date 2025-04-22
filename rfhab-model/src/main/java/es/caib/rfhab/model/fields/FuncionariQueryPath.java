@@ -15,8 +15,8 @@ public class FuncionariQueryPath extends org.fundaciobit.genapp.common.query.Que
     return new LongField(getQueryPath(), FuncionariFields.FUNCIONARIID);
   }
 
-  public IntegerField NUMERO() {
-    return new IntegerField(getQueryPath(), FuncionariFields.NUMERO);
+  public StringField NUMERO() {
+    return new StringField(getQueryPath(), FuncionariFields.NUMERO);
   }
 
   public StringField NOM() {

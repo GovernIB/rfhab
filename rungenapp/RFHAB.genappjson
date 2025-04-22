@@ -1412,7 +1412,7 @@
         {
           "isAutoIncrement": false,
           "sqlName": "numero",
-          "sqlType": 4,
+          "sqlType": 12,
           "size": 10,
           "digits": 0,
           "isNotNullable": true,
@@ -1421,7 +1421,7 @@
             "es": "Número"
           },
           "javaName": "numero",
-          "javaType": "int",
+          "javaType": "java.lang.String",
           "traduible": false,
           "showInWebList": true,
           "showInReferenceList": false,
@@ -1430,7 +1430,7 @@
           "orderBy": 0,
           "groupBy": false,
           "webFieldInfo": {
-            "webtype": 14
+            "webtype": 1
           },
           "foreignKeys": []
         },

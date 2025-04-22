@@ -30,7 +30,7 @@ public class FuncionariJPA implements Funcionari {
     long funcionariID;
 
     @Column(name="numero",nullable = false,length = 10)
-    int numero;
+    java.lang.String numero;
 
     @Column(name="nom",nullable = false,length = 255)
     java.lang.String nom;
@@ -74,7 +74,7 @@ public class FuncionariJPA implements Funcionari {
   }
 
   /** Constructor amb tots els camps  */
-  public FuncionariJPA(long funcionariID , int numero , java.lang.String nom , java.lang.String llinatge1 , java.lang.String llinatge2 , int tipusIdentificador , java.lang.String identificador , java.lang.String usuari , java.lang.String correu , java.sql.Timestamp dataCreacio , java.lang.String observacions , java.sql.Timestamp dataBaixa , long entitatID) {
+  public FuncionariJPA(long funcionariID , java.lang.String numero , java.lang.String nom , java.lang.String llinatge1 , java.lang.String llinatge2 , int tipusIdentificador , java.lang.String identificador , java.lang.String usuari , java.lang.String correu , java.sql.Timestamp dataCreacio , java.lang.String observacions , java.sql.Timestamp dataBaixa , long entitatID) {
     this.funcionariID=funcionariID;
     this.numero=numero;
     this.nom=nom;
@@ -90,7 +90,7 @@ public class FuncionariJPA implements Funcionari {
     this.entitatID=entitatID;
 }
   /** Constructor sense valors autoincrementals */
-  public FuncionariJPA(int numero , java.lang.String nom , java.lang.String llinatge1 , java.lang.String llinatge2 , int tipusIdentificador , java.lang.String identificador , java.lang.String usuari , java.lang.String correu , java.sql.Timestamp dataCreacio , java.lang.String observacions , java.sql.Timestamp dataBaixa , long entitatID) {
+  public FuncionariJPA(java.lang.String numero , java.lang.String nom , java.lang.String llinatge1 , java.lang.String llinatge2 , int tipusIdentificador , java.lang.String identificador , java.lang.String usuari , java.lang.String correu , java.sql.Timestamp dataCreacio , java.lang.String observacions , java.sql.Timestamp dataBaixa , long entitatID) {
     this.numero=numero;
     this.nom=nom;
     this.llinatge1=llinatge1;
@@ -105,7 +105,7 @@ public class FuncionariJPA implements Funcionari {
     this.entitatID=entitatID;
 }
   /** Constructor dels valors Not Null */
-  public FuncionariJPA(long funcionariID , int numero , java.lang.String nom , java.lang.String llinatge1 , int tipusIdentificador , java.lang.String identificador , java.lang.String usuari , java.lang.String correu , java.sql.Timestamp dataCreacio , long entitatID) {
+  public FuncionariJPA(long funcionariID , java.lang.String numero , java.lang.String nom , java.lang.String llinatge1 , int tipusIdentificador , java.lang.String identificador , java.lang.String usuari , java.lang.String correu , java.sql.Timestamp dataCreacio , long entitatID) {
     this.funcionariID=funcionariID;
     this.numero=numero;
     this.nom=nom;
@@ -140,10 +140,10 @@ public class FuncionariJPA implements Funcionari {
 		this.funcionariID = _funcionariID_;
 	};
 
-	public int getNumero() {
+	public java.lang.String getNumero() {
 		return(numero);
 	};
-	public void setNumero(int _numero_) {
+	public void setNumero(java.lang.String _numero_) {
 		this.numero = _numero_;
 	};
 

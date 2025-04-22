@@ -9,7 +9,7 @@ public class FuncionariBean implements Funcionari {
 
 
 	long funcionariID;// PK
-	int numero;
+	java.lang.String numero;
 	java.lang.String nom;
 	java.lang.String llinatge1;
 	java.lang.String llinatge2;
@@ -28,7 +28,7 @@ public class FuncionariBean implements Funcionari {
   }
 
   /** Constructor amb tots els camps  */
-  public FuncionariBean(long funcionariID , int numero , java.lang.String nom , java.lang.String llinatge1 , java.lang.String llinatge2 , int tipusIdentificador , java.lang.String identificador , java.lang.String usuari , java.lang.String correu , java.sql.Timestamp dataCreacio , java.lang.String observacions , java.sql.Timestamp dataBaixa , long entitatID) {
+  public FuncionariBean(long funcionariID , java.lang.String numero , java.lang.String nom , java.lang.String llinatge1 , java.lang.String llinatge2 , int tipusIdentificador , java.lang.String identificador , java.lang.String usuari , java.lang.String correu , java.sql.Timestamp dataCreacio , java.lang.String observacions , java.sql.Timestamp dataBaixa , long entitatID) {
     this.funcionariID=funcionariID;
     this.numero=numero;
     this.nom=nom;
@@ -44,7 +44,7 @@ public class FuncionariBean implements Funcionari {
     this.entitatID=entitatID;
 }
   /** Constructor sense valors autoincrementals */
-  public FuncionariBean(int numero , java.lang.String nom , java.lang.String llinatge1 , java.lang.String llinatge2 , int tipusIdentificador , java.lang.String identificador , java.lang.String usuari , java.lang.String correu , java.sql.Timestamp dataCreacio , java.lang.String observacions , java.sql.Timestamp dataBaixa , long entitatID) {
+  public FuncionariBean(java.lang.String numero , java.lang.String nom , java.lang.String llinatge1 , java.lang.String llinatge2 , int tipusIdentificador , java.lang.String identificador , java.lang.String usuari , java.lang.String correu , java.sql.Timestamp dataCreacio , java.lang.String observacions , java.sql.Timestamp dataBaixa , long entitatID) {
     this.numero=numero;
     this.nom=nom;
     this.llinatge1=llinatge1;
@@ -59,7 +59,7 @@ public class FuncionariBean implements Funcionari {
     this.entitatID=entitatID;
 }
   /** Constructor dels valors Not Null */
-  public FuncionariBean(long funcionariID , int numero , java.lang.String nom , java.lang.String llinatge1 , int tipusIdentificador , java.lang.String identificador , java.lang.String usuari , java.lang.String correu , java.sql.Timestamp dataCreacio , long entitatID) {
+  public FuncionariBean(long funcionariID , java.lang.String numero , java.lang.String nom , java.lang.String llinatge1 , int tipusIdentificador , java.lang.String identificador , java.lang.String usuari , java.lang.String correu , java.sql.Timestamp dataCreacio , long entitatID) {
     this.funcionariID=funcionariID;
     this.numero=numero;
     this.nom=nom;
@@ -94,10 +94,10 @@ public class FuncionariBean implements Funcionari {
 		this.funcionariID = _funcionariID_;
 	};
 
-	public int getNumero() {
+	public java.lang.String getNumero() {
 		return(numero);
 	};
-	public void setNumero(int _numero_) {
+	public void setNumero(java.lang.String _numero_) {
 		this.numero = _numero_;
 	};
 

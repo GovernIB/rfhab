@@ -80,7 +80,7 @@
         llinatge1 varchar2(255 char) not null,
         llinatge2 varchar2(255 char),
         nom varchar2(255 char) not null,
-        numero number(10,0) not null,
+        numero varchar2(10 char) not null,
         observacions clob,
         tipusidentificador number(10,0) not null,
         usuari varchar2(50 char) not null

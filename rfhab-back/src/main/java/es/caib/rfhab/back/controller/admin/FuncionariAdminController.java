@@ -20,8 +20,6 @@ import org.fundaciobit.genapp.common.query.GroupByItem;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.query.selectcolumn.Select6Values;
 import org.fundaciobit.genapp.common.utils.Utils;
-import org.fundaciobit.genapp.common.web.form.AdditionalButton;
-import org.fundaciobit.genapp.common.web.form.AdditionalButtonStyle;
 import org.fundaciobit.genapp.common.web.form.AdditionalField;
 import org.fundaciobit.genapp.common.web.i18n.I18NUtils;
 import org.springframework.stereotype.Controller;
@@ -36,29 +34,30 @@ import es.caib.rfhab.back.controller.webdb.FuncionariController;
 import es.caib.rfhab.back.form.webdb.FuncionariFilterForm;
 import es.caib.rfhab.back.form.webdb.FuncionariForm;
 import es.caib.rfhab.back.security.LoginInfo;
+import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.ejb.UnitatService;
 import es.caib.rfhab.logic.ActivitatLogicaService;
 import es.caib.rfhab.logic.AutoritzacioLogicaService;
+import es.caib.rfhab.logic.FuncionariAdminLogicaService;
 import es.caib.rfhab.logic.FuncionariLogicaService;
 import es.caib.rfhab.logic.HistoricLogicaService;
 import es.caib.rfhab.logic.LlocLogicaService;
 import es.caib.rfhab.model.entity.Activitat;
-import es.caib.rfhab.model.entity.Autoritzacio;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.Lloc;
-import es.caib.rfhab.model.entity.Rol;
 import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.LlocFields;
-import es.caib.rfhab.model.fields.RolFields;
 import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.HistoricJPA;
 import es.caib.rfhab.persistence.LlocJPA;
-import es.caib.rfhab.persistence.RolJPA;
 
 @Controller
 @RequestMapping(value = "/admin/funcionari")
 @SessionAttributes(types = { FuncionariForm.class, FuncionariFilterForm.class })
 public class FuncionariAdminController extends FuncionariController {
+
+	@EJB(mappedName = FuncionariAdminLogicaService.JNDI_NAME)
+	protected FuncionariAdminLogicaService funcionariAdminEJB;
 
 	@EJB(mappedName = FuncionariLogicaService.JNDI_NAME)
 	protected FuncionariLogicaService funcionariEJB;
@@ -126,10 +125,34 @@ public class FuncionariAdminController extends FuncionariController {
 			if (entitatIDActual != null && entitatIDActual > 0) {
 				funcionari.setEntitatID(entitatIDActual);
 			}
+
+			int nouNumber = 1;
+			String maxFuncionariNumero;
+			try {
+				maxFuncionariNumero = funcionariAdminEJB.getMaxFuncionariNumero();
+			} catch (SecurityException e) {
+				throw new I18NException(e.getMessage());
+			} catch (NoSuchFieldException e) {
+				throw new I18NException(e.getMessage());
+			}
+			if (maxFuncionariNumero != null) {
+				// Extreu la part numèrica de la cadena
+				String numericPart = maxFuncionariNumero.substring(Constants.FUNCIONARI_NUMERO_PLACEHOLDER_PREFIX.length());
+				// Converteix la part numèrica a un enter, suma 1 i torna a formar la cadena
+				nouNumber = Integer.parseInt(numericPart);
+				nouNumber += 1;
+			}
+			// Format numèric amb el mateix nombre de dígits que l'original
+			String updatedNumericPart = String.format("%0" + Constants.FUNCIONARI_NUMERO_PLACEHOLDER_NUMERICPART.length() + "d", nouNumber);
+			// Reconstrueix la cadena amb el prefix i el nou valor numèric
+			String nouFuncionariNumero = Constants.FUNCIONARI_NUMERO_PLACEHOLDER_PREFIX + updatedNumericPart;
+			funcionari.setNumero(nouFuncionariNumero);
 		}
+		mav.addObject("FUNCIONARI_NUMERO_PLACEHOLDER", Constants.FUNCIONARI_NUMERO_PLACEHOLDER);
 
 		funcionariForm.addReadOnlyField(DATACREACIO);
 		funcionariForm.addHiddenField(DATABAIXA);
+		funcionariForm.addReadOnlyField(FuncionariFields.NUMERO);
 		// funcionariForm.addHiddenField(ENTITATID);
 		funcionariForm.addReadOnlyField(FuncionariFields.ENTITATID);
 

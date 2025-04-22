@@ -67,6 +67,14 @@ public class FuncionariValidator<I extends Funcionari>
         new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(ENTITATID)));
 
     // Check size
+    if (__vr.getFieldErrorCount(NUMERO) == 0) {
+      java.lang.String __numero = __target__.getNumero();
+      if (__numero!= null && __numero.length() > 10) {
+        __vr.rejectValue(NUMERO, "genapp.validation.sizeexceeds",
+            new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(NUMERO)), new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(10)));
+      }
+    }
+
     if (__vr.getFieldErrorCount(NOM) == 0) {
       java.lang.String __nom = __target__.getNom();
       if (__nom!= null && __nom.length() > 255) {

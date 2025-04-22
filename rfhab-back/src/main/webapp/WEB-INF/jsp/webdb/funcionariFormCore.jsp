@@ -14,7 +14,7 @@
             </td>
           <td id="funcionari_numero_columnvalueid">
             <form:errors path="funcionari.numero" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,FuncionariFields.NUMERO)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,FuncionariFields.NUMERO)? ' uneditable-input' : ''}"  style=""  path="funcionari.numero"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,FuncionariFields.NUMERO)? 'true' : 'false'}" cssClass="w-50 form-control  ${gen:contains(__theForm.readOnlyFields ,FuncionariFields.NUMERO)? ' uneditable-input' : ''}"  style="" maxlength="10" path="funcionari.numero"   />
 
            </td>
         </tr>

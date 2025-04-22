@@ -13,7 +13,7 @@ public interface FuncionariFields extends java.io.Serializable {
 
 
 	 public static final LongField FUNCIONARIID = new LongField(_TABLE_MODEL, "funcionariID", "funcionariid");  // PK
-	 public static final IntegerField NUMERO = new IntegerField(_TABLE_MODEL, "numero", "numero");
+	 public static final StringField NUMERO = new StringField(_TABLE_MODEL, "numero", "numero");
 	 public static final StringField NOM = new StringField(_TABLE_MODEL, "nom", "nom");
 	 public static final StringField LLINATGE1 = new StringField(_TABLE_MODEL, "llinatge1", "llinatge1");
 	 public static final StringField LLINATGE2 = new StringField(_TABLE_MODEL, "llinatge2", "llinatge2");

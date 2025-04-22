@@ -43,25 +43,14 @@ public class FuncionariFilterForm extends RFHabBaseFilterForm implements Funcion
   }
 
 
-  private java.lang.Integer numeroDesde;
+  private java.lang.String numero;
 
-  public java.lang.Integer getNumeroDesde() {
-    return this.numeroDesde;
+  public java.lang.String getNumero() {
+    return this.numero;
   }
 
-  public void setNumeroDesde(java.lang.Integer numeroDesde) {
-    this.numeroDesde = numeroDesde;
-  }
-
-
-  private java.lang.Integer numeroFins;
-
-  public java.lang.Integer getNumeroFins() {
-    return this.numeroFins;
-  }
-
-  public void setNumeroFins(java.lang.Integer numeroFins) {
-    this.numeroFins = numeroFins;
+  public void setNumero(java.lang.String numero) {
+    this.numero = numero;
   }
 
 
@@ -226,8 +215,7 @@ public class FuncionariFilterForm extends RFHabBaseFilterForm implements Funcion
     super(__toClone);
     this.funcionariIDDesde = __toClone.funcionariIDDesde;
     this.funcionariIDFins = __toClone.funcionariIDFins;
-    this.numeroDesde = __toClone.numeroDesde;
-    this.numeroFins = __toClone.numeroFins;
+    this.numero = __toClone.numero;
     this.nom = __toClone.nom;
     this.llinatge1 = __toClone.llinatge1;
     this.llinatge2 = __toClone.llinatge2;

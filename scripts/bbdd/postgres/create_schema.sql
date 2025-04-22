@@ -102,7 +102,7 @@ create sequence rfh_usuarientitat_seq start 1000 increment 1;
         llinatge1 varchar(255) not null,
         llinatge2 varchar(255),
         nom varchar(255) not null,
-        numero int4 not null,
+        numero varchar(10) not null,
         observacions text,
         tipusidentificador int4 not null,
         usuari varchar(50) not null,

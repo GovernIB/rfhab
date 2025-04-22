@@ -6,11 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.Rol;
-import es.caib.rfhab.persistence.RolJPA;
 
 /**
- * 
- * ES63 0081 7045 1500 0111 4213
  * 
  * @autor jagarcia
  *
@@ -18,7 +15,7 @@ import es.caib.rfhab.persistence.RolJPA;
 
 public class HistoricFuncionariDAO implements java.io.Serializable{
 
-	private int numero;
+	private String numero;
 	private String nom;
 	private String llinatge1;
 	private String llinatge2;
@@ -31,11 +28,11 @@ public class HistoricFuncionariDAO implements java.io.Serializable{
 	@JsonIgnore
 	private List<Rol> rols;
 
-	public int getNumero() {
+	public String getNumero() {
 		return numero;
 	}
 
-	public void setNumero(int numero) {
+	public void setNumero(String numero) {
 		this.numero = numero;
 	}
 

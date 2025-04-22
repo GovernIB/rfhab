@@ -2,7 +2,7 @@ package es.caib.rfhab.commons.utils;
 
 /**
  *
- * @author anadal
+ * @author jpou
  *
  */
 public interface Constants {
@@ -33,5 +33,13 @@ public interface Constants {
     public static final String PLUGIN_SCAN = "SCANWEB";
     public static final String PLUGIN_DIR3 = "DIR3";
     public static final String PLUGIN_ROLSAC = "ROLSAC";
-    
+
+    // MENU ADMIN
+    public static final String FUNCIONARI_NUMERO_PLACEHOLDER_PREFIX = "FH_";
+    public static final String FUNCIONARI_NUMERO_PLACEHOLDER_NUMERICPART = "XXXXXXX";
+    public static final String FUNCIONARI_NUMERO_PLACEHOLDER = FUNCIONARI_NUMERO_PLACEHOLDER_PREFIX + FUNCIONARI_NUMERO_PLACEHOLDER_NUMERICPART;
+    public static final String SQL_LIKE_ESCAPE_PATTERN = "^";
+		public static final String SQL_NUMERO_PATTERN = FUNCIONARI_NUMERO_PLACEHOLDER.replaceAll("_", SQL_LIKE_ESCAPE_PATTERN + "_")
+				.replaceAll("X", "_");
+
 }

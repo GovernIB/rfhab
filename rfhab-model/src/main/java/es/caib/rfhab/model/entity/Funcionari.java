@@ -5,8 +5,8 @@ public interface Funcionari extends org.fundaciobit.genapp.common.IGenAppEntity 
 	public long getFuncionariID();
 	public void setFuncionariID(long _funcionariID_);
 
-	public int getNumero();
-	public void setNumero(int _numero_);
+	public java.lang.String getNumero();
+	public void setNumero(java.lang.String _numero_);
 
 	public java.lang.String getNom();
 	public void setNom(java.lang.String _nom_);

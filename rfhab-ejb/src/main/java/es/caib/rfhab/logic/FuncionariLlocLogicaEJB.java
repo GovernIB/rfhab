@@ -23,10 +23,10 @@ import es.caib.rfhab.model.fields.FuncionariLlocFields;
 public class FuncionariLlocLogicaEJB extends FuncionariLlocEJB implements FuncionariLlocLogicaService {
 
 	public Where getWhereFuncionariIsCurrent() {
-		Where w1 = Where.AND(FuncionariLlocFields.DATAINICI.lessThan(new Date(System.currentTimeMillis())),
+		Where w1 = Where.AND(FuncionariLlocFields.DATAINICI.lessThanOrEqual(new Date(System.currentTimeMillis())),
 				FuncionariLlocFields.DATAFI.greaterThan(new Date(System.currentTimeMillis())));
 
-		Where w2 = Where.AND(FuncionariLlocFields.DATAINICI.lessThan(new Date(System.currentTimeMillis())),
+		Where w2 = Where.AND(FuncionariLlocFields.DATAINICI.lessThanOrEqual(new Date(System.currentTimeMillis())),
 				FuncionariLlocFields.DATAFI.isNull());
 
 		Where w3 = Where.AND(FuncionariLlocFields.DATAINICI.isNull(), FuncionariLlocFields.DATAFI.isNull());

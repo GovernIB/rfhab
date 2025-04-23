@@ -50,6 +50,9 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 	@EJB(mappedName = FuncionariLlocService.JNDI_NAME)
 	FuncionariLlocService funcionariLlocEjb;
 
+	@EJB(mappedName = FuncionariLlocLogicaService.JNDI_NAME)
+	FuncionariLlocLogicaService funcionariLlocLogicaEjb;
+
 	@EJB(mappedName = FuncionariService.JNDI_NAME)
 	FuncionariService funcionariEjb;
 
@@ -204,19 +207,7 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 			w = FuncionariLlocFields.LLOCID.equal(llocId);
 
 		} else {
-
-			Where w1 = Where.AND(FuncionariLlocFields.DATAINICI.lessThan(new Date(System.currentTimeMillis())),
-					FuncionariLlocFields.DATAFI.greaterThan(new Date(System.currentTimeMillis())));
-
-			Where w2 = Where.AND(FuncionariLlocFields.DATAINICI.lessThan(new Date(System.currentTimeMillis())),
-					FuncionariLlocFields.DATAFI.isNull());
-
-			Where w3 = Where.AND(FuncionariLlocFields.DATAINICI.isNull(), FuncionariLlocFields.DATAFI.isNull());
-			
-			Where w4 = Where.AND(FuncionariLlocFields.DATAINICI.isNull(), FuncionariLlocFields.DATAFI.greaterThan(new Date(System.currentTimeMillis())));
-
-			w = Where.OR(w1, w2, w3, w4);
-
+			w = funcionariLlocLogicaEjb.getWhereFuncionariIsCurrent();
 		}
 
 		List<FuncionariLloc> funcionarisActius = funcionariLlocEjb.select(w);
@@ -243,8 +234,8 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 		}
 
 		return funcionaris;
-
 	}
+
 
 	@Override
 	public List<Lloc> getLlocByFuncionariID(Long funcionariId, boolean current) throws I18NException {
@@ -254,19 +245,7 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 			Where w = FuncionariLlocFields.FUNCIONARIID.equal(funcionariId);
 			 
 			if (current) {
-				
-				Where w1 = Where.AND(FuncionariLlocFields.DATAINICI.lessThan(new Date(System.currentTimeMillis())),
-						FuncionariLlocFields.DATAFI.greaterThan(new Date(System.currentTimeMillis())));
-
-				Where w2 = Where.AND(FuncionariLlocFields.DATAINICI.lessThan(new Date(System.currentTimeMillis())),
-						FuncionariLlocFields.DATAFI.isNull());
-
-				Where w3 = Where.AND(FuncionariLlocFields.DATAINICI.isNull(), FuncionariLlocFields.DATAFI.isNull());
-				
-				Where w4 = Where.AND(FuncionariLlocFields.DATAINICI.isNull(), FuncionariLlocFields.DATAFI.greaterThan(new Date(System.currentTimeMillis())));
-
-				w = Where.AND(w, Where.OR(w1, w2, w3, w4));
-				
+				w = funcionariLlocLogicaEjb.getWhereFuncionariIsCurrent(w);
 			}
 			List<FuncionariLloc> funcionarisLlocs = funcionariLlocEjb.select(w);
 			if (funcionarisLlocs.size() > 0) {

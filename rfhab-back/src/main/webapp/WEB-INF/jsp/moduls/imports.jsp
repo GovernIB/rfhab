@@ -141,12 +141,12 @@
         }
     }
 
-    function createDivModal(tituloDialog, msgDialog, url, formName) {
+    function createDivModal(tituloDialog, msgDialog, url, formName, modalId='myModal', titolIcona='fa-trash') {
         $('body')
-                .append('<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'
+                .append('<div id="' + modalId + '" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'
                         + '<div class="modal-dialog" role="document">'
                         + '<div class="modal-content">'
-                        + '<div class="modal-header">' + '<h4 id="myModalLabel"><i class="fas fa-trash"></i>'
+                        + '<div class="modal-header">' + '<h4 id="myModalLabel"><i class="fas ' + titolIcona + '"></i>&nbsp;'
                         + tituloDialog
                         + '</h4>'
                         + '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
@@ -174,7 +174,9 @@
             "dialogoMensajeEliminar" : "<fmt:message key="genapp.delete.info"/>",
             //MARILEN
             "boto.cancelar" : "<fmt:message key="genapp.cancel"/>",
-            "boto.continuar" : "<fmt:message key="genapp.continue"/>"
+            "boto.continuar" : "<fmt:message key="genapp.continue"/>",
+            "missatge.funcionari.donarbaixa.continuar" : "<fmt:message key="funcionari.donarbaixa.missatgecontinuar"/>",
+            "titol.funcionari.donarbaixa.continuar" : "<fmt:message key="funcionari.donarbaixa"/>"
         }
     }
 

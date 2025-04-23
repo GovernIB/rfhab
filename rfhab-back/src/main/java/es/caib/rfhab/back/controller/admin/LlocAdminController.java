@@ -34,6 +34,7 @@ import es.caib.rfhab.ejb.EntitatService;
 import es.caib.rfhab.ejb.FuncionariLlocService;
 import es.caib.rfhab.ejb.LlocRolService;
 import es.caib.rfhab.ejb.UnitatService;
+import es.caib.rfhab.logic.FuncionariLlocLogicaService;
 import es.caib.rfhab.logic.HistoricLlocLogicaService;
 import es.caib.rfhab.logic.LlocLogicaService;
 import es.caib.rfhab.model.entity.Entitat;
@@ -72,6 +73,9 @@ public class LlocAdminController extends LlocController {
 
 	@EJB(mappedName = FuncionariLlocService.JNDI_NAME)
 	protected FuncionariLlocService funcionariLlocEjb;
+
+	@EJB(mappedName = FuncionariLlocLogicaService.JNDI_NAME)
+	protected FuncionariLlocLogicaService funcionariLlocLogicaEjb;
 
 	@EJB(mappedName = LlocRolService.JNDI_NAME)
 	protected LlocRolService llocRolEjb;
@@ -246,20 +250,7 @@ public class LlocAdminController extends LlocController {
 	public void postList(HttpServletRequest request, ModelAndView mav, LlocFilterForm filterForm, List<Lloc> list)
 			throws I18NException {
 
-		Where w1 = Where.AND(FuncionariLlocFields.DATAINICI.lessThan(new Date(System.currentTimeMillis())),
-				FuncionariLlocFields.DATAFI.greaterThan(new Date(System.currentTimeMillis())));
-
-		Where w2 = Where.AND(FuncionariLlocFields.DATAINICI.lessThan(new Date(System.currentTimeMillis())),
-				FuncionariLlocFields.DATAFI.isNull());
-
-		Where w3 = Where.AND(FuncionariLlocFields.DATAINICI.isNull(), FuncionariLlocFields.DATAFI.isNull());
-
-		Where w4 = Where.AND(FuncionariLlocFields.DATAINICI.isNull(),
-				FuncionariLlocFields.DATAFI.greaterThan(new Date(System.currentTimeMillis())));
-
-		Where w = Where.OR(w1, w2, w3, w4);
-
-		List<Long> llocsOcupats = funcionariLlocEjb.executeQuery(FuncionariLlocFields.LLOCID, w);
+		List<Long> llocsOcupats = funcionariLlocEjb.executeQuery(FuncionariLlocFields.LLOCID, funcionariLlocLogicaEjb.getWhereFuncionariIsCurrent());
 
 		filterForm.getAdditionalButtonsByPK().clear();
 

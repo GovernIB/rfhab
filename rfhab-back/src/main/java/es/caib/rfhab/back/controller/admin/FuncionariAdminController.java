@@ -20,6 +20,8 @@ import org.fundaciobit.genapp.common.query.GroupByItem;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.query.selectcolumn.Select6Values;
 import org.fundaciobit.genapp.common.utils.Utils;
+import org.fundaciobit.genapp.common.web.form.AdditionalButton;
+import org.fundaciobit.genapp.common.web.form.AdditionalButtonStyle;
 import org.fundaciobit.genapp.common.web.form.AdditionalField;
 import org.fundaciobit.genapp.common.web.i18n.I18NUtils;
 import org.springframework.stereotype.Controller;
@@ -39,6 +41,7 @@ import es.caib.rfhab.ejb.UnitatService;
 import es.caib.rfhab.logic.ActivitatLogicaService;
 import es.caib.rfhab.logic.AutoritzacioLogicaService;
 import es.caib.rfhab.logic.FuncionariAdminLogicaService;
+import es.caib.rfhab.logic.FuncionariLlocLogicaService;
 import es.caib.rfhab.logic.FuncionariLogicaService;
 import es.caib.rfhab.logic.HistoricLogicaService;
 import es.caib.rfhab.logic.LlocLogicaService;
@@ -64,6 +67,9 @@ public class FuncionariAdminController extends FuncionariController {
 
 	@EJB(mappedName = LlocLogicaService.JNDI_NAME)
 	protected LlocLogicaService llocEJB;
+
+	@EJB(mappedName = FuncionariLlocLogicaService.JNDI_NAME)
+	protected FuncionariLlocLogicaService funcionariLlocLogicaEJB;
 
 	@EJB(mappedName = UnitatService.JNDI_NAME)
 	protected UnitatService unitatEJB;
@@ -108,17 +114,16 @@ public class FuncionariAdminController extends FuncionariController {
 			List<Select6Values<Long, String, String, String, String, Timestamp>> historicItems = historicEjb
 					.getHistoricByFuncionariId(funcionariID);
 			mav.addObject("historicItems", historicItems);
-
 		}
 
 		FuncionariForm funcionariForm = super.getFuncionariForm(_jpa, __isView, request, mav);
 
+		funcionariForm.setDeleteButtonVisible(false);
+
+		FuncionariJPA funcionari = funcionariForm.getFuncionari();
 		if (funcionariForm.isNou()) {
-			FuncionariJPA funcionari = funcionariForm.getFuncionari();
 			funcionari.setDataCreacio(new Timestamp(System.currentTimeMillis()));
 
-			funcionariForm.setDeleteButtonVisible(false);
-			
 			LoginInfo loginInfo = LoginInfo.getInstance();
 			Long entitatIDActual = loginInfo.getEntitatIDActual();
 			log.info("ENTITAT ID ACTUAL: => " + entitatIDActual);
@@ -147,6 +152,21 @@ public class FuncionariAdminController extends FuncionariController {
 			// Reconstrueix la cadena amb el prefix i el nou valor numèric
 			String nouFuncionariNumero = Constants.FUNCIONARI_NUMERO_PLACEHOLDER_PREFIX + updatedNumericPart;
 			funcionari.setNumero(nouFuncionariNumero);
+		}
+		else{
+			if(funcionari.getDataBaixa() == null) {
+				long funcionariId = funcionari.getFuncionariID();
+				//botó donar de baixa funcionari
+				String jsOpenModalDonarBaixa = "javascript:createDivModal(traduccions.type['titol.funcionari.donarbaixa.continuar'], traduccions.type['missatge.funcionari.donarbaixa.continuar'], '"
+				+ request.getContextPath() + getContextWeb() + "/" + funcionariId + "/delete/"
+				+ "', '', 'func-donarbaixa-id', 'fa-user-times');\r\n" + //
+				"        $('#func-donarbaixa-id').modal('show');\r\n";
+				AdditionalButton donarDeBaixaButton = new AdditionalButton("fas fa-user-times",
+					"funcionari.donarbaixa",
+					jsOpenModalDonarBaixa,
+					AdditionalButtonStyle.DANGER);
+				funcionariForm.addAdditionalButton(donarDeBaixaButton);			
+			}
 		}
 		mav.addObject("FUNCIONARI_NUMERO_PLACEHOLDER", Constants.FUNCIONARI_NUMERO_PLACEHOLDER);
 
@@ -304,18 +324,21 @@ public class FuncionariAdminController extends FuncionariController {
 
 	@Override
 	public void delete(HttpServletRequest request, Funcionari funcionari) throws I18NException {
-
+		//afegim històric
 		HistoricJPA historic = new HistoricJPA();
 		historic.setDataCreacio(new Timestamp(System.currentTimeMillis()));
 		historic.setFuncionariID(funcionari.getFuncionariID());
 		historic.setNumeroCai("CAI");
 		historic.setUsuariID(LoginInfo.getInstance().getUsuariPersona().getUsuariID());
-		historic.setObservacions("Funcionari eliminat");
+		historic.setObservacions("Funcionari donat de baixa");
 		historicEjb.create(historic);
 
+		//el desasignam del lloc de feina
+		funcionariLlocLogicaEJB.donarDeBaixaFuncionariDeLloc(funcionari.getFuncionariID());
+
+		//el donam de baixa
 		funcionari.setDataBaixa(new Timestamp(System.currentTimeMillis()));
 		funcionariEjb.update(funcionari);
-
 	}
 
 	@Override
@@ -358,7 +381,6 @@ public class FuncionariAdminController extends FuncionariController {
 		__tmp.add(new StringKeyValue("0", "No"));
 		__tmp.add(new StringKeyValue("1", "Sí"));
 		return __tmp;
-
 	}
 
 	@Override
@@ -372,7 +394,6 @@ public class FuncionariAdminController extends FuncionariController {
 		__tmp.add(new StringKeyValue("3", I18NUtils.tradueix("tipusidentificacio.3")));
 		__tmp.add(new StringKeyValue("4", I18NUtils.tradueix("tipusidentificacio.4")));
 		return __tmp;
-
 	}
 
 	@Override
@@ -386,7 +407,6 @@ public class FuncionariAdminController extends FuncionariController {
 				LoginInfo.getInstance().getUsuariPersona().getUsuariID());
 
 		return super.editarFuncionariPost(funcionariForm, result, status, request, response);
-
 	}
 
 	@Override
@@ -419,9 +439,6 @@ public class FuncionariAdminController extends FuncionariController {
 				mapFuncionari2.put(funcionariID, "");
 				mapFuncionari3.put(funcionariID, "<i class=\"fa fa-times\"></i>");
 			}
-
 		}
-
 	}
-
 }

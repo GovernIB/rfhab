@@ -89,21 +89,19 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 		FuncionariLlocForm funcionariLlocForm = super.getFuncionariLlocForm(_jpa, __isView, request, mav);
 
 		if (funcionariLlocForm.isNou()) {
-
+			FuncionariLlocJPA funcionariLloc = funcionariLlocForm.getFuncionariLloc();
 			if (request.getSession() != null && request.getSession().getAttribute("LlocId") != null) {
-				funcionariLlocForm.getFuncionariLloc().setLlocID((long) request.getSession().getAttribute("LlocId"));
+				funcionariLloc.setLlocID((long) request.getSession().getAttribute("LlocId"));
 				funcionariLlocForm.addReadOnlyField(LLOCID);
 			}
 
 			if (request.getSession() != null && request.getSession().getAttribute("FuncionariId") != null) {
-				funcionariLlocForm.getFuncionariLloc()
-						.setFuncionariID((long) request.getSession().getAttribute("FuncionariId"));
+				funcionariLloc.setFuncionariID((long) request.getSession().getAttribute("FuncionariId"));
 				funcionariLlocForm.addReadOnlyField(FUNCIONARIID);
 			}
 
-			funcionariLlocForm.getFuncionariLloc()
-					.setUsuariID(LoginInfo.getInstance().getUsuariPersona().getUsuariID());
-			funcionariLlocForm.getFuncionariLloc().setDataCreacio(new Timestamp(System.currentTimeMillis()));
+			funcionariLloc.setUsuariID(LoginInfo.getInstance().getUsuariPersona().getUsuariID());
+			funcionariLloc.setDataCreacio(new Timestamp(System.currentTimeMillis()));
 		}
 
 		funcionariLlocForm.addHiddenField(USUARIID);

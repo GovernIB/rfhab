@@ -57,7 +57,7 @@ public class HistoricLlocLogicaEJB extends HistoricLlocEJB implements HistoricLl
 			HistoricLlocDAO historicOld)
 			throws JsonProcessingException, I18NException {
 		ObjectMapper mapper = new ObjectMapper();
-		String cambio = mapper.writeValueAsString(new HistoricLlocDAO[] { historicNew, historicOld });
+		String cambio = mapper.writeValueAsString(new HistoricLlocDAO[] { historicOld, historicNew });
 		historicLloc.setObservacions(cambio);
 
 		super.create(historicLloc);

@@ -19,7 +19,7 @@
 		</thead>
 		<tbody>
 			<c:forEach var="field" items="${nou['class'].declaredFields}">
-				<c:if test="${nou[field.name] != null && vell[field.name] != null}">
+				<c:if test="${nou[field.name] != null || vell[field.name] != null}">
 					<c:if test="${nou[field.name] != vell[field.name]}">
 						<tr>
 							<td><c:out value="${field}"/></td>

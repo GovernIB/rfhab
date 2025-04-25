@@ -27,10 +27,13 @@ import es.caib.rfhab.back.form.webdb.FuncionariLlocFilterForm;
 import es.caib.rfhab.back.form.webdb.FuncionariLlocForm;
 import es.caib.rfhab.back.security.LoginInfo;
 import es.caib.rfhab.commons.utils.Utils;
-import es.caib.rfhab.ejb.HistoricLlocService;
+import es.caib.rfhab.logic.FuncionariLogicaService;
+import es.caib.rfhab.logic.HistoricLlocLogicaService;
+import es.caib.rfhab.logic.LlocLogicaService;
+import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.FuncionariLloc;
+import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.fields.FuncionariFields;
-import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.persistence.FuncionariLlocJPA;
 import es.caib.rfhab.persistence.HistoricLlocJPA;
 
@@ -43,9 +46,15 @@ import es.caib.rfhab.persistence.HistoricLlocJPA;
 @SessionAttributes(types = { FuncionariLlocForm.class, FuncionariLlocFilterForm.class })
 public class FuncionariLlocAdminController extends FuncionariLlocController {
 
-	@EJB(mappedName = HistoricLlocService.JNDI_NAME)
-	protected HistoricLlocService historicLlocEjb;
-	
+	@EJB(mappedName = HistoricLlocLogicaService.JNDI_NAME)
+	protected HistoricLlocLogicaService historicLlocLogicaEjb;
+
+	@EJB(mappedName = FuncionariLogicaService.JNDI_NAME)
+	protected FuncionariLogicaService funcionariEjb;
+
+	@EJB(mappedName = LlocLogicaService.JNDI_NAME)
+	protected LlocLogicaService llocEjb;
+
 	@Override
 	public String getTileForm() {
 		return "funcionariLlocFormAdmin";
@@ -92,9 +101,9 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 				funcionariLlocForm.addReadOnlyField(FUNCIONARIID);
 			}
 
-			funcionariLlocForm.getFuncionariLloc().setUsuariID(LoginInfo.getInstance().getUsuariPersona().getUsuariID());
+			funcionariLlocForm.getFuncionariLloc()
+					.setUsuariID(LoginInfo.getInstance().getUsuariPersona().getUsuariID());
 			funcionariLlocForm.getFuncionariLloc().setDataCreacio(new Timestamp(System.currentTimeMillis()));
-
 		}
 
 		funcionariLlocForm.addHiddenField(USUARIID);
@@ -106,21 +115,38 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 	@Override
 	public FuncionariLlocJPA create(HttpServletRequest request, FuncionariLlocJPA funcionariLloc)
 			throws I18NException, I18NValidationException {
-		
+
 		FuncionariLlocJPA funcionariLlocJPA = super.create(request, funcionariLloc);
-		
+
 		// Guardar imatge del canvi a historic de Lloc i historic de funcionari
-		
-	    final String numeroCai = (Utils.isNotEmpty(request.getParameter("numeroCai"))) ? request.getParameter("numeroCai") : ""; 
+		final String numeroCai = (Utils.isNotEmpty(request.getParameter("numeroCai")))
+				? request.getParameter("numeroCai")
+				: "";
 
 		HistoricLlocJPA historicLloc = new HistoricLlocJPA();
-		historicLloc.setLlocID(funcionariLloc.getLlocID());
+		long llocID = funcionariLloc.getLlocID();
+		historicLloc.setLlocID(llocID);
 		historicLloc.setNumeroCai(numeroCai);
 		historicLloc.setDataCreacio(new Timestamp(System.currentTimeMillis()));
 		historicLloc.setUsuariID(LoginInfo.getInstance().getUsuariPersona().getUsuariID());
-		historicLloc.setObservacions("Nova assignació de funcionari a lloc: " + funcionariLloc.getFuncionariID() + " - " + funcionariLloc.getLlocID());
-		historicLlocEjb.create(historicLloc);
-		
+
+		long funcionariID = funcionariLloc.getFuncionariID();
+		String funcionariIdString = Long.toString(funcionariID);
+		Funcionari funcionari = funcionariEjb.findByPrimaryKey(funcionariID);
+		String funcionariIdentificador = "<null>";
+		if(funcionari != null){
+			funcionariIdentificador = funcionari.getIdentificador();
+		}
+		String llocIdString = Long.toString(llocID);
+		Lloc lloc = llocEjb.findByPrimaryKey(llocID);
+		String llocCodi = "<null>";
+		if(lloc != null){
+			llocCodi = lloc.getCodiLloc();
+		}
+		String historicLlocObservacions = "Nova assignació de funcionari " + funcionariIdentificador + " (id "
+				+ funcionariIdString + ") a lloc " + llocCodi + " (id " + llocIdString + ")";
+		historicLlocLogicaEjb.create(historicLloc, historicLlocObservacions);
+
 		return funcionariLlocJPA;
 	}
 
@@ -134,7 +160,6 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 	public String assignarFuncionari(HttpServletRequest request, @PathVariable("llocId") Long llocId) {
 
 		request.getSession().setAttribute("LlocId", llocId);
-
 		return "redirect:/admin/funcionarilloc/new";
 	}
 
@@ -142,32 +167,26 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 	public String tornar(HttpServletRequest request) {
 		return "redirect:/admin/funcionari/list/1";
 	}
-	
+
 	@Override
 	public String getRedirectWhenCancel(HttpServletRequest request, java.lang.Long historicID) {
-        return "redirect:/admin/funcionari/list/1";
-    }
+		return "redirect:/admin/funcionari/list/1";
+	}
 
 	@Override
 	public List<StringKeyValue> getReferenceListForLlocID(HttpServletRequest request,
-       ModelAndView mav, FuncionariLlocFilterForm funcionariLlocFilterForm,
-       List<FuncionariLloc> list, Map<Field<?>, GroupByItem> _groupByItemsMap, Where where)  throws I18NException {
+			ModelAndView mav, FuncionariLlocFilterForm funcionariLlocFilterForm,
+			List<FuncionariLloc> list, Map<Field<?>, GroupByItem> _groupByItemsMap, Where where) throws I18NException {
 
 		Where w1 = FuncionariFields.ENTITATID.equal(LoginInfo.getInstance().getEntitatIDActual());
-
 		return super.getReferenceListForFuncionariID(request, mav, Where.AND(where, w1));
-
 	}
 
 	@Override
 	public List<StringKeyValue> getReferenceListForFuncionariID(HttpServletRequest request,
-       ModelAndView mav, FuncionariLlocForm funcionariLlocForm, Where where)  throws I18NException {
+			ModelAndView mav, FuncionariLlocForm funcionariLlocForm, Where where) throws I18NException {
 
 		Where w1 = FuncionariFields.ENTITATID.equal(LoginInfo.getInstance().getEntitatIDActual());
-
 		return super.getReferenceListForFuncionariID(request, mav, Where.AND(where, w1));
-
 	}
-	
-
 }

@@ -3,20 +3,33 @@
 <div class="col-12">
 	<ul class="nav nav-tabs" id="myTab" role="tablist"
 		style="margin-bottom: 20px;">
-		<li class="nav-item"><a class="nav-link active" id="home-tab"
-			data-toggle="tab" href="#funcionaris" role="tab" aria-controls="home"
-			aria-selected="true"><fmt:message key="funcionari.funcionari.plural"/></a></li>
-		<li class="nav-item"><a class="nav-link" id="rols-tab"
-			data-toggle="tab" href="#rols" role="tab" aria-controls="rols"
-			aria-selected="false"><fmt:message key="rol.rol.plural"/></a></li>
-		<li class="nav-item"><a class="nav-link" id="autoritzacio-tab"
-			data-toggle="tab" href="#autoritzacio" role="tab"
-			aria-controls="autoritzacio" aria-selected="false"><fmt:message key="autoritzacio.autoritzacio.plural"/></a>
+		<li class="nav-item">
+			<a class="nav-link active" id="home-tab"
+				data-toggle="tab" href="#funcionaris" role="tab" aria-controls="home"
+				aria-selected="true"><fmt:message key="funcionari.funcionari.plural"/></a>
 		</li>
-		<li class="nav-item"><a class="nav-link" id="historic-tab"
-			data-toggle="tab" href="#historic" role="tab"
-			aria-controls="historic" aria-selected="false"><fmt:message key="historicLloc.historicLloc.plural"/></a></li>
+		<li class="nav-item">
+			<a class="nav-link" id="rols-tab"
+				data-toggle="tab" href="#rols" role="tab" aria-controls="rols"
+				aria-selected="false"><fmt:message key="rol.rol.plural"/></a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" id="autoritzacio-tab"
+				data-toggle="tab" href="#autoritzacio" role="tab"
+				aria-controls="autoritzacio" aria-selected="false"><fmt:message key="autoritzacio.autoritzacio.plural"/></a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" id="historic-tab"
+				data-toggle="tab" href="#historic" role="tab"
+				aria-controls="historic" aria-selected="false"><fmt:message key="lloc.historic.pipella"/></a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" id="historicfuncionaris-tab"
+				data-toggle="tab" href="#historicfuncionaris" role="tab"
+				aria-controls="historicfuncionaris" aria-selected="false"><fmt:message key="lloc.historicfuncionaris.pipella"/></a>
+		</li>
 	</ul>
+
 	<div class="tab-content" id="myTabContent">
 		<div class="tab-pane fade show active" id="funcionaris" role="tabpanel"
 			aria-labelledby="funcionaris-tab">
@@ -44,19 +57,17 @@
 								<tr id="rol_rowid_${funcionariItem.funcionariID}">
 									<td>${funcionariItem.numero}</td>
 									<td>${funcionariItem.nom}&nbsp;${funcionariItem.llinatge1}&nbsp;${funcionariItem.llinatge2}</td>
-									<td><fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${funcionariItem.dataBaixa}" /></td>
-									<td><fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${funcionariItem.dataBaixa}" /></td>
+									<td><fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${funcionariItem.dataInici}" /></td>
+									<td><fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${funcionariItem.dataFi}" /></td>
 									<td><a class="btn btn-primary btn-sm" href="<c:url value="/admin/funcionari/${funcionariItem.funcionariID}/edit"/>"><fmt:message key="detall"/></a></td>
 								</tr>
 							</c:forEach>
 						</tbody>
 					</table>
 				</div>
-
 			</c:if>
-
-
 		</div>
+
 		<div class="tab-pane fade" id="rols" role="tabpanel"
 			aria-labelledby="rols-tab">
 
@@ -124,42 +135,82 @@
 			</c:if>
 
 		</div>
+
 		<div class="tab-pane fade" id="historic" role="tabpanel"
 			aria-labelledby="historic-tab">
 
 			<c:if test="${historic.isEmpty()}">
-	<div class="alert alert-warning" role="alert" style="margin-top: 20px;"><fmt:message key="lloc.historic.buit"/></div>
-</c:if>
+				<div class="alert alert-warning" role="alert" style="margin-top: 20px;">
+					<fmt:message key="lloc.historic.buit"/>
+				</div>
+			</c:if>
 
-<c:if test="${ not isNew && not historic.isEmpty()}">
-	<div style="margin-top: 20px;">
-		<table
-			class="table table-sm table-bordered table-striped table-genapp table-genapp-list"
-			style="width: auto;">
-			<thead>
-				<tr>
-					<th><fmt:message key="historicLloc.dataCreacio" /></th>
-					<th><fmt:message key="historicLloc.numeroCai"/></th>
-					<th><fmt:message key="historicLloc.usuariID"/></th>
-					<th>&nbsp;</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach var="h" items="${historic}">
-					<tr>
-						<td>${h.value6}</td>
-						<td>${h.value2}</td>
-						<td>${h.value3}&nbsp;${h.value4}&nbsp;${h.value5}</td>
-						<td><a href="<c:url value="/admin/historiclloc/view/${h.value1}"/>" class="btn btn-secondary"><i
-								class="far fa-eye" title="Veure Detall"></i></a></td>
-					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
-	</div>
-</c:if>
+			<c:if test="${ not isNew && not historic.isEmpty()}">
+				<div style="margin-top: 20px;">
+					<table
+						class="table table-sm table-bordered table-striped table-genapp table-genapp-list"
+						style="width: auto;">
+						<thead>
+							<tr>
+								<th><fmt:message key="historicLloc.dataCreacio" /></th>
+								<th><fmt:message key="historicLloc.numeroCai"/></th>
+								<th><fmt:message key="historicLloc.usuariID"/></th>
+								<th>&nbsp;</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach var="h" items="${historic}">
+								<tr>
+									<td>${h.value6}</td>
+									<td>${h.value2}</td>
+									<td>${h.value3}&nbsp;${h.value4}&nbsp;${h.value5}</td>
+									<td><a href="<c:url value="/admin/historiclloc/view/${h.value1}"/>" class="btn btn-secondary"><i
+											class="far fa-eye" title="<fmt:message key="lloc.historic.veuredetall"/>"></i></a></td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+				</div>
+			</c:if>
 
 		</div>
+
+		<div class="tab-pane fade" id="historicfuncionaris" role="tabpanel"
+			aria-labelledby="historicfuncionaris-tab">
+
+			<c:if test="${funcionarisHistoric.isEmpty()}">
+				<div class="alert alert-warning" role="alert"><fmt:message key="lloc.admin.rols.sense"/></div>
+			</c:if>
+
+			<c:if test="${not funcionarisHistoric.isEmpty()}">
+				<div class="row" style="margin-left: 0px;">
+					<table
+						class="table table-sm table-bordered table-striped table-genapp table-genapp-list"
+						style="width: auto;">
+						<thead>
+							<tr>
+								<th><fmt:message key="funcionari.numero"/></th>
+								<th><fmt:message key="funcionari.nom"/></th>
+								<th><fmt:message key="funcionariLloc.dataInici"/></th>
+								<th><fmt:message key="funcionariLloc.dataFi"/></th>
+								<th>&nbsp;</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach var="funcionariItem" items="${funcionarisHistoric}">
+								<tr id="rol_rowid_${funcionariItem.funcionariID}">
+									<td>${funcionariItem.numero}</td>
+									<td>${funcionariItem.nom}&nbsp;${funcionariItem.llinatge1}&nbsp;${funcionariItem.llinatge2}</td>
+									<td><fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${funcionariItem.dataInici}" /></td>
+									<td><fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${funcionariItem.dataFi}" /></td>
+									<td><a class="btn btn-primary btn-sm" href="<c:url value="/admin/funcionari/${funcionariItem.funcionariID}/edit"/>"><fmt:message key="detall"/></a></td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+				</div>
+			</c:if>
+		</div>	
 	</div>
 </div>
 

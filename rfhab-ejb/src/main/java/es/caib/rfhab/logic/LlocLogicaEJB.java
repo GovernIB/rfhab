@@ -14,15 +14,13 @@ import javax.persistence.Query;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.query.Where;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import es.caib.rfhab.ejb.FuncionariLlocService;
 import es.caib.rfhab.ejb.FuncionariService;
 import es.caib.rfhab.ejb.HistoricLlocService;
 import es.caib.rfhab.ejb.LlocEJB;
 import es.caib.rfhab.ejb.LlocRolService;
-import es.caib.rfhab.ejb.LlocService;
 import es.caib.rfhab.ejb.RolService;
+import es.caib.rfhab.logic.utils.FuncionariLlocDAO;
 import es.caib.rfhab.logic.utils.HistoricLlocDAO;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.FuncionariLloc;
@@ -31,6 +29,7 @@ import es.caib.rfhab.model.entity.LlocRol;
 import es.caib.rfhab.model.entity.Rol;
 import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.FuncionariLlocFields;
+import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.model.fields.LlocRolFields;
 import es.caib.rfhab.persistence.HistoricLlocJPA;
 import es.caib.rfhab.persistence.LlocJPA;
@@ -46,6 +45,9 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 
 	@EJB(mappedName = HistoricLlocService.JNDI_NAME)
 	HistoricLlocService historicLlocEjb;
+
+	@EJB(mappedName = HistoricLlocLogicaService.JNDI_NAME)
+	HistoricLlocLogicaService historicLlocLogicaEjb;
 
 	@EJB(mappedName = FuncionariLlocService.JNDI_NAME)
 	FuncionariLlocService funcionariLlocEjb;
@@ -65,94 +67,59 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 	@Override
 	@PermitAll
 	public Lloc updateAndHistory(Lloc lloc, String cai, Long usuariId) throws I18NException {
-
 		try {
 			Lloc newLloc = null;
-
-			if (lloc != null) {
-
-				Lloc oldLloc = findByPrimaryKey(lloc.getLlocID());
-
-				if (oldLloc != null) {
-
-					newLloc = update(lloc);
-
-					HistoricLlocJPA historicLloc = new HistoricLlocJPA();
-					historicLloc.setLlocID(oldLloc.getLlocID());
-					historicLloc.setNumeroCai(cai);
-					historicLloc.setDataCreacio(new Timestamp(System.currentTimeMillis()));
-					historicLloc.setUsuariID(usuariId);
-
-					/*
-					 * String cambio = ""; if (oldLloc.getNom() != lloc.getNom()) { cambio +=
-					 * "Nom: " + oldLloc.getNom() + " -> " + lloc.getNom() + " | "; }
-					 * 
-					 * if (oldLloc.getCodiDir3() != lloc.getCodiDir3()) { cambio += "CodiDir3: " +
-					 * oldLloc.getCodiDir3() + " -> " + lloc.getCodiDir3() + " | "; }
-					 * 
-					 * if (oldLloc.getCodiLloc() != lloc.getCodiLloc()) { cambio += "CodiLloc: " +
-					 * oldLloc.getCodiLloc() + " -> " + lloc.getCodiLloc() + " | "; }
-					 * 
-					 * if (oldLloc.getPersonalOamr() != lloc.getPersonalOamr()) { cambio +=
-					 * "Personaloamr: " + oldLloc.getPersonalOamr() + " -> " +
-					 * lloc.getPersonalOamr() + " | "; }
-					 */
-
-					HistoricLlocDAO historic = new HistoricLlocDAO(oldLloc);
-
-					ObjectMapper mapper = new ObjectMapper();
-
-					String cambio = mapper.writeValueAsString(historic);
-
-					historicLloc.setObservacions(cambio);
-
-					historicLlocEjb.create(historicLloc);
-
-				} else
-					throw new I18NException("error.modification", String.valueOf(lloc.getLlocID()));
+			if (lloc == null) {
+				throw new I18NException("error.modification", "<lloc null>");
 			}
+			Lloc oldLloc = findByPrimaryKey(lloc.getLlocID());
+			if (oldLloc == null) {
+				throw new I18NException("error.modification", new String[] { "lloc", LlocFields.LLOCID.sqlName,
+						String.valueOf(lloc.getLlocID()), "<oldLloc null>" });
+			}
+
+			HistoricLlocDAO historicOld = new HistoricLlocDAO(oldLloc);
+			newLloc = update(lloc);
+
+			HistoricLlocJPA historicLloc = new HistoricLlocJPA();
+			historicLloc.setLlocID(oldLloc.getLlocID());
+			historicLloc.setNumeroCai(cai);
+			historicLloc.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+			historicLloc.setUsuariID(usuariId);
+
+			HistoricLlocDAO historicNew = new HistoricLlocDAO(newLloc);
+			historicLlocLogicaEjb.create(historicLloc, historicNew, historicOld);
 
 			return newLloc;
 		} catch (Exception e) {
 			log.error(e.getMessage());
-			return null;
+			throw new I18NException("error.modification", String.valueOf(lloc.getLlocID()));
 		}
 	}
 
 	@Override
 	@PermitAll
 	public HistoricLlocJPA createAndHistory(Lloc lloc, String cai, Long usuariId) throws I18NException {
-
 		try {
-
 			HistoricLlocJPA historicLloc = null;
 
 			if (lloc != null) {
-
-				log.info("Lloc creat: " + lloc.getLlocID());
-
 				historicLloc = new HistoricLlocJPA();
 				historicLloc.setLlocID(lloc.getLlocID());
 				historicLloc.setNumeroCai(cai);
 				historicLloc.setDataCreacio(new Timestamp(System.currentTimeMillis()));
 				historicLloc.setUsuariID(usuariId);
 
-				HistoricLlocDAO historic = new HistoricLlocDAO(lloc);
-				ObjectMapper mapper = new ObjectMapper();
-				String cambio = mapper.writeValueAsString(historic);
-				historicLloc.setObservacions(cambio);
-
-				historicLlocEjb.create(historicLloc);
-
-				log.info("HistoricLloc creat: " + historicLloc.getHistoricllocID());
-
+				HistoricLlocDAO historicNew = new HistoricLlocDAO(lloc);
+				HistoricLlocDAO historicOld = new HistoricLlocDAO();
+				historicLlocLogicaEjb.create(historicLloc, historicNew, historicOld);
 			} else
-				throw new I18NException("error.creation", String.valueOf(lloc.getLlocID()));
+				throw new I18NException("error.creation", "<lloc null>");
 
 			return historicLloc;
 		} catch (Exception e) {
 			log.error(e.getMessage());
-			return null;
+			throw new I18NException("error.creation", String.valueOf(lloc.getLlocID()));
 		}
 	}
 
@@ -203,9 +170,7 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 		Where w = null;
 
 		if (llocId != null && llocId > 0) {
-
 			w = FuncionariLlocFields.LLOCID.equal(llocId);
-
 		} else {
 			w = funcionariLlocLogicaEjb.getWhereFuncionariIsCurrent();
 		}
@@ -218,7 +183,7 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 		}
 
 		Where filtro = FuncionariFields.FUNCIONARIID.in(funcionarisAssignats);
-		if (entitatId != null && entitatId > 0){
+		if (entitatId != null && entitatId > 0) {
 			filtro = Where.AND(filtro, FuncionariFields.ENTITATID.equal(entitatId));
 		}
 		List<Funcionari> llistaFuncionaris = funcionariEjb
@@ -236,14 +201,13 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 		return funcionaris;
 	}
 
-
 	@Override
 	public List<Lloc> getLlocByFuncionariID(Long funcionariId, boolean current) throws I18NException {
-		
+
 		if (funcionariId != null) {
-			
+
 			Where w = FuncionariLlocFields.FUNCIONARIID.equal(funcionariId);
-			 
+
 			if (current) {
 				w = funcionariLlocLogicaEjb.getWhereFuncionariIsCurrent(w);
 			}
@@ -261,31 +225,24 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 		}
 		return null;
 	}
-	
-	@Override
-	@PermitAll
-	public HistoricLlocDAO fromJson(String json) throws I18NException {
-
-		if (json == null || json.isEmpty())
-			return null;
-		
-		try {
-			ObjectMapper mapper = new ObjectMapper();
-			HistoricLlocDAO historic = mapper.readValue(json, HistoricLlocDAO.class);
-			return historic;
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			throw new I18NException(e.getMessage());
-		}
-	}
 
 	@Override
 	@PermitAll
 	public List<Funcionari> getFuncionarisByLlocID(Long llocId) throws I18NException {
+		return getFuncionarisByLlocID(llocId, false);
+	}
+
+	@Override
+	@PermitAll
+	public List<Funcionari> getFuncionarisByLlocID(Long llocId, boolean current) throws I18NException {
 
 		if (llocId != null) {
 
 			Where w = FuncionariLlocFields.LLOCID.equal(llocId);
+
+			if(current){
+				w = funcionariLlocLogicaEjb.getWhereFuncionariIsCurrent(w);
+			}
 
 			List<FuncionariLloc> funcionarisLlocs = funcionariLlocEjb.select(w);
 
@@ -299,18 +256,49 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 				}
 				return llistaFuncionaris;
 			}
-
 		}
 		return new ArrayList<Funcionari>();
+	}
 
+	@Override
+	@PermitAll
+	public List<FuncionariLlocDAO> getFuncionarisLlocByLlocID(Long llocId) throws I18NException {
+		return getFuncionarisLlocByLlocID(llocId, false);
+	}
+
+	@Override
+	@PermitAll
+	public List<FuncionariLlocDAO> getFuncionarisLlocByLlocID(Long llocId, boolean current) throws I18NException {
+
+		if (llocId != null) {
+
+			Where w = FuncionariLlocFields.LLOCID.equal(llocId);
+
+			if(current){
+				w = funcionariLlocLogicaEjb.getWhereFuncionariIsCurrent(w);
+			}
+
+			List<FuncionariLloc> funcionarisLlocs = funcionariLlocEjb.select(w);
+
+			if (funcionarisLlocs.size() > 0) {
+				List<FuncionariLlocDAO> llistaFuncionaris = new ArrayList<FuncionariLlocDAO>(funcionarisLlocs.size());
+				for (FuncionariLloc fl : funcionarisLlocs) {
+					Funcionari funcionari = funcionariEjb.findByPrimaryKey(fl.getFuncionariID());
+					if (funcionari != null) {
+						llistaFuncionaris.add(new FuncionariLlocDAO(funcionari, fl));
+					}
+				}
+				return llistaFuncionaris;
+			}
+		}
+		return new ArrayList<FuncionariLlocDAO>();
 	}
 
 	@Override
 	@PermitAll
 	public List<Rol> getRolsByLlocID(Long llocId) throws I18NException {
 
-		if (llocId != null){
-
+		if (llocId != null) {
 
 			Where w = LlocRolFields.LLOCID.equal(llocId);
 

@@ -20,13 +20,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.JsonParseException;
+
 import es.caib.rfhab.back.controller.webdb.HistoricLlocController;
 import es.caib.rfhab.back.form.webdb.HistoricLlocFilterForm;
 import es.caib.rfhab.back.form.webdb.HistoricLlocForm;
 import es.caib.rfhab.back.form.webdb.LlocRefList;
+import es.caib.rfhab.logic.HistoricLlocLogicaService;
 import es.caib.rfhab.logic.LlocLogicaService;
 import es.caib.rfhab.logic.utils.HistoricLlocDAO;
-import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.persistence.HistoricLlocJPA;
 import es.caib.rfhab.persistence.LlocJPA;
@@ -41,10 +43,13 @@ import es.caib.rfhab.persistence.LlocJPA;
 public class HistoricLlocAdminController extends HistoricLlocController {
 
 	protected final Logger log = Logger.getLogger(getClass());
-	
+
 	@EJB(mappedName = LlocLogicaService.JNDI_NAME)
-	LlocLogicaService llocEjb; 
-	
+	LlocLogicaService llocEjb;
+
+	@EJB(mappedName = HistoricLlocLogicaService.JNDI_NAME)
+	HistoricLlocLogicaService HistoricLlocLogicaEjb;
+
 	@Override
 	public String getTileForm() {
 		return "historicLlocFormAdmin";
@@ -64,7 +69,6 @@ public class HistoricLlocAdminController extends HistoricLlocController {
 				LlocFields.CODILLOC.select, new SelectConstant(")") });
 
 		this.llocRefList.setSeparator("");
-
 	}
 
 	@Override
@@ -76,7 +80,7 @@ public class HistoricLlocAdminController extends HistoricLlocController {
 		if (historicLlocFilterForm.isNou()) {
 			historicLlocFilterForm.addHiddenField(HISTORICLLOCID);
 			historicLlocFilterForm.addHiddenField(OBSERVACIONS);
-			
+
 			historicLlocFilterForm.setViewButtonVisible(true);
 			historicLlocFilterForm.setEditButtonVisible(false);
 			historicLlocFilterForm.setDeleteButtonVisible(false);
@@ -85,16 +89,16 @@ public class HistoricLlocAdminController extends HistoricLlocController {
 
 			historicLlocFilterForm.setOrderBy(DATACREACIO.javaName);
 			historicLlocFilterForm.setOrderAsc(false);
-			
+
 			Long codigoLugar = (Long) request.getSession().getAttribute("LlocId");
-			if(codigoLugar != null && codigoLugar > 0) {
+			if (codigoLugar != null && codigoLugar > 0) {
 				LlocJPA plaza = llocEjb.findByPrimaryKey(codigoLugar);
 				historicLlocFilterForm.setTitleCode("historiclloc.customTitol");
 				historicLlocFilterForm.setTitleParam(plaza.getNom() + " (" + plaza.getCodiLloc() + ")");
-				
-				historicLlocFilterForm.addAdditionalButton(new AdditionalButton("fa fa-chevron-left", "historiclloc.tornar", "/admin/lloc/view/" + codigoLugar, AdditionalButtonStyle.INFO)); 
+
+				historicLlocFilterForm.addAdditionalButton(new AdditionalButton("fa fa-chevron-left",
+						"historiclloc.tornar", "/admin/lloc/view/" + codigoLugar, AdditionalButtonStyle.INFO));
 			}
-			
 		}
 
 		return historicLlocFilterForm;
@@ -105,39 +109,48 @@ public class HistoricLlocAdminController extends HistoricLlocController {
 			ModelAndView mav) throws I18NException {
 
 		HistoricLlocForm historicLlocForm = super.getHistoricLlocForm(_jpa, __isView, request, mav);
+		HistoricLlocJPA historicLlocJPA = historicLlocForm.getHistoricLloc();
 
 		if (historicLlocForm.isNou()) {
 			historicLlocForm.getHistoricLloc().setDataCreacio(new Timestamp(System.currentTimeMillis()));
-			
+
 			historicLlocForm.addAdditionalButton(new AdditionalButton(" fas fa-long-arrow-alt-left", "tornar",
 					getContextWeb() + "/tornar", AdditionalButtonStyle.SECONDARY));
 		}
-		
+
 		historicLlocForm.addReadOnlyField(DATACREACIO);
 		historicLlocForm.addHiddenField(OBSERVACIONS);
-		
-		if (_jpa.getObservacions() != null) {
-			HistoricLlocDAO oldLloc = llocEjb.fromJson(_jpa.getObservacions());
-			mav.addObject("vell", oldLloc);
+
+		if (historicLlocJPA.getObservacions() != null) {
+			try {
+				List<HistoricLlocDAO> historicLloc = HistoricLlocLogicaEjb
+						.listFromJson(historicLlocJPA.getObservacions());
+				HistoricLlocDAO oldLloc = historicLloc.get(0);
+				log.info("oldLloc: " + oldLloc.toString());
+				mav.addObject("vell", oldLloc);
+				HistoricLlocDAO nouLloc = historicLloc.get(1);
+				log.info("nouLloc: " + nouLloc.toString());
+				mav.addObject("nou", nouLloc);
+			} catch (JsonParseException | IndexOutOfBoundsException e) {
+				mav.addObject("observacions", historicLlocJPA.getObservacions());
+			} catch (Exception e) {
+				log.error("Error al parsejar el JSON de les observacions", e);
+				throw new I18NException(e, "historiclloc.error.parsejason");
+			}
 		}
-		
-		List<Lloc> actualLloc = llocEjb.select(LlocFields.LLOCID.equal(_jpa.getLloc().getLlocID()));
-		mav.addObject("actual", actualLloc.get(0));
-		
+
 		historicLlocForm.setAttachedAdditionalJspCode(true);
-		
+
 		return historicLlocForm;
 	}
-	
-	
-	@RequestMapping(value= "/llistar/{llocId}", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/llistar/{llocId}", method = RequestMethod.GET)
 	public String llistarHistoricPerLlocId(HttpServletRequest request, @PathVariable("llocId") Long llocId) {
 
 		request.getSession().setAttribute("LlocId", llocId);
-		
 		return "redirect:/admin/historiclloc/list";
 	}
-	
+
 	@RequestMapping(value = "/tornar", method = RequestMethod.GET)
 	public String tornar(HttpServletRequest request) {
 		return "redirect:/admin/funcionari/list/1";
@@ -145,6 +158,6 @@ public class HistoricLlocAdminController extends HistoricLlocController {
 
 	@Override
 	public String getRedirectWhenCancel(HttpServletRequest request, java.lang.Long historicID) {
-	    return "redirect:/admin/funcionari/list/1";
-	  }
+		return "redirect:/admin/funcionari/list/1";
+	}
 }

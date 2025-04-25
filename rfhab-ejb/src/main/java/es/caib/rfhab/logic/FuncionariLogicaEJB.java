@@ -15,6 +15,7 @@ import org.fundaciobit.genapp.common.utils.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.ejb.FuncionariEJB;
 import es.caib.rfhab.ejb.HistoricService;
 import es.caib.rfhab.ejb.RolService;
@@ -39,7 +40,6 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 
 	@EJB(mappedName = RolService.JNDI_NAME)
 	protected RolService rolEjb;
-
 
 	@Override
 	@PermitAll
@@ -92,13 +92,13 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 		// TODO REVISAR
 
 		/*
-		List<RolJPA> rolsFuncionari = getRolsByFuncionariID(funcionariId);
-		for (RolJPA rol : rolsFuncionari) {
-			if (rol.getCodi().toUpperCase().equals(codiRol.toUpperCase())) {
-				return true;
-			}
-		}
-		*/
+		 * List<RolJPA> rolsFuncionari = getRolsByFuncionariID(funcionariId);
+		 * for (RolJPA rol : rolsFuncionari) {
+		 * if (rol.getCodi().toUpperCase().equals(codiRol.toUpperCase())) {
+		 * return true;
+		 * }
+		 * }
+		 */
 
 		return false;
 	}
@@ -141,73 +141,71 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 	@Override
 	@PermitAll
 	public Funcionari updateAndHistory(Funcionari funcionari, String cai, Long usuariId) throws I18NException {
-		
+
 		log.info("CAI: " + cai);
 		log.info("UsuariID: " + usuariId);
 		if (funcionari != null)
 			log.info("FuncionariID: " + funcionari.getFuncionariID());
 		else
 			log.error("Funcionari null");
-			
-			HistoricJPA historic = new HistoricJPA();
 
-			historic.setNumeroCai(cai);
-			historic.setFuncionariID(funcionari.getFuncionariID());
-			historic.setDataCreacio(new Timestamp(System.currentTimeMillis()));
-			historic.setUsuariID(usuariId);
+		HistoricJPA historic = new HistoricJPA();
 
-			HistoricFuncionariDAO newFuncionari = new HistoricFuncionariDAO(funcionari);
-			
-			
-			/* 
-			TODO REVISAR
+		historic.setNumeroCai(cai);
+		historic.setFuncionariID(funcionari.getFuncionariID());
+		historic.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+		historic.setUsuariID(usuariId);
 
-			try {
-				List<Rol> oldRols = getRolsByFuncionariIDv2(funcionari.getFuncionariID());
-				if (oldRols != null && !oldRols.isEmpty())
-					newFuncionari.setRols(oldRols);
-				else
-					log.error("No s'han pogut recuperar els rols del funcionari");
-				
-			} catch (Exception e) {
-				log.error("Error al recuperar els rols del funcionari");
-				log.error(e.getMessage());
-			}
-			*/
-			
-			try {
-				ObjectMapper mapper = new ObjectMapper();
-				String canvis = mapper.writeValueAsString(newFuncionari);
-				historic.setObservacions(canvis);
-			} catch (JsonProcessingException e) {
-				log.info("error al convertir el funcionari a JSON");
-				log.error(e.getMessage());
-			}
-					
-			try {
-				Historic nou = historicEjb.create(historic);
-				
-				if (nou != null)
-					log.info("Historic de funcionari creat: " + nou.getHistoricID());
-			} catch (Exception e) {
-				log.info("Error al crear el historic de funcionari");
-				log.error(e.getMessage());
-			}
-	
+		HistoricFuncionariDAO newFuncionari = new HistoricFuncionariDAO(funcionari);
+
+		/*
+		 * TODO REVISAR
+		 * 
+		 * try {
+		 * List<Rol> oldRols = getRolsByFuncionariIDv2(funcionari.getFuncionariID());
+		 * if (oldRols != null && !oldRols.isEmpty())
+		 * newFuncionari.setRols(oldRols);
+		 * else
+		 * log.error("No s'han pogut recuperar els rols del funcionari");
+		 * 
+		 * } catch (Exception e) {
+		 * log.error("Error al recuperar els rols del funcionari");
+		 * log.error(e.getMessage());
+		 * }
+		 */
+
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			String canvis = mapper.writeValueAsString(newFuncionari);
+			historic.setObservacions(canvis);
+		} catch (JsonProcessingException e) {
+			log.info("error al convertir el funcionari a JSON");
+			log.error(e.getMessage());
+		}
+
+		try {
+			Historic nou = historicEjb.create(historic);
+
+			if (nou != null)
+				log.info("Historic de funcionari creat: " + nou.getHistoricID());
+		} catch (Exception e) {
+			log.info("Error al crear el historic de funcionari");
+			log.error(e.getMessage());
+		}
+
 		return funcionari;
-
 	}
-	
+
 	@Override
 	@PermitAll
 	public HistoricFuncionariDAO fromJson(String json) throws I18NException {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-        	
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+
 			if (json == null || json.isEmpty())
 				return null;
-        	
-        	return mapper.readValue(json, HistoricFuncionariDAO.class);
+
+			return mapper.readValue(json, HistoricFuncionariDAO.class);
 		} catch (JsonProcessingException e) {
 			log.error(e.getMessage());
 			throw new I18NException(e.getMessage());
@@ -215,7 +213,21 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 			e.printStackTrace();
 			throw new I18NException(e.getMessage());
 		}
-        
 	}
 
+	@Override
+	@PermitAll
+	public String getMaxFuncionariNumero() throws SecurityException, NoSuchFieldException {
+
+		StringBuilder queryString = new StringBuilder(
+				"select max(rf." + FuncionariFields.NUMERO.javaName + ") from " + FuncionariJPA.class.getName()
+						+ " rf where rf." + FuncionariFields.NUMERO.javaName + " like '" + Constants.SQL_NUMERO_PATTERN
+						+ "' escape '" + Constants.SQL_LIKE_ESCAPE_PATTERN + "'");
+		Class<?> numeroClass = FuncionariFields.NUMERO.getClass().getField("javaName").getType();// TODO:comentar a anadal que getJavaClass no funciona perquè javaClass és javaName
+		TypedQuery<?> query = getEntityManager().createQuery(queryString.toString(),
+				numeroClass);
+		List<?> resultats = query.getResultList();
+
+		return (!resultats.isEmpty()) ? (resultats.get(0).toString()) : null;
+	}
 }

@@ -37,6 +37,7 @@ import es.caib.rfhab.ejb.UnitatService;
 import es.caib.rfhab.logic.FuncionariLlocLogicaService;
 import es.caib.rfhab.logic.HistoricLlocLogicaService;
 import es.caib.rfhab.logic.LlocLogicaService;
+import es.caib.rfhab.logic.utils.FuncionariLlocDAO;
 import es.caib.rfhab.model.entity.Entitat;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.HistoricLloc;
@@ -159,12 +160,11 @@ public class LlocAdminController extends LlocController {
 		mav.addObject("isView", __isView);
 
 		LlocForm llocForm = super.getLlocForm(_jpa, __isView, request, mav);
+		LlocJPA lloc = llocForm.getLloc();
 
 		if (llocForm.isNou()) {
-
 			mav.addObject("isNew", llocForm.isNou());
 
-			LlocJPA lloc = llocForm.getLloc();
 			lloc.setDataCreacio(new Timestamp(System.currentTimeMillis()));
 			lloc.setEntitatID(LoginInfo.getInstance().getEntitatIDActual());
 
@@ -177,41 +177,32 @@ public class LlocAdminController extends LlocController {
 			log.info("Unitat ID seleccionada: " + lloc.getUnitatID());
 		} else {
 			// Pipella Funcionari - Obtenir tots els funcionaris relacionats amb el lloc
-
-			List<Funcionari> funcionaris = llocLogicaEjb.getFuncionarisByLlocID(_jpa.getLlocID());
+			long llocID = lloc.getLlocID();
+			List<FuncionariLlocDAO> funcionarisHistoric = llocLogicaEjb.getFuncionarisLlocByLlocID(llocID);
+			List<FuncionariLlocDAO> funcionaris = llocLogicaEjb.getFuncionarisLlocByLlocID(llocID, true);
 
 			log.info("funcionaris per lloc: " + funcionaris.size());
 			funcionaris.forEach(funcionari -> {
-				log.info(funcionari.getNom() + " " + funcionari.getLlinatge1() + " " + funcionari.getLlinatge2() + " "
-						+ funcionari.getUsuari());
+				log.info(funcionari.getNom() + " " + funcionari.getLlinatge1() + " " + funcionari.getLlinatge2());
 			});
 			log.info("fi funcionaris per lloc");
 
 			mav.addObject("funcionaris", funcionaris);
+			mav.addObject("funcionarisHistoric", funcionarisHistoric);
 
 			// Pipella Rols - Obtenir tots els rols relacionats amb el lloc
-			List<Rol> llistaRols = llocLogicaEjb.getRolsByLlocID(_jpa.getLlocID());
+			List<Rol> llistaRols = llocLogicaEjb.getRolsByLlocID(llocID);
 			llistaRols.forEach(rol -> {
 				log.info("Rol: " + rol.getCodi());
 			});
 			mav.addObject("rols", llistaRols);
 
-			// Pipella Històric - Obtenir tots els canvis realitzats al lloc de feina
-			List<Select6Values<Long, String, String, String, String, Timestamp>> historic = historicLlocEjb
-					.getHistoricByLlocId(_jpa.getLlocID());
-			log.info("HistoricLloc.size: " + historic.size());
-
-			historic.forEach(x -> log.info("HistoricLloc: " + x.getValue1() + " " + x.getValue2() + " " + x.getValue3()
-					+ " " + x.getValue4() + " " + x.getValue5() + " " + x.getValue6()));
-
-			mav.addObject("historic", historic);
-
 			// Pipella Autoritzacions - procediments de Rolsac autoritzats en funció del
 			// codi DIR3 de la unitat
 			HashMap<String, String> procediments = new HashMap<String, String>();
-			if (_jpa.getUnitatID() > 0) {
+			if (lloc.getUnitatID() > 0) {
 				try {
-					List<Unitat> unitatsDir3 = unitatEjb.select(UnitatFields.UNITATID.equal(_jpa.getUnitatID()));
+					List<Unitat> unitatsDir3 = unitatEjb.select(UnitatFields.UNITATID.equal(lloc.getUnitatID()));
 					if (unitatsDir3.size() > 0) {
 						procediments = getProcedimentsByDir3(unitatsDir3.get(0).getCodi());
 						procediments.forEach((clave, valor) -> {
@@ -223,12 +214,20 @@ public class LlocAdminController extends LlocController {
 				}
 			}
 			mav.addObject("procediments", procediments);
+
+			// Pipella Històric - Obtenir tots els canvis realitzats al lloc de feina
+			List<Select6Values<Long, String, String, String, String, Timestamp>> historic = historicLlocEjb
+				.getHistoricByLlocId(lloc.getLlocID());
+			log.info("HistoricLloc.size: " + historic.size());
+
+			historic.forEach(x -> log.info("HistoricLloc: " + x.getValue1() + " " + x.getValue2() + " " + x.getValue3()
+					+ " " + x.getValue4() + " " + x.getValue5() + " " + x.getValue6()));
+
+			mav.addObject("historic", historic);	
 		}
 
-		// TODO: comentar a Toni Nadal per què està empleant _jpa tot es temps? És
-		// legacy de quan no hi havia isNou??
-		mav.addObject("lloc", _jpa);
-		if (_jpa != null && _jpa.getPersonalOamr() > 0) {
+		mav.addObject("lloc", lloc);
+		if (lloc != null && lloc.getPersonalOamr() > 0) {
 			mav.addObject("isOamr", 1);
 		} else {
 			mav.addObject("isOamr", 0);
@@ -335,20 +334,16 @@ public class LlocAdminController extends LlocController {
 	public LlocJPA create(HttpServletRequest request, LlocJPA lloc) throws I18NException, I18NValidationException {
 		lloc.setEntitatID(Long.parseLong(request.getParameter("lloc.entitatID")));
 		LlocJPA newLloc = super.create(request, lloc);
-
-		/*
-		 * Enumeration<String> parameterNames = request.getParameterNames(); while
-		 * (parameterNames.hasMoreElements()) { String paramName =
-		 * parameterNames.nextElement(); log.info("crearLlocPost => " + paramName + ": "
-		 * + request.getParameter(paramName)); }
-		 */
+		log.info("Lloc creat: " + lloc.getLlocID());
 
 		Long usuariId = LoginInfo.getInstance().getUsuariPersona().getUsuariID();
 
-		llocLogicaEjb.createAndHistory((Lloc) newLloc, request.getParameter("numerocai"), usuariId);
+		String numeroCai = request.getParameter("numerocai");
+		log.info("Creant HistoricLloc per a CAI: " + numeroCai + " i usuari: " + usuariId);
+		HistoricLlocJPA historicLloc = llocLogicaEjb.createAndHistory((Lloc) newLloc, numeroCai, usuariId);
+		log.info("HistoricLloc creat: " + historicLloc.getHistoricllocID());
 
 		return newLloc;
-
 	}
 
 	@Override

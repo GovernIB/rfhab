@@ -40,7 +40,6 @@ import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.ejb.UnitatService;
 import es.caib.rfhab.logic.ActivitatLogicaService;
 import es.caib.rfhab.logic.AutoritzacioLogicaService;
-import es.caib.rfhab.logic.FuncionariAdminLogicaService;
 import es.caib.rfhab.logic.FuncionariLlocLogicaService;
 import es.caib.rfhab.logic.FuncionariLogicaService;
 import es.caib.rfhab.logic.HistoricLogicaService;
@@ -58,9 +57,6 @@ import es.caib.rfhab.persistence.LlocJPA;
 @RequestMapping(value = "/admin/funcionari")
 @SessionAttributes(types = { FuncionariForm.class, FuncionariFilterForm.class })
 public class FuncionariAdminController extends FuncionariController {
-
-	@EJB(mappedName = FuncionariAdminLogicaService.JNDI_NAME)
-	protected FuncionariAdminLogicaService funcionariAdminEJB;
 
 	@EJB(mappedName = FuncionariLogicaService.JNDI_NAME)
 	protected FuncionariLogicaService funcionariEJB;
@@ -134,7 +130,7 @@ public class FuncionariAdminController extends FuncionariController {
 			int nouNumber = 1;
 			String maxFuncionariNumero;
 			try {
-				maxFuncionariNumero = funcionariAdminEJB.getMaxFuncionariNumero();
+				maxFuncionariNumero = funcionariEJB.getMaxFuncionariNumero();
 			} catch (SecurityException e) {
 				throw new I18NException(e.getMessage());
 			} catch (NoSuchFieldException e) {

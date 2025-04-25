@@ -2155,11 +2155,11 @@
       "shortName": "histolloc",
       "labels": {
         "ca": "Històric de canvis de lloc de feina",
-        "es": "Historico de cambios de Plaza"
+        "es": "Histórico de cambios de Puesto"
       },
       "labelsPlural": {
         "ca": "Històric de canvis de lloc de feina",
-        "es": "Historico de cambios de Plaza"
+        "es": "Histórico de cambios de Puesto"
       },
       "generate": true,
       "fileMappingEntity": false,

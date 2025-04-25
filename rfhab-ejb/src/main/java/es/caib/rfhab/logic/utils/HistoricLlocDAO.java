@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.Lloc;
@@ -14,28 +15,29 @@ import es.caib.rfhab.model.entity.Lloc;
  * @autor jagarcia
  *
  */
-
+@JsonInclude(JsonInclude.Include.NON_NULL) // Inclou només camps no nuls al JSON
 public class HistoricLlocDAO {
 
-	private long llocID;
-	private String codiLloc;
-	private String nom;
-	private long unitatID;
-	private int personalOamr;
-	private long entitatID;
-	private String observacions;
-	private String numeroCai;
-	private Timestamp dataCreacio;
-	private Timestamp dataBaixa;
-	
-	@JsonIgnore
-	private List<Funcionari> funcionaris = new ArrayList<Funcionari>();
+	private Long llocID = null;
+	private String codiLloc = null;
+	private String nom = null;
+	private Long unitatID = null;
+	private Integer personalOamr = null;
+	private Long entitatID = null;
+	private String observacions = null;
+	private String numeroCai = null;
+	private Timestamp dataCreacio = null;
+	private Timestamp dataBaixa = null;
 
-	public long getLlocID() {
+	@JsonIgnore
+	private List<Funcionari> funcionaris = new ArrayList<>();
+
+	// Getters i setters
+	public Long getLlocID() {
 		return llocID;
 	}
 
-	public void setLlocID(long llocID) {
+	public void setLlocID(Long llocID) {
 		this.llocID = llocID;
 	}
 
@@ -55,27 +57,27 @@ public class HistoricLlocDAO {
 		this.nom = nom;
 	}
 
-	public long getUnitatID() {
+	public Long getUnitatID() {
 		return unitatID;
 	}
 
-	public void setUnitatID(long unitatID) {
+	public void setUnitatID(Long unitatID) {
 		this.unitatID = unitatID;
 	}
 
-	public int getPersonalOamr() {
+	public Integer getPersonalOamr() {
 		return personalOamr;
 	}
 
-	public void setPersonalOamr(int personalOamr) {
+	public void setPersonalOamr(Integer personalOamr) {
 		this.personalOamr = personalOamr;
 	}
 
-	public long getEntitatID() {
+	public Long getEntitatID() {
 		return entitatID;
 	}
 
-	public void setEntitatID(long entitatID) {
+	public void setEntitatID(Long entitatID) {
 		this.entitatID = entitatID;
 	}
 
@@ -118,43 +120,34 @@ public class HistoricLlocDAO {
 	public void setFuncionaris(List<Funcionari> funcionaris) {
 		this.funcionaris = funcionaris;
 	}
-	
+
 	public void addFuncionari(Funcionari funcionari) {
 		this.funcionaris.add(funcionari);
 	}
-	
+
 	public void removeFuncionari(Funcionari funcionari) {
 		this.funcionaris.remove(funcionari);
 	}
 
+	// Constructors
 	public HistoricLlocDAO() {
 		super();
 	}
 
-	public HistoricLlocDAO ( Lloc lloc ) {
+	public HistoricLlocDAO(Lloc lloc) {
 		this.llocID = lloc.getLlocID();
-        this.codiLloc = lloc.getCodiLloc();
-        this.nom = lloc.getNom();
-        this.unitatID = lloc.getUnitatID();
-        this.personalOamr = lloc.getPersonalOamr();
-        this.entitatID = lloc.getEntitatID();
-        this.observacions = lloc.getObservacions();
-        this.dataCreacio = lloc.getDataCreacio();
-        this.dataBaixa = lloc.getDataBaixa();
-    }
-	
-	public HistoricLlocDAO ( Lloc lloc, List<Funcionari> funcionaris ) {
-		this.llocID = lloc.getLlocID();
-        this.codiLloc = lloc.getCodiLloc();
-        this.nom = lloc.getNom();
-        this.unitatID = lloc.getUnitatID();
-        this.personalOamr = lloc.getPersonalOamr();
-        this.entitatID = lloc.getEntitatID();
-        this.observacions = lloc.getObservacions();
-        this.dataCreacio = lloc.getDataCreacio();
-        this.dataBaixa = lloc.getDataBaixa();
-        this.funcionaris = funcionaris;
-    }
-	
-		
+		this.codiLloc = lloc.getCodiLloc();
+		this.nom = lloc.getNom();
+		this.unitatID = lloc.getUnitatID();
+		this.personalOamr = lloc.getPersonalOamr();
+		this.entitatID = lloc.getEntitatID();
+		this.observacions = lloc.getObservacions();
+		this.dataCreacio = lloc.getDataCreacio();
+		this.dataBaixa = lloc.getDataBaixa();
+	}
+
+	public HistoricLlocDAO(Lloc lloc, List<Funcionari> funcionaris) {
+		this(lloc);
+		this.funcionaris = funcionaris;
+	}
 }

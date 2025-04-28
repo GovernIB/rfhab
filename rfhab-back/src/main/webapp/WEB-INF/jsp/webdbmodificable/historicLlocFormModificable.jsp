@@ -22,7 +22,7 @@
 				<c:if test="${nou[field.name] != null || vell[field.name] != null}">
 					<c:if test="${nou[field.name] != vell[field.name]}">
 						<tr>
-							<td><c:out value="${field}"/></td>
+							<td><c:out value="${historicLlocDictionary[field.name]}"/></td>
 							<td style="color:green"><c:out value="${nou[field.name]}"/></td>
 							<td style="color:red"><c:out value="${vell[field.name]}"/></td>
 						</tr>

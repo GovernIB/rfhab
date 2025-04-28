@@ -28,6 +28,7 @@ import es.caib.rfhab.back.form.webdb.HistoricLlocForm;
 import es.caib.rfhab.back.form.webdb.LlocRefList;
 import es.caib.rfhab.logic.HistoricLlocLogicaService;
 import es.caib.rfhab.logic.LlocLogicaService;
+import es.caib.rfhab.logic.utils.DbDaoDictionaries;
 import es.caib.rfhab.logic.utils.HistoricLlocDAO;
 import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.persistence.HistoricLlocJPA;
@@ -131,6 +132,7 @@ public class HistoricLlocAdminController extends HistoricLlocController {
 				HistoricLlocDAO nouLloc = historicLloc.get(1);
 				log.info("nouLloc: " + nouLloc.toString());
 				mav.addObject("nou", nouLloc);
+				mav.addObject("historicLlocDictionary", DbDaoDictionaries.HistoricLloc);
 			} catch (JsonParseException | IndexOutOfBoundsException e) {
 				mav.addObject("observacions", historicLlocJPA.getObservacions());
 			} catch (Exception e) {

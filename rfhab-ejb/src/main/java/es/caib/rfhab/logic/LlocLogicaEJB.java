@@ -24,6 +24,7 @@ import es.caib.rfhab.logic.utils.FuncionariLlocDAO;
 import es.caib.rfhab.logic.utils.HistoricLlocDAO;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.FuncionariLloc;
+import es.caib.rfhab.model.entity.HistoricLloc;
 import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.entity.LlocRol;
 import es.caib.rfhab.model.entity.Rol;
@@ -80,6 +81,7 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 
 			HistoricLlocDAO historicOld = new HistoricLlocDAO(oldLloc);
 			newLloc = update(lloc);
+			log.info("Lloc actualitzat: " + newLloc.getLlocID());
 
 			HistoricLlocJPA historicLloc = new HistoricLlocJPA();
 			historicLloc.setLlocID(oldLloc.getLlocID());
@@ -88,7 +90,8 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 			historicLloc.setUsuariID(usuariId);
 
 			HistoricLlocDAO historicNew = new HistoricLlocDAO(newLloc);
-			historicLlocLogicaEjb.create(historicLloc, historicNew, historicOld);
+			HistoricLloc historicCreat = historicLlocLogicaEjb.create(historicLloc, historicNew, historicOld);
+			log.info("HistoricLloc creat: " + historicCreat.getHistoricllocID());
 
 			return newLloc;
 		} catch (Exception e) {

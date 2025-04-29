@@ -1,6 +1,5 @@
 package es.caib.rfhab.logic;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -8,12 +7,8 @@ import javax.ejb.Local;
 
 import org.fundaciobit.genapp.common.i18n.I18NException;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-
 import es.caib.rfhab.ejb.LlocService;
 import es.caib.rfhab.logic.utils.FuncionariLlocDAO;
-import es.caib.rfhab.logic.utils.HistoricLlocDAO;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.entity.Rol;

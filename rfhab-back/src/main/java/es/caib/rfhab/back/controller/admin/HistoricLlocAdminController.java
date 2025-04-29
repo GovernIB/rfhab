@@ -30,6 +30,7 @@ import es.caib.rfhab.logic.HistoricLlocLogicaService;
 import es.caib.rfhab.logic.LlocLogicaService;
 import es.caib.rfhab.logic.utils.DbDaoDictionaries;
 import es.caib.rfhab.logic.utils.HistoricLlocDAO;
+import es.caib.rfhab.logic.utils.JsonUtils;
 import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.persistence.HistoricLlocJPA;
 import es.caib.rfhab.persistence.LlocJPA;
@@ -124,15 +125,15 @@ public class HistoricLlocAdminController extends HistoricLlocController {
 
 		if (historicLlocJPA.getObservacions() != null) {
 			try {
-				List<HistoricLlocDAO> historicLloc = HistoricLlocLogicaEjb
-						.listFromJson(historicLlocJPA.getObservacions());
+				List<HistoricLlocDAO> historicLloc = JsonUtils
+						.listFromJson(historicLlocJPA.getObservacions(), HistoricLlocDAO[].class);
 				HistoricLlocDAO oldLloc = historicLloc.get(0);
 				log.info("oldLloc: " + oldLloc.toString());
 				mav.addObject("vell", oldLloc);
 				HistoricLlocDAO nouLloc = historicLloc.get(1);
 				log.info("nouLloc: " + nouLloc.toString());
 				mav.addObject("nou", nouLloc);
-				mav.addObject("historicLlocDictionary", DbDaoDictionaries.HistoricLloc);
+				mav.addObject("diferenciesDictionary", DbDaoDictionaries.HistoricLloc);
 			} catch (JsonParseException | IndexOutOfBoundsException e) {
 				mav.addObject("observacions", historicLlocJPA.getObservacions());
 			} catch (Exception e) {

@@ -6,7 +6,7 @@
 		<li class="nav-item">
 			<a class="nav-link active" id="home-tab"
 				data-toggle="tab" href="#funcionaris" role="tab" aria-controls="home"
-				aria-selected="true"><fmt:message key="funcionari.funcionari.plural"/></a>
+				aria-selected="true"><fmt:message key="lloc.funcionari.pipella"/></a>
 		</li>
 		<li class="nav-item">
 			<a class="nav-link" id="rols-tab"
@@ -179,7 +179,9 @@
 			aria-labelledby="historicfuncionaris-tab">
 
 			<c:if test="${funcionarisHistoric.isEmpty()}">
-				<div class="alert alert-warning" role="alert"><fmt:message key="lloc.admin.rols.sense"/></div>
+				<div class="alert alert-warning" role="alert">
+					<fmt:message key="lloc.historicfuncionaris.sense"/>
+				</div>
 			</c:if>
 
 			<c:if test="${not funcionarisHistoric.isEmpty()}">
@@ -336,8 +338,6 @@
 
 							var taula = document.getElementById("lloc_tableid");
 							taula.appendChild(nouTr);
-
 						}
-
 					});
 </script>

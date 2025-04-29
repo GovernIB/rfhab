@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.fundaciobit.genapp.common.StringKeyValue;
 import org.fundaciobit.genapp.common.i18n.I18NException;
+import org.fundaciobit.genapp.common.i18n.I18NValidationException;
 import org.fundaciobit.genapp.common.query.Field;
 import org.fundaciobit.genapp.common.query.GroupByItem;
 import org.fundaciobit.genapp.common.query.Where;
@@ -51,6 +52,7 @@ import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.HistoricJPA;
+import es.caib.rfhab.persistence.HistoricLlocJPA;
 import es.caib.rfhab.persistence.LlocJPA;
 
 @Controller
@@ -93,30 +95,11 @@ public class FuncionariAdminController extends FuncionariController {
 	public FuncionariForm getFuncionariForm(FuncionariJPA _jpa, boolean __isView, HttpServletRequest request,
 			ModelAndView mav) throws I18NException {
 
-		if (_jpa != null && _jpa.getFuncionariID() > 0) {
-			long funcionariID = _jpa.getFuncionariID();
-
-			// Obtenir les activitats que té assignades el funcionari
-			List<Activitat> activitatsFuncionari = activitatEJB.getActivitatsByFuncionariID(funcionariID);
-			mav.addObject("activitatItems", activitatsFuncionari);
-
-			// Obtenir el lloc de feina assignat al funcionari
-			List<Lloc> llocsFuncionari = llocEJB.getLlocByFuncionariID(funcionariID, true);
-			if (llocsFuncionari != null) {
-				mav.addObject("llocItems", llocsFuncionari);
-			}
-
-			// Obtenir el historic de canvis
-			List<Select6Values<Long, String, String, String, String, Timestamp>> historicItems = historicEjb
-					.getHistoricByFuncionariId(funcionariID);
-			mav.addObject("historicItems", historicItems);
-		}
-
 		FuncionariForm funcionariForm = super.getFuncionariForm(_jpa, __isView, request, mav);
+		FuncionariJPA funcionari = funcionariForm.getFuncionari();
 
 		funcionariForm.setDeleteButtonVisible(false);
 
-		FuncionariJPA funcionari = funcionariForm.getFuncionari();
 		if (funcionariForm.isNou()) {
 			funcionari.setDataCreacio(new Timestamp(System.currentTimeMillis()));
 
@@ -138,30 +121,52 @@ public class FuncionariAdminController extends FuncionariController {
 			}
 			if (maxFuncionariNumero != null) {
 				// Extreu la part numèrica de la cadena
-				String numericPart = maxFuncionariNumero.substring(Constants.FUNCIONARI_NUMERO_PLACEHOLDER_PREFIX.length());
+				String numericPart = maxFuncionariNumero
+						.substring(Constants.FUNCIONARI_NUMERO_PLACEHOLDER_PREFIX.length());
 				// Converteix la part numèrica a un enter, suma 1 i torna a formar la cadena
 				nouNumber = Integer.parseInt(numericPart);
 				nouNumber += 1;
 			}
 			// Format numèric amb el mateix nombre de dígits que l'original
-			String updatedNumericPart = String.format("%0" + Constants.FUNCIONARI_NUMERO_PLACEHOLDER_NUMERICPART.length() + "d", nouNumber);
+			String updatedNumericPart = String
+					.format("%0" + Constants.FUNCIONARI_NUMERO_PLACEHOLDER_NUMERICPART.length() + "d", nouNumber);
 			// Reconstrueix la cadena amb el prefix i el nou valor numèric
 			String nouFuncionariNumero = Constants.FUNCIONARI_NUMERO_PLACEHOLDER_PREFIX + updatedNumericPart;
 			funcionari.setNumero(nouFuncionariNumero);
-		}
-		else{
-			if(funcionari.getDataBaixa() == null) {
-				long funcionariId = funcionari.getFuncionariID();
-				//botó donar de baixa funcionari
+		} else {
+			long funcionariId = funcionari.getFuncionariID();
+
+			// Pipella Activitat - Obtenir les activitats que té assignades el funcionari
+			List<Activitat> activitatsFuncionari = activitatEJB.getActivitatsByFuncionariID(funcionariId);
+			mav.addObject("activitatItems", activitatsFuncionari);
+
+			// Pipella Lloc assignat - Obtenir tots els llocs relacionats amb el funcionari
+			// (actuals, sense data fi)
+			// Pipella Funcionari històrics - Obtenir tots els llocs relacionats amb el
+			// funcionari
+			List<Lloc> llocsFuncionari = llocEJB.getLlocByFuncionariID(funcionariId, true);
+			List<Lloc> llocsFuncionariHistoric = llocEJB.getLlocByFuncionariID(funcionariId, false);
+			mav.addObject("llocItems", llocsFuncionari);
+			mav.addObject("llocsHistoric", llocsFuncionariHistoric);
+
+			// Pipella Històric - Obtenir tots els canvis realitzats al funcionari
+			List<Select6Values<Long, String, String, String, String, Timestamp>> historicItems = historicEjb
+					.getHistoricByFuncionariId(funcionariId);
+			mav.addObject("historicItems", historicItems);
+
+			if (funcionari.getDataBaixa() == null) {
+				// botó donar de baixa funcionari
 				String jsOpenModalDonarBaixa = "javascript:createDivModal(traduccions.type['titol.funcionari.donarbaixa.continuar'], traduccions.type['missatge.funcionari.donarbaixa.continuar'], '"
-				+ request.getContextPath() + getContextWeb() + "/" + funcionariId + "/delete/"
-				+ "', '', 'func-donarbaixa-id', 'fa-user-times');\r\n" + //
-				"        $('#func-donarbaixa-id').modal('show');\r\n";
+						+ request.getContextPath() + getContextWeb() + "/" + funcionariId + "/delete/"
+						+ "', '', 'func-donarbaixa-id', 'fa-user-times');\r\n" + //
+						"        $('#func-donarbaixa-id').modal('show');\r\n";
 				AdditionalButton donarDeBaixaButton = new AdditionalButton("fas fa-user-times",
-					"funcionari.donarbaixa",
-					jsOpenModalDonarBaixa,
-					AdditionalButtonStyle.DANGER);
-				funcionariForm.addAdditionalButton(donarDeBaixaButton);			
+						"funcionari.donarbaixa",
+						jsOpenModalDonarBaixa,
+						AdditionalButtonStyle.DANGER);
+				funcionariForm.addAdditionalButton(donarDeBaixaButton);
+			} else {
+				// TODO: afegir botó per donar d'alta el funcionari
 			}
 		}
 		mav.addObject("FUNCIONARI_NUMERO_PLACEHOLDER", Constants.FUNCIONARI_NUMERO_PLACEHOLDER);
@@ -172,7 +177,7 @@ public class FuncionariAdminController extends FuncionariController {
 		// funcionariForm.addHiddenField(ENTITATID);
 		funcionariForm.addReadOnlyField(FuncionariFields.ENTITATID);
 
-		mav.addObject("funcionari", _jpa);
+		mav.addObject("funcionari", funcionari);
 
 		funcionariForm.setAttachedAdditionalJspCode(true);
 
@@ -269,7 +274,6 @@ public class FuncionariAdminController extends FuncionariController {
 		// funcionariFilterForm.setActionsRenderer(FuncionariFilterForm.ACTIONS_RENDERER_DROPDOWN_BUTTON);
 
 		return funcionariFilterForm;
-
 	}
 
 	@Override
@@ -320,21 +324,40 @@ public class FuncionariAdminController extends FuncionariController {
 
 	@Override
 	public void delete(HttpServletRequest request, Funcionari funcionari) throws I18NException {
-		//afegim històric
+		long funcionariId = funcionari.getFuncionariID();
+		log.info("'Esborrant' (donant de baixa) funcionari amb ID " + funcionariId);
+
+		// afegim històric
 		HistoricJPA historic = new HistoricJPA();
 		historic.setDataCreacio(new Timestamp(System.currentTimeMillis()));
-		historic.setFuncionariID(funcionari.getFuncionariID());
-		historic.setNumeroCai("CAI");
+		historic.setFuncionariID(funcionariId);
+		historic.setNumeroCai("CAI");// TODO:revisar això
 		historic.setUsuariID(LoginInfo.getInstance().getUsuariPersona().getUsuariID());
 		historic.setObservacions("Funcionari donat de baixa");
 		historicEjb.create(historic);
 
-		//el desasignam del lloc de feina
-		funcionariLlocLogicaEJB.donarDeBaixaFuncionariDeLloc(funcionari.getFuncionariID());
+		// el desasignam del lloc de feina
+		funcionariLlocLogicaEJB.donarDeBaixaFuncionariDeLloc(funcionariId);
 
-		//el donam de baixa
+		// el donam de baixa
 		funcionari.setDataBaixa(new Timestamp(System.currentTimeMillis()));
 		funcionariEjb.update(funcionari);
+	}
+
+	@Override
+	public FuncionariJPA create(HttpServletRequest request, FuncionariJPA funcionari)
+			throws I18NException, I18NValidationException {
+		FuncionariJPA newFuncionari = super.create(request, funcionari);
+		log.info("Funcionari creat: " + newFuncionari.getFuncionariID());
+
+		Long usuariId = LoginInfo.getInstance().getUsuariPersona().getUsuariID();
+
+		String numeroCai = request.getParameter("numerocai");
+		log.info("Creant Historic per a CAI: " + numeroCai + " i usuari: " + usuariId);
+		HistoricJPA historic = historicEjb.create(newFuncionari, numeroCai, usuariId);
+		log.info("Historic creat: " + historic.getHistoricID());
+
+		return newFuncionari;
 	}
 
 	@Override
@@ -392,17 +415,24 @@ public class FuncionariAdminController extends FuncionariController {
 		return __tmp;
 	}
 
+	// @Override
+	// public String editarFuncionariPost(@ModelAttribute FuncionariForm funcionariForm,
+	// 		BindingResult result, SessionStatus status, HttpServletRequest request,
+	// 		HttpServletResponse response) throws I18NException {
+
+	// 	String numeroCai = (!Utils.isEmpty(request.getParameter("numerocai"))) ? request.getParameter("numerocai") : "";
+
+	// 	funcionariEJB.updateAndHistory(funcionariForm.getFuncionari(), numeroCai,
+	// 			LoginInfo.getInstance().getUsuariPersona().getUsuariID());
+
+	// 	return super.editarFuncionariPost(funcionariForm, result, status, request, response);
+	// }
 	@Override
-	public String editarFuncionariPost(@ModelAttribute FuncionariForm funcionariForm,
-			BindingResult result, SessionStatus status, HttpServletRequest request,
-			HttpServletResponse response) throws I18NException {
+	public FuncionariJPA update(HttpServletRequest request, FuncionariJPA funcionari) throws I18NException, I18NValidationException {
 
+		Long usuariId = LoginInfo.getInstance().getUsuariPersona().getUsuariID();
 		String numeroCai = (!Utils.isEmpty(request.getParameter("numerocai"))) ? request.getParameter("numerocai") : "";
-
-		Funcionari funcionariModificat = funcionariEJB.updateAndHistory(funcionariForm.getFuncionari(), numeroCai,
-				LoginInfo.getInstance().getUsuariPersona().getUsuariID());
-
-		return super.editarFuncionariPost(funcionariForm, result, status, request, response);
+		return (FuncionariJPA) funcionariEJB.updateAndHistory((Funcionari) funcionari, numeroCai, usuariId);
 	}
 
 	@Override

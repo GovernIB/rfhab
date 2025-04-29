@@ -20,11 +20,16 @@ import es.caib.rfhab.ejb.FuncionariEJB;
 import es.caib.rfhab.ejb.HistoricService;
 import es.caib.rfhab.ejb.RolService;
 import es.caib.rfhab.logic.utils.HistoricFuncionariDAO;
+import es.caib.rfhab.logic.utils.HistoricLlocDAO;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.Historic;
+import es.caib.rfhab.model.entity.HistoricLloc;
+import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.fields.FuncionariFields;
+import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.HistoricJPA;
+import es.caib.rfhab.persistence.HistoricLlocJPA;
 
 /**
  * 
@@ -34,6 +39,9 @@ import es.caib.rfhab.persistence.HistoricJPA;
 
 @Stateless
 public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogicaService {
+
+	@EJB(mappedName = HistoricLogicaService.JNDI_NAME)
+	protected HistoricLogicaService historicLogicaEjb;
 
 	@EJB(mappedName = HistoricService.JNDI_NAME)
 	protected HistoricService historicEjb;
@@ -141,59 +149,53 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 	@Override
 	@PermitAll
 	public Funcionari updateAndHistory(Funcionari funcionari, String cai, Long usuariId) throws I18NException {
-
-		log.info("CAI: " + cai);
-		log.info("UsuariID: " + usuariId);
-		if (funcionari != null)
-			log.info("FuncionariID: " + funcionari.getFuncionariID());
-		else
-			log.error("Funcionari null");
-
-		HistoricJPA historic = new HistoricJPA();
-
-		historic.setNumeroCai(cai);
-		historic.setFuncionariID(funcionari.getFuncionariID());
-		historic.setDataCreacio(new Timestamp(System.currentTimeMillis()));
-		historic.setUsuariID(usuariId);
-
-		HistoricFuncionariDAO newFuncionari = new HistoricFuncionariDAO(funcionari);
-
-		/*
-		 * TODO REVISAR
-		 * 
-		 * try {
-		 * List<Rol> oldRols = getRolsByFuncionariIDv2(funcionari.getFuncionariID());
-		 * if (oldRols != null && !oldRols.isEmpty())
-		 * newFuncionari.setRols(oldRols);
-		 * else
-		 * log.error("No s'han pogut recuperar els rols del funcionari");
-		 * 
-		 * } catch (Exception e) {
-		 * log.error("Error al recuperar els rols del funcionari");
-		 * log.error(e.getMessage());
-		 * }
-		 */
-
 		try {
-			ObjectMapper mapper = new ObjectMapper();
-			String canvis = mapper.writeValueAsString(newFuncionari);
-			historic.setObservacions(canvis);
-		} catch (JsonProcessingException e) {
-			log.info("error al convertir el funcionari a JSON");
-			log.error(e.getMessage());
-		}
+			Funcionari newFuncionari = null;
+			if (funcionari == null) {
+				throw new I18NException("error.modification", "<funcionari null>");
+			}
+			Funcionari oldFuncionari = findByPrimaryKey(funcionari.getFuncionariID());
+			if (oldFuncionari == null) {
+				throw new I18NException("error.modification", new String[] { "funcionari", FuncionariFields.FUNCIONARIID.sqlName ,
+						String.valueOf(funcionari.getFuncionariID()), "<oldFuncionari null>" });
+			}
 
-		try {
-			Historic nou = historicEjb.create(historic);
+			/*
+			* TODO REVISAR
+			* 
+			* try {
+			* List<Rol> oldRols = getRolsByFuncionariIDv2(funcionari.getFuncionariID());
+			* if (oldRols != null && !oldRols.isEmpty())
+			* newFuncionari.setRols(oldRols);
+			* else
+			* log.error("No s'han pogut recuperar els rols del funcionari");
+			* 
+			* } catch (Exception e) {
+			* log.error("Error al recuperar els rols del funcionari");
+			* log.error(e.getMessage());
+			* }
+			*/
 
-			if (nou != null)
-				log.info("Historic de funcionari creat: " + nou.getHistoricID());
+
+			HistoricFuncionariDAO historicOld = new HistoricFuncionariDAO(oldFuncionari);
+			newFuncionari = update(funcionari);
+			log.info("Funcionari actualitzat: " + newFuncionari.getFuncionariID());
+
+			HistoricJPA historicLloc = new HistoricJPA();
+			historicLloc.setFuncionariID(oldFuncionari.getFuncionariID());
+			historicLloc.setNumeroCai(cai);
+			historicLloc.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+			historicLloc.setUsuariID(usuariId);
+
+			HistoricFuncionariDAO historicNew = new HistoricFuncionariDAO(newFuncionari);
+			Historic historicCreat = historicLogicaEjb.create(historicLloc, historicNew, historicOld);
+			log.info("Historic de funcionari creat: " + historicCreat.getHistoricID());
+
+			return newFuncionari;
 		} catch (Exception e) {
-			log.info("Error al crear el historic de funcionari");
 			log.error(e.getMessage());
+			throw new I18NException("error.modification", String.valueOf(funcionari.getFuncionariID()));
 		}
-
-		return funcionari;
 	}
 
 	@Override

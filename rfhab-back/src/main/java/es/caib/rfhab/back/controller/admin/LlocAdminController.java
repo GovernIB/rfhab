@@ -176,10 +176,11 @@ public class LlocAdminController extends LlocController {
 			}
 			log.info("Unitat ID seleccionada: " + lloc.getUnitatID());
 		} else {
-			// Pipella Funcionari - Obtenir tots els funcionaris relacionats amb el lloc
+			// Pipella Funcionari assignat- Obtenir tots els funcionaris relacionats amb el lloc (actuals, sense data fi)
+			// Pipella Funcionari històrics - Obtenir tots els funcionaris relacionats amb el lloc
 			long llocID = lloc.getLlocID();
-			List<FuncionariLlocDAO> funcionarisHistoric = llocLogicaEjb.getFuncionarisLlocByLlocID(llocID);
 			List<FuncionariLlocDAO> funcionaris = llocLogicaEjb.getFuncionarisLlocByLlocID(llocID, true);
+			List<FuncionariLlocDAO> funcionarisHistoric = llocLogicaEjb.getFuncionarisLlocByLlocID(llocID);
 
 			log.info("funcionaris per lloc: " + funcionaris.size());
 			funcionaris.forEach(funcionari -> {
@@ -321,7 +322,6 @@ public class LlocAdminController extends LlocController {
 			// Afegir el botó d'assignar rols
 			filterForm.addAdditionalButtonByPK(llocID, new AdditionalButton("far fa-check-square", "rol.assignarrol",
 					"/admin/llocrol/assignar/" + llocID, AdditionalButtonStyle.INFO));
-
 		}
 	}
 
@@ -365,50 +365,24 @@ public class LlocAdminController extends LlocController {
 
 	@Override
 	public void delete(HttpServletRequest request, Lloc lloc) throws I18NException {
+		long llocId = lloc.getLlocID();
+		log.info("'Esborrant' (donant de baixa) lloc amb ID " + llocId);
+		
+		//afegim històric
+		HistoricLlocJPA historicLloc = new HistoricLlocJPA();
+		historicLloc.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+		historicLloc.setLlocID(lloc.getLlocID());
+		historicLloc.setUsuariID(LoginInfo.getInstance().getUsuariPersona().getUsuariID());
+		historicLloc.setNumeroCai("CAI");//TODO:revisar això
+		historicLloc.setObservacions("Lloc donat de baixa");
+		historicLlocEjb.create(historicLloc);
 
-		log.info("ESBORRAR LLOC DE FEINA AMD ID " + lloc.getLlocID());
-
-		Where w1 = Where.AND(FuncionariLlocFields.DATAINICI.lessThan(new Date(System.currentTimeMillis())),
-				FuncionariLlocFields.DATAFI.greaterThan(new Date(System.currentTimeMillis())));
-
-		Where w2 = Where.AND(FuncionariLlocFields.DATAINICI.lessThan(new Date(System.currentTimeMillis())),
-				FuncionariLlocFields.DATAFI.isNull());
-
-		Where w3 = Where.AND(FuncionariLlocFields.DATAINICI.isNull(), FuncionariLlocFields.DATAFI.isNull());
-
-		Where w4 = Where.AND(FuncionariLlocFields.DATAINICI.isNull(),
-				FuncionariLlocFields.DATAFI.greaterThan(new Date(System.currentTimeMillis())));
-
-		Where w = Where.OR(w1, w2, w3, w4);
-
-		List<Long> llocsOcupats = funcionariLlocEjb.executeQuery(FuncionariLlocFields.LLOCID, w);
-
-		llocsOcupats.forEach(item -> {
-			log.info("Lloc ocupat per: " + item);
-		});
-
-		// TODO:revisar
-		if (llocsOcupats.size() > 0) {
-			throw new I18NException(createMessageError(request, "error.funcionariAssignat", lloc.getLlocID()));
-
-		} else {
-
-			// No es poden eliminar. Es donen de baixa insertant la data de baixa.
-			// llocEjb.delete(lloc);
-
-			HistoricLlocJPA historicLloc = new HistoricLlocJPA();
-			historicLloc.setLlocID(lloc.getLlocID());
-			historicLloc.setDataCreacio(new Timestamp(System.currentTimeMillis()));
-			historicLloc.setUsuariID(LoginInfo.getInstance().getUsuariPersona().getUsuariID());
-
-			historicLloc.setNumeroCai("CAI");
-			historicLloc.setObservacions("Lloc Eliminat");
-			historicLlocEjb.create(historicLloc);
-
-			lloc.setDataBaixa(new Timestamp(System.currentTimeMillis()));
-			llocEjb.update(lloc);
-		}
-
+		//el desasignam del lloc de feina
+		funcionariLlocLogicaEjb.donarDeBaixaFuncionariDeLlocByLloc(llocId);
+		
+		// No es poden eliminar. Es donen de baixa insertant la data de baixa.
+		lloc.setDataBaixa(new Timestamp(System.currentTimeMillis()));
+		llocEjb.update(lloc);
 	}
 
 	@RequestMapping(value = "/tornar", method = RequestMethod.GET)

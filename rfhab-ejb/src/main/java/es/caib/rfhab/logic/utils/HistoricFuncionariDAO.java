@@ -3,6 +3,7 @@ package es.caib.rfhab.logic.utils;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.Rol;
@@ -12,22 +13,23 @@ import es.caib.rfhab.model.entity.Rol;
  * @autor jagarcia
  *
  */
+@JsonInclude(JsonInclude.Include.NON_NULL) // Inclou només camps no nuls al JSON
+public class HistoricFuncionariDAO implements java.io.Serializable {
 
-public class HistoricFuncionariDAO implements java.io.Serializable{
+	private String numero = null;
+	private String nom = null;
+	private String llinatge1 = null;
+	private String llinatge2 = null;
+	private Integer tipusIdentificador = null;
+	private String identificador = null;
+	private String usuari = null;
+	private String correu = null;
+	private String observacions = null;
 
-	private String numero;
-	private String nom;
-	private String llinatge1;
-	private String llinatge2;
-	private int tipusIdentificador;
-	private String identificador;
-	private String usuari;
-	private String correu;
-	private String observacions;
-	
 	@JsonIgnore
 	private List<Rol> rols;
 
+	// Getters i setters
 	public String getNumero() {
 		return numero;
 	}
@@ -60,11 +62,11 @@ public class HistoricFuncionariDAO implements java.io.Serializable{
 		this.llinatge2 = llinatge2;
 	}
 
-	public int getTipusIdentificador() {
+	public Integer getTipusIdentificador() {
 		return tipusIdentificador;
 	}
 
-	public void setTipusIdentificador(int tipusIdentificador) {
+	public void setTipusIdentificador(Integer tipusIdentificador) {
 		this.tipusIdentificador = tipusIdentificador;
 	}
 
@@ -108,6 +110,7 @@ public class HistoricFuncionariDAO implements java.io.Serializable{
 		this.rols = rols;
 	}
 
+	// Constructors
 	public HistoricFuncionariDAO() {
 		super();
 	}
@@ -125,16 +128,7 @@ public class HistoricFuncionariDAO implements java.io.Serializable{
 	}
 
 	public HistoricFuncionariDAO(Funcionari funcionari, List<Rol> rols) {
-		this.numero = funcionari.getNumero();
-		this.nom = funcionari.getNom();
-		this.llinatge1 = funcionari.getLlinatge1();
-		this.llinatge2 = funcionari.getLlinatge2();
-		this.tipusIdentificador = funcionari.getTipusIdentificador();
-		this.identificador = funcionari.getIdentificador();
-		this.usuari = funcionari.getUsuari();
-		this.correu = funcionari.getCorreu();
-		this.observacions = funcionari.getObservacions();
+		this(funcionari);
 		this.rols = rols;
 	}
-
 }

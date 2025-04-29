@@ -29,12 +29,14 @@ import es.caib.rfhab.back.security.LoginInfo;
 import es.caib.rfhab.commons.utils.Utils;
 import es.caib.rfhab.logic.FuncionariLogicaService;
 import es.caib.rfhab.logic.HistoricLlocLogicaService;
+import es.caib.rfhab.logic.HistoricLogicaService;
 import es.caib.rfhab.logic.LlocLogicaService;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.FuncionariLloc;
 import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.persistence.FuncionariLlocJPA;
+import es.caib.rfhab.persistence.HistoricJPA;
 import es.caib.rfhab.persistence.HistoricLlocJPA;
 
 /**
@@ -48,6 +50,9 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 
 	@EJB(mappedName = HistoricLlocLogicaService.JNDI_NAME)
 	protected HistoricLlocLogicaService historicLlocLogicaEjb;
+
+	@EJB(mappedName = HistoricLogicaService.JNDI_NAME)
+	protected HistoricLogicaService historicLogicaEjb;
 
 	@EJB(mappedName = FuncionariLogicaService.JNDI_NAME)
 	protected FuncionariLogicaService funcionariEjb;
@@ -127,8 +132,13 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 		historicLloc.setNumeroCai(numeroCai);
 		historicLloc.setDataCreacio(new Timestamp(System.currentTimeMillis()));
 		historicLloc.setUsuariID(LoginInfo.getInstance().getUsuariPersona().getUsuariID());
-
 		long funcionariID = funcionariLloc.getFuncionariID();
+		HistoricJPA historicFuncionari = new HistoricJPA();
+		historicFuncionari.setFuncionariID(funcionariID);
+		historicFuncionari.setNumeroCai(numeroCai);
+		historicFuncionari.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+		historicFuncionari.setUsuariID(LoginInfo.getInstance().getUsuariPersona().getUsuariID());
+
 		String funcionariIdString = Long.toString(funcionariID);
 		Funcionari funcionari = funcionariEjb.findByPrimaryKey(funcionariID);
 		String funcionariIdentificador = "<null>";
@@ -144,6 +154,7 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 		String historicLlocObservacions = "Nova assignació de funcionari " + funcionariIdentificador + " (id "
 				+ funcionariIdString + ") a lloc " + llocCodi + " (id " + llocIdString + ")";
 		historicLlocLogicaEjb.create(historicLloc, historicLlocObservacions);
+		historicLogicaEjb.create(historicFuncionari, historicLlocObservacions);
 
 		return funcionariLlocJPA;
 	}

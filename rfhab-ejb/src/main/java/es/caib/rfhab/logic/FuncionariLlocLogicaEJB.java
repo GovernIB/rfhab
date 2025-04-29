@@ -43,7 +43,6 @@ public class FuncionariLlocLogicaEJB extends FuncionariLlocEJB implements Funcio
 
 	@PermitAll
 	public List<FuncionariLloc> donarDeBaixaFuncionariDeLloc(long funcionariId) throws I18NException {
-		getWhereFuncionariIsCurrent();
 		List<FuncionariLloc> llocs = select(
 				getWhereFuncionariIsCurrent(FuncionariLlocFields.FUNCIONARIID.equal(funcionariId)));
 		// TODO:aquí només hauria d'haver-ni un
@@ -55,6 +54,24 @@ public class FuncionariLlocLogicaEJB extends FuncionariLlocEJB implements Funcio
 			}
 		} else {
 			log.info("No s'ha trobat cap lloc de feina per al funcionari " + funcionariId);
+		}
+
+		return llocs;
+	}
+
+	@PermitAll
+	public List<FuncionariLloc> donarDeBaixaFuncionariDeLlocByLloc(long llocId) throws I18NException {
+		List<FuncionariLloc> llocs = select(
+				getWhereFuncionariIsCurrent(FuncionariLlocFields.LLOCID.equal(llocId)));
+		// TODO:aquí només hauria d'haver-ni un
+		if (llocs != null && llocs.size() > 0) {
+			log.info("Trobats " + llocs.size() + " funcionaris assignats per al lloc de feina " + llocId);
+			for (FuncionariLloc lloc : llocs) {
+				lloc.setDataFi(new Date(System.currentTimeMillis()));
+				update(lloc);
+			}
+		} else {
+			log.info("No s'ha trobat cap funcionari assignat per al lloc de feina " + llocId);
 		}
 
 		return llocs;

@@ -6,8 +6,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.apache.log4j.Logger;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.query.Select;
@@ -27,6 +25,7 @@ import es.caib.rfhab.back.controller.webdb.HistoricLlocController;
 import es.caib.rfhab.back.form.webdb.HistoricLlocFilterForm;
 import es.caib.rfhab.back.form.webdb.HistoricLlocForm;
 import es.caib.rfhab.back.form.webdb.LlocRefList;
+import es.caib.rfhab.back.utils.UrlUtils;
 import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.logic.HistoricLlocLogicaService;
 import es.caib.rfhab.logic.LlocLogicaService;
@@ -161,23 +160,11 @@ public class HistoricLlocAdminController extends HistoricLlocController {
 
 	@RequestMapping(value = "/tornar", method = RequestMethod.GET)
 	public String tornar(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		if (refererUrl == null || refererUrl.toString().isEmpty()) {
-			refererUrl = "/admin/lloc/list/1";
-		}
-		return "redirect:" + refererUrl;
+		return UrlUtils.getRefererRedirect(request, "redirect:/admin/lloc/list/1");
 	}
 
 	@Override
 	public String getRedirectWhenCancel(HttpServletRequest request, java.lang.Long historicID) {
-		HttpSession session = request.getSession();
-		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		if (refererUrl == null || refererUrl.toString().isEmpty()) {
-			refererUrl = "/admin/funcionari/list/1";
-		}
-		return "redirect:" + refererUrl;
+		return UrlUtils.getRefererRedirect(request, "redirect:/admin/funcionari/list/1");
 	}
 }

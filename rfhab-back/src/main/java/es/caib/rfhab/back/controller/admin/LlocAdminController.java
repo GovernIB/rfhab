@@ -8,8 +8,6 @@ import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.apache.log4j.Logger;
 import org.fundaciobit.genapp.common.StringKeyValue;
 import org.fundaciobit.genapp.common.i18n.I18NException;
@@ -30,6 +28,7 @@ import es.caib.rfhab.back.controller.webdb.LlocController;
 import es.caib.rfhab.back.form.webdb.LlocFilterForm;
 import es.caib.rfhab.back.form.webdb.LlocForm;
 import es.caib.rfhab.back.security.LoginInfo;
+import es.caib.rfhab.back.utils.UrlUtils;
 import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.ejb.EntitatService;
 import es.caib.rfhab.ejb.FuncionariLlocService;
@@ -393,14 +392,7 @@ public class LlocAdminController extends LlocController {
 
 	@RequestMapping(value = "/tornar", method = RequestMethod.GET)
 	public String tornar(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		if (refererUrl == null || refererUrl.toString().isEmpty()) {
-			refererUrl = getContextWeb() + "/list/1";
-		}
-		log.info("Redirigint cap a " + "redirect:" + refererUrl);
-		return "redirect:" + refererUrl;
+		return UrlUtils.getRefererRedirect(request, "redirect:" + getContextWeb() + "/list/1");
 	}
 
 	@Override
@@ -509,45 +501,21 @@ public class LlocAdminController extends LlocController {
 
 	@Override
 	public String getRedirectWhenCreated(HttpServletRequest request, LlocForm llocForm) {
-		HttpSession session = request.getSession();
-		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		if (refererUrl == null || refererUrl.toString().isEmpty()) {
-			return super.getRedirectWhenCreated(request, llocForm);
-		}
-		return "redirect:" + refererUrl;
+		return UrlUtils.getRefererRedirect(request, super.getRedirectWhenCreated(request, llocForm));
 	}
 
 	@Override
 	public String getRedirectWhenModified(HttpServletRequest request, LlocForm llocForm, Throwable __e) {
-		HttpSession session = request.getSession();
-		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		if (refererUrl == null || refererUrl.toString().isEmpty()) {
-			return super.getRedirectWhenModified(request, llocForm, __e);
-		}
-		return "redirect:" + refererUrl;
+		return UrlUtils.getRefererRedirect(request, super.getRedirectWhenModified(request, llocForm, __e));
 	}
 
 	@Override
 	public String getRedirectWhenDelete(HttpServletRequest request, java.lang.Long llocID, Throwable __e) {
-		HttpSession session = request.getSession();
-		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		if (refererUrl == null || refererUrl.toString().isEmpty()) {
-			return super.getRedirectWhenDelete(request, llocID, __e);
-		}
-		return "redirect:" + refererUrl;
+		return UrlUtils.getRefererRedirect(request, super.getRedirectWhenDelete(request, llocID, __e));
 	}
 
 	@Override
 	public String getRedirectWhenCancel(HttpServletRequest request, java.lang.Long llocID) {
-		HttpSession session = request.getSession();
-		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		if (refererUrl == null || refererUrl.toString().isEmpty()) {
-			return super.getRedirectWhenCancel(request, llocID);
-		}
-		return "redirect:" + refererUrl;
+		return UrlUtils.getRefererRedirect(request, super.getRedirectWhenCancel(request, llocID));
 	}
 }

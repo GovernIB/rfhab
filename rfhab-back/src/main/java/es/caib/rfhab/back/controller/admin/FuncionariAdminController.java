@@ -11,8 +11,6 @@ import java.util.Set;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.fundaciobit.genapp.common.StringKeyValue;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.i18n.I18NValidationException;
@@ -34,6 +32,7 @@ import es.caib.rfhab.back.controller.webdb.FuncionariController;
 import es.caib.rfhab.back.form.webdb.FuncionariFilterForm;
 import es.caib.rfhab.back.form.webdb.FuncionariForm;
 import es.caib.rfhab.back.security.LoginInfo;
+import es.caib.rfhab.back.utils.UrlUtils;
 import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.ejb.UnitatService;
 import es.caib.rfhab.logic.ActivitatLogicaService;
@@ -459,46 +458,22 @@ public class FuncionariAdminController extends FuncionariController {
 
 	@Override
 	public String getRedirectWhenCreated(HttpServletRequest request, FuncionariForm funcionariForm) {
-		HttpSession session = request.getSession();
-		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		if (refererUrl == null || refererUrl.toString().isEmpty()) {
-			return super.getRedirectWhenCreated(request, funcionariForm);
-		}
-		return "redirect:" + refererUrl;
+		return UrlUtils.getRefererRedirect(request, super.getRedirectWhenCreated(request, funcionariForm));
 	}
 
 	@Override
 	public String getRedirectWhenModified(HttpServletRequest request, FuncionariForm funcionariForm, Throwable __e) {
-		HttpSession session = request.getSession();
-		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		if (refererUrl == null || refererUrl.toString().isEmpty()) {
-			return super.getRedirectWhenModified(request, funcionariForm, __e);
-		}
-		return "redirect:" + refererUrl;
+		return UrlUtils.getRefererRedirect(request, super.getRedirectWhenModified(request, funcionariForm, __e));
 	}
 
 	@Override
 	public String getRedirectWhenDelete(HttpServletRequest request, java.lang.Long funcionariID, Throwable __e) {
-		HttpSession session = request.getSession();
-		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		if (refererUrl == null || refererUrl.toString().isEmpty()) {
-			return super.getRedirectWhenDelete(request, funcionariID, __e);
-		}
-		return "redirect:" + refererUrl;
+		return UrlUtils.getRefererRedirect(request, super.getRedirectWhenDelete(request, funcionariID, __e));
 	}
 
 	@Override
 	public String getRedirectWhenCancel(HttpServletRequest request, java.lang.Long funcionariID) {
-		HttpSession session = request.getSession();
-		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		if (refererUrl == null || refererUrl.toString().isEmpty()) {
-			return super.getRedirectWhenCancel(request, funcionariID);
-		}
-		return "redirect:" + refererUrl;
+		return UrlUtils.getRefererRedirect(request, super.getRedirectWhenCancel(request, funcionariID));
 	}
 
 }

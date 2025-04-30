@@ -6,8 +6,6 @@ import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.fundaciobit.genapp.common.StringKeyValue;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.i18n.I18NValidationException;
@@ -27,6 +25,7 @@ import es.caib.rfhab.back.controller.webdb.FuncionariLlocController;
 import es.caib.rfhab.back.form.webdb.FuncionariLlocFilterForm;
 import es.caib.rfhab.back.form.webdb.FuncionariLlocForm;
 import es.caib.rfhab.back.security.LoginInfo;
+import es.caib.rfhab.back.utils.UrlUtils;
 import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.commons.utils.Utils;
 import es.caib.rfhab.logic.FuncionariLogicaService;
@@ -181,46 +180,22 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 
 	@RequestMapping(value = "/tornar", method = RequestMethod.GET)
 	public String tornar(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		if (refererUrl == null || refererUrl.toString().isEmpty()) {
-			refererUrl = "/admin/funcionari/list/1";
-		}
-		return "redirect:" + refererUrl;
+		return UrlUtils.getRefererRedirect(request, "redirect:/admin/funcionari/list/1");
 	}
 
 	@Override
 	public String getRedirectWhenCancel(HttpServletRequest request, java.lang.Long historicID) {
-		HttpSession session = request.getSession();
-		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		if (refererUrl == null || refererUrl.toString().isEmpty()) {
-			refererUrl = "/admin/funcionari/list/1";
-		}
-		return "redirect:" + refererUrl;
+		return UrlUtils.getRefererRedirect(request, "redirect:/admin/funcionari/list/1");
 	}
 
 	@Override
 	public String getRedirectWhenDelete(HttpServletRequest request, java.lang.Long funcionarillocID, Throwable __e) {
-		HttpSession session = request.getSession();
-		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		if (refererUrl == null || refererUrl.toString().isEmpty()) {
-			return super.getRedirectWhenDelete(request, funcionarillocID, __e);
-		}
-		return "redirect:" + refererUrl;
+		return UrlUtils.getRefererRedirect(request, super.getRedirectWhenDelete(request, funcionarillocID, __e));
 	}
 
 	@Override
 	public String getRedirectWhenCreated(HttpServletRequest request, FuncionariLlocForm funcionariLlocForm) {
-		HttpSession session = request.getSession();
-		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
-		if (refererUrl == null || refererUrl.toString().isEmpty()) {
-			return super.getRedirectWhenCreated(request, funcionariLlocForm);
-		}
-		return "redirect:" + refererUrl;
+		return UrlUtils.getRefererRedirect(request, super.getRedirectWhenCreated(request, funcionariLlocForm));
 	}
 
 	@Override

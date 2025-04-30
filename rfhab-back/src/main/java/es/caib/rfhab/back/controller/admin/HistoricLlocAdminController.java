@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.fundaciobit.genapp.common.i18n.I18NException;
@@ -26,6 +27,7 @@ import es.caib.rfhab.back.controller.webdb.HistoricLlocController;
 import es.caib.rfhab.back.form.webdb.HistoricLlocFilterForm;
 import es.caib.rfhab.back.form.webdb.HistoricLlocForm;
 import es.caib.rfhab.back.form.webdb.LlocRefList;
+import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.logic.HistoricLlocLogicaService;
 import es.caib.rfhab.logic.LlocLogicaService;
 import es.caib.rfhab.logic.utils.DbDaoDictionaries;
@@ -102,6 +104,7 @@ public class HistoricLlocAdminController extends HistoricLlocController {
 						"historiclloc.tornar", "/admin/lloc/view/" + codigoLugar, AdditionalButtonStyle.INFO));
 			}
 		}
+		request.getSession().setAttribute(Constants.REFERER_SESSION_ATTRIBUTE, request.getHeader("referer"));
 
 		return historicLlocFilterForm;
 	}
@@ -144,6 +147,8 @@ public class HistoricLlocAdminController extends HistoricLlocController {
 
 		historicLlocForm.setAttachedAdditionalJspCode(true);
 
+		request.getSession().setAttribute(Constants.REFERER_SESSION_ATTRIBUTE, request.getHeader("referer"));
+
 		return historicLlocForm;
 	}
 
@@ -156,11 +161,23 @@ public class HistoricLlocAdminController extends HistoricLlocController {
 
 	@RequestMapping(value = "/tornar", method = RequestMethod.GET)
 	public String tornar(HttpServletRequest request) {
-		return "redirect:/admin/funcionari/list/1";
+		HttpSession session = request.getSession();
+		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		if (refererUrl == null || refererUrl.toString().isEmpty()) {
+			refererUrl = "/admin/lloc/list/1";
+		}
+		return "redirect:" + refererUrl;
 	}
 
 	@Override
 	public String getRedirectWhenCancel(HttpServletRequest request, java.lang.Long historicID) {
-		return "redirect:/admin/funcionari/list/1";
+		HttpSession session = request.getSession();
+		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		if (refererUrl == null || refererUrl.toString().isEmpty()) {
+			refererUrl = "/admin/funcionari/list/1";
+		}
+		return "redirect:" + refererUrl;
 	}
 }

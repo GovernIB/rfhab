@@ -11,7 +11,7 @@ import java.util.Set;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.fundaciobit.genapp.common.StringKeyValue;
 import org.fundaciobit.genapp.common.i18n.I18NException;
@@ -26,11 +26,8 @@ import org.fundaciobit.genapp.common.web.form.AdditionalButtonStyle;
 import org.fundaciobit.genapp.common.web.form.AdditionalField;
 import org.fundaciobit.genapp.common.web.i18n.I18NUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import es.caib.rfhab.back.controller.webdb.FuncionariController;
@@ -52,7 +49,6 @@ import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.HistoricJPA;
-import es.caib.rfhab.persistence.HistoricLlocJPA;
 import es.caib.rfhab.persistence.LlocJPA;
 
 @Controller
@@ -193,6 +189,8 @@ public class FuncionariAdminController extends FuncionariController {
 		 * roleUsuariEntitatFilterForm.addAdditionalField(adfield);
 		 */
 
+		request.getSession().setAttribute(Constants.REFERER_SESSION_ATTRIBUTE, request.getHeader("referer"));
+
 		return funcionariForm;
 	}
 
@@ -272,6 +270,8 @@ public class FuncionariAdminController extends FuncionariController {
 		funcionariFilterForm.setAttachedAdditionalJspCode(true);
 
 		// funcionariFilterForm.setActionsRenderer(FuncionariFilterForm.ACTIONS_RENDERER_DROPDOWN_BUTTON);
+
+		request.getSession().setAttribute(Constants.REFERER_SESSION_ATTRIBUTE, request.getHeader("referer"));
 
 		return funcionariFilterForm;
 	}
@@ -415,20 +415,9 @@ public class FuncionariAdminController extends FuncionariController {
 		return __tmp;
 	}
 
-	// @Override
-	// public String editarFuncionariPost(@ModelAttribute FuncionariForm funcionariForm,
-	// 		BindingResult result, SessionStatus status, HttpServletRequest request,
-	// 		HttpServletResponse response) throws I18NException {
-
-	// 	String numeroCai = (!Utils.isEmpty(request.getParameter("numerocai"))) ? request.getParameter("numerocai") : "";
-
-	// 	funcionariEJB.updateAndHistory(funcionariForm.getFuncionari(), numeroCai,
-	// 			LoginInfo.getInstance().getUsuariPersona().getUsuariID());
-
-	// 	return super.editarFuncionariPost(funcionariForm, result, status, request, response);
-	// }
 	@Override
-	public FuncionariJPA update(HttpServletRequest request, FuncionariJPA funcionari) throws I18NException, I18NValidationException {
+	public FuncionariJPA update(HttpServletRequest request, FuncionariJPA funcionari)
+			throws I18NException, I18NValidationException {
 
 		Long usuariId = LoginInfo.getInstance().getUsuariPersona().getUsuariID();
 		String numeroCai = (!Utils.isEmpty(request.getParameter("numerocai"))) ? request.getParameter("numerocai") : "";
@@ -467,4 +456,49 @@ public class FuncionariAdminController extends FuncionariController {
 			}
 		}
 	}
+
+	@Override
+	public String getRedirectWhenCreated(HttpServletRequest request, FuncionariForm funcionariForm) {
+		HttpSession session = request.getSession();
+		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		if (refererUrl == null || refererUrl.toString().isEmpty()) {
+			return super.getRedirectWhenCreated(request, funcionariForm);
+		}
+		return "redirect:" + refererUrl;
+	}
+
+	@Override
+	public String getRedirectWhenModified(HttpServletRequest request, FuncionariForm funcionariForm, Throwable __e) {
+		HttpSession session = request.getSession();
+		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		if (refererUrl == null || refererUrl.toString().isEmpty()) {
+			return super.getRedirectWhenModified(request, funcionariForm, __e);
+		}
+		return "redirect:" + refererUrl;
+	}
+
+	@Override
+	public String getRedirectWhenDelete(HttpServletRequest request, java.lang.Long funcionariID, Throwable __e) {
+		HttpSession session = request.getSession();
+		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		if (refererUrl == null || refererUrl.toString().isEmpty()) {
+			return super.getRedirectWhenDelete(request, funcionariID, __e);
+		}
+		return "redirect:" + refererUrl;
+	}
+
+	@Override
+	public String getRedirectWhenCancel(HttpServletRequest request, java.lang.Long funcionariID) {
+		HttpSession session = request.getSession();
+		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		if (refererUrl == null || refererUrl.toString().isEmpty()) {
+			return super.getRedirectWhenCancel(request, funcionariID);
+		}
+		return "redirect:" + refererUrl;
+	}
+
 }

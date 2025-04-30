@@ -1,7 +1,6 @@
 package es.caib.rfhab.back.controller.admin;
 
 import java.sql.Timestamp;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +8,7 @@ import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.fundaciobit.genapp.common.StringKeyValue;
@@ -30,6 +30,7 @@ import es.caib.rfhab.back.controller.webdb.LlocController;
 import es.caib.rfhab.back.form.webdb.LlocFilterForm;
 import es.caib.rfhab.back.form.webdb.LlocForm;
 import es.caib.rfhab.back.security.LoginInfo;
+import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.ejb.EntitatService;
 import es.caib.rfhab.ejb.FuncionariLlocService;
 import es.caib.rfhab.ejb.LlocRolService;
@@ -176,8 +177,10 @@ public class LlocAdminController extends LlocController {
 			}
 			log.info("Unitat ID seleccionada: " + lloc.getUnitatID());
 		} else {
-			// Pipella Funcionari assignat- Obtenir tots els funcionaris relacionats amb el lloc (actuals, sense data fi)
-			// Pipella Funcionari històrics - Obtenir tots els funcionaris relacionats amb el lloc
+			// Pipella Funcionari assignat- Obtenir tots els funcionaris relacionats amb el
+			// lloc (actuals, sense data fi)
+			// Pipella Funcionari històrics - Obtenir tots els funcionaris relacionats amb
+			// el lloc
 			long llocID = lloc.getLlocID();
 			List<FuncionariLlocDAO> funcionaris = llocLogicaEjb.getFuncionarisLlocByLlocID(llocID, true);
 			List<FuncionariLlocDAO> funcionarisHistoric = llocLogicaEjb.getFuncionarisLlocByLlocID(llocID);
@@ -218,13 +221,13 @@ public class LlocAdminController extends LlocController {
 
 			// Pipella Històric - Obtenir tots els canvis realitzats al lloc de feina
 			List<Select6Values<Long, String, String, String, String, Timestamp>> historic = historicLlocEjb
-				.getHistoricByLlocId(lloc.getLlocID());
+					.getHistoricByLlocId(lloc.getLlocID());
 			log.info("HistoricLloc.size: " + historic.size());
 
 			historic.forEach(x -> log.info("HistoricLloc: " + x.getValue1() + " " + x.getValue2() + " " + x.getValue3()
 					+ " " + x.getValue4() + " " + x.getValue5() + " " + x.getValue6()));
 
-			mav.addObject("historic", historic);	
+			mav.addObject("historic", historic);
 		}
 
 		mav.addObject("lloc", lloc);
@@ -243,6 +246,8 @@ public class LlocAdminController extends LlocController {
 		llocForm.setCancelButtonVisible(false);
 		llocForm.setAttachedAdditionalJspCode(true);
 
+		request.getSession().setAttribute(Constants.REFERER_SESSION_ATTRIBUTE, request.getHeader("referer"));
+
 		return llocForm;
 	}
 
@@ -250,7 +255,8 @@ public class LlocAdminController extends LlocController {
 	public void postList(HttpServletRequest request, ModelAndView mav, LlocFilterForm filterForm, List<Lloc> list)
 			throws I18NException {
 
-		List<Long> llocsOcupats = funcionariLlocEjb.executeQuery(FuncionariLlocFields.LLOCID, funcionariLlocLogicaEjb.getWhereFuncionariIsCurrent());
+		List<Long> llocsOcupats = funcionariLlocEjb.executeQuery(FuncionariLlocFields.LLOCID,
+				funcionariLlocLogicaEjb.getWhereFuncionariIsCurrent());
 
 		filterForm.getAdditionalButtonsByPK().clear();
 
@@ -367,19 +373,19 @@ public class LlocAdminController extends LlocController {
 	public void delete(HttpServletRequest request, Lloc lloc) throws I18NException {
 		long llocId = lloc.getLlocID();
 		log.info("'Esborrant' (donant de baixa) lloc amb ID " + llocId);
-		
-		//afegim històric
+
+		// afegim històric
 		HistoricLlocJPA historicLloc = new HistoricLlocJPA();
 		historicLloc.setDataCreacio(new Timestamp(System.currentTimeMillis()));
 		historicLloc.setLlocID(lloc.getLlocID());
 		historicLloc.setUsuariID(LoginInfo.getInstance().getUsuariPersona().getUsuariID());
-		historicLloc.setNumeroCai("CAI");//TODO:revisar això
+		historicLloc.setNumeroCai("CAI");// TODO:revisar això
 		historicLloc.setObservacions("Lloc donat de baixa");
 		historicLlocEjb.create(historicLloc);
 
-		//el desasignam del lloc de feina
+		// el desasignam del lloc de feina
 		funcionariLlocLogicaEjb.donarDeBaixaFuncionariDeLlocByLloc(llocId);
-		
+
 		// No es poden eliminar. Es donen de baixa insertant la data de baixa.
 		lloc.setDataBaixa(new Timestamp(System.currentTimeMillis()));
 		llocEjb.update(lloc);
@@ -387,8 +393,14 @@ public class LlocAdminController extends LlocController {
 
 	@RequestMapping(value = "/tornar", method = RequestMethod.GET)
 	public String tornar(HttpServletRequest request) {
-		log.info("Redirigint cap a " + "redirect:" + getContextWeb() + "/list/1");
-		return "redirect:" + getContextWeb() + "/list/1";
+		HttpSession session = request.getSession();
+		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		if (refererUrl == null || refererUrl.toString().isEmpty()) {
+			refererUrl = getContextWeb() + "/list/1";
+		}
+		log.info("Redirigint cap a " + "redirect:" + refererUrl);
+		return "redirect:" + refererUrl;
 	}
 
 	@Override
@@ -493,5 +505,49 @@ public class LlocAdminController extends LlocController {
 		}
 
 		return result;
+	}
+
+	@Override
+	public String getRedirectWhenCreated(HttpServletRequest request, LlocForm llocForm) {
+		HttpSession session = request.getSession();
+		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		if (refererUrl == null || refererUrl.toString().isEmpty()) {
+			return super.getRedirectWhenCreated(request, llocForm);
+		}
+		return "redirect:" + refererUrl;
+	}
+
+	@Override
+	public String getRedirectWhenModified(HttpServletRequest request, LlocForm llocForm, Throwable __e) {
+		HttpSession session = request.getSession();
+		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		if (refererUrl == null || refererUrl.toString().isEmpty()) {
+			return super.getRedirectWhenModified(request, llocForm, __e);
+		}
+		return "redirect:" + refererUrl;
+	}
+
+	@Override
+	public String getRedirectWhenDelete(HttpServletRequest request, java.lang.Long llocID, Throwable __e) {
+		HttpSession session = request.getSession();
+		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		if (refererUrl == null || refererUrl.toString().isEmpty()) {
+			return super.getRedirectWhenDelete(request, llocID, __e);
+		}
+		return "redirect:" + refererUrl;
+	}
+
+	@Override
+	public String getRedirectWhenCancel(HttpServletRequest request, java.lang.Long llocID) {
+		HttpSession session = request.getSession();
+		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		if (refererUrl == null || refererUrl.toString().isEmpty()) {
+			return super.getRedirectWhenCancel(request, llocID);
+		}
+		return "redirect:" + refererUrl;
 	}
 }

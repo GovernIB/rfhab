@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.fundaciobit.genapp.common.StringKeyValue;
 import org.fundaciobit.genapp.common.i18n.I18NException;
@@ -26,6 +27,7 @@ import es.caib.rfhab.back.controller.webdb.FuncionariLlocController;
 import es.caib.rfhab.back.form.webdb.FuncionariLlocFilterForm;
 import es.caib.rfhab.back.form.webdb.FuncionariLlocForm;
 import es.caib.rfhab.back.security.LoginInfo;
+import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.commons.utils.Utils;
 import es.caib.rfhab.logic.FuncionariLogicaService;
 import es.caib.rfhab.logic.HistoricLlocLogicaService;
@@ -82,7 +84,10 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 
 			funcionariLlocFilterForm.addAdditionalButton(new AdditionalButton(" fas fa-long-arrow-alt-left", "tornar",
 					getContextWeb() + "/tornar", AdditionalButtonStyle.SECONDARY));
+			log.info("getContextPath: " + request.getContextPath());
 		}
+
+		request.getSession().setAttribute(Constants.REFERER_SESSION_ATTRIBUTE, request.getHeader("referer"));
 
 		return funcionariLlocFilterForm;
 	}
@@ -111,6 +116,8 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 
 		funcionariLlocForm.addHiddenField(USUARIID);
 		funcionariLlocForm.addReadOnlyField(DATACREACIO);
+
+		request.getSession().setAttribute(Constants.REFERER_SESSION_ATTRIBUTE, request.getHeader("referer"));
 
 		return funcionariLlocForm;
 	}
@@ -142,13 +149,13 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 		String funcionariIdString = Long.toString(funcionariID);
 		Funcionari funcionari = funcionariEjb.findByPrimaryKey(funcionariID);
 		String funcionariIdentificador = "<null>";
-		if(funcionari != null){
+		if (funcionari != null) {
 			funcionariIdentificador = funcionari.getIdentificador();
 		}
 		String llocIdString = Long.toString(llocID);
 		Lloc lloc = llocEjb.findByPrimaryKey(llocID);
 		String llocCodi = "<null>";
-		if(lloc != null){
+		if (lloc != null) {
 			llocCodi = lloc.getCodiLloc();
 		}
 		String historicLlocObservacions = "Nova assignació de funcionari " + funcionariIdentificador + " (id "
@@ -174,12 +181,46 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 
 	@RequestMapping(value = "/tornar", method = RequestMethod.GET)
 	public String tornar(HttpServletRequest request) {
-		return "redirect:/admin/funcionari/list/1";
+		HttpSession session = request.getSession();
+		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		if (refererUrl == null || refererUrl.toString().isEmpty()) {
+			refererUrl = "/admin/funcionari/list/1";
+		}
+		return "redirect:" + refererUrl;
 	}
 
 	@Override
 	public String getRedirectWhenCancel(HttpServletRequest request, java.lang.Long historicID) {
-		return "redirect:/admin/funcionari/list/1";
+		HttpSession session = request.getSession();
+		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		if (refererUrl == null || refererUrl.toString().isEmpty()) {
+			refererUrl = "/admin/funcionari/list/1";
+		}
+		return "redirect:" + refererUrl;
+	}
+
+	@Override
+	public String getRedirectWhenDelete(HttpServletRequest request, java.lang.Long funcionarillocID, Throwable __e) {
+		HttpSession session = request.getSession();
+		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		if (refererUrl == null || refererUrl.toString().isEmpty()) {
+			return super.getRedirectWhenDelete(request, funcionarillocID, __e);
+		}
+		return "redirect:" + refererUrl;
+	}
+
+	@Override
+	public String getRedirectWhenCreated(HttpServletRequest request, FuncionariLlocForm funcionariLlocForm) {
+		HttpSession session = request.getSession();
+		Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+		if (refererUrl == null || refererUrl.toString().isEmpty()) {
+			return super.getRedirectWhenCreated(request, funcionariLlocForm);
+		}
+		return "redirect:" + refererUrl;
 	}
 
 	@Override

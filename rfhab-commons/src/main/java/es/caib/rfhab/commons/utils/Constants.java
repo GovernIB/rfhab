@@ -41,5 +41,5 @@ public interface Constants {
     public static final String SQL_LIKE_ESCAPE_PATTERN = "^";
 		public static final String SQL_NUMERO_PATTERN = FUNCIONARI_NUMERO_PLACEHOLDER.replaceAll("_", SQL_LIKE_ESCAPE_PATTERN + "_")
 				.replaceAll("X", "_");
-
+		public static final String REFERER_SESSION_ATTRIBUTE = "referer";
 }

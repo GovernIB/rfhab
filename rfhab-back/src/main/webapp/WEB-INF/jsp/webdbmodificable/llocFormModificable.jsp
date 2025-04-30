@@ -59,7 +59,7 @@
 									<td>${funcionariItem.nom}&nbsp;${funcionariItem.llinatge1}&nbsp;${funcionariItem.llinatge2}</td>
 									<td><fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${funcionariItem.dataInici}" /></td>
 									<td><fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${funcionariItem.dataFi}" /></td>
-									<td><a class="btn btn-primary btn-sm" href="<c:url value="/admin/funcionari/${funcionariItem.funcionariID}/edit"/>"><fmt:message key="detall"/></a></td>
+									<td><a class="btn btn-primary btn-sm" href="<c:url value="/admin/funcionari/view/${funcionariItem.funcionariID}"/>"><fmt:message key="detall"/></a></td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -205,7 +205,7 @@
 									<td>${funcionariItem.nom}&nbsp;${funcionariItem.llinatge1}&nbsp;${funcionariItem.llinatge2}</td>
 									<td><fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${funcionariItem.dataInici}" /></td>
 									<td><fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${funcionariItem.dataFi}" /></td>
-									<td><a class="btn btn-primary btn-sm" href="<c:url value="/admin/funcionari/${funcionariItem.funcionariID}/edit"/>"><fmt:message key="detall"/></a></td>
+									<td><a class="btn btn-primary btn-sm" href="<c:url value="/admin/funcionari/view/${funcionariItem.funcionariID}"/>"><fmt:message key="detall"/></a></td>
 								</tr>
 							</c:forEach>
 						</tbody>

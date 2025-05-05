@@ -9,6 +9,7 @@ import org.fundaciobit.genapp.common.i18n.I18NException;
 
 import es.caib.rfhab.ejb.LlocService;
 import es.caib.rfhab.logic.utils.FuncionariLlocDAO;
+import es.caib.rfhab.logic.utils.FuncionariLlocLlocDAO;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.entity.Rol;
@@ -33,6 +34,9 @@ public interface LlocLogicaService extends LlocService {
 	public HashMap<Long, LlocJPA> getAllLlocsOcupats(Long entitatId) throws I18NException;
 
 	public HashMap<Long, Funcionari> getCurrentFuncionarisByLloc(Long llocId, Long entitatId) throws I18NException;
+
+	public List<FuncionariLlocLlocDAO> getLlocHistoricByFuncionariID(Long funcionariId, boolean current)
+			throws I18NException;
 
 	public List<Lloc> getLlocByFuncionariID(Long funcionariId, boolean current) throws I18NException;
 

@@ -21,6 +21,7 @@ import es.caib.rfhab.ejb.LlocEJB;
 import es.caib.rfhab.ejb.LlocRolService;
 import es.caib.rfhab.ejb.RolService;
 import es.caib.rfhab.logic.utils.FuncionariLlocDAO;
+import es.caib.rfhab.logic.utils.FuncionariLlocLlocDAO;
 import es.caib.rfhab.logic.utils.HistoricLlocDAO;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.FuncionariLloc;
@@ -229,6 +230,30 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 		return null;
 	}
 
+	public List<FuncionariLlocLlocDAO> getLlocHistoricByFuncionariID(Long funcionariId, boolean current)
+			throws I18NException {
+		if (funcionariId != null) {
+			Where w = FuncionariLlocFields.FUNCIONARIID.equal(funcionariId);
+
+			if (current) {
+				w = funcionariLlocLogicaEjb.getWhereFuncionariIsCurrent(w);
+			}
+			List<FuncionariLloc> funcionarisLlocs = funcionariLlocEjb.select(w);
+			if (funcionarisLlocs.size() > 0) {
+				List<FuncionariLlocLlocDAO> llocsOcupatsPerFuncionari = new ArrayList<FuncionariLlocLlocDAO>(
+						funcionarisLlocs.size());
+				for (FuncionariLloc fl : funcionarisLlocs) {
+					Lloc lloc = findByPrimaryKey(fl.getLlocID());
+					if (lloc != null) {
+						llocsOcupatsPerFuncionari.add(new FuncionariLlocLlocDAO(lloc, fl));
+					}
+				}
+				return llocsOcupatsPerFuncionari;
+			}
+		}
+		return null;
+	}
+
 	@Override
 	@PermitAll
 	public List<Funcionari> getFuncionarisByLlocID(Long llocId) throws I18NException {
@@ -243,7 +268,7 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 
 			Where w = FuncionariLlocFields.LLOCID.equal(llocId);
 
-			if(current){
+			if (current) {
 				w = funcionariLlocLogicaEjb.getWhereFuncionariIsCurrent(w);
 			}
 
@@ -277,7 +302,7 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 
 			Where w = FuncionariLlocFields.LLOCID.equal(llocId);
 
-			if(current){
+			if (current) {
 				w = funcionariLlocLogicaEjb.getWhereFuncionariIsCurrent(w);
 			}
 

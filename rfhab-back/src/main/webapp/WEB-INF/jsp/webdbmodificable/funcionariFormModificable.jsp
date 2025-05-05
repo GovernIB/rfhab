@@ -171,7 +171,8 @@
 								<th><fmt:message key="lloc.codiLloc" /></th>
 								<th><fmt:message key="lloc.nom" /></th>
 								<th><fmt:message key="lloc.personalOamr" /></th>
-								<th><fmt:message key="lloc.dataBaixa" /></th>
+								<th><fmt:message key="funcionariLloc.dataInici" /></th>
+								<th><fmt:message key="funcionariLloc.dataFi" /></th>
 								<th>&nbsp;</th>
 							</tr>
 						</thead>
@@ -187,7 +188,9 @@
 											<i class="fa fa-times" aria-hidden="true"></i>
 										</c:if></td>
 									<td><fmt:formatDate pattern="${gen:getDateTimePattern()}"
-											value="${lloc.dataBaixa}" /></td>
+											value="${lloc.dataInici}" /></td>
+									<td><fmt:formatDate pattern="${gen:getDateTimePattern()}"
+											value="${lloc.dataFi}" /></td>
 									<td><a class="btn btn-primary btn-sm"
 										href="<c:url value="/admin/lloc/view/${lloc.llocID}"/>"><i
 											class="far fa-eye" title="Veure detall"></i>&nbsp;<fmt:message key="detall" /></a></td>

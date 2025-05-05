@@ -45,6 +45,7 @@ import es.caib.rfhab.logic.FuncionariLlocLogicaService;
 import es.caib.rfhab.logic.FuncionariLogicaService;
 import es.caib.rfhab.logic.HistoricLogicaService;
 import es.caib.rfhab.logic.LlocLogicaService;
+import es.caib.rfhab.logic.utils.FuncionariLlocLlocDAO;
 import es.caib.rfhab.model.entity.Activitat;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.Lloc;
@@ -144,7 +145,8 @@ public class FuncionariAdminController extends FuncionariController {
 			// Pipella Funcionari històrics - Obtenir tots els llocs relacionats amb el
 			// funcionari
 			List<Lloc> llocsFuncionari = llocEJB.getLlocByFuncionariID(funcionariId, true);
-			List<Lloc> llocsFuncionariHistoric = llocEJB.getLlocByFuncionariID(funcionariId, false);
+			List<FuncionariLlocLlocDAO> llocsFuncionariHistoric = llocEJB.getLlocHistoricByFuncionariID(funcionariId,
+					false);
 			mav.addObject("llocItems", llocsFuncionari);
 			mav.addObject("llocsHistoric", llocsFuncionariHistoric);
 

@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import es.caib.pluginsib.arxiu.caib.ArxiuPluginCaib;
 import es.caib.rfhab.commons.utils.Configuracio;
 import es.caib.rfhab.commons.utils.Constants;
-import es.caib.rfhab.commons.utils.Utils;
+import es.caib.rfhab.commons.utils.StringUtils;
 import es.caib.rfhab.model.entity.Fitxer;
 import es.caib.rfhab.pluginsib.arxiu.model.DocumentInfo;
 import es.caib.pluginsib.arxiu.api.ContingutArxiu;
@@ -84,7 +84,7 @@ public class ArxiuPlugin extends AbstractPluginProperties implements es.caib.rfh
 	@Override
 	public String tancarExpedientPerId(String identificador) {
 		LOG.info("tancarExpedient::" + identificador);
-		if (Utils.isNotEmpty(identificador)) {
+		if (StringUtils.isNotEmpty(identificador)) {
 			if (plugin == null) {
 				plugin = getArxiuPlugin();
 			}
@@ -166,7 +166,7 @@ public class ArxiuPlugin extends AbstractPluginProperties implements es.caib.rfh
 			throw new I18NException("Document no vàlid");
 		}
 
-		if (Utils.isEmpty(expedientId)) {
+		if (StringUtils.isEmpty(expedientId)) {
 			LOG.error("No existeix expedientId");
 		}
 

@@ -32,4 +32,10 @@ public interface FuncionariLogicaService extends FuncionariService {
 	public HistoricFuncionariDAO fromJson(String json) throws I18NException;
 
 	public String getMaxFuncionariNumero() throws SecurityException, NoSuchFieldException;
+
+	public Funcionari dessassignarFuncionariAndHistory(Funcionari funcionari, Long llocId, final String numeroCai,
+			long usuariId, boolean donarDeBaixaFuncionari) throws I18NException;
+
+	public Funcionari donarDeBaixaFuncionariAndHistory(Funcionari funcionari, final String numeroCai, long usuariId)
+			throws I18NException;
 }

@@ -17,11 +17,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.ejb.FuncionariEJB;
+import es.caib.rfhab.ejb.FuncionariLlocService;
 import es.caib.rfhab.ejb.HistoricService;
 import es.caib.rfhab.ejb.RolService;
 import es.caib.rfhab.logic.utils.HistoricFuncionariDAO;
 import es.caib.rfhab.logic.utils.HistoricLlocDAO;
 import es.caib.rfhab.model.entity.Funcionari;
+import es.caib.rfhab.model.entity.FuncionariLloc;
 import es.caib.rfhab.model.entity.Historic;
 import es.caib.rfhab.model.entity.HistoricLloc;
 import es.caib.rfhab.model.entity.Lloc;
@@ -43,8 +45,13 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 	@EJB(mappedName = HistoricLogicaService.JNDI_NAME)
 	protected HistoricLogicaService historicLogicaEjb;
 
-	@EJB(mappedName = HistoricService.JNDI_NAME)
-	protected HistoricService historicEjb;
+	@EJB(mappedName = FuncionariLlocLogicaService.JNDI_NAME)
+	protected FuncionariLlocLogicaService funcionariLlocLogicaEjb;
+	@EJB(mappedName = HistoricLlocLogicaService.JNDI_NAME)
+	protected HistoricLlocLogicaService historicLlocLogicaEjb;
+
+	@EJB(mappedName = LlocLogicaService.JNDI_NAME)
+	protected LlocLogicaService llocEjb;
 
 	@EJB(mappedName = RolService.JNDI_NAME)
 	protected RolService rolEjb;
@@ -132,7 +139,7 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 			String canvis = mapper.writeValueAsString(newFuncionari);
 			historic.setObservacions(canvis);
 
-			Historic nou = historicEjb.create(historic);
+			Historic nou = historicLogicaEjb.create(historic);
 
 			log.info("Historic de funcionari creat: " + nou.getHistoricID());
 
@@ -156,39 +163,39 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 			}
 			Funcionari oldFuncionari = findByPrimaryKey(funcionari.getFuncionariID());
 			if (oldFuncionari == null) {
-				throw new I18NException("error.modification", new String[] { "funcionari", FuncionariFields.FUNCIONARIID.sqlName ,
-						String.valueOf(funcionari.getFuncionariID()), "<oldFuncionari null>" });
+				throw new I18NException("error.modification",
+						new String[] { "funcionari", FuncionariFields.FUNCIONARIID.sqlName,
+								String.valueOf(funcionari.getFuncionariID()), "<oldFuncionari null>" });
 			}
 
 			/*
-			* TODO REVISAR
-			* 
-			* try {
-			* List<Rol> oldRols = getRolsByFuncionariIDv2(funcionari.getFuncionariID());
-			* if (oldRols != null && !oldRols.isEmpty())
-			* newFuncionari.setRols(oldRols);
-			* else
-			* log.error("No s'han pogut recuperar els rols del funcionari");
-			* 
-			* } catch (Exception e) {
-			* log.error("Error al recuperar els rols del funcionari");
-			* log.error(e.getMessage());
-			* }
-			*/
-
+			 * TODO REVISAR
+			 * 
+			 * try {
+			 * List<Rol> oldRols = getRolsByFuncionariIDv2(funcionari.getFuncionariID());
+			 * if (oldRols != null && !oldRols.isEmpty())
+			 * newFuncionari.setRols(oldRols);
+			 * else
+			 * log.error("No s'han pogut recuperar els rols del funcionari");
+			 * 
+			 * } catch (Exception e) {
+			 * log.error("Error al recuperar els rols del funcionari");
+			 * log.error(e.getMessage());
+			 * }
+			 */
 
 			HistoricFuncionariDAO historicOld = new HistoricFuncionariDAO(oldFuncionari);
 			newFuncionari = update(funcionari);
 			log.info("Funcionari actualitzat: " + newFuncionari.getFuncionariID());
 
-			HistoricJPA historicLloc = new HistoricJPA();
-			historicLloc.setFuncionariID(oldFuncionari.getFuncionariID());
-			historicLloc.setNumeroCai(cai);
-			historicLloc.setDataCreacio(new Timestamp(System.currentTimeMillis()));
-			historicLloc.setUsuariID(usuariId);
+			HistoricJPA historicFuncionari = new HistoricJPA();
+			historicFuncionari.setFuncionariID(oldFuncionari.getFuncionariID());
+			historicFuncionari.setNumeroCai(cai);
+			historicFuncionari.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+			historicFuncionari.setUsuariID(usuariId);
 
 			HistoricFuncionariDAO historicNew = new HistoricFuncionariDAO(newFuncionari);
-			Historic historicCreat = historicLogicaEjb.create(historicLloc, historicNew, historicOld);
+			Historic historicCreat = historicLogicaEjb.create(historicFuncionari, historicNew, historicOld);
 			log.info("Historic de funcionari creat: " + historicCreat.getHistoricID());
 
 			return newFuncionari;
@@ -196,6 +203,79 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 			log.error(e.getMessage());
 			throw new I18NException("error.modification", String.valueOf(funcionari.getFuncionariID()));
 		}
+	}
+
+	// si llocId és null, es desassigna de tots els llocs de feina
+	public Funcionari dessassignarFuncionariAndHistory(Funcionari funcionari, Long llocId, final String numeroCai,
+			long usuariId, boolean donarDeBaixaFuncionari)
+			throws I18NException {
+		Funcionari newFuncionari = null;
+		if (funcionari == null) {
+			throw new I18NException("error.modification", "<funcionari null>");
+		}
+		long funcionariId = funcionari.getFuncionariID();
+		String funcionariIdentificador = funcionari.getIdentificador();
+
+		// el desasignam del lloc de feina
+		List<FuncionariLloc> funcionarisLlocsDonatsDeBaixa = funcionariLlocLogicaEjb
+				.donarDeBaixaFuncionariDeLloc(funcionariId, llocId);
+		log.info("Assignacions de Llocs de Feina de Funcionari " + funcionariId + " actualitzades");
+
+		// el donam de baixa
+		if (donarDeBaixaFuncionari) {
+			funcionari.setDataBaixa(new Timestamp(System.currentTimeMillis()));
+			newFuncionari = update(funcionari);
+			log.info("Funcionari actualitzat: " + newFuncionari.getFuncionariID());
+		}
+
+		// afegim històric de llocs de feina
+		for (FuncionariLloc funcionariLloc : funcionarisLlocsDonatsDeBaixa) {
+			HistoricLlocJPA historicLloc = new HistoricLlocJPA();
+			long llocID = funcionariLloc.getLlocID();
+			historicLloc.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+			historicLloc.setLlocID(llocID);
+			historicLloc.setNumeroCai(numeroCai);
+			historicLloc.setUsuariID(usuariId);
+
+			Lloc lloc = llocEjb.findByPrimaryKey(llocID);
+			String llocCodi = "<null>";
+			if (lloc != null) {
+				llocCodi = lloc.getCodiLloc();
+			}
+			String historicLlocObservacions = "Nova desassignació del funcionari " + funcionariIdentificador
+					+ " (id "
+					+ funcionariId + ") del lloc " + llocCodi + " (id " + llocID + ")";
+			HistoricLloc historicLlocCreat = historicLlocLogicaEjb.create(historicLloc, historicLlocObservacions);
+			log.info("Històric de lloc de feina de funcionari creat: " + historicLlocCreat.getHistoricllocID());
+
+			HistoricJPA historicFuncionari = new HistoricJPA();
+			historicFuncionari.setFuncionariID(funcionariId);
+			historicFuncionari.setNumeroCai(numeroCai);
+			historicFuncionari.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+			historicFuncionari.setUsuariID(usuariId);
+
+			Historic historicCreat = historicLogicaEjb.create(historicFuncionari, historicLlocObservacions);
+			log.info("Històric de funcionari creat: " + historicCreat.getHistoricID());
+		}
+
+		// afegim històric de funcionari
+		if (donarDeBaixaFuncionari) {
+			HistoricJPA historic = new HistoricJPA();
+			historic.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+			historic.setFuncionariID(funcionariId);
+			historic.setNumeroCai(numeroCai);
+			historic.setUsuariID(usuariId);
+			String observacions = "Funcionari " + funcionariIdentificador + " donat de baixa";
+			Historic historicCreat = historicLogicaEjb.create(historic, observacions);
+			log.info("Històric de funcionari creat: " + historicCreat.getHistoricID());
+		}
+
+		return newFuncionari;
+	}
+
+	public Funcionari donarDeBaixaFuncionariAndHistory(Funcionari funcionari, final String numeroCai, long usuariId)
+			throws I18NException {
+		return dessassignarFuncionariAndHistory(funcionari, null, numeroCai, usuariId, true);
 	}
 
 	@Override
@@ -225,7 +305,12 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 				"select max(rf." + FuncionariFields.NUMERO.javaName + ") from " + FuncionariJPA.class.getName()
 						+ " rf where rf." + FuncionariFields.NUMERO.javaName + " like '" + Constants.SQL_NUMERO_PATTERN
 						+ "' escape '" + Constants.SQL_LIKE_ESCAPE_PATTERN + "'");
-		Class<?> numeroClass = FuncionariFields.NUMERO.getClass().getField("javaName").getType();// TODO:comentar a anadal que getJavaClass no funciona perquè javaClass és javaName
+		Class<?> numeroClass = FuncionariFields.NUMERO.getClass().getField("javaName").getType();// TODO:comentar a
+																									// anadal que
+																									// getJavaClass no
+																									// funciona perquè
+																									// javaClass és
+																									// javaName
 		TypedQuery<?> query = getEntityManager().createQuery(queryString.toString(),
 				numeroClass);
 		List<?> resultats = query.getResultList();

@@ -1,7 +1,7 @@
 package es.caib.rfhab.api.interna.secure.funcionari;
 
 import es.caib.rfhab.commons.utils.Constants;
-import es.caib.rfhab.commons.utils.Utils;
+import es.caib.rfhab.commons.utils.StringUtils;
 import es.caib.rfhab.ejb.ActivitatService;
 import es.caib.rfhab.ejb.EntitatService;
 import es.caib.rfhab.ejb.FuncionariLlocService;
@@ -136,11 +136,11 @@ public class FuncionariRestService extends RestUtils {
 
 		try {
 
-			if (Utils.isEmpty(usuari)) {
+			if (StringUtils.isEmpty(usuari)) {
 				return "Error: cal indicar el nom del usuari del funcionari o funcionària";
 			}
 
-			if (Utils.isEmpty(entitat)) {
+			if (StringUtils.isEmpty(entitat)) {
 				return "Error: cal indicar el codi de l'entitat a la que pertany el funcionari o funcionària";
 			}
 
@@ -235,7 +235,7 @@ public class FuncionariRestService extends RestUtils {
 
 		try {
 
-			if (Utils.isEmpty(usuari)) {
+			if (StringUtils.isEmpty(usuari)) {
 				return "Error: cal indicar el nom del usuari del funcionari o funcionària";
 			}
 
@@ -354,11 +354,11 @@ public class FuncionariRestService extends RestUtils {
 
 		try {
 
-			if ( Utils.isEmpty(usuari)) {
+			if ( StringUtils.isEmpty(usuari)) {
 				return "Error: cal indicar el número o el nom del usuari del funcionari o funcionària";
 			}
 
-			if (Utils.isEmpty(entitat)) {
+			if (StringUtils.isEmpty(entitat)) {
 				return "Error: cal indicar el codi de l'entitat";
 			}
 

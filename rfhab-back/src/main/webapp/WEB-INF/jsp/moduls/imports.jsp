@@ -176,7 +176,9 @@
             "boto.cancelar" : "<fmt:message key="genapp.cancel"/>",
             "boto.continuar" : "<fmt:message key="genapp.continue"/>",
             "missatge.funcionari.donarbaixa.continuar" : "<fmt:message key="funcionari.donarbaixa.missatgecontinuar"/>",
-            "titol.funcionari.donarbaixa.continuar" : "<fmt:message key="funcionari.donarbaixa"/>"
+            "missatge.funcionari.donaralta.continuar" : "<fmt:message key="funcionari.donaralta.missatgecontinuar"/>",
+            "titol.funcionari.donarbaixa.continuar" : "<fmt:message key="funcionari.donarbaixa"/>",
+            "titol.funcionari.donaralta.continuar" : "<fmt:message key="funcionari.donaralta"/>"
         }
     }
 

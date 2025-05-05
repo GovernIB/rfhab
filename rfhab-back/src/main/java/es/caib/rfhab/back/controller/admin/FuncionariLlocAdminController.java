@@ -27,7 +27,7 @@ import es.caib.rfhab.back.form.webdb.FuncionariLlocForm;
 import es.caib.rfhab.back.security.LoginInfo;
 import es.caib.rfhab.back.utils.UrlUtils;
 import es.caib.rfhab.commons.utils.Constants;
-import es.caib.rfhab.commons.utils.Utils;
+import es.caib.rfhab.commons.utils.StringUtils;
 import es.caib.rfhab.logic.FuncionariLogicaService;
 import es.caib.rfhab.logic.HistoricLlocLogicaService;
 import es.caib.rfhab.logic.HistoricLogicaService;
@@ -127,11 +127,13 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 
 		FuncionariLlocJPA funcionariLlocJPA = super.create(request, funcionariLloc);
 
+		// TODO:revisar això #38
 		// Guardar imatge del canvi a historic de Lloc i historic de funcionari
-		final String numeroCai = (Utils.isNotEmpty(request.getParameter("numeroCai")))
+		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numeroCai")))
 				? request.getParameter("numeroCai")
 				: "";
 
+		//TODO: ficar dins transacció #35
 		HistoricLlocJPA historicLloc = new HistoricLlocJPA();
 		long llocID = funcionariLloc.getLlocID();
 		historicLloc.setLlocID(llocID);

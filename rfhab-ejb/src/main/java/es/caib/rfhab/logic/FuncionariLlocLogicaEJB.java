@@ -43,8 +43,17 @@ public class FuncionariLlocLogicaEJB extends FuncionariLlocEJB implements Funcio
 
 	@PermitAll
 	public List<FuncionariLloc> donarDeBaixaFuncionariDeLloc(long funcionariId) throws I18NException {
+		return donarDeBaixaFuncionariDeLloc(funcionariId, null);
+	}
+
+	@PermitAll
+	public List<FuncionariLloc> donarDeBaixaFuncionariDeLloc(long funcionariId, Long llocId) throws I18NException {
+		Where w = FuncionariLlocFields.FUNCIONARIID.equal(funcionariId);
+		if (llocId != null) {
+			w = Where.AND(w, FuncionariLlocFields.LLOCID.equal(llocId));
+		}
 		List<FuncionariLloc> llocs = select(
-				getWhereFuncionariIsCurrent(FuncionariLlocFields.FUNCIONARIID.equal(funcionariId)));
+				getWhereFuncionariIsCurrent(w));
 		// TODO:aquí només hauria d'haver-ni un
 		if (llocs != null && llocs.size() > 0) {
 			log.info("Trobats " + llocs.size() + " llocs de feina per al funcionari " + funcionariId);

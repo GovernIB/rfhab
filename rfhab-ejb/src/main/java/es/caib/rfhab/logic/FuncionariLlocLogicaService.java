@@ -27,5 +27,7 @@ public interface FuncionariLlocLogicaService extends FuncionariLlocService {
 
 	public List<FuncionariLloc> donarDeBaixaFuncionariDeLloc(long funcionariId) throws I18NException;
 
+	public List<FuncionariLloc> donarDeBaixaFuncionariDeLloc(long funcionariId, Long llocId) throws I18NException;
+
 	public List<FuncionariLloc> donarDeBaixaFuncionariDeLlocByLloc(long llocId) throws I18NException;
 }

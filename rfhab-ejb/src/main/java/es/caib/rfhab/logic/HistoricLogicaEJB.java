@@ -64,7 +64,7 @@ public class HistoricLogicaEJB extends HistoricEJB implements HistoricLogicaServ
 		return super.create(historicFuncionari);
 	}
 
-		@Override
+	@Override
 	@PermitAll
 	public HistoricJPA create(Funcionari funcionari, String cai, Long usuariId) throws I18NException {
 		try {

@@ -11,6 +11,8 @@ import java.util.Set;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.fundaciobit.genapp.common.StringKeyValue;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.i18n.I18NValidationException;
@@ -24,6 +26,7 @@ import org.fundaciobit.genapp.common.web.form.AdditionalButtonStyle;
 import org.fundaciobit.genapp.common.web.form.AdditionalField;
 import org.fundaciobit.genapp.common.web.i18n.I18NUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
@@ -34,6 +37,7 @@ import es.caib.rfhab.back.form.webdb.FuncionariForm;
 import es.caib.rfhab.back.security.LoginInfo;
 import es.caib.rfhab.back.utils.UrlUtils;
 import es.caib.rfhab.commons.utils.Constants;
+import es.caib.rfhab.commons.utils.StringUtils;
 import es.caib.rfhab.ejb.UnitatService;
 import es.caib.rfhab.logic.ActivitatLogicaService;
 import es.caib.rfhab.logic.AutoritzacioLogicaService;
@@ -161,7 +165,16 @@ public class FuncionariAdminController extends FuncionariController {
 						AdditionalButtonStyle.DANGER);
 				funcionariForm.addAdditionalButton(donarDeBaixaButton);
 			} else {
-				// TODO: afegir botó per donar d'alta el funcionari
+				// botó donar d'alta funcionari
+				String jsOpenModalDonarAlta = "javascript:createDivModal(traduccions.type['titol.funcionari.donaralta.continuar'], traduccions.type['missatge.funcionari.donaralta.continuar'], '"
+						+ request.getContextPath() + getContextWeb() + "/" + funcionariId + "/donaralta/"
+						+ "', '', 'func-donaralta-id', 'fa-user-plus');\r\n" + //
+						"        $('#func-donaralta-id').modal('show');\r\n";
+				AdditionalButton donarDeAltaButton = new AdditionalButton("fas fa-user-plus",
+						"funcionari.donaralta",
+						jsOpenModalDonarAlta,
+						AdditionalButtonStyle.DANGER);
+				funcionariForm.addAdditionalButton(donarDeAltaButton);
 			}
 		}
 		mav.addObject("FUNCIONARI_NUMERO_PLACEHOLDER", Constants.FUNCIONARI_NUMERO_PLACEHOLDER);
@@ -326,21 +339,49 @@ public class FuncionariAdminController extends FuncionariController {
 		long funcionariId = funcionari.getFuncionariID();
 		log.info("'Esborrant' (donant de baixa) funcionari amb ID " + funcionariId);
 
+		// TODO:revisar això #38
+		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numeroCai")))
+				? request.getParameter("numeroCai")
+				: "";
+
+		funcionariEJB.donarDeBaixaFuncionariAndHistory(funcionari, numeroCai,
+				LoginInfo.getInstance().getUsuariPersona().getUsuariID());
+
+		createMessageSuccess(request, "success.modification", funcionariId);// funcionari.donaralta.exit
+	}
+
+	@RequestMapping(value = "/{funcionariID}/donaralta")
+	public String donarDeAlta(@PathVariable("funcionariID") java.lang.Long funcionariID, HttpServletRequest request,
+			HttpServletResponse response) throws I18NException {
+		log.info("Donant d'alta funcionari amb ID " + funcionariID);
+
+		// TODO:revisar això #38
+		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numeroCai")))
+				? request.getParameter("numeroCai")
+				: "";
+
+		// TODO:tot dins una transacció #35
+		FuncionariJPA funcionari = funcionariEJB.findByPrimaryKey(funcionariID);
+		if (funcionari == null) {
+			log.error("No s'ha trobat el funcionari amb ID " + funcionariID);
+			throw new I18NException("funcionari.error.noexisteix", funcionariID.toString());
+		}
+
 		// afegim històric
 		HistoricJPA historic = new HistoricJPA();
 		historic.setDataCreacio(new Timestamp(System.currentTimeMillis()));
-		historic.setFuncionariID(funcionariId);
-		historic.setNumeroCai("CAI");// TODO:revisar això
+		historic.setFuncionariID(funcionariID);
+		historic.setNumeroCai(numeroCai);
 		historic.setUsuariID(LoginInfo.getInstance().getUsuariPersona().getUsuariID());
-		historic.setObservacions("Funcionari donat de baixa");
+		historic.setObservacions("Funcionari " + funcionari.getIdentificador() + " donat d'alta de nou");
 		historicEjb.create(historic);
 
-		// el desasignam del lloc de feina
-		funcionariLlocLogicaEJB.donarDeBaixaFuncionariDeLloc(funcionariId);
-
 		// el donam de baixa
-		funcionari.setDataBaixa(new Timestamp(System.currentTimeMillis()));
+		funcionari.setDataBaixa(null);
 		funcionariEjb.update(funcionari);
+
+		createMessageSuccess(request, "success.modification", funcionariID);// funcionari.donaralta.exit
+		return getRedirectWhenModified(request, null, null);
 	}
 
 	@Override

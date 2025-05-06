@@ -26,6 +26,9 @@
     alter table rfh_funcionarilloc 
        drop constraint if exists rfh_funlloc_lloc_llocid_fk;
 
+    alter table rfh_funcionarilloc 
+       drop constraint if exists rfh_funlloc_usuari_usuid_fk;
+
     alter table rfh_historic 
        drop constraint if exists rfh_historic_funcionari_f_fk;
 

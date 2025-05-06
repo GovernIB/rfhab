@@ -33,7 +33,7 @@ public class FuncionariRefList extends RefListBase
     this.funcionariEjb = __clone.funcionariEjb;
   }
   public FuncionariRefList() {
-    setSelects(new Select<?>[] { NOM.select });
+    setSelects(new Select<?>[] { NOM.select, LLINATGE1.select, LLINATGE2.select });
   }
   public List<StringKeyValue> getReferenceList(Field<?> keyField, Where where, OrderBy ... orderBy) throws I18NException {
     Select<StringKeyValue> select =  new org.fundaciobit.genapp.common.query.SelectMultipleStringKeyValue(keyField.select, getSeparator(), getSelects());

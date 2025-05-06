@@ -76,6 +76,10 @@ public class FuncionariLlocController
   @Autowired
   protected FuncionariRefList funcionariRefList;
 
+  // References 
+  @Autowired
+  protected UsuariRefList usuariRefList;
+
   /**
    * Llistat de totes FuncionariLloc
    */
@@ -216,6 +220,16 @@ public class FuncionariLlocController
       };
     }
 
+    // Field usuariID
+    {
+      _listSKV = getReferenceListForUsuariID(request, mav, filterForm, list, groupByItemsMap, null);
+      _tmp = Utils.listToMap(_listSKV);
+      filterForm.setMapOfUsuariForUsuariID(_tmp);
+      if (filterForm.getGroupByFields().contains(USUARIID)) {
+        fillValuesToGroupByItems(_tmp, groupByItemsMap, USUARIID, false);
+      };
+    }
+
 
     return groupByItemsMap;
   }
@@ -233,6 +247,7 @@ public class FuncionariLlocController
     __mapping = new java.util.HashMap<Field<?>, java.util.Map<String, String>>();
     __mapping.put(LLOCID, filterForm.getMapOfLlocForLlocID());
     __mapping.put(FUNCIONARIID, filterForm.getMapOfFuncionariForFuncionariID());
+    __mapping.put(USUARIID, filterForm.getMapOfUsuariForUsuariID());
     exportData(request, response, dataExporterID, filterForm,
           list, allFields, __mapping, PRIMARYKEY_FIELDS);
   }
@@ -297,6 +312,15 @@ public class FuncionariLlocController
           java.util.Collections.sort(_listSKV, STRINGKEYVALUE_COMPARATOR);
       }
       funcionariLlocForm.setListOfFuncionariForFuncionariID(_listSKV);
+    }
+    // Comprovam si ja esta definida la llista
+    if (funcionariLlocForm.getListOfUsuariForUsuariID() == null) {
+      List<StringKeyValue> _listSKV = getReferenceListForUsuariID(request, mav, funcionariLlocForm, null);
+
+      if(_listSKV != null && !_listSKV.isEmpty()) { 
+          java.util.Collections.sort(_listSKV, STRINGKEYVALUE_COMPARATOR);
+      }
+      funcionariLlocForm.setListOfUsuariForUsuariID(_listSKV);
     }
     
   }
@@ -683,6 +707,46 @@ public java.lang.Long stringToPK(String value) {
   public List<StringKeyValue> getReferenceListForFuncionariID(HttpServletRequest request,
        ModelAndView mav, Where where)  throws I18NException {
     return funcionariRefList.getReferenceList(FuncionariFields.FUNCIONARIID, where );
+  }
+
+
+  public List<StringKeyValue> getReferenceListForUsuariID(HttpServletRequest request,
+       ModelAndView mav, FuncionariLlocForm funcionariLlocForm, Where where)  throws I18NException {
+    if (funcionariLlocForm.isHiddenField(USUARIID)) {
+      return EMPTY_STRINGKEYVALUE_LIST;
+    }
+    Where _where = null;
+    if (funcionariLlocForm.isReadOnlyField(USUARIID)) {
+      _where = UsuariFields.USUARIID.equal(funcionariLlocForm.getFuncionariLloc().getUsuariID());
+    }
+    return getReferenceListForUsuariID(request, mav, Where.AND(where, _where));
+  }
+
+
+  public List<StringKeyValue> getReferenceListForUsuariID(HttpServletRequest request,
+       ModelAndView mav, FuncionariLlocFilterForm funcionariLlocFilterForm,
+       List<FuncionariLloc> list, Map<Field<?>, GroupByItem> _groupByItemsMap, Where where)  throws I18NException {
+    if (funcionariLlocFilterForm.isHiddenField(USUARIID)
+       && !funcionariLlocFilterForm.isGroupByField(USUARIID)) {
+      return EMPTY_STRINGKEYVALUE_LIST;
+    }
+    Where _w = null;
+    if (!_groupByItemsMap.containsKey(USUARIID)) {
+      // OBTENIR TOTES LES CLAUS (PK) i despres només cercar referències d'aquestes PK
+      java.util.Set<java.lang.Long> _pkList = new java.util.HashSet<java.lang.Long>();
+      for (FuncionariLloc _item : list) {
+        if(_item.getUsuariID() == null) { continue; };
+        _pkList.add(_item.getUsuariID());
+        }
+        _w = UsuariFields.USUARIID.in(_pkList);
+      }
+    return getReferenceListForUsuariID(request, mav, Where.AND(where,_w));
+  }
+
+
+  public List<StringKeyValue> getReferenceListForUsuariID(HttpServletRequest request,
+       ModelAndView mav, Where where)  throws I18NException {
+    return usuariRefList.getReferenceList(UsuariFields.USUARIID, where );
   }
 
 

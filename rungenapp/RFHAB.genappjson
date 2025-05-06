@@ -1474,7 +1474,7 @@
           "javaType": "java.lang.String",
           "traduible": false,
           "showInWebList": true,
-          "showInReferenceList": false,
+          "showInReferenceList": true,
           "transientField": false,
           "filter": false,
           "orderBy": 0,
@@ -1499,7 +1499,7 @@
           "javaType": "java.lang.String",
           "traduible": false,
           "showInWebList": true,
-          "showInReferenceList": false,
+          "showInReferenceList": true,
           "transientField": false,
           "filter": false,
           "orderBy": 0,
@@ -1913,6 +1913,7 @@
           "foreignKeys": []
         },
         {
+          "index": "rfh_funlloc_usuariid_fk_i",
           "isAutoIncrement": false,
           "sqlName": "usuariid",
           "sqlType": -5,
@@ -1933,9 +1934,22 @@
           "orderBy": 0,
           "groupBy": false,
           "webFieldInfo": {
-            "webtype": 14
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_funlloc_usuari_usuid_fk",
+              "table": "rfh_usuari",
+              "field": "usuariid",
+              "type": 1
+            }
           },
-          "foreignKeys": []
+          "foreignKeys": [
+            {
+              "name": "rfh_funlloc_usuari_usuid_fk",
+              "table": "rfh_usuari",
+              "field": "usuariid",
+              "type": 1
+            }
+          ]
         }
       ],
       "multipleUniques": [
@@ -4277,6 +4291,12 @@
             {
               "name": "rfh_scanweb_usuari_usuariid_fk",
               "table": "rfh_digitalib",
+              "field": "usuariid",
+              "type": 0
+            },
+            {
+              "name": "rfh_funlloc_usuari_usuid_fk",
+              "table": "rfh_funcionarilloc",
               "field": "usuariid",
               "type": 0
             },

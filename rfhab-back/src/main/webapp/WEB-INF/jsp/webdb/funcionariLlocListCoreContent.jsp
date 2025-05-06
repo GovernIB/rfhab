@@ -56,7 +56,10 @@
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,FuncionariLlocFields.USUARIID)}">
           <td>
-          ${funcionariLloc.usuariID}
+          <c:set var="tmp">${funcionariLloc.usuariID}</c:set>
+          <c:if test="${not empty tmp}">
+          ${__theFilterForm.mapOfUsuariForUsuariID[tmp]}
+          </c:if>
           </td>
         </c:if>
 

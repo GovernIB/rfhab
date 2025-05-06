@@ -196,6 +196,7 @@ public class FuncionariLlocFilterForm extends RFHabBaseFilterForm implements Fun
     this.usuariIDFins = __toClone.usuariIDFins;
     this.mapOfLlocForLlocID = __toClone.mapOfLlocForLlocID;
     this.mapOfFuncionariForFuncionariID = __toClone.mapOfFuncionariForFuncionariID;
+    this.mapOfUsuariForUsuariID = __toClone.mapOfUsuariForUsuariID;
   }
   
   /* ========= UTILS ========== */
@@ -250,6 +251,18 @@ public class FuncionariLlocFilterForm extends RFHabBaseFilterForm implements Fun
 
   public void setMapOfFuncionariForFuncionariID(Map<String, String> mapOfFuncionariForFuncionariID) {
     this.mapOfFuncionariForFuncionariID = mapOfFuncionariForFuncionariID;
+  }
+
+
+
+  private Map<String, String> mapOfUsuariForUsuariID;
+
+  public Map<String, String> getMapOfUsuariForUsuariID() {
+    return this.mapOfUsuariForUsuariID;
+  }
+
+  public void setMapOfUsuariForUsuariID(Map<String, String> mapOfUsuariForUsuariID) {
+    this.mapOfUsuariForUsuariID = mapOfUsuariForUsuariID;
   }
 
 

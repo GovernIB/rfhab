@@ -21,6 +21,7 @@ public class FuncionariLlocForm extends RFHabBaseForm {
       this.funcionariLloc = __toClone.funcionariLloc;
     this.listOfLlocForLlocID = __toClone.listOfLlocForLlocID;
     this.listOfFuncionariForFuncionariID = __toClone.listOfFuncionariForFuncionariID;
+    this.listOfUsuariForUsuariID = __toClone.listOfUsuariForUsuariID;
   }
   
   public FuncionariLlocForm(FuncionariLlocJPA funcionariLloc, boolean nou) {
@@ -56,6 +57,18 @@ public class FuncionariLlocForm extends RFHabBaseForm {
 
   public void setListOfFuncionariForFuncionariID(List<StringKeyValue> listOfFuncionariForFuncionariID) {
     this.listOfFuncionariForFuncionariID = listOfFuncionariForFuncionariID;
+  }
+
+
+
+  private List<StringKeyValue> listOfUsuariForUsuariID;
+
+  public List<StringKeyValue> getListOfUsuariForUsuariID() {
+    return this.listOfUsuariForUsuariID;
+  }
+
+  public void setListOfUsuariForUsuariID(List<StringKeyValue> listOfUsuariForUsuariID) {
+    this.listOfUsuariForUsuariID = listOfUsuariForUsuariID;
   }
 
 

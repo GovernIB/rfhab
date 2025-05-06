@@ -258,6 +258,7 @@ create index rfh_funcionari_pk_i on rfh_funcionari (funcionariid);
 create index rfh_funcionarientitat_pk_i on rfh_funcionarilloc (funcionarillocid);
 create index rfh_funcionarilloc_llocid_fk_i on rfh_funcionarilloc (llocid);
 create index rfh_funlloc_funcionariid_fk_i on rfh_funcionarilloc (funcionariid);
+create index rfh_funlloc_usuariid_fk_i on rfh_funcionarilloc (usuariid);
 
     alter table rfh_funcionarilloc 
        add constraint rfh_funlloc_multiple_uk unique (llocid, funcionariid);
@@ -342,6 +343,11 @@ create index rfh_usuarient_usuariid_fk_i on rfh_usuarientitat (usuariid);
        add constraint rfh_funlloc_lloc_llocid_fk 
        foreign key (llocid) 
        references rfh_lloc;
+
+    alter table rfh_funcionarilloc 
+       add constraint rfh_funlloc_usuari_usuid_fk 
+       foreign key (usuariid) 
+       references rfh_usuari;
 
     alter table rfh_historic 
        add constraint rfh_historic_funcionari_f_fk 

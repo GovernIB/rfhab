@@ -54,8 +54,6 @@ import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.model.fields.LlocRolFields;
 import es.caib.rfhab.model.fields.RolFields;
 import es.caib.rfhab.model.fields.UnitatFields;
-import es.caib.rfhab.persistence.FuncionariJPA;
-import es.caib.rfhab.persistence.HistoricJPA;
 import es.caib.rfhab.persistence.HistoricLlocJPA;
 import es.caib.rfhab.persistence.LlocJPA;
 import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;

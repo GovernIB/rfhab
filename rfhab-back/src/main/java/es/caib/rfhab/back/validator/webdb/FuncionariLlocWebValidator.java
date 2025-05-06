@@ -41,6 +41,9 @@ public class FuncionariLlocWebValidator extends AbstractWebValidator<FuncionariL
   @javax.ejb.EJB(mappedName = es.caib.rfhab.ejb.LlocService.JNDI_NAME)
   protected es.caib.rfhab.ejb.LlocService llocEjb;
 
+  @javax.ejb.EJB(mappedName = es.caib.rfhab.ejb.UsuariService.JNDI_NAME)
+  protected es.caib.rfhab.ejb.UsuariService usuariEjb;
+
 
 
   public FuncionariLlocWebValidator() {
@@ -83,7 +86,7 @@ public class FuncionariLlocWebValidator extends AbstractWebValidator<FuncionariL
 
     BeanValidatorResult<FuncionariLloc> __vr = new BeanValidatorResult<FuncionariLloc>();
     validator.validate(__vr, __bean,
-      isNou, funcionariEjb, funcionariLlocEjb, llocEjb);
+      isNou, funcionariEjb, funcionariLlocEjb, llocEjb, usuariEjb);
 
     if (__vr.hasErrors()) {
         List<I18NFieldError> vrErrors = __vr.getErrors();

@@ -7,6 +7,7 @@ import org.fundaciobit.genapp.common.query.Field;
 import es.caib.rfhab.model.fields.FuncionariLlocFields;
 import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.LlocFields;
+import es.caib.rfhab.model.fields.UsuariFields;
 
 import org.fundaciobit.genapp.common.validation.IValidatorResult;
 
@@ -31,7 +32,8 @@ public class FuncionariLlocValidator<I extends FuncionariLloc>
   public void validate(IValidatorResult<I> __vr,I __target__, boolean __isNou__
     ,es.caib.rfhab.model.dao.IFuncionariManager __funcionariManager
     ,es.caib.rfhab.model.dao.IFuncionariLlocManager __funcionariLlocManager
-    ,es.caib.rfhab.model.dao.ILlocManager __llocManager) {
+    ,es.caib.rfhab.model.dao.ILlocManager __llocManager
+    ,es.caib.rfhab.model.dao.IUsuariManager __usuariManager) {
 
     // Valors Not Null
     __vr.rejectIfEmptyOrWhitespace(__target__,LLOCID, 
@@ -117,6 +119,20 @@ public class FuncionariLlocValidator<I extends FuncionariLloc>
          new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("funcionari.funcionari"),
          new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("funcionari.funcionariID"),
          new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(__funcionariid)));
+      }
+    }
+
+    if (__vr.getFieldErrorCount(USUARIID) == 0) {
+      java.lang.Long __usuariid = __target__.getUsuariID();
+      if (__usuariid != null ) {
+        Long __count_ = null;
+        try { __count_ = __usuariManager.count(UsuariFields.USUARIID.equal(__usuariid)); } catch(org.fundaciobit.genapp.common.i18n.I18NException e) { e.printStackTrace(); };
+        if (__count_ == null || __count_ == 0) {        
+          __vr.rejectValue(USUARIID, "error.notfound",
+         new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("usuari.usuari"),
+         new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("usuari.usuariID"),
+         new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(__usuariid)));
+        }
       }
     }
 

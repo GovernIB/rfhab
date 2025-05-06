@@ -20,7 +20,8 @@ import javax.persistence.Id;
 @Table(name = "rfh_funcionarilloc" , indexes = { 
         @Index(name="rfh_funcionarientitat_pk_i", columnList = "funcionarillocid"),
         @Index(name="rfh_funcionarilloc_llocid_fk_i", columnList = "llocid"),
-        @Index(name="rfh_funlloc_funcionariid_fk_i", columnList = "funcionariid")},
+        @Index(name="rfh_funlloc_funcionariid_fk_i", columnList = "funcionariid"),
+        @Index(name="rfh_funlloc_usuariid_fk_i", columnList = "usuariid")},
            uniqueConstraints = {
             @UniqueConstraint(name="rfh_funlloc_multiple_uk", columnNames={"llocid","funcionariid"}) } )
 @SequenceGenerator(name="FUNCIONARILLOC_SEQ", sequenceName="rfh_funcionarilloc_seq", allocationSize=1, initialValue=1000)
@@ -184,6 +185,20 @@ public class FuncionariLlocJPA implements FuncionariLloc {
     this.funcionari = funcionari;
   }
 
+// IMP Field:usuariid | Table: rfh_usuari | Type: 1  
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuariid", referencedColumnName ="usuariID", nullable = true, insertable=false, updatable=false, foreignKey=@ForeignKey(name="rfh_funlloc_usuari_usuid_fk"))
+    private UsuariJPA usuari;
+
+    public UsuariJPA getUsuari() {
+    return this.usuari;
+  }
+
+    public  void setUsuari(UsuariJPA usuari) {
+    this.usuari = usuari;
+  }
+
 
  // ---------------  STATIC METHODS ------------------
   public static FuncionariLlocJPA toJPA(FuncionariLloc __bean) {
@@ -233,6 +248,10 @@ public class FuncionariLlocJPA implements FuncionariLloc {
     if(!"FuncionariJPA".equals(origenJPA) && 
        (!org.fundaciobit.genapp.common.utils.Utils.isEmpty(__jpa.funcionari) || org.hibernate.Hibernate.isInitialized(__jpa.getFuncionari()) ) ) {
       __tmp.setFuncionari(FuncionariJPA.copyJPA(__jpa.getFuncionari(), __alreadyCopied,"FuncionariLlocJPA"));
+    }
+    if(!"UsuariJPA".equals(origenJPA) && 
+       (!org.fundaciobit.genapp.common.utils.Utils.isEmpty(__jpa.usuari) || org.hibernate.Hibernate.isInitialized(__jpa.getUsuari()) ) ) {
+      __tmp.setUsuari(UsuariJPA.copyJPA(__jpa.getUsuari(), __alreadyCopied,"FuncionariLlocJPA"));
     }
 
     return __tmp;

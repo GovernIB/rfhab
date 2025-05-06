@@ -6,6 +6,7 @@ create index rfh_digitalib_usuariid_fk_i on rfh_digitalib (usuariid);
 create index rfh_entitat_unitatid_fk_i on rfh_entitat (unitatid);
 -- create index rfh_funcionari_pk_i on rfh_funcionari (funcionariid);
 create index rfh_funcionarilloc_llocid_fk_i on rfh_funcionarilloc (llocid);
+create index rfh_funlloc_usuariid_fk_i on rfh_funcionarilloc (usuariid);
 create index rfh_historic_funcionariid_fk_i on rfh_historic (funcionariid);
 -- create index rfh_historiclloc_pk_i on rfh_historiclloc (historicllocid);
 create index rfh_historiclloc_usuariid_fk_i on rfh_historiclloc (usuariid);

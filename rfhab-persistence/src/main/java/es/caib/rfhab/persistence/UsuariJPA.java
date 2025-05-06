@@ -238,6 +238,19 @@ public class UsuariJPA implements Usuari {
     }
 
 
+// EXP  Field:usuariid | Table: rfh_funcionarilloc | Type: 0  
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuari")
+    private Set<FuncionariLlocJPA> funcionariLlocs = new HashSet<FuncionariLlocJPA>(0);
+    public  Set<FuncionariLlocJPA> getFuncionariLlocs() {
+    return this.funcionariLlocs;
+  }
+
+    public void setFuncionariLlocs(Set<FuncionariLlocJPA> funcionariLlocs) {
+      this.funcionariLlocs = funcionariLlocs;
+    }
+
+
 // EXP  Field:usuariid | Table: rfh_historic | Type: 0  
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuari")
@@ -351,6 +364,10 @@ public class UsuariJPA implements Usuari {
     __tmp = toJPA(__jpa);
     __alreadyCopied.put(__jpa, __tmp);
     // Copia de beans complexes (EXP)
+    if(!"FuncionariLlocJPA".equals(origenJPA) 
+       && ( !org.fundaciobit.genapp.common.utils.Utils.isEmpty(__jpa.funcionariLlocs) || org.hibernate.Hibernate.isInitialized(__jpa.getFuncionariLlocs())) ) {
+      __tmp.setFuncionariLlocs(FuncionariLlocJPA.copyJPA(__jpa.getFuncionariLlocs(), __alreadyCopied,"UsuariJPA"));
+    }
     if(!"UsuariEntitatJPA".equals(origenJPA) 
        && ( !org.fundaciobit.genapp.common.utils.Utils.isEmpty(__jpa.usuariEntitats) || org.hibernate.Hibernate.isInitialized(__jpa.getUsuariEntitats())) ) {
       __tmp.setUsuariEntitats(UsuariEntitatJPA.copyJPA(__jpa.getUsuariEntitats(), __alreadyCopied,"UsuariJPA"));

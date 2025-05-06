@@ -37,6 +37,7 @@ import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.FuncionariLloc;
 import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.fields.FuncionariFields;
+import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.persistence.FuncionariLlocJPA;
 import es.caib.rfhab.persistence.HistoricJPA;
 import es.caib.rfhab.persistence.HistoricLlocJPA;
@@ -217,22 +218,5 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 	@Override
 	public String getRedirectWhenCreated(HttpServletRequest request, FuncionariLlocForm funcionariLlocForm) {
 		return UrlUtils.getRefererRedirect(request, super.getRedirectWhenCreated(request, funcionariLlocForm));
-	}
-
-	@Override
-	public List<StringKeyValue> getReferenceListForLlocID(HttpServletRequest request,
-			ModelAndView mav, FuncionariLlocFilterForm funcionariLlocFilterForm,
-			List<FuncionariLloc> list, Map<Field<?>, GroupByItem> _groupByItemsMap, Where where) throws I18NException {
-
-		Where w1 = FuncionariFields.ENTITATID.equal(LoginInfo.getInstance().getEntitatIDActual());
-		return super.getReferenceListForFuncionariID(request, mav, Where.AND(where, w1));
-	}
-
-	@Override
-	public List<StringKeyValue> getReferenceListForFuncionariID(HttpServletRequest request,
-			ModelAndView mav, FuncionariLlocForm funcionariLlocForm, Where where) throws I18NException {
-
-		Where w1 = FuncionariFields.ENTITATID.equal(LoginInfo.getInstance().getEntitatIDActual());
-		return super.getReferenceListForFuncionariID(request, mav, Where.AND(where, w1));
 	}
 }

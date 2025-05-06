@@ -64,4 +64,12 @@ public class FuncionariLlocQueryPath extends org.fundaciobit.genapp.common.query
     });
   }
 
+  public UsuariQueryPath USUARI() {
+    return new UsuariQueryPath(new QueryPath() {
+      public String getQueryPath() {
+          return FuncionariLlocQueryPath.this.getQueryPath() + "usuari" + ".";
+      }
+    });
+  }
+
 }

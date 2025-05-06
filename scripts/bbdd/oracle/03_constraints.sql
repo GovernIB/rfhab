@@ -87,6 +87,11 @@
        add constraint rfh_funlloc_lloc_llocid_fk 
        foreign key (llocid) 
        references rfh_lloc;
+       
+    alter table rfh_funcionarilloc 
+       add constraint rfh_funlloc_usuari_usuid_fk 
+       foreign key (usuariid) 
+       references rfh_usuari;
 
     alter table rfh_historic 
        add constraint rfh_historic_funcionari_f_fk 

@@ -178,7 +178,11 @@
             "missatge.funcionari.donarbaixa.continuar" : "<fmt:message key="funcionari.donarbaixa.missatgecontinuar"/>",
             "missatge.funcionari.donaralta.continuar" : "<fmt:message key="funcionari.donaralta.missatgecontinuar"/>",
             "titol.funcionari.donarbaixa.continuar" : "<fmt:message key="funcionari.donarbaixa"/>",
-            "titol.funcionari.donaralta.continuar" : "<fmt:message key="funcionari.donaralta"/>"
+            "titol.funcionari.donaralta.continuar" : "<fmt:message key="funcionari.donaralta"/>",
+            "missatge.lloc.donarbaixa.continuar" : "<fmt:message key="lloc.donarbaixa.missatgecontinuar"/>",
+            "missatge.lloc.donaralta.continuar" : "<fmt:message key="lloc.donaralta.missatgecontinuar"/>",
+            "titol.lloc.donarbaixa.continuar" : "<fmt:message key="lloc.donarbaixa"/>",
+            "titol.lloc.donaralta.continuar" : "<fmt:message key="lloc.donaralta"/>"
         }
     }
 

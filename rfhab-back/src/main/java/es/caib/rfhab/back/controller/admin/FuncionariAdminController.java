@@ -155,6 +155,7 @@ public class FuncionariAdminController extends FuncionariController {
 					.getHistoricByFuncionariId(funcionariId);
 			mav.addObject("historicItems", historicItems);
 
+			// botons donar de baixa/alta
 			if (funcionari.getDataBaixa() == null) {
 				// botó donar de baixa funcionari
 				String jsOpenModalDonarBaixa = "javascript:createDivModal(traduccions.type['titol.funcionari.donarbaixa.continuar'], traduccions.type['missatge.funcionari.donarbaixa.continuar'], '"
@@ -378,7 +379,7 @@ public class FuncionariAdminController extends FuncionariController {
 		historic.setObservacions("Funcionari " + funcionari.getIdentificador() + " donat d'alta de nou");
 		historicEjb.create(historic);
 
-		// el donam de baixa
+		// el donam d'alta
 		funcionari.setDataBaixa(null);
 		funcionariEjb.update(funcionari);
 

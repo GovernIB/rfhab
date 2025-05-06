@@ -21,7 +21,6 @@ import es.caib.rfhab.persistence.LlocJPA;
  * @autor jagarcia
  *
  */
-
 @Local
 public interface LlocLogicaService extends LlocService {
 
@@ -49,4 +48,7 @@ public interface LlocLogicaService extends LlocService {
 	public List<FuncionariLlocDAO> getFuncionarisLlocByLlocID(Long llocId, boolean current) throws I18NException;
 
 	public List<Rol> getRolsByLlocID(Long llocId) throws I18NException;
+
+	public Funcionari donarDeBaixaLlocAndHistory(long llocId, final String numeroCai, long usuariId)
+			throws I18NException;
 }

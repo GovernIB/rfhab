@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import es.caib.rfhab.back.controller.webdb.FuncionariLlocController;
 import es.caib.rfhab.back.form.webdb.FuncionariLlocFilterForm;
 import es.caib.rfhab.back.form.webdb.FuncionariLlocForm;
+import es.caib.rfhab.back.security.LoginException;
 import es.caib.rfhab.back.security.LoginInfo;
 import es.caib.rfhab.back.utils.UrlUtils;
 import es.caib.rfhab.commons.utils.Constants;
@@ -133,7 +134,7 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 				? request.getParameter("numeroCai")
 				: "";
 
-		//TODO: ficar dins transacció #35
+		// TODO: ficar dins transacció #35
 		HistoricLlocJPA historicLloc = new HistoricLlocJPA();
 		long llocID = funcionariLloc.getLlocID();
 		historicLloc.setLlocID(llocID);
@@ -178,6 +179,24 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 
 		request.getSession().setAttribute("LlocId", llocId);
 		return "redirect:/admin/funcionarilloc/new";
+	}
+
+	@RequestMapping(value = "/treure/{llocId}", method = RequestMethod.GET)
+	public String treureFuncionari(HttpServletRequest request, @PathVariable("llocId") Long llocId)
+			throws LoginException, I18NException {
+
+		log.info("Desassignant funcionari(s) del lloc " + llocId);
+
+		// TODO:revisar això #38
+		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numeroCai")))
+				? request.getParameter("numeroCai")
+				: "";
+
+		funcionariEjb.dessassignarFuncionariAndHistory(null, llocId, numeroCai,
+				LoginInfo.getInstance().getUsuariPersona().getUsuariID(), false, false);
+
+		createMessageSuccess(request, "success.modification", llocId);// funcionari.donaralta.exit
+		return getRedirectWhenCreated(request, null);
 	}
 
 	@RequestMapping(value = "/tornar", method = RequestMethod.GET)

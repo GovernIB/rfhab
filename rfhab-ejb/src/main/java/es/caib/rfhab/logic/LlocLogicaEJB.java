@@ -14,9 +14,6 @@ import javax.persistence.Query;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.query.Where;
 
-import es.caib.rfhab.ejb.FuncionariLlocService;
-import es.caib.rfhab.ejb.FuncionariService;
-import es.caib.rfhab.ejb.HistoricLlocService;
 import es.caib.rfhab.ejb.LlocEJB;
 import es.caib.rfhab.ejb.LlocRolService;
 import es.caib.rfhab.ejb.RolService;
@@ -45,20 +42,14 @@ import es.caib.rfhab.persistence.LlocJPA;
 @Stateless
 public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 
-	@EJB(mappedName = HistoricLlocService.JNDI_NAME)
-	HistoricLlocService historicLlocEjb;
-
 	@EJB(mappedName = HistoricLlocLogicaService.JNDI_NAME)
 	HistoricLlocLogicaService historicLlocLogicaEjb;
-
-	@EJB(mappedName = FuncionariLlocService.JNDI_NAME)
-	FuncionariLlocService funcionariLlocEjb;
 
 	@EJB(mappedName = FuncionariLlocLogicaService.JNDI_NAME)
 	FuncionariLlocLogicaService funcionariLlocLogicaEjb;
 
-	@EJB(mappedName = FuncionariService.JNDI_NAME)
-	FuncionariService funcionariEjb;
+	@EJB(mappedName = FuncionariLogicaService.JNDI_NAME)
+	FuncionariLogicaService funcionariLogicaEjb;
 
 	@EJB(mappedName = LlocRolService.JNDI_NAME)
 	LlocRolService llocRolEjb;
@@ -179,7 +170,7 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 			w = funcionariLlocLogicaEjb.getWhereFuncionariIsCurrent();
 		}
 
-		List<FuncionariLloc> funcionarisActius = funcionariLlocEjb.select(w);
+		List<FuncionariLloc> funcionarisActius = funcionariLlocLogicaEjb.select(w);
 
 		List<Long> funcionarisAssignats = new ArrayList<Long>(funcionarisActius.size());
 		for (FuncionariLloc f : funcionarisActius) {
@@ -190,7 +181,7 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 		if (entitatId != null && entitatId > 0) {
 			filtro = Where.AND(filtro, FuncionariFields.ENTITATID.equal(entitatId));
 		}
-		List<Funcionari> llistaFuncionaris = funcionariEjb
+		List<Funcionari> llistaFuncionaris = funcionariLogicaEjb
 				.select(filtro);
 
 		for (FuncionariLloc fl : funcionarisActius) {
@@ -215,7 +206,7 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 			if (current) {
 				w = funcionariLlocLogicaEjb.getWhereFuncionariIsCurrent(w);
 			}
-			List<FuncionariLloc> funcionarisLlocs = funcionariLlocEjb.select(w);
+			List<FuncionariLloc> funcionarisLlocs = funcionariLlocLogicaEjb.select(w);
 			if (funcionarisLlocs.size() > 0) {
 				List<Lloc> llocsOcupatsPerFuncionari = new ArrayList<Lloc>();
 				for (FuncionariLloc fl : funcionarisLlocs) {
@@ -238,7 +229,7 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 			if (current) {
 				w = funcionariLlocLogicaEjb.getWhereFuncionariIsCurrent(w);
 			}
-			List<FuncionariLloc> funcionarisLlocs = funcionariLlocEjb.select(w);
+			List<FuncionariLloc> funcionarisLlocs = funcionariLlocLogicaEjb.select(w);
 			if (funcionarisLlocs.size() > 0) {
 				List<FuncionariLlocLlocDAO> llocsOcupatsPerFuncionari = new ArrayList<FuncionariLlocLlocDAO>(
 						funcionarisLlocs.size());
@@ -272,12 +263,12 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 				w = funcionariLlocLogicaEjb.getWhereFuncionariIsCurrent(w);
 			}
 
-			List<FuncionariLloc> funcionarisLlocs = funcionariLlocEjb.select(w);
+			List<FuncionariLloc> funcionarisLlocs = funcionariLlocLogicaEjb.select(w);
 
 			if (funcionarisLlocs.size() > 0) {
 				List<Funcionari> llistaFuncionaris = new ArrayList<Funcionari>(funcionarisLlocs.size());
 				for (FuncionariLloc fl : funcionarisLlocs) {
-					Funcionari funcionari = funcionariEjb.findByPrimaryKey(fl.getFuncionariID());
+					Funcionari funcionari = funcionariLogicaEjb.findByPrimaryKey(fl.getFuncionariID());
 					if (funcionari != null) {
 						llistaFuncionaris.add(funcionari);
 					}
@@ -306,12 +297,12 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 				w = funcionariLlocLogicaEjb.getWhereFuncionariIsCurrent(w);
 			}
 
-			List<FuncionariLloc> funcionarisLlocs = funcionariLlocEjb.select(w);
+			List<FuncionariLloc> funcionarisLlocs = funcionariLlocLogicaEjb.select(w);
 
 			if (funcionarisLlocs.size() > 0) {
 				List<FuncionariLlocDAO> llistaFuncionaris = new ArrayList<FuncionariLlocDAO>(funcionarisLlocs.size());
 				for (FuncionariLloc fl : funcionarisLlocs) {
-					Funcionari funcionari = funcionariEjb.findByPrimaryKey(fl.getFuncionariID());
+					Funcionari funcionari = funcionariLogicaEjb.findByPrimaryKey(fl.getFuncionariID());
 					if (funcionari != null) {
 						llistaFuncionaris.add(new FuncionariLlocDAO(funcionari, fl));
 					}
@@ -348,4 +339,8 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 
 	}
 
+	public Funcionari donarDeBaixaLlocAndHistory(long llocId, final String numeroCai, long usuariId)
+			throws I18NException {
+		return funcionariLogicaEjb.dessassignarFuncionariAndHistory(null, llocId, numeroCai, usuariId, false, true);
+	}
 }

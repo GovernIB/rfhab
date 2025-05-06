@@ -8,6 +8,8 @@ import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Logger;
 import org.fundaciobit.genapp.common.StringKeyValue;
 import org.fundaciobit.genapp.common.i18n.I18NException;
@@ -19,6 +21,7 @@ import org.fundaciobit.genapp.common.web.form.AdditionalButtonStyle;
 import org.fundaciobit.genapp.common.web.form.AdditionalField;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -30,8 +33,8 @@ import es.caib.rfhab.back.form.webdb.LlocForm;
 import es.caib.rfhab.back.security.LoginInfo;
 import es.caib.rfhab.back.utils.UrlUtils;
 import es.caib.rfhab.commons.utils.Constants;
+import es.caib.rfhab.commons.utils.StringUtils;
 import es.caib.rfhab.ejb.EntitatService;
-import es.caib.rfhab.ejb.FuncionariLlocService;
 import es.caib.rfhab.ejb.LlocRolService;
 import es.caib.rfhab.ejb.UnitatService;
 import es.caib.rfhab.logic.FuncionariLlocLogicaService;
@@ -51,6 +54,8 @@ import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.model.fields.LlocRolFields;
 import es.caib.rfhab.model.fields.RolFields;
 import es.caib.rfhab.model.fields.UnitatFields;
+import es.caib.rfhab.persistence.FuncionariJPA;
+import es.caib.rfhab.persistence.HistoricJPA;
 import es.caib.rfhab.persistence.HistoricLlocJPA;
 import es.caib.rfhab.persistence.LlocJPA;
 import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
@@ -71,9 +76,6 @@ public class LlocAdminController extends LlocController {
 
 	@EJB(mappedName = LlocLogicaService.JNDI_NAME)
 	protected LlocLogicaService llocLogicaEjb;
-
-	@EJB(mappedName = FuncionariLlocService.JNDI_NAME)
-	protected FuncionariLlocService funcionariLlocEjb;
 
 	@EJB(mappedName = FuncionariLlocLogicaService.JNDI_NAME)
 	protected FuncionariLlocLogicaService funcionariLlocLogicaEjb;
@@ -162,6 +164,8 @@ public class LlocAdminController extends LlocController {
 		LlocForm llocForm = super.getLlocForm(_jpa, __isView, request, mav);
 		LlocJPA lloc = llocForm.getLloc();
 
+		llocForm.setDeleteButtonVisible(false);
+
 		if (llocForm.isNou()) {
 			mav.addObject("isNew", llocForm.isNou());
 
@@ -227,6 +231,31 @@ public class LlocAdminController extends LlocController {
 					+ " " + x.getValue4() + " " + x.getValue5() + " " + x.getValue6()));
 
 			mav.addObject("historic", historic);
+
+			// botons donar de baixa/alta
+			if (lloc.getDataBaixa() == null) {
+				// botó donar de baixa lloc
+				String jsOpenModalDonarBaixa = "javascript:createDivModal(traduccions.type['titol.lloc.donarbaixa.continuar'], traduccions.type['missatge.lloc.donarbaixa.continuar'], '"
+						+ request.getContextPath() + getContextWeb() + "/" + llocID + "/delete/"
+						+ "', '', 'lloc-donarbaixa-id', 'fa-laptop-code');\r\n" + //
+						"        $('#lloc-donarbaixa-id').modal('show');\r\n";
+				AdditionalButton donarDeBaixaButton = new AdditionalButton("fas fa-laptop-code",
+						"lloc.donarbaixa",
+						jsOpenModalDonarBaixa,
+						AdditionalButtonStyle.DANGER);
+				llocForm.addAdditionalButton(donarDeBaixaButton);
+			} else {
+				// botó donar d'alta lloc
+				String jsOpenModalDonarAlta = "javascript:createDivModal(traduccions.type['titol.lloc.donaralta.continuar'], traduccions.type['missatge.lloc.donaralta.continuar'], '"
+						+ request.getContextPath() + getContextWeb() + "/" + llocID + "/donaralta/"
+						+ "', '', 'lloc-donaralta-id', 'fa-laptop-medical');\r\n" + //
+						"        $('#lloc-donaralta-id').modal('show');\r\n";
+				AdditionalButton donarDeAltaButton = new AdditionalButton("fas fa-laptop-medical",
+						"lloc.donaralta",
+						jsOpenModalDonarAlta,
+						AdditionalButtonStyle.DANGER);
+				llocForm.addAdditionalButton(donarDeAltaButton);
+			}
 		}
 
 		mav.addObject("lloc", lloc);
@@ -254,7 +283,7 @@ public class LlocAdminController extends LlocController {
 	public void postList(HttpServletRequest request, ModelAndView mav, LlocFilterForm filterForm, List<Lloc> list)
 			throws I18NException {
 
-		List<Long> llocsOcupats = funcionariLlocEjb.executeQuery(FuncionariLlocFields.LLOCID,
+		List<Long> llocsOcupats = funcionariLlocLogicaEjb.executeQuery(FuncionariLlocFields.LLOCID,
 				funcionariLlocLogicaEjb.getWhereFuncionariIsCurrent());
 
 		filterForm.getAdditionalButtonsByPK().clear();
@@ -373,21 +402,49 @@ public class LlocAdminController extends LlocController {
 		long llocId = lloc.getLlocID();
 		log.info("'Esborrant' (donant de baixa) lloc amb ID " + llocId);
 
+		// TODO:revisar això #38
+		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numeroCai")))
+				? request.getParameter("numeroCai")
+				: "";
+
+		llocLogicaEjb.donarDeBaixaLlocAndHistory(llocId, numeroCai,
+				LoginInfo.getInstance().getUsuariPersona().getUsuariID());
+
+		createMessageSuccess(request, "success.modification", llocId);// funcionari.donaralta.exit
+	}
+
+	@RequestMapping(value = "/{llocID}/donaralta")
+	public String donarDeAlta(@PathVariable("llocID") java.lang.Long llocID, HttpServletRequest request,
+			HttpServletResponse response) throws I18NException {
+		log.info("Donant d'alta Lloc amb ID " + llocID);
+
+		// TODO:revisar això #38
+		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numeroCai")))
+				? request.getParameter("numeroCai")
+				: "";
+
+		// TODO:tot dins una transacció #35
+		LlocJPA lloc = llocLogicaEjb.findByPrimaryKey(llocID);
+		if (lloc == null) {
+			log.error("No s'ha trobat el Lloc amb ID " + llocID);
+			throw new I18NException("lloc.error.noexisteix", llocID.toString());
+		}
+
 		// afegim històric
-		HistoricLlocJPA historicLloc = new HistoricLlocJPA();
-		historicLloc.setDataCreacio(new Timestamp(System.currentTimeMillis()));
-		historicLloc.setLlocID(lloc.getLlocID());
-		historicLloc.setUsuariID(LoginInfo.getInstance().getUsuariPersona().getUsuariID());
-		historicLloc.setNumeroCai("CAI");// TODO:revisar això
-		historicLloc.setObservacions("Lloc donat de baixa");
-		historicLlocEjb.create(historicLloc);
+		HistoricLlocJPA historic = new HistoricLlocJPA();
+		historic.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+		historic.setLlocID(llocID);
+		historic.setNumeroCai(numeroCai);
+		historic.setUsuariID(LoginInfo.getInstance().getUsuariPersona().getUsuariID());
+		historic.setObservacions("Lloc de feina " + lloc.getCodiLloc() + " donat d'alta de nou");
+		historicLlocEjb.create(historic);
 
-		// el desasignam del lloc de feina
-		funcionariLlocLogicaEjb.donarDeBaixaFuncionariDeLlocByLloc(llocId);
+		// el donam de baixa
+		lloc.setDataBaixa(null);
+		llocLogicaEjb.update(lloc);
 
-		// No es poden eliminar. Es donen de baixa insertant la data de baixa.
-		lloc.setDataBaixa(new Timestamp(System.currentTimeMillis()));
-		llocEjb.update(lloc);
+		createMessageSuccess(request, "success.modification", llocID);// funcionari.donaralta.exit
+		return getRedirectWhenModified(request, null, null);
 	}
 
 	@RequestMapping(value = "/tornar", method = RequestMethod.GET)

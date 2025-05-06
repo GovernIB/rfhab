@@ -207,29 +207,76 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 
 	// si llocId és null, es desassigna de tots els llocs de feina
 	public Funcionari dessassignarFuncionariAndHistory(Funcionari funcionari, Long llocId, final String numeroCai,
-			long usuariId, boolean donarDeBaixaFuncionari)
+			long usuariId, boolean donarDeBaixaFuncionari, boolean donarDeBaixaLloc)
 			throws I18NException {
 		Funcionari newFuncionari = null;
+
+		List<FuncionariLloc> funcionarisLlocsDonatsDeBaixa;
 		if (funcionari == null) {
-			throw new I18NException("error.modification", "<funcionari null>");
-		}
-		long funcionariId = funcionari.getFuncionariID();
-		String funcionariIdentificador = funcionari.getIdentificador();
+			// el desasignam del lloc de feina
+			funcionarisLlocsDonatsDeBaixa = funcionariLlocLogicaEjb
+					.donarDeBaixaFuncionariDeLlocByLloc(llocId);
+			log.info("Assignacions de Funcionaris al Lloc de Feina " + llocId + " actualitzades");
 
-		// el desasignam del lloc de feina
-		List<FuncionariLloc> funcionarisLlocsDonatsDeBaixa = funcionariLlocLogicaEjb
-				.donarDeBaixaFuncionariDeLloc(funcionariId, llocId);
-		log.info("Assignacions de Llocs de Feina de Funcionari " + funcionariId + " actualitzades");
+			// Lloc de feina: el donam de baixa
+			if (donarDeBaixaLloc) {
+				Lloc lloc = llocEjb.findByPrimaryKey(llocId);
+				if (lloc == null) {
+					throw new I18NException("error.modification", "<lloc null>");
+				}
+				String codiLloc = lloc.getCodiLloc();
+				lloc.setDataBaixa(new Timestamp(System.currentTimeMillis()));
+				llocEjb.update(lloc);
+				log.info("Lloc de feina actualitzat: " + llocId);
 
-		// el donam de baixa
-		if (donarDeBaixaFuncionari) {
-			funcionari.setDataBaixa(new Timestamp(System.currentTimeMillis()));
-			newFuncionari = update(funcionari);
-			log.info("Funcionari actualitzat: " + newFuncionari.getFuncionariID());
+				// afegim històric del Lloc de feina
+				HistoricLlocJPA historicLloc = new HistoricLlocJPA();
+				historicLloc.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+				historicLloc.setLlocID(llocId);
+				historicLloc.setNumeroCai(numeroCai);
+				historicLloc.setUsuariID(usuariId);
+				String observacions = "Lloc de feina " + codiLloc + " donat de baixa";
+				HistoricLloc historicCreat = historicLlocLogicaEjb.create(historicLloc, observacions);
+				log.info("Històric de Lloc creat: " + historicCreat.getHistoricllocID());
+			}
+		} else {
+			long funcionariId = funcionari.getFuncionariID();
+			String funcionariIdentificador = funcionari.getIdentificador();
+
+			// el desasignam del lloc de feina
+			funcionarisLlocsDonatsDeBaixa = funcionariLlocLogicaEjb
+					.donarDeBaixaFuncionariDeLloc(funcionariId, llocId);
+			log.info("Assignacions de Llocs de Feina de Funcionari " + funcionariId + " actualitzades");
+
+			// Funcionari: el donam de baixa
+			if (donarDeBaixaFuncionari) {
+				funcionari.setDataBaixa(new Timestamp(System.currentTimeMillis()));
+				newFuncionari = update(funcionari);
+				log.info("Funcionari actualitzat: " + newFuncionari.getFuncionariID());
+
+				// afegim històric de funcionari
+				HistoricJPA historic = new HistoricJPA();
+				historic.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+				historic.setFuncionariID(funcionariId);
+				historic.setNumeroCai(numeroCai);
+				historic.setUsuariID(usuariId);
+				String observacions = "Funcionari " + funcionariIdentificador + " donat de baixa";
+				Historic historicCreat = historicLogicaEjb.create(historic, observacions);
+				log.info("Històric de funcionari creat: " + historicCreat.getHistoricID());
+			}
 		}
 
 		// afegim històric de llocs de feina
 		for (FuncionariLloc funcionariLloc : funcionarisLlocsDonatsDeBaixa) {
+			long funcionariId = funcionariLloc.getFuncionariID();
+			Funcionari funcionariDelLloc = findByPrimaryKey(funcionariId);
+			if (funcionariDelLloc == null) {
+				log.error("No s'ha trobat el funcionari " + funcionariId
+						+ " per afegir al seu històric de llocs de feina");
+				continue;
+			}
+			String funcionariIdentificador = funcionariDelLloc.getIdentificador();
+
 			HistoricLlocJPA historicLloc = new HistoricLlocJPA();
 			long llocID = funcionariLloc.getLlocID();
 			historicLloc.setDataCreacio(new Timestamp(System.currentTimeMillis()));
@@ -258,24 +305,12 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 			log.info("Històric de funcionari creat: " + historicCreat.getHistoricID());
 		}
 
-		// afegim històric de funcionari
-		if (donarDeBaixaFuncionari) {
-			HistoricJPA historic = new HistoricJPA();
-			historic.setDataCreacio(new Timestamp(System.currentTimeMillis()));
-			historic.setFuncionariID(funcionariId);
-			historic.setNumeroCai(numeroCai);
-			historic.setUsuariID(usuariId);
-			String observacions = "Funcionari " + funcionariIdentificador + " donat de baixa";
-			Historic historicCreat = historicLogicaEjb.create(historic, observacions);
-			log.info("Històric de funcionari creat: " + historicCreat.getHistoricID());
-		}
-
 		return newFuncionari;
 	}
 
 	public Funcionari donarDeBaixaFuncionariAndHistory(Funcionari funcionari, final String numeroCai, long usuariId)
 			throws I18NException {
-		return dessassignarFuncionariAndHistory(funcionari, null, numeroCai, usuariId, true);
+		return dessassignarFuncionariAndHistory(funcionari, null, numeroCai, usuariId, true, false);
 	}
 
 	@Override

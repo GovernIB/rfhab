@@ -111,7 +111,7 @@ public class FuncionariAdminController extends FuncionariController {
 			}
 
 			int nouNumber = 1;
-			String maxFuncionariNumero;
+			Object maxFuncionariNumero = null;
 			try {
 				maxFuncionariNumero = funcionariEJB.getMaxFuncionariNumero();
 			} catch (SecurityException e) {
@@ -121,7 +121,7 @@ public class FuncionariAdminController extends FuncionariController {
 			}
 			if (maxFuncionariNumero != null) {
 				// Extreu la part numèrica de la cadena
-				String numericPart = maxFuncionariNumero
+				String numericPart = maxFuncionariNumero.toString()
 						.substring(Constants.FUNCIONARI_NUMERO_PLACEHOLDER_PREFIX.length());
 				// Converteix la part numèrica a un enter, suma 1 i torna a formar la cadena
 				nouNumber = Integer.parseInt(numericPart);

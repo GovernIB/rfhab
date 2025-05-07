@@ -334,7 +334,7 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 
 	@Override
 	@PermitAll
-	public String getMaxFuncionariNumero() throws SecurityException, NoSuchFieldException {
+	public Object getMaxFuncionariNumero() throws SecurityException, NoSuchFieldException {
 
 		StringBuilder queryString = new StringBuilder(
 				"select max(rf." + FuncionariFields.NUMERO.javaName + ") from " + FuncionariJPA.class.getName()
@@ -350,6 +350,6 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 				numeroClass);
 		List<?> resultats = query.getResultList();
 
-		return (!resultats.isEmpty()) ? (resultats.get(0).toString()) : null;
+		return (resultats != null && !resultats.isEmpty()) ? (resultats.get(0)) : null;
 	}
 }

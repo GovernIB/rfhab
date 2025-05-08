@@ -136,7 +136,7 @@ public class LlocAdminController extends LlocController {
 				AdditionalField<Long, String> adfield2 = new AdditionalField<Long, String>();
 				adfield2.setCodeName(RolFields._TABLE_TRANSLATION);
 				adfield2.setPosition(3);
-				adfield2.setOrderBy(RolFields.CODI);
+				// adfield2.setOrderBy(RolFields.CODI);
 				adfield2.setEscapeXml(false);
 				adfield2.setValueMap(new HashMap<Long, String>());
 				llocFilterForm.addAdditionalField(adfield2);

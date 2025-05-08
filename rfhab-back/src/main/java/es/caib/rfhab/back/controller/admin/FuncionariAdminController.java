@@ -270,12 +270,10 @@ public class FuncionariAdminController extends FuncionariController {
 						Arrays.asList(FuncionariFields.ALL_FUNCIONARI_FIELDS));
 				hiddenFields.add(LlocFields.PERSONALOAMR);
 				hiddenFields.forEach(x -> log.info("hiddenFields item: " + x.javaName));
-
 			}
 
 			funcionariFilterForm.setOrderBy(FuncionariFields.LLINATGE1.sqlName);
 			funcionariFilterForm.setOrderAsc(true);
-
 		}
 
 		funcionariFilterForm.setDeleteButtonVisible(false);

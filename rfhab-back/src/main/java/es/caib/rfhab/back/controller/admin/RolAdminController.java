@@ -22,11 +22,12 @@ import es.caib.rfhab.persistence.RolJPA;
  * @author jagarcia
  * 
  */
-
 @Controller
-@RequestMapping(value = "/admin/rol")
+@RequestMapping(value = RolAdminController.CONTEXTWEB)
 @SessionAttributes(types = { RolForm.class, RolFilterForm.class })
 public class RolAdminController extends RolController {
+
+	public static final String CONTEXTWEB = "/admin/habilitacio";
 
 	@Override
 	public String getTileForm() {

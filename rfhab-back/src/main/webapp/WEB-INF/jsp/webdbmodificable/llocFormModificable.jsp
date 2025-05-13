@@ -100,7 +100,7 @@
 			</c:if>
 			<p>
 				<a class="btn btn-primary btn-sm"
-					href="<c:url value="/admin/llocrol/assignar/${lloc.llocID}"/>"><fmt:message key="lloc.assignar.nou.rol"/></a>
+					href="<c:url value="/admin/llochabilitacio/assignar/${lloc.llocID}"/>"><fmt:message key="lloc.assignar.nou.rol"/></a>
 			</p>
 		</div>
 		

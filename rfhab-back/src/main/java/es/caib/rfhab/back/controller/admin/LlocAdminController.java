@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,11 +34,11 @@ import es.caib.rfhab.back.utils.UrlUtils;
 import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.commons.utils.StringUtils;
 import es.caib.rfhab.ejb.EntitatService;
-import es.caib.rfhab.ejb.LlocRolService;
 import es.caib.rfhab.ejb.UnitatService;
 import es.caib.rfhab.logic.FuncionariLlocLogicaService;
 import es.caib.rfhab.logic.HistoricLlocLogicaService;
 import es.caib.rfhab.logic.LlocLogicaService;
+import es.caib.rfhab.logic.LlocRolLogicaService;
 import es.caib.rfhab.logic.utils.FuncionariLlocDAO;
 import es.caib.rfhab.model.entity.Entitat;
 import es.caib.rfhab.model.entity.Funcionari;
@@ -61,7 +60,6 @@ import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
 /**
  * @author jagarcia
  */
-
 @Controller
 @RequestMapping(value = "/admin/lloc")
 @SessionAttributes(types = { LlocForm.class, LlocFilterForm.class })
@@ -78,8 +76,8 @@ public class LlocAdminController extends LlocController {
 	@EJB(mappedName = FuncionariLlocLogicaService.JNDI_NAME)
 	protected FuncionariLlocLogicaService funcionariLlocLogicaEjb;
 
-	@EJB(mappedName = LlocRolService.JNDI_NAME)
-	protected LlocRolService llocRolEjb;
+	@EJB(mappedName = LlocRolLogicaService.JNDI_NAME)
+	protected LlocRolLogicaService llocRolLogicaEjb;
 
 	@EJB(mappedName = UnitatService.JNDI_NAME)
 	protected UnitatService unitatEjb;
@@ -329,14 +327,21 @@ public class LlocAdminController extends LlocController {
 					"/admin/lloc/{0}/delete", AdditionalButtonStyle.DANGER));
 
 			// Comprobam els rols assignats a un lloc de feina
-			Boolean llocHasRol = (llocRolEjb.count(LlocRolFields.LLOCID.equal(llocID)) > 0);
+			Boolean llocHasRol = (llocRolLogicaEjb.count(LlocRolFields.LLOCID.equal(llocID)) > 0);
 
 			if (llocHasRol) {
 				List<Rol> rolsLloc = llocLogicaEjb.getRolsByLlocID(llocID);
 				String rolsLlocStr = "";
 				for (Rol rol : rolsLloc) {
-					rolsLlocStr += "<span class='badge badge-secondary'>" + rol.getCodi()
-							+ "<a href=\"#\">X</a></span>";
+					Long llocRolID = llocRolLogicaEjb.getLlocRolIDByLlocAndRol(llocID, rol.getRolID());
+					String urlEsborrar = request.getContextPath() + LlocRolAdminController.CONTEXTWEB + "/" + llocRolID
+							+ "/delete";
+					String botoEsborrarTitle = I18NUtils.tradueix("lloc.habilitacio.botoEsborrar");
+					String botoEsborrar = "<a style='margin-left:5px;' href='" + urlEsborrar + "' title='"
+							+ botoEsborrarTitle
+							+ "' alt='" + botoEsborrarTitle
+							+ "'><i class='fas fa-times' style='color:white;'></i></a>";
+					rolsLlocStr += "<span class='badge badge-secondary'>" + rol.getCodi() + botoEsborrar + "</span>";
 				}
 				mapRols.put(llocID, rolsLlocStr);
 			}
@@ -353,7 +358,7 @@ public class LlocAdminController extends LlocController {
 
 			// Afegir el botó d'assignar rols
 			filterForm.addAdditionalButtonByPK(llocID, new AdditionalButton("far fa-check-square", "rol.assignarrol",
-					"/admin/llocrol/assignar/" + llocID, AdditionalButtonStyle.INFO));
+					LlocRolAdminController.CONTEXTWEB + "/assignar/" + llocID, AdditionalButtonStyle.INFO));
 		}
 	}
 

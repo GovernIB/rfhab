@@ -40,29 +40,31 @@ import es.caib.rfhab.model.fields.RolFields;
 import es.caib.rfhab.persistence.LlocRolJPA;
 
 @Controller
-@RequestMapping(value="/admin/llocrol")
-@SessionAttributes(types = { LlocRolForm.class, LlocRolFilterForm.class})
-public class LlocRolAdminController extends LlocRolController{
-    
-    protected final Logger log = Logger.getLogger(getClass());
+@RequestMapping(value = LlocRolAdminController.CONTEXTWEB)
+@SessionAttributes(types = { LlocRolForm.class, LlocRolFilterForm.class })
+public class LlocRolAdminController extends LlocRolController {
 
-    @EJB(mappedName = LlocRolService.JNDI_NAME)
+	public static final String CONTEXTWEB = "/admin/llochabilitacio";
+
+	protected final Logger log = Logger.getLogger(getClass());
+
+	@EJB(mappedName = LlocRolService.JNDI_NAME)
 	protected LlocRolService llocRolEJB;
 
 	@EJB(mappedName = RolService.JNDI_NAME)
 	protected RolService rolEJB;
 
-    @Override
-    public String getTileForm() {
-        return "llocRolFormAdmin";
-    }
+	@Override
+	public String getTileForm() {
+		return "llocRolFormAdmin";
+	}
 
-    @Override
-    public String getTileList() {
-        return "llocRolListAdmin";
-    }
+	@Override
+	public String getTileList() {
+		return "llocRolListAdmin";
+	}
 
-    @Override
+	@Override
 	public LlocRolFilterForm getLlocRolFilterForm(Integer pagina, ModelAndView mav,
 			HttpServletRequest request) throws I18NException {
 
@@ -106,8 +108,9 @@ public class LlocRolAdminController extends LlocRolController{
 
 		llocRolForm.addReadOnlyField(LLOCID);
 		llocRolForm.addHiddenField(DATACREACIO);
-		
-		// Obtenir els rols del funcionari i passar-los a la vista per marcar els checkboxs
+
+		// Obtenir els rols del funcionari i passar-los a la vista per marcar els
+		// checkboxs
 		List<LlocRol> rolsLloc = llocRolEJB.select(LlocRolFields.LLOCID.equal(llocRolForm.getLlocRol().getLlocID()));
 		mav.addObject("rolsLloc", rolsLloc);
 
@@ -121,7 +124,7 @@ public class LlocRolAdminController extends LlocRolController{
 
 		log.info("Assignar rols a llocId => " + llocId);
 		request.getSession().setAttribute("llocId", llocId);
-		return "redirect:/admin/llocrol/new";
+		return "redirect:" + getContextWeb() + "/new";
 	}
 
 	@RequestMapping(value = "/tornar", method = RequestMethod.GET)
@@ -179,9 +182,9 @@ public class LlocRolAdminController extends LlocRolController{
 		}
 
 		try {
-			
+
 			log.info("------ START Crear LlocRolPost ----");
-			
+
 			ArrayList<Long> rolsMarcats = new ArrayList<Long>();
 
 			Enumeration<String> enumeration = request.getParameterNames();
@@ -194,8 +197,9 @@ public class LlocRolAdminController extends LlocRolController{
 			}
 
 			// Obtener los roles de un funcionario
-			List<LlocRol> anticsRols = llocRolEjb.select(LlocRolFields.LLOCID.equal(llocRolForm.getLlocRol().getLlocID()));
-			
+			List<LlocRol> anticsRols = llocRolEjb
+					.select(LlocRolFields.LLOCID.equal(llocRolForm.getLlocRol().getLlocID()));
+
 			// Crear los nuevos roles
 			for (Long rolId : rolsMarcats) {
 				LlocRolJPA llocRol = new LlocRolJPA();
@@ -205,16 +209,16 @@ public class LlocRolAdminController extends LlocRolController{
 				llocRol = create(request, llocRol);
 				llocRolForm.setLlocRol(llocRol);
 			}
-			
+
 			// Eliminar los roles anteriores una vez creados los nuevos
 			for (LlocRol llocRol : anticsRols) {
-                llocRolEjb.delete(llocRol.getLlocRolID());
-            }
+				llocRolEjb.delete(llocRol.getLlocRolID());
+			}
 
 			log.info("------ END Crear LlocRolPost ----");
-			
+
 			createMessageSuccess(request, "success.generic", null);
-			
+
 			return getRedirectWhenCreated(request, llocRolForm);
 		} catch (Throwable __e) {
 			if (__e instanceof I18NValidationException) {

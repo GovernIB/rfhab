@@ -18,6 +18,7 @@
             // create label
             let label = document.createElement('label')
             label.htmlFor = "rolID_" + options[i].value;
+            label.style.marginLeft = "5px";
             label.appendChild(document.createTextNode(options[i].text));
             
             // append checkbox and label

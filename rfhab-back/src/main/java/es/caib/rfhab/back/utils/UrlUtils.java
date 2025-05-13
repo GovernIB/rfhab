@@ -28,6 +28,7 @@ public class UrlUtils {
                 redirectUrl = defaultRedirect;
             }
         } catch (MalformedURLException e) {
+            log.error("Malformed URL: " + refererUrl, e);
         }
 
         if (redirectUrl.isEmpty()) {

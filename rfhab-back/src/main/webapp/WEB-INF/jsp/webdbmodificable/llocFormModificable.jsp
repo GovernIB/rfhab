@@ -216,17 +216,7 @@
 	</div>
 </div>
 
-
 <script type="text/javascript">
-	function displayOptionsFromSelect(element) {
-		let txt = "All options: ";
-		for (let i = 0; i < element.length; i++) {
-			txt =
-			txt + "\n" + element.options[i].text + " - " + element.options[i].value;
-		}
-		return txt;
-	}
-
 	function findUnitatByArrel(unitats, unitatId) {
 		// Cerca la unitat amb el unitatId especificat
 		let unitatTrobada = unitats.find(unitat => unitat.unitatID === unitatId);

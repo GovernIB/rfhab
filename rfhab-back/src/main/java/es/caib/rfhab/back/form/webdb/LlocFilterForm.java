@@ -203,7 +203,7 @@ public class LlocFilterForm extends RFHabBaseFilterForm implements LlocFields {
 
   @Override
   public List<Field<?>> getDefaultFilterByFields() {
-    return new java.util.ArrayList<Field<?>>(Arrays.asList(new Field<?>[] { CODILLOC ,NOM ,PERSONALOAMR }));
+    return new java.util.ArrayList<Field<?>>(Arrays.asList(new Field<?>[] { CODILLOC ,NOM ,PERSONALOAMR ,UNITATID }));
   }
 
   @Override

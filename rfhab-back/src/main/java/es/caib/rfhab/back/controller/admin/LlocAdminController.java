@@ -13,11 +13,16 @@ import org.apache.log4j.Logger;
 import org.fundaciobit.genapp.common.StringKeyValue;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.i18n.I18NValidationException;
+import org.fundaciobit.genapp.common.query.CustomField;
+import org.fundaciobit.genapp.common.query.Field;
+import org.fundaciobit.genapp.common.query.GroupByItem;
+import org.fundaciobit.genapp.common.query.GroupByValueItem;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.query.selectcolumn.Select6Values;
 import org.fundaciobit.genapp.common.web.form.AdditionalButton;
 import org.fundaciobit.genapp.common.web.form.AdditionalButtonStyle;
 import org.fundaciobit.genapp.common.web.form.AdditionalField;
+import org.fundaciobit.genapp.common.web.i18n.I18NUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -97,6 +102,9 @@ public class LlocAdminController extends LlocController {
 		return "llocListAdmin";
 	}
 
+	public static final CustomField VIRTUAL_FIELD_DATABAIXA_ESTA_DEFINIT_O_NO = new CustomField(
+			"DataBaixa_Esta_Definit_O_No");
+
 	@Override
 	public LlocFilterForm getLlocFilterForm(Integer pagina, ModelAndView mav, HttpServletRequest request)
 			throws I18NException {
@@ -108,17 +116,15 @@ public class LlocAdminController extends LlocController {
 			llocFilterForm.addHiddenField(DATACREACIO);
 			llocFilterForm.addHiddenField(ENTITATID);
 			llocFilterForm.addHiddenField(OBSERVACIONS);
-			llocFilterForm.addHiddenField(DATABAIXA);
+			// llocFilterForm.addHiddenField(DATABAIXA);
 
 			{
-
 				AdditionalField<Long, String> adfield0 = new AdditionalField<Long, String>();
 				adfield0.setCodeName(UnitatFields.SUPERIOR.codeLabel);
 				adfield0.setPosition(1);
 				adfield0.setEscapeXml(false);
 				adfield0.setValueMap(new HashMap<Long, String>());
 				llocFilterForm.addAdditionalField(adfield0);
-
 			}
 
 			{
@@ -139,7 +145,6 @@ public class LlocAdminController extends LlocController {
 				adfield2.setValueMap(new HashMap<Long, String>());
 				llocFilterForm.addAdditionalField(adfield2);
 			}
-
 		}
 
 		llocFilterForm.setDeleteButtonVisible(false);
@@ -473,7 +478,31 @@ public class LlocAdminController extends LlocController {
 			w1 = LlocFields.ENTITATID.equal(loginInfo.getEntitatIDActual());
 		}
 
-		return (w1 != null) ? Where.AND(defaultCondition, w1) : defaultCondition;
+		Where donatsDeBaixa = getAdditionalConditionDonatsDeBaixa(request);
+		return Where.AND(donatsDeBaixa, (w1 != null) ? Where.AND(defaultCondition, w1) : defaultCondition);
+	}
+
+	public Where getAdditionalConditionDonatsDeBaixa(HttpServletRequest request) throws I18NException {
+
+		LlocFilterForm filterForm = (LlocFilterForm) request.getSession()
+				.getAttribute(getSessionAttributeFilterForm());
+
+		log.info("Group by Field ==> " + filterForm.getGroupBy());
+		log.info("Group Value ==> " + filterForm.getGroupValue());
+
+		if (VIRTUAL_FIELD_DATABAIXA_ESTA_DEFINIT_O_NO.getJavaName().equals(filterForm.getGroupBy())) {
+
+			if ("true".equals(filterForm.getGroupValue())) {
+				return LlocFields.DATABAIXA.isNotNull();
+			} else if ("false".equals(filterForm.getGroupValue())) {
+				return LlocFields.DATABAIXA.isNull();
+			} else {
+				log.warn("Valor per filterBY no reconegut[" + filterForm.getGroupBy() + "]: "
+						+ filterForm.getGroupValue());
+			}
+		}
+
+		return null;
 	}
 
 	private HashMap<String, String> getProcedimentsByDir3(String codiDir3) throws Exception {
@@ -493,13 +522,6 @@ public class LlocAdminController extends LlocController {
 		}
 		return getUnitatsByEntitatArrel(mav, llocForm);
 	}
-
-	// @Override
-	// public List<StringKeyValue> getReferenceListForUnitatID(HttpServletRequest
-	// request,
-	// ModelAndView mav, Where where) throws I18NException {
-	// return unitatRefList.getReferenceList(UnitatFields.UNITATID, where);
-	// }
 
 	public List<StringKeyValue> getUnitatsByEntitatArrel(
 			ModelAndView mav, LlocForm llocForm) throws I18NException {
@@ -557,6 +579,47 @@ public class LlocAdminController extends LlocController {
 		}
 
 		return result;
+	}
+
+	@Override
+	public Map<Field<?>, GroupByItem> fillReferencesForList(LlocFilterForm filterForm,
+			HttpServletRequest request, ModelAndView mav,
+			List<Lloc> list, List<GroupByItem> groupItems) throws I18NException {
+		Map<Field<?>, GroupByItem> groupByItemsMap = super.fillReferencesForList(filterForm, request, mav, list,
+				groupItems);
+
+		// Data Baixa
+		{
+			boolean selectedField = VIRTUAL_FIELD_DATABAIXA_ESTA_DEFINIT_O_NO.getJavaName()
+					.equals(filterForm.getGroupBy());
+
+			if (selectedField) {
+				filterForm.setVisibleGroupBy(true);
+			}
+
+			List<GroupByValueItem> values = new ArrayList<GroupByValueItem>();
+
+			long countDataNull = this.llocLogicaEjb.count(LlocFields.DATABAIXA.isNull());
+			boolean selectedFalse = selectedField && "false".equals(filterForm.getGroupValue());
+			values.add(new GroupByValueItem(VIRTUAL_FIELD_DATABAIXA_ESTA_DEFINIT_O_NO, "=Actius",
+					"false", selectedFalse,
+					countDataNull));
+
+			long countDataNotNull = this.llocLogicaEjb.count(LlocFields.DATABAIXA.isNotNull());
+			boolean selectedTrue = selectedField && "true".equals(filterForm.getGroupValue());
+			values.add(new GroupByValueItem(VIRTUAL_FIELD_DATABAIXA_ESTA_DEFINIT_O_NO, "=Inactius",
+					"true", selectedTrue,
+					countDataNotNull));
+			String label = "=Tenen Data Baixa Definit";
+
+			String value = VIRTUAL_FIELD_DATABAIXA_ESTA_DEFINIT_O_NO.getJavaName();
+			GroupByItem items = new GroupByItem(VIRTUAL_FIELD_DATABAIXA_ESTA_DEFINIT_O_NO, label, value,
+					selectedField, values);
+			groupItems.add(items);
+			groupByItemsMap.put(VIRTUAL_FIELD_DATABAIXA_ESTA_DEFINIT_O_NO, items);
+		}
+
+		return groupByItemsMap;
 	}
 
 	@Override

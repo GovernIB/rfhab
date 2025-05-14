@@ -6,6 +6,22 @@
 
 <script type="text/javascript">
   function replaceOamrFilter() {
+    const inputPersonalOamrLabel = "Personal OAMR: ";
+    const options = [
+      {
+        value: "",
+        text: "Tots",
+      },
+      {
+        value: "1",
+        text: "Si",
+      },
+      {
+        value: "0",
+        text: "No",
+      },
+    ];
+
     const inputPersonalOamrName = "personalOamr";
     const inputAdedFieldPersonalOamrName = "lloc.personalOamr";
     const inputSelectPersonalOamrId = "lloc_personalOamr_select";
@@ -18,7 +34,9 @@
       replaceFilterForSelectFilter(
         inputPersonalOamr,
         inputAdedFieldPersonalOamrName,
-        inputAdedFieldPersonalOamrName
+        inputAdedFieldPersonalOamrName,
+        inputPersonalOamrLabel,
+        options
       );
       return;
     }
@@ -28,7 +46,9 @@
       replaceFilterForSelectFilter(
         inputPersonalOamr,
         inputPersonalOamrName,
-        inputPersonalOamrName
+        inputPersonalOamrName,
+        inputPersonalOamrLabel,
+        options
       );
       return;
     }
@@ -39,6 +59,8 @@
         inputPersonalOamr,
         inputSelectPersonalOamrName,
         inputSelectPersonalOamrName,
+        inputPersonalOamrLabel,
+        options,
         true
       );
       return;

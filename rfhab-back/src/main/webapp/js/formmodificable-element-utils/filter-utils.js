@@ -2,13 +2,17 @@ function replaceFilterForSelectFilter(
   inputElement,
   newInputId,
   newInputName,
-  isSelect = false
+  label,
+  options,
+  wasSelect = false
 ) {
   // eliminam els fills per afegir un select com a nou filtre
   let parentContainer = inputElement.parentElement;
-  if (isSelect && parentContainer.parentElement) {
+  if (wasSelect && parentContainer.parentElement) {
     parentContainer = parentContainer.parentElement;
   }
+  parentContainer.classList.add("input-prepend");
+  parentContainer.classList.remove("input-group");
 
   while (parentContainer.firstChild) {
     parentContainer.removeChild(parentContainer.firstChild);
@@ -16,7 +20,7 @@ function replaceFilterForSelectFilter(
 
   const labelElement = document.createElement("span");
   labelElement.classList.add("add-on");
-  labelElement.innerHTML = "Personal OAMR: ";
+  labelElement.innerHTML = label;
   parentContainer.appendChild(labelElement);
 
   const selectElement = document.createElement("select");
@@ -25,21 +29,12 @@ function replaceFilterForSelectFilter(
   selectElement.id = newInputId;
   selectElement.name = newInputName;
 
-  const optionBlanc = document.createElement("option");
-  optionBlanc.value = "";
-  optionBlanc.text = "Tots";
-  selectElement.appendChild(optionBlanc);
-
-  const optionYes = document.createElement("option");
-  optionYes.value = "1";
-  optionYes.text = "Si";
-  // optionYes.text = "S&iacute;";
-  selectElement.appendChild(optionYes);
-
-  const optionNo = document.createElement("option");
-  optionNo.value = "0";
-  optionNo.text = "No";
-  selectElement.appendChild(optionNo);
+  options.forEach((option) => {
+    const optionElement = document.createElement("option");
+    optionElement.value = option.value;
+    optionElement.text = option.text;
+    selectElement.appendChild(optionElement);
+  });
 
   parentContainer.appendChild(selectElement);
 }

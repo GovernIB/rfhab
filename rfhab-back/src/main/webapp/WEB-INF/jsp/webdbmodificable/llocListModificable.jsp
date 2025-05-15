@@ -1,3 +1,5 @@
+<%@page import="es.caib.rfhab.commons.utils.FiltresCookies"%>
+
 <style type="text/css">
   .search-query {
     width: auto !important;
@@ -5,72 +7,28 @@
 </style>
 
 <script type="text/javascript">
-  function replaceOamrFilter() {
-    const inputPersonalOamrLabel = "Personal OAMR: ";
-    const options = [
-      {
-        value: "",
-        text: "Tots",
-      },
-      {
-        value: "1",
-        text: "Si",
-      },
-      {
-        value: "0",
-        text: "No",
-      },
-    ];
-
-    const inputPersonalOamrName = "personalOamr";
-    const inputAdedFieldPersonalOamrName = "lloc.personalOamr";
-    const inputSelectPersonalOamrId = "lloc_personalOamr_select";
-    const inputSelectPersonalOamrName = "personalOamrSelect";
-
-    let inputPersonalOamr = document.getElementById(
-      inputAdedFieldPersonalOamrName
-    );
-    if (inputPersonalOamr) {
-      replaceFilterForSelectFilter(
-        inputPersonalOamr,
-        inputAdedFieldPersonalOamrName,
-        inputAdedFieldPersonalOamrName,
-        inputPersonalOamrLabel,
-        options
-      );
-      return;
-    }
-
-    inputPersonalOamr = document.getElementById(inputPersonalOamrName);
-    if (inputPersonalOamr) {
-      replaceFilterForSelectFilter(
-        inputPersonalOamr,
-        inputPersonalOamrName,
-        inputPersonalOamrName,
-        inputPersonalOamrLabel,
-        options
-      );
-      return;
-    }
-
-    inputPersonalOamr = document.getElementById(inputSelectPersonalOamrId);
-    if (inputPersonalOamr) {
-      replaceFilterForSelectFilter(
-        inputPersonalOamr,
-        inputSelectPersonalOamrName,
-        inputSelectPersonalOamrName,
-        inputPersonalOamrLabel,
-        options,
-        true
-      );
-      return;
-    }
-  }
+    const unitatsOptions = [];
+    console.log("unitatsFiltreCerca: ${unitatsFiltreCerca}");//todo:eliminar
+    <c:forEach items="${unitatsFiltreCerca}" var="unitat">
+      console.log("unitat: ${unitat.key} - ${unitat.value}");
+      unitatsOptions.push({
+        value: "${unitat.key}",
+        text: "${unitat.value}",
+      });
+    </c:forEach>
+    //todo:eliminar
+    console.log("unitats: ${unitats}");
+    <c:forEach items="${unitats}" var="unitat">
+      console.log("unitat2: ${unitat.unitatID} - ${unitat.codi} ${unitat.cooficial}");
+    </c:forEach>
 
   $(document).ready(function () {
     document.getElementById("FilterDiv").style.display = "inherit";
     document.getElementById("FilterButton").style.display = "none";
 
+
     replaceOamrFilter();
+    replaceUnitatsFilter(unitatsOptions);
+    addActiusSelectFilter("${FiltresCookies.FILTRE_LLOCS_DATA_BAIXA_ACTIUS_COOKIE_NAME}");
   });
 </script>

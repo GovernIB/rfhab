@@ -1,0 +1,127 @@
+function replaceUnitatsFilter(options) {
+  const inputUnitatsLabel = "Unitat: ";
+
+  const inputUnitatsName = "unitatIDDesde";
+  const inputFinsUnitatsName = "unitatIDFins";
+
+  let inputUnitats = document.getElementById(inputUnitatsName);
+  if (inputUnitats) {
+    replaceFilterForSelectFilter(
+      inputUnitats,
+      inputUnitatsName,
+      inputUnitatsName,
+      inputUnitatsLabel,
+      options,
+      false,
+      inputFinsUnitatsName,
+      inputFinsUnitatsName
+    );
+    return;
+  }
+}
+
+function replaceOamrFilter() {
+  const inputPersonalOamrLabel = "Personal OAMR: ";
+  const options = [
+    {
+      value: "",
+      text: "Tots",
+    },
+    {
+      value: "1",
+      text: "Si",
+    },
+    {
+      value: "0",
+      text: "No",
+    },
+  ];
+
+  const inputPersonalOamrName = "personalOamr";
+  const inputAdedFieldPersonalOamrName = "lloc.personalOamr";
+  const inputSelectPersonalOamrId = "lloc_personalOamr_select";
+  const inputSelectPersonalOamrName = "personalOamrSelect";
+
+  let inputPersonalOamr = document.getElementById(
+    inputAdedFieldPersonalOamrName
+  );
+  if (inputPersonalOamr) {
+    replaceFilterForSelectFilter(
+      inputPersonalOamr,
+      inputAdedFieldPersonalOamrName,
+      inputAdedFieldPersonalOamrName,
+      inputPersonalOamrLabel,
+      options
+    );
+    return;
+  }
+
+  inputPersonalOamr = document.getElementById(inputPersonalOamrName);
+  if (inputPersonalOamr) {
+    replaceFilterForSelectFilter(
+      inputPersonalOamr,
+      inputPersonalOamrName,
+      inputPersonalOamrName,
+      inputPersonalOamrLabel,
+      options
+    );
+    return;
+  }
+
+  inputPersonalOamr = document.getElementById(inputSelectPersonalOamrId);
+  if (inputPersonalOamr) {
+    replaceFilterForSelectFilter(
+      inputPersonalOamr,
+      inputSelectPersonalOamrName,
+      inputSelectPersonalOamrName,
+      inputPersonalOamrLabel,
+      options,
+      true
+    );
+    return;
+  }
+}
+
+function addActiusSelectFilter(filterCookieName) {
+  const options = [
+    {
+      value: "",
+      text: "Tots",
+    },
+    {
+      value: "1",
+      text: "Actius",
+    },
+    {
+      value: "0",
+      text: "Inactius",
+    },
+  ];
+  const label = "Actius: ";
+
+  let formFilterContainer = document.querySelector("#FilterDiv > .form-inline");
+  const actiusSelect = addNewSelectFilterToForm(
+    formFilterContainer,
+    options,
+    label,
+    "actius-segons-databaixa-id",
+    "actiusSegonsDatabaixaName"
+  );
+
+  if (actiusSelect) {
+    //valor per defecte
+    document.cookie =
+      filterCookieName +
+      "=" +
+      encodeURIComponent(actiusSelect.value) +
+      "; path=/; Secure; SameSite=Strict";
+
+    actiusSelect.addEventListener("change", function () {
+      document.cookie =
+        filterCookieName +
+        "=" +
+        encodeURIComponent(actiusSelect.value) +
+        "; path=/; Secure; SameSite=Strict";
+    });
+  }
+}

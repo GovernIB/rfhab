@@ -43,6 +43,7 @@ import es.caib.rfhab.logic.FuncionariLlocLogicaService;
 import es.caib.rfhab.logic.HistoricLlocLogicaService;
 import es.caib.rfhab.logic.LlocLogicaService;
 import es.caib.rfhab.logic.LlocRolLogicaService;
+import es.caib.rfhab.logic.UnitatLogicaUserService;
 import es.caib.rfhab.logic.utils.FuncionariLlocDAO;
 import es.caib.rfhab.model.entity.Entitat;
 import es.caib.rfhab.model.entity.Funcionari;
@@ -84,8 +85,8 @@ public class LlocAdminController extends LlocController {
 	@EJB(mappedName = LlocRolLogicaService.JNDI_NAME)
 	protected LlocRolLogicaService llocRolLogicaEjb;
 
-	@EJB(mappedName = UnitatService.JNDI_NAME)
-	protected UnitatService unitatEjb;
+	@EJB(mappedName = UnitatLogicaUserService.JNDI_NAME)
+	protected UnitatLogicaUserService unitatEjb;
 
 	@EJB(mappedName = EntitatService.JNDI_NAME)
 	protected EntitatService entitatEjb;

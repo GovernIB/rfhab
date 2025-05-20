@@ -1,14 +1,9 @@
 package es.caib.rfhab.back.controller.admin;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
 import javax.ejb.EJB;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -371,32 +366,13 @@ public class FuncionariAdminController extends FuncionariController {
 	@RequestMapping(value = "/{funcionariID}/donaralta")
 	public String donarDeAlta(@PathVariable("funcionariID") java.lang.Long funcionariID, HttpServletRequest request,
 			HttpServletResponse response) throws I18NException {
-		log.info("Donant d'alta funcionari amb ID " + funcionariID);
-
 		// TODO:revisar això #38
 		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numeroCai")))
 				? request.getParameter("numeroCai")
 				: "";
 
-		// TODO:tot dins una transacció #35
-		FuncionariJPA funcionari = funcionariEJB.findByPrimaryKey(funcionariID);
-		if (funcionari == null) {
-			log.error("No s'ha trobat el funcionari amb ID " + funcionariID);
-			throw new I18NException("funcionari.error.noexisteix", funcionariID.toString());
-		}
-
-		// afegim històric
-		HistoricJPA historic = new HistoricJPA();
-		historic.setDataCreacio(new Timestamp(System.currentTimeMillis()));
-		historic.setFuncionariID(funcionariID);
-		historic.setNumeroCai(numeroCai);
-		historic.setUsuariID(LoginInfo.getInstance().getUsuariPersona().getUsuariID());
-		historic.setObservacions("Funcionari " + funcionari.getIdentificador() + " donat d'alta de nou");
-		historicEjb.create(historic);
-
-		// el donam d'alta
-		funcionari.setDataBaixa(null);
-		funcionariEjb.update(funcionari);
+		funcionariEJB.donarDeAltaAndHistory(funcionariID, numeroCai,
+				LoginInfo.getInstance().getUsuariPersona().getUsuariID());
 
 		createMessageSuccess(request, "success.modification", funcionariID);// funcionari.donaralta.exit
 		return getRedirectWhenModified(request, null, null);

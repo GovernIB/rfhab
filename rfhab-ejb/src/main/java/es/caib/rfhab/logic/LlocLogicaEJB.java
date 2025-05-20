@@ -10,7 +10,6 @@ import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
-
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.query.Where;
 
@@ -36,9 +35,9 @@ import es.caib.rfhab.persistence.LlocJPA;
 /**
  * 
  * @autor jagarcia
+ * @autor jpou
  *
  */
-
 @Stateless
 public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 
@@ -342,5 +341,27 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 	public Funcionari donarDeBaixaLlocAndHistory(long llocId, final String numeroCai, long usuariId)
 			throws I18NException {
 		return funcionariLogicaEjb.dessassignarFuncionariAndHistory(null, llocId, numeroCai, usuariId, false, true);
+	}
+
+	public Lloc donarDeAltaAndHistory(java.lang.Long llocID, String numeroCai, long usuariId) throws I18NException {
+		log.info("Donant d'alta Lloc amb ID " + llocID);
+
+		LlocJPA lloc = findByPrimaryKey(llocID);
+		if (lloc == null) {
+			log.error("No s'ha trobat el Lloc amb ID " + llocID);
+			throw new I18NException("lloc.error.noexisteix", llocID.toString());
+		}
+
+		// afegim històric
+		HistoricLlocJPA historic = new HistoricLlocJPA();
+		historic.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+		historic.setLlocID(llocID);
+		historic.setNumeroCai(numeroCai);
+		historic.setUsuariID(usuariId);
+		historicLlocLogicaEjb.create(historic, "Lloc de feina " + lloc.getCodiLloc() + " donat d'alta de nou");
+
+		// el donam de baixa
+		lloc.setDataBaixa(null);
+		return update(lloc);
 	}
 }

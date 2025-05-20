@@ -428,32 +428,13 @@ public class LlocAdminController extends LlocController {
 	@RequestMapping(value = "/{llocID}/donaralta")
 	public String donarDeAlta(@PathVariable("llocID") java.lang.Long llocID, HttpServletRequest request,
 			HttpServletResponse response) throws I18NException {
-		log.info("Donant d'alta Lloc amb ID " + llocID);
-
 		// TODO:revisar això #38
 		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numeroCai")))
 				? request.getParameter("numeroCai")
 				: "";
 
-		// TODO:tot dins una transacció #35
-		LlocJPA lloc = llocLogicaEjb.findByPrimaryKey(llocID);
-		if (lloc == null) {
-			log.error("No s'ha trobat el Lloc amb ID " + llocID);
-			throw new I18NException("lloc.error.noexisteix", llocID.toString());
-		}
-
-		// afegim històric
-		HistoricLlocJPA historic = new HistoricLlocJPA();
-		historic.setDataCreacio(new Timestamp(System.currentTimeMillis()));
-		historic.setLlocID(llocID);
-		historic.setNumeroCai(numeroCai);
-		historic.setUsuariID(LoginInfo.getInstance().getUsuariPersona().getUsuariID());
-		historic.setObservacions("Lloc de feina " + lloc.getCodiLloc() + " donat d'alta de nou");
-		historicLlocEjb.create(historic);
-
-		// el donam de baixa
-		lloc.setDataBaixa(null);
-		llocLogicaEjb.update(lloc);
+		llocLogicaEjb.donarDeAltaAndHistory(llocID, numeroCai,
+				LoginInfo.getInstance().getUsuariPersona().getUsuariID());
 
 		createMessageSuccess(request, "success.modification", llocID);// funcionari.donaralta.exit
 		return getRedirectWhenModified(request, null, null);

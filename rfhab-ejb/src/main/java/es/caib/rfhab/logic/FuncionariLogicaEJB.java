@@ -418,4 +418,28 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 
 		return funcionariLlocJPA;
 	}
+
+	@PermitAll
+	public Funcionari donarDeAltaAndHistory(java.lang.Long funcionariID, String numeroCai, long usuarId)
+			throws I18NException {
+		log.info("Donant d'alta funcionari amb ID " + funcionariID);
+
+		FuncionariJPA funcionari = findByPrimaryKey(funcionariID);
+		if (funcionari == null) {
+			log.error("No s'ha trobat el funcionari amb ID " + funcionariID);
+			throw new I18NException("funcionari.error.noexisteix", funcionariID.toString());
+		}
+
+		// afegim històric
+		HistoricJPA historic = new HistoricJPA();
+		historic.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+		historic.setFuncionariID(funcionariID);
+		historic.setNumeroCai(numeroCai);
+		historic.setUsuariID(usuarId);
+		historicLogicaEjb.create(historic, "Funcionari " + funcionari.getIdentificador() + " donat d'alta de nou");
+
+		// el donam d'alta
+		funcionari.setDataBaixa(null);
+		return update(funcionari);
+	}
 }

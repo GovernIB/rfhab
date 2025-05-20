@@ -43,4 +43,6 @@ public interface FuncionariLogicaService extends FuncionariService {
 
 	public FuncionariLlocJPA assignarFuncionari(FuncionariLlocJPA funcionariLloc, String numeroCai, long usuarId)
 			throws I18NException, I18NValidationException;
+
+	public Funcionari donarDeAltaAndHistory(java.lang.Long funcionariID, String numeroCai, long usuarId) throws I18NException;
 }

@@ -15,7 +15,6 @@ import es.caib.rfhab.model.entity.FuncionariLloc;
  * @autor jpou
  *
  */
-
 @Local
 public interface FuncionariLlocLogicaService extends FuncionariLlocService {
 

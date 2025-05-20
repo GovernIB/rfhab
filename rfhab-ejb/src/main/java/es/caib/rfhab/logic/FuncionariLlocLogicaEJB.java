@@ -18,7 +18,6 @@ import es.caib.rfhab.model.fields.FuncionariLlocFields;
  * @autor jpou
  *
  */
-
 @Stateless
 public class FuncionariLlocLogicaEJB extends FuncionariLlocEJB implements FuncionariLlocLogicaService {
 

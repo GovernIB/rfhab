@@ -1,19 +1,14 @@
 package es.caib.rfhab.back.controller.admin;
 
 import java.sql.Timestamp;
-import java.util.List;
-import java.util.Map;
-
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
-import org.fundaciobit.genapp.common.StringKeyValue;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.i18n.I18NValidationException;
-import org.fundaciobit.genapp.common.query.Field;
-import org.fundaciobit.genapp.common.query.GroupByItem;
-import org.fundaciobit.genapp.common.query.Where;
+import org.fundaciobit.genapp.common.web.HtmlUtils;
 import org.fundaciobit.genapp.common.web.form.AdditionalButton;
 import org.fundaciobit.genapp.common.web.form.AdditionalButtonStyle;
+import org.fundaciobit.genapp.common.web.i18n.I18NUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,19 +28,12 @@ import es.caib.rfhab.logic.FuncionariLogicaService;
 import es.caib.rfhab.logic.HistoricLlocLogicaService;
 import es.caib.rfhab.logic.HistoricLogicaService;
 import es.caib.rfhab.logic.LlocLogicaService;
-import es.caib.rfhab.model.entity.Funcionari;
-import es.caib.rfhab.model.entity.FuncionariLloc;
-import es.caib.rfhab.model.entity.Lloc;
-import es.caib.rfhab.model.fields.FuncionariFields;
-import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.persistence.FuncionariLlocJPA;
-import es.caib.rfhab.persistence.HistoricJPA;
-import es.caib.rfhab.persistence.HistoricLlocJPA;
 
 /**
  * @author jagarcia
+ * @author jpou
  */
-
 @Controller
 @RequestMapping(value = "/admin/funcionarilloc")
 @SessionAttributes(types = { FuncionariLlocForm.class, FuncionariLlocFilterForm.class })
@@ -127,44 +115,29 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 	public FuncionariLlocJPA create(HttpServletRequest request, FuncionariLlocJPA funcionariLloc)
 			throws I18NException, I18NValidationException {
 
-		FuncionariLlocJPA funcionariLlocJPA = super.create(request, funcionariLloc);
-
 		// TODO:revisar això #38
-		// Guardar imatge del canvi a historic de Lloc i historic de funcionari
 		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numeroCai")))
 				? request.getParameter("numeroCai")
 				: "";
 
-		// TODO: ficar dins transacció #35
-		HistoricLlocJPA historicLloc = new HistoricLlocJPA();
-		long llocID = funcionariLloc.getLlocID();
-		historicLloc.setLlocID(llocID);
-		historicLloc.setNumeroCai(numeroCai);
-		historicLloc.setDataCreacio(new Timestamp(System.currentTimeMillis()));
-		historicLloc.setUsuariID(LoginInfo.getInstance().getUsuariPersona().getUsuariID());
-		long funcionariID = funcionariLloc.getFuncionariID();
-		HistoricJPA historicFuncionari = new HistoricJPA();
-		historicFuncionari.setFuncionariID(funcionariID);
-		historicFuncionari.setNumeroCai(numeroCai);
-		historicFuncionari.setDataCreacio(new Timestamp(System.currentTimeMillis()));
-		historicFuncionari.setUsuariID(LoginInfo.getInstance().getUsuariPersona().getUsuariID());
+		FuncionariLlocJPA funcionariLlocJPA = null;
+		try {
+			funcionariLlocJPA = funcionariEjb.assignarFuncionari(funcionariLloc, numeroCai,
+					LoginInfo.getInstance().getUsuariPersona().getUsuariID());
+		} catch (I18NValidationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			String msg = I18NUtils.getMessage((I18NValidationException) e);
+			HtmlUtils.saveMessageError(request, msg);
+		}
 
-		String funcionariIdString = Long.toString(funcionariID);
-		Funcionari funcionari = funcionariEjb.findByPrimaryKey(funcionariID);
-		String funcionariIdentificador = "<null>";
-		if (funcionari != null) {
-			funcionariIdentificador = funcionari.getIdentificador();
-		}
-		String llocIdString = Long.toString(llocID);
-		Lloc lloc = llocEjb.findByPrimaryKey(llocID);
-		String llocCodi = "<null>";
-		if (lloc != null) {
-			llocCodi = lloc.getCodiLloc();
-		}
-		String historicLlocObservacions = "Nova assignació de funcionari " + funcionariIdentificador + " (id "
-				+ funcionariIdString + ") a lloc " + llocCodi + " (id " + llocIdString + ")";
-		historicLlocLogicaEjb.create(historicLloc, historicLlocObservacions);
-		historicLogicaEjb.create(historicFuncionari, historicLlocObservacions);
+		// if (errorsControlats) {
+		// String msg = I18NUtils.tradueix("funcionarilloc.error.funcionari.baixa",
+		// funcionariIdentificador);
+		// HtmlUtils.saveMessageError(request, msg);
+
+		// return funcionariLlocJPA;
+		// }
 
 		return funcionariLlocJPA;
 	}

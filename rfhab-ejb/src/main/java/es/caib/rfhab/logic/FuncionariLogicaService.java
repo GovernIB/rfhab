@@ -3,17 +3,19 @@ package es.caib.rfhab.logic;
 import javax.ejb.Local;
 
 import org.fundaciobit.genapp.common.i18n.I18NException;
+import org.fundaciobit.genapp.common.i18n.I18NValidationException;
 
 import es.caib.rfhab.ejb.FuncionariService;
 import es.caib.rfhab.logic.utils.HistoricFuncionariDAO;
 import es.caib.rfhab.model.entity.Funcionari;
+import es.caib.rfhab.persistence.FuncionariLlocJPA;
 
 /**
  * 
  * @autor jagarcia
+ * @autor jpou
  *
  */
-
 @Local
 public interface FuncionariLogicaService extends FuncionariService {
 
@@ -38,4 +40,7 @@ public interface FuncionariLogicaService extends FuncionariService {
 
 	public Funcionari donarDeBaixaFuncionariAndHistory(Funcionari funcionari, final String numeroCai, long usuariId)
 			throws I18NException;
+
+	public FuncionariLlocJPA assignarFuncionari(FuncionariLlocJPA funcionariLloc, String numeroCai, long usuarId)
+			throws I18NException, I18NValidationException;
 }

@@ -2,14 +2,17 @@ package es.caib.rfhab.logic;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
-
 import org.fundaciobit.genapp.common.i18n.I18NException;
+import org.fundaciobit.genapp.common.i18n.I18NFieldError;
+import org.fundaciobit.genapp.common.i18n.I18NTranslation;
+import org.fundaciobit.genapp.common.i18n.I18NValidationException;
 import org.fundaciobit.genapp.common.utils.Utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,28 +20,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.ejb.FuncionariEJB;
-import es.caib.rfhab.ejb.FuncionariLlocService;
-import es.caib.rfhab.ejb.HistoricService;
 import es.caib.rfhab.ejb.RolService;
 import es.caib.rfhab.logic.utils.HistoricFuncionariDAO;
-import es.caib.rfhab.logic.utils.HistoricLlocDAO;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.FuncionariLloc;
 import es.caib.rfhab.model.entity.Historic;
 import es.caib.rfhab.model.entity.HistoricLloc;
 import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.fields.FuncionariFields;
-import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.persistence.FuncionariJPA;
+import es.caib.rfhab.persistence.FuncionariLlocJPA;
 import es.caib.rfhab.persistence.HistoricJPA;
 import es.caib.rfhab.persistence.HistoricLlocJPA;
 
 /**
  * 
  * @autor jagarcia
+ * @autor jpou
  *
  */
-
 @Stateless
 public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogicaService {
 
@@ -47,6 +47,7 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 
 	@EJB(mappedName = FuncionariLlocLogicaService.JNDI_NAME)
 	protected FuncionariLlocLogicaService funcionariLlocLogicaEjb;
+
 	@EJB(mappedName = HistoricLlocLogicaService.JNDI_NAME)
 	protected HistoricLlocLogicaService historicLlocLogicaEjb;
 
@@ -351,5 +352,70 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 		List<?> resultats = query.getResultList();
 
 		return (resultats != null && !resultats.isEmpty()) ? (resultats.get(0)) : null;
+	}
+
+	@PermitAll
+	public FuncionariLlocJPA assignarFuncionari(FuncionariLlocJPA funcionariLloc, String numeroCai, long usuarId)
+			throws I18NException, I18NValidationException {
+		long funcionariID = funcionariLloc.getFuncionariID();
+		long llocID = funcionariLloc.getLlocID();
+		log.info(numeroCai + " --> assignant funcionari " + funcionariID + " a lloc "
+				+ llocID);
+
+		// Validam
+		Funcionari funcionari = findByPrimaryKey(funcionariID);
+		if (funcionari == null) {
+			throw new I18NException("error.notfound",
+					new String[] { "funcionari.funcionari", "funcionari.funcionariID", String.valueOf(funcionariID) });
+		}
+
+		Lloc lloc = llocEjb.findByPrimaryKey(llocID);
+		if (lloc == null) {
+			throw new I18NException("error.notfound",
+					new String[] { "lloc.lloc", "lloc.llocID", String.valueOf(llocID) });
+		}
+
+		String funcionariIdentificador = funcionari.getIdentificador();
+		if (funcionari.getDataBaixa() != null) {
+			throw new I18NValidationException(
+					java.util.Collections.singletonList(
+							new I18NFieldError(FuncionariFields.DATABAIXA,
+									new I18NTranslation("funcionarilloc.error.funcionari.baixa",
+											funcionariIdentificador))));
+		}
+
+		String llocCodi = lloc.getCodiLloc();
+		if (lloc.getDataBaixa() != null) {
+			throw new I18NValidationException(new I18NFieldError(FuncionariFields.DATABAIXA,
+					new I18NTranslation("funcionarilloc.error.lloc.baixa", llocCodi)));
+		}
+
+		// Cream assignació
+		log.info("Validacions correctes, creant assignació de funcionari " + funcionariID
+				+ " a lloc " + llocID);
+		FuncionariLlocJPA funcionariLlocJPA = (FuncionariLlocJPA) funcionariLlocLogicaEjb.create(funcionariLloc);
+
+		// Cream històrics
+		log.info("Creant històrics de funcionari i lloc");
+		HistoricLlocJPA historicLloc = new HistoricLlocJPA();
+		historicLloc.setLlocID(llocID);
+		historicLloc.setNumeroCai(numeroCai);
+		historicLloc.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+		historicLloc.setUsuariID(usuarId);
+		HistoricJPA historicFuncionari = new HistoricJPA();
+		historicFuncionari.setFuncionariID(funcionariID);
+		historicFuncionari.setNumeroCai(numeroCai);
+		historicFuncionari.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+		historicFuncionari.setUsuariID(usuarId);
+
+		String funcionariIdString = Long.toString(funcionariID);
+		String llocIdString = Long.toString(llocID);
+
+		String historicLlocObservacions = "Nova assignació de funcionari " + funcionariIdentificador + " (id "
+				+ funcionariIdString + ") a lloc " + llocCodi + " (id " + llocIdString + ")";
+		historicLlocLogicaEjb.create(historicLloc, historicLlocObservacions);
+		historicLogicaEjb.create(historicFuncionari, historicLlocObservacions);
+
+		return funcionariLlocJPA;
 	}
 }

@@ -13,7 +13,7 @@
 				data-toggle="tab" href="#rols" role="tab" aria-controls="rols"
 				aria-selected="false"><fmt:message key="rol.rol.plural"/></a>
 		</li>
-		<li class="nav-item">
+		<li class="nav-item" style="display: none;">
 			<a class="nav-link" id="autoritzacio-tab"
 				data-toggle="tab" href="#autoritzacio" role="tab"
 				aria-controls="autoritzacio" aria-selected="false"><fmt:message key="autoritzacio.autoritzacio.plural"/></a>

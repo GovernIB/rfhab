@@ -56,7 +56,7 @@ public class UnitatSuperAdminController extends UnitatController {
 			unitatFilterForm.addAdditionalButton(new AdditionalButton("fa fa-repeat", "unitats.sincronitzar",
 					"/superadmin/unitat/sincronitzar", AdditionalButtonStyle.PRIMARY));
 		}
-		
+
 		unitatFilterForm.setAttachedAdditionalJspCode(true);
 
 		return unitatFilterForm;

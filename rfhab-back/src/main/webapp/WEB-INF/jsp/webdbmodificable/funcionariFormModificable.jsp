@@ -10,7 +10,7 @@
 		<li class="nav-item"><a class="nav-link" id="historic-tab"
 			data-toggle="tab" href="#historic" role="tab"
 			aria-controls="historic" aria-selected="false"><fmt:message key="historic.historic" /></a></li>
-		<li class="nav-item"><a class="nav-link" id="historicllocs-tab"
+		<li class="nav-item" style="display: none;"><a class="nav-link" id="historicllocs-tab"
 			data-toggle="tab" href="#historicllocs" role="tab"
 			aria-controls="historicllocs" aria-selected="false"><fmt:message key="funcionari.historicllocs.pipella" /></a></li>
 	</ul>

@@ -14,9 +14,9 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import es.caib.rfhab.commons.utils.Configuracio;
 import es.caib.rfhab.commons.utils.Constants;
-import es.caib.rfhab.ejb.UnitatService;
 import es.caib.rfhab.logic.AuthenticationLogicaService;
 import es.caib.rfhab.logic.IdiomaLogicaService;
+import es.caib.rfhab.logic.UnitatLogicaUserService;
 import es.caib.rfhab.logic.utils.EjbManager;
 import es.caib.rfhab.persistence.EntitatJPA;
 import es.caib.rfhab.persistence.IdiomaJPA;
@@ -48,7 +48,7 @@ import org.springframework.web.util.WebUtils;
 
 /**
  * 
- * @author anadal
+ * @author jpou
  * 
  */
 @Component
@@ -64,7 +64,7 @@ public class AuthenticationSuccessListener implements ApplicationListener<Intera
     
     protected IdiomaLogicaService idiomaLogicaEjb;
     
-    protected UnitatService unitatEjb;
+    protected UnitatLogicaUserService unitatEjb;
 
 
     @Override

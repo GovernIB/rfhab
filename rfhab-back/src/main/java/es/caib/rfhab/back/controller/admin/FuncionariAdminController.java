@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.ejb.EJB;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -37,6 +38,7 @@ import es.caib.rfhab.back.form.webdb.FuncionariForm;
 import es.caib.rfhab.back.security.LoginInfo;
 import es.caib.rfhab.back.utils.UrlUtils;
 import es.caib.rfhab.commons.utils.Constants;
+import es.caib.rfhab.commons.utils.FiltresCookies;
 import es.caib.rfhab.commons.utils.StringUtils;
 import es.caib.rfhab.ejb.UnitatService;
 import es.caib.rfhab.logic.ActivitatLogicaService;
@@ -55,6 +57,11 @@ import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.HistoricJPA;
 import es.caib.rfhab.persistence.LlocJPA;
 
+/*
+ * 
+ * @author jagarcia
+ * @author jpou
+ */
 @Controller
 @RequestMapping(value = "/admin/funcionari")
 @SessionAttributes(types = { FuncionariForm.class, FuncionariFilterForm.class })
@@ -220,20 +227,11 @@ public class FuncionariAdminController extends FuncionariController {
 			funcionariFilterForm.addHiddenField(FUNCIONARIID);
 			funcionariFilterForm.addHiddenField(DATACREACIO);
 			funcionariFilterForm.addHiddenField(TIPUSIDENTIFICADOR);
-			funcionariFilterForm.addHiddenField(IDENTIFICADOR);
+			// funcionariFilterForm.addHiddenField(IDENTIFICADOR);
 			funcionariFilterForm.addHiddenField(CORREU);
 			funcionariFilterForm.addHiddenField(ENTITATID);
 			funcionariFilterForm.addHiddenField(OBSERVACIONS);
 			funcionariFilterForm.addHiddenField(DATABAIXA);
-
-			{
-				// Afegir filtres adicionals
-				List<Field<?>> newFilterBy = new ArrayList<Field<?>>(funcionariFilterForm.getDefaultFilterByFields());
-				newFilterBy.remove(LlocFields.PERSONALOAMR);
-				newFilterBy.remove(FuncionariFields.IDENTIFICADOR);
-				funcionariFilterForm.setFilterByFields(newFilterBy);
-
-			}
 
 			{
 				AdditionalField<Long, String> adfield = new AdditionalField<Long, String>();
@@ -265,11 +263,6 @@ public class FuncionariAdminController extends FuncionariController {
 				adfield3.setGroupBy(LlocFields.PERSONALOAMR);
 				adfield3.setValueMap(new HashMap<Long, String>());
 				funcionariFilterForm.addAdditionalField(adfield3);
-
-				Set<Field<?>> hiddenFields = new HashSet<Field<?>>(
-						Arrays.asList(FuncionariFields.ALL_FUNCIONARI_FIELDS));
-				hiddenFields.add(LlocFields.PERSONALOAMR);
-				hiddenFields.forEach(x -> log.info("hiddenFields item: " + x.javaName));
 			}
 
 			funcionariFilterForm.setOrderBy(FuncionariFields.LLINATGE1.sqlName);
@@ -308,31 +301,55 @@ public class FuncionariAdminController extends FuncionariController {
 			w1 = FuncionariFields.ENTITATID.equal(entitatIDActual);
 		}
 
+		// TODO:revisar si podem fer funcionar filtre de databaixa amb això
 		// filtrar per personalOamr
 		Map<String, String[]> parametros = request.getParameterMap();
-		boolean personalOamr = false;
+		String personalOamr = "";
 		for (Map.Entry<String, String[]> entry : parametros.entrySet()) {
-			System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+			System.out.println("Key = " + entry.getKey() + ", Value = " +
+					entry.getValue());
 			if ("lloc.personalOamr".equals(entry.getKey())) {
-				personalOamr = (entry.getValue()[0].equals("1") ? true : false);
+				personalOamr = entry.getValue()[0];
 				break;
 			}
 		}
-
-		if (personalOamr) {
-			System.out.println("Where: IS PERSONAL OAMR");
-			// Where w2 = new
-			// FuncionariLlocQueryPath().LLOC().PERSONALOAMR().greaterThan(0);
-			// if (w1 != null)
-			// w1 = Where.AND(w1, w2);
-			// else
-			// w1 = w2;
+		log.info("personalOamr ==> " + personalOamr);
+		// TODO:personal oamr es de la taula lloc, puc fer això? te pinta que hauré de
+		// sobreescriure el mètode llistat (i amb codi de feina igual)
+		Where personalOamrWhere = null;
+		if ("0".equals(personalOamr)) {
+			personalOamrWhere = LlocFields.PERSONALOAMR.equal(0);
+		} else if ("1".equals(personalOamr)) {
+			personalOamrWhere = LlocFields.PERSONALOAMR.equal(1);
+		} else {
+			log.warn("Mostrant tots DataBaixa");
 		}
 
-		if (w1 != null)
-			return Where.AND(defaultCondition, w1);
-		else
-			return defaultCondition;
+		Where donatsDeBaixa = getAdditionalConditionDonatsDeBaixa(request);
+		return Where.AND(personalOamrWhere, donatsDeBaixa,
+				(w1 != null) ? Where.AND(defaultCondition, w1) : defaultCondition);
+	}
+
+	public Where getAdditionalConditionDonatsDeBaixa(HttpServletRequest request) throws I18NException {
+
+		String actiusSelectvalue = "";
+		for (Cookie cookie : request.getCookies()) {
+			if (cookie.getName().equals(FiltresCookies.FILTRE_FUNCIONARIS_DATA_BAIXA_ACTIUS_COOKIE_NAME)) {
+				actiusSelectvalue = cookie.getValue();
+				break;
+			}
+		}
+		log.info("actiusSelectvalue ==> " + actiusSelectvalue);
+
+		if ("0".equals(actiusSelectvalue)) {
+			return FuncionariFields.DATABAIXA.isNotNull();
+		} else if ("1".equals(actiusSelectvalue)) {
+			return FuncionariFields.DATABAIXA.isNull();
+		} else {
+			log.warn("Mostrant tots DataBaixa");
+		}
+
+		return null;
 	}
 
 	@Override

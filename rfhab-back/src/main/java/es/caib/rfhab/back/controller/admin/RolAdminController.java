@@ -19,7 +19,9 @@ import es.caib.rfhab.model.fields.RolFields;
 import es.caib.rfhab.persistence.RolJPA;
 
 /**
+ * 
  * @author jagarcia
+ * @author jpou
  * 
  */
 @Controller

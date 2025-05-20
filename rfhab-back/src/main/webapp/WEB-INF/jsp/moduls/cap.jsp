@@ -222,7 +222,7 @@
 									class="fa fa-user"></i> <fmt:message
 										key="menu.admin.funcionaris" />
 								</a>
-								<a class="dropdown-item" href="<c:url value="/admin/rol/list"/>">
+								<a class="dropdown-item" href="<c:url value="/admin/habilitacio/list"/>">
 									<i class="fas fa-key"></i> <fmt:message key="menu.admin.rols" />
 								</a>
 

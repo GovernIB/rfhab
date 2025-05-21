@@ -17,8 +17,6 @@ import org.springframework.web.client.RestTemplate;
 import es.caib.rfhab.commons.utils.Configuracio;
 import es.caib.rfhab.pluginsib.rolsac.client.v1.api.ProcedimientosApi;
 import es.caib.rfhab.pluginsib.rolsac.client.v1.api.TramitesApi;
-import es.caib.rfhab.pluginsib.rolsac.client.v1.model.LlistarRequest14;
-import es.caib.rfhab.pluginsib.rolsac.client.v1.model.LlistarRequest18;
 import es.caib.rfhab.pluginsib.rolsac.client.v1.model.Procedimientos;
 import es.caib.rfhab.pluginsib.rolsac.client.v1.model.RespuestaProcedimientos;
 import es.caib.rfhab.pluginsib.rolsac.client.v1.model.RespuestaTramites;
@@ -29,8 +27,9 @@ import es.caib.rfhab.pluginsib.rolsac.client.v1.services.auth.HttpBasicAuth;
 /**
  * 
  * @author jagarcia
+ * @author jpou
+ * 
  */
-
 public class RolsacPlugin implements IRolsacPlugin {
 
 	protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
@@ -139,9 +138,12 @@ public class RolsacPlugin implements IRolsacPlugin {
 		headers.setContentType(org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED);
 
 		final MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
-		map.add("idioma", "es");
+		// map.add("idioma", "es");
+		// map.add("filtro", FILTRE_PROCEDIMENTS);
+		// map.add("filtroOrdenacion", FILTRE_PAGINACIO);
+		map.add("lang", "es");
 		map.add("filtro", FILTRE_PROCEDIMENTS);
-		map.add("filtroOrdenacion", FILTRE_PAGINACIO);
+		map.add("filtroPaginacion", FILTRE_PAGINACIO);
 
 		final HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 

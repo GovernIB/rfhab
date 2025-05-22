@@ -1,5 +1,3 @@
-<%@page import="es.caib.rfhab.commons.utils.FiltresCookies"%>
-
 <style type="text/css">
   .search-query {
     width: auto !important;
@@ -29,6 +27,6 @@
 
     replaceOamrFilter();
     replaceUnitatsFilter(unitatsOptions);
-    addActiusSelectFilter("${FiltresCookies.FILTRE_LLOCS_DATA_BAIXA_ACTIUS_COOKIE_NAME}");
+    addActiusSelectFilter();
   });
 </script>

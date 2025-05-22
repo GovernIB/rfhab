@@ -1,5 +1,3 @@
-<%@page import="es.caib.rfhab.commons.utils.FiltresCookies"%>
-
 <style type="text/css">
   .search-query {
     width: auto !important;

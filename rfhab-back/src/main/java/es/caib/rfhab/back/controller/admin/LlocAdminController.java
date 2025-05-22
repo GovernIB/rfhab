@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -35,10 +34,8 @@ import es.caib.rfhab.back.form.webdb.LlocForm;
 import es.caib.rfhab.back.security.LoginInfo;
 import es.caib.rfhab.back.utils.UrlUtils;
 import es.caib.rfhab.commons.utils.Constants;
-import es.caib.rfhab.commons.utils.FiltresCookies;
 import es.caib.rfhab.commons.utils.StringUtils;
 import es.caib.rfhab.ejb.EntitatService;
-import es.caib.rfhab.ejb.UnitatService;
 import es.caib.rfhab.logic.FuncionariLlocLogicaService;
 import es.caib.rfhab.logic.HistoricLlocLogicaService;
 import es.caib.rfhab.logic.LlocLogicaService;
@@ -451,6 +448,14 @@ public class LlocAdminController extends LlocController {
 
 		final Where defaultCondition = super.getAdditionalCondition(request);
 
+		Where entitatActualWhere = getEntitatActualWhere();
+		Where donatsDeBaixa = getAdditionalConditionDonatsDeBaixa(request);
+
+		return Where.AND(donatsDeBaixa,
+				(entitatActualWhere != null) ? Where.AND(defaultCondition, entitatActualWhere) : defaultCondition);
+	}
+
+	private Where getEntitatActualWhere() {
 		// filtrar per entitat
 		LoginInfo loginInfo = LoginInfo.getInstance();
 
@@ -459,24 +464,18 @@ public class LlocAdminController extends LlocController {
 		System.out.println("ENTITAT ID ACTUAL: => " + loginInfo.getEntitatID());
 		System.out.println("================================================");
 
-		Where w1 = null;
+		Where entitatActualWhere = null;
 		if (loginInfo.getEntitatIDActual() != null && loginInfo.getEntitatIDActual() > 0) {
-			w1 = LlocFields.ENTITATID.equal(loginInfo.getEntitatIDActual());
+			entitatActualWhere = LlocFields.ENTITATID.equal(loginInfo.getEntitatIDActual());
 		}
-
-		Where donatsDeBaixa = getAdditionalConditionDonatsDeBaixa(request);
-		return Where.AND(donatsDeBaixa, (w1 != null) ? Where.AND(defaultCondition, w1) : defaultCondition);
+		return entitatActualWhere;
 	}
 
 	public Where getAdditionalConditionDonatsDeBaixa(HttpServletRequest request) throws I18NException {
-
-		String actiusSelectvalue = "";
-		for (Cookie cookie : request.getCookies()) {
-			if (cookie.getName().equals(FiltresCookies.FILTRE_LLOCS_DATA_BAIXA_ACTIUS_COOKIE_NAME)) {
-				actiusSelectvalue = cookie.getValue();
-				break;
-			}
-		}
+		// filtrar per donats de baixa (actius)
+		final String actiusSelectvalue = (StringUtils.isNotEmpty(request.getParameter("actiusSegonsDatabaixaName")))
+				? request.getParameter("actiusSegonsDatabaixaName")
+				: "";
 		log.info("actiusSelectvalue ==> " + actiusSelectvalue);
 
 		if ("0".equals(actiusSelectvalue)) {

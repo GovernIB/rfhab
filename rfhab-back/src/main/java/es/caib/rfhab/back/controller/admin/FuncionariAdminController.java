@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,6 +13,7 @@ import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.i18n.I18NValidationException;
 import org.fundaciobit.genapp.common.query.Field;
 import org.fundaciobit.genapp.common.query.GroupByItem;
+import org.fundaciobit.genapp.common.query.SubQuery;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.query.selectcolumn.Select6Values;
 import org.fundaciobit.genapp.common.utils.Utils;
@@ -33,9 +33,7 @@ import es.caib.rfhab.back.form.webdb.FuncionariForm;
 import es.caib.rfhab.back.security.LoginInfo;
 import es.caib.rfhab.back.utils.UrlUtils;
 import es.caib.rfhab.commons.utils.Constants;
-import es.caib.rfhab.commons.utils.FiltresCookies;
 import es.caib.rfhab.commons.utils.StringUtils;
-import es.caib.rfhab.ejb.UnitatService;
 import es.caib.rfhab.logic.ActivitatLogicaService;
 import es.caib.rfhab.logic.AutoritzacioLogicaService;
 import es.caib.rfhab.logic.FuncionariLlocLogicaService;
@@ -46,8 +44,11 @@ import es.caib.rfhab.logic.UnitatLogicaUserService;
 import es.caib.rfhab.logic.utils.FuncionariLlocLlocDAO;
 import es.caib.rfhab.model.entity.Activitat;
 import es.caib.rfhab.model.entity.Funcionari;
+import es.caib.rfhab.model.entity.FuncionariLloc;
 import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.fields.FuncionariFields;
+import es.caib.rfhab.model.fields.FuncionariLlocFields;
+import es.caib.rfhab.model.fields.FuncionariLlocQueryPath;
 import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.HistoricJPA;
@@ -255,7 +256,9 @@ public class FuncionariAdminController extends FuncionariController {
 				adfield3.setPosition(3);
 				adfield3.setOrderBy(LlocFields.PERSONALOAMR);
 				adfield3.setEscapeXml(false);
-				adfield3.setSearchBy(LlocFields.PERSONALOAMR);
+				// no podem cercar a un altre taula perquè donarà error. Afegirem aquest filtre
+				// a getAdditionalCondition
+				// adfield3.setSearchBy(LlocFields.PERSONALOAMR);
 				adfield3.setGroupBy(LlocFields.PERSONALOAMR);
 				adfield3.setValueMap(new HashMap<Long, String>());
 				funcionariFilterForm.addAdditionalField(adfield3);
@@ -282,7 +285,20 @@ public class FuncionariAdminController extends FuncionariController {
 	public Where getAdditionalCondition(HttpServletRequest request) throws I18NException {
 
 		final Where defaultCondition = super.getAdditionalCondition(request);
+		final Where entitatIdActualWhere = getEntitatIdActualWhere();
+		final Where personalOamrWhere = getPersonalOamrWhere(request);
+		final Where donatsDeBaixaWhere = getAdditionalConditionDonatsDeBaixa(request);
 
+		log.debug("defaultCondition ==> " + (defaultCondition != null ? defaultCondition.toSQL() : "null"));
+		log.debug("donatsDeBaixaWhere ==> " + (donatsDeBaixaWhere != null ? donatsDeBaixaWhere.toSQL() : "null"));
+		log.debug("personalOamrWhere ==> " + (personalOamrWhere != null ? personalOamrWhere.toSQL() : "null"));
+		log.debug("entitatIdActualWhere ==> " + (entitatIdActualWhere != null ? entitatIdActualWhere.toSQL() : "null"));
+
+		return Where.AND(personalOamrWhere, donatsDeBaixaWhere,
+				(entitatIdActualWhere != null) ? Where.AND(defaultCondition, entitatIdActualWhere) : defaultCondition);
+	}
+
+	private Where getEntitatIdActualWhere() {
 		// filtrar per entitat
 		LoginInfo loginInfo = LoginInfo.getInstance();
 
@@ -292,49 +308,45 @@ public class FuncionariAdminController extends FuncionariController {
 		System.out.println("ENTITAT ID ACTUAL: => " + loginInfo.getEntitatID());
 		System.out.println("================================================");
 
-		Where w1 = null;
+		Where entitatIdActualWhere = null;
 		if (entitatIDActual != null && entitatIDActual > 0) {
-			w1 = FuncionariFields.ENTITATID.equal(entitatIDActual);
+			entitatIdActualWhere = FuncionariFields.ENTITATID.equal(entitatIDActual);
 		}
+		return entitatIdActualWhere;
+	}
 
-		// TODO:revisar si podem fer funcionar filtre de databaixa amb això
+	private Where getPersonalOamrWhere(HttpServletRequest request) throws I18NException {
 		// filtrar per personalOamr
-		Map<String, String[]> parametros = request.getParameterMap();
-		String personalOamr = "";
-		for (Map.Entry<String, String[]> entry : parametros.entrySet()) {
-			System.out.println("Key = " + entry.getKey() + ", Value = " +
-					entry.getValue());
-			if ("lloc.personalOamr".equals(entry.getKey())) {
-				personalOamr = entry.getValue()[0];
-				break;
-			}
-		}
-		log.info("personalOamr ==> " + personalOamr);
-		// TODO:personal oamr es de la taula lloc, puc fer això? te pinta que hauré de
-		// sobreescriure el mètode llistat (i amb codi de feina igual)
-		Where personalOamrWhere = null;
-		if ("0".equals(personalOamr)) {
-			personalOamrWhere = LlocFields.PERSONALOAMR.equal(0);
-		} else if ("1".equals(personalOamr)) {
-			personalOamrWhere = LlocFields.PERSONALOAMR.equal(1);
-		} else {
-			log.warn("Mostrant tots DataBaixa");
-		}
+		final String personalOamr = (StringUtils.isNotEmpty(request.getParameter("lloc.personalOamr")))
+				? request.getParameter("lloc.personalOamr")
+				: "";
 
-		Where donatsDeBaixa = getAdditionalConditionDonatsDeBaixa(request);
-		return Where.AND(personalOamrWhere, donatsDeBaixa,
-				(w1 != null) ? Where.AND(defaultCondition, w1) : defaultCondition);
+		log.info("personalOamr ==> " + personalOamr);
+		Where personalOamrWhere = null;
+		if (!"".equals(personalOamr)) {
+			FuncionariLlocQueryPath funcionarilLocQueryPath = new FuncionariLlocQueryPath();
+			Where whereLloc = funcionarilLocQueryPath.LLOC().PERSONALOAMR().equal(Integer.valueOf(personalOamr));
+			// executeQuery seria fer un select i el resultat el ficariem dins l'IN. En
+			// canvi, SubQuery prepara la sentencia select i és el que fica dins l'in. Seria
+			// IN Operator vs IN (SELECT). És a dir, SubQuery seria una SubQuery normal i
+			// corrent de SQL, molt més eficient en aquest cas.
+			SubQuery<FuncionariLloc, Long> subQuery;
+			subQuery = funcionariLlocLogicaEJB.getSubQuery(FuncionariLlocFields.FUNCIONARIID, whereLloc);
+			// List<Long> fFuncIds =
+			// funcionariLlocLogicaEJB.executeQuery(FuncionariLlocFields.FUNCIONARIID,
+			// whereLloc);
+			personalOamrWhere = FuncionariFields.FUNCIONARIID.in(subQuery);
+		} else {
+			log.warn("Mostrant tots personalOamr");
+		}
+		return personalOamrWhere;
 	}
 
 	public Where getAdditionalConditionDonatsDeBaixa(HttpServletRequest request) throws I18NException {
-
-		String actiusSelectvalue = "";
-		for (Cookie cookie : request.getCookies()) {
-			if (cookie.getName().equals(FiltresCookies.FILTRE_FUNCIONARIS_DATA_BAIXA_ACTIUS_COOKIE_NAME)) {
-				actiusSelectvalue = cookie.getValue();
-				break;
-			}
-		}
+		// filtrar per donats de baixa (actius)
+		final String actiusSelectvalue = (StringUtils.isNotEmpty(request.getParameter("actiusSegonsDatabaixaName")))
+				? request.getParameter("actiusSegonsDatabaixaName")
+				: "";
 		log.info("actiusSelectvalue ==> " + actiusSelectvalue);
 
 		if ("0".equals(actiusSelectvalue)) {

@@ -11,7 +11,7 @@
     document.getElementById("FilterDiv").style.display = "inherit";
     document.getElementById("FilterButton").style.display = "none";
 
-    replaceOamrFilter();
-    addActiusSelectFilter("${FiltresCookies.FILTRE_FUNCIONARIS_DATA_BAIXA_ACTIUS_COOKIE_NAME}");
+    addOamrSelectFilter();
+    addActiusSelectFilter();
   });
 </script>

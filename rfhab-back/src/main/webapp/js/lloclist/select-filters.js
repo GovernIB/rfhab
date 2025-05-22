@@ -108,7 +108,52 @@ function addActiusSelectFilter(filterCookieName) {
     "actiusSegonsDatabaixaName"
   );
 
-  if (actiusSelect) {
+  if (actiusSelect && filterCookieName) {
+    //valor per defecte
+    document.cookie =
+      filterCookieName +
+      "=" +
+      encodeURIComponent(actiusSelect.value) +
+      "; path=/; Secure; SameSite=Strict";
+
+    actiusSelect.addEventListener("change", function () {
+      document.cookie =
+        filterCookieName +
+        "=" +
+        encodeURIComponent(actiusSelect.value) +
+        "; path=/; Secure; SameSite=Strict";
+    });
+  }
+}
+
+function addOamrSelectFilter(filterCookieName) {
+  const inputPersonalOamrLabel = "Personal OAMR: ";
+  const options = [
+    {
+      value: "",
+      text: "Tots",
+    },
+    {
+      value: "1",
+      text: "Si",
+    },
+    {
+      value: "0",
+      text: "No",
+    },
+  ];
+  const inputAdedFieldPersonalOamrName = "lloc.personalOamr";
+
+  let formFilterContainer = document.querySelector("#FilterDiv > .form-inline");
+  const actiusSelect = addNewSelectFilterToForm(
+    formFilterContainer,
+    options,
+    inputPersonalOamrLabel,
+    inputAdedFieldPersonalOamrName,
+    inputAdedFieldPersonalOamrName
+  );
+
+  if (actiusSelect && filterCookieName) {
     //valor per defecte
     document.cookie =
       filterCookieName +

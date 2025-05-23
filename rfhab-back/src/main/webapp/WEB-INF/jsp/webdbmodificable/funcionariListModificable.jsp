@@ -21,6 +21,7 @@
 
     addOamrSelectFilter();
     addActiusSelectFilter();
+    addAssignatsLlocSelectFilter();
 
     const dataBaixaHeader = document
       .getElementById("data-baixa-header-traduit-id")

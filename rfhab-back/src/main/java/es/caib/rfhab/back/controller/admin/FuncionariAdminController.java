@@ -58,6 +58,7 @@ import es.caib.rfhab.persistence.LlocJPA;
  * 
  * @author jagarcia
  * @author jpou
+ * 
  */
 @Controller
 @RequestMapping(value = "/admin/funcionari")
@@ -288,13 +289,16 @@ public class FuncionariAdminController extends FuncionariController {
 		final Where entitatIdActualWhere = getEntitatIdActualWhere();
 		final Where personalOamrWhere = getPersonalOamrWhere(request);
 		final Where donatsDeBaixaWhere = getAdditionalConditionDonatsDeBaixa(request);
+		final Where AssignatsAllocDeFeinaWhere = getAdditionalConditionAssignats(request);
 
 		log.debug("defaultCondition ==> " + (defaultCondition != null ? defaultCondition.toSQL() : "null"));
 		log.debug("donatsDeBaixaWhere ==> " + (donatsDeBaixaWhere != null ? donatsDeBaixaWhere.toSQL() : "null"));
 		log.debug("personalOamrWhere ==> " + (personalOamrWhere != null ? personalOamrWhere.toSQL() : "null"));
 		log.debug("entitatIdActualWhere ==> " + (entitatIdActualWhere != null ? entitatIdActualWhere.toSQL() : "null"));
+		log.debug("AssignatsAllocDeFeinaWhere ==> "
+				+ (AssignatsAllocDeFeinaWhere != null ? AssignatsAllocDeFeinaWhere.toSQL() : "null"));
 
-		return Where.AND(personalOamrWhere, donatsDeBaixaWhere,
+		return Where.AND(personalOamrWhere, donatsDeBaixaWhere, AssignatsAllocDeFeinaWhere,
 				(entitatIdActualWhere != null) ? Where.AND(defaultCondition, entitatIdActualWhere) : defaultCondition);
 	}
 
@@ -340,6 +344,28 @@ public class FuncionariAdminController extends FuncionariController {
 			log.warn("Mostrant tots personalOamr");
 		}
 		return personalOamrWhere;
+	}
+
+	private Where getAdditionalConditionAssignats(HttpServletRequest request) throws I18NException {
+		// filtrar per assignatsAlloc
+		final String assignatsAlloc = (StringUtils.isNotEmpty(request.getParameter("assignatsAllocName")))
+				? request.getParameter("assignatsAllocName")
+				: "";
+
+		log.info("assignatsAlloc ==> " + assignatsAlloc);
+		Where assignatsAllocWhere = null;
+
+		Where whereLloc = funcionariLlocLogicaEJB.getWhereFuncionariIsCurrent();
+		SubQuery<FuncionariLloc, Long> subQuery;
+		subQuery = funcionariLlocLogicaEJB.getSubQuery(FuncionariLlocFields.FUNCIONARIID, whereLloc);
+		if ("1".equals(assignatsAlloc)) {
+			assignatsAllocWhere = FuncionariFields.FUNCIONARIID.in(subQuery);
+		} else if ("0".equals(assignatsAlloc)) {
+			assignatsAllocWhere = FuncionariFields.FUNCIONARIID.notIn(subQuery);
+		} else {
+			log.warn("Mostrant tots assignatsAlloc");
+		}
+		return assignatsAllocWhere;
 	}
 
 	public Where getAdditionalConditionDonatsDeBaixa(HttpServletRequest request) throws I18NException {

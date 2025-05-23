@@ -126,6 +126,50 @@ function addActiusSelectFilter(filterCookieName) {
   }
 }
 
+function addAssignatsLlocSelectFilter(filterCookieName) {
+  const options = [
+    {
+      value: "",
+      text: "Tots",
+    },
+    {
+      value: "1",
+      text: "Assignats",
+    },
+    {
+      value: "0",
+      text: "No assignats",
+    },
+  ];
+  const label = "Assignats a Lloc: ";
+
+  let formFilterContainer = document.querySelector("#FilterDiv > .form-inline");
+  const actiusSelect = addNewSelectFilterToForm(
+    formFilterContainer,
+    options,
+    label,
+    "assignats-a-lloc-id",
+    "assignatsAllocName"
+  );
+
+  if (actiusSelect && filterCookieName) {
+    //valor per defecte
+    document.cookie =
+      filterCookieName +
+      "=" +
+      encodeURIComponent(actiusSelect.value) +
+      "; path=/; Secure; SameSite=Strict";
+
+    actiusSelect.addEventListener("change", function () {
+      document.cookie =
+        filterCookieName +
+        "=" +
+        encodeURIComponent(actiusSelect.value) +
+        "; path=/; Secure; SameSite=Strict";
+    });
+  }
+}
+
 function addOamrSelectFilter(filterCookieName) {
   const inputPersonalOamrLabel = "Personal OAMR: ";
   const options = [

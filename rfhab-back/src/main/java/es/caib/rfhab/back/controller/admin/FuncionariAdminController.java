@@ -228,7 +228,7 @@ public class FuncionariAdminController extends FuncionariController {
 			funcionariFilterForm.addHiddenField(CORREU);
 			funcionariFilterForm.addHiddenField(ENTITATID);
 			funcionariFilterForm.addHiddenField(OBSERVACIONS);
-			funcionariFilterForm.addHiddenField(DATABAIXA);
+			// funcionariFilterForm.addHiddenField(DATABAIXA);
 
 			{
 				AdditionalField<Long, String> adfield = new AdditionalField<Long, String>();

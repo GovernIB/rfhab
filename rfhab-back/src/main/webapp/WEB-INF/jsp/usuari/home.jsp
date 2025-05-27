@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ include file="/WEB-INF/jsp/moduls/includes.jsp"%>
 
 <style type="text/css">
 .well {
@@ -155,16 +155,16 @@ form label {
 			<div class="msf-header">
 				<div class="row text-center">
 					<div class="msf-step col-md-3">
-						<span><em>1</em> Identificació del interessat</span>
+						<span><em>1</em> <fmt:message key="usuari.tramit.titol.dades" /></span>
 					</div>
 					<div class="msf-step col-md-3">
-						<span><em>2</em> Sel·lecció de tràmit</span>
+						<span><em>2</em> <fmt:message key="usuari.tramit.titol.seleccio" /></span>
 					</div>
 					<div class="msf-step col-md-3">
-						<span><em>3</em> Documentació</span>
+						<span><em>3</em> <fmt:message key="usuari.tramit.titol.documentacio" /></span>
 					</div>
 					<div class="msf-step col-md-3">
-						<span><em>4</em> Iniciar tràmit</span>
+						<span><em>4</em> <fmt:message key="usuari.tramit.titol.iniciar" /></span>
 					</div>
 				</div>
 			</div>
@@ -175,93 +175,93 @@ form label {
 					<div class="row">
 						<div class="col-md-12">
 
-							<h3>1 Dades del interessat</h3>
+							<h3>1 <fmt:message key="usuari.tramit.dades.titol" /></h3>
 
 							<div class="form-group">
-								<label>Nom</label> <input id="pas1_nom" name="nom" type="text"
+								<label><fmt:message key="usuari.tramit.dades.nom" /></label> <input id="pas1_nom" name="nom" type="text"
 									class="form-control" placeholder="Nom" data-bind="value: Nom"
-									data-val="true" data-val-required="el nom és obligatori">
+									data-val="true" data-val-required="el nom ï¿½s obligatori">
 							</div>
 
 							<div class="form-group">
-								<label>Llinatges</label> <input id="pas1_llinatges"
+								<label><fmt:message key="usuari.tramit.dades.llinatges" /></label> <input id="pas1_llinatges"
 									name="llinatges" type="text" class="form-control"
 									placeholder="Llinatges" data-bind="value: Llinatges"
 									data-val="true"
-									data-val-required="els llinatges són obligatoris">
+									data-val-required="els llinatges sï¿½n obligatoris">
 							</div>
 
 							<div class="form-group">
-								<label>Tipus Identificació</label> <select
+								<label><fmt:message key="usuari.tramit.dades.tipusidentificacio" /></label> <select
 									id="pas1_tipusIdentificacio" name="tipusIdentificacio"
 									class="form-control"
-									data-bind="options: availableTypes, selectedOptions: chosenType, optionsCaption: 'Tria tipus identificació'"
+									data-bind="options: availableTypes, selectedOptions: chosenType, optionsCaption: 'Tria tipus identificaciï¿½'"
 									data-val="true"
-									data-val-required="el tipus d'identificació és obligatori">
-									<option value="DNI">DNI</option>
-									<option value="NIE">NIE</option>
-									<option value="Passaport">Passaport</option>
-									<option value="Altres">Altres</option>
+									data-val-required="el tipus d'identificaciï¿½ ï¿½s obligatori">
+									<option value="DNI"><fmt:message key="usuari.tramit.dades.tipusidentificacio.dni" /></option>
+									<option value="NIE"><fmt:message key="usuari.tramit.dades.tipusidentificacio.nie" /></option>
+									<option value="Passaport"><fmt:message key="usuari.tramit.dades.tipusidentificacio.passaport" /></option>
+									<option value="Altres"><fmt:message key="usuari.tramit.dades.tipusidentificacio.altres" /></option>
 								</select>
 							</div>
 
 							<div class="form-group">
-								<label>Número d'identificació</label> <input
+								<label><fmt:message key="usuari.tramit.dades.numeroidentificacio" /></label> <input
 									id="pas1_identificacion" name="identificacio" type="text"
-									class="form-control" placeholder="Identificació"
+									class="form-control" placeholder="Identificaciï¿½"
 									data-bind="value: Identificacio" data-val="true"
-									data-val-required="la identificació és obligatòria">
+									data-val-required="la identificaciï¿½ ï¿½s obligatï¿½ria">
 							</div>
 
 							<div class="form-group">
 								<input type="checkbox" name="representant" value="representant"
-									id="representant"> Representant
+									id="representant"> <fmt:message key="usuari.tramit.dades.representant" />
 
 							</div>
 
 							<div class="formRepresentant" style="display: none;">
 
-								<h3>Dades del representant</h3>
+								<h3><fmt:message key="usuari.tramit.dades.representant.titol" /></h3>
 
 								<div class="form-group">
-									<label>Nom del representant</label> <input
+									<label><fmt:message key="usuari.tramit.dades.representant.nom" /></label> <input
 										id="pas1_representant_nom" name="representant_nom" type="text"
 										class="form-control" placeholder="Nom" data-bind="value: Nom"
-										data-val="true" data-val-required="el nom és obligatori"
+										data-val="true" data-val-required="el nom ï¿½s obligatori"
 										data-rule-required="#representant:checked">
 								</div>
 
 								<div class="form-group">
-									<label>Llinatges del representant</label> <input
+									<label><fmt:message key="usuari.tramit.dades.representant.llinatges" /></label> <input
 										id="pas1_representant_llinatges" name="representant_llinatges"
 										type="text" class="form-control" placeholder="Llinatges"
 										data-bind="value: Llinatges" data-val="true"
-										data-val-required="els llinatges són obligatoris"
+										data-val-required="els llinatges sï¿½n obligatoris"
 										data-rule-required="#representant:checked">
 								</div>
 
 								<div class="form-group">
-									<label>Tipus d'identificació del representant</label> <select
+									<label><fmt:message key="usuari.tramit.dades.representant.tipusidentificacio" /></label> <select
 										id="pas1_representant_tipusIdentificacio"
 										name="representant_tipusIdentificacio" class="form-control"
-										data-bind="options: availableTypes, selectedOptions: chosenType, optionsCaption: 'Tria tipus identificació'"
+										data-bind="options: availableTypes, selectedOptions: chosenType, optionsCaption: 'Tria tipus identificaciï¿½'"
 										data-val="true"
-										data-val-required="el tipus d'identificació és obligatori"
+										data-val-required="el tipus d'identificaciï¿½ ï¿½s obligatori"
 										data-rule-required="#representant:checked">
-										<option value="DNI">DNI</option>
-										<option value="NIE">NIE</option>
-										<option value="Passaport">Passaport</option>
-										<option value="Altres">Altres</option>
+										<option value="DNI"><fmt:message key="usuari.tramit.dades.tipusidentificacio.dni" /></option>
+										<option value="NIE"><fmt:message key="usuari.tramit.dades.tipusidentificacio.nie" /></option>
+										<option value="Passaport"><fmt:message key="usuari.tramit.dades.tipusidentificacio.passaport" /></option>
+										<option value="Altres"><fmt:message key="usuari.tramit.dades.tipusidentificacio.altres" /></option>
 									</select>
 								</div>
 
 								<div class="form-group">
-									<label>Número d'identificació del representant</label> <input
+									<label><fmt:message key="usuari.tramit.dades.representant.numeroidentificacio" /></label> <input
 										id="pas1_representant_identificacion"
 										name="representant_identificacio" type="text"
-										class="form-control" placeholder="Identificació"
+										class="form-control" placeholder="Identificaciï¿½"
 										data-bind="value: Identificacio" data-val="true"
-										data-val-required="la identificació és obligatòria"
+										data-val-required="la identificaciï¿½ ï¿½s obligatï¿½ria"
 										data-rule-required="#representant:checked">
 								</div>
 
@@ -276,24 +276,24 @@ form label {
 					<div class="row">
 						<div class="col-md-12">
 
-							<h3>2 Sel·lecció del tràmit</h3>
+							<h3>2 <fmt:message key="usuari.tramit.seleccio.titol" /></h3>
 
 							<div class="form-group">
-								<label>Codi o nom del procediment</label> <input
+								<label><fmt:message key="usuari.tramit.seleccio.procediment" /></label> <input
 									id="pas2_procediment" name="procediment" type="text"
 									class="form-control"
 									placeholder="Codi del procediment o nom del procediment"
 									data-bind="value: Procediment" data-val="true"
-									data-val-required="el procediment és obligatori"> <input
+									data-val-required="el procediment ï¿½s obligatori"> <input
 									type="hidden" id="procedimentId" name="procedimentId" value="1" />
 							</div>
 
 							<div class="form-group">
-								<label>Codi o nom del tràmit</label> <input id="pas2_tramit"
+								<label><fmt:message key="usuari.tramit.seleccio.tramit" /></label> <input id="pas2_tramit"
 									name="tramit" type="text" class="form-control"
-									placeholder="Codi del tràmit o nom del tràmit"
+									placeholder="Codi del trï¿½mit o nom del trï¿½mit"
 									data-bind="value: Procediment" data-val="true"
-									data-val-required="el procediment és obligatori"> <input
+									data-val-required="el procediment ï¿½s obligatori"> <input
 									type="hidden" id="tramitId" name="tramitId" value="1" /> <input
 									type="hidden" id="tramitVersio" name="tramitVersio" value="1" />
 							</div>
@@ -306,7 +306,7 @@ form label {
 					<div class="row">
 						<div class="col-md-12">
 
-							<h3>3 Generació de la documentació</h3>
+							<h3>3 <fmt:message key="usuari.tramit.documentacio.titol" /></h3>
 
 							<div class="form-group pdfVisor">
 								<embed src="/rfhabback/dummy.pdf" width="100%" height="600"
@@ -316,13 +316,15 @@ form label {
 							<div class="row buttonsDiv">
 								<div class="col-md-6">
 									<button type="button" class="btn btn-primary">
-										<i class="fa fa-file-pdf"></i> Descarregar
+										<i class="fa fa-file-pdf"></i> <fmt:message key="usuari.tramit.documentacio.descarregar" />
 									</button>
 								</div>
 								<div class="col-md-6">
-									<button type="button" class="btn btn-secondary">
-										<i class="fa fa-upload"></i> Pujar document
-									</button>
+									<a href="/usuari/scanweb">
+										<button type="button" class="btn btn-secondary"  onclick="if(typeof onClickPujarDocument == 'function') {  onClickPujarDocument(this); };">
+											<i class="fa fa-upload"></i> <fmt:message key="usuari.tramit.documentacio.pujardocument" />
+										</button>										
+									</a>
 								</div>
 							</div>
 
@@ -334,13 +336,12 @@ form label {
 					<div class="row">
 						<div class="col-md-12" style="min-height: 325px;">
 
-							<h3>Iniciar el tràmit</h3>
+							<h3><fmt:message key="usuari.tramit.iniciar.titol" /></h3>
 
-							<p>A continuació es redireccionará automàticament a la pàgina
-								de tràmits.</p>
+							<p><fmt:message key="usuari.tramit.iniciar.redireccionamentautomatic" /></p>
 							<p>
-								Si no es redirecciona automàticament, faci clic <a
-									href="https://www.google.com">aquí</a>.
+								<fmt:message key="usuari.tramit.iniciar.noredireccionament" /> <a
+									href="https://www.google.com">aquÃ­</a>.
 							</p>
 
 						</div>
@@ -349,14 +350,13 @@ form label {
 
 			</div>
 
-
 			<div class="msf-navigation">
 				<div class="col-md-12">
 					<div class="row">
 						<div class="col-md-4">
 							<button type="button" data-type="back"
 								class="btn btn-default msf-nav-button">
-								<i class="fa fa-chevron-left"></i> Tornar
+								<i class="fa fa-chevron-left"></i> <fmt:message key="usuari.tramit.navegacio.tornar" />
 							</button>
 						</div>
 						<div class="col-md-4">
@@ -367,10 +367,9 @@ form label {
 						</div>
 						<div class="col-md-4">
 							<button type="submit" data-type="submit"
-								class="btn btn-primary msf-nav-button">Finalitzar</button>
+								class="btn btn-primary msf-nav-button"><fmt:message key="usuari.tramit.navegacio.finalitzar" /></button>
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</form>
@@ -959,7 +958,7 @@ form label {
 	
 	var countries = [
 	    { value: 'Andorra', data: 'AD' },
-	    { value: 'España', data: 'AD' },
+	    { value: 'Espaï¿½a', data: 'AD' },
 	    { value: 'Portugal', data: 'AD' },
 	    { value: 'Francia', data: 'AD' },
 	    { value: 'Alemania', data: 'AD' },
@@ -987,4 +986,11 @@ form label {
 	        alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
 	    }
 	});
+</script>
+
+<script type="text/javascript">
+	function onClickPujarDocument(button) {
+		console.log("Pujar document");
+		// AquÃ­ puedes implementar la lï¿½gica para pujar el documento
+	}
 </script>

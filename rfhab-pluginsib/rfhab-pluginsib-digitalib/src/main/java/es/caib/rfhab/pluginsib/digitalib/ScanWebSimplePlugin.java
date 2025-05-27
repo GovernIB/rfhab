@@ -50,6 +50,7 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 	protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
 	private ApiMassiveScanWebSimpleApi api = null;
+	private String perfil = null;
 
 	public static final MassiveScanWebSimpleConstants CONSTANTS = new MassiveScanWebSimpleConstants();
 
@@ -59,6 +60,14 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 
 	public ApiMassiveScanWebSimpleApi getApi() {
 		return api;
+	}
+
+	public String getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
 	}
 
 	@Override
@@ -72,13 +81,22 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 			ApiMassiveScanWebSimpleApi instancia = getApiConnection();
 
 			MassiveScanWebSimpleAvailableProfiles scanWebProfileSelected = instancia.getAvailableProfiles(languageUI);
+			MassiveScanWebSimpleAvailableProfile profileSelected = null;
 
 			if (scanWebProfileSelected == null) {
-				LOG.info("NO HI HA PERFILS PER AQUEST USUARI APLICACIÓ");
+				LOG.info("NO HI HA PERFILS PER A AQUEST USUARI APLICACIÓ");
 				return;
 			} else {
 				for (MassiveScanWebSimpleAvailableProfile profile : scanWebProfileSelected.getAvailableProfiles()) {
-					LOG.info("Profile: " + profile.getName() + " - " + profile.getDescription());
+					LOG.info("Profile: " + profile.getName() + " (CODI: " + profile.getCode() + "): " + profile.getDescription());
+					if( perfil != null && perfil.equals(profile.getCode())) {
+						LOG.info("Perfil seleccionat: " + perfil);
+						profileSelected = profile;
+					}
+				}
+				if( profileSelected == null ) {
+					LOG.info("No s'ha trobat el perfil " + perfil + " a la llista de perfils disponibles");
+					return;
 				}
 			}
 
@@ -86,10 +104,6 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 
 			// Recuperar un ID de transacció
 			{
-
-				MassiveScanWebSimpleAvailableProfile profileSelected = scanWebProfileSelected.getAvailableProfiles()
-						.get(0);
-
 				final String profileCode = profileSelected.getCode();
 
 				final int view = CONSTANTS.getMassiveScanWebSimpleGetTransactionIdRequestVIEWIFRAME();
@@ -351,7 +365,7 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 		System.err.println("Servidor escoltant al PORT: " + port);
 		{
 			Socket clientSocket = serverSocket.accept();
-			System.err.println("Nou Client Connectat desde " + clientSocket.getRemoteSocketAddress());
+			System.err.println("Nou Client Connectat des de " + clientSocket.getRemoteSocketAddress());
 
 			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			PrintWriter out = new PrintWriter(
@@ -390,6 +404,7 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 			final String host = Configuracio.getAppSystemProperty(ENDPOINT);
 			final String usuari = Configuracio.getAppSystemProperty(USUARI);
 			final String clau = Configuracio.getAppSystemProperty(CLAU);
+			final String perfil = Configuracio.getAppSystemProperty(PROFILE);
 
 			ApiClient client = Configuration.getDefaultApiClient();
 			client.setBasePath(host);
@@ -400,10 +415,10 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 
 			ApiMassiveScanWebSimpleApi api = new ApiMassiveScanWebSimpleApi(client);
 			setApi(api);
+			setPerfil(perfil);
 		}
 
 		return getApi();
-
 	}
 
 }

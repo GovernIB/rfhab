@@ -179,25 +179,25 @@ form label {
 
 							<div class="form-group">
 								<label><fmt:message key="usuari.tramit.dades.nom" /></label> <input id="pas1_nom" name="nom" type="text"
-									class="form-control" placeholder="Nom" data-bind="value: Nom"
-									data-val="true" data-val-required="el nom �s obligatori">
+									class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.nom.placeholder" />" data-bind="value: Nom"
+									data-val="true" data-val-required="<fmt:message key="usuari.tramit.dades.nom.required" />">
 							</div>
 
 							<div class="form-group">
 								<label><fmt:message key="usuari.tramit.dades.llinatges" /></label> <input id="pas1_llinatges"
 									name="llinatges" type="text" class="form-control"
-									placeholder="Llinatges" data-bind="value: Llinatges"
+									placeholder="<fmt:message key="usuari.tramit.dades.llinatges.placeholder" />" data-bind="value: Llinatges"
 									data-val="true"
-									data-val-required="els llinatges s�n obligatoris">
+									data-val-required="<fmt:message key="usuari.tramit.dades.llinatges.required" />">
 							</div>
 
 							<div class="form-group">
 								<label><fmt:message key="usuari.tramit.dades.tipusidentificacio" /></label> <select
 									id="pas1_tipusIdentificacio" name="tipusIdentificacio"
 									class="form-control"
-									data-bind="options: availableTypes, selectedOptions: chosenType, optionsCaption: 'Tria tipus identificaci�'"
+									data-bind="options: availableTypes, selectedOptions: chosenType, optionsCaption: '<fmt:message key="usuari.tramit.dades.numeroidentificacio.placeholder" />'"
 									data-val="true"
-									data-val-required="el tipus d'identificaci� �s obligatori">
+									data-val-required="<fmt:message key="usuari.tramit.dades.tipusidentificacio.required" />">
 									<option value="DNI"><fmt:message key="usuari.tramit.dades.tipusidentificacio.dni" /></option>
 									<option value="NIE"><fmt:message key="usuari.tramit.dades.tipusidentificacio.nie" /></option>
 									<option value="Passaport"><fmt:message key="usuari.tramit.dades.tipusidentificacio.passaport" /></option>
@@ -208,15 +208,14 @@ form label {
 							<div class="form-group">
 								<label><fmt:message key="usuari.tramit.dades.numeroidentificacio" /></label> <input
 									id="pas1_identificacion" name="identificacio" type="text"
-									class="form-control" placeholder="Identificaci�"
+									class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.numeroidentificacio" />"
 									data-bind="value: Identificacio" data-val="true"
-									data-val-required="la identificaci� �s obligat�ria">
+									data-val-required="<fmt:message key="usuari.tramit.dades.numeroidentificacio.required" />">
 							</div>
 
 							<div class="form-group">
 								<input type="checkbox" name="representant" value="representant"
 									id="representant"> <fmt:message key="usuari.tramit.dades.representant" />
-
 							</div>
 
 							<div class="formRepresentant" style="display: none;">
@@ -226,17 +225,17 @@ form label {
 								<div class="form-group">
 									<label><fmt:message key="usuari.tramit.dades.representant.nom" /></label> <input
 										id="pas1_representant_nom" name="representant_nom" type="text"
-										class="form-control" placeholder="Nom" data-bind="value: Nom"
-										data-val="true" data-val-required="el nom �s obligatori"
+										class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.nom.placeholder" />" data-bind="value: Nom"
+										data-val="true" data-val-required="<fmt:message key="usuari.tramit.dades.nom.required" />"
 										data-rule-required="#representant:checked">
 								</div>
 
 								<div class="form-group">
 									<label><fmt:message key="usuari.tramit.dades.representant.llinatges" /></label> <input
 										id="pas1_representant_llinatges" name="representant_llinatges"
-										type="text" class="form-control" placeholder="Llinatges"
+										type="text" class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.llinatges.placeholder" />"
 										data-bind="value: Llinatges" data-val="true"
-										data-val-required="els llinatges s�n obligatoris"
+										data-val-required="<fmt:message key="usuari.tramit.dades.llinatges.required" />"
 										data-rule-required="#representant:checked">
 								</div>
 
@@ -244,9 +243,9 @@ form label {
 									<label><fmt:message key="usuari.tramit.dades.representant.tipusidentificacio" /></label> <select
 										id="pas1_representant_tipusIdentificacio"
 										name="representant_tipusIdentificacio" class="form-control"
-										data-bind="options: availableTypes, selectedOptions: chosenType, optionsCaption: 'Tria tipus identificaci�'"
+										data-bind="options: availableTypes, selectedOptions: chosenType, optionsCaption: '"<fmt:message key="usuari.tramit.dades.tipusidentificacio.placeholder" />"'"
 										data-val="true"
-										data-val-required="el tipus d'identificaci� �s obligatori"
+										data-val-required="<fmt:message key="usuari.tramit.dades.tipusidentificacio.required" />"
 										data-rule-required="#representant:checked">
 										<option value="DNI"><fmt:message key="usuari.tramit.dades.tipusidentificacio.dni" /></option>
 										<option value="NIE"><fmt:message key="usuari.tramit.dades.tipusidentificacio.nie" /></option>
@@ -259,9 +258,9 @@ form label {
 									<label><fmt:message key="usuari.tramit.dades.representant.numeroidentificacio" /></label> <input
 										id="pas1_representant_identificacion"
 										name="representant_identificacio" type="text"
-										class="form-control" placeholder="Identificaci�"
+										class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.numeroidentificacio.placeholder" />"
 										data-bind="value: Identificacio" data-val="true"
-										data-val-required="la identificaci� �s obligat�ria"
+										data-val-required="<fmt:message key="usuari.tramit.dades.numeroidentificacio.required" />"
 										data-rule-required="#representant:checked">
 								</div>
 
@@ -282,18 +281,18 @@ form label {
 								<label><fmt:message key="usuari.tramit.seleccio.procediment" /></label> <input
 									id="pas2_procediment" name="procediment" type="text"
 									class="form-control"
-									placeholder="Codi del procediment o nom del procediment"
+									placeholder="<fmt:message key="usuari.tramit.seleccio.procediment.placeholder" />"
 									data-bind="value: Procediment" data-val="true"
-									data-val-required="el procediment �s obligatori"> <input
+									data-val-required="<fmt:message key="usuari.tramit.seleccio.procediment.required" />"> <input
 									type="hidden" id="procedimentId" name="procedimentId" value="1" />
 							</div>
 
 							<div class="form-group">
 								<label><fmt:message key="usuari.tramit.seleccio.tramit" /></label> <input id="pas2_tramit"
 									name="tramit" type="text" class="form-control"
-									placeholder="Codi del tr�mit o nom del tr�mit"
+									placeholder="<fmt:message key="usuari.tramit.seleccio.tramit.placeholder" />"
 									data-bind="value: Procediment" data-val="true"
-									data-val-required="el procediment �s obligatori"> <input
+									data-val-required="<fmt:message key="usuari.tramit.seleccio.tramit.placeholder" />"> <input
 									type="hidden" id="tramitId" name="tramitId" value="1" /> <input
 									type="hidden" id="tramitVersio" name="tramitVersio" value="1" />
 							</div>
@@ -958,7 +957,7 @@ form label {
 	
 	var countries = [
 	    { value: 'Andorra', data: 'AD' },
-	    { value: 'Espa�a', data: 'AD' },
+	    { value: 'España', data: 'AD' },
 	    { value: 'Portugal', data: 'AD' },
 	    { value: 'Francia', data: 'AD' },
 	    { value: 'Alemania', data: 'AD' },

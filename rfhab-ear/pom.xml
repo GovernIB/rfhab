@@ -232,12 +232,23 @@
 					<defaultLibBundleDir>lib</defaultLibBundleDir>
                     <skinnyWars>true</skinnyWars>
                     
-                    <packagingExcludes>lib/resteasy-*.jar,lib/jackson-*.jar,**/bcprov-jdk15on-*redhat*.jar,
-                         **/bcmail-jdk15on-*redhat*.jar,
-                         **/bcpkix-jdk15on-*redhat*.jar,
-                         **/commons-codec-*redhat*.jar,
-                         **/commons-io-*redhat*.jar,
-                         **/commons-lang3-*redhat*.jar, **/jboss-annotations-api_1.3_spec-1.0.1.Final-redhat*redhat*.jar,**/jboss-jaxb-api_2.3_spec-1.0.1.Final-redhat*redhat*.jar,</packagingExcludes>
+                    <packagingExcludes>
+						<!-- **/lib/resteasy-*.jar,
+						**/lib/jackson-*.jar, -->
+						**/bcprov-jdk15on-*redhat*.jar,
+						**/bcmail-jdk15on-*redhat*.jar,
+						**/bcpkix-jdk15on-*redhat*.jar,
+						**/commons-codec-*redhat*.jar,
+						**/commons-io-*redhat*.jar,
+						**/commons-lang3-*redhat*.jar,
+						**/jboss-annotations-api_1.3_spec-1.0.1.Final-redhat*redhat*.jar,
+						**/jboss-jaxb-api_2.3_spec-1.0.1.Final-redhat*redhat*.jar,
+						**/activation*redhat*.jar,
+						**/jboss-annotations-api_1.3_spec*redhat*.jar,
+						**/jboss-jaxb-api_2.3_spec*redhat*.jar,
+						**/commons-logging-jboss-logging*redhat*.jar,
+						**/slf4j-api*redhat*.jar
+					</packagingExcludes>
                     
 					<includeLibInApplicationXml>false</includeLibInApplicationXml>
                         <!--suppress UnresolvedMavenProperty -->

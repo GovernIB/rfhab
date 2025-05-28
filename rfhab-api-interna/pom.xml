@@ -333,6 +333,12 @@
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
+                    <packagingExcludes>
+                        **/jackson-datatype-jsr310*redhat*.jar,
+                        **/json-patch*redhat*.jar,
+                        **/jboss-jaxrs-api_2.1_spec*redhat*.jar,
+                        **/resteasy-jackson2-provider*redhat*.jar
+                    </packagingExcludes>
                     <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
                     <webResources>
                         <resource>

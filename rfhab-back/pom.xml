@@ -419,7 +419,11 @@
                         <!-- Requereix afegir mòdul 'org.apache.commons.collections' a jboss-deployment-structure.xml -->
                         **/commons-collections-*.redhat*.jar,
                         <!-- Requereix afegir mòdul 'javax.xml.bind.api' a jboss-deployment-structure.xml -->
-                        **/jboss-jaxb-api*-redhat*.jar
+                        **/jboss-jaxb-api*-redhat*.jar,
+						**/jackson-datatype-jsr310*redhat*.jar,
+						**/json-patch*redhat*.jar,
+						**/jboss-jaxrs-api_2.1_spec*redhat*.jar,
+						**/resteasy-jackson2-provider*redhat*.jar,
                     </packagingExcludes>
                     <webResources>
                         <resource>

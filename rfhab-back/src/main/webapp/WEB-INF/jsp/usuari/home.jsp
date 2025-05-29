@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/moduls/includes.jsp"%>
 
 <style type="text/css">
@@ -171,7 +171,6 @@ form label {
 
 			<div class="msf-content">
 				<div class="msf-view">
-
 					<div class="row">
 						<div class="col-md-12">
 
@@ -267,8 +266,6 @@ form label {
 							</div>
 						</div>
 					</div>
-
-
 				</div>
 
 				<div class="msf-view">
@@ -278,25 +275,25 @@ form label {
 							<h3>2 <fmt:message key="usuari.tramit.seleccio.titol" /></h3>
 
 							<div class="form-group">
-								<label><fmt:message key="usuari.tramit.seleccio.procediment" /></label> <input
-									id="pas2_procediment" name="procediment" type="text"
+								<label><fmt:message key="usuari.tramit.seleccio.procediment" /></label>
+								<input id="pas2_procediment" name="procediment" type="text"
 									class="form-control"
 									placeholder="<fmt:message key="usuari.tramit.seleccio.procediment.placeholder" />"
 									data-bind="value: Procediment" data-val="true"
-									data-val-required="<fmt:message key="usuari.tramit.seleccio.procediment.required" />"> <input
-									type="hidden" id="procedimentId" name="procedimentId" value="1" />
+									data-val-required="<fmt:message key="usuari.tramit.seleccio.procediment.required" />">
+								<input type="hidden" id="procedimentId" name="procedimentId" value="1" />
 							</div>
 
 							<div class="form-group">
-								<label><fmt:message key="usuari.tramit.seleccio.tramit" /></label> <input id="pas2_tramit"
-									name="tramit" type="text" class="form-control"
+								<label><fmt:message key="usuari.tramit.seleccio.tramit" /></label>
+								<input id="pas2_tramit" name="tramit" type="text"
+									class="form-control"
 									placeholder="<fmt:message key="usuari.tramit.seleccio.tramit.placeholder" />"
-									data-bind="value: Procediment" data-val="true"
-									data-val-required="<fmt:message key="usuari.tramit.seleccio.tramit.placeholder" />"> <input
-									type="hidden" id="tramitId" name="tramitId" value="1" /> <input
-									type="hidden" id="tramitVersio" name="tramitVersio" value="1" />
+									data-bind="value: Tramit" data-val="true"
+									data-val-required="<fmt:message key="usuari.tramit.seleccio.tramit.placeholder" />">
+								<input type="hidden" id="tramitId" name="tramitId" value="1" />
+								<input type="hidden" id="tramitVersio" name="tramitVersio" value="1" />
 							</div>
-
 						</div>
 					</div>
 				</div>
@@ -319,14 +316,11 @@ form label {
 									</button>
 								</div>
 								<div class="col-md-6">
-									<a href="/usuari/scanweb">
-										<button type="button" class="btn btn-secondary"  onclick="if(typeof onClickPujarDocument == 'function') {  onClickPujarDocument(this); };">
-											<i class="fa fa-upload"></i> <fmt:message key="usuari.tramit.documentacio.pujardocument" />
-										</button>										
-									</a>
+									<button type="button" class="btn btn-secondary"  onclick="if(typeof onClickPujarDocument == 'function') {  onClickPujarDocument(this); };">
+										<i class="fa fa-upload"></i> <fmt:message key="usuari.tramit.documentacio.pujardocument" />
+									</button>										
 								</div>
 							</div>
-
 						</div>
 					</div>
 				</div>
@@ -346,7 +340,6 @@ form label {
 						</div>
 					</div>
 				</div>
-
 			</div>
 
 			<div class="msf-navigation">
@@ -957,22 +950,27 @@ form label {
 	
 	var countries = [
 	    { value: 'Andorra', data: 'AD' },
-	    { value: 'España', data: 'AD' },
-	    { value: 'Portugal', data: 'AD' },
-	    { value: 'Francia', data: 'AD' },
-	    { value: 'Alemania', data: 'AD' },
-	    { value: 'Suiza', data: 'AD' },
-	    { value: 'China', data: 'AD' },
+	    { value: 'España', data: 'ES' },
+	    { value: 'Portugal', data: 'PT' },
+	    { value: 'Francia', data: 'FR' },
+	    { value: 'Alemania', data: 'AL' },
+	    { value: 'Suiza', data: 'SZ' },
+	    { value: 'China', data: 'CH' },
 	    { value: 'Zimbabwe', data: 'ZZ' }
 	];
 
+	var pas2_procediment_value = null;
+	var pas2_tramit_value = null;
 	$('#pas2_procediment').autocomplete({
 	    lookup: procediments,
 	    minChars: 1,
 	    showNoSuggestionNotice: true,
         noSuggestionNotice: 'Sorry, no matching results',
 	    onSelect: function (suggestion) {
-	        alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
+			if(pas2_procediment_value != suggestion.data) {
+				pas2_procediment_value = suggestion.data;
+				console.log('You selected: ' + suggestion.value + ', ' + suggestion.data);
+			}
 	    }
 	});
 	
@@ -982,14 +980,107 @@ form label {
 	    showNoSuggestionNotice: true,
         noSuggestionNotice: 'Sorry, no matching results',
 	    onSelect: function (suggestion) {
-	        alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
+			if(pas2_tramit_value != suggestion.data) {
+				pas2_tramit_value = suggestion.data;
+	        	console.log('You selected: ' + suggestion.value + ', ' + suggestion.data);
+			}
 	    }
 	});
 </script>
 
 <script type="text/javascript">
 	function onClickPujarDocument(button) {
-		console.log("Pujar document");
-		// Aquí puedes implementar la l�gica para pujar el documento
+		console.log("Pujar document");	
+
+		const url = "<%=request.getContextPath() + "/usuari/scanweb/"%>";
+		const dataObj = getFormData();
+
+		console.log("URL: " + url);
+		console.log("Data object: ", dataObj);
+		$.ajax({
+			url: url,
+			method: 'GET',
+			data: dataObj,
+			// xhrFields: {
+			// 	responseType: 'blob'
+			// },
+			//retornam una url on hi ha el fitxer pujat
+			success: function(data, status, xhr) {
+				if(data === null || data === undefined || data === '' || data === 'null' || data === 'undefined' || data.length === 0) {
+					console.error("No s'ha pogut pujar el document o no s'ha retornat cap URL.");
+					console.error("Resposta --> " + data);
+					// Aquí pots mostrar errorText per pantalla
+					return;
+				}
+				// Aquí pots gestionar la resposta del servidor
+				// per exemple, mostrar un missatge de confirmació
+				console.log("Resposta correcta al procés de pujada del document: ", data);
+
+				// Si vols redirigir a una altra pàgina o fer alguna acció
+				// window.location.href = data;
+				for (let i = 0; i < data.length; i++) {
+					const url = data[i];
+					if (!url || !/^https?:\/\/|^\/|^\.\/|^\.\.\/|^[a-zA-Z]:[\\/]{1,2}.*/.test(url)) {
+						console.error("La resposta no sembla ser una URL o path vàlid: " + url);
+						console.error("No s'ha pogut pujar el document o no s'ha retornat cap URL.");
+						console.error("Resposta --> " + url);
+						// Aquí pots mostrar errorText per pantalla
+						continue;
+					}
+					console.log("Document pujat correctament");
+					console.log("URL del document pujat: " + url);
+					window.open(url);
+					// window.open(url, '_blank');
+				}
+			},
+			//si retornassis un pdf, pots fer servir el següent codi per descarregar-lo
+			// success: function(data, status, xhr) {
+			// 	const blob = new Blob([data], { type: 'application/pdf' });
+			// 	const link = document.createElement('a');
+			// 	link.href = window.URL.createObjectURL(blob);
+			// 	link.download = 'document.pdf';
+			// 	document.body.appendChild(link);
+			// 	link.click();
+			// 	document.body.removeChild(link);
+			// },
+			error: function(xhr, status, error) {
+				let errorText = 'Error descarregant el document: ' + (xhr.responseText || error);
+				// Aquí pots mostrar errorText per pantalla
+			}
+		});
+	}
+
+	function getFormData() {
+		let $form = $('.msf');
+		let data = {
+			languageUI: $('html').attr('lang') || '', // suposant que el languageUI ve del lang de l'html
+			interessats: [],
+			ciutadaTipusIdentificacio: $form.find('#pas1_tipusIdentificacio').val() || '',
+			ciutadaNif: $form.find('#pas1_identificacion').val() || '',
+			ciutadaNom: $form.find('#pas1_nom').val() || '',
+			ciutadaLlinatges: $form.find('#pas1_llinatges').val() || '',
+			representant: $form.find('#representant').is(':checked') ? 'true' : 'false',
+			representantNom: $form.find('#pas1_representant_nom').val() || '',
+			representantLlinatges: $form.find('#pas1_representant_llinatges').val() || '',
+			representantTipusIdentificacio: $form.find('#pas1_representant_tipusIdentificacio').val() || '',
+			representantIdentificacio: $form.find('#pas1_representant_identificacion').val() || '',
+			procediment: $form.find('#pas2_procediment').val() || '',
+			tramit: $form.find('#pas2_tramit').val() || '',
+		};
+
+		//TODO:demanar a ttrobat
+		data.interessats.push(data.ciutadaNif);
+		data.interessats = data.interessats.join('--');//convertim a string. No puc passar un array com a queryparam
+		// interessats i organs: si hi hagués inputs múltiples, per exemple amb class .interessat o .orga
+		// $form.find('.interessat').each(function() {
+		// 	var v = $(this).val();
+		// 	if (v) data.interessats.push(v);
+		// });
+		//TODO??
+		// data.procedimentId = $form.find('#procedimentId').val() || '';
+		// data.tramitId = $form.find('#tramitId').val() || '';
+		// data.tramitVersio = $form.find('#tramitVersio').val() || '';
+
+		return data;
 	}
 </script>

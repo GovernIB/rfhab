@@ -71,11 +71,15 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 	}
 
 	@Override
-	public void escaneig(String usuari, String languageUI, String funcionariNom, String funcionariAdministracioID, String funcionariDir3,
-			List<String> interessats, List<String> organs, String ciutadaNif, String ciutadaNom) throws Exception {
+	public List<String> escaneig(String usuari, String languageUI, String funcionariNom,
+			String funcionariAdministracioID,
+			String funcionariDir3,
+			List<String> interessats, List<String> organs, String ciutadaNif, String ciutadaNom, File filesPath)
+			throws Exception {
 
 		String transactionID = null;
 
+		List<String> filesOrErrorsResult = new ArrayList<String>();
 		try {
 
 			ApiMassiveScanWebSimpleApi instancia = getApiConnection();
@@ -84,19 +88,22 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 			MassiveScanWebSimpleAvailableProfile profileSelected = null;
 
 			if (scanWebProfileSelected == null) {
-				LOG.info("NO HI HA PERFILS PER A AQUEST USUARI APLICACIÓ");
-				return;
+				String msgError = "Error: NO HI HA PERFILS PER A AQUEST USUARI APLICACIÓ";
+				LOG.info(msgError);
+				return Arrays.asList(msgError);
 			} else {
 				for (MassiveScanWebSimpleAvailableProfile profile : scanWebProfileSelected.getAvailableProfiles()) {
-					LOG.info("Profile: " + profile.getName() + " (CODI: " + profile.getCode() + "): " + profile.getDescription());
-					if( perfil != null && perfil.equals(profile.getCode())) {
+					LOG.info("Profile: " + profile.getName() + " (CODI: " + profile.getCode() + "): "
+							+ profile.getDescription());
+					if (perfil != null && perfil.equals(profile.getCode())) {
 						LOG.info("Perfil seleccionat: " + perfil);
 						profileSelected = profile;
 					}
 				}
-				if( profileSelected == null ) {
-					LOG.info("No s'ha trobat el perfil " + perfil + " a la llista de perfils disponibles");
-					return;
+				if (profileSelected == null) {
+					String msgError = "No s'ha trobat el perfil " + perfil + " a la llista de perfils disponibles";
+					LOG.info(msgError);
+					return Arrays.asList(msgError);
 				}
 			}
 
@@ -188,10 +195,8 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 					transacctionIdRequest.setSignatureParameters(signatureParameters);
 					transacctionIdRequest.setArxiuRequiredParameters(arxiuRequiredParameters);
 					transacctionIdRequest.setArxiuOptionalParameters(arxiuOptionalParameters);
-
 				} else {
 					throw new Exception("Tipus de perfil desconegut " + profileSelected.getProfileType());
-
 				}
 
 				// Enviam la part comu de la transacció
@@ -255,6 +260,8 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 				resultRequest.setReturnScannedFile(returnScannedFile);
 				resultRequest.setReturnSignedFile(returnSignedFile);
 
+				LOG.info(" Cridant a getSubTransactionResult ...");
+				LOG.info(resultRequest.toString());
 				MassiveScanWebSimpleSubtransactionResult result = api.getSubTransactionResult(resultRequest);
 
 				MassiveScanWebSimpleStatus transactionStatus = result.getStatus();
@@ -264,86 +271,91 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 				LOG.info(result.toString());
 
 				if (CONSTANTS.getMassiveScanWebSimpleStatusSTATUSREQUESTEDID().equals(status)) { // = 0;
-					LOG.info("S'ha rebut un estat inconsistent del procés"
+					String msg = "S'ha rebut un estat inconsistent del procés"
 							+ " (requestedid). Pot ser el PLugin no està ben desenvolupat."
-							+ " Consulti amb el seu administrador.");
-
+							+ " Consulti amb el seu administrador.";
+					LOG.info(msg);
+					filesOrErrorsResult.add(msg);
+					continue;
 				} else if (CONSTANTS.getMassiveScanWebSimpleStatusSTATUSINPROGRESS().equals(status)) { // = 1;
-					LOG.info("S'ha rebut un estat inconsistent del procés"
+					String msg = "S'ha rebut un estat inconsistent del procés"
 							+ " (En Progrés). Pot ser el PLugin no està ben desenvolupat."
-							+ " Consulti amb el seu administrador.");
-
+							+ " Consulti amb el seu administrador.";
+					LOG.info(msg);
+					filesOrErrorsResult.add(msg);
+					continue;
 				} else if (CONSTANTS.getMassiveScanWebSimpleStatusSTATUSFINALERROR().equals(status)) { // = -1;
-
-					LOG.info("Error durant la realització de l'escaneig/còpia autèntica: "
-							+ transactionStatus.getErrorMessage());
+					String msg = "Error durant la realització de l'escaneig/còpia autèntica: "
+							+ transactionStatus.getErrorMessage();
+					LOG.info(msg);
+					filesOrErrorsResult.add(msg);
 					String desc = transactionStatus.getErrorStackTrace();
 					if (desc != null) {
 						LOG.info(desc);
 					}
 					continue;
-
 				} else if (CONSTANTS.getMassiveScanWebSimpleStatusSTATUSCANCELLED().equals(status)) { // = -2;
-					LOG.info("Durant el procés, l'usuari ha cancelat la transacció.");
+					String msg = "Durant el procés, l'usuari ha cancelat la transacció.";
+					LOG.info(msg);
+					filesOrErrorsResult.add(msg);
 					continue;
-
-				} else
+				}
 
 				if (CONSTANTS.getMassiveScanWebSimpleStatusSTATUSFINALOK().equals(status)) { // = 2;
-					{
+					// Enregistrament de la transaccio amb digitalIB
+					// TODO: només es pot donar un dels casos següents??
+					MassiveScanWebSimpleFile scannedFile = result.getScannedFile();
+					if (scannedFile != null) {
 
-						// Enregistrament de la transaccio amb digitalIB
-						
-						if (result.getScannedFile() != null) {
-
-							String format = result.getScannedFileInfo().getFormatFile();
-							if (format == null) {
-								format = "unknown";
-							} else {
-								format = format.replace("/", ".");
-							}
-
-							File scanFile = new File((count - 1) + "_scanfile." + format);
-
-							FileOutputStream fos = new FileOutputStream(scanFile);
-							fos.write(result.getScannedFile().getData());
-							fos.flush();
-							fos.close();
-
-							LOG.info("Fitxer Escanejat guardat a " + scanFile.getAbsolutePath());
+						String format = result.getScannedFileInfo().getFormatFile();
+						if (format == null) {
+							format = "unknown";
+						} else {
+							format = format.replace("/", ".");
 						}
 
-						MassiveScanWebSimpleFile signedFile = result.getSignedFile();
+						File scanFile = new File(filesPath, (count - 1) + "_scanfile." + format);
 
-						if (signedFile != null) {
-							File signed = new File((count - 1) + "_signed." + signedFile.getNom());
+						FileOutputStream fos = new FileOutputStream(scanFile);
+						fos.write(scannedFile.getData());
+						fos.flush();
+						fos.close();
 
-							FileOutputStream fos = new FileOutputStream(signed);
-							fos.write(signedFile.getData());
-							fos.flush();
-							fos.close();
+						String scannedFileAbsPath = scanFile.getAbsolutePath();
+						LOG.info("Fitxer Escanejat guardat a " + scannedFileAbsPath);
+						filesOrErrorsResult.add(scannedFileAbsPath);
+					}
 
-							LOG.info("Firma del Fitxer Escanejat guardat a " + signed.getAbsolutePath());
-						}
+					MassiveScanWebSimpleFile signedFile = result.getSignedFile();
+					if (signedFile != null) {
+						File signed = new File(filesPath, (count - 1) + "_signed." + signedFile.getNom());
 
-						MassiveScanWebSimpleFile detachedSignedFile = result.getDetachedSignatureFile();
+						FileOutputStream fos = new FileOutputStream(signed);
+						fos.write(signedFile.getData());
+						fos.flush();
+						fos.close();
 
-						if (detachedSignedFile != null) {
-							File detached = new File((count - 1) + "_detached_sign." + detachedSignedFile.getNom());
+						String signedFileAbsPath = signed.getAbsolutePath();
+						LOG.info("Firma del Fitxer Escanejat guardat a " + signedFileAbsPath);
+						filesOrErrorsResult.add(signedFileAbsPath);
+					}
 
-							FileOutputStream fos = new FileOutputStream(detached);
-							fos.write(detachedSignedFile.getData());
-							fos.flush();
-							fos.close();
+					MassiveScanWebSimpleFile detachedSignedFile = result.getDetachedSignatureFile();
+					if (detachedSignedFile != null) {
+						File detached = new File(filesPath, (count - 1) + "_detached_sign." + detachedSignedFile.getNom());
 
-							LOG.info("Document Detached de la Firma (Document Escanejat) guardat a "
-									+ detached.getAbsolutePath());
-						}
+						FileOutputStream fos = new FileOutputStream(detached);
+						fos.write(detachedSignedFile.getData());
+						fos.flush();
+						fos.close();
 
-					} // Final Case Firma OK
-				}
+						String detachedFileAbsPath = detached.getAbsolutePath();
+						LOG.info("Document Detached de la Firma (Document Escanejat) guardat a "
+								+ detachedFileAbsPath);
+						filesOrErrorsResult.add(detachedFileAbsPath);
+					}
+				} // Final Case Firma OK
 			} // final for
-
 		} catch (Exception e) {
 			LOG.error("Error en la connexió amb ScanWeb", e);
 			throw e;
@@ -357,6 +369,7 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 			}
 		}
 
+		return filesOrErrorsResult;
 	}
 
 	public static void readFromSocket(int port) throws Exception {

@@ -4,19 +4,22 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.fundaciobit.genapp.common.StringKeyValue;
+import org.fundaciobit.genapp.common.filesystem.FileSystemManager;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.web.HtmlUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -24,6 +27,10 @@ import es.caib.rfhab.back.controller.webdb.UsuariController;
 import es.caib.rfhab.back.form.webdb.UsuariFilterForm;
 import es.caib.rfhab.back.form.webdb.UsuariForm;
 import es.caib.rfhab.back.security.LoginInfo;
+import es.caib.rfhab.logic.EntitatLogicaService;
+import es.caib.rfhab.logic.UnitatLogicaUserService;
+import es.caib.rfhab.model.entity.Entitat;
+import es.caib.rfhab.model.entity.Unitat;
 import es.caib.rfhab.model.entity.Usuari;
 import es.caib.rfhab.model.fields.IdiomaFields;
 import es.caib.rfhab.persistence.UsuariJPA;
@@ -33,12 +40,19 @@ import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
 /**
  * 
  * @author jagarcia
+ * @author jpou
  *
  */
 @Controller
 @RequestMapping(value = "/usuari/")
 @SessionAttributes(types = { UsuariForm.class, UsuariFilterForm.class })
 public class UserController extends UsuariController {
+
+	@EJB(mappedName = UnitatLogicaUserService.JNDI_NAME)
+	protected UnitatLogicaUserService unitatLogicaEjb;
+
+	@EJB(mappedName = EntitatLogicaService.JNDI_NAME)
+	protected EntitatLogicaService entitatLogicaEjb;
 
 	private RolsacPlugin rolsacPlugin;
 
@@ -68,18 +82,92 @@ public class UserController extends UsuariController {
 	}
 
 	@RequestMapping(value = "/scanweb", method = RequestMethod.GET)
-	public ModelAndView scanweb(HttpSession session, HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+	@ResponseBody
+	public List<String> scanweb(
+			@RequestParam(value = "languageUI", required = false) String languageUI,
+			@RequestParam(value = "interessats", required = false) String interessats,
+			@RequestParam(value = "ciutadaTipusIdentificacio", required = false) String ciutadaTipusIdentificacio,
+			@RequestParam(value = "ciutadaNif", required = false) String ciutadaNif,
+			@RequestParam(value = "ciutadaNom", required = false) String ciutadaNom,
+			@RequestParam(value = "ciutadaLlinatges", required = false) String ciutadaLlinatges,
+			@RequestParam(value = "representant", required = false) Boolean representant,
+			@RequestParam(value = "representantNom", required = false) String representantNom,
+			@RequestParam(value = "representantLlinatges", required = false) String representantLlinatges,
+			@RequestParam(value = "representantTipusIdentificacio", required = false) String representantTipusIdentificacio,
+			@RequestParam(value = "representantIdentificacio", required = false) String representantIdentificacio,
+			@RequestParam(value = "procediment", required = false) String procediment,
+			@RequestParam(value = "tramit", required = false) String tramit,
+			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		log.info("XYZ ZZZ ENTRANT A SCANWEB");
 
+		log.info("XYZ ZZZ languageUI = " + languageUI);
+		log.info("XYZ ZZZ interessats = " + interessats);
+		List<String> interessatsList = Arrays.asList(interessats.split("--"));
+		log.info("XYZ ZZZ interessatsList = " + interessatsList);
+		log.info("XYZ ZZZ ciutadaTipusIdentificacio = " + ciutadaTipusIdentificacio);
+		log.info("XYZ ZZZ ciutadaNif = " + ciutadaNif);
+		log.info("XYZ ZZZ ciutadaNom = " + ciutadaNom);
+		log.info("XYZ ZZZ ciutadaLlinatges = " + ciutadaLlinatges);
+		log.info("XYZ ZZZ representant = " + representant);
+		log.info("XYZ ZZZ representantNom = " + representantNom);
+		log.info("XYZ ZZZ representantLlinatges = " + representantLlinatges);
+		log.info("XYZ ZZZ representantTipusIdentificacio = " + representantTipusIdentificacio);
+		log.info("XYZ ZZZ representantIdentificacio = " + representantIdentificacio);
+		log.info("XYZ ZZZ procediment = " + procediment);
+		log.info("XYZ ZZZ tramit = " + tramit);
+		// TODO:aquí sobra info que s'ha d'emprar per generar el pdf plantilla que
+		// descarregarà l'usuari
+
+		LoginInfo loginInfo = LoginInfo.getInstance();
+		Usuari usuari = loginInfo.getUsuariPersona();
+		String username = usuari.getUsername();
+		String funcionariAdministracioID = usuari.getNif();// TODO: no n'estic segur
+		String funcionariNom = (usuari.getNom() != null ? usuari.getNom() : "") + " "
+				+ (usuari.getLlinatge1() != null ? usuari.getLlinatge1() : "") + " "
+				+ (usuari.getLlinatge2() != null ? usuari.getLlinatge2() : "");// TODO: no n'estic segur
+		String funcionariDir3 = getCodiDIR3(request, username);// TODO: no tenim el codi dir3 del funcionari enlloc
+		// TODO: no n'estic segur
+		Entitat entitat = entitatLogicaEjb.findByPrimaryKey(loginInfo.getEntitatID());
+		Unitat unitat = unitatLogicaEjb.findByPrimaryKey(entitat.getUnitatID());
+		List<String> organs = Arrays.asList(unitat.getCodi());
+
+		log.info("XYZ ZZZ username = " + username);
+		log.info("XYZ ZZZ funcionariAdministracioID = " + funcionariAdministracioID);
+		log.info("XYZ ZZZ funcionariNom = " + funcionariNom);
+		log.info("XYZ ZZZ funcionariDir3 = " + funcionariDir3);
+		log.info("XYZ ZZZ organs = " + organs);
 		scanwebPlugin = new ScanWebSimplePlugin();
-		scanwebPlugin.escaneig("u00666", "ca", "Funcionari DeProfessio", "12345678X", "1254123412",
-				Arrays.asList("43153858Q"), Arrays.asList("A04013511"), "11223344C", "Pep Gonella");
+		// scanwebPlugin.escaneig("u00666", "ca", "Funcionari DeProfessio", "12345678X",
+		// "1254123412",
+		// Arrays.asList("43153858Q"), Arrays.asList("A04013511"), "11223344C", "Pep
+		// Gonella");
+		List<String> urlFitxersFirmatsOerrors = scanwebPlugin.escaneig(
+				username, languageUI, funcionariNom, funcionariAdministracioID, funcionariDir3,
+				interessatsList, organs, ciutadaNif, ciutadaNom, FileSystemManager.getFilesPath());
 
-		ModelAndView mav = new ModelAndView("scanPage");
+		log.info("XYZ ZZZ urlFitxersFirmatsOerrors = " + urlFitxersFirmatsOerrors);
+		// TODO:aquests fitxers després s'han d'esborrar
+		return urlFitxersFirmatsOerrors;
+		//HtmlUtils.saveMessageError només és útil si retornam un ModelAndView
+		// List<String> urlFitxersFirmats = new java.util.ArrayList<String>();
+		// for (String urlFitxer : urlFitxersFirmatsOerrors) {
+		// 	if (urlFitxer == null || urlFitxer.trim().isEmpty() ||
+		// 			!(urlFitxer.startsWith("http://") || urlFitxer.startsWith("https://") || urlFitxer.startsWith("/")
+		// 					|| urlFitxer.matches("^[a-zA-Z]:[\\/]{1,2}.*"))) {
+		// 		// Si hi ha un error, el retornem com a missatge d'error
+		// 		HtmlUtils.saveMessageError(request, urlFitxer);
+		// 	} else {
+		// 		urlFitxersFirmats.add(urlFitxer);
+		// 	}
+		// }
+		// return urlFitxersFirmats;
+		// ModelAndView mav = new ModelAndView("homeUsuari", "fitxersFirmats",
+		// urlFitxersFirmats);
+		// ModelAndView mav = new ModelAndView("scanPage", "fitxersFirmats",
+		// urlFitxersFirmats);
 
-		return mav;
+		// return mav;
 	}
 
 	@RequestMapping(value = "/nou/{usuariID}/check", method = RequestMethod.GET)

@@ -235,7 +235,7 @@ public class FuncionariAdminController extends FuncionariController {
 				AdditionalField<Long, String> adfield = new AdditionalField<Long, String>();
 				adfield.setCodeName(LlocFields.CODILLOC.codeLabel);
 				adfield.setPosition(1);
-				adfield.setOrderBy(LlocFields.CODILLOC);
+				// adfield.setOrderBy(LlocFields.CODILLOC);
 				adfield.setEscapeXml(false);
 				adfield.setValueMap(new HashMap<Long, String>());
 				funcionariFilterForm.addAdditionalField(adfield);
@@ -245,7 +245,7 @@ public class FuncionariAdminController extends FuncionariController {
 				AdditionalField<Long, String> adfield2 = new AdditionalField<Long, String>();
 				adfield2.setCodeName(LlocFields.UNITATID.codeLabel);
 				adfield2.setPosition(2);
-				adfield2.setOrderBy(LlocFields.UNITATID);
+				// adfield2.setOrderBy(LlocFields.UNITATID);
 				adfield2.setEscapeXml(false);
 				adfield2.setValueMap(new HashMap<Long, String>());
 				funcionariFilterForm.addAdditionalField(adfield2);
@@ -255,7 +255,7 @@ public class FuncionariAdminController extends FuncionariController {
 				AdditionalField<Long, String> adfield3 = new AdditionalField<Long, String>();
 				adfield3.setCodeName(LlocFields.PERSONALOAMR.codeLabel);
 				adfield3.setPosition(3);
-				adfield3.setOrderBy(LlocFields.PERSONALOAMR);
+				// adfield3.setOrderBy(LlocFields.PERSONALOAMR);
 				adfield3.setEscapeXml(false);
 				// no podem cercar a un altre taula perquè donarà error. Afegirem aquest filtre
 				// a getAdditionalCondition

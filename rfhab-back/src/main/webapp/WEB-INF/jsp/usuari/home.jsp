@@ -989,65 +989,213 @@ form label {
 </script>
 
 <script type="text/javascript">
-	function onClickPujarDocument(button) {
-		console.log("Pujar document");	
+	const MODAL_PUJAR_DOCUMENT_ID = 'pujar-document-digitalib-modal';
+	const IFRAME_DIGITALIB_ID = 'modal-iframe-digitalib';
+	const URL_NO_CARREGAT_IFRAME_DIGITALIB_ID = 'modal-urlnotloaded-iframe-digitalib';
+	const NO_CARREGAT_IFRAME_DIGITALIB_ID = 'modal-body-nocarregat';
 
+	function inserirMsg(tipusMsg, msg) {
+		const alertHtml = '<div class="alert alert-' + tipusMsg + '" role="alert">'
+			+ '<button type="button" class="close" data-dismiss="alert">&times;</button>'
+			+ msg
+			+ '</div>';
+		$('#contingut').prepend(alertHtml);
+	}
+
+	function createModalPujarDocument(modalId, loadedCallback) {
+			$('body').append('<div id="' + modalId + '" class="modal hide fade show" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'
+                        + '<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">'
+							
+                        + '<div class="modal-content">'
+
+                        + '<div class="modal-header">' + '<h4 id="myModalLabel"><i class="fa fa-upload"></i>&nbsp;'
+                        + "<fmt:message key="usuari.tramit.documentacio.pujardocument" />"
+                        + '</h4>'
+                        + '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+                        + '</div>'
+
+                        + '<div class="modal-body" id="modal-body-carregant">'
+                        + '<p id="modal-message-carregant">'
+						+ "<fmt:message key="usuari.tramit.documentacio.pujardocument.carregant" />"
+                        + '</p>'
+                        + '<p id="modal-spinner-carregant" style="text-align: center;">'
+						+ '<svg style="width:20%;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150"><path fill="none" stroke="#007BFF" stroke-width="15" stroke-linecap="round" stroke-dasharray="300 385" stroke-dashoffset="0" d="M275 75c0 31-27 50-50 50-58 0-92-100-150-100-28 0-50 22-50 50s23 50 50 50c58 0 92-100 150-100 24 0 50 19 50 50Z"><animate attributeName="stroke-dashoffset" calcMode="spline" dur="2" values="685;-685" keySplines="0 0 1 1" repeatCount="indefinite"></animate></path></svg>'
+                        + '</p>'
+                        + '</div>'
+
+                        + '<div class="modal-body" id="' + NO_CARREGAT_IFRAME_DIGITALIB_ID + '">'
+						+ '<p id="modal-msgnotloaded-iframe-digitalib">' 
+						+ "<fmt:message key="usuari.tramit.documentacio.pujardocument.iframenocarrega"/>" 
+						+ '</p>'
+						+ '<p id=' + URL_NO_CARREGAT_IFRAME_DIGITALIB_ID + '>' 
+						+ '</p>'
+                        + '</div>'
+
+						+ '</div>' + '</div>' + '</div>');
+			$(modalId).on("load", loadedCallback);
+    }
+
+	function onScanwebPrepared(redirectUrl, port, transactionID) {
+		console.log("scanweb preparat, procedim a scanweb");	
+
+		$('#' + URL_NO_CARREGAT_IFRAME_DIGITALIB_ID).text(redirectUrl);
+		$('#' + NO_CARREGAT_IFRAME_DIGITALIB_ID).show();
+		
 		const url = "<%=request.getContextPath() + "/usuari/scanweb/"%>";
-		const dataObj = getFormData();
+		const dataObj = {
+			redirectUrl: redirectUrl,
+			port: port,
+			transactionID: transactionID
+		};
 
-		console.log("URL: " + url);
-		console.log("Data object: ", dataObj);
+		console.log("cridant a scanweb, URL: " + url);
+		console.log("cridant a scanweb, Data object: ", dataObj);
 		$.ajax({
 			url: url,
 			method: 'GET',
 			data: dataObj,
-			// xhrFields: {
-			// 	responseType: 'blob'
-			// },
+			xhrFields: {
+				responseType: 'blob'
+			},
 			//retornam una url on hi ha el fitxer pujat
+			// success: function(data, status, xhr) {
+			// 	if(data === null || data === undefined || data === '' || data === 'null' || data === 'undefined' || data.length === 0) {
+			// 		const errorText = "No s'ha pogut pujar el document o no s'ha retornat cap URL.";
+			// 		console.error(errorText);
+			// 		console.error("Resposta --> " + data);
+			// 		// Aquí pots mostrar errorText per pantalla
+            //         inserirMsg('danger', errorText);
+			// 		return;
+			// 	}
+			// 	// Aquí pots gestionar la resposta del servidor
+			// 	// per exemple, mostrar un missatge de confirmació
+			// 	console.log("Resposta correcta al procés de pujada del document: ", data);
+
+			// 	// Si vols redirigir a una altra pàgina o fer alguna acció
+			// 	// window.location.href = data;
+			// 	for (let i = 0; i < data.length; i++) {
+			// 		const url = data[i];
+			// 		if (!url || !/^https?:\/\/|^\/|^\.\/|^\.\.\/|^[a-zA-Z]:[\\/]{1,2}.*/.test(url)) {
+			// 			console.error("La resposta no sembla ser una URL o path vàlid: " + url);
+			// 			const errorText = "No s'ha pogut pujar el document o no s'ha retornat cap URL.";
+			// 			console.error(errorText);
+			// 			console.error("Resposta --> " + url);
+			// 			// Aquí pots mostrar errorText per pantalla
+			// 			inserirMsg('danger', errorText);
+			// 			continue;
+			// 		}
+			// 		console.log("Document pujat correctament");
+			// 		console.log("URL del document pujat: " + url);
+			// 		window.open(url);
+			// 		// window.open(url, '_blank');
+			// 	}
+			// },
 			success: function(data, status, xhr) {
-				if(data === null || data === undefined || data === '' || data === 'null' || data === 'undefined' || data.length === 0) {
-					console.error("No s'ha pogut pujar el document o no s'ha retornat cap URL.");
-					console.error("Resposta --> " + data);
-					// Aquí pots mostrar errorText per pantalla
+				console.log("Resposta correcta al procés de pujada del document: ", data);
+				const blob = new Blob([data], { type: 'application/pdf' });
+				$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
+
+				if(blob instanceof Blob){
+					const link = document.createElement('a');
+					link.href = window.URL.createObjectURL(blob);
+					link.download = 'document.pdf';
+					document.body.appendChild(link);
+					link.click();
+					document.body.removeChild(link);
+					console.log("Document pujat correctament");
+					inserirMsg('success', "El document s'ha pujat correctament i s'ha descarregat automàticament.");
+					$('#modal-body-carregant').append('<iframe id="' + IFRAME_DIGITALIB_ID + '" src="'+ redirectUrl +'" style="width:100%; height:600px; border:none;"></iframe>');
 					return;
 				}
-				// Aquí pots gestionar la resposta del servidor
-				// per exemple, mostrar un missatge de confirmació
-				console.log("Resposta correcta al procés de pujada del document: ", data);
 
-				// Si vols redirigir a una altra pàgina o fer alguna acció
-				// window.location.href = data;
+				// Errors:
+				if(data === null || data === undefined || data === '' || data === 'null' || data === 'undefined' || data.length === 0) {
+					const errorText = "No s'ha pogut pujar el document o no s'ha retornat cap blob i tampoc errors.";
+					console.error(errorText);
+					console.error("Resposta --> " + data);
+					// Aquí pots mostrar errorText per pantalla
+					inserirMsg('danger', errorText);
+					return;
+				}
+
 				for (let i = 0; i < data.length; i++) {
-					const url = data[i];
-					if (!url || !/^https?:\/\/|^\/|^\.\/|^\.\.\/|^[a-zA-Z]:[\\/]{1,2}.*/.test(url)) {
-						console.error("La resposta no sembla ser una URL o path vàlid: " + url);
-						console.error("No s'ha pogut pujar el document o no s'ha retornat cap URL.");
-						console.error("Resposta --> " + url);
-						// Aquí pots mostrar errorText per pantalla
-						continue;
-					}
-					console.log("Document pujat correctament");
-					console.log("URL del document pujat: " + url);
-					window.open(url);
-					// window.open(url, '_blank');
+					const errorResponse = data[i];
+					const errorText = "No s'ha pogut pujar el document: " + errorResponse;
+					console.error(errorText);
+					// Aquí pots mostrar errorText per pantalla
+					inserirMsg('danger', errorText);
 				}
 			},
-			//si retornassis un pdf, pots fer servir el següent codi per descarregar-lo
-			// success: function(data, status, xhr) {
-			// 	const blob = new Blob([data], { type: 'application/pdf' });
-			// 	const link = document.createElement('a');
-			// 	link.href = window.URL.createObjectURL(blob);
-			// 	link.download = 'document.pdf';
-			// 	document.body.appendChild(link);
-			// 	link.click();
-			// 	document.body.removeChild(link);
-			// },
 			error: function(xhr, status, error) {
+				$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
 				let errorText = 'Error descarregant el document: ' + (xhr.responseText || error);
 				// Aquí pots mostrar errorText per pantalla
+                inserirMsg('danger', errorText);
 			}
 		});
+	}
+
+	function onClickPujarDocument(button) {
+		console.log("Pujar document");	
+
+		console.log($('#' + MODAL_PUJAR_DOCUMENT_ID))
+		$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('show');
+
+		$('#' + NO_CARREGAT_IFRAME_DIGITALIB_ID).hide();
+		$('#' + IFRAME_DIGITALIB_ID)?.remove();
+
+		const url = "<%=request.getContextPath() + "/usuari/preparescanweb/"%>";
+		const dataObj = getFormData();
+
+		console.log("preparescanweb, URL: " + url);
+		console.log("preparescanweb, Data object: ", dataObj);
+		$.ajax({
+			url: url,
+			method: 'GET',
+			data: dataObj,
+        success: function(data, status, xhr) {
+            console.log("Resposta preparescanweb:", data);
+			$('#modal-spinner-carregant').hide();
+			$('#modal-message-carregant').hide();
+
+            if (data && typeof data === "object") {
+                if (data.hasOwnProperty("error")) {
+                    // Hi ha errors, mostra'ls per pantalla
+                    let errors = data["error"];
+                    let errorText = "S'ha produït un error:<br>" + errors.join("<br>");
+                    // Mostra l'error dins el modal o com vulguis
+                    inserirMsg('danger', errorText);
+                } else {
+					for (const transactionID in data) {
+						if (data.hasOwnProperty(transactionID)) {
+							const values = data[transactionID];
+							if (Array.isArray(values)) {
+								const redirectUrl = values[0];
+								const port = values[1];
+								if (transactionID && redirectUrl && port) {
+									onScanwebPrepared(redirectUrl, port, transactionID);
+									return;
+								} else {
+									let errorText = "Falten dades per continuar el procés de pujada del document.";
+									inserirMsg('danger', errorText);
+								}
+							}
+						}
+					}
+				}
+			} else {
+				let errorText = "Resposta invàlida del servidor.";
+				inserirMsg('danger', errorText);
+			}	
+
+			$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
+        },
+        error: function(xhr, status, error) {
+            let errorText = 'Error descarregant el document: ' + (xhr.responseText || error);
+			inserirMsg('danger', errorText);
+			$('#modal-spinner-carregant').hide();
+			$('#modal-message-carregant').hide();
+        }});
 	}
 
 	function getFormData() {
@@ -1083,4 +1231,12 @@ form label {
 
 		return data;
 	}
+
+	$(document).ready(function() {
+		createModalPujarDocument(MODAL_PUJAR_DOCUMENT_ID, function() {
+				$('#' + NO_CARREGAT_IFRAME_DIGITALIB_ID).hide();
+				console.log(MODAL_PUJAR_DOCUMENT_ID + " loaded!");
+			});
+		console.log("Modal created with ID: " + MODAL_PUJAR_DOCUMENT_ID);
+	});
 </script>

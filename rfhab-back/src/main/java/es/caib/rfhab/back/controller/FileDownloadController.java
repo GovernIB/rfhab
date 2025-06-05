@@ -156,4 +156,64 @@ public class FileDownloadController {
       }
     }
 
+    /**
+     * Descarrega un fitxer local a través d'HTTP. Si deleteAfter és true, esborra el fitxer després de la transferència.
+     * @param filePath Ruta local del fitxer
+     * @param filename Nom del fitxer a descarregar (pot ser null)
+     * @param contentType Tipus MIME (pot ser null)
+     * @param deleteAfter Si és true, esborra el fitxer després de la transferència
+     * @param response HttpServletResponse per escriure la resposta
+     */
+    public static void downloadLocalFile(String filePath, String filename, String contentType, boolean deleteAfter, HttpServletResponse response) {
+      FileInputStream input = null;
+      OutputStream output = null;
+      File file = new File(filePath);
+
+      try {
+        if (!file.exists()) {
+          String msg = "Fitxer no trobat: " + filePath;
+          response.setHeader("MsgRFHab", msg);
+          response.sendError(HttpServletResponse.SC_NOT_FOUND);
+          return;
+        }
+
+        if (filename == null) {
+          filename = file.getName();
+        }
+        if (contentType == null) {
+          MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
+          contentType = mimeTypesMap.getContentType(file);
+        }
+        response.setContentType(contentType);
+        response.setHeader("Content-Disposition", "inline; filename=\"" + filename + "\"");
+        response.setContentLength((int) file.length());
+
+        output = response.getOutputStream();
+        input = new FileInputStream(file);
+
+        byte[] buffer = new byte[8192];
+        int bytesRead;
+        while ((bytesRead = input.read(buffer)) != -1) {
+          output.write(buffer, 0, bytesRead);
+        }
+
+        input.close();
+        output.close();
+
+        if (deleteAfter) {
+          if (!file.delete()) {
+            log.warn("No s'ha pogut esborrar el fitxer: " + filePath);
+          }
+        }
+      } catch (Exception e) {
+        String msg = "Error descarregant fitxer local: " + filePath + " (" + e.getMessage() + ")";
+        log.error(msg, e);
+        response.setHeader("MsgRFHab", msg);
+        try {
+          response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        } catch (IOException e1) {
+          response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
+      }
+    }
 }

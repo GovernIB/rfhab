@@ -1,6 +1,7 @@
 package es.caib.rfhab.back.controller.user;
 
 import java.util.List;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import es.caib.rfhab.back.controller.FileDownloadController;
 import es.caib.rfhab.back.controller.webdb.UsuariController;
 import es.caib.rfhab.back.form.webdb.UsuariFilterForm;
 import es.caib.rfhab.back.form.webdb.UsuariForm;
@@ -56,7 +58,9 @@ public class UserController extends UsuariController {
 
 	private RolsacPlugin rolsacPlugin;
 
-	private ScanWebSimplePlugin scanwebPlugin;
+	// TODO: El plugin ScanWebSimplePlugin s'hauria de carregar a través del EJB o
+	// un plugin manager
+	private ScanWebSimplePlugin scanwebPlugin = new ScanWebSimplePlugin();
 
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public ModelAndView home(HttpSession session, HttpServletRequest request, HttpServletResponse response)
@@ -81,9 +85,9 @@ public class UserController extends UsuariController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/scanweb", method = RequestMethod.GET)
+	@RequestMapping(value = "/preparescanweb", method = RequestMethod.GET)
 	@ResponseBody
-	public List<String> scanweb(
+	public HashMap<String, List<String>> prepareScanweb(
 			@RequestParam(value = "languageUI", required = false) String languageUI,
 			@RequestParam(value = "interessats", required = false) String interessats,
 			@RequestParam(value = "ciutadaTipusIdentificacio", required = false) String ciutadaTipusIdentificacio,
@@ -99,69 +103,91 @@ public class UserController extends UsuariController {
 			@RequestParam(value = "tramit", required = false) String tramit,
 			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		log.info("XYZ ZZZ ENTRANT A SCANWEB");
+		log.info("XYZ ZZZ ENTRANT A PREPARESCANWEB");
 
-		log.info("XYZ ZZZ languageUI = " + languageUI);
-		log.info("XYZ ZZZ interessats = " + interessats);
+		log.info("XYZ YYY languageUI = " + languageUI);
+		log.info("XYZ YYY interessats = " + interessats);
 		List<String> interessatsList = Arrays.asList(interessats.split("--"));
-		log.info("XYZ ZZZ interessatsList = " + interessatsList);
-		log.info("XYZ ZZZ ciutadaTipusIdentificacio = " + ciutadaTipusIdentificacio);
-		log.info("XYZ ZZZ ciutadaNif = " + ciutadaNif);
-		log.info("XYZ ZZZ ciutadaNom = " + ciutadaNom);
-		log.info("XYZ ZZZ ciutadaLlinatges = " + ciutadaLlinatges);
-		log.info("XYZ ZZZ representant = " + representant);
-		log.info("XYZ ZZZ representantNom = " + representantNom);
-		log.info("XYZ ZZZ representantLlinatges = " + representantLlinatges);
-		log.info("XYZ ZZZ representantTipusIdentificacio = " + representantTipusIdentificacio);
-		log.info("XYZ ZZZ representantIdentificacio = " + representantIdentificacio);
-		log.info("XYZ ZZZ procediment = " + procediment);
-		log.info("XYZ ZZZ tramit = " + tramit);
+		log.info("XYZ YYY interessatsList = " + interessatsList);
+		log.info("XYZ YYY ciutadaTipusIdentificacio = " + ciutadaTipusIdentificacio);
+		log.info("XYZ YYY ciutadaNif = " + ciutadaNif);
+		log.info("XYZ YYY ciutadaNom = " + ciutadaNom);
+		log.info("XYZ YYY ciutadaLlinatges = " + ciutadaLlinatges);
+		log.info("XYZ YYY representant = " + representant);
+		log.info("XYZ YYY representantNom = " + representantNom);
+		log.info("XYZ YYY representantLlinatges = " + representantLlinatges);
+		log.info("XYZ YYY representantTipusIdentificacio = " + representantTipusIdentificacio);
+		log.info("XYZ YYY representantIdentificacio = " + representantIdentificacio);
+		log.info("XYZ YYY procediment = " + procediment);
+		log.info("XYZ YYY tramit = " + tramit);
 		// TODO:aquí sobra info que s'ha d'emprar per generar el pdf plantilla que
 		// descarregarà l'usuari
 
 		LoginInfo loginInfo = LoginInfo.getInstance();
 		Usuari usuari = loginInfo.getUsuariPersona();
 		String username = usuari.getUsername();
-		String funcionariAdministracioID = usuari.getNif();// TODO: no n'estic segur
+		String funcionariAdministracioID = usuari.getNif();
 		String funcionariNom = (usuari.getNom() != null ? usuari.getNom() : "") + " "
 				+ (usuari.getLlinatge1() != null ? usuari.getLlinatge1() : "") + " "
-				+ (usuari.getLlinatge2() != null ? usuari.getLlinatge2() : "");// TODO: no n'estic segur
-		String funcionariDir3 = getCodiDIR3(request, username);// TODO: no tenim el codi dir3 del funcionari enlloc
-		// TODO: no n'estic segur
+				+ (usuari.getLlinatge2() != null ? usuari.getLlinatge2() : "");
+		String funcionariDir3 = getCodiDIR3(request, username);// codiDIR3 del lloc de feina del funcionari
 		Entitat entitat = entitatLogicaEjb.findByPrimaryKey(loginInfo.getEntitatID());
 		Unitat unitat = unitatLogicaEjb.findByPrimaryKey(entitat.getUnitatID());
 		List<String> organs = Arrays.asList(unitat.getCodi());
 
-		log.info("XYZ ZZZ username = " + username);
-		log.info("XYZ ZZZ funcionariAdministracioID = " + funcionariAdministracioID);
-		log.info("XYZ ZZZ funcionariNom = " + funcionariNom);
-		log.info("XYZ ZZZ funcionariDir3 = " + funcionariDir3);
-		log.info("XYZ ZZZ organs = " + organs);
-		scanwebPlugin = new ScanWebSimplePlugin();
+		log.info("XYZ YYY username = " + username);
+		log.info("XYZ YYY funcionariAdministracioID = " + funcionariAdministracioID);
+		log.info("XYZ YYY funcionariNom = " + funcionariNom);
+		log.info("XYZ YYY funcionariDir3 = " + funcionariDir3);
+		log.info("XYZ YYY organs = " + organs);
 		// scanwebPlugin.escaneig("u00666", "ca", "Funcionari DeProfessio", "12345678X",
 		// "1254123412",
 		// Arrays.asList("43153858Q"), Arrays.asList("A04013511"), "11223344C", "Pep
 		// Gonella");
-		List<String> urlFitxersFirmatsOerrors = scanwebPlugin.escaneig(
+		HashMap<String, List<String>> transactionPreparedOrErrors = scanwebPlugin.prepareEscaneig(
 				username, languageUI, funcionariNom, funcionariAdministracioID, funcionariDir3,
-				interessatsList, organs, ciutadaNif, ciutadaNom, FileSystemManager.getFilesPath());
+				interessatsList, organs, ciutadaNif, ciutadaNom);
+
+		log.info("XYZ YYY transactionPreparedOrErrors = " + transactionPreparedOrErrors);
+		return transactionPreparedOrErrors;
+	}
+
+	@RequestMapping(value = "/scanweb", method = RequestMethod.GET)
+	@ResponseBody
+	public List<String> scanweb(
+			@RequestParam(value = "redirectUrl", required = false) String redirectUrl,
+			@RequestParam(value = "port", required = false) String portStr,
+			@RequestParam(value = "transactionID", required = false) String transactionID,
+			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		log.info("XYZ ZZZ ENTRANT A SCANWEB");
+
+		log.info("XYZ ZZZ redirectUrl = " + redirectUrl);
+		log.info("XYZ ZZZ portStr = " + portStr);
+		int port = Integer.parseInt(portStr);
+		log.info("XYZ ZZZ port = " + port);
+		log.info("XYZ ZZZ transactionID = " + transactionID);
+
+		List<String> urlFitxersFirmatsOerrors = scanwebPlugin.escaneig(redirectUrl, port, transactionID,
+				FileSystemManager.getFilesPath());
 
 		log.info("XYZ ZZZ urlFitxersFirmatsOerrors = " + urlFitxersFirmatsOerrors);
-		// TODO:aquests fitxers després s'han d'esborrar
-		return urlFitxersFirmatsOerrors;
-		//HtmlUtils.saveMessageError només és útil si retornam un ModelAndView
-		// List<String> urlFitxersFirmats = new java.util.ArrayList<String>();
-		// for (String urlFitxer : urlFitxersFirmatsOerrors) {
-		// 	if (urlFitxer == null || urlFitxer.trim().isEmpty() ||
-		// 			!(urlFitxer.startsWith("http://") || urlFitxer.startsWith("https://") || urlFitxer.startsWith("/")
-		// 					|| urlFitxer.matches("^[a-zA-Z]:[\\/]{1,2}.*"))) {
-		// 		// Si hi ha un error, el retornem com a missatge d'error
-		// 		HtmlUtils.saveMessageError(request, urlFitxer);
-		// 	} else {
-		// 		urlFitxersFirmats.add(urlFitxer);
-		// 	}
-		// }
-		// return urlFitxersFirmats;
+
+		// HtmlUtils.saveMessageError només és útil si retornam un ModelAndView
+		List<String> urlErrors = new java.util.ArrayList<String>();
+		for (String urlFitxer : urlFitxersFirmatsOerrors) {
+			if (urlFitxer == null || urlFitxer.trim().isEmpty() ||
+					!(urlFitxer.startsWith("http://") || urlFitxer.startsWith("https://") || urlFitxer.startsWith("/")
+							|| urlFitxer.matches("^[a-zA-Z]:[\\\\\\/]{1,2}.*"))) {
+				// Si hi ha un error, el retornem com a missatge d'error
+				// HtmlUtils.saveMessageError(request, urlFitxer);//només és útil si retornam un ModelAndView
+				urlErrors.add(urlFitxer);
+			} else {
+				FileDownloadController.downloadLocalFile(urlFitxer, Paths.get(urlFitxer).getFileName().toString(),
+						"application/pdf", true, response);
+			}
+		}
+		return urlErrors;
 		// ModelAndView mav = new ModelAndView("homeUsuari", "fitxersFirmats",
 		// urlFitxersFirmats);
 		// ModelAndView mav = new ModelAndView("scanPage", "fitxersFirmats",

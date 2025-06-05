@@ -14,6 +14,7 @@ import java.net.Socket;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -71,15 +72,14 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 	}
 
 	@Override
-	public List<String> escaneig(String usuari, String languageUI, String funcionariNom,
-			String funcionariAdministracioID,
-			String funcionariDir3,
-			List<String> interessats, List<String> organs, String ciutadaNif, String ciutadaNom, File filesPath)
+	public HashMap<String, List<String>> prepareEscaneig(String usuari, String languageUI, String funcionariNom,
+			String funcionariAdministracioID, String funcionariDir3, List<String> interessats, List<String> organs,
+			String ciutadaNif, String ciutadaNom)
 			throws Exception {
-
 		String transactionID = null;
 
-		List<String> filesOrErrorsResult = new ArrayList<String>();
+		String redirectUrl = null;
+		HashMap<String, List<String>> transactionPrepared = new HashMap<String, List<String>>();
 		try {
 
 			ApiMassiveScanWebSimpleApi instancia = getApiConnection();
@@ -90,7 +90,11 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 			if (scanWebProfileSelected == null) {
 				String msgError = "Error: NO HI HA PERFILS PER A AQUEST USUARI APLICACIÓ";
 				LOG.info(msgError);
-				return Arrays.asList(msgError);
+				return new HashMap<String, List<String>>() {
+					{
+						put("error", Arrays.asList(msgError));
+					}
+				};
 			} else {
 				for (MassiveScanWebSimpleAvailableProfile profile : scanWebProfileSelected.getAvailableProfiles()) {
 					LOG.info("Profile: " + profile.getName() + " (CODI: " + profile.getCode() + "): "
@@ -103,7 +107,11 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 				if (profileSelected == null) {
 					String msgError = "No s'ha trobat el perfil " + perfil + " a la llista de perfils disponibles";
 					LOG.info(msgError);
-					return Arrays.asList(msgError);
+					return new HashMap<String, List<String>>() {
+						{
+							put("error", Arrays.asList(msgError));
+						}
+					};
 				}
 			}
 
@@ -203,6 +211,7 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 				transactionID = api.getTransactionID(transacctionIdRequest);
 				LOG.info("languageUI = |" + languageUI + "|");
 				LOG.info("TransactionID = |" + transactionID + "|");
+				LOG.info("view = |" + view + "|");
 			}
 
 			// Servidor TEMPORAL
@@ -223,14 +232,39 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 			startTransactionInfo.setReturnUrl(returnUrl);
 			startTransactionInfo.setTransactionID(transactionID);
 
-			String redirectUrl = api.startTransaction(startTransactionInfo);
+			redirectUrl = api.startTransaction(startTransactionInfo);
+			LOG.info("Transacció creada, TransactionID = " + transactionID);
 			LOG.info("RedirectUrl = " + redirectUrl);
 
-			if (Desktop.isDesktopSupported()) {
-				Desktop.getDesktop().browse(new URI(redirectUrl));
-			} else {
-				LOG.info("Per favor obri un Navegador i copia-li la URL anterior ...");
+			transactionPrepared.put(transactionID, Arrays.asList(redirectUrl, Integer.toString(port)));
+			return transactionPrepared;
+		} catch (Exception e) {
+			if (api != null && transactionID != null && redirectUrl != null) {
+				try {
+					LOG.error("Error en la connexió amb ScanWeb, procediment a tancar transacció " + transactionID, e);
+					api.closeTransaction(transactionID);
+				} catch (Throwable th) {
+					th.printStackTrace();
+				}
 			}
+
+			LOG.error("Error en la connexió amb ScanWeb", e);
+			throw e;
+		}
+	}
+
+	@Override
+	public List<String> escaneig(String redirectUrl, int port, String transactionID, File filesPath)
+			throws Exception {
+
+		List<String> filesOrErrorsResult = new ArrayList<String>();
+		try {
+			// Ho gestiona el front, es veurà dins un iframe
+			// if (Desktop.isDesktopSupported()) {
+			// Desktop.getDesktop().browse(new URI(redirectUrl));
+			// } else {
+			// LOG.info("Per favor obri un Navegador i copia-li la URL anterior ...");
+			// }
 
 			readFromSocket(port);
 
@@ -342,7 +376,8 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 
 					MassiveScanWebSimpleFile detachedSignedFile = result.getDetachedSignatureFile();
 					if (detachedSignedFile != null) {
-						File detached = new File(filesPath, (count - 1) + "_detached_sign." + detachedSignedFile.getNom());
+						File detached = new File(filesPath,
+								(count - 1) + "_detached_sign." + detachedSignedFile.getNom());
 
 						FileOutputStream fos = new FileOutputStream(detached);
 						fos.write(detachedSignedFile.getData());

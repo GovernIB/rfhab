@@ -5,9 +5,11 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.DatagramSocket;
 import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -215,13 +217,19 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 			}
 
 			// Servidor TEMPORAL
-			String host = Inet4Address.getLocalHost().getHostAddress();
+			String host = Inet4Address.getLocalHost().getHostAddress();// TODO:emprar un nom de domini???
 			// final int port = 1989;
 
 			Random r = new Random();
-			int low = 1900;
-			int high = 2000;
-			final int port = r.nextInt(high - low) + low;
+			final int low = 1900;
+			final int high = 2000;
+			int port = r.nextInt(high - low) + low;
+			final int MAX_TRIES_AVALIABLE_PORT = 10;
+			int tries = 0;
+			while (!available(port, low, high) && tries < MAX_TRIES_AVALIABLE_PORT) {
+				tries++;
+				port = r.nextInt(high - low) + low;
+			}
 
 			final String returnUrl = "http://" + host + ":" + port + "/returnurl/" + transactionID;
 			LOG.info("ReturnURL =" + returnUrl);
@@ -440,7 +448,46 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 		}
 
 		serverSocket.close();
+	}
 
+	/**
+	 * Checks to see if a specific port is available.
+	 *
+	 * @param port the port to check for availability
+	 * @param MIN_PORT_NUMBER the minimum port number allowed (inclusive)
+	 * @param MAX_PORT_NUMBER the maximum port number allowed (inclusive)
+	 */
+	public static boolean available(int port, final Integer MIN_PORT_NUMBER,
+			final Integer MAX_PORT_NUMBER) {
+		if ((MIN_PORT_NUMBER != null && port < MIN_PORT_NUMBER)
+				|| (MAX_PORT_NUMBER != null && port > MAX_PORT_NUMBER)) {
+			throw new IllegalArgumentException("Invalid start port: " + port);
+		}
+
+		ServerSocket ss = null;
+		DatagramSocket ds = null;
+		try {
+			ss = new ServerSocket(port);
+			ss.setReuseAddress(true);
+			ds = new DatagramSocket(port);
+			ds.setReuseAddress(true);
+			return true;
+		} catch (IOException e) {
+		} finally {
+			if (ds != null) {
+				ds.close();
+			}
+
+			if (ss != null) {
+				try {
+					ss.close();
+				} catch (IOException e) {
+					/* should not be thrown */
+				}
+			}
+		}
+
+		return false;
 	}
 
 	private ApiMassiveScanWebSimpleApi getApiConnection() throws Exception {
@@ -468,5 +515,4 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 
 		return getApi();
 	}
-
 }

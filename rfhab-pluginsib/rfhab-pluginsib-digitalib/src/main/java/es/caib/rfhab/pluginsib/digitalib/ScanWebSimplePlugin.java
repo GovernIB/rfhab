@@ -5,9 +5,11 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.DatagramSocket;
 import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -433,6 +435,46 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 		serverSocket.close();
 	}
 
+	/**
+	 * Checks to see if a specific port is available.
+	 *
+	 * @param port the port to check for availability
+	 * @param MIN_PORT_NUMBER the minimum port number allowed (inclusive)
+	 * @param MAX_PORT_NUMBER the maximum port number allowed (inclusive)
+	 */
+	public static boolean available(int port, final Integer MIN_PORT_NUMBER,
+			final Integer MAX_PORT_NUMBER) {
+		if ((MIN_PORT_NUMBER != null && port < MIN_PORT_NUMBER)
+				|| (MAX_PORT_NUMBER != null && port > MAX_PORT_NUMBER)) {
+			throw new IllegalArgumentException("Invalid start port: " + port);
+		}
+
+		ServerSocket ss = null;
+		DatagramSocket ds = null;
+		try {
+			ss = new ServerSocket(port);
+			ss.setReuseAddress(true);
+			ds = new DatagramSocket(port);
+			ds.setReuseAddress(true);
+			return true;
+		} catch (IOException e) {
+		} finally {
+			if (ds != null) {
+				ds.close();
+			}
+
+			if (ss != null) {
+				try {
+					ss.close();
+				} catch (IOException e) {
+					/* should not be thrown */
+				}
+			}
+		}
+
+		return false;
+	}
+
 	private ApiMassiveScanWebSimpleApi getApiConnection() throws Exception {
 
 		ApiMassiveScanWebSimpleApi instancia = getApi();
@@ -458,5 +500,4 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 
 		return getApi();
 	}
-
 }

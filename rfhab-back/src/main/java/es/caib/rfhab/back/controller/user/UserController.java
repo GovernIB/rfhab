@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import es.caib.rfhab.back.controller.FileDownloadController;
 import es.caib.rfhab.back.controller.webdb.UsuariController;
@@ -87,7 +88,7 @@ public class UserController extends UsuariController {
 
 	@RequestMapping(value = "/preparescanweb", method = RequestMethod.GET)
 	@ResponseBody
-	public HashMap<String, List<String>> prepareScanweb(
+	public HashMap<String, String> prepareScanweb(
 			@RequestParam(value = "languageUI", required = false) String languageUI,
 			@RequestParam(value = "interessats", required = false) String interessats,
 			@RequestParam(value = "ciutadaTipusIdentificacio", required = false) String ciutadaTipusIdentificacio,
@@ -144,31 +145,40 @@ public class UserController extends UsuariController {
 		// "1254123412",
 		// Arrays.asList("43153858Q"), Arrays.asList("A04013511"), "11223344C", "Pep
 		// Gonella");
-		HashMap<String, List<String>> transactionPreparedOrErrors = scanwebPlugin.prepareEscaneig(
-				username, languageUI, funcionariNom, funcionariAdministracioID, funcionariDir3,
-				interessatsList, organs, ciutadaNif, ciutadaNom);
+		final String absoluteControllerBase = getAbsoluteControllerBase(request, CONTEXTWEB);
+		final String firstPartReturnUrl = absoluteControllerBase + "finalscanweb/";
+
+		log.info("XYZ YYY firstPartReturnUrl = " + firstPartReturnUrl);
+		HashMap<String, String> transactionPreparedOrErrors = scanwebPlugin.prepareEscaneig(firstPartReturnUrl,
+				username, languageUI, funcionariNom, funcionariAdministracioID, funcionariDir3, interessatsList, organs,
+				ciutadaNif, ciutadaNom);
 
 		log.info("XYZ YYY transactionPreparedOrErrors = " + transactionPreparedOrErrors);
 		return transactionPreparedOrErrors;
+	}
+
+	@RequestMapping(value = "/finalscanweb/{transactionID}", method = RequestMethod.GET)
+	@ResponseBody
+	public ModelAndView finalscanweb(
+			@RequestParam(value = "transactionID", required = false) String transactionID,
+			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		log.info("finalscanweb: " + transactionID);
+		return new ModelAndView(new RedirectView("/", true));
 	}
 
 	@RequestMapping(value = "/scanweb", method = RequestMethod.GET)
 	@ResponseBody
 	public List<String> scanweb(
 			@RequestParam(value = "redirectUrl", required = false) String redirectUrl,
-			@RequestParam(value = "port", required = false) String portStr,
 			@RequestParam(value = "transactionID", required = false) String transactionID,
 			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		log.info("XYZ ZZZ ENTRANT A SCANWEB");
 
 		log.info("XYZ ZZZ redirectUrl = " + redirectUrl);
-		log.info("XYZ ZZZ portStr = " + portStr);
-		int port = Integer.parseInt(portStr);
-		log.info("XYZ ZZZ port = " + port);
 		log.info("XYZ ZZZ transactionID = " + transactionID);
 
-		List<String> urlFitxersFirmatsOerrors = scanwebPlugin.escaneig(redirectUrl, port, transactionID,
+		List<String> urlFitxersFirmatsOerrors = scanwebPlugin.escaneig(redirectUrl, transactionID,
 				FileSystemManager.getFilesPath());
 
 		log.info("XYZ ZZZ urlFitxersFirmatsOerrors = " + urlFitxersFirmatsOerrors);

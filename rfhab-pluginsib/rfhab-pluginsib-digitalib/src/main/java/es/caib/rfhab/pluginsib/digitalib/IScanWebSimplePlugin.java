@@ -13,12 +13,13 @@ public interface IScanWebSimplePlugin extends IPluginIB {
 	public static final String SCANWEB_PLUGIN_PROPERTY = Constants.RFHAB_PROPERTY_BASE + IPLUGINSIB_BASE_PROPERTIES
 			+ "scanweb.";
 
-	public HashMap<String, List<String>> prepareEscaneig(String usuari, String languageUI, String funcionariNom,
+	public HashMap<String, String> prepareEscaneig(String firstPartReturnUrl, String usuari, String languageUI,
+			String funcionariNom,
 			String funcionariAdministracioID, String funcionariDir3, List<String> interessats, List<String> organs,
 			String ciutadaNif, String ciutadaNom)
 			throws Exception;
 
-	public List<String> escaneig(String redirectUrl, int port, String transactionID, File filesPath)
+	public List<String> escaneig(String redirectUrl, String transactionID, File filesPath)
 			throws Exception;
 
 }

@@ -1035,7 +1035,7 @@ form label {
 			$(modalId).on("load", loadedCallback);
     }
 
-	function onScanwebPrepared(redirectUrl, port, transactionID) {
+	function onScanwebPrepared(redirectUrl, transactionID) {
 		console.log("scanweb preparat, procedim a scanweb");	
 
 		$('#' + URL_NO_CARREGAT_IFRAME_DIGITALIB_ID).text(redirectUrl);
@@ -1044,7 +1044,6 @@ form label {
 		const url = "<%=request.getContextPath() + "/usuari/scanweb/"%>";
 		const dataObj = {
 			redirectUrl: redirectUrl,
-			port: port,
 			transactionID: transactionID
 		};
 
@@ -1161,24 +1160,20 @@ form label {
             if (data && typeof data === "object") {
                 if (data.hasOwnProperty("error")) {
                     // Hi ha errors, mostra'ls per pantalla
-                    let errors = data["error"];
-                    let errorText = "S'ha produït un error:<br>" + errors.join("<br>");
+                    let error = data["error"];
+                    let errorText = "S'ha produït un error:<br>" + error + "<br>";
                     // Mostra l'error dins el modal o com vulguis
                     inserirMsg('danger', errorText);
                 } else {
 					for (const transactionID in data) {
 						if (data.hasOwnProperty(transactionID)) {
-							const values = data[transactionID];
-							if (Array.isArray(values)) {
-								const redirectUrl = values[0];
-								const port = values[1];
-								if (transactionID && redirectUrl && port) {
-									onScanwebPrepared(redirectUrl, port, transactionID);
-									return;
-								} else {
-									let errorText = "Falten dades per continuar el procés de pujada del document.";
-									inserirMsg('danger', errorText);
-								}
+							const redirectUrl = data[transactionID];
+							if (transactionID && redirectUrl) {
+								onScanwebPrepared(redirectUrl, transactionID);
+								return;
+							} else {
+								let errorText = "Falten dades per continuar el procés de pujada del document.";
+								inserirMsg('danger', errorText);
 							}
 						}
 					}

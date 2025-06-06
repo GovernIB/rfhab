@@ -72,14 +72,14 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 	}
 
 	@Override
-	public HashMap<String, List<String>> prepareEscaneig(String usuari, String languageUI, String funcionariNom,
+	public HashMap<String, String> prepareEscaneig(String firstPartReturnUrl, String usuari, String languageUI, String funcionariNom,
 			String funcionariAdministracioID, String funcionariDir3, List<String> interessats, List<String> organs,
 			String ciutadaNif, String ciutadaNom)
 			throws Exception {
 		String transactionID = null;
 
 		String redirectUrl = null;
-		HashMap<String, List<String>> transactionPrepared = new HashMap<String, List<String>>();
+		HashMap<String, String> transactionPrepared = new HashMap<String, String>();
 		try {
 
 			ApiMassiveScanWebSimpleApi instancia = getApiConnection();
@@ -90,9 +90,9 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 			if (scanWebProfileSelected == null) {
 				String msgError = "Error: NO HI HA PERFILS PER A AQUEST USUARI APLICACIÓ";
 				LOG.info(msgError);
-				return new HashMap<String, List<String>>() {
+				return new HashMap<String, String>() {
 					{
-						put("error", Arrays.asList(msgError));
+						put("error", msgError);
 					}
 				};
 			} else {
@@ -107,9 +107,9 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 				if (profileSelected == null) {
 					String msgError = "No s'ha trobat el perfil " + perfil + " a la llista de perfils disponibles";
 					LOG.info(msgError);
-					return new HashMap<String, List<String>>() {
+					return new HashMap<String, String>() {
 						{
-							put("error", Arrays.asList(msgError));
+							put("error", msgError);
 						}
 					};
 				}
@@ -214,17 +214,8 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 				LOG.info("view = |" + view + "|");
 			}
 
-			// Servidor TEMPORAL
-			String host = Inet4Address.getLocalHost().getHostAddress();
-			// final int port = 1989;
-
-			Random r = new Random();
-			int low = 1900;
-			int high = 2000;
-			final int port = r.nextInt(high - low) + low;
-
-			final String returnUrl = "http://" + host + ":" + port + "/returnurl/" + transactionID;
-			LOG.info("ReturnURL =" + returnUrl);
+			final String returnUrl = firstPartReturnUrl + transactionID;
+			LOG.info("ReturnURL = " + returnUrl);
 
 			MassiveScanWebSimpleStartTransactionRequest startTransactionInfo;
 			startTransactionInfo = new MassiveScanWebSimpleStartTransactionRequest();
@@ -236,7 +227,7 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 			LOG.info("Transacció creada, TransactionID = " + transactionID);
 			LOG.info("RedirectUrl = " + redirectUrl);
 
-			transactionPrepared.put(transactionID, Arrays.asList(redirectUrl, Integer.toString(port)));
+			transactionPrepared.put(transactionID, redirectUrl);
 			return transactionPrepared;
 		} catch (Exception e) {
 			if (api != null && transactionID != null && redirectUrl != null) {
@@ -254,7 +245,7 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 	}
 
 	@Override
-	public List<String> escaneig(String redirectUrl, int port, String transactionID, File filesPath)
+	public List<String> escaneig(String redirectUrl, String transactionID, File filesPath)
 			throws Exception {
 
 		List<String> filesOrErrorsResult = new ArrayList<String>();
@@ -266,7 +257,7 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 			// LOG.info("Per favor obri un Navegador i copia-li la URL anterior ...");
 			// }
 
-			readFromSocket(port);
+			// readFromSocket(port);
 
 			LOG.info(" Cridant a getSubTransactionsOfTransaction(" + transactionID + ") ...");
 			MassiveScanWebSimpleSubTransactionsOfTransaction subs = api.getSubTransactionsOfTransaction(transactionID);
@@ -440,7 +431,6 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 		}
 
 		serverSocket.close();
-
 	}
 
 	private ApiMassiveScanWebSimpleApi getApiConnection() throws Exception {

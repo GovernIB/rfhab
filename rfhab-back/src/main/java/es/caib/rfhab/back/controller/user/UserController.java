@@ -47,9 +47,11 @@ import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
  *
  */
 @Controller
-@RequestMapping(value = "/usuari/")
+@RequestMapping(value = UserController.CONTEXTWEB)
 @SessionAttributes(types = { UsuariForm.class, UsuariFilterForm.class })
 public class UserController extends UsuariController {
+
+	public static final String CONTEXTWEB = "/usuari/";
 
 	@EJB(mappedName = UnitatLogicaUserService.JNDI_NAME)
 	protected UnitatLogicaUserService unitatLogicaEjb;
@@ -190,7 +192,8 @@ public class UserController extends UsuariController {
 					!(urlFitxer.startsWith("http://") || urlFitxer.startsWith("https://") || urlFitxer.startsWith("/")
 							|| urlFitxer.matches("^[a-zA-Z]:[\\\\\\/]{1,2}.*"))) {
 				// Si hi ha un error, el retornem com a missatge d'error
-				// HtmlUtils.saveMessageError(request, urlFitxer);//només és útil si retornam un ModelAndView
+				// HtmlUtils.saveMessageError(request, urlFitxer);//només és útil si retornam un
+				// ModelAndView
 				urlErrors.add(urlFitxer);
 			} else {
 				FileDownloadController.downloadLocalFile(urlFitxer, Paths.get(urlFitxer).getFileName().toString(),
@@ -326,4 +329,16 @@ public class UserController extends UsuariController {
 		return "userFormCommon";
 	}
 
+	protected static String getAbsoluteControllerBase(HttpServletRequest request,
+			String webContext) {
+		return getAbsoluteURLBase(request) + webContext;
+	}
+
+	protected static String getAbsoluteURLBase(HttpServletRequest request) {
+		// return
+		// request.getSession().getAttribute(MenuUserController.URL_BASE_NAVEGADOR)
+		// + getContextWeb();
+		return request.getScheme() + "://" + request.getServerName() + ":"
+				+ +request.getServerPort() + request.getContextPath();
+	}
 }

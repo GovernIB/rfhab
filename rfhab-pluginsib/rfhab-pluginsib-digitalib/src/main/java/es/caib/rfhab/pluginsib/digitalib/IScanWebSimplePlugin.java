@@ -8,6 +8,11 @@ import org.fundaciobit.pluginsib.core.v3.IPluginIB;
 
 import es.caib.rfhab.commons.utils.Constants;
 
+/*
+ *
+ * @author jpou
+ * 
+ */
 public interface IScanWebSimplePlugin extends IPluginIB {
 
 	public static final String SCANWEB_PLUGIN_PROPERTY = Constants.RFHAB_PROPERTY_BASE + IPLUGINSIB_BASE_PROPERTIES

@@ -1,6 +1,7 @@
 package es.caib.rfhab.back.controller.user;
 
 import java.util.List;
+import java.io.PrintWriter;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.fundaciobit.genapp.common.StringKeyValue;
-import org.fundaciobit.genapp.common.filesystem.FileSystemManager;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.web.HtmlUtils;
@@ -23,21 +23,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
-
 import es.caib.rfhab.back.controller.FileDownloadController;
 import es.caib.rfhab.back.controller.webdb.UsuariController;
 import es.caib.rfhab.back.form.webdb.UsuariFilterForm;
 import es.caib.rfhab.back.form.webdb.UsuariForm;
 import es.caib.rfhab.back.security.LoginInfo;
 import es.caib.rfhab.logic.EntitatLogicaService;
+import es.caib.rfhab.logic.ScanWebLogicaService;
 import es.caib.rfhab.logic.UnitatLogicaUserService;
 import es.caib.rfhab.model.entity.Entitat;
 import es.caib.rfhab.model.entity.Unitat;
 import es.caib.rfhab.model.entity.Usuari;
 import es.caib.rfhab.model.fields.IdiomaFields;
 import es.caib.rfhab.persistence.UsuariJPA;
-import es.caib.rfhab.pluginsib.digitalib.ScanWebSimplePlugin;
 import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
 
 /**
@@ -53,6 +51,9 @@ public class UserController extends UsuariController {
 
 	public static final String CONTEXTWEB = "/usuari/";
 
+	@EJB(mappedName = ScanWebLogicaService.JNDI_NAME)
+	protected ScanWebLogicaService scanWebLogicaEjb;
+
 	@EJB(mappedName = UnitatLogicaUserService.JNDI_NAME)
 	protected UnitatLogicaUserService unitatLogicaEjb;
 
@@ -60,10 +61,6 @@ public class UserController extends UsuariController {
 	protected EntitatLogicaService entitatLogicaEjb;
 
 	private RolsacPlugin rolsacPlugin;
-
-	// TODO: El plugin ScanWebSimplePlugin s'hauria de carregar a través del EJB o
-	// un plugin manager
-	private ScanWebSimplePlugin scanwebPlugin = new ScanWebSimplePlugin();
 
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public ModelAndView home(HttpSession session, HttpServletRequest request, HttpServletResponse response)
@@ -148,42 +145,30 @@ public class UserController extends UsuariController {
 		// Arrays.asList("43153858Q"), Arrays.asList("A04013511"), "11223344C", "Pep
 		// Gonella");
 		final String absoluteControllerBase = getAbsoluteControllerBase(request, CONTEXTWEB);
-		final String firstPartReturnUrl = absoluteControllerBase + "finalscanweb/";
+		final String firstPartReturnUrl = absoluteControllerBase + "scanweb/";
 
 		log.info("XYZ YYY firstPartReturnUrl = " + firstPartReturnUrl);
-		HashMap<String, String> transactionPreparedOrErrors = scanwebPlugin.prepareEscaneig(firstPartReturnUrl,
+		HashMap<String, String> transactionPreparedOrErrors = scanWebLogicaEjb.escaneig(firstPartReturnUrl,
 				username, languageUI, funcionariNom, funcionariAdministracioID, funcionariDir3, interessatsList, organs,
 				ciutadaNif, ciutadaNom);
 
-		log.info("XYZ YYY transactionPreparedOrErrors = " + transactionPreparedOrErrors);
 		return transactionPreparedOrErrors;
 	}
 
-	@RequestMapping(value = "/finalscanweb/{transactionID}", method = RequestMethod.GET)
+	@RequestMapping(value = "/checkfinalscanweb/", method = RequestMethod.GET)
 	@ResponseBody
-	public ModelAndView finalscanweb(
-			@RequestParam(value = "transactionID", required = false) String transactionID,
+	public List<String> checkFinalScanweb(
+			@RequestParam(value = "transactionID", required = true) String transactionID,
 			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		log.info("finalscanweb: " + transactionID);
-		return new ModelAndView(new RedirectView("/", true));
-	}
+		log.info("checkFinalScanweb: " + transactionID);
 
-	@RequestMapping(value = "/scanweb", method = RequestMethod.GET)
-	@ResponseBody
-	public List<String> scanweb(
-			@RequestParam(value = "redirectUrl", required = false) String redirectUrl,
-			@RequestParam(value = "transactionID", required = false) String transactionID,
-			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		List<String> urlFitxersFirmatsOerrors = scanWebLogicaEjb.checkFinalScanweb(transactionID);
 
-		log.info("XYZ ZZZ ENTRANT A SCANWEB");
-
-		log.info("XYZ ZZZ redirectUrl = " + redirectUrl);
-		log.info("XYZ ZZZ transactionID = " + transactionID);
-
-		List<String> urlFitxersFirmatsOerrors = scanwebPlugin.escaneig(redirectUrl, transactionID,
-				FileSystemManager.getFilesPath());
-
-		log.info("XYZ ZZZ urlFitxersFirmatsOerrors = " + urlFitxersFirmatsOerrors);
+		if (urlFitxersFirmatsOerrors == null) {
+			// transacció en curs
+			log.info("checkFinalScanweb: transacció en curs");
+			return null;
+		}
 
 		// HtmlUtils.saveMessageError només és útil si retornam un ModelAndView
 		List<String> urlErrors = new java.util.ArrayList<String>();
@@ -200,7 +185,32 @@ public class UserController extends UsuariController {
 						"application/pdf", true, response);
 			}
 		}
+
 		return urlErrors;
+	}
+
+	@RequestMapping(value = "/scanweb/{transactionID}", method = RequestMethod.GET)
+	@ResponseBody
+	public void scanweb(
+			@PathVariable(value = "transactionID", required = true) String transactionID,
+			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		log.info("XYZ ZZZ ENTRANT A SCANWEB");
+
+		log.info("XYZ ZZZ transactionID = " + transactionID);
+
+		scanWebLogicaEjb.checkResultatEscaneig(transactionID, response);
+
+		PrintWriter out = response.getWriter();
+		out.println("HTTP/1.0 200 OK");
+		out.println("Content-Type: text/html");
+		out.println("\r\n");
+		out.println("<html><body>OK (Revisi consola per saber l'estat final del proc&eacute;s)</body></html>");
+
+		System.err.println("Connexio amb el client finalitzada.");
+		out.flush();
+		out.close();
+
 		// ModelAndView mav = new ModelAndView("homeUsuari", "fitxersFirmats",
 		// urlFitxersFirmats);
 		// ModelAndView mav = new ModelAndView("scanPage", "fitxersFirmats",

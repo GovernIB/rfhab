@@ -62,12 +62,6 @@
 			<version>${project.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>es.caib.rfhab.pluginsib</groupId>
-			<artifactId>rfhab-pluginsib-digitalib</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
 		<!-- Externas -->
 
 		<dependency>

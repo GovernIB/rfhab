@@ -45,7 +45,13 @@
             <artifactId>pluginsib-arxiu-api</artifactId>
             <version>${pluginsib.arxiu.version}</version>
         </dependency>
-        
+
+        <dependency>
+			<groupId>es.caib.rfhab.pluginsib</groupId>
+			<artifactId>rfhab-pluginsib-digitalib</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
         <dependency>
             <artifactId>pluginsib-userinformation-api</artifactId>
             <groupId>org.fundaciobit.pluginsib.userinformation</groupId>

@@ -42,6 +42,12 @@ import es.caib.digitalib.api.interna.client.apimassivescanwebsimple.v1.services.
 import es.caib.digitalib.api.interna.client.apimassivescanwebsimple.v1.services.auth.HttpBasicAuth;
 import es.caib.rfhab.commons.utils.Configuracio;
 
+/*
+ *
+ * @author jagarcia
+ * @author jpou
+ * 
+ */
 public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 
 	protected static final String ENDPOINT = SCANWEB_PLUGIN_PROPERTY + "endpoint";
@@ -74,7 +80,8 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 	}
 
 	@Override
-	public HashMap<String, String> prepareEscaneig(String firstPartReturnUrl, String usuari, String languageUI, String funcionariNom,
+	public HashMap<String, String> escaneig(String firstPartReturnUrl, String usuari, String languageUI,
+			String funcionariNom,
 			String funcionariAdministracioID, String funcionariDir3, List<String> interessats, List<String> organs,
 			String ciutadaNif, String ciutadaNom)
 			throws Exception {
@@ -246,8 +253,7 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 		}
 	}
 
-	@Override
-	public List<String> escaneig(String redirectUrl, String transactionID, File filesPath)
+	public List<String> checkResultatEscaneig(String transactionID, File filesPath)
 			throws Exception {
 
 		List<String> filesOrErrorsResult = new ArrayList<String>();
@@ -298,21 +304,24 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 				LOG.info(result.toString());
 
 				if (CONSTANTS.getMassiveScanWebSimpleStatusSTATUSREQUESTEDID().equals(status)) { // = 0;
-					String msg = "S'ha rebut un estat inconsistent del procés"
+					String msg = "Subtransacció: " + subTransactionID
+							+ " -- S'ha rebut un estat inconsistent del procés"
 							+ " (requestedid). Pot ser el PLugin no està ben desenvolupat."
 							+ " Consulti amb el seu administrador.";
 					LOG.info(msg);
 					filesOrErrorsResult.add(msg);
 					continue;
 				} else if (CONSTANTS.getMassiveScanWebSimpleStatusSTATUSINPROGRESS().equals(status)) { // = 1;
-					String msg = "S'ha rebut un estat inconsistent del procés"
+					String msg = "Subtransacció: " + subTransactionID
+							+ " -- S'ha rebut un estat inconsistent del procés"
 							+ " (En Progrés). Pot ser el PLugin no està ben desenvolupat."
 							+ " Consulti amb el seu administrador.";
 					LOG.info(msg);
 					filesOrErrorsResult.add(msg);
 					continue;
 				} else if (CONSTANTS.getMassiveScanWebSimpleStatusSTATUSFINALERROR().equals(status)) { // = -1;
-					String msg = "Error durant la realització de l'escaneig/còpia autèntica: "
+					String msg = "Subtransacció: " + subTransactionID
+							+ " -- Error durant la realització de l'escaneig/còpia autèntica: "
 							+ transactionStatus.getErrorMessage();
 					LOG.info(msg);
 					filesOrErrorsResult.add(msg);
@@ -322,7 +331,8 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 					}
 					continue;
 				} else if (CONSTANTS.getMassiveScanWebSimpleStatusSTATUSCANCELLED().equals(status)) { // = -2;
-					String msg = "Durant el procés, l'usuari ha cancelat la transacció.";
+					String msg = "Subtransacció: " + subTransactionID
+							+ " -- Durant el procés, l'usuari ha cancelat la transacció.";
 					LOG.info(msg);
 					filesOrErrorsResult.add(msg);
 					continue;
@@ -438,7 +448,7 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 	/**
 	 * Checks to see if a specific port is available.
 	 *
-	 * @param port the port to check for availability
+	 * @param port            the port to check for availability
 	 * @param MIN_PORT_NUMBER the minimum port number allowed (inclusive)
 	 * @param MAX_PORT_NUMBER the maximum port number allowed (inclusive)
 	 */

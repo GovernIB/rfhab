@@ -45,6 +45,14 @@ public class ScanWebValidator<I extends ScanWeb>
         new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(ENTITATID)));
 
     // Check size
+    if (__vr.getFieldErrorCount(TRANSACTIONID) == 0) {
+      java.lang.String __transactionid = __target__.getTransactionID();
+      if (__transactionid!= null && __transactionid.length() > 255) {
+        __vr.rejectValue(TRANSACTIONID, "genapp.validation.sizeexceeds",
+            new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(TRANSACTIONID)), new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(255)));
+      }
+    }
+
     if (__vr.getFieldErrorCount(TRANSACTIONWEBID) == 0) {
       java.lang.String __transactionwebid = __target__.getTransactionWebID();
       if (__transactionwebid!= null && __transactionwebid.length() > 255) {

@@ -49,7 +49,7 @@
         missatge clob,
         signedfileinfo clob,
         status number(19,0) not null,
-        transactionid number(19,0),
+        transactionid varchar2(255 char),
         transactionwebid varchar2(255 char),
         usuariid number(19,0) not null
     );

@@ -15,8 +15,8 @@ public class ScanWebQueryPath extends org.fundaciobit.genapp.common.query.QueryP
     return new LongField(getQueryPath(), ScanWebFields.DIGITALID);
   }
 
-  public LongField TRANSACTIONID() {
-    return new LongField(getQueryPath(), ScanWebFields.TRANSACTIONID);
+  public StringField TRANSACTIONID() {
+    return new StringField(getQueryPath(), ScanWebFields.TRANSACTIONID);
   }
 
   public StringField TRANSACTIONWEBID() {

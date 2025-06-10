@@ -1,8 +1,11 @@
 package es.caib.rfhab.back.controller.user;
 
 import java.util.List;
+import java.util.Map;
+import java.io.File;
 import java.io.PrintWriter;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -12,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.fundaciobit.genapp.common.StringKeyValue;
+import org.fundaciobit.genapp.common.filesystem.FileSystemManager;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.web.HtmlUtils;
@@ -29,12 +33,16 @@ import es.caib.rfhab.back.form.webdb.UsuariFilterForm;
 import es.caib.rfhab.back.form.webdb.UsuariForm;
 import es.caib.rfhab.back.security.LoginInfo;
 import es.caib.rfhab.logic.EntitatLogicaService;
+import es.caib.rfhab.logic.FitxerPublicLogicaService;
 import es.caib.rfhab.logic.ScanWebLogicaService;
 import es.caib.rfhab.logic.UnitatLogicaUserService;
+import es.caib.rfhab.model.bean.ScanWebBean;
 import es.caib.rfhab.model.entity.Entitat;
+import es.caib.rfhab.model.entity.Fitxer;
 import es.caib.rfhab.model.entity.Unitat;
 import es.caib.rfhab.model.entity.Usuari;
 import es.caib.rfhab.model.fields.IdiomaFields;
+import es.caib.rfhab.persistence.FitxerJPA;
 import es.caib.rfhab.persistence.UsuariJPA;
 import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
 
@@ -61,6 +69,9 @@ public class UserController extends UsuariController {
 	protected EntitatLogicaService entitatLogicaEjb;
 
 	private RolsacPlugin rolsacPlugin;
+
+	@EJB(mappedName = FitxerPublicLogicaService.JNDI_NAME)
+	protected FitxerPublicLogicaService fitxerLogicaEjb;
 
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public ModelAndView home(HttpSession session, HttpServletRequest request, HttpServletResponse response)
@@ -162,7 +173,7 @@ public class UserController extends UsuariController {
 			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		log.info("checkFinalScanweb: " + transactionID);
 
-		List<String> urlFitxersFirmatsOerrors = scanWebLogicaEjb.checkFinalScanweb(transactionID);
+		Map<String, String> urlFitxersFirmatsOerrors = scanWebLogicaEjb.checkFinalScanweb(transactionID);
 
 		if (urlFitxersFirmatsOerrors == null) {
 			// transacció en curs
@@ -172,15 +183,43 @@ public class UserController extends UsuariController {
 
 		// HtmlUtils.saveMessageError només és útil si retornam un ModelAndView
 		List<String> urlErrors = new java.util.ArrayList<String>();
-		for (String urlFitxer : urlFitxersFirmatsOerrors) {
-			if (urlFitxer == null || urlFitxer.trim().isEmpty() ||
-					!(urlFitxer.startsWith("http://") || urlFitxer.startsWith("https://") || urlFitxer.startsWith("/")
-							|| urlFitxer.matches("^[a-zA-Z]:[\\\\\\/]{1,2}.*"))) {
+		for (String urlFitxer : urlFitxersFirmatsOerrors.values()) {
+			File file = new File(urlFitxer);
+			if (!file.exists()) {
 				// Si hi ha un error, el retornem com a missatge d'error
 				// HtmlUtils.saveMessageError(request, urlFitxer);//només és útil si retornam un
 				// ModelAndView
 				urlErrors.add(urlFitxer);
 			} else {
+				Fitxer fitxer = new FitxerJPA();
+				fitxer.setNom(file.getName());
+				fitxer.setDescripcio(null);
+				fitxer.setMime("application/pdf");
+				fitxer.setTamany(file.length());
+				fitxer = fitxerLogicaEjb.create(fitxer);
+				FileSystemManager.crearFitxer(file, fitxer.getFitxerID());
+				ScanWebBean scanWebBean = new ScanWebBean();
+				// TODO: ficar plugin a ejb
+				// TODO:falta informació de fitxer firmat...
+				scanWebBean.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+				LoginInfo loginInfo = LoginInfo.getInstance();
+				scanWebBean.setEntitatID(loginInfo.getEntitatID());
+				// TODO:falta
+				scanWebBean.setFileInfo(null);
+				scanWebBean.setFitxerID(fitxer.getFitxerID());
+				// TODO:falta
+				scanWebBean.setMetadades(null);
+				// TODO:falta
+				scanWebBean.setMissatge(null);
+				// TODO:falta
+				scanWebBean.setStatus(0);
+				// TODO:falta
+				scanWebBean.setSignedFileInfo(null);
+				scanWebBean.setTransactionID(transactionID);
+				// TODO:falta (subtransactionID)
+				scanWebBean.setTransactionWebID(transactionID);
+				scanWebBean.setUsuariID(loginInfo.getUsuariPersona().getUsuariID());
+
 				FileDownloadController.downloadLocalFile(urlFitxer, Paths.get(urlFitxer).getFileName().toString(),
 						"application/pdf", true, response);
 			}
@@ -205,7 +244,8 @@ public class UserController extends UsuariController {
 		out.println("HTTP/1.0 200 OK");
 		out.println("Content-Type: text/html");
 		out.println("\r\n");
-		out.println("<html><body>OK (Revisi consola per saber l'estat final del proc&eacute;s)</body></html>");
+		out.println(
+				"<html><body>OK. Esperi la descàrrega del document si està a RFHAB. Sino revisi consola per saber l'estat final del proc&eacute;s</body></html>");
 
 		System.err.println("Connexio amb el client finalitzada.");
 		out.flush();

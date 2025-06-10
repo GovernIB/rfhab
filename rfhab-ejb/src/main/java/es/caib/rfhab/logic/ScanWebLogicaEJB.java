@@ -5,12 +5,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.servlet.http.HttpServletResponse;
 
 import org.fundaciobit.genapp.common.filesystem.FileSystemManager;
 
+import es.caib.rfhab.ejb.FitxerService;
 import es.caib.rfhab.ejb.ScanWebEJB;
+import es.caib.rfhab.model.entity.Fitxer;
 import es.caib.rfhab.pluginsib.digitalib.ScanWebSimplePlugin;
 
 /**
@@ -20,14 +23,18 @@ import es.caib.rfhab.pluginsib.digitalib.ScanWebSimplePlugin;
  */
 @Stateless
 public class ScanWebLogicaEJB extends ScanWebEJB implements ScanWebLogicaService {
+	@EJB(mappedName = FitxerService.JNDI_NAME)
+    protected FitxerService fitxerLogicaEjb;
+	
 	// TODO: El plugin ScanWebSimplePlugin s'hauria de carregar a través del EJB o
 	// un plugin manager
 	private ScanWebSimplePlugin scanwebPlugin = new ScanWebSimplePlugin();
 
-	private static Map<String, List<String>> transactionsStarted = new HashMap<>();
+	private static Map<String, Map<String, String>> transactionsStarted = new HashMap<>();
 
-	public List<String> checkFinalScanweb(String transactionID) {
-		List<String> urlFitxersFirmatsOerrors = transactionsStarted.get(transactionID);
+	@Override
+	public Map<String, String> checkFinalScanweb(String transactionID) {
+		Map<String, String> urlFitxersFirmatsOerrors = transactionsStarted.get(transactionID);
 
 		// procés acabat, esborrem la transacció
 		if (urlFitxersFirmatsOerrors != null) {
@@ -39,6 +46,7 @@ public class ScanWebLogicaEJB extends ScanWebEJB implements ScanWebLogicaService
 		return urlFitxersFirmatsOerrors;
 	}
 
+	@Override
 	public HashMap<String, String> escaneig(String firstPartReturnUrl, String username, String languageUI,
 			String funcionariNom,
 			String funcionariAdministracioID, String funcionariDir3, List<String> interessatsList, List<String> organs,
@@ -56,8 +64,9 @@ public class ScanWebLogicaEJB extends ScanWebEJB implements ScanWebLogicaService
 		return transactionPreparedOrErrors;
 	}
 
-	public List<String> checkResultatEscaneig(String transactionID, HttpServletResponse response) throws Exception {
-		List<String> urlFitxersFirmatsOerrors = scanwebPlugin.checkResultatEscaneig(transactionID,
+	@Override
+	public Map<String, String> checkResultatEscaneig(String transactionID, HttpServletResponse response) throws Exception {
+		Map<String, String> urlFitxersFirmatsOerrors = scanwebPlugin.checkResultatEscaneig(transactionID,
 				FileSystemManager.getFilesPath());
 
 		log.info("XYZ ZZZ urlFitxersFirmatsOerrors = " + urlFitxersFirmatsOerrors);

@@ -13,7 +13,7 @@ public interface ScanWebFields extends java.io.Serializable {
 
 
 	 public static final LongField DIGITALID = new LongField(_TABLE_MODEL, "digitalID", "digitalid");  // PK
-	 public static final LongField TRANSACTIONID = new LongField(_TABLE_MODEL, "transactionID", "transactionid");
+	 public static final StringField TRANSACTIONID = new StringField(_TABLE_MODEL, "transactionID", "transactionid");
 	 public static final StringField TRANSACTIONWEBID = new StringField(_TABLE_MODEL, "transactionWebID", "transactionwebid");
 	 public static final LongField STATUS = new LongField(_TABLE_MODEL, "status", "status");
 	 public static final LongField FITXERID = new LongField(_TABLE_MODEL, "fitxerID", "fitxerid");

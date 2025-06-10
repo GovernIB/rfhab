@@ -2,6 +2,7 @@ package es.caib.rfhab.logic;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Local;
 import javax.servlet.http.HttpServletResponse;
@@ -18,9 +19,9 @@ public interface ScanWebLogicaService extends ScanWebService {
 
 	public static final String JNDI_NAME = "java:app/rfhab-ejb/ScanWebLogicaEJB!es.caib.rfhab.logic.ScanWebLogicaService";
 
-	public List<String> checkFinalScanweb(String transactionID);
+	public Map<String, String> checkFinalScanweb(String transactionID);
 
-	public List<String> checkResultatEscaneig(String transactionID, HttpServletResponse response) throws Exception;
+	public Map<String, String> checkResultatEscaneig(String transactionID, HttpServletResponse response) throws Exception;
 
 	public HashMap<String, String> escaneig(String firstPartReturnUrl, String username, String languageUI,
 			String funcionariNom,

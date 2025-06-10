@@ -3,6 +3,7 @@ package es.caib.rfhab.pluginsib.digitalib;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.fundaciobit.pluginsib.core.v3.IPluginIB;
 
@@ -24,7 +25,7 @@ public interface IScanWebSimplePlugin extends IPluginIB {
 			String ciutadaNif, String ciutadaNom)
 			throws Exception;
 
-	public List<String> checkResultatEscaneig(String transactionID, File filesPath)
+	public Map<String, String> checkResultatEscaneig(String transactionID, File filesPath)
 			throws Exception;
 
 }

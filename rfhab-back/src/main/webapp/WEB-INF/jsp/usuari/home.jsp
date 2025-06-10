@@ -993,6 +993,7 @@ form label {
 	const IFRAME_DIGITALIB_ID = 'modal-iframe-digitalib';
 	const URL_NO_CARREGAT_IFRAME_DIGITALIB_ID = 'modal-urlnotloaded-iframe-digitalib';
 	const NO_CARREGAT_IFRAME_DIGITALIB_ID = 'modal-body-nocarregat';
+	const CARREGANT_IFRAME_DIGITALIB_ID = 'modal-body-carregant';
 
 	function inserirMsg(tipusMsg, msg) {
 		const alertHtml = '<div class="alert alert-' + tipusMsg + '" role="alert">'
@@ -1014,7 +1015,7 @@ form label {
                         + '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
                         + '</div>'
 
-                        + '<div class="modal-body" id="modal-body-carregant">'
+                        + '<div class="modal-body" id="' + CARREGANT_IFRAME_DIGITALIB_ID + '">'
                         + '<p id="modal-message-carregant">'
 						+ "<fmt:message key="usuari.tramit.documentacio.pujardocument.carregant" />"
                         + '</p>'
@@ -1099,6 +1100,10 @@ form label {
 							setTimeout(makeRequest, pollingInterval); // Schedule next request
 						} else {
 							console.log('Maximum polling duration reached. Stopping polling.');
+							$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
+							let errorText = 'Exhaurit el temps màxim per pujar el document. Si us plau, obri la finestra modal de nou i torna-ho a intentar.';
+							// Aquí pots mostrar errorText per pantalla
+							inserirMsg('danger', errorText);
 						}
 						return;
 					}
@@ -1157,10 +1162,10 @@ form label {
 
 		$('#' + URL_NO_CARREGAT_IFRAME_DIGITALIB_ID).text(redirectUrl);
 		$('#' + NO_CARREGAT_IFRAME_DIGITALIB_ID).show();
-		$('#modal-body-carregant').append('<iframe id="' + IFRAME_DIGITALIB_ID + '" src="'+ redirectUrl +'" style="width:100%; height:600px; border:none;"></iframe>');
+		$('#' + CARREGANT_IFRAME_DIGITALIB_ID).append('<iframe id="' + IFRAME_DIGITALIB_ID + '" src="'+ redirectUrl +'" style="width:100%; height:450px; border:none;"></iframe>');
 		
 		const pollingInterval = 5000; // 5 seconds in milliseconds
-		const maxPollingDuration = 600000; // 600 seconds (10 minutes) in milliseconds
+		const maxPollingDuration = 900000; // 900 seconds (15 minutes) in milliseconds
 
 		pollCheckResultScanweb(transactionID, pollingInterval, maxPollingDuration);
 	}

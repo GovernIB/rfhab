@@ -3452,8 +3452,8 @@
         {
           "isAutoIncrement": false,
           "sqlName": "transactionid",
-          "sqlType": -5,
-          "size": 19,
+          "sqlType": 12,
+          "size": 255,
           "digits": 0,
           "isNotNullable": false,
           "labels": {
@@ -3461,7 +3461,7 @@
             "es": "Transacción"
           },
           "javaName": "transactionID",
-          "javaType": "long",
+          "javaType": "java.lang.String",
           "traduible": false,
           "showInWebList": true,
           "showInReferenceList": true,
@@ -3470,7 +3470,7 @@
           "orderBy": 0,
           "groupBy": false,
           "webFieldInfo": {
-            "webtype": 14
+            "webtype": 1
           },
           "foreignKeys": []
         },

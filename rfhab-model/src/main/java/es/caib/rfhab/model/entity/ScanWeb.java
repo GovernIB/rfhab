@@ -5,8 +5,8 @@ public interface ScanWeb extends org.fundaciobit.genapp.common.IGenAppEntity {
 	public long getDigitalID();
 	public void setDigitalID(long _digitalID_);
 
-	public long getTransactionID();
-	public void setTransactionID(long _transactionID_);
+	public java.lang.String getTransactionID();
+	public void setTransactionID(java.lang.String _transactionID_);
 
 	public java.lang.String getTransactionWebID();
 	public void setTransactionWebID(java.lang.String _transactionWebID_);

@@ -43,25 +43,14 @@ public class ScanWebFilterForm extends RFHabBaseFilterForm implements ScanWebFie
   }
 
 
-  private java.lang.Long transactionIDDesde;
+  private java.lang.String transactionID;
 
-  public java.lang.Long getTransactionIDDesde() {
-    return this.transactionIDDesde;
+  public java.lang.String getTransactionID() {
+    return this.transactionID;
   }
 
-  public void setTransactionIDDesde(java.lang.Long transactionIDDesde) {
-    this.transactionIDDesde = transactionIDDesde;
-  }
-
-
-  private java.lang.Long transactionIDFins;
-
-  public java.lang.Long getTransactionIDFins() {
-    return this.transactionIDFins;
-  }
-
-  public void setTransactionIDFins(java.lang.Long transactionIDFins) {
-    this.transactionIDFins = transactionIDFins;
+  public void setTransactionID(java.lang.String transactionID) {
+    this.transactionID = transactionID;
   }
 
 
@@ -215,8 +204,7 @@ public class ScanWebFilterForm extends RFHabBaseFilterForm implements ScanWebFie
     super(__toClone);
     this.digitalIDDesde = __toClone.digitalIDDesde;
     this.digitalIDFins = __toClone.digitalIDFins;
-    this.transactionIDDesde = __toClone.transactionIDDesde;
-    this.transactionIDFins = __toClone.transactionIDFins;
+    this.transactionID = __toClone.transactionID;
     this.transactionWebID = __toClone.transactionWebID;
     this.statusDesde = __toClone.statusDesde;
     this.statusFins = __toClone.statusFins;

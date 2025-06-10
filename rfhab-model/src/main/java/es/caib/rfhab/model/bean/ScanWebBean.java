@@ -9,7 +9,7 @@ public class ScanWebBean implements ScanWeb {
 
 
 	long digitalID;// PK
-	long transactionID;
+	java.lang.String transactionID;
 	java.lang.String transactionWebID;
 	long status;
 	long fitxerID;
@@ -27,7 +27,7 @@ public class ScanWebBean implements ScanWeb {
   }
 
   /** Constructor amb tots els camps  */
-  public ScanWebBean(long digitalID , long transactionID , java.lang.String transactionWebID , long status , long fitxerID , java.lang.String fileInfo , java.lang.String signedFileInfo , java.lang.String metadades , java.lang.String missatge , java.lang.Long usuariID , java.sql.Timestamp dataCreacio , long entitatID) {
+  public ScanWebBean(long digitalID , java.lang.String transactionID , java.lang.String transactionWebID , long status , long fitxerID , java.lang.String fileInfo , java.lang.String signedFileInfo , java.lang.String metadades , java.lang.String missatge , java.lang.Long usuariID , java.sql.Timestamp dataCreacio , long entitatID) {
     this.digitalID=digitalID;
     this.transactionID=transactionID;
     this.transactionWebID=transactionWebID;
@@ -42,7 +42,7 @@ public class ScanWebBean implements ScanWeb {
     this.entitatID=entitatID;
 }
   /** Constructor sense valors autoincrementals */
-  public ScanWebBean(long transactionID , java.lang.String transactionWebID , long status , long fitxerID , java.lang.String fileInfo , java.lang.String signedFileInfo , java.lang.String metadades , java.lang.String missatge , java.lang.Long usuariID , java.sql.Timestamp dataCreacio , long entitatID) {
+  public ScanWebBean(java.lang.String transactionID , java.lang.String transactionWebID , long status , long fitxerID , java.lang.String fileInfo , java.lang.String signedFileInfo , java.lang.String metadades , java.lang.String missatge , java.lang.Long usuariID , java.sql.Timestamp dataCreacio , long entitatID) {
     this.transactionID=transactionID;
     this.transactionWebID=transactionWebID;
     this.status=status;
@@ -87,10 +87,10 @@ public class ScanWebBean implements ScanWeb {
 		this.digitalID = _digitalID_;
 	};
 
-	public long getTransactionID() {
+	public java.lang.String getTransactionID() {
 		return(transactionID);
 	};
-	public void setTransactionID(long _transactionID_) {
+	public void setTransactionID(java.lang.String _transactionID_) {
 		this.transactionID = _transactionID_;
 	};
 

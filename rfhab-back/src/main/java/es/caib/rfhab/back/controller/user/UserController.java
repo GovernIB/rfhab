@@ -19,6 +19,7 @@ import org.fundaciobit.genapp.common.filesystem.FileSystemManager;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.web.HtmlUtils;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -173,7 +174,10 @@ public class UserController extends UsuariController {
 			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		log.info("checkFinalScanweb: " + transactionID);
 
-		Map<String, String> urlFitxersFirmatsOerrors = scanWebLogicaEjb.checkFinalScanweb(transactionID);// a urlFitxersFirmatsOerrors tenc subtransaccions
+		Map<String, String> urlFitxersFirmatsOerrors = scanWebLogicaEjb.checkFinalScanweb(transactionID);// a
+																											// urlFitxersFirmatsOerrors
+																											// tenc
+																											// subtransaccions
 
 		if (urlFitxersFirmatsOerrors == null) {
 			// transacció en curs
@@ -187,7 +191,8 @@ public class UserController extends UsuariController {
 			File file = new File(urlFitxer);
 			if (!file.exists()) {
 				// Si hi ha un error, el retornem com a missatge d'error
-				// HtmlUtils.saveMessageError(request, urlFitxer);// només és útil si retornam un ModelAndView
+				// HtmlUtils.saveMessageError(request, urlFitxer);// només és útil si retornam
+				// un ModelAndView
 				urlErrorsOFitxers.add(urlFitxer);
 			} else {
 				LoginInfo loginInfo = LoginInfo.getInstance();
@@ -195,7 +200,8 @@ public class UserController extends UsuariController {
 						loginInfo.getUsuariPersona().getUsuariID());
 				urlErrorsOFitxers
 						.add(FileDownloadController.fileUrl(fitxer));
-						// .add(getAbsoluteControllerBase(request, FileDownloadController.CONTEXTWEB) + fitxerId);
+				// .add(getAbsoluteControllerBase(request, FileDownloadController.CONTEXTWEB) +
+				// fitxerId);
 			}
 		}
 
@@ -203,36 +209,21 @@ public class UserController extends UsuariController {
 		// return new ModelAndView("homeUsuari", "fitxersFirmats", fitxersFirmatsIds);
 	}
 
-	@RequestMapping(value = "/scanweb/{transactionID}", method = RequestMethod.GET)
+	@RequestMapping(value = "/scanweb/{transactionID}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
 	@ResponseBody
-	public void scanweb(
+	public String scanweb(
 			@PathVariable(value = "transactionID", required = true) String transactionID,
 			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
-
 		log.info("XYZ ZZZ ENTRANT A SCANWEB");
-
 		log.info("XYZ ZZZ transactionID = " + transactionID);
 
 		scanWebLogicaEjb.checkResultatEscaneig(transactionID, response);
 
-		PrintWriter out = response.getWriter();
-		out.println("HTTP/1.0 200 OK");
-		out.println("Content-Type: text/html");
-		out.println("\r\n");
-		out.println(
-				"<html><body>OK. Revisi consola per saber l'estat final del proc&eacute;s</body></html>");
-
-		out.flush();
-		out.close();
 		System.err.println("Connexio amb el client finalitzada.");
-
-		// ModelAndView mav = new ModelAndView("homeUsuari", "fitxersFirmats",
-		// urlFitxersFirmats);
-		// ModelAndView mav = new ModelAndView("scanPage", "fitxersFirmats",
-		// urlFitxersFirmats);
-
-		// return mav;
-		// return new ModelAndView("homeUsuari");
+		return "<html>"
+				+ "<body>OK. Revisi consola per saber l'estat final del proc&eacute;s</body>"
+				+ "<script>window.close();</script>"
+				+ "</html>";
 	}
 
 	@RequestMapping(value = "/nou/{usuariID}/check", method = RequestMethod.GET)

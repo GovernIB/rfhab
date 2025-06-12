@@ -1,5 +1,7 @@
 package es.caib.rfhab.logic;
 
+import java.io.File;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,10 +12,12 @@ import javax.ejb.Stateless;
 import javax.servlet.http.HttpServletResponse;
 
 import org.fundaciobit.genapp.common.filesystem.FileSystemManager;
+import org.fundaciobit.genapp.common.i18n.I18NException;
 
-import es.caib.rfhab.ejb.FitxerService;
 import es.caib.rfhab.ejb.ScanWebEJB;
+import es.caib.rfhab.model.bean.ScanWebBean;
 import es.caib.rfhab.model.entity.Fitxer;
+import es.caib.rfhab.persistence.FitxerJPA;
 import es.caib.rfhab.pluginsib.digitalib.ScanWebSimplePlugin;
 
 /**
@@ -23,9 +27,9 @@ import es.caib.rfhab.pluginsib.digitalib.ScanWebSimplePlugin;
  */
 @Stateless
 public class ScanWebLogicaEJB extends ScanWebEJB implements ScanWebLogicaService {
-	@EJB(mappedName = FitxerService.JNDI_NAME)
-    protected FitxerService fitxerLogicaEjb;
-	
+	@EJB(mappedName = FitxerPublicLogicaService.JNDI_NAME)
+	protected FitxerPublicLogicaService fitxerLogicaEjb;
+
 	// TODO: El plugin ScanWebSimplePlugin s'hauria de carregar a través del EJB o
 	// un plugin manager
 	private ScanWebSimplePlugin scanwebPlugin = new ScanWebSimplePlugin();
@@ -65,7 +69,8 @@ public class ScanWebLogicaEJB extends ScanWebEJB implements ScanWebLogicaService
 	}
 
 	@Override
-	public Map<String, String> checkResultatEscaneig(String transactionID, HttpServletResponse response) throws Exception {
+	public Map<String, String> checkResultatEscaneig(String transactionID, HttpServletResponse response)
+			throws Exception {
 		Map<String, String> urlFitxersFirmatsOerrors = scanwebPlugin.checkResultatEscaneig(transactionID,
 				FileSystemManager.getFilesPath());
 
@@ -77,5 +82,39 @@ public class ScanWebLogicaEJB extends ScanWebEJB implements ScanWebLogicaService
 			log.error("XYZ ZZZ transactionID not found: " + transactionID);
 			throw new Exception("Transaction ID not found: " + transactionID);
 		}
+	}
+
+	@Override
+	public Fitxer guardaEscaneig(String transactionID, File file, long entitatId, long usuariId) throws I18NException {
+		Fitxer fitxer = new FitxerJPA();
+		fitxer.setNom(file.getName());
+		fitxer.setDescripcio(null);
+		fitxer.setMime("application/pdf");
+		fitxer.setTamany(file.length());
+		fitxer = fitxerLogicaEjb.create(fitxer);
+		FileSystemManager.crearFitxer(file, fitxer.getFitxerID());
+
+		ScanWebBean scanWebBean = new ScanWebBean();
+		// TODO: ficar plugin a ejb
+		// TODO:falta informació de fitxer firmat...
+		scanWebBean.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+		scanWebBean.setEntitatID(entitatId);
+		// TODO:falta
+		scanWebBean.setFileInfo(null);
+		scanWebBean.setFitxerID(fitxer.getFitxerID());
+		// TODO:falta
+		scanWebBean.setMetadades(null);
+		// TODO:falta
+		scanWebBean.setMissatge(null);
+		// TODO:falta
+		scanWebBean.setStatus(0);
+		// TODO:falta
+		scanWebBean.setSignedFileInfo(null);
+		scanWebBean.setTransactionID(transactionID);
+		// TODO:falta (subtransactionID)
+		scanWebBean.setTransactionWebID(transactionID);
+		scanWebBean.setUsuariID(usuariId);
+
+		return fitxer;
 	}
 }

@@ -126,8 +126,17 @@ form label {
 
 .buttonsDiv {
 	margin-bottom: 30px;
-}
+	
+	div:last-child{
+		text-align: end;
+	}
 
+	button[disabled] {
+		pointer-events: none;
+		opacity: 0.5;
+		filter: grayscale(0.75);
+	}
+}
 
 /* Autocomplete */
 
@@ -311,8 +320,8 @@ form label {
 
 							<div class="row buttonsDiv">
 								<div class="col-md-6">
-									<button type="button" class="btn btn-primary">
-										<i class="fa fa-file-pdf"></i> <fmt:message key="usuari.tramit.documentacio.descarregar" />
+									<button type="button" id="btn-descarregar-firmat-id" class="btn btn-primary" disabled onclick="if(typeof onClickDescarregarFirmat == 'function') {  onClickDescarregarFirmat(this); };">
+										<i class="fa fa-file-pdf"></i> <fmt:message key="usuari.tramit.documentacio.descarregarfirmat" />
 									</button>
 								</div>
 								<div class="col-md-6">
@@ -973,7 +982,7 @@ form label {
 			}
 	    }
 	});
-	
+
 	$('#pas2_tramit').autocomplete({
 	    lookup: countries,
 	    minChars: 1,
@@ -994,6 +1003,7 @@ form label {
 	const URL_NO_CARREGAT_IFRAME_DIGITALIB_ID = 'modal-urlnotloaded-iframe-digitalib';
 	const NO_CARREGAT_IFRAME_DIGITALIB_ID = 'modal-body-nocarregat';
 	const CARREGANT_IFRAME_DIGITALIB_ID = 'modal-body-carregant';
+	var FITXER_ENCRYPTED_ID = [];
 
 	function inserirMsg(tipusMsg, msg) {
 		const alertHtml = '<div class="alert alert-' + tipusMsg + '" role="alert">'
@@ -1003,7 +1013,7 @@ form label {
 		$('#contingut').prepend(alertHtml);
 	}
 
-	function createModalPujarDocument(modalId, iframeLoadedCallback) {
+	function createModalPujarDocument(modalId) {
 			$('body').append('<div id="' + modalId + '" class="modal hide fade show" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'
                         + '<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">'
 							
@@ -1025,16 +1035,14 @@ form label {
                         + '</div>'
 
                         + '<div class="modal-body" id="' + NO_CARREGAT_IFRAME_DIGITALIB_ID + '">'
-						+ '<p id="modal-msgnotloaded-iframe-digitalib">' 
-						+ "<fmt:message key="usuari.tramit.documentacio.pujardocument.iframenocarrega"/>" 
-						+ '</p>'
-						+ '<p id=' + URL_NO_CARREGAT_IFRAME_DIGITALIB_ID + '>' 
-						+ '</p>'
+							+ '<p id="modal-msgnotloaded-iframe-digitalib">' 
+								+ "<fmt:message key="usuari.tramit.documentacio.pujardocument.iframenocarrega"/>" 
+								+ '&nbsp;'
+								+ '<a id=' + URL_NO_CARREGAT_IFRAME_DIGITALIB_ID + ' target="_blank" href="#">AQUÍ</a>'
+							+ '</p>'
                         + '</div>'
 
 						+ '</div>' + '</div>' + '</div>');
-			//TODO: iframe o modal???
-			$('#' + MODAL_PUJAR_DOCUMENT_ID).on("load", iframeLoadedCallback);
     }
 
 	async function pollCheckResultScanweb(transactionID, pollingInterval, maxPollingDuration) {
@@ -1053,9 +1061,9 @@ form label {
 				url: url,
 				method: 'GET',
 				data: dataObj,
-				xhrFields: {
-					responseType: 'blob'
-				},
+				// xhrFields: {
+				// 	responseType: 'blob'
+				// },
 				//retornam una url on hi ha el fitxer pujat
 				// success: function(data, status, xhr) {
 				// 	if(data === null || data === undefined || data === '' || data === 'null' || data === 'undefined' || data.length === 0) {
@@ -1110,25 +1118,14 @@ form label {
 
 					// Procés acabat
 					console.log("Procés de pujada acabat!");
-					const blob = new Blob([data], { type: 'application/pdf' });
-					$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
+					document.querySelector('#btn-descarregar-firmat-id').setAttribute('disabled', true);
+					FITXER_ENCRYPTED_ID = [];
 
-					// OK
-					if(blob instanceof Blob){
-						const link = document.createElement('a');
-						link.href = window.URL.createObjectURL(blob);
-						link.download = 'document.pdf';
-						document.body.appendChild(link);
-						link.click();
-						document.body.removeChild(link);
-						console.log("Document pujat correctament");
-						inserirMsg('success', "El document s'ha pujat correctament i s'ha descarregat automàticament.");
-						return;
-					}
+					$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
 
 					// Errors:
 					if(data.length === 0) {
-						const errorText = "No s'ha pogut pujar el document o no s'ha retornat cap blob i tampoc errors.";
+						const errorText = "No s'ha pogut pujar el document o no s'ha retornat cap fitxer ID i tampoc errors.";
 						console.error(errorText);
 						console.error("Resposta --> " + data);
 						// Aquí pots mostrar errorText per pantalla
@@ -1136,12 +1133,21 @@ form label {
 						return;
 					}
 
+					//OK o Errors
 					for (let i = 0; i < data.length; i++) {
-						const errorResponse = data[i];
-						const errorText = "No s'ha pogut pujar el document: " + errorResponse;
-						console.error(errorText);
-						// Aquí pots mostrar errorText per pantalla
-						inserirMsg('danger', errorText);
+						const errorResponseOrFileId = data[i];
+						if(!errorResponseOrFileId || errorResponseOrFileId.indexOf(' ') >= 0){
+							const errorText = "No s'ha pogut pujar el document: " + errorResponseOrFileId;
+							console.error(errorText);
+							// Aquí pots mostrar errorText per pantalla
+							inserirMsg('danger', errorText);
+							return;
+						}
+
+						document.querySelector('#btn-descarregar-firmat-id').removeAttribute('disabled');
+						FITXER_ENCRYPTED_ID.push(errorResponseOrFileId);
+						console.log("Document pujat correctament");
+						inserirMsg('success', "El document s'ha pujat correctament i s'ha habilitat la descàrrega.");
 						return;
 					}
 				},
@@ -1157,17 +1163,87 @@ form label {
 		makeRequest(); // Start the first request
 	}
 
+	function afegeixIframeDigitalib(redirectUrl){
+		$('#' + CARREGANT_IFRAME_DIGITALIB_ID).append('<iframe id="' + IFRAME_DIGITALIB_ID + '" src="'+ redirectUrl +'" style="width:100%; height:450px; border:none;"></iframe>');
+
+		const iframe = document.getElementById(IFRAME_DIGITALIB_ID);
+		// Detectar error de càrrega
+		iframe.addEventListener('error', function () {
+			console.error('Error: L\'iframe no s\'ha pogut carregar correctament.');
+			//destruit iframe
+			$('#' + IFRAME_DIGITALIB_ID).remove();
+		});
+
+		// confirmar que s’ha carregat bé
+		iframe.addEventListener('load', function () {
+			try {
+				// Prova d’accedir al contingut per comprovar si la càrrega ha estat correcta
+				const doc = iframe.contentDocument || iframe.contentWindow.document;
+				console.log('L\'iframe ' + IFRAME_DIGITALIB_ID + ' s\'ha carregat correctament.');
+				$('#' + NO_CARREGAT_IFRAME_DIGITALIB_ID).hide();
+			} catch (e) {
+				// Si no es pot accedir al contingut, probablement per política CORS
+				console.warn('L\'iframe ha carregat però no es pot accedir al contingut (CORS?).');
+				//destruit iframe
+				$('#' + IFRAME_DIGITALIB_ID).remove();
+			}
+		});
+	}
+
 	function onScanwebIniciat(redirectUrl, transactionID) {
 		console.log("scanweb iniciat");	
 
-		$('#' + URL_NO_CARREGAT_IFRAME_DIGITALIB_ID).text(redirectUrl);
+		document.getElementById(URL_NO_CARREGAT_IFRAME_DIGITALIB_ID)?.setAttribute("href", redirectUrl);
 		$('#' + NO_CARREGAT_IFRAME_DIGITALIB_ID).show();
-		$('#' + CARREGANT_IFRAME_DIGITALIB_ID).append('<iframe id="' + IFRAME_DIGITALIB_ID + '" src="'+ redirectUrl +'" style="width:100%; height:450px; border:none;"></iframe>');
-		
+		afegeixIframeDigitalib(redirectUrl);
+
 		const pollingInterval = 5000; // 5 seconds in milliseconds
 		const maxPollingDuration = 900000; // 900 seconds (15 minutes) in milliseconds
 
 		pollCheckResultScanweb(transactionID, pollingInterval, maxPollingDuration);
+	}
+
+	function onClickDescarregarFirmat(button) {
+		console.log("Descarregar fitxer firmat");
+		if(FITXER_ENCRYPTED_ID.length === 0) {
+			let errorText = "No hi ha cap fitxer per descarregar.";
+			inserirMsg('danger', errorText);
+			return;
+		}
+
+		for (let i = 0; i < FITXER_ENCRYPTED_ID.length; i++) {
+			const fitxerId = FITXER_ENCRYPTED_ID[i];
+			if (!fitxerId || fitxerId.indexOf(' ') >= 0) {
+				let errorText = "No s'ha pogut descarregar el fitxer firmat: " + fitxerId;
+				console.error(errorText);
+				inserirMsg('danger', errorText);
+				return;
+			}
+
+			const url = "<%=request.getContextPath()%>" + fitxerId;
+			console.log("Descarregant fitxer firmat, URL: " + url);
+			const request = new Request(url, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/octet-stream'
+				},
+				responseType: 'blob'
+			});
+			fetch(request)
+				.then(response => {
+					if (!response.ok) {
+						throw new Error('Error al descarregar el fitxer: ' + response.statusText);
+					}
+					return response.blob();
+				})
+				.then(blob => {
+					downloadPdf(blob)
+				})
+				.catch(error => {
+					let errorText = 'Error descarregant el fitxer firmat: ' + error.message;
+					inserirMsg('danger', errorText);
+				});
+		}
 	}
 
 	function onClickPujarDocument(button) {
@@ -1262,10 +1338,7 @@ form label {
 	}
 
 	$(document).ready(function() {
-		createModalPujarDocument(MODAL_PUJAR_DOCUMENT_ID, function() {
-				$('#' + NO_CARREGAT_IFRAME_DIGITALIB_ID).hide();
-				console.log(IFRAME_DIGITALIB_ID + " loaded!");
-			});
+		createModalPujarDocument(MODAL_PUJAR_DOCUMENT_ID);
 		console.log("Modal created with ID: " + MODAL_PUJAR_DOCUMENT_ID);
 	});
 </script>

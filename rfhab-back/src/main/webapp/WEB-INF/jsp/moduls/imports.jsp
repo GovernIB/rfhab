@@ -199,6 +199,7 @@
 <script src="<c:url value="/js/element-utils/select-utils.js"/>"></script>
 <script src="<c:url value="/js/element-utils/table-utils.js"/>"></script>
 <script src="<c:url value="/js/lloclist/select-filters.js"/>"></script>
+<script src="<c:url value="/js/response-utils.js"/>"></script>
 
 <%--// Compatibilitat IE8  --%>
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

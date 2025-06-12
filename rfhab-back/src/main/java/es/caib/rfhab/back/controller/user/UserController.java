@@ -173,7 +173,7 @@ public class UserController extends UsuariController {
 			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		log.info("checkFinalScanweb: " + transactionID);
 
-		Map<String, String> urlFitxersFirmatsOerrors = scanWebLogicaEjb.checkFinalScanweb(transactionID);
+		Map<String, String> urlFitxersFirmatsOerrors = scanWebLogicaEjb.checkFinalScanweb(transactionID);// a urlFitxersFirmatsOerrors tenc subtransaccions
 
 		if (urlFitxersFirmatsOerrors == null) {
 			// transacció en curs
@@ -182,50 +182,25 @@ public class UserController extends UsuariController {
 		}
 
 		// HtmlUtils.saveMessageError només és útil si retornam un ModelAndView
-		List<String> urlErrors = new java.util.ArrayList<String>();
+		List<String> urlErrorsOFitxers = new java.util.ArrayList<String>();
 		for (String urlFitxer : urlFitxersFirmatsOerrors.values()) {
 			File file = new File(urlFitxer);
 			if (!file.exists()) {
 				// Si hi ha un error, el retornem com a missatge d'error
-				// HtmlUtils.saveMessageError(request, urlFitxer);//només és útil si retornam un
-				// ModelAndView
-				urlErrors.add(urlFitxer);
+				// HtmlUtils.saveMessageError(request, urlFitxer);// només és útil si retornam un ModelAndView
+				urlErrorsOFitxers.add(urlFitxer);
 			} else {
-				Fitxer fitxer = new FitxerJPA();
-				fitxer.setNom(file.getName());
-				fitxer.setDescripcio(null);
-				fitxer.setMime("application/pdf");
-				fitxer.setTamany(file.length());
-				fitxer = fitxerLogicaEjb.create(fitxer);
-				FileSystemManager.crearFitxer(file, fitxer.getFitxerID());
-				ScanWebBean scanWebBean = new ScanWebBean();
-				// TODO: ficar plugin a ejb
-				// TODO:falta informació de fitxer firmat...
-				scanWebBean.setDataCreacio(new Timestamp(System.currentTimeMillis()));
 				LoginInfo loginInfo = LoginInfo.getInstance();
-				scanWebBean.setEntitatID(loginInfo.getEntitatID());
-				// TODO:falta
-				scanWebBean.setFileInfo(null);
-				scanWebBean.setFitxerID(fitxer.getFitxerID());
-				// TODO:falta
-				scanWebBean.setMetadades(null);
-				// TODO:falta
-				scanWebBean.setMissatge(null);
-				// TODO:falta
-				scanWebBean.setStatus(0);
-				// TODO:falta
-				scanWebBean.setSignedFileInfo(null);
-				scanWebBean.setTransactionID(transactionID);
-				// TODO:falta (subtransactionID)
-				scanWebBean.setTransactionWebID(transactionID);
-				scanWebBean.setUsuariID(loginInfo.getUsuariPersona().getUsuariID());
-
-				FileDownloadController.downloadLocalFile(urlFitxer, Paths.get(urlFitxer).getFileName().toString(),
-						"application/pdf", true, response);
+				Fitxer fitxer = scanWebLogicaEjb.guardaEscaneig(transactionID, file, loginInfo.getEntitatID(),
+						loginInfo.getUsuariPersona().getUsuariID());
+				urlErrorsOFitxers
+						.add(FileDownloadController.fileUrl(fitxer));
+						// .add(getAbsoluteControllerBase(request, FileDownloadController.CONTEXTWEB) + fitxerId);
 			}
 		}
 
-		return urlErrors;
+		return urlErrorsOFitxers;
+		// return new ModelAndView("homeUsuari", "fitxersFirmats", fitxersFirmatsIds);
 	}
 
 	@RequestMapping(value = "/scanweb/{transactionID}", method = RequestMethod.GET)
@@ -245,11 +220,11 @@ public class UserController extends UsuariController {
 		out.println("Content-Type: text/html");
 		out.println("\r\n");
 		out.println(
-				"<html><body>OK. Esperi la descàrrega del document si està a RFHAB. Sino revisi consola per saber l'estat final del proc&eacute;s</body></html>");
+				"<html><body>OK. Revisi consola per saber l'estat final del proc&eacute;s</body></html>");
 
-		System.err.println("Connexio amb el client finalitzada.");
 		out.flush();
 		out.close();
+		System.err.println("Connexio amb el client finalitzada.");
 
 		// ModelAndView mav = new ModelAndView("homeUsuari", "fitxersFirmats",
 		// urlFitxersFirmats);
@@ -257,6 +232,7 @@ public class UserController extends UsuariController {
 		// urlFitxersFirmats);
 
 		// return mav;
+		// return new ModelAndView("homeUsuari");
 	}
 
 	@RequestMapping(value = "/nou/{usuariID}/check", method = RequestMethod.GET)

@@ -68,7 +68,7 @@ create sequence rfh_usuarientitat_seq start 1000 increment 1;
         missatge text,
         signedfileinfo text,
         status int8 not null,
-        transactionid varchar(255),
+        transactionid int8,
         transactionwebid varchar(255),
         usuariid int8 not null,
         CONSTRAINT rfh_digitalib_pk primary key (digitalid)

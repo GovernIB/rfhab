@@ -31,8 +31,8 @@ public class ScanWebJPA implements ScanWeb {
     @Column(name="digitalid",nullable = false,length = 19)
     long digitalID;
 
-    @Column(name="transactionid",length = 255)
-    java.lang.String transactionID;
+    @Column(name="transactionid",length = 19)
+    long transactionID;
 
     @Column(name="transactionwebid",length = 255)
     java.lang.String transactionWebID;
@@ -79,7 +79,7 @@ public class ScanWebJPA implements ScanWeb {
   }
 
   /** Constructor amb tots els camps  */
-  public ScanWebJPA(long digitalID , java.lang.String transactionID , java.lang.String transactionWebID , long status , long fitxerID , java.lang.String fileInfo , java.lang.String signedFileInfo , java.lang.String metadades , java.lang.String missatge , java.lang.Long usuariID , java.sql.Timestamp dataCreacio , long entitatID) {
+  public ScanWebJPA(long digitalID , long transactionID , java.lang.String transactionWebID , long status , long fitxerID , java.lang.String fileInfo , java.lang.String signedFileInfo , java.lang.String metadades , java.lang.String missatge , java.lang.Long usuariID , java.sql.Timestamp dataCreacio , long entitatID) {
     this.digitalID=digitalID;
     this.transactionID=transactionID;
     this.transactionWebID=transactionWebID;
@@ -94,7 +94,7 @@ public class ScanWebJPA implements ScanWeb {
     this.entitatID=entitatID;
 }
   /** Constructor sense valors autoincrementals */
-  public ScanWebJPA(java.lang.String transactionID , java.lang.String transactionWebID , long status , long fitxerID , java.lang.String fileInfo , java.lang.String signedFileInfo , java.lang.String metadades , java.lang.String missatge , java.lang.Long usuariID , java.sql.Timestamp dataCreacio , long entitatID) {
+  public ScanWebJPA(long transactionID , java.lang.String transactionWebID , long status , long fitxerID , java.lang.String fileInfo , java.lang.String signedFileInfo , java.lang.String metadades , java.lang.String missatge , java.lang.Long usuariID , java.sql.Timestamp dataCreacio , long entitatID) {
     this.transactionID=transactionID;
     this.transactionWebID=transactionWebID;
     this.status=status;
@@ -139,10 +139,10 @@ public class ScanWebJPA implements ScanWeb {
 		this.digitalID = _digitalID_;
 	};
 
-	public java.lang.String getTransactionID() {
+	public long getTransactionID() {
 		return(transactionID);
 	};
-	public void setTransactionID(java.lang.String _transactionID_) {
+	public void setTransactionID(long _transactionID_) {
 		this.transactionID = _transactionID_;
 	};
 

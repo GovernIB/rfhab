@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,11 +30,9 @@ import es.caib.digitalib.api.interna.client.apimassivescanwebsimple.v1.model.Mas
 import es.caib.digitalib.api.interna.client.apimassivescanwebsimple.v1.model.MassiveScanWebSimpleAvailableProfile;
 import es.caib.digitalib.api.interna.client.apimassivescanwebsimple.v1.model.MassiveScanWebSimpleAvailableProfiles;
 import es.caib.digitalib.api.interna.client.apimassivescanwebsimple.v1.model.MassiveScanWebSimpleConstants;
-import es.caib.digitalib.api.interna.client.apimassivescanwebsimple.v1.model.MassiveScanWebSimpleFile;
 import es.caib.digitalib.api.interna.client.apimassivescanwebsimple.v1.model.MassiveScanWebSimpleGetTransactionIdRequest;
 import es.caib.digitalib.api.interna.client.apimassivescanwebsimple.v1.model.MassiveScanWebSimpleSignatureParameters;
 import es.caib.digitalib.api.interna.client.apimassivescanwebsimple.v1.model.MassiveScanWebSimpleStartTransactionRequest;
-import es.caib.digitalib.api.interna.client.apimassivescanwebsimple.v1.model.MassiveScanWebSimpleStatus;
 import es.caib.digitalib.api.interna.client.apimassivescanwebsimple.v1.model.MassiveScanWebSimpleSubTransactionsOfTransaction;
 import es.caib.digitalib.api.interna.client.apimassivescanwebsimple.v1.model.MassiveScanWebSimpleSubtransactionResult;
 import es.caib.digitalib.api.interna.client.apimassivescanwebsimple.v1.model.MassiveScanWebSimpleSubtransactionResultRequest;
@@ -256,10 +253,10 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 	}
 
 	@Override
-	public Map<String, String> checkResultatEscaneig(String transactionID, File filesPathOriginal)
+	public Map<String, MassiveScanWebSimpleSubtransactionResult> finalitzaEscaneig(String transactionID)
 			throws Exception {
 
-		Map<String, String> filesOrErrorsResult = new HashMap<String, String>();
+		Map<String, MassiveScanWebSimpleSubtransactionResult> filesOrErrorsResult = new HashMap<String, MassiveScanWebSimpleSubtransactionResult>();
 		try {
 			// Ho gestiona el front, es veurà dins un iframe
 			// if (Desktop.isDesktopSupported()) {
@@ -300,112 +297,9 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 				LOG.info(resultRequest.toString());
 				MassiveScanWebSimpleSubtransactionResult result = api.getSubTransactionResult(resultRequest);
 
-				MassiveScanWebSimpleStatus transactionStatus = result.getStatus();
-
-				int status = transactionStatus.getStatus();
-
 				LOG.info(result.toString());
 
-				if (CONSTANTS.getMassiveScanWebSimpleStatusSTATUSREQUESTEDID().equals(status)) { // = 0;
-					String msg = "Subtransacció: " + subTransactionID
-							+ " -- S'ha rebut un estat inconsistent del procés"
-							+ " (requestedid). Pot ser el PLugin no està ben desenvolupat."
-							+ " Consulti amb el seu administrador.";
-					LOG.info(msg);
-					filesOrErrorsResult.put(subTransactionID, msg);
-					continue;
-				} else if (CONSTANTS.getMassiveScanWebSimpleStatusSTATUSINPROGRESS().equals(status)) { // = 1;
-					String msg = "Subtransacció: " + subTransactionID
-							+ " -- S'ha rebut un estat inconsistent del procés"
-							+ " (En Progrés). Pot ser el PLugin no està ben desenvolupat."
-							+ " Consulti amb el seu administrador.";
-					LOG.info(msg);
-					filesOrErrorsResult.put(subTransactionID, msg);
-					continue;
-				} else if (CONSTANTS.getMassiveScanWebSimpleStatusSTATUSFINALERROR().equals(status)) { // = -1;
-					String msg = "Subtransacció: " + subTransactionID
-							+ " -- Error durant la realització de l'escaneig/còpia autèntica: "
-							+ transactionStatus.getErrorMessage();
-					LOG.info(msg);
-					filesOrErrorsResult.put(subTransactionID, msg);
-					String desc = transactionStatus.getErrorStackTrace();
-					if (desc != null) {
-						LOG.info(desc);
-					}
-					continue;
-				} else if (CONSTANTS.getMassiveScanWebSimpleStatusSTATUSCANCELLED().equals(status)) { // = -2;
-					String msg = "Subtransacció: " + subTransactionID
-							+ " -- Durant el procés, l'usuari ha cancelat la transacció.";
-					LOG.info(msg);
-					filesOrErrorsResult.put(subTransactionID, msg);
-					continue;
-				}
-
-				if (CONSTANTS.getMassiveScanWebSimpleStatusSTATUSFINALOK().equals(status)) { // = 2;
-					File filesPath = new File(filesPathOriginal, "scanWeb");
-					filesPath.mkdirs();
-
-					// Enregistrament de la transaccio amb digitalIB
-					MassiveScanWebSimpleFile signedFile = result.getSignedFile();
-					if (signedFile != null) {
-						File signed = new File(filesPath,
-								cleanFileName(transactionID + "_" + (count - 1) + "_signed." + signedFile.getNom()));
-
-						FileOutputStream fos = new FileOutputStream(signed);
-						fos.write(signedFile.getData());
-						fos.flush();
-						fos.close();
-
-						String signedFileAbsPath = signed.getAbsolutePath();
-						LOG.info("Firma del Fitxer Escanejat guardat a " + signedFileAbsPath);
-						filesOrErrorsResult.put(subTransactionID, signedFileAbsPath);
-					} else {
-						MassiveScanWebSimpleFile scannedFile = result.getScannedFile();
-						if (scannedFile != null) {
-
-							String format = result.getScannedFileInfo().getFormatFile();
-							if (format == null) {
-								format = "unknown";
-							} else {
-								format = format.replace("/", ".");
-							}
-
-							File scanFile = new File(filesPath,
-									cleanFileName(transactionID + "_" + (count - 1) + "_scanfile." + format));
-
-							FileOutputStream fos = new FileOutputStream(scanFile);
-							fos.write(scannedFile.getData());
-							fos.flush();
-							fos.close();
-
-							String scannedFileAbsPath = scanFile.getAbsolutePath();
-							LOG.info("Fitxer Escanejat guardat a " + scannedFileAbsPath);
-							filesOrErrorsResult.put(subTransactionID, scannedFileAbsPath);
-						} else {
-							String msg = "Subtransacció: " + subTransactionID
-									+ " -- No s'ha trobat el fitxer escanejat ni la firma.";
-							LOG.info(msg);
-							filesOrErrorsResult.put(subTransactionID, msg);
-						}
-					}
-
-					// MassiveScanWebSimpleFile detachedSignedFile =
-					// result.getDetachedSignatureFile();
-					// if (detachedSignedFile != null) {
-					// File detached = new File(filesPath,
-					// (count - 1) + "_detached_sign." + detachedSignedFile.getNom());
-
-					// FileOutputStream fos = new FileOutputStream(detached);
-					// fos.write(detachedSignedFile.getData());
-					// fos.flush();
-					// fos.close();
-
-					// String detachedFileAbsPath = detached.getAbsolutePath();
-					// LOG.info("Document Detached de la Firma (Document Escanejat) guardat a "
-					// + detachedFileAbsPath);
-					// filesOrErrorsResult.put(subTransactionID, detachedFileAbsPath);
-					// }
-				} // Final Case Firma OK
+				filesOrErrorsResult.put(subTransactionID, result);
 			} // final for
 		} catch (Exception e) {
 			LOG.error("Error en la connexió amb ScanWeb", e);
@@ -522,24 +416,5 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 		}
 
 		return getApi();
-	}
-
-	final static int[] illegalChars = { 34, 60, 62, 124, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
-			18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 58, 42, 63, 92, 47 };
-
-	static {
-		Arrays.sort(illegalChars);
-	}
-
-	public static String cleanFileName(String badFileName) {
-		StringBuilder cleanName = new StringBuilder();
-		int len = badFileName.codePointCount(0, badFileName.length());
-		for (int i = 0; i < len; i++) {
-			int c = badFileName.codePointAt(i);
-			if (Arrays.binarySearch(illegalChars, c) < 0) {
-				cleanName.appendCodePoint(c);
-			}
-		}
-		return cleanName.toString();
 	}
 }

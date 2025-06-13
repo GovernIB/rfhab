@@ -2,6 +2,7 @@ package es.caib.rfhab.back.controller.user;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.io.File;
 import java.io.PrintWriter;
 import java.nio.file.Paths;
@@ -28,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
+
+import es.caib.digitalib.api.interna.client.apimassivescanwebsimple.v1.model.MassiveScanWebSimpleSubtransactionResult;
 import es.caib.rfhab.back.controller.FileDownloadController;
 import es.caib.rfhab.back.controller.webdb.UsuariController;
 import es.caib.rfhab.back.form.webdb.UsuariFilterForm;
@@ -174,12 +177,13 @@ public class UserController extends UsuariController {
 			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		log.info("checkFinalScanweb: " + transactionID);
 
-		Map<String, String> urlFitxersFirmatsOerrors = scanWebLogicaEjb.checkFinalScanweb(transactionID);// a
-																											// urlFitxersFirmatsOerrors
-																											// tenc
-																											// subtransaccions
+		Map<String, MassiveScanWebSimpleSubtransactionResult> fitxersFirmatsOerrors = scanWebLogicaEjb
+				.checkFinalScanweb(transactionID);// a
+		// urlFitxersFirmatsOerrors
+		// tenc
+		// subtransaccions
 
-		if (urlFitxersFirmatsOerrors == null) {
+		if (fitxersFirmatsOerrors == null) {
 			// transacció en curs
 			log.info("checkFinalScanweb: transacció en curs");
 			return null;
@@ -187,21 +191,27 @@ public class UserController extends UsuariController {
 
 		// HtmlUtils.saveMessageError només és útil si retornam un ModelAndView
 		List<String> urlErrorsOFitxers = new java.util.ArrayList<String>();
-		for (String urlFitxer : urlFitxersFirmatsOerrors.values()) {
-			File file = new File(urlFitxer);
-			if (!file.exists()) {
-				// Si hi ha un error, el retornem com a missatge d'error
-				// HtmlUtils.saveMessageError(request, urlFitxer);// només és útil si retornam
-				// un ModelAndView
+		for (Entry<String, MassiveScanWebSimpleSubtransactionResult> entry : fitxersFirmatsOerrors.entrySet()) {
+			String transactionId = entry.getKey();
+			MassiveScanWebSimpleSubtransactionResult result = entry.getValue();
+			Object escaneigResultat = scanWebLogicaEjb.gestionaResultatScaneig(transactionId,
+					result, LoginInfo.getInstance().getEntitatID(), LoginInfo.getInstance().getUsuariPersona()
+							.getUsuariID());
+			if (escaneigResultat instanceof Fitxer) {
+				Fitxer fitxer = (Fitxer) escaneigResultat;
+				String urlFitxer = FileDownloadController.fileUrl(fitxer);
+				log.info("Fitxer escanejat: " + urlFitxer);
 				urlErrorsOFitxers.add(urlFitxer);
+			} else if (escaneigResultat instanceof String) {
+				String errorMessage = (String) escaneigResultat;
+				log.error("Error en l'escaneig: " + errorMessage);
+				// HtmlUtils.saveMessageError(request, errorMessage);// només és útil si
+				// retornam un ModelAndView
+				urlErrorsOFitxers.add(errorMessage);
 			} else {
-				LoginInfo loginInfo = LoginInfo.getInstance();
-				Fitxer fitxer = scanWebLogicaEjb.guardaEscaneig(transactionID, file, loginInfo.getEntitatID(),
-						loginInfo.getUsuariPersona().getUsuariID());
-				urlErrorsOFitxers
-						.add(FileDownloadController.fileUrl(fitxer));
-				// .add(getAbsoluteControllerBase(request, FileDownloadController.CONTEXTWEB) +
-				// fitxerId);
+				String errorMessage = "Tipus de resultat inesperat: " + escaneigResultat.getClass().getName();
+				log.error(errorMessage);
+				urlErrorsOFitxers.add(errorMessage);
 			}
 		}
 
@@ -217,7 +227,7 @@ public class UserController extends UsuariController {
 		log.info("XYZ ZZZ ENTRANT A SCANWEB");
 		log.info("XYZ ZZZ transactionID = " + transactionID);
 
-		scanWebLogicaEjb.checkResultatEscaneig(transactionID, response);
+		scanWebLogicaEjb.finalitzaEscaneig(transactionID, response);
 
 		System.err.println("Connexio amb el client finalitzada.");
 		return "<html>"

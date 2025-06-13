@@ -55,7 +55,7 @@ public class ScanWebJPAManager
         return list.toArray(new ScanWeb[list.size()]);
     };
 
-    public ScanWeb create( java.lang.String _transactionID_, java.lang.String _transactionWebID_, long _status_, long _fitxerID_, java.lang.String _fileInfo_, java.lang.String _signedFileInfo_, java.lang.String _metadades_, java.lang.String _missatge_, java.lang.Long _usuariID_, java.sql.Timestamp _dataCreacio_, long _entitatID_) throws I18NException {
+    public ScanWeb create( long _transactionID_, java.lang.String _transactionWebID_, long _status_, long _fitxerID_, java.lang.String _fileInfo_, java.lang.String _signedFileInfo_, java.lang.String _metadades_, java.lang.String _missatge_, java.lang.Long _usuariID_, java.sql.Timestamp _dataCreacio_, long _entitatID_) throws I18NException {
         ScanWebJPA __bean =  new ScanWebJPA(_transactionID_,_transactionWebID_,_status_,_fitxerID_,_fileInfo_,_signedFileInfo_,_metadades_,_missatge_,_usuariID_,_dataCreacio_,_entitatID_);
         return create(__bean);
     }

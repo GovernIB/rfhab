@@ -14,7 +14,7 @@
             </td>
           <td id="scanWeb_transactionID_columnvalueid">
             <form:errors path="scanWeb.transactionID" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ScanWebFields.TRANSACTIONID)? 'true' : 'false'}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,ScanWebFields.TRANSACTIONID)? ' uneditable-input' : ''}"  style="" maxlength="255" path="scanWeb.transactionID"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ScanWebFields.TRANSACTIONID)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ScanWebFields.TRANSACTIONID)? ' uneditable-input' : ''}"  style=""  path="scanWeb.transactionID"   />
 
            </td>
         </tr>

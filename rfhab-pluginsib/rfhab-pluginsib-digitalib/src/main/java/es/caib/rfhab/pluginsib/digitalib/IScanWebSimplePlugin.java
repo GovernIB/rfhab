@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.fundaciobit.pluginsib.core.v3.IPluginIB;
 
+import es.caib.digitalib.api.interna.client.apimassivescanwebsimple.v1.model.MassiveScanWebSimpleSubtransactionResult;
 import es.caib.rfhab.commons.utils.Constants;
 
 /*
@@ -25,7 +26,7 @@ public interface IScanWebSimplePlugin extends IPluginIB {
 			String ciutadaNif, String ciutadaNom)
 			throws Exception;
 
-	public Map<String, String> checkResultatEscaneig(String transactionID, File filesPath)
+	public Map<String, MassiveScanWebSimpleSubtransactionResult> finalitzaEscaneig(String transactionID)
 			throws Exception;
 
 }

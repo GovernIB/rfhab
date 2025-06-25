@@ -15,18 +15,6 @@
     </properties>
 
     <dependencies>
-        <!-- Especificacions i llibreries proporcionades per JBoss -->
-        <dependency>
-            <groupId>org.jboss.spec</groupId>
-            <artifactId>jboss-javaee-8.0</artifactId>
-            <type>pom</type>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
         <!-- Altres mòduls del projecte -->
         <dependency>
             <groupId>es.caib.rfhab</groupId>
@@ -57,7 +45,29 @@
         <dependency>
             <groupId>com.fasterxml.jackson.jaxrs</groupId>
             <artifactId>jackson-jaxrs-json-provider</artifactId>
+            <scope>provided</scope>
         </dependency>
+
+        <!-- dependència javax javaee-api -->
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/javax.json.bind/javax.json.bind-api -->
+        <!-- <dependency>
+            <groupId>javax.json.bind</groupId>
+            <artifactId>javax.json.bind-api</artifactId>
+            <scope>provided</scope>
+        </dependency> -->
+        <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet -->
+        <!-- <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet</artifactId>
+            <version>3.0.0</version>
+            <scope>provided</scope>
+        </dependency>     -->
+        <!-- Fi dependència javax javaee-api -->
 
         <dependency>
             <artifactId>pluginsib-utils-rest</artifactId>

@@ -23,6 +23,18 @@
 	<dependencies>
 
             <!-- Internes -->
+			<dependency>
+				<groupId>es.caib.rfhab.pluginsib</groupId>
+				<artifactId>rfhab-pluginsib-rolsac</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>es.caib.rfhab.pluginsib</groupId>
+				<artifactId>rfhab-pluginsib-dir3caib</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
             <dependency>
                 <groupId>es.caib.rfhab</groupId>
                 <artifactId>rfhab-persistence</artifactId>
@@ -35,7 +47,6 @@
                 <version>${project.version}</version>
                 <type>ejb</type>
             </dependency>
-
 
     		<dependency>
     			<groupId>es.caib.rfhab</groupId>
@@ -53,41 +64,6 @@
 
             <!-- Externes -->
             
-            <!-- ============================================ -->
-	        <!-- ====    PLUGINS DE ARXIU    === -->
-	        <!-- ============================================ -->
-	        
-	        <dependency>
-	            <groupId>org.fundaciobit.pluginsib.arxiu</groupId>
-	            <artifactId>pluginsib-arxiu-api</artifactId>
-	            <version>${pluginsib.arxiu.version}</version>
-	        </dependency>
-	        
-	        <dependency>
-	            <groupId>org.fundaciobit.pluginsib.arxiu</groupId>
-	            <artifactId>pluginsib-arxiu-caib</artifactId>
-	            <version>${pluginsib.arxiu.version}</version>
-	            <exclusions>
-	                <exclusion>
-	                    <groupId>com.sun.jersey</groupId>
-	                    <artifactId>jersey-client</artifactId>
-	                </exclusion>
-	                <exclusion>
-	                    <groupId>com.fasterxml.jackson.core</groupId>
-	                    <artifactId>jackson-annotations</artifactId>
-	                </exclusion>
-	                <exclusion>
-	                    <groupId>com.fasterxml.jackson.core</groupId>
-	                    <artifactId>jackson-databind</artifactId>
-	                </exclusion>
-	                <exclusion>
-	                    <groupId>com.fasterxml.jackson.core</groupId>
-	                    <artifactId>jackson-core</artifactId>
-	                </exclusion>
-	
-	            </exclusions>
-	        </dependency>
-
 
             <!-- ====================================== -->
             <!-- ===== PLUGINS DE USERINFORMATION ===== -->
@@ -247,7 +223,18 @@
 						**/jboss-annotations-api_1.3_spec*redhat*.jar,
 						**/jboss-jaxb-api_2.3_spec*redhat*.jar,
 						**/commons-logging-jboss-logging*redhat*.jar,
-						**/slf4j-api*redhat*.jar
+						**/slf4j-api*redhat*.jar,
+                        <!-- Requereix afegir mòdul 'com.fasterxml.jackson.datatype.jackson-datatype-jsr310' a jboss-deployment-structure.xml -->
+						**/jackson-datatype-jsr310*redhat*.jar,
+                        <!-- Requereix afegir mòdul 'com.github.fge.json-patch' a jboss-deployment-structure.xml -->
+						**/json-patch*redhat*.jar,
+                        <!-- Requereix afegir mòdul 'javax.ws.rs.api' a jboss-deployment-structure.xml -->
+						**/jboss-jaxrs-api_2.1_spec*redhat*.jar,
+                        <!-- Requereix afegir mòdul 'org.jboss.resteasy.resteasy-jackson2-provider' a jboss-deployment-structure.xml -->
+						**/resteasy-jackson2-provider*redhat*.jar,
+						**/jboss-logging*redhat*.jar,
+                        <!-- Requereix afegir mòdul 'org.apache.log4j' a jboss-deployment-structure.xml -->
+						**/log4j-*.jar
 					</packagingExcludes>
                     
 					<includeLibInApplicationXml>false</includeLibInApplicationXml>

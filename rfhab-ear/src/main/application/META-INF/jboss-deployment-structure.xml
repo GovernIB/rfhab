@@ -19,6 +19,15 @@
 			<module name="org.keycloak.keycloak-wildfly-subsystem" optional="TRUE"/>
 
             <!-- packagingExcludes definits al plugin de ear del pom.xml  -->
+            <module name="com.fasterxml.jackson.core-jackson-core" optional="TRUE" />
+            <module name="com.fasterxml.jackson.core-jackson-databind" optional="TRUE" />
+            <module name="com.fasterxml.jackson.core.jackson-annotations" export="TRUE"/>
+            <module name="com.fasterxml.jackson.datatype.jackson-datatype-jsr310" export="TRUE"/>
+            <module name="com.fasterxml.jackson.jaxrs.jackson-jaxrs-json-provider" export="TRUE"/>
+            <module name="com.fasterxml.jackson.core.jackson-databind" export="TRUE"/>
+            <module name="com.fasterxml.jackson.core.jackson-core" export="TRUE"/>
+            <module name="com.github.fge.json-patch" export="TRUE"/>
+
             <module name="javax.activation.api" export="TRUE"/>
             <module name="org.antlr" export="TRUE"/>
             <module name="org.bouncycastle" export="TRUE"/>
@@ -29,9 +38,6 @@
             <module name="org.apache.commons.lang3" export="TRUE"/>
             <module name="org.hibernate.commons-annotations" export="TRUE"/>
             <module name="org.hibernate" export="TRUE"/>
-            <module name="com.fasterxml.jackson.core.jackson-annotations" export="TRUE"/>
-            <module name="com.fasterxml.jackson.core.jackson-core" export="TRUE"/>
-            <module name="com.fasterxml.jackson.core.jackson-databind" export="TRUE"/>
             <module name="org.jboss.jandex" export="TRUE"/>
             <module name="org.javassist" export="TRUE"/>
             <module name="javax.mail.api" export="TRUE"/>

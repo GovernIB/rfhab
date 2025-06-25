@@ -20,46 +20,55 @@
         <backContext>rfhabback</backContext>
     </properties>
 
-	<repositories>
-		<!-- repository>
-			<id>thirdparty-releases</id>
-			<name>JBoss Thirdparty Releases</name>
-			<url>https://repository.jboss.org/nexus/content/repositories/thirdparty-releases</url>
-		</repository -->
-		<repository>
-			<id>github_governib_maven</id>
-			<name>GitHub GovernIB Maven Repository</name>
-			<url>https://governib.github.io/maven/maven/</url>
-		</repository>
-	</repositories>
-
 	<dependencies>
 
 		<!-- Internas -->
 		<dependency>
+            <groupId>es.caib.rfhab</groupId>
+            <artifactId>rfhab-persistence</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>es.caib.rfhab</groupId>
+            <artifactId>rfhab-model</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+		<dependency>
 			<groupId>es.caib.rfhab</groupId>
 			<artifactId>rfhab-ejb</artifactId>
 			<version>${project.version}</version>
-			<scope>provided</scope>
+            <scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>es.caib.rfhab</groupId>
 			<artifactId>rfhab-commons</artifactId>
 			<version>${project.version}</version>
-			<scope>provided</scope>
+            <scope>provided</scope>
 		</dependency>
 		
 		<dependency>
 			<groupId>es.caib.rfhab.pluginsib</groupId>
 			<artifactId>rfhab-pluginsib-rolsac</artifactId>
 			<version>${project.version}</version>
+            <scope>provided</scope>
 		</dependency>
 		
 		<dependency>
 			<groupId>es.caib.rfhab.pluginsib</groupId>
 			<artifactId>rfhab-pluginsib-dir3caib</artifactId>
 			<version>${project.version}</version>
+            <scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>es.caib.rfhab.pluginsib</groupId>
+			<artifactId>rfhab-pluginsib-digitalib</artifactId>
+			<version>${project.version}</version>
+            <scope>provided</scope>
 		</dependency>
 
 		<!-- Externas -->
@@ -89,11 +98,11 @@
 			</exclusions>
 		</dependency>
 
-        <dependency>
+        <!-- <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <scope>provided</scope>
-        </dependency>
+        </dependency> -->
         
         <dependency>
             <groupId>commons-io</groupId>
@@ -414,10 +423,7 @@
                         **/commons-collections-*.redhat*.jar,
                         <!-- Requereix afegir mòdul 'javax.xml.bind.api' a jboss-deployment-structure.xml -->
                         **/jboss-jaxb-api*-redhat*.jar,
-						**/jackson-datatype-jsr310*redhat*.jar,
-						**/json-patch*redhat*.jar,
-						**/jboss-jaxrs-api_2.1_spec*redhat*.jar,
-						**/resteasy-jackson2-provider*redhat*.jar,
+						**/slf4j-api*redhat*.jar
                     </packagingExcludes>
                     <webResources>
                         <resource>

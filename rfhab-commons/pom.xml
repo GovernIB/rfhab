@@ -15,7 +15,6 @@
 	<name>RFHab - Commons</name>
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.buildtime>${maven.build.timestamp}</project.buildtime>
 	</properties>
 

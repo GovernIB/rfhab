@@ -16,6 +16,12 @@
 
         <dependency>
             <groupId>es.caib.rfhab</groupId>
+            <artifactId>rfhab-model</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>es.caib.rfhab</groupId>
             <artifactId>rfhab-persistence</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -24,34 +30,27 @@
             <groupId>es.caib.rfhab</groupId>
             <artifactId>rfhab-commons</artifactId>
             <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
+        </dependency>        
         
-        
-         <!-- ===== PLUGINS IB -->
         <dependency>
-            <groupId>org.fundaciobit.pluginsib.arxiu</groupId>
-            <artifactId>pluginsib-arxiu-api</artifactId>
-            <version>${pluginsib.arxiu.version}</version>
+            <groupId>es.caib.rfhab.pluginsib</groupId>
+            <artifactId>rfhab-pluginsib-arxiu</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
 			<groupId>es.caib.rfhab.pluginsib</groupId>
 			<artifactId>rfhab-pluginsib-digitalib</artifactId>
 			<version>${project.version}</version>
-		</dependency>
+        </dependency>
 
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <scope>provided</scope>
+        </dependency>        
+        
+         <!-- ===== PLUGINS IB -->
         <dependency>
             <artifactId>pluginsib-userinformation-api</artifactId>
             <groupId>org.fundaciobit.pluginsib.userinformation</groupId>
@@ -89,6 +88,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.jaxrs</groupId>
             <artifactId>jackson-jaxrs-json-provider</artifactId>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>

@@ -17,17 +17,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.jboss.spec</groupId>
-            <artifactId>jboss-javaee-8.0</artifactId>
-            <type>pom</type>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
         <!-- Altres mòduls del projecte -->
         <dependency>
             <groupId>es.caib.rfhab</groupId>
@@ -43,6 +32,12 @@
         </dependency>
         <dependency>
             <groupId>es.caib.rfhab</groupId>
+            <artifactId>rfhab-model</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>es.caib.rfhab</groupId>
             <artifactId>rfhab-ejb</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
@@ -51,6 +46,7 @@
             <groupId>es.caib.rfhab.pluginsib</groupId>
             <artifactId>rfhab-pluginsib-rolsac</artifactId>
             <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         
         <dependency>
@@ -67,11 +63,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.fasterxml.jackson.jaxrs</groupId>
-            <artifactId>jackson-jaxrs-json-provider</artifactId>
-        </dependency>
-
-        <dependency>
             <artifactId>pluginsib-utils-rest</artifactId>
             <groupId>org.fundaciobit.pluginsib.utils</groupId>
             <version>${pluginsib.utils.rest.version}</version>
@@ -81,6 +72,12 @@
             <groupId>org.fundaciobit.pluginsib.utils</groupId>
             <artifactId>pluginsib-utils-swagger-ui-configurable-webjar</artifactId>
             <version>${pluginsib.utils.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>

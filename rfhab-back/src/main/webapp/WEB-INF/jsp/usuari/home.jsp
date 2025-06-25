@@ -314,13 +314,14 @@ form label {
 							<h3>3 <fmt:message key="usuari.tramit.documentacio.titol" /></h3>
 
 							<div class="form-group pdfVisor">
-								<embed src="/rfhabback/dummy.pdf" width="100%" height="600"
+								<embed id="embed-pdf" src="/rfhabback/dummy.pdf" width="100%" height="600"
 									type="application/pdf">
+								<iframe id="iframe-pdf" style="display: none;" src="" type="application/pdf" width="100%" height="600" style="overflow: auto;"></iframe>
 							</div>
 
 							<div class="row buttonsDiv">
 								<div class="col-md-6">
-									<button type="button" id="btn-descarregar-firmat-id" class="btn btn-primary" disabled onclick="if(typeof onClickDescarregarFirmat == 'function') {  onClickDescarregarFirmat(this); };">
+									<button type="button" id="btn-descarregar-firmat-id" style="display: none;" class="btn btn-primary" disabled onclick="if(typeof onClickDescarregarFirmat == 'function') {  onClickDescarregarFirmat(this); };">
 										<i class="fa fa-file-pdf"></i> <fmt:message key="usuari.tramit.documentacio.descarregarfirmat" />
 									</button>
 								</div>
@@ -1005,6 +1006,25 @@ form label {
 	const CARREGANT_IFRAME_DIGITALIB_ID = 'modal-body-carregant';
 	var FITXER_ENCRYPTED_ID = [];
 
+	function showIframePdf(url) {
+		const iframe = document.getElementById('iframe-pdf');
+		const embed = document.getElementById('embed-pdf');
+		iframe.style.display = 'block';
+		iframe.src = url;
+
+		embed.style.display = 'none';
+	}
+
+	function showEmbedPdf(url) {
+		const iframe = document.getElementById('iframe-pdf');
+		const embed = document.getElementById('embed-pdf');
+		embed.style.display = 'block';
+		embed.src = url;
+
+		iframe.style.display = 'none';
+		iframe.src = '';
+	}
+
 	function inserirMsg(tipusMsg, msg) {
 		const alertHtml = '<div class="alert alert-' + tipusMsg + '" role="alert">'
 			+ '<button type="button" class="close" data-dismiss="alert">&times;</button>'
@@ -1044,6 +1064,217 @@ form label {
 
 						+ '</div>' + '</div>' + '</div>');
     }
+
+	async function tancarExpedient(identificadorExpedient) {
+		const url = "<%=request.getContextPath() + "/usuari/tancarexpedient/"%>";
+		const dataObj = {
+			identificadorExpedient: identificadorExpedient
+		};
+
+		console.log("cridant a tancarexpedient, URL: " + url);
+		console.log("cridant a tancarexpedient, Data object: ", dataObj);
+
+		const makeRequest = async () => { 
+			$.ajax({
+				url: url,
+				method: 'GET',
+				data: dataObj,
+				success: function(data, status, xhr) {
+					const successText = "Resposta correcta de tancarExpedient";
+					console.log(successText);
+					inserirMsg('success', successText);
+				},
+				error: function(xhr, status, error) {
+					let errorText = 'Error tancant expedient: ' + (xhr.responseText || error);
+					inserirMsg('danger', errorText);
+				}
+			});
+		};
+
+		makeRequest();
+	}
+
+	async function downloadFitxer(fitxerId, fileReturnedCallback){
+		console.log("Descarregar fitxer amb ID: " + fitxerId);
+
+		if (!fitxerId || fitxerId.indexOf(' ') >= 0) {
+			let errorText = "No s'ha pogut descarregar el fitxer: " + fitxerId;//TODO:afegir missatge a traduccions
+			console.error(errorText);
+			inserirMsg('danger', errorText);
+			return;
+		}
+
+		const url = "<%=request.getContextPath()%>" + fitxerId;
+		console.log("Descarregant fitxer, URL: " + url);
+		const request = new Request(url, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/octet-stream'
+			},
+			responseType: 'blob'
+		});
+		fetch(request)
+			.then(response => {
+				if (!response.ok) {
+					throw new Error('Error al descarregar el fitxer: ' + response.statusText);
+				}
+				return response.blob();
+			})
+			.then(blob => {
+				if(fileReturnedCallback){
+					const file = downloadPdf(blob, true);
+					fileReturnedCallback(file);
+				}
+				else{
+					downloadPdf(blob);
+				}
+			})
+			.catch(error => {
+				let errorText = 'Error descarregant el fitxer: ' + error.message;//TODO:afegir missatge a traduccions
+				inserirMsg('danger', errorText);
+			});
+	}
+
+	async function insertFitxerInIframe(fitxerId) {
+		console.log("Descarregar fitxer amb ID: " + fitxerId);
+
+		if (!fitxerId || fitxerId.indexOf(' ') >= 0) {
+			let errorText = "No s'ha pogut descarregar el fitxer: " + fitxerId;//TODO:afegir missatge a traduccions
+			console.error(errorText);
+			inserirMsg('danger', errorText);
+			return;
+		}
+
+		const url = "<%=request.getContextPath()%>" + fitxerId;
+		console.log("Descarregant fitxer, URL: " + url);
+		const request = new Request(url, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/octet-stream'
+			},
+			responseType: 'blob'
+		});
+		fetch(request)
+			.then(response => {
+				if (!response.ok) {
+					throw new Error('Error al descarregar el fitxer: ' + response.statusText);
+				}
+				return response.blob();
+			})
+			.then(blob => {
+				const iframe = document.createElement('iframe');
+				// const html = '<body>Foo</body>';
+				const html = blob;
+				iframe.src = 'data:text/html;charset=utf-8,' + encodeURI(html);
+				document.body.appendChild(iframe);
+				console.log('iframe.contentWindow =', iframe.contentWindow);
+			})
+			.catch(error => {
+				let errorText = 'Error descarregant el fitxer: ' + error.message;//TODO:afegir missatge a traduccions
+				inserirMsg('danger', errorText);
+			});
+
+	}
+
+	async function documentImprimible(identificadorDocument) {
+		const url = "<%=request.getContextPath() + "/usuari/documentimprimible/"%>";
+		const dataObj = {
+			identificadorDocument: identificadorDocument
+		};
+
+		console.log("cridant a documentimprimible, URL: " + url);
+		console.log("cridant a documentimprimible, Data object: ", dataObj);
+
+		const makeRequest = async () => { 
+			$.ajax({
+				url: url,
+				method: 'GET',
+				data: dataObj,
+				success: function(data, status, xhr) {
+					const successText = "Consulta a Arxiu correcta, procedim a visualitzar el fitxer";
+					console.log(successText);
+					inserirMsg('success', successText);
+					downloadFitxer(data, showIframePdf);
+				},
+				error: function(xhr, status, error) {
+					let errorText = 'Error consultant el document imprimible: ' + (xhr.responseText || error);
+					inserirMsg('danger', errorText);
+				}
+			});
+		};
+
+		makeRequest();
+	}
+
+	async function guardarFitxerAarxiu(encryptedIdFitxer, perfilfirma, tipusFirma) {
+		const url = "<%=request.getContextPath() + "/usuari/guardararxiu/"%>";
+
+		let $form = $('.msf');
+		const ciutadaNif = $form.find('#pas1_identificacion').val() || '';
+		let interessats = [ciutadaNif];
+		interessats = interessats.join('--');//convertim a string. No puc passar un array com a queryparam
+
+		const dataObj = {
+			encryptedIdFitxer: encryptedIdFitxer,
+			interessats: interessats,
+			perfilfirma: perfilfirma,
+			tipusFirma: tipusFirma
+		};
+
+		console.log("cridant a guardararxiu, URL: " + url);
+		console.log("cridant a guardararxiu, Data object: ", dataObj);
+
+		$('#modal-spinner-carregant').show();
+		$('#' + NO_CARREGAT_IFRAME_DIGITALIB_ID).hide();
+
+		const makeRequest = async () => { 
+			$.ajax({
+				url: url,
+				method: 'GET',
+				data: dataObj,
+				success: function(data, status, xhr) {
+					console.log("Resposta correcta del guardat a arxiu: ", data);
+
+					$('#modal-spinner-carregant').hide();
+
+					if (data && typeof data === "object") {
+						if (data.hasOwnProperty("error")) {
+							// Hi ha errors, mostra'ls per pantalla
+							let error = data["error"];
+							let errorText = "S'ha produït un error:<br>" + error + "<br>";
+							// Mostra l'error dins el modal o com vulguis
+							inserirMsg('danger', errorText);
+						} else {
+							for (const expedientId in data) {
+								if (data.hasOwnProperty(expedientId)) {
+									const documentId = data[expedientId];
+									inserirMsg('success', "Fitxer guardat correctament a Arxiu amb ID d'expedient: " + expedientId + 
+										" i ID de document: " + documentId);//TODO: ficar coi de traduccions
+									documentImprimible(documentId);
+								}
+							}
+						}
+					} else {
+						let errorText = "Resposta invàlida del servidor.";
+						inserirMsg('danger', errorText);
+					}	
+					
+					// Procés acabat
+					// document.querySelector('#btn-descarregar-firmat-id').setAttribute('disabled', true);
+					// FITXER_ENCRYPTED_ID = [];
+					$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
+				},
+				error: function(xhr, status, error) {
+					let errorText = 'Error pujant a arxiu el document: ' + (xhr.responseText || error);
+					inserirMsg('danger', errorText);
+					$('#modal-spinner-carregant').hide();
+					$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
+				}
+			});
+		};
+
+		makeRequest();
+	}
 
 	async function pollCheckResultScanweb(transactionID, pollingInterval, maxPollingDuration) {
 		const url = "<%=request.getContextPath() + "/usuari/checkfinalscanweb/"%>";
@@ -1121,39 +1352,41 @@ form label {
 					document.querySelector('#btn-descarregar-firmat-id').setAttribute('disabled', true);
 					FITXER_ENCRYPTED_ID = [];
 
-					$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
-
 					// Errors:
 					if(data.length === 0) {
-						const errorText = "No s'ha pogut pujar el document o no s'ha retornat cap fitxer ID i tampoc errors.";
+						const errorText = "No s'ha pogut pujar el document o no s'ha retornat cap fitxer ID i tampoc errors.";//TODO:afegir missatge a traduccions
 						console.error(errorText);
 						console.error("Resposta --> " + data);
 						// Aquí pots mostrar errorText per pantalla
 						inserirMsg('danger', errorText);
+						$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
 						return;
 					}
 
 					//OK o Errors
 					for (let i = 0; i < data.length; i++) {
 						const errorResponseOrFileId = data[i];
-						if(!errorResponseOrFileId || errorResponseOrFileId.indexOf(' ') >= 0){
-							const errorText = "No s'ha pogut pujar el document: " + errorResponseOrFileId;
+						if(!errorResponseOrFileId || errorResponseOrFileId.error){
+							const errorText = "No s'ha pogut pujar el document: " + errorResponseOrFileId.error;//TODO:afegir missatge a traduccions
 							console.error(errorText);
 							// Aquí pots mostrar errorText per pantalla
 							inserirMsg('danger', errorText);
+							$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
 							return;
 						}
 
 						document.querySelector('#btn-descarregar-firmat-id').removeAttribute('disabled');
-						FITXER_ENCRYPTED_ID.push(errorResponseOrFileId);
+						FITXER_ENCRYPTED_ID.push(errorResponseOrFileId.urlFitxer);
 						console.log("Document pujat correctament");
-						inserirMsg('success', "El document s'ha pujat correctament i s'ha habilitat la descàrrega.");
+						inserirMsg('success', "El document firmat s'ha guardat correctament a la base de dades. Pujant a Arxiu...");//TODO:afegir missatge a traduccions
+						const encryptedIdFitxer = errorResponseOrFileId.urlFitxer.substring(errorResponseOrFileId.urlFitxer.lastIndexOf('/') + 1);
+						guardarFitxerAarxiu(encryptedIdFitxer, errorResponseOrFileId.perfilFirma, errorResponseOrFileId.tipusFirma);
 						return;
 					}
 				},
 				error: function(xhr, status, error) {
 					$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
-					let errorText = 'Error descarregant el document: ' + (xhr.responseText || error);
+					let errorText = 'Error descarregant el document: ' + (xhr.responseText || error);//TODO:afegir missatge a traduccions
 					// Aquí pots mostrar errorText per pantalla
 					inserirMsg('danger', errorText);
 				}
@@ -1213,36 +1446,7 @@ form label {
 
 		for (let i = 0; i < FITXER_ENCRYPTED_ID.length; i++) {
 			const fitxerId = FITXER_ENCRYPTED_ID[i];
-			if (!fitxerId || fitxerId.indexOf(' ') >= 0) {
-				let errorText = "No s'ha pogut descarregar el fitxer firmat: " + fitxerId;
-				console.error(errorText);
-				inserirMsg('danger', errorText);
-				return;
-			}
-
-			const url = "<%=request.getContextPath()%>" + fitxerId;
-			console.log("Descarregant fitxer firmat, URL: " + url);
-			const request = new Request(url, {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/octet-stream'
-				},
-				responseType: 'blob'
-			});
-			fetch(request)
-				.then(response => {
-					if (!response.ok) {
-						throw new Error('Error al descarregar el fitxer: ' + response.statusText);
-					}
-					return response.blob();
-				})
-				.then(blob => {
-					downloadPdf(blob)
-				})
-				.catch(error => {
-					let errorText = 'Error descarregant el fitxer firmat: ' + error.message;
-					inserirMsg('danger', errorText);
-				});
+			downloadFitxer(fitxerId);
 		}
 	}
 

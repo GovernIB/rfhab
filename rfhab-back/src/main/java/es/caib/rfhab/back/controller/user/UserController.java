@@ -3,10 +3,6 @@ package es.caib.rfhab.back.controller.user;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.io.File;
-import java.io.PrintWriter;
-import java.nio.file.Paths;
-import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -16,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.fundaciobit.genapp.common.StringKeyValue;
-import org.fundaciobit.genapp.common.filesystem.FileSystemManager;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.web.HtmlUtils;
@@ -33,20 +28,20 @@ import org.springframework.web.servlet.ModelAndView;
 import es.caib.digitalib.api.interna.client.apimassivescanwebsimple.v1.model.MassiveScanWebSimpleSubtransactionResult;
 import es.caib.rfhab.back.controller.FileDownloadController;
 import es.caib.rfhab.back.controller.webdb.UsuariController;
+import es.caib.rfhab.back.form.dto.ScanWebResult;
 import es.caib.rfhab.back.form.webdb.UsuariFilterForm;
 import es.caib.rfhab.back.form.webdb.UsuariForm;
 import es.caib.rfhab.back.security.LoginInfo;
+import es.caib.rfhab.logic.ActivitatLogicaService;
 import es.caib.rfhab.logic.EntitatLogicaService;
 import es.caib.rfhab.logic.FitxerPublicLogicaService;
 import es.caib.rfhab.logic.ScanWebLogicaService;
 import es.caib.rfhab.logic.UnitatLogicaUserService;
-import es.caib.rfhab.model.bean.ScanWebBean;
 import es.caib.rfhab.model.entity.Entitat;
 import es.caib.rfhab.model.entity.Fitxer;
 import es.caib.rfhab.model.entity.Unitat;
 import es.caib.rfhab.model.entity.Usuari;
 import es.caib.rfhab.model.fields.IdiomaFields;
-import es.caib.rfhab.persistence.FitxerJPA;
 import es.caib.rfhab.persistence.UsuariJPA;
 import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
 
@@ -62,6 +57,9 @@ import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
 public class UserController extends UsuariController {
 
 	public static final String CONTEXTWEB = "/usuari/";
+
+	@EJB(mappedName = ActivitatLogicaService.JNDI_NAME)
+	protected ActivitatLogicaService activitatLogicaEjb;
 
 	@EJB(mappedName = ScanWebLogicaService.JNDI_NAME)
 	protected ScanWebLogicaService scanWebLogicaEjb;
@@ -98,6 +96,66 @@ public class UserController extends UsuariController {
 		}
 
 		return mav;
+	}
+
+	@RequestMapping(value = "/guardararxiu", method = RequestMethod.GET)
+	@ResponseBody
+	public HashMap<String, String> guardarArxiu(
+			@RequestParam(value = "encryptedIdFitxer", required = true) String encryptedIdFitxer,
+			@RequestParam(value = "perfilfirma", required = false) String perfilfirma,
+			@RequestParam(value = "tipusFirma", required = false) String tipusFirma,
+			@RequestParam(value = "interessats", required = false) String interessats,
+			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		log.info("ENTRANT A guardararxiu");
+
+		log.info("guardararxiu -- encryptedIdFitxer = " + encryptedIdFitxer);
+		log.info("guardararxiu -- perfilfirma = " + perfilfirma);
+		log.info("guardararxiu -- tipusFirma = " + tipusFirma);
+		log.info("guardararxiu -- interessats = " + interessats);
+		List<String> interessatsList = Arrays.asList(interessats.split("--"));
+		log.info("guardararxiu -- interessatsList = " + interessatsList);
+
+		LoginInfo loginInfo = LoginInfo.getInstance();
+		Entitat entitat = entitatLogicaEjb.findByPrimaryKey(loginInfo.getEntitatID());
+		Unitat unitat = unitatLogicaEjb.findByPrimaryKey(entitat.getUnitatID());
+		List<String> organs = Arrays.asList(unitat.getCodi());
+		log.info("guardararxiu -- organs = " + organs);
+
+		final long fitxerId = FileDownloadController.recuperaFitxerId(encryptedIdFitxer);
+		log.info("guardararxiu -- fitxerId = " + fitxerId);
+		Fitxer fitxer = fitxerLogicaEjb.findByPrimaryKey(fitxerId);
+		if (fitxer == null) {
+			log.error("guardararxiu -- Fitxer amb id " + fitxerId + " no trobat");
+			throw new I18NException("error.arxiu.fitxernotfound", Long.toString(fitxerId));
+		}
+		HashMap<String, String> identificadors = activitatLogicaEjb.guardarArxiu(fitxer, fitxer.getNom(),
+				perfilfirma, tipusFirma, interessatsList, organs);
+		// TODO:falta tornar documentació de fitxer per a la descàrrega de l'usuari
+		return identificadors;
+	}
+
+	@RequestMapping(value = "/documentimprimible", method = RequestMethod.GET)
+	@ResponseBody
+	public String documentImprimible(
+			@RequestParam(value = "identificadorDocument", required = true) String identificadorDocument,
+			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		log.info("ENTRANT A documentimprimible");
+		log.info("documentimprimible -- identificadorDocument = " + identificadorDocument);
+		Fitxer documentFitxer = activitatLogicaEjb.documentImprimible(identificadorDocument);
+		return FileDownloadController.fileUrl(documentFitxer);
+	}
+
+	// TODO:convertir això a asincron i fer tasca nocturna, amb gestió de
+	// reintents...
+	@RequestMapping(value = "/tancarexpedient", method = RequestMethod.GET)
+	@ResponseBody
+	public void tancarExpedient(
+			@RequestParam(value = "identificadorExpedient", required = true) String identificadorExpedient,
+			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		log.info("ENTRANT A tancarexpedient");
+		log.info("tancarexpedient -- identificadorExpedient = " + identificadorExpedient);
+		activitatLogicaEjb.tancarExpedient(identificadorExpedient);
 	}
 
 	@RequestMapping(value = "/preparescanweb", method = RequestMethod.GET)
@@ -172,7 +230,7 @@ public class UserController extends UsuariController {
 
 	@RequestMapping(value = "/checkfinalscanweb/", method = RequestMethod.GET)
 	@ResponseBody
-	public List<String> checkFinalScanweb(
+	public List<ScanWebResult> checkFinalScanweb(
 			@RequestParam(value = "transactionID", required = true) String transactionID,
 			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		log.info("checkFinalScanweb: " + transactionID);
@@ -190,7 +248,7 @@ public class UserController extends UsuariController {
 		}
 
 		// HtmlUtils.saveMessageError només és útil si retornam un ModelAndView
-		List<String> urlErrorsOFitxers = new java.util.ArrayList<String>();
+		List<ScanWebResult> urlErrorsOFitxers = new java.util.ArrayList<ScanWebResult>();
 		for (Entry<String, MassiveScanWebSimpleSubtransactionResult> entry : fitxersFirmatsOerrors.entrySet()) {
 			String transactionId = entry.getKey();
 			MassiveScanWebSimpleSubtransactionResult result = entry.getValue();
@@ -201,17 +259,18 @@ public class UserController extends UsuariController {
 				Fitxer fitxer = (Fitxer) escaneigResultat;
 				String urlFitxer = FileDownloadController.fileUrl(fitxer);
 				log.info("Fitxer escanejat: " + urlFitxer);
-				urlErrorsOFitxers.add(urlFitxer);
+				urlErrorsOFitxers.add(new ScanWebResult("", urlFitxer, result.getSignedFileInfo().getSignType(),
+						result.getSignedFileInfo().getEniPerfilFirma()));
 			} else if (escaneigResultat instanceof String) {
 				String errorMessage = (String) escaneigResultat;
 				log.error("Error en l'escaneig: " + errorMessage);
 				// HtmlUtils.saveMessageError(request, errorMessage);// només és útil si
 				// retornam un ModelAndView
-				urlErrorsOFitxers.add(errorMessage);
+				urlErrorsOFitxers.add(new ScanWebResult(errorMessage, "", null, null));
 			} else {
 				String errorMessage = "Tipus de resultat inesperat: " + escaneigResultat.getClass().getName();
 				log.error(errorMessage);
-				urlErrorsOFitxers.add(errorMessage);
+				urlErrorsOFitxers.add(new ScanWebResult(errorMessage, "", null, null));
 			}
 		}
 

@@ -43,4 +43,8 @@ public interface Constants {
       .replaceAll("_", SQL_LIKE_ESCAPE_PATTERN + "_")
       .replaceAll("X", "_");
   public static final String REFERER_SESSION_ATTRIBUTE = "referer";
+
+  // PLUGIN ARXIU
+  public static final int ARXIU_PLUGIN_REINTENTS_CREAR_DOCUMENT = 5;
+  public static final int ARXIU_PLUGIN_REINTENTS_TANCAR_EXPEDIENT = 5;
 }

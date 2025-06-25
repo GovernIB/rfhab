@@ -22,7 +22,6 @@ import es.caib.digitalib.api.interna.client.apimassivescanwebsimple.v1.model.Mas
 import es.caib.digitalib.api.interna.client.apimassivescanwebsimple.v1.model.MassiveScanWebSimpleSubtransactionResult;
 import es.caib.rfhab.commons.utils.FileNameCleaner;
 import es.caib.rfhab.ejb.ScanWebEJB;
-import es.caib.rfhab.model.bean.ScanWebBean;
 import es.caib.rfhab.model.entity.Fitxer;
 import es.caib.rfhab.model.entity.ScanWeb;
 import es.caib.rfhab.persistence.FitxerJPA;

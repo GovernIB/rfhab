@@ -63,6 +63,23 @@ public class FileDownloadController {
     }
   }
 
+  public static long recuperaFitxerId(String encryptedArxiuId) throws Exception {
+
+    long arxiuId = HibernateFileUtil.decryptFileID(encryptedArxiuId);
+
+    if (arxiuId == 0) {
+      FileIDEncrypter enc = HibernateFileUtil.getEncrypter();
+      log.error("+ Key = ]" + new String(enc.getKey().getEncoded(), "UTF-8") + "[");
+      log.error("+ Algorithm = " + enc.getAlgorithm());
+      log.error("+ EncryptedArxiuId = ]" + encryptedArxiuId + "[");
+      // TODO TRADUIR Identificador no trobar
+      String msg = "Identificador no s'ha pogut desencriptar";
+      throw new Exception(msg);
+    }
+
+    return arxiuId;
+  }
+
   /**
    * 
    * @param arxiuId

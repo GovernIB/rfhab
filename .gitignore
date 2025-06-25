@@ -73,3 +73,4 @@ rfhab-api-interna-client*
 
 # Fitxers generats amb sqlgenerator
 # scripts/sqlgenerator/*.sql
+rfhab-pluginsib/rfhab-pluginsib-arxiu/arxiuplugin.properties

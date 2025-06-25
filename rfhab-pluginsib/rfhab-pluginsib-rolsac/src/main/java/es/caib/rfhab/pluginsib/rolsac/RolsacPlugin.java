@@ -4,8 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jboss.logging.Logger;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +31,7 @@ import es.caib.rfhab.pluginsib.rolsac.client.v1.services.auth.HttpBasicAuth;
  */
 public class RolsacPlugin implements IRolsacPlugin {
 
-	protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
+	protected final Logger LOG = Logger.getLogger(this.getClass());
 
 	private static final String FILTRE_PROCEDIMENTS = "{\"activo\":\"1\",\"telematico\":\"1\",\"disponibleFuncionarioHabilitado\":\"1\"}";
 

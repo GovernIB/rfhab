@@ -2,8 +2,7 @@ package es.caib.rfhab.pluginsib.arxiu;
 
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.pluginsib.core.v3.utils.AbstractPluginProperties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jboss.logging.Logger;
 
 import es.caib.pluginsib.arxiu.caib.ArxiuPluginCaib;
 import es.caib.rfhab.commons.utils.Configuracio;
@@ -42,7 +41,7 @@ import javax.inject.Inject;
 
 public class ArxiuPlugin extends AbstractPluginProperties implements es.caib.rfhab.pluginsib.arxiu.IArxiuPlugin {
 
-	protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
+	protected final Logger LOG = Logger.getLogger(this.getClass());
 
 	private static final String ARXIU_PLUGIN_URL = ARXIU_PLUGIN_PROPERTY + "endpoint";
 	private static final String ARXIU_PLUGIN_USERNAME = ARXIU_PLUGIN_PROPERTY + "usuari";

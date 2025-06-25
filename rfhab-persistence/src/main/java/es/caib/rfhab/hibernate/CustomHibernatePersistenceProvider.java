@@ -8,8 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.spi.PersistenceUnitInfo;
 
 import org.hibernate.jpa.HibernatePersistenceProvider;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jboss.logging.Logger;
 
 import es.caib.rfhab.commons.utils.Configuracio;
 /**
@@ -18,7 +17,7 @@ import es.caib.rfhab.commons.utils.Configuracio;
  */
 public class CustomHibernatePersistenceProvider extends HibernatePersistenceProvider {
 	
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
+	private final Logger log = Logger.getLogger(this.getClass());
 	
 	@Override
 	public EntityManagerFactory createContainerEntityManagerFactory(PersistenceUnitInfo info, @SuppressWarnings("rawtypes") Map properties) {

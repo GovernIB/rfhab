@@ -4,12 +4,10 @@ import es.caib.rfhab.commons.utils.Configuracio;
 import es.caib.rfhab.pluginsib.dir3caib.client.v1.api.DefaultApi;
 import es.caib.rfhab.pluginsib.dir3caib.client.v1.services.ApiClient;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.List;
 
 import org.fundaciobit.genapp.common.i18n.I18NException;
+import org.jboss.logging.Logger;
 
 /**
  * 
@@ -18,7 +16,7 @@ import org.fundaciobit.genapp.common.i18n.I18NException;
 
 public class Dir3CaibPlugin implements IDir3CaibPlugin {
 
-	protected Logger log = LoggerFactory.getLogger(this.getClass());
+	protected Logger log = Logger.getLogger(this.getClass());
 
 	private DefaultApi publicApi = null;
 	private DefaultApi protectedApi = null;

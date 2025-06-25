@@ -21,8 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jboss.logging.Logger;
 
 import es.caib.digitalib.api.interna.client.apimassivescanwebsimple.v1.api.ApiMassiveScanWebSimpleApi;
 import es.caib.digitalib.api.interna.client.apimassivescanwebsimple.v1.model.MassiveScanWebSimpleArxiuOptionalParameters;
@@ -55,7 +54,7 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 
 	protected static final String PROFILE = SCANWEB_PLUGIN_PROPERTY + "profile";
 
-	protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
+	protected final Logger LOG = Logger.getLogger(this.getClass());
 
 	private ApiMassiveScanWebSimpleApi api = null;
 	private String perfil = null;

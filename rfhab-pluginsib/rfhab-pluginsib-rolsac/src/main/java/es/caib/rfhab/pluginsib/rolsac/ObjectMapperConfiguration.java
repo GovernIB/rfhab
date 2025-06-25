@@ -8,8 +8,7 @@ import javax.ws.rs.ext.Provider;
 
 import org.fundaciobit.pluginsib.utils.rest.ISO8601DateTimeSerializer;
 import org.fundaciobit.pluginsib.utils.rest.ISO8601TimestampSerializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jboss.logging.Logger;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,7 +26,7 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 @Produces("application/json")
 public class ObjectMapperConfiguration extends JacksonJaxbJsonProvider {
 
-    protected static Logger log = LoggerFactory.getLogger(ObjectMapperConfiguration.class);
+    protected static Logger log = Logger.getLogger(ObjectMapperConfiguration.class);
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
     

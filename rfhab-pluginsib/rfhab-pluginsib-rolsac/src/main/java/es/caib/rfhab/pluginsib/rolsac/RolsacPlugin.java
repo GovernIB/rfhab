@@ -2,6 +2,8 @@ package es.caib.rfhab.pluginsib.rolsac;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.jboss.logging.Logger;
@@ -41,6 +43,10 @@ public class RolsacPlugin implements IRolsacPlugin {
 
 	private TramitesApi tramitesApiClient = null;
 
+	private static final long TEMPS_CATXE_PROCEDIMENTS_I_TRAMITS = 1000 * 60 * 60 * 4; // 4 hores
+	private Entry<Long, HashMap<String, String[]>> procedimentsAllCatxe = null;
+	private Entry<Long, HashMap<String, String[]>> tramitsFhAllCatxe = null;
+
 	private Properties propietats;
 
 	public Properties getPropietats() {
@@ -61,7 +67,7 @@ public class RolsacPlugin implements IRolsacPlugin {
 		final String entitat = "procedimientos";
 		final String usuari = Configuracio.getRolsacUsername();
 		final String pass = Configuracio.getRolsacPassword();
-		
+
 		final RestTemplate restTemplate = new RestTemplate();
 		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(usuari, pass));
 		final HttpHeaders headers = new HttpHeaders();
@@ -92,10 +98,11 @@ public class RolsacPlugin implements IRolsacPlugin {
 
 				HashMap<String, String> resultats = new HashMap<String, String>();
 
-				if (respostaProcediments != null) 
+				if (respostaProcediments != null)
 					for (Procedimientos procediment : respostaProcediments) {
 						LOG.info(procediment.getCodigo() + " " + procediment.getNombre());
-						resultats.put(String.valueOf(procediment.getCodigo()), procediment.getNombre().replace("'", "`"));
+						resultats.put(String.valueOf(procediment.getCodigo()),
+								procediment.getNombre().replace("'", "`"));
 					}
 
 				return resultats;
@@ -105,8 +112,24 @@ public class RolsacPlugin implements IRolsacPlugin {
 
 	}
 
-	public HashMap<String, String> obtenirProcediments() throws Exception {
+	public HashMap<String, String[]> obtenirProcediments(String llengua, Boolean empraCatxe) throws Exception {
+		if (llengua == null || llengua.isEmpty()) {
+			llengua = "ca";
+		}
 
+		if (empraCatxe == null || empraCatxe) {
+			long now = System.currentTimeMillis();
+			if (procedimentsAllCatxe != null && procedimentsAllCatxe.getKey() != null
+					&& (now - procedimentsAllCatxe.getKey()) < TEMPS_CATXE_PROCEDIMENTS_I_TRAMITS) {
+				HashMap<String, String[]> itemsCatxe = procedimentsAllCatxe.getValue();
+				Map.Entry<String, String[]> primerItem = itemsCatxe.entrySet().iterator().next();
+				if (primerItem != null && primerItem.getValue()[1] == llengua) {
+					LOG.info("Retornant procediments del catxe");
+					return itemsCatxe;
+				}
+			}
+			LOG.info("Procediments no trobats al catxe, s'ha de tornar a cridar a Rolsac");
+		}
 		/*
 		 * if (procedimientosApiClient == null) { procedimientosApiClient =
 		 * getProcedimientosApi(); }
@@ -130,7 +153,7 @@ public class RolsacPlugin implements IRolsacPlugin {
 		final String entitat = "procedimientos";
 		final String usuari = Configuracio.getRolsacUsername();
 		final String pass = Configuracio.getRolsacPassword();
-		
+
 		final RestTemplate restTemplate = new RestTemplate();
 		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(usuari, pass));
 		final HttpHeaders headers = new HttpHeaders();
@@ -140,12 +163,20 @@ public class RolsacPlugin implements IRolsacPlugin {
 		// map.add("idioma", "es");
 		// map.add("filtro", FILTRE_PROCEDIMENTS);
 		// map.add("filtroOrdenacion", FILTRE_PAGINACIO);
-		map.add("lang", "es");
+		map.add("lang", llengua);
 		map.add("filtro", FILTRE_PROCEDIMENTS);
 		map.add("filtroPaginacion", FILTRE_PAGINACIO);
 
 		final HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
+		LOG.info("Cridant a Rolsac: " + endpoint + entitat);
+		LOG.info("Amb filtre: " + FILTRE_PROCEDIMENTS);
+		LOG.info("Amb paginacio: " + FILTRE_PAGINACIO);
+		LOG.info("Amb usuari: " + usuari);
+		LOG.info("Amb password: " + pass);
+		LOG.info("Amb request: " + request);
+		LOG.info("Amb headers: " + headers);
+		LOG.info("Amb map: " + map);
 		final ResponseEntity<RespuestaProcedimientos> responseProcedimientos = restTemplate
 				.postForEntity(endpoint + entitat, request, RespuestaProcedimientos.class);
 
@@ -161,22 +192,43 @@ public class RolsacPlugin implements IRolsacPlugin {
 				else
 					LOG.info("No s'han trobat procediments");
 
-				HashMap<String, String> resultats = new HashMap<String, String>();
+				HashMap<String, String[]> resultats = new HashMap<String, String[]>();
 
-				if (respostaProcediments != null) 
+				if (respostaProcediments != null)
 					for (Procedimientos procediment : respostaProcediments) {
 						LOG.info(procediment.getCodigo() + " " + procediment.getNombre());
-						resultats.put(String.valueOf(procediment.getCodigo()), procediment.getNombre().replace("'", "`"));
+						resultats.put(String.valueOf(procediment.getCodigo()),
+								new String[] { procediment.getNombre().replace("'", "`"),
+										llengua });
 					}
 
+				procedimentsAllCatxe = Map.entry(System.currentTimeMillis(), resultats);
 				return resultats;
 			}
 		}
+		procedimentsAllCatxe = null;
 		return null;
-
 	}
 
-	public HashMap<String, String> obtenirTramits(String procedimentId) throws Exception {
+	public HashMap<String, String[]> obtenirTramits(String procedimentId, String llengua, Boolean empraCatxe)
+			throws Exception {
+		if (llengua == null || llengua.isEmpty()) {
+			llengua = "ca";
+		}
+
+		if (empraCatxe == null || empraCatxe) {
+			long now = System.currentTimeMillis();
+			if (tramitsFhAllCatxe != null && tramitsFhAllCatxe.getKey() != null
+					&& (now - tramitsFhAllCatxe.getKey()) < TEMPS_CATXE_PROCEDIMENTS_I_TRAMITS) {
+				HashMap<String, String[]> itemsCatxe = tramitsFhAllCatxe.getValue();
+				Map.Entry<String, String[]> primerItem = itemsCatxe.entrySet().iterator().next();
+				if (primerItem != null && primerItem.getValue()[1] == llengua) {
+					LOG.info("Retornant tramits del catxe");
+					return itemsCatxe;
+				}
+			}
+			LOG.info("Tramits no trobats al catxe, s'ha de tornar a cridar a Rolsac");
+		}
 
 		/*
 		 * if (tramitesApiClient == null) { tramitesApiClient = getTramitesApi(); }
@@ -209,37 +261,41 @@ public class RolsacPlugin implements IRolsacPlugin {
 		headers.setContentType(org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED);
 
 		final MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
-		map.add("idioma", "es");
+		map.add("idioma", llengua);
 		map.add("filtro", "{\"codigoProcedimiento\":\"" + procedimentId + "\"}");
 		map.add("filtroOrdenacion", FILTRE_PAGINACIO);
 
 		final HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
-		final ResponseEntity<RespuestaTramites> responseProcedimientos = restTemplate.postForEntity(endpoint + entitat,
+		final ResponseEntity<RespuestaTramites> responseTramites = restTemplate.postForEntity(endpoint + entitat,
 				request, RespuestaTramites.class);
 
-		if (responseProcedimientos != null && responseProcedimientos.getBody() != null) {
-			if (!responseProcedimientos.getBody().getStatus().equals("200")
-					|| (responseProcedimientos.getBody().getNumeroElementos().equals("0"))) {
+		if (responseTramites != null && responseTramites.getBody() != null) {
+			if (!responseTramites.getBody().getStatus().equals("200")
+					|| (responseTramites.getBody().getNumeroElementos().equals("0"))) {
 				return null;
 			} else {
 
-				final List<Tramites> respostaProcediments = responseProcedimientos.getBody().getResultado();
-				LOG.info("S'han trobat " + respostaProcediments.size() + " procediments");
+				final List<Tramites> respostaTramits = responseTramites.getBody().getResultado();
+				LOG.info("S'han trobat " + respostaTramits.size() + " procediments");
 
-				HashMap<String, String> resultats = new HashMap<String, String>();
+				HashMap<String, String[]> resultats = new HashMap<String, String[]>();
 
-				for (Tramites procediment : respostaProcediments) {
-					LOG.info(procediment.getCodigo() + " " + procediment.getNombre());
-					resultats.put(String.valueOf(procediment.getCodigo()), procediment.getNombre().replace("'", "`"));
+				for (Tramites tramit : respostaTramits) {
+					LOG.info(tramit.getCodigo() + " " + tramit.getNombre() + " "
+							+ tramit.getLinkProcedimiento().getCodigo());
+					resultats.put(String.valueOf(tramit.getCodigo()),
+							new String[] { tramit.getNombre().replace("'", "`"),
+									tramit.getLinkProcedimiento().getCodigo(), llengua });
 				}
 
+				tramitsFhAllCatxe = Map.entry(System.currentTimeMillis(), resultats);
 				return resultats;
 			}
 		}
 
+		tramitsFhAllCatxe = null;
 		return null;
-
 	}
 
 	private ProcedimientosApi getProcedimientosApi() throws Exception {

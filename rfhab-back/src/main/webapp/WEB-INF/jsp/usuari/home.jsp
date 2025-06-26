@@ -952,22 +952,18 @@ form label {
 		}
 	});
 	
-	var procediments =[
+	var procediments = [
 		<c:forEach items="${llistaProcediments}" var="procediment">
-            { value: '${procediment.key} ${procediment.value}', data: '${procediment.value}' },
+            { value: '${procediment.key} ${procediment.value[0]}', data: '${procediment.value[0]}', procediment: '${procediment.key}' },
         </c:forEach>
 	];
 	
-	var countries = [
-	    { value: 'Andorra', data: 'AD' },
-	    { value: 'España', data: 'ES' },
-	    { value: 'Portugal', data: 'PT' },
-	    { value: 'Francia', data: 'FR' },
-	    { value: 'Alemania', data: 'AL' },
-	    { value: 'Suiza', data: 'SZ' },
-	    { value: 'China', data: 'CH' },
-	    { value: 'Zimbabwe', data: 'ZZ' }
+	var tramitsAll = [
+		<c:forEach items="${llistaTramits}" var="tramit">
+			{ value: '${tramit.key} ${tramit.value[0]}', data: '${tramit.value[0]}', procediment: '${tramit.value[1]}' },
+		</c:forEach>
 	];
+	var tramitsProcediment = [];
 
 	var pas2_procediment_value = null;
 	var pas2_tramit_value = null;
@@ -979,13 +975,17 @@ form label {
 	    onSelect: function (suggestion) {
 			if(pas2_procediment_value != suggestion.data) {
 				pas2_procediment_value = suggestion.data;
+				pas2_procediment_id = suggestion.procediment;
 				console.log('You selected: ' + suggestion.value + ', ' + suggestion.data);
+				tramitsProcediment = tramitsAll.filter(function(tramit) {
+					return tramit.procediment === pas2_procediment_id;
+				});
 			}
 	    }
 	});
 
 	$('#pas2_tramit').autocomplete({
-	    lookup: countries,
+	    lookup: tramitsProcediment,
 	    minChars: 1,
 	    showNoSuggestionNotice: true,
         noSuggestionNotice: 'Sorry, no matching results',

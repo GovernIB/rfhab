@@ -6,14 +6,15 @@ import org.fundaciobit.pluginsib.core.v3.IPluginIB;
 
 import es.caib.rfhab.commons.utils.Constants;
 
-public interface IRolsacPlugin extends IPluginIB{
-	
-	public static final String ROLSAC_PLUGIN_PROPERTY = Constants.RFHAB_PROPERTY_BASE + IPLUGINSIB_BASE_PROPERTIES + "rolsac.";
+public interface IRolsacPlugin extends IPluginIB {
 
-	public HashMap<String,String> obtenirProcedimentsByDir3(String codiDir3) throws Exception;
+	public static final String ROLSAC_PLUGIN_PROPERTY = Constants.RFHAB_PROPERTY_BASE + IPLUGINSIB_BASE_PROPERTIES
+			+ "rolsac.";
 
-	public HashMap<String,String> obtenirProcediments() throws Exception;
+	public HashMap<String, String> obtenirProcedimentsByDir3(String codiDir3) throws Exception;
 
-	public HashMap<String,String> obtenirTramits(String procedimentId) throws Exception;
+	public HashMap<String, String[]> obtenirProcediments(String llengua, Boolean empraCatxe) throws Exception;
+
+	public HashMap<String, String[]> obtenirTramits(String procedimentId, String llengua, Boolean empraCatxe) throws Exception;
 
 }

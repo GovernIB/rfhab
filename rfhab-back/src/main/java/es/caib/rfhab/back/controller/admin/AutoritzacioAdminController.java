@@ -64,7 +64,7 @@ public class AutoritzacioAdminController extends AutoritzacioController {
 		}
 
 		autoritzacioForm.addReadOnlyField(DATACREACIO);
-		
+
 		autoritzacioForm.setAttachedAdditionalJspCode(true);
 
 		return autoritzacioForm;
@@ -106,7 +106,9 @@ public class AutoritzacioAdminController extends AutoritzacioController {
 			if (rolsacPlugin == null)
 				rolsacPlugin = new RolsacPlugin();
 
-			HashMap<String, String> llistaProcediments = rolsacPlugin.obtenirProcediments();
+			LoginInfo loginInfo = LoginInfo.getInstance();
+			HashMap<String, String[]> llistaProcediments = rolsacPlugin.obtenirProcediments(loginInfo.getLanguage(),
+					null);
 
 			if (llistaProcediments != null) {
 				llistaProcediments.forEach((x, y) -> log.info("Procediment: " + x + " " + y));
@@ -115,10 +117,10 @@ public class AutoritzacioAdminController extends AutoritzacioController {
 			ModelAndView mav = new ModelAndView("jsonView");
 
 			if (llistaProcediments == null)
-				llistaProcediments = new HashMap<String, String>();
+				llistaProcediments = new HashMap<String, String[]>();
 
 			ObjectMapper mapper = new ObjectMapper();
-			String json = mapper.writeValueAsString(llistaProcediments);		
+			String json = mapper.writeValueAsString(llistaProcediments);
 			mav.addObject("jsonData", json);
 			return mav;
 
@@ -137,7 +139,9 @@ public class AutoritzacioAdminController extends AutoritzacioController {
 			if (rolsacPlugin == null)
 				rolsacPlugin = new RolsacPlugin();
 
-			HashMap<String, String> llistaTramits = rolsacPlugin.obtenirTramits(procedimentID);
+			LoginInfo loginInfo = LoginInfo.getInstance();
+			HashMap<String, String[]> llistaTramits = rolsacPlugin.obtenirTramits(procedimentID,
+					loginInfo.getLanguage(), null);
 
 			if (llistaTramits != null) {
 				llistaTramits.forEach((x, y) -> log.info("Tramit: " + x + " " + y));
@@ -146,7 +150,7 @@ public class AutoritzacioAdminController extends AutoritzacioController {
 			ModelAndView mav = new ModelAndView("jsonView");
 
 			if (llistaTramits == null)
-				llistaTramits = new HashMap<String, String>();
+				llistaTramits = new HashMap<String, String[]>();
 
 			ObjectMapper mapper = new ObjectMapper();
 			String json = mapper.writeValueAsString(llistaTramits);

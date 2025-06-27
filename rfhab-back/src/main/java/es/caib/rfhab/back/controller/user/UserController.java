@@ -153,6 +153,19 @@ public class UserController extends UsuariController {
 		return FileDownloadController.fileUrl(documentFitxer);
 	}
 
+	@RequestMapping(value = "/obtenirtramits/{identificadorProcediment}", method = RequestMethod.GET)
+	@ResponseBody
+	public HashMap<String, String[]> obtenirTramits(
+			@PathVariable(value = "identificadorProcediment", required = true) String identificadorProcediment,
+			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		log.info("ENTRANT A obtenirtramit");
+		log.info("obtenirtramit -- identificadorProcediment = " + identificadorProcediment);
+		LoginInfo loginInfo = LoginInfo.getInstance();
+		String language = loginInfo.getLanguage();
+		HashMap<String, String[]> llistaTramits = rolsacPlugin.obtenirTramits(identificadorProcediment, language);
+		return llistaTramits;
+	}
+
 	// TODO:convertir això a asincron i fer tasca nocturna, amb gestió de
 	// reintents...
 	@RequestMapping(value = "/tancarexpedient", method = RequestMethod.GET)

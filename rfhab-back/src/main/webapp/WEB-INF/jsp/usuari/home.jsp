@@ -295,6 +295,9 @@ form label {
 
 							<div class="form-group">
 								<label><fmt:message key="usuari.tramit.seleccio.tramit" /></label>
+								<p id="spinner-carregant-tramits" style="text-align: center; display: none;">
+									<svg style="width:20%;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150"><path fill="none" stroke="#007BFF" stroke-width="15" stroke-linecap="round" stroke-dasharray="300 385" stroke-dashoffset="0" d="M275 75c0 31-27 50-50 50-58 0-92-100-150-100-28 0-50 22-50 50s23 50 50 50c58 0 92-100 150-100 24 0 50 19 50 50Z"><animate attributeName="stroke-dashoffset" calcMode="spline" dur="2" values="685;-685" keySplines="0 0 1 1" repeatCount="indefinite"></animate></path></svg>
+								</p>
 								<input id="pas2_tramit" name="tramit" type="text"
 									class="form-control"
 									placeholder="<fmt:message key="usuari.tramit.seleccio.tramit.placeholder" />"
@@ -965,6 +968,56 @@ form label {
 	];
 	var tramitsProcediment = [];
 
+	function actualitzaLlistatDeTramits(procediment){
+		$('#spinner-carregant-tramits').show();
+		$('#pas2_tramit').hide();
+
+		// tramitsProcediment = tramitsAll.filter(function(tramit) {
+		// 	return tramit.procediment === procediment;
+		// });
+		// console.log('Tramits per al procediment ' + procediment + ': ', tramitsProcediment);
+		// $('#spinner-carregant-tramits').hide();
+		// $('#pas2_tramit').show();
+
+		const url = "<%=request.getContextPath()%>" + "/usuari/obtenirtramits/" + procediment;
+		const request = new Request(url, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
+		fetch(request)
+			.then(response => response.json())
+			.then(data => {
+				tramitsProcediment = [];
+				for (const tramit in data) {
+					if (Object.prototype.hasOwnProperty.call(data, tramit)) {
+						const nomTramit = data[tramit][0];
+						const procedimentId = data[tramit][1];
+						tramitsProcediment.push(
+							{ 
+								value: tramit + " " + nomTramit,
+								data: nomTramit,
+								procediment: procedimentId 
+							});
+						}
+					}
+				console.log('Tramits per al procediment ' + procediment + ': ', tramitsProcediment);
+				$('#spinner-carregant-tramits').hide();
+				const pas2Tramit = $('#pas2_tramit');
+				pas2Tramit.autocomplete().setOptions({ lookup: tramitsProcediment });
+				pas2Tramit.show();
+			})
+			.catch(error => {
+				const errorMsg = 'Error al carregar els tràmits: ' + error.message;
+				inserirMsg('danger', errorMsg);
+				console.error('Error obtenint tramits:', error);
+				$('#spinner-carregant-tramits').hide();
+				$('#pas2_tramit').show();
+			});
+	}
+
+	// https://github.com/devbridge/jQuery-Autocomplete
 	var pas2_procediment_value = null;
 	var pas2_tramit_value = null;
 	$('#pas2_procediment').autocomplete({
@@ -977,9 +1030,7 @@ form label {
 				pas2_procediment_value = suggestion.data;
 				pas2_procediment_id = suggestion.procediment;
 				console.log('You selected: ' + suggestion.value + ', ' + suggestion.data);
-				tramitsProcediment = tramitsAll.filter(function(tramit) {
-					return tramit.procediment === pas2_procediment_id;
-				});
+				actualitzaLlistatDeTramits(pas2_procediment_id);
 			}
 	    }
 	});

@@ -80,14 +80,12 @@ public class UserController extends UsuariController {
 			throws Exception {
 
 		log.info("XYZ ZZZ ENTRANT A HOME");
-		
+
 		LoginInfo loginInfo = LoginInfo.getInstance();
 		String language = loginInfo.getLanguage();
-		log.info("XYZ ZZZ llengua: " + language);//TODO:llevar
-
 		rolsacPlugin = new RolsacPlugin();
-		HashMap<String, String[]> llistaProcediments = rolsacPlugin.obtenirProcediments(language, true);
-		HashMap<String, String[]> llistaTramits = rolsacPlugin.obtenirTramits("", language, true);
+		HashMap<String, String[]> llistaProcediments = rolsacPlugin.obtenirProcedimentsAll(language, true);
+		HashMap<String, String[]> llistaTramits = rolsacPlugin.obtenirTramitsAll(language, true);
 
 		// HashMap<String, String> llistaTramits =
 		// rolsacPlugin.obtenirTramits("1533169");
@@ -96,7 +94,7 @@ public class UserController extends UsuariController {
 
 		if (llistaProcediments == null) {
 			llistaProcediments = new HashMap<String, String[]>();
-		} 
+		}
 		mav.addObject("llistaProcediments", llistaProcediments);
 
 		if (llistaTramits == null) {

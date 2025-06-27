@@ -107,7 +107,7 @@ public class AutoritzacioAdminController extends AutoritzacioController {
 				rolsacPlugin = new RolsacPlugin();
 
 			LoginInfo loginInfo = LoginInfo.getInstance();
-			HashMap<String, String[]> llistaProcediments = rolsacPlugin.obtenirProcediments(loginInfo.getLanguage(),
+			HashMap<String, String[]> llistaProcediments = rolsacPlugin.obtenirProcedimentsAll(loginInfo.getLanguage(),
 					null);
 
 			if (llistaProcediments != null) {
@@ -141,7 +141,7 @@ public class AutoritzacioAdminController extends AutoritzacioController {
 
 			LoginInfo loginInfo = LoginInfo.getInstance();
 			HashMap<String, String[]> llistaTramits = rolsacPlugin.obtenirTramits(procedimentID,
-					loginInfo.getLanguage(), null);
+					loginInfo.getLanguage());
 
 			if (llistaTramits != null) {
 				llistaTramits.forEach((x, y) -> log.info("Tramit: " + x + " " + y));

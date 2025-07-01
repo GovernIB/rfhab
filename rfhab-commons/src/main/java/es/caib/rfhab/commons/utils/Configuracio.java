@@ -131,11 +131,12 @@ public class Configuracio implements Constants {
     }
 
     public static byte[] getEncryptKey() {
-        return getAppProperties().getProperty(RFHAB_PROPERTY_BASE + "encryptkey", "0123456789123456").getBytes(StandardCharsets.UTF_8);
+        return getAppProperties().getProperty(RFHAB_PROPERTY_BASE + "encryptkey", "0123456789123456")
+                .getBytes(StandardCharsets.UTF_8);
     }
-    
+
     public static String getDefaultEntitat() {
-    	return getAppProperties().getProperty(RFHAB_PROPERTY_BASE + "defaultentitat", "1");
+        return getAppProperties().getProperty(RFHAB_PROPERTY_BASE + "defaultentitat", "1");
     }
 
     public static Long getMaxUploadSizeInBytes() {
@@ -160,12 +161,12 @@ public class Configuracio implements Constants {
             throw new RuntimeException("No s'ha definit la propietat '" + RFHAB_PROPERTY_BASE + "filesdirectory'"
                     + " al fitxer " + System.getProperty(RFHAB_PROPERTY_BASE + "system.properties")
                     + ". S'hauria d'anar al fitxer " + System.getProperty(RFHAB_PROPERTY_BASE + "system.properties")
-                    + " i donar valor a la propietat '" + RFHAB_PROPERTY_BASE +"filesdirectory'"
+                    + " i donar valor a la propietat '" + RFHAB_PROPERTY_BASE + "filesdirectory'"
                     + " amb una ruta al directori on l'aplició gestionara els fitxers.");
         }
-        
+
         File filesFolder = new File(path);
-        
+
         if (!filesFolder.exists()) {
             throw new RuntimeException("El directori indicat a la propietat '" + RFHAB_PROPERTY_BASE
                     + ".filesdirectory'" + " del fitxer "
@@ -194,36 +195,60 @@ public class Configuracio implements Constants {
     public static String getFileSystemManager() {
         return getAppProperties().getProperty(RFHAB_PROPERTY_BASE + "filesystemmanagerclass");
     }
-    
-	public static String getRolsacEndpoint() {
-		return getAppSystemProperties().getProperty(RFHAB_PROPERTY_BASE + "rolsac.endpoint");
-	}
-	
-	public static String getRolsacUsername() {
-		return getAppSystemProperties().getProperty(RFHAB_PROPERTY_BASE + "rolsac.usuari");
-	}
-	
-	public static String getRolsacPassword() {
-		return getAppSystemProperties().getProperty(RFHAB_PROPERTY_BASE + "rolsac.contrasenya");
-	}
-	
-	public static String getDir3CaibEndpoint() {
-		return getAppSystemProperties().getProperty(RFHAB_PROPERTY_BASE + "dir3caib.endpoint");
-	}
-	
-	public static String getDir3CaibUsername() {
-		return getAppSystemProperties().getProperty(RFHAB_PROPERTY_BASE + "dir3caib.usuari");
-	}
-	
-	public static String getDir3CaibPassword() {
-		return getAppSystemProperties().getProperty(RFHAB_PROPERTY_BASE + "dir3caib.contrasenya");
-	}
-	
-	public static String getAppSystemProperty(String key) {
-		return getAppSystemProperties().getProperty(key);
-	}
-	
-	public static String getAppProperty(String key) {
-		return getAppProperties().getProperty(key);
-	}
+
+    public static String getRolsacEndpoint() {
+        return getAppSystemProperties().getProperty(RFHAB_PROPERTY_BASE + "rolsac.endpoint");
+    }
+
+    public static String getRolsacUsername() {
+        return getAppSystemProperties().getProperty(RFHAB_PROPERTY_BASE + "rolsac.usuari");
+    }
+
+    public static String getRolsacPassword() {
+        return getAppSystemProperties().getProperty(RFHAB_PROPERTY_BASE + "rolsac.contrasenya");
+    }
+
+    public static String getDir3CaibEndpoint() {
+        return getAppSystemProperties().getProperty(RFHAB_PROPERTY_BASE + "dir3caib.endpoint");
+    }
+
+    public static String getDir3CaibUsername() {
+        return getAppSystemProperties().getProperty(RFHAB_PROPERTY_BASE + "dir3caib.usuari");
+    }
+
+    public static String getDir3CaibPassword() {
+        return getAppSystemProperties().getProperty(RFHAB_PROPERTY_BASE + "dir3caib.contrasenya");
+    }
+
+    public static String getSistramitEndpoint() {
+        return getAppSystemProperties().getProperty(SISTRAMIT_PROPERTY_BASE + "url");
+    }
+
+    public static String getSistramitUser() {
+        return getAppSystemProperties().getProperty(SISTRAMIT_PROPERTY_BASE + "usuari");
+    }
+
+    public static String getSistramitPassword() {
+        return getAppSystemProperties().getProperty(SISTRAMIT_PROPERTY_BASE + "contrasenya");
+    }
+
+    public static String getSistramitEndpoint(Properties properties) {
+        return properties.getProperty(SISTRAMIT_PROPERTY_BASE + "url");
+    }
+
+    public static String getSistramitUser(Properties properties) {
+        return properties.getProperty(SISTRAMIT_PROPERTY_BASE + "usuari");
+    }
+
+    public static String getSistramitPassword(Properties properties) {
+        return properties.getProperty(SISTRAMIT_PROPERTY_BASE + "contrasenya");
+    }
+
+    public static String getAppSystemProperty(String key) {
+        return getAppSystemProperties().getProperty(key);
+    }
+
+    public static String getAppProperty(String key) {
+        return getAppProperties().getProperty(key);
+    }
 }

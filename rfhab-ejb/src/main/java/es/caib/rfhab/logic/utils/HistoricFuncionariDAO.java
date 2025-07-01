@@ -11,6 +11,7 @@ import es.caib.rfhab.model.entity.Rol;
 /**
  * 
  * @autor jagarcia
+ * @autor jpou
  *
  */
 @JsonInclude(JsonInclude.Include.NON_NULL) // Inclou només camps no nuls al JSON

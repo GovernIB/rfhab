@@ -3,6 +3,7 @@ package es.caib.rfhab.back.controller.user;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -36,12 +37,16 @@ import es.caib.rfhab.logic.ActivitatLogicaService;
 import es.caib.rfhab.logic.EntitatLogicaService;
 import es.caib.rfhab.logic.FitxerPublicLogicaService;
 import es.caib.rfhab.logic.ScanWebLogicaService;
+import es.caib.rfhab.logic.SistramitLogicaService;
 import es.caib.rfhab.logic.UnitatLogicaUserService;
+import es.caib.rfhab.logic.utils.TicketAccesDto.RpersonaInfo;
 import es.caib.rfhab.model.entity.Entitat;
 import es.caib.rfhab.model.entity.Fitxer;
+import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.Unitat;
 import es.caib.rfhab.model.entity.Usuari;
 import es.caib.rfhab.model.fields.IdiomaFields;
+import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.UsuariJPA;
 import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
 
@@ -57,6 +62,9 @@ import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
 public class UserController extends UsuariController {
 
 	public static final String CONTEXTWEB = "/usuari/";
+
+	@EJB(mappedName = SistramitLogicaService.JNDI_NAME)
+	protected SistramitLogicaService sistramitLogicaEjb;
 
 	@EJB(mappedName = ActivitatLogicaService.JNDI_NAME)
 	protected ActivitatLogicaService activitatLogicaEjb;
@@ -176,6 +184,97 @@ public class UserController extends UsuariController {
 		log.info("ENTRANT A tancarexpedient");
 		log.info("tancarexpedient -- identificadorExpedient = " + identificadorExpedient);
 		activitatLogicaEjb.tancarExpedient(identificadorExpedient);
+	}
+
+	@RequestMapping(value = "/ticketAccesFh", method = RequestMethod.GET)
+	@ResponseBody
+	public String ticketAccesFh(
+			@RequestParam(value = "languageUI", required = false) String languageUI,
+			@RequestParam(value = "interessats", required = false) String interessats,
+			@RequestParam(value = "ciutadaTipusIdentificacio", required = false) String ciutadaTipusIdentificacio,
+			@RequestParam(value = "ciutadaNif", required = false) String ciutadaNif,
+			@RequestParam(value = "ciutadaNom", required = false) String ciutadaNom,
+			@RequestParam(value = "ciutadaLlinatges", required = false) String ciutadaLlinatges,
+			@RequestParam(value = "representant", required = false) Boolean representant,
+			@RequestParam(value = "representantNom", required = false) String representantNom,
+			@RequestParam(value = "representantLlinatges", required = false) String representantLlinatges,
+			@RequestParam(value = "representantTipusIdentificacio", required = false) String representantTipusIdentificacio,
+			@RequestParam(value = "representantIdentificacio", required = false) String representantIdentificacio,
+			@RequestParam(value = "procediment", required = false) String procediment,
+			@RequestParam(value = "tramit", required = false) String tramit,
+			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		log.info("XYZ ZZZ ENTRANT A ticketAccesFh");
+
+		log.info("XYZ YYY languageUI = " + languageUI);
+		log.info("XYZ YYY interessats = " + interessats);
+		List<String> interessatsList = Arrays.asList(interessats.split("--"));
+		log.info("XYZ YYY interessatsList = " + interessatsList);
+		log.info("XYZ YYY ciutadaTipusIdentificacio = " + ciutadaTipusIdentificacio);
+		log.info("XYZ YYY ciutadaNif = " + ciutadaNif);
+		log.info("XYZ YYY ciutadaNom = " + ciutadaNom);
+		log.info("XYZ YYY ciutadaLlinatges = " + ciutadaLlinatges);
+		String[] ciutadaLlinatgesList = ciutadaLlinatges.split(" ");
+		log.info("XYZ YYY ciutadaLlinatgesList = " + ciutadaLlinatgesList);
+		log.info("XYZ YYY representant = " + representant);
+		log.info("XYZ YYY representantNom = " + representantNom);
+		log.info("XYZ YYY representantLlinatges = " + representantLlinatges);
+		log.info("XYZ YYY representantTipusIdentificacio = " + representantTipusIdentificacio);
+		log.info("XYZ YYY representantIdentificacio = " + representantIdentificacio);
+		log.info("XYZ YYY procediment = " + procediment);
+		log.info("XYZ YYY tramit = " + tramit);
+
+		LoginInfo loginInfo = LoginInfo.getInstance();
+		Usuari usuari = loginInfo.getUsuariPersona();
+		String username = usuari.getUsername();
+		String funcionariAdministracioID = usuari.getNif();
+		String funcionariNom = (usuari.getNom() != null ? usuari.getNom() : "") + " "
+				+ (usuari.getLlinatge1() != null ? usuari.getLlinatge1() : "") + " "
+				+ (usuari.getLlinatge2() != null ? usuari.getLlinatge2() : "");
+		String funcionariDir3 = getCodiDIR3(request, username);// codiDIR3 del lloc de feina del funcionari
+		Entitat entitat = entitatLogicaEjb.findByPrimaryKey(loginInfo.getEntitatID());
+		Unitat unitat = unitatLogicaEjb.findByPrimaryKey(entitat.getUnitatID());
+
+		log.info("XYZ YYY username = " + username);
+		log.info("XYZ YYY funcionariAdministracioID = " + funcionariAdministracioID);
+		log.info("XYZ YYY funcionariNom = " + funcionariNom);
+		log.info("XYZ YYY funcionariDir3 = " + funcionariDir3);
+
+		String urlTramit = null;
+		try {
+			Funcionari funcionari = new FuncionariJPA();
+			funcionari.setCorreu(usuari.getCorreu());
+			funcionari.setEntitatID(entitat.getEntitatID());
+			funcionari.setIdentificador(funcionariAdministracioID);
+			funcionari.setLlinatge1(usuari.getLlinatge1());
+			funcionari.setLlinatge2(usuari.getLlinatge2());
+			funcionari.setNom(funcionariNom);
+			funcionari.setTipusIdentificador(1);
+			funcionari.setUsuari(username);
+
+			RpersonaInfo interessatTramit = new RpersonaInfo(
+					ciutadaLlinatgesList.length > 0 ? ciutadaLlinatgesList[0] : "",
+					ciutadaLlinatgesList.length > 1 ? ciutadaLlinatgesList[1] : "", ciutadaNif, ciutadaNom);
+			RpersonaInfo representantTramit = null;
+			if (representant != null && representant) {
+				String[] representantLlinatgesList = representantLlinatges.split(" ");
+				representantTramit = new RpersonaInfo(
+						representantLlinatgesList.length > 0 ? representantLlinatgesList[0] : "",
+						representantLlinatgesList.length > 1 ? representantLlinatgesList[1] : "", representantNom,
+						representantIdentificacio);
+			}
+
+			// procediment i tramit
+			urlTramit = sistramitLogicaEjb.getTicketAccesoFh(funcionari, funcionariDir3, interessatTramit,
+					representantTramit,
+					"3860378", languageUI, "", false, "CAIB.TESTS_OLD.TEST-FIRMA", 5);
+		} catch (Exception e) {
+			log.error("Error retrieving ticket access. Message: " + e.getMessage());
+			log.error("Error retrieving ticket access. LocalizedMessage: " + e.getLocalizedMessage());
+			throw e;
+		}
+		log.info("Ticket access URL: " + urlTramit);
+		return urlTramit;
 	}
 
 	@RequestMapping(value = "/preparescanweb", method = RequestMethod.GET)

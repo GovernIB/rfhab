@@ -12,6 +12,10 @@
 
     <name>RFHab - EJB</name>
 
+    <properties>
+            <maven.test.skip>false</maven.test.skip>
+    </properties>
+
     <dependencies>
 
         <dependency>
@@ -89,6 +93,12 @@
             <groupId>com.fasterxml.jackson.jaxrs</groupId>
             <artifactId>jackson-jaxrs-json-provider</artifactId>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
         </dependency>
 
     </dependencies>

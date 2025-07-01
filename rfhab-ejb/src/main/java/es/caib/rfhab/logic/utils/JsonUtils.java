@@ -51,4 +51,18 @@ public class JsonUtils {
             throw new I18NException(e.getMessage());
         }
     }
+
+    public static String toJson(Object object) throws I18NException {
+        if (object == null) {
+            return null; // Retorna null si l'objecte és nul
+        }
+
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.writeValueAsString(object);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw new I18NException(e.getMessage());
+        }
+    }
 }

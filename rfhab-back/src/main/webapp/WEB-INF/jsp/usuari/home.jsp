@@ -340,16 +340,26 @@ form label {
 
 				<div class="msf-view">
 					<div class="row">
-						<div class="col-md-12" style="min-height: 325px;">
+						<div class="col-md-12" style="min-height: 325px;" id="div-iniciar-tramit">
 
 							<h3><fmt:message key="usuari.tramit.iniciar.titol" /></h3>
 
 							<p><fmt:message key="usuari.tramit.iniciar.redireccionamentautomatic" /></p>
 							<p>
-								<fmt:message key="usuari.tramit.iniciar.noredireccionament" /> <a
-									href="https://www.google.com">aquí</a>.
+								<fmt:message key="usuari.tramit.iniciar.noredireccionament" />&nbsp;<a
+									href="#" id="link-iniciar-tramit">aquí</a>.
 							</p>
 
+						</div>
+						<div class="col-md-12" style="min-height: 325px;" id="div-iniciar-tramit-error" style="display: none;">
+							<p class="text-danger">
+								<fmt:message key="usuari.tramit.iniciar.error" />
+							</p>
+						</div>
+						<div class="col-md-12" style="min-height: 325px;" id="spinner-carregant-iniciartramit" style="display: none;">
+							<p  style="text-align: center;">
+								<svg style="width:20%;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150"><path fill="none" stroke="#007BFF" stroke-width="15" stroke-linecap="round" stroke-dasharray="300 385" stroke-dashoffset="0" d="M275 75c0 31-27 50-50 50-58 0-92-100-150-100-28 0-50 22-50 50s23 50 50 50c58 0 92-100 150-100 24 0 50 19 50 50Z"><animate attributeName="stroke-dashoffset" calcMode="spline" dur="2" values="685;-685" keySplines="0 0 1 1" repeatCount="indefinite"></animate></path></svg>
+							</p>
 						</div>
 					</div>
 				</div>
@@ -903,6 +913,8 @@ form label {
 							e.preventDefault();
 							return true;
 						});
+
+						iniciarTramit();
 					});
 					return form;
 				};
@@ -1392,7 +1404,6 @@ form label {
 							console.log('Maximum polling duration reached. Stopping polling.');
 							$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
 							let errorText = 'Exhaurit el temps màxim per pujar el document. Si us plau, obri la finestra modal de nou i torna-ho a intentar.';
-							// Aquí pots mostrar errorText per pantalla
 							inserirMsg('danger', errorText);
 						}
 						return;
@@ -1408,7 +1419,6 @@ form label {
 						const errorText = "No s'ha pogut pujar el document o no s'ha retornat cap fitxer ID i tampoc errors.";//TODO:afegir missatge a traduccions
 						console.error(errorText);
 						console.error("Resposta --> " + data);
-						// Aquí pots mostrar errorText per pantalla
 						inserirMsg('danger', errorText);
 						$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
 						return;
@@ -1420,7 +1430,6 @@ form label {
 						if(!errorResponseOrFileId || errorResponseOrFileId.error){
 							const errorText = "No s'ha pogut pujar el document: " + errorResponseOrFileId.error;//TODO:afegir missatge a traduccions
 							console.error(errorText);
-							// Aquí pots mostrar errorText per pantalla
 							inserirMsg('danger', errorText);
 							$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
 							return;
@@ -1438,7 +1447,6 @@ form label {
 				error: function(xhr, status, error) {
 					$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
 					let errorText = 'Error descarregant el document: ' + (xhr.responseText || error);//TODO:afegir missatge a traduccions
-					// Aquí pots mostrar errorText per pantalla
 					inserirMsg('danger', errorText);
 				}
 			});
@@ -1499,6 +1507,40 @@ form label {
 			const fitxerId = FITXER_ENCRYPTED_ID[i];
 			downloadFitxer(fitxerId);
 		}
+	}
+
+	async function iniciarTramit() {
+		console.log("Iniciar tramit");	
+
+		$('#spinner-carregant-iniciartramit').show();
+		$('#div-iniciar-tramit').hide();
+		$('#div-iniciar-tramit-error').hide();
+
+		const url = "<%=request.getContextPath() + "/usuari/ticketAccesFh/"%>";
+		const dataObj = getFormData();
+
+		console.log("ticketAccesFh, URL: " + url);
+		console.log("ticketAccesFh, Data object: ", dataObj);
+		$.ajax({
+			url: url,
+			method: 'GET',
+			data: dataObj,
+        success: function(data, status, xhr) {
+            console.log("Resposta ticketAccesFh:", data);
+			$('#spinner-carregant-iniciartramit').hide();
+			$('#div-iniciar-tramit').show();
+			$('#div-iniciar-tramit-error').hide();
+
+			$('#link-iniciar-tramit').attr('href', data);
+			window.open(data, '_blank').focus();
+        },
+        error: function(xhr, status, error) {
+            let errorText = 'Error obtenint el ticket d´accés al tràmit: ' + (xhr.responseText || error);
+			inserirMsg('danger', errorText);
+			$('#spinner-carregant-iniciartramit').hide();
+			$('#div-iniciar-tramit').hide();
+			$('#div-iniciar-tramit-error').show();
+        }});
 	}
 
 	function onClickPujarDocument(button) {

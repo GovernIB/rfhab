@@ -47,6 +47,7 @@ import es.caib.rfhab.model.entity.Unitat;
 import es.caib.rfhab.model.entity.Usuari;
 import es.caib.rfhab.model.fields.IdiomaFields;
 import es.caib.rfhab.persistence.FuncionariJPA;
+import es.caib.rfhab.persistence.UnitatJPA;
 import es.caib.rfhab.persistence.UsuariJPA;
 import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
 
@@ -93,6 +94,7 @@ public class UserController extends UsuariController {
 		String language = loginInfo.getLanguage();
 		rolsacPlugin = new RolsacPlugin();
 		HashMap<String, String[]> llistaProcediments = rolsacPlugin.obtenirProcedimentsAll(language, true);
+		// TODO: esborrar quan se millori la catxe. No podem consultar TOTS el tramits
 		HashMap<String, String[]> llistaTramits = rolsacPlugin.obtenirTramitsAll(language, true);
 
 		// HashMap<String, String> llistaTramits =
@@ -201,7 +203,10 @@ public class UserController extends UsuariController {
 			@RequestParam(value = "representantTipusIdentificacio", required = false) String representantTipusIdentificacio,
 			@RequestParam(value = "representantIdentificacio", required = false) String representantIdentificacio,
 			@RequestParam(value = "procediment", required = false) String procediment,
-			@RequestParam(value = "tramit", required = false) String tramit,
+			@RequestParam(value = "tramitCodi", required = true) String tramitCodi,
+			@RequestParam(value = "tramitVersio", required = true) String tramitVersio,
+			@RequestParam(value = "tramitParametres", required = false) String tramitParametres,
+			@RequestParam(value = "idTraTel", required = false) String idTraTel,
 			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		log.info("XYZ ZZZ ENTRANT A ticketAccesFh");
@@ -222,7 +227,10 @@ public class UserController extends UsuariController {
 		log.info("XYZ YYY representantTipusIdentificacio = " + representantTipusIdentificacio);
 		log.info("XYZ YYY representantIdentificacio = " + representantIdentificacio);
 		log.info("XYZ YYY procediment = " + procediment);
-		log.info("XYZ YYY tramit = " + tramit);
+		log.info("XYZ YYY tramitCodi = " + tramitCodi);
+		log.info("XYZ YYY tramitVersio = " + tramitVersio);
+		log.info("XYZ YYY tramitParametres = " + tramitParametres);
+		log.info("XYZ YYY idTraTel = " + idTraTel);
 
 		LoginInfo loginInfo = LoginInfo.getInstance();
 		Usuari usuari = loginInfo.getUsuariPersona();
@@ -265,9 +273,28 @@ public class UserController extends UsuariController {
 			}
 
 			// procediment i tramit
+			List<String> campsBuits = new java.util.ArrayList<>();
+			if (tramitCodi == null || "".equals(tramitCodi)) {
+				campsBuits.add("tramitCodi");
+			}
+			if (tramitVersio == null || "".equals(tramitVersio)) {
+				campsBuits.add("tramitVersio");
+			}
+			if (idTraTel == null || "".equals(idTraTel)) {
+				campsBuits.add("idTraTel");
+			}
+			if (campsBuits.size() > 0) {
+				String missatge = "Error al recuperar el ticket d'accés, els següents camps estan buits i són necessaris: ";
+				for (String camp : campsBuits) {
+					missatge += camp + ", ";
+				}
+				missatge = "ERROR: " + missatge.substring(0, missatge.length() - 2);
+				log.error(missatge);
+				return missatge;
+			}
 			urlTramit = sistramitLogicaEjb.getTicketAccesoFh(funcionari, funcionariDir3, interessatTramit,
 					representantTramit,
-					"3860378", languageUI, "", false, "CAIB.TESTS_OLD.TEST-FIRMA", 5);
+					tramitCodi, languageUI, tramitParametres, false, idTraTel, Integer.valueOf(tramitVersio));
 		} catch (Exception e) {
 			log.error("Error retrieving ticket access. Message: " + e.getMessage());
 			log.error("Error retrieving ticket access. LocalizedMessage: " + e.getLocalizedMessage());
@@ -292,7 +319,10 @@ public class UserController extends UsuariController {
 			@RequestParam(value = "representantTipusIdentificacio", required = false) String representantTipusIdentificacio,
 			@RequestParam(value = "representantIdentificacio", required = false) String representantIdentificacio,
 			@RequestParam(value = "procediment", required = false) String procediment,
-			@RequestParam(value = "tramit", required = false) String tramit,
+			@RequestParam(value = "tramitCodi", required = false) String tramitCodi,
+			@RequestParam(value = "tramitVersio", required = false) String tramitVersio,
+			@RequestParam(value = "tramitParametres", required = false) String tramitParametres,
+			@RequestParam(value = "idTraTel", required = false) String idTraTel,
 			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		log.info("XYZ ZZZ ENTRANT A PREPARESCANWEB");
@@ -311,7 +341,10 @@ public class UserController extends UsuariController {
 		log.info("XYZ YYY representantTipusIdentificacio = " + representantTipusIdentificacio);
 		log.info("XYZ YYY representantIdentificacio = " + representantIdentificacio);
 		log.info("XYZ YYY procediment = " + procediment);
-		log.info("XYZ YYY tramit = " + tramit);
+		log.info("XYZ YYY tramitCodi = " + tramitCodi);
+		log.info("XYZ YYY tramitVersio = " + tramitVersio);
+		log.info("XYZ YYY tramitParametres = " + tramitParametres);
+		log.info("XYZ YYY idTraTel = " + idTraTel);
 		// TODO:aquí sobra info que s'ha d'emprar per generar el pdf plantilla que
 		// descarregarà l'usuari
 
@@ -485,6 +518,14 @@ public class UserController extends UsuariController {
 		log.info("Aquest mètode es per cercar el dir3");
 
 		try {
+			// TODO: llevar aquesta primera part quan funcioni getCodiDir3Actual
+			LoginInfo loginInfo = LoginInfo.getInstance();
+			Long entitatId = loginInfo.getEntitatID();
+			String codi = entitatLogicaEjb.findCodiDir3ByEntitatId(entitatId);
+			if (codi != null) {
+				return codi;
+			}
+
 			// TODO IEstructuraOrganitzativaPlugin instance =
 			// pluginEstructuraOrganitzativaEjb.getInstance();
 			// codiDIR3 = instance.getDir3DepartamentDireccioGeneral(username);

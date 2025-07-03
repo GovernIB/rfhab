@@ -305,6 +305,8 @@ form label {
 									data-val-required="<fmt:message key="usuari.tramit.seleccio.tramit.placeholder" />">
 								<input type="hidden" id="tramitId" name="tramitId" value="1" />
 								<input type="hidden" id="tramitVersio" name="tramitVersio" value="1" />
+								<input type="hidden" id="tramitParametres" name="tramitParametres" value="1" />
+								<input type="hidden" id="idTraTel" name="idTraTel" value="1" />
 							</div>
 						</div>
 					</div>
@@ -975,7 +977,16 @@ form label {
 	
 	var tramitsAll = [
 		<c:forEach items="${llistaTramits}" var="tramit">
-			{ value: '${tramit.key} ${tramit.value[0]}', data: '${tramit.value[0]}', procediment: '${tramit.value[1]}' },
+			{ 
+				value: '${tramit.key} ${tramit.value[0]}', 
+				data: '${tramit.value[0]}', 
+				procediment: '${tramit.value[1]}',
+				llengua: '${tramit.value[2]}',
+				tramitId: '${tramit.value[3]}',
+				tramitVersio: '${tramit.value[4]}',
+				tramitParametres: '${tramit.value[5]}',
+				idTraTel: '${tramit.value[6]}'
+			},
 		</c:forEach>
 	];
 	var tramitsProcediment = [];
@@ -1010,7 +1021,12 @@ form label {
 							{ 
 								value: tramit + " " + nomTramit,
 								data: nomTramit,
-								procediment: procedimentId 
+								procediment: procedimentId,
+								llengua: data[tramit][2],
+								tramitId: data[tramit][3],
+								tramitVersio: data[tramit][4],
+								tramitParametres: data[tramit][5],
+								idTraTel: data[tramit][6]
 							});
 						}
 					}
@@ -1041,7 +1057,14 @@ form label {
 			if(pas2_procediment_value != suggestion.data) {
 				pas2_procediment_value = suggestion.data;
 				pas2_procediment_id = suggestion.procediment;
+				pas2_tramit_value = null;
+				$('#pas2_tramit').val('');
 				console.log('You selected: ' + suggestion.value + ', ' + suggestion.data);
+				$('#procedimentId').val(pas2_procediment_id);
+				$('#tramitId').val(1);
+				$('#tramitVersio').val(1);
+				$('#tramitParametres').val(1);
+				$('#idTraTel').val(1);
 				actualitzaLlistatDeTramits(pas2_procediment_id);
 			}
 	    }
@@ -1055,7 +1078,17 @@ form label {
 	    onSelect: function (suggestion) {
 			if(pas2_tramit_value != suggestion.data) {
 				pas2_tramit_value = suggestion.data;
-	        	console.log('You selected: ' + suggestion.value + ', ' + suggestion.data);
+	        	console.log('You selected: ' + suggestion.value + ', ' + suggestion.data + 
+	        		'::: procediment: ' + suggestion.procediment + 
+	        		', llengua: ' + suggestion.llengua +
+	        		', tramitId: ' + suggestion.tramitId +
+	        		', tramitVersio: ' + suggestion.tramitVersio +
+	        		', tramitParametres: ' + suggestion.tramitParametres +
+	        		', idTraTel: ' + suggestion.idTraTel);
+				$('#tramitId').val(suggestion.tramitId);
+				$('#tramitVersio').val(suggestion.tramitVersio);
+				$('#tramitParametres').val(suggestion.tramitParametres);
+				$('#idTraTel').val(suggestion.idTraTel);
 			}
 	    }
 	});
@@ -1509,6 +1542,13 @@ form label {
 		}
 	}
 
+	function iniciarTramitShowError(errorText) {
+		inserirMsg('danger', errorText);
+		$('#spinner-carregant-iniciartramit').hide();
+		$('#div-iniciar-tramit').hide();
+		$('#div-iniciar-tramit-error').show();
+	}
+
 	async function iniciarTramit() {
 		console.log("Iniciar tramit");	
 
@@ -1527,6 +1567,11 @@ form label {
 			data: dataObj,
         success: function(data, status, xhr) {
             console.log("Resposta ticketAccesFh:", data);
+			if(data !== null && data !== undefined && data.startsWith('ERROR:')) {
+				let errorText = data; // si hi ha un error, el retorn és un text que comença per 'ERROR:'
+				iniciarTramitShowError(errorText);
+				return;
+			}
 			$('#spinner-carregant-iniciartramit').hide();
 			$('#div-iniciar-tramit').show();
 			$('#div-iniciar-tramit-error').hide();
@@ -1535,11 +1580,8 @@ form label {
 			window.open(data, '_blank').focus();
         },
         error: function(xhr, status, error) {
-            let errorText = 'Error obtenint el ticket d´accés al tràmit: ' + (xhr.responseText || error);
-			inserirMsg('danger', errorText);
-			$('#spinner-carregant-iniciartramit').hide();
-			$('#div-iniciar-tramit').hide();
-			$('#div-iniciar-tramit-error').show();
+			let errorText = 'Error obtenint el ticket d´accés al tràmit: ' + (xhr.responseText || error);
+			iniciarTramitShowError(errorText);
         }});
 	}
 
@@ -1615,8 +1657,11 @@ form label {
 			representantLlinatges: $form.find('#pas1_representant_llinatges').val() || '',
 			representantTipusIdentificacio: $form.find('#pas1_representant_tipusIdentificacio').val() || '',
 			representantIdentificacio: $form.find('#pas1_representant_identificacion').val() || '',
-			procediment: $form.find('#pas2_procediment').val() || '',
-			tramit: $form.find('#pas2_tramit').val() || '',
+			procediment: $form.find('#procedimentId').val() || '',
+			tramitCodi: $form.find('#tramitId').val() || '',
+			tramitVersio: $form.find('#tramitVersio').val() || '',
+			tramitParametres: $form.find('#tramitParametres').val() || '',
+			idTraTel: $form.find('#idTraTel').val() || '',
 		};
 
 		data.interessats.push(data.ciutadaNif);

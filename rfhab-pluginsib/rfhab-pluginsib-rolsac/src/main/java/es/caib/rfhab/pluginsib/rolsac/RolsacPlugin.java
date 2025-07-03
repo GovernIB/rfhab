@@ -215,7 +215,7 @@ public class RolsacPlugin implements IRolsacPlugin {
 		if (llengua == null || llengua.isEmpty()) {
 			llengua = "ca";
 		}
-		if(procedimentId == null){
+		if (procedimentId == null) {
 			procedimentId = "";
 		}
 		/*
@@ -257,13 +257,9 @@ public class RolsacPlugin implements IRolsacPlugin {
 		final HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
 		LOG.info("Cridant a Rolsac: " + endpoint + entitat);
-		LOG.info("Amb filtre: " + filtreTramits);
-		LOG.info("Amb paginacio: " + FILTRE_PAGINACIO);
-		LOG.info("Amb usuari: " + usuari);
-		LOG.info("Amb password: " + pass);
+		LOG.debug("Amb usuari: " + usuari);
+		LOG.debug("Amb password: " + pass);
 		LOG.info("Amb request: " + request);
-		LOG.info("Amb headers: " + headers);
-		LOG.info("Amb map: " + map);
 		final ResponseEntity<RespuestaTramites> responseTramites = restTemplate.postForEntity(endpoint + entitat,
 				request, RespuestaTramites.class);
 
@@ -280,10 +276,19 @@ public class RolsacPlugin implements IRolsacPlugin {
 
 				for (Tramites tramit : respostaTramits) {
 					LOG.info(tramit.getCodigo() + " " + tramit.getNombre() + " "
-							+ tramit.getLinkProcedimiento().getCodigo());
+							+ tramit.getLinkProcedimiento().getCodigo() +
+							" " + llengua + " " + tramit.getVersio() + " " + tramit.getParametros() + " "
+							+ tramit.getIdTraTel());
 					resultats.put(String.valueOf(tramit.getCodigo()),
-							new String[] { tramit.getNombre().replace("'", "`"),
-									tramit.getLinkProcedimiento().getCodigo(), llengua });
+							new String[] {
+									tramit.getNombre().replace("'", "`"),
+									tramit.getLinkProcedimiento().getCodigo(),
+									llengua,
+									String.valueOf(tramit.getCodigo()),
+									String.valueOf(tramit.getVersio()),
+									tramit.getParametros(),
+									tramit.getIdTraTel()
+							});
 				}
 
 				return resultats;

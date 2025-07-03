@@ -109,6 +109,8 @@ public class LoginInfo {
             throw new LoginException("La informació de Login és buida");
         }
 
+		Logger instanceLog = Logger.getLogger(LoginInfo.class);
+		instanceLog.debug("obj => " + obj);
         if (obj instanceof LoginInfo) {
             return (LoginInfo) obj;
         } else {

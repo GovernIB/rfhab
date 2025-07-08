@@ -49,6 +49,7 @@
             <module name="org.slf4j" export="TRUE"/>
             <module name="org.apache.log4j" export="TRUE"/>
             <module name="org.jboss.logging.commons.logging" export="TRUE"/>
+            <module name="javax.ws.rs.api" export="TRUE"/>
         </dependencies>
         <exclusions>
             <module name="org.jboss.resteasy.resteasy-json-binding-provider"/>

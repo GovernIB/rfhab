@@ -234,7 +234,9 @@
 						**/resteasy-jackson2-provider*redhat*.jar,
 						**/jboss-logging*redhat*.jar,
                         <!-- Requereix afegir mòdul 'org.apache.log4j' a jboss-deployment-structure.xml -->
-						**/log4j-*.jar
+						**/log4j-*.jar,
+                        <!-- Requereix afegir mòdul 'javax.ws.rs.api' a jboss-deployment-structure.xml -->
+						**/jsr311-api-1.1.1.jar
 					</packagingExcludes>
                     
 					<includeLibInApplicationXml>false</includeLibInApplicationXml>

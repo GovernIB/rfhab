@@ -138,6 +138,13 @@ form label {
 	}
 }
 
+button[disabled][type="submit"] {
+	pointer-events: none;
+	opacity: 0.5;
+	filter: grayscale(0.75);
+}
+
+
 /* Autocomplete */
 
 .autocomplete-suggestions { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; border: 1px solid #999; background: #FFF; cursor: default; overflow: auto; -webkit-box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); -moz-box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); box-shadow: 1px 4px 3px rgba(50, 50, 50, 0.64); }
@@ -200,7 +207,8 @@ form label {
 							</div>
 
 							<div class="form-group">
-								<label><fmt:message key="usuari.tramit.dades.tipusidentificacio" /></label> <select
+								<label><fmt:message key="usuari.tramit.dades.tipusidentificacio" /></label>
+								<select
 									id="pas1_tipusIdentificacio" name="tipusIdentificacio"
 									class="form-control"
 									data-bind="options: availableTypes, selectedOptions: chosenType, optionsCaption: '<fmt:message key="usuari.tramit.dades.numeroidentificacio.placeholder" />'"
@@ -248,7 +256,8 @@ form label {
 								</div>
 
 								<div class="form-group">
-									<label><fmt:message key="usuari.tramit.dades.representant.tipusidentificacio" /></label> <select
+									<label><fmt:message key="usuari.tramit.dades.representant.tipusidentificacio" /></label>
+									<select
 										id="pas1_representant_tipusIdentificacio"
 										name="representant_tipusIdentificacio" class="form-control"
 										data-bind="options: availableTypes, selectedOptions: chosenType, optionsCaption: '"<fmt:message key="usuari.tramit.dades.tipusidentificacio.placeholder" />"'"
@@ -322,6 +331,8 @@ form label {
 								<embed id="embed-pdf" src="/rfhabback/dummy.pdf" width="100%" height="600"
 									type="application/pdf">
 								<iframe id="iframe-pdf" style="display: none;" src="" type="application/pdf" width="100%" height="600" style="overflow: auto;"></iframe>
+								<input style="display: none;" id="input-pdf" name="inputPdf" type="text" class="form-control" 
+									data-bind="value: Pdf" data-val="true" data-val-required="<fmt:message key="usuari.tramit.iniciar.apoderament" />">
 							</div>
 
 							<div class="row buttonsDiv">
@@ -421,6 +432,18 @@ form label {
 	crossorigin="anonymous"></script>
 
 <script type="text/javascript">
+	function comprovaInputPdf() {
+		var inputPdf = document.getElementById('input-pdf');
+		var submitBtn = document.querySelector("button[type='submit'][data-type='submit']");
+		if (inputPdf && submitBtn) {
+			if (inputPdf.value && inputPdf.value.trim() !== "") {
+				submitBtn.removeAttribute('disabled');
+			} else {
+				submitBtn.setAttribute('disabled', 'disabled');
+			}
+		}
+	}
+
 	(function(factory) {
 		'use strict';
 		if (typeof define === 'function' && define.amd) {
@@ -676,10 +699,7 @@ form label {
 						this.views
 								.each(function(index, view) {
 
-									$
-											.data(view,
-													msfJqueryData.validated,
-													false);
+									$.data(view, msfJqueryData.validated, false);
 									$.data(view, msfJqueryData.visited, false);
 
 									//if this is not the last view do not allow the enter key to submit the form as it is not completed yet                  
@@ -813,6 +833,7 @@ form label {
 							form.setActiveView(0);
 						}
 
+						comprovaInputPdf();//TODO:parxe dolent, no se com fer validació de la darrera pantalla per habilitar/deshabilitar el botó de submit
 					};
 
 					form.validateView = function(view) {
@@ -950,7 +971,8 @@ form label {
 
 				$(".progress-bar").css("width", progress + "%").attr(
 						'aria-valuenow', progress);
-				;
+
+				comprovaInputPdf();
 			});
 
 	$(".msf:first").multiStepForm({
@@ -1101,6 +1123,7 @@ form label {
 	const NO_CARREGAT_IFRAME_DIGITALIB_ID = 'modal-body-nocarregat';
 	const CARREGANT_IFRAME_DIGITALIB_ID = 'modal-body-carregant';
 	var FITXER_ENCRYPTED_ID = [];
+	var POLLING_CHECK_SCAN_WEB_FINAL_RUNNING = false;
 
 	function showIframePdf(url) {
 		const iframe = document.getElementById('iframe-pdf');
@@ -1159,6 +1182,10 @@ form label {
                         + '</div>'
 
 						+ '</div>' + '</div>' + '</div>');
+
+			$('#' + modalId).on('hidden.bs.modal', function () {
+				POLLING_CHECK_SCAN_WEB_FINAL_RUNNING = false;
+			})
     }
 
 	async function tancarExpedient(identificadorExpedient) {
@@ -1211,6 +1238,7 @@ form label {
 		});
 		fetch(request)
 			.then(response => {
+				$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
 				if (!response.ok) {
 					throw new Error('Error al descarregar el fitxer: ' + response.statusText);
 				}
@@ -1228,6 +1256,7 @@ form label {
 			.catch(error => {
 				let errorText = 'Error descarregant el fitxer: ' + error.message;//TODO:afegir missatge a traduccions
 				inserirMsg('danger', errorText);
+				$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
 			});
 	}
 
@@ -1290,11 +1319,15 @@ form label {
 					const successText = "Consulta a Arxiu correcta, procedim a visualitzar el fitxer";
 					console.log(successText);
 					inserirMsg('success', successText);
+					document.getElementById('input-pdf').value = data;
+					// $("#input-pdf").trigger("input");
+					comprovaInputPdf();
 					downloadFitxer(data, showIframePdf);
 				},
 				error: function(xhr, status, error) {
 					let errorText = 'Error consultant el document imprimible: ' + (xhr.responseText || error);
 					inserirMsg('danger', errorText);
+					$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
 				}
 			});
 		};
@@ -1340,25 +1373,37 @@ form label {
 							let errorText = "S'ha produït un error:<br>" + error + "<br>";
 							// Mostra l'error dins el modal o com vulguis
 							inserirMsg('danger', errorText);
+							$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
 						} else {
+							let documentImmprimibleTancaraElModal = false;
 							for (const expedientId in data) {
 								if (data.hasOwnProperty(expedientId)) {
 									const documentId = data[expedientId];
-									inserirMsg('success', "Fitxer guardat correctament a Arxiu amb ID d'expedient: " + expedientId + 
-										" i ID de document: " + documentId);//TODO: ficar coi de traduccions
-									documentImprimible(documentId);
+									if(documentId){
+										inserirMsg('success', "Fitxer guardat correctament a Arxiu amb ID d'expedient: " + expedientId + 
+											" i ID de document: " + documentId);//TODO: ficar codi de traduccions
+										documentImmprimibleTancaraElModal = true;
+										documentImprimible(documentId);
+									}
+									else {
+										let errorText = "No s'ha pogut guardar el fitxer amb ID d'expedient " + expedientId + " dins Arxiu.";//TODO: ficar codi de traduccions
+										inserirMsg('danger', errorText);
+									}
 								}
+							}
+							if(!documentImmprimibleTancaraElModal){
+								$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
 							}
 						}
 					} else {
 						let errorText = "Resposta invàlida del servidor.";
 						inserirMsg('danger', errorText);
+						$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
 					}	
 					
 					// Procés acabat
 					// document.querySelector('#btn-descarregar-firmat-id').setAttribute('disabled', true);
 					// FITXER_ENCRYPTED_ID = [];
-					$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
 				},
 				error: function(xhr, status, error) {
 					let errorText = 'Error pujant a arxiu el document: ' + (xhr.responseText || error);
@@ -1383,6 +1428,7 @@ form label {
 
 		const startTime = Date.now(); // Record the start time
 
+		POLLING_CHECK_SCAN_WEB_FINAL_RUNNING = true;
 		const makeRequest = async () => { 
 			$.ajax({
 				url: url,
@@ -1431,13 +1477,14 @@ form label {
 					if(!data || data === 'null' || data === 'undefined' || data.size === 0) {
 						const elapsedTime = Date.now() - startTime;
 
-						if (elapsedTime < maxPollingDuration) {
+						if (elapsedTime < maxPollingDuration && POLLING_CHECK_SCAN_WEB_FINAL_RUNNING) {
 							setTimeout(makeRequest, pollingInterval); // Schedule next request
 						} else {
 							console.log('Maximum polling duration reached. Stopping polling.');
 							$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
 							let errorText = 'Exhaurit el temps màxim per pujar el document. Si us plau, obri la finestra modal de nou i torna-ho a intentar.';
 							inserirMsg('danger', errorText);
+							POLLING_CHECK_SCAN_WEB_FINAL_RUNNING = false;
 						}
 						return;
 					}
@@ -1446,6 +1493,7 @@ form label {
 					console.log("Procés de pujada acabat!");
 					document.querySelector('#btn-descarregar-firmat-id').setAttribute('disabled', true);
 					FITXER_ENCRYPTED_ID = [];
+					POLLING_CHECK_SCAN_WEB_FINAL_RUNNING = false;
 
 					// Errors:
 					if(data.length === 0) {
@@ -1671,10 +1719,6 @@ form label {
 		// 	var v = $(this).val();
 		// 	if (v) data.interessats.push(v);
 		// });
-		//TODO??
-		// data.procedimentId = $form.find('#procedimentId').val() || '';
-		// data.tramitId = $form.find('#tramitId').val() || '';
-		// data.tramitVersio = $form.find('#tramitVersio').val() || '';
 
 		return data;
 	}
@@ -1682,5 +1726,6 @@ form label {
 	$(document).ready(function() {
 		createModalPujarDocument(MODAL_PUJAR_DOCUMENT_ID);
 		console.log("Modal created with ID: " + MODAL_PUJAR_DOCUMENT_ID);
+		document.getElementById('input-pdf').addEventListener('input', comprovaInputPdf);
 	});
 </script>

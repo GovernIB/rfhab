@@ -134,7 +134,7 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 			if (identificadorDocument != null) {
 				log.info("ActivitatLogicaEJB::guardarArxiu::document creat amb id: " + identificadorDocument);
 			} else {
-				if (intents <= Constants.ARXIU_PLUGIN_REINTENTS_CREAR_DOCUMENT) {
+				if (intents < Constants.ARXIU_PLUGIN_REINTENTS_CREAR_DOCUMENT) {
 					log.warn("ActivitatLogicaEJB::guardarArxiu::no s'ha pogut crear el document, reintentant");
 				} else {
 					log.error(

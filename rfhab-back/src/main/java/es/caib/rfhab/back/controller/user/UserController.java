@@ -148,7 +148,6 @@ public class UserController extends UsuariController {
 		}
 		HashMap<String, String> identificadors = activitatLogicaEjb.guardarArxiu(fitxer, fitxer.getNom(),
 				perfilfirma, tipusFirma, interessatsList, organs);
-		// TODO:falta tornar documentació de fitxer per a la descàrrega de l'usuari
 		return identificadors;
 	}
 
@@ -440,7 +439,7 @@ public class UserController extends UsuariController {
 
 		scanWebLogicaEjb.finalitzaEscaneig(transactionID, response);
 
-		System.err.println("Connexio amb el client finalitzada.");
+		System.out.println("Connexio amb el client finalitzada.");
 		return "<html>"
 				+ "<body>OK. Revisi consola per saber l'estat final del proc&eacute;s</body>"
 				+ "<script>window.close();</script>"

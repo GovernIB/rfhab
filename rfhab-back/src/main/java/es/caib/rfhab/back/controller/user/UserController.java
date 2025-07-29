@@ -47,7 +47,6 @@ import es.caib.rfhab.model.entity.Unitat;
 import es.caib.rfhab.model.entity.Usuari;
 import es.caib.rfhab.model.fields.IdiomaFields;
 import es.caib.rfhab.persistence.FuncionariJPA;
-import es.caib.rfhab.persistence.UnitatJPA;
 import es.caib.rfhab.persistence.UsuariJPA;
 import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
 
@@ -93,9 +92,7 @@ public class UserController extends UsuariController {
 		LoginInfo loginInfo = LoginInfo.getInstance();
 		String language = loginInfo.getLanguage();
 		rolsacPlugin = new RolsacPlugin();
-		HashMap<String, String[]> llistaProcediments = rolsacPlugin.obtenirProcedimentsAll(language, true);
-		// TODO: esborrar quan se millori la catxe. No podem consultar TOTS el tramits
-		HashMap<String, String[]> llistaTramits = rolsacPlugin.obtenirTramitsAll(language, true);
+		HashMap<String, String[]> llistaProcediments = rolsacPlugin.obtenirProcedimentsAll(language);
 
 		// HashMap<String, String> llistaTramits =
 		// rolsacPlugin.obtenirTramits("1533169");
@@ -106,11 +103,6 @@ public class UserController extends UsuariController {
 			llistaProcediments = new HashMap<String, String[]>();
 		}
 		mav.addObject("llistaProcediments", llistaProcediments);
-
-		if (llistaTramits == null) {
-			llistaTramits = new HashMap<String, String[]>();
-		}
-		mav.addObject("llistaTramits", llistaTramits);
 
 		return mav;
 	}

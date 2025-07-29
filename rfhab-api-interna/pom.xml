@@ -53,6 +53,12 @@
 			<groupId>es.caib.rfhab</groupId>
 			<artifactId>rfhab-pluginsib-rolsac-client</artifactId>
 			<version>1.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.errorprone</groupId>
+                    <artifactId>error_prone_annotations</artifactId>
+                </exclusion>
+			</exclusions>
 		</dependency>
 
         <!-- Anotacions de documentació de openapi -->

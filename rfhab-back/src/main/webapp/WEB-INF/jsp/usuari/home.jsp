@@ -1065,20 +1065,6 @@ button[disabled][type="submit"] {
         </c:forEach>
 	];
 	
-	var tramitsAll = [
-		<c:forEach items="${llistaTramits}" var="tramit">
-			{ 
-				value: '${tramit.key} ${tramit.value[0]}', 
-				data: '${tramit.value[0]}', 
-				procediment: '${tramit.value[1]}',
-				llengua: '${tramit.value[2]}',
-				tramitId: '${tramit.value[3]}',
-				tramitVersio: '${tramit.value[4]}',
-				tramitParametres: '${tramit.value[5]}',
-				idTraTel: '${tramit.value[6]}'
-			},
-		</c:forEach>
-	];
 	var tramitsProcediment = [];
 
 	function actualitzaLlistatDeTramits(procediment){

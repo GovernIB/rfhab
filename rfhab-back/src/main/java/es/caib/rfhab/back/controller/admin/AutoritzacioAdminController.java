@@ -107,8 +107,7 @@ public class AutoritzacioAdminController extends AutoritzacioController {
 				rolsacPlugin = new RolsacPlugin();
 
 			LoginInfo loginInfo = LoginInfo.getInstance();
-			HashMap<String, String[]> llistaProcediments = rolsacPlugin.obtenirProcedimentsAll(loginInfo.getLanguage(),
-					null);
+			HashMap<String, String[]> llistaProcediments = rolsacPlugin.obtenirProcedimentsAll(loginInfo.getLanguage());
 
 			if (llistaProcediments != null) {
 				llistaProcediments.forEach((x, y) -> log.info("Procediment: " + x + " " + y));

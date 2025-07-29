@@ -13,9 +13,9 @@ public interface IRolsacPlugin extends IPluginIB {
 
 	public HashMap<String, String> obtenirProcedimentsByDir3(String codiDir3) throws Exception;
 
-	public HashMap<String, String[]> obtenirProcedimentsAll(String llengua, Boolean empraCatxe) throws Exception;
+	public HashMap<String, String[]> obtenirProcedimentsAll(String llengua) throws Exception;
 
 	public HashMap<String, String[]> obtenirTramits(String procedimentId, String llengua) throws Exception;
 
-	public HashMap<String, String[]> obtenirTramitsAll(String llengua, Boolean empraCatxe) throws Exception;
+	public HashMap<String, String[]> obtenirTramitsAll(String llengua) throws Exception;
 }

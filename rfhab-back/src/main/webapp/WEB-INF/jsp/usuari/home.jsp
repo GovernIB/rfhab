@@ -1028,7 +1028,7 @@ button[disabled][type="submit"] {
 
 				const pas2Procediment = $('#pas2_procediment');
 				//TODO:revisar aquesta comrpovació
-				if (pas2Procediment && (!pas2Procediment.data('select2') || $('#pas2_procediment+.select2').style.display == "none" || $('#pas2_procediment+.select2').style.display == "hidden"))
+				if (pas2Procediment && (!pas2Procediment.data('select2') || $('#pas2_procediment+.select2').css("display") == "none" || $('#pas2_procediment+.select2').css("display") == "hidden"))
 				{
 					pas2Procediment.select2(
 						{

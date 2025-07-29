@@ -39,7 +39,6 @@
 <script src="<c:url value="/js/jquery.js"/>"></script>
 <script src="<c:url value="/js/popper.min.js"/>"></script>
 
-
 <%-- Bootstrap JS --%>
 <script src="<c:url value="/js/bootstrap.js"/>"></script>
 

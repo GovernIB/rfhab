@@ -22,22 +22,23 @@ import org.fundaciobit.genapp.common.web.controller.RefListBase;
  * 
  */
 @Component
-public class HistoricLlocRefList extends RefListBase
-    implements HistoricLlocFields {
+public class HistoricLlocRefList extends RefListBase implements HistoricLlocFields {
 
-  @EJB(mappedName = HistoricLlocService.JNDI_NAME)
-  private HistoricLlocService historicLlocEjb;
+    @EJB(mappedName = HistoricLlocService.JNDI_NAME)
+    private HistoricLlocService historicLlocEjb;
 
-  public HistoricLlocRefList(HistoricLlocRefList __clone) {
-    super(__clone);
-    this.historicLlocEjb = __clone.historicLlocEjb;
-  }
-  public HistoricLlocRefList() {
-    setSelects(new Select<?>[] { LLOCID.select, NUMEROCAI.select });
-  }
-  public List<StringKeyValue> getReferenceList(Field<?> keyField, Where where, OrderBy ... orderBy) throws I18NException {
-    Select<StringKeyValue> select =  new org.fundaciobit.genapp.common.query.SelectMultipleStringKeyValue(keyField.select, getSeparator(), getSelects());
-    List<StringKeyValue> list = historicLlocEjb.executeQuery(select, where, (orderBy==null || orderBy.length == 0) ? getOrderBy() : orderBy);
+    public HistoricLlocRefList(HistoricLlocRefList __clone) {
+        super(__clone);
+        this.historicLlocEjb = __clone.historicLlocEjb;
+    }
+
+    public HistoricLlocRefList() {
+        setSelects(new Select<?>[] { LLOCID.select, NUMEROCAI.select });
+    }
+
+    public List<StringKeyValue> getReferenceList(Field<?> keyField, Where where, OrderBy ... orderBy) throws I18NException {
+        Select<StringKeyValue> select =  new org.fundaciobit.genapp.common.query.SelectMultipleStringKeyValue(keyField.select, getSeparator(), getSelects());
+        List<StringKeyValue> list = historicLlocEjb.executeQuery(select, where, (orderBy==null || orderBy.length == 0) ? getOrderBy() : orderBy);
     return list;
-  }
+    }
 }

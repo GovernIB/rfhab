@@ -22,22 +22,23 @@ import org.fundaciobit.genapp.common.web.controller.RefListBase;
  * 
  */
 @Component
-public class ActivitatRefList extends RefListBase
-    implements ActivitatFields {
+public class ActivitatRefList extends RefListBase implements ActivitatFields {
 
-  @EJB(mappedName = ActivitatService.JNDI_NAME)
-  private ActivitatService activitatEjb;
+    @EJB(mappedName = ActivitatService.JNDI_NAME)
+    private ActivitatService activitatEjb;
 
-  public ActivitatRefList(ActivitatRefList __clone) {
-    super(__clone);
-    this.activitatEjb = __clone.activitatEjb;
-  }
-  public ActivitatRefList() {
-    setSelects(new Select<?>[] { REGISTRE.select, TRAMIT.select });
-  }
-  public List<StringKeyValue> getReferenceList(Field<?> keyField, Where where, OrderBy ... orderBy) throws I18NException {
-    Select<StringKeyValue> select =  new org.fundaciobit.genapp.common.query.SelectMultipleStringKeyValue(keyField.select, getSeparator(), getSelects());
-    List<StringKeyValue> list = activitatEjb.executeQuery(select, where, (orderBy==null || orderBy.length == 0) ? getOrderBy() : orderBy);
+    public ActivitatRefList(ActivitatRefList __clone) {
+        super(__clone);
+        this.activitatEjb = __clone.activitatEjb;
+    }
+
+    public ActivitatRefList() {
+        setSelects(new Select<?>[] { REGISTRE.select, TRAMIT.select });
+    }
+
+    public List<StringKeyValue> getReferenceList(Field<?> keyField, Where where, OrderBy ... orderBy) throws I18NException {
+        Select<StringKeyValue> select =  new org.fundaciobit.genapp.common.query.SelectMultipleStringKeyValue(keyField.select, getSeparator(), getSelects());
+        List<StringKeyValue> list = activitatEjb.executeQuery(select, where, (orderBy==null || orderBy.length == 0) ? getOrderBy() : orderBy);
     return list;
-  }
+    }
 }

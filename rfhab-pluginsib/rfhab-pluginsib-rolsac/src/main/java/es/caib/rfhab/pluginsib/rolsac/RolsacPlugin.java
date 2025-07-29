@@ -199,7 +199,7 @@ public class RolsacPlugin implements IRolsacPlugin {
 						LOG.info(procediment.getCodigo() + " " + procediment.getNombre());
 						resultats.put(String.valueOf(procediment.getCodigo()),
 								new String[] { procediment.getNombre().replace("'", "`"),
-										llengua });
+										llengua, procediment.getCodigoSIA() });
 					}
 
 				procedimentsAllCatxe = Map.entry(System.currentTimeMillis(), resultats);

@@ -239,7 +239,8 @@ button[disabled][type="submit"] {
 								<h3><fmt:message key="usuari.tramit.dades.representant.titol" /></h3>
 
 								<div class="form-group">
-									<label><fmt:message key="usuari.tramit.dades.representant.nom" /></label> <input
+									<label><fmt:message key="usuari.tramit.dades.representant.nom" /></label>
+									<input
 										id="pas1_representant_nom" name="representant_nom" type="text"
 										class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.nom.placeholder" />" data-bind="value: Nom"
 										data-val="true" data-val-required="<fmt:message key="usuari.tramit.dades.nom.required" />"
@@ -247,7 +248,8 @@ button[disabled][type="submit"] {
 								</div>
 
 								<div class="form-group">
-									<label><fmt:message key="usuari.tramit.dades.representant.llinatges" /></label> <input
+									<label><fmt:message key="usuari.tramit.dades.representant.llinatges" /></label>
+									<input
 										id="pas1_representant_llinatges" name="representant_llinatges"
 										type="text" class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.llinatges.placeholder" />"
 										data-bind="value: Llinatges" data-val="true"
@@ -293,13 +295,37 @@ button[disabled][type="submit"] {
 							<h3>2 <fmt:message key="usuari.tramit.seleccio.titol" /></h3>
 
 							<div class="form-group">
-								<label><fmt:message key="usuari.tramit.seleccio.procediment" /></label>
-								<input id="pas2_procediment" name="procediment" type="text"
-									class="form-control"
-									placeholder="<fmt:message key="usuari.tramit.seleccio.procediment.placeholder" />"
-									data-bind="value: Procediment" data-val="true"
-									data-val-required="<fmt:message key="usuari.tramit.seleccio.procediment.required" />">
-								<input type="hidden" id="procedimentId" name="procedimentId" value="1" />
+								<label for="pas2_procediment" class="w-100">
+									<fmt:message key="usuari.tramit.seleccio.procediment" />
+									<c:set var="containsValues" value="false" />
+									<select id="pas2_procediment" name="procediment-select" class="form-control input-ample-tota-linia" onchange="if(typeof onSelectedProcediment == 'function') {  onSelectedProcediment(this); };">
+										<c:forEach items="${llistaProcediments}" var="tmp">
+											<option value="${tmp.key}">${tmp.value[2]} &nbsp; ${tmp.value[0]}</option>
+											<c:if test="${not empty tmp.key}">
+												<c:set var="containsValues"  value="true" />
+											</c:if>
+										</c:forEach>
+										<c:if test="${containsValues}">
+											<option value="" selected="true" >"<fmt:message key="usuari.tramit.seleccio.procediment.placeholder" />"</option>
+										</c:if>
+									</select>
+									<script>
+										$(document).ready(function() {
+											$('#pas2_procediment').select2(
+												{
+													placeholder: "<fmt:message key="usuari.tramit.seleccio.procediment.placeholder" />",
+													allowClear: true,
+													language: "${lang}",
+													minimumInputLength: 0
+												}
+											);
+
+											const select2Container = $("#pas2_procediment").closest('label').find('.select2');
+											select2Container.addClass("input-ample-tota-linia");
+										});
+									</script>
+									<input type="hidden" id="procediment-id" class="form-control always-validate" data-rule-procediment="true" name="procediment-id" value="" />
+								</label>
 							</div>
 
 							<div class="form-group">
@@ -307,12 +333,12 @@ button[disabled][type="submit"] {
 								<p id="spinner-carregant-tramits" style="text-align: center; display: none;">
 									<svg style="width:20%;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150"><path fill="none" stroke="#007BFF" stroke-width="15" stroke-linecap="round" stroke-dasharray="300 385" stroke-dashoffset="0" d="M275 75c0 31-27 50-50 50-58 0-92-100-150-100-28 0-50 22-50 50s23 50 50 50c58 0 92-100 150-100 24 0 50 19 50 50Z"><animate attributeName="stroke-dashoffset" calcMode="spline" dur="2" values="685;-685" keySplines="0 0 1 1" repeatCount="indefinite"></animate></path></svg>
 								</p>
-								<input id="pas2_tramit" name="tramit" type="text"
+								<input id="pas2_tramit" name="tramit" type="text" disabled
 									class="form-control"
 									placeholder="<fmt:message key="usuari.tramit.seleccio.tramit.placeholder" />"
 									data-bind="value: Tramit" data-val="true"
 									data-val-required="<fmt:message key="usuari.tramit.seleccio.tramit.placeholder" />">
-								<input type="hidden" id="tramitId" name="tramitId" value="1" />
+								<input type="hidden" id="tramitId" class="form-control always-validate" name="tramitId" value="1" />
 								<input type="hidden" id="tramitVersio" name="tramitVersio" value="1" />
 								<input type="hidden" id="tramitParametres" name="tramitParametres" value="1" />
 								<input type="hidden" id="idTraTel" name="idTraTel" value="1" />
@@ -431,6 +457,9 @@ button[disabled][type="submit"] {
 	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
 	crossorigin="anonymous"></script>
 
+<script src="<c:url value="/js/select2.min.js"/>"></script>
+<script src="<c:url value="/js/select2_i18n/${lang}.js"/>"></script>
+
 <script type="text/javascript">
 	function comprovaInputPdf() {
 		var inputPdf = document.getElementById('input-pdf');
@@ -443,6 +472,29 @@ button[disabled][type="submit"] {
 			}
 		}
 	}
+
+	$.validator.addMethod("procediment", function(value, element) {
+		const select2Container = $("#pas2_procediment").closest('label').find('.select2');
+		if (value === "null" || !value) {
+			// If the value is null or empty, add an error class to the select2 container
+			select2Container.addClass("input-validation-error");
+			return false;
+		}
+		select2Container.removeClass("input-validation-error");
+		return true;
+	}, "Sel·leccioni procediment");
+	$.validator.setDefaults({
+		ignore: function (index, el) {
+								const $el = $(el);
+
+								if ($el.hasClass('always-validate')) {
+									return false;
+								}
+
+								// Default behavior
+								return $el.is(':hidden');
+							}
+	});
 
 	(function(factory) {
 		'use strict';
@@ -973,6 +1025,22 @@ button[disabled][type="submit"] {
 						'aria-valuenow', progress);
 
 				comprovaInputPdf();
+
+				const pas2Procediment = $('#pas2_procediment');
+				//TODO:revisar aquesta comrpovació
+				if (pas2Procediment && (!pas2Procediment.data('select2') || $('#pas2_procediment+.select2').style.display == "none" || $('#pas2_procediment+.select2').style.display == "hidden"))
+				{
+					pas2Procediment.select2(
+						{
+							placeholder: "<fmt:message key="usuari.tramit.seleccio.procediment.placeholder" />",
+							allowClear: true,
+							language: "${lang}",
+							minimumInputLength: 0
+						}
+					);
+					const select2Container = pas2Procediment.closest('label').find('.select2');
+					select2Container.addClass("input-ample-tota-linia");
+				}
 			});
 
 	$(".msf:first").multiStepForm({
@@ -993,7 +1061,7 @@ button[disabled][type="submit"] {
 	
 	var procediments = [
 		<c:forEach items="${llistaProcediments}" var="procediment">
-            { value: '${procediment.key} ${procediment.value[0]}', data: '${procediment.value[0]}', procediment: '${procediment.key}' },
+            { nom: '${procediment.value[0]}', codiRolsac: '${procediment.key}', llengua: '${procediment.value[1]}', codiSia: '${procediment.value[2]}' },
         </c:forEach>
 	];
 	
@@ -1014,8 +1082,17 @@ button[disabled][type="submit"] {
 	var tramitsProcediment = [];
 
 	function actualitzaLlistatDeTramits(procediment){
+		const pas2Tramit = $("#pas2_tramit");
+		if(procediment === 'null' || !procediment){
+			tramitsProcediment = [];
+			pas2Tramit.prop("disabled", true);
+			pas2Tramit.autocomplete().setOptions({ lookup: tramitsProcediment });
+			return;
+		}
+		pas2Tramit.prop("disabled", false);
+		
 		$('#spinner-carregant-tramits').show();
-		$('#pas2_tramit').hide();
+		pas2Tramit.hide();
 
 		// tramitsProcediment = tramitsAll.filter(function(tramit) {
 		// 	return tramit.procediment === procediment;
@@ -1053,8 +1130,8 @@ button[disabled][type="submit"] {
 						}
 					}
 				console.log('Tramits per al procediment ' + procediment + ': ', tramitsProcediment);
+
 				$('#spinner-carregant-tramits').hide();
-				const pas2Tramit = $('#pas2_tramit');
 				pas2Tramit.autocomplete().setOptions({ lookup: tramitsProcediment });
 				pas2Tramit.show();
 			})
@@ -1062,36 +1139,32 @@ button[disabled][type="submit"] {
 				const errorMsg = 'Error al carregar els tràmits: ' + error.message;
 				inserirMsg('danger', errorMsg);
 				console.error('Error obtenint tramits:', error);
+
 				$('#spinner-carregant-tramits').hide();
-				$('#pas2_tramit').show();
+				pas2Tramit.show();
 			});
 	}
 
-	// https://github.com/devbridge/jQuery-Autocomplete
-	var pas2_procediment_value = null;
-	var pas2_tramit_value = null;
-	$('#pas2_procediment').autocomplete({
-	    lookup: procediments,
-	    minChars: 1,
-	    showNoSuggestionNotice: true,
-        noSuggestionNotice: 'Sorry, no matching results',
-	    onSelect: function (suggestion) {
-			if(pas2_procediment_value != suggestion.data) {
-				pas2_procediment_value = suggestion.data;
-				pas2_procediment_id = suggestion.procediment;
-				pas2_tramit_value = null;
-				$('#pas2_tramit').val('');
-				console.log('You selected: ' + suggestion.value + ', ' + suggestion.data);
-				$('#procedimentId').val(pas2_procediment_id);
-				$('#tramitId').val(1);
-				$('#tramitVersio').val(1);
-				$('#tramitParametres').val(1);
-				$('#idTraTel').val(1);
-				actualitzaLlistatDeTramits(pas2_procediment_id);
-			}
-	    }
-	});
 
+	var pas2_procediment_id = null;
+	var pas2_tramit_value = null;
+	function onSelectedProcediment (suggestion) {
+		if(pas2_procediment_id != suggestion.value) {
+			pas2_procediment_id = suggestion.value;
+			pas2_tramit_value = null;
+			$('#pas2_tramit').val('');
+			console.log('You selected: ' + pas2_procediment_id);
+
+			$('#procediment-id').val(pas2_procediment_id);
+			$('#tramitId').val(1);
+			$('#tramitVersio').val(1);
+			$('#tramitParametres').val(1);
+			$('#idTraTel').val(1);
+			actualitzaLlistatDeTramits(pas2_procediment_id);
+		}
+	}
+
+	// https://github.com/devbridge/jQuery-Autocomplete
 	$('#pas2_tramit').autocomplete({
 	    lookup: tramitsProcediment,
 	    minChars: 1,
@@ -1705,7 +1778,7 @@ button[disabled][type="submit"] {
 			representantLlinatges: $form.find('#pas1_representant_llinatges').val() || '',
 			representantTipusIdentificacio: $form.find('#pas1_representant_tipusIdentificacio').val() || '',
 			representantIdentificacio: $form.find('#pas1_representant_identificacion').val() || '',
-			procediment: $form.find('#procedimentId').val() || '',
+			procediment: $form.find('#procediment-id').val() || '',
 			tramitCodi: $form.find('#tramitId').val() || '',
 			tramitVersio: $form.find('#tramitVersio').val() || '',
 			tramitParametres: $form.find('#tramitParametres').val() || '',

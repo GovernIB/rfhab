@@ -22,22 +22,23 @@ import org.fundaciobit.genapp.common.web.controller.RefListBase;
  * 
  */
 @Component
-public class UnitatRefList extends RefListBase
-    implements UnitatFields {
+public class UnitatRefList extends RefListBase implements UnitatFields {
 
-  @EJB(mappedName = UnitatService.JNDI_NAME)
-  private UnitatService unitatEjb;
+    @EJB(mappedName = UnitatService.JNDI_NAME)
+    private UnitatService unitatEjb;
 
-  public UnitatRefList(UnitatRefList __clone) {
-    super(__clone);
-    this.unitatEjb = __clone.unitatEjb;
-  }
-  public UnitatRefList() {
-    setSelects(new Select<?>[] { CODI.select, DENOMINACIO.select, COOFICIAL.select });
-  }
-  public List<StringKeyValue> getReferenceList(Field<?> keyField, Where where, OrderBy ... orderBy) throws I18NException {
-    Select<StringKeyValue> select =  new org.fundaciobit.genapp.common.query.SelectMultipleStringKeyValue(keyField.select, getSeparator(), getSelects());
-    List<StringKeyValue> list = unitatEjb.executeQuery(select, where, (orderBy==null || orderBy.length == 0) ? getOrderBy() : orderBy);
+    public UnitatRefList(UnitatRefList __clone) {
+        super(__clone);
+        this.unitatEjb = __clone.unitatEjb;
+    }
+
+    public UnitatRefList() {
+        setSelects(new Select<?>[] { CODI.select, DENOMINACIO.select, COOFICIAL.select });
+    }
+
+    public List<StringKeyValue> getReferenceList(Field<?> keyField, Where where, OrderBy ... orderBy) throws I18NException {
+        Select<StringKeyValue> select =  new org.fundaciobit.genapp.common.query.SelectMultipleStringKeyValue(keyField.select, getSeparator(), getSelects());
+        List<StringKeyValue> list = unitatEjb.executeQuery(select, where, (orderBy==null || orderBy.length == 0) ? getOrderBy() : orderBy);
     return list;
-  }
+    }
 }

@@ -22,22 +22,23 @@ import org.fundaciobit.genapp.common.web.controller.RefListBase;
  * 
  */
 @Component
-public class HistoricRefList extends RefListBase
-    implements HistoricFields {
+public class HistoricRefList extends RefListBase implements HistoricFields {
 
-  @EJB(mappedName = HistoricService.JNDI_NAME)
-  private HistoricService historicEjb;
+    @EJB(mappedName = HistoricService.JNDI_NAME)
+    private HistoricService historicEjb;
 
-  public HistoricRefList(HistoricRefList __clone) {
-    super(__clone);
-    this.historicEjb = __clone.historicEjb;
-  }
-  public HistoricRefList() {
-    setSelects(new Select<?>[] { NUMEROCAI.select });
-  }
-  public List<StringKeyValue> getReferenceList(Field<?> keyField, Where where, OrderBy ... orderBy) throws I18NException {
-    Select<StringKeyValue> select =  new org.fundaciobit.genapp.common.query.SelectMultipleStringKeyValue(keyField.select, getSeparator(), getSelects());
-    List<StringKeyValue> list = historicEjb.executeQuery(select, where, (orderBy==null || orderBy.length == 0) ? getOrderBy() : orderBy);
+    public HistoricRefList(HistoricRefList __clone) {
+        super(__clone);
+        this.historicEjb = __clone.historicEjb;
+    }
+
+    public HistoricRefList() {
+        setSelects(new Select<?>[] { NUMEROCAI.select });
+    }
+
+    public List<StringKeyValue> getReferenceList(Field<?> keyField, Where where, OrderBy ... orderBy) throws I18NException {
+        Select<StringKeyValue> select =  new org.fundaciobit.genapp.common.query.SelectMultipleStringKeyValue(keyField.select, getSeparator(), getSelects());
+        List<StringKeyValue> list = historicEjb.executeQuery(select, where, (orderBy==null || orderBy.length == 0) ? getOrderBy() : orderBy);
     return list;
-  }
+    }
 }

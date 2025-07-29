@@ -22,22 +22,23 @@ import org.fundaciobit.genapp.common.web.controller.RefListBase;
  * 
  */
 @Component
-public class LlocRefList extends RefListBase
-    implements LlocFields {
+public class LlocRefList extends RefListBase implements LlocFields {
 
-  @EJB(mappedName = LlocService.JNDI_NAME)
-  private LlocService llocEjb;
+    @EJB(mappedName = LlocService.JNDI_NAME)
+    private LlocService llocEjb;
 
-  public LlocRefList(LlocRefList __clone) {
-    super(__clone);
-    this.llocEjb = __clone.llocEjb;
-  }
-  public LlocRefList() {
-    setSelects(new Select<?>[] { CODILLOC.select, NOM.select, ENTITATID.select });
-  }
-  public List<StringKeyValue> getReferenceList(Field<?> keyField, Where where, OrderBy ... orderBy) throws I18NException {
-    Select<StringKeyValue> select =  new org.fundaciobit.genapp.common.query.SelectMultipleStringKeyValue(keyField.select, getSeparator(), getSelects());
-    List<StringKeyValue> list = llocEjb.executeQuery(select, where, (orderBy==null || orderBy.length == 0) ? getOrderBy() : orderBy);
+    public LlocRefList(LlocRefList __clone) {
+        super(__clone);
+        this.llocEjb = __clone.llocEjb;
+    }
+
+    public LlocRefList() {
+        setSelects(new Select<?>[] { CODILLOC.select, NOM.select, ENTITATID.select });
+    }
+
+    public List<StringKeyValue> getReferenceList(Field<?> keyField, Where where, OrderBy ... orderBy) throws I18NException {
+        Select<StringKeyValue> select =  new org.fundaciobit.genapp.common.query.SelectMultipleStringKeyValue(keyField.select, getSeparator(), getSelects());
+        List<StringKeyValue> list = llocEjb.executeQuery(select, where, (orderBy==null || orderBy.length == 0) ? getOrderBy() : orderBy);
     return list;
-  }
+    }
 }

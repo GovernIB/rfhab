@@ -305,14 +305,15 @@ public class LlocAdminController extends LlocController {
 		for (Lloc lloc : list) {
 
 			final Long llocID = lloc.getLlocID();
+			final boolean donatdeBaixa = lloc.getDataBaixa() != null;
 
 			if (!llocsOcupats.contains(llocID)) {
-
-				// Botó per assignar funcionari
-				filterForm.addAdditionalButtonByPK(llocID,
-						new AdditionalButton("fa fa-user-plus", "lloc.assignarfuncionari",
-								"/admin/funcionarilloc/assignar/{0}", AdditionalButtonStyle.SECONDARY));
-
+				if(!donatdeBaixa){
+					// Botó per assignar funcionari
+					filterForm.addAdditionalButtonByPK(llocID,
+							new AdditionalButton("fa fa-user-plus", "lloc.assignarfuncionari",
+									"/admin/funcionarilloc/assignar/{0}", AdditionalButtonStyle.SECONDARY));
+				}
 			} else {
 				Funcionari f = llistaFuncionarisActius.get(llocID);
 				if (f != null && f.getNom() != null) {
@@ -326,12 +327,25 @@ public class LlocAdminController extends LlocController {
 				// Botó per desassignar funcionari
 				filterForm.addAdditionalButtonByPK(llocID, new AdditionalButton("fa fa-user-times",
 						"lloc.treurefuncionari", "/admin/funcionarilloc/treure/{0}", AdditionalButtonStyle.INFO));
-
 			}
 
-			// Botó per donar de baixa un lloc de feina
-			filterForm.addAdditionalButtonByPK(llocID, new AdditionalButton("fa fa-pause", "lloc.baixa",
-					"/admin/lloc/{0}/delete", AdditionalButtonStyle.DANGER));
+			if(donatdeBaixa){
+				// Botó per donar d'alta un lloc de feina
+				String jsOpenModalDonarAlta = "javascript:createDivModal(traduccions.type['titol.lloc.donaralta.continuar'], traduccions.type['missatge.lloc.donaralta.continuar'], '"
+					+ request.getContextPath() + getContextWeb() + "/" + llocID + "/donaralta/"
+					+ "', '', 'lloc-donaralta-id', 'fa-laptop-medical');\r\n" + //
+					"        $('#lloc-donaralta-id').modal('show');\r\n";
+				filterForm.addAdditionalButtonByPK(llocID, new AdditionalButton("fas fa-laptop-medical", "lloc.donaralta",
+						jsOpenModalDonarAlta, AdditionalButtonStyle.DANGER));
+			}else{
+				// Botó per donar de baixa un lloc de feina
+				String jsOpenModalDonarBaixa = "javascript:createDivModal(traduccions.type['titol.lloc.donarbaixa.continuar'], traduccions.type['missatge.lloc.donarbaixa.continuar'], '"
+					+ request.getContextPath() + getContextWeb() + "/" + llocID + "/delete/"
+					+ "', '', 'lloc-donarbaixa-id', 'fa-laptop-code');\r\n" + //
+					"        $('#lloc-donarbaixa-id').modal('show');\r\n";
+				filterForm.addAdditionalButtonByPK(llocID, new AdditionalButton("fas fa-laptop-code", "lloc.donarbaixa",
+						jsOpenModalDonarBaixa, AdditionalButtonStyle.DANGER));
+			}
 
 			// Comprobam els rols assignats a un lloc de feina
 			Boolean llocHasRol = (llocRolLogicaEjb.count(LlocRolFields.LLOCID.equal(llocID)) > 0);

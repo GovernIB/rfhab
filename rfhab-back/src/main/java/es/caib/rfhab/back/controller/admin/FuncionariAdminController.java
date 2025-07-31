@@ -22,6 +22,7 @@ import org.fundaciobit.genapp.common.web.form.AdditionalButtonStyle;
 import org.fundaciobit.genapp.common.web.form.AdditionalField;
 import org.fundaciobit.genapp.common.web.i18n.I18NUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -64,6 +65,8 @@ import es.caib.rfhab.persistence.LlocJPA;
 @RequestMapping(value = "/admin/funcionari")
 @SessionAttributes(types = { FuncionariForm.class, FuncionariFilterForm.class })
 public class FuncionariAdminController extends FuncionariController {
+
+	private static final String TIPUS_IDENTIFICACIO_SELECCIONA = "0";
 
 	@EJB(mappedName = FuncionariLogicaService.JNDI_NAME)
 	protected FuncionariLogicaService funcionariEJB;
@@ -360,7 +363,7 @@ public class FuncionariAdminController extends FuncionariController {
 		subQuery = funcionariLlocLogicaEJB.getSubQuery(FuncionariLlocFields.FUNCIONARIID, whereLloc);
 		if ("1".equals(assignatsAlloc)) {
 			assignatsAllocWhere = FuncionariFields.FUNCIONARIID.in(subQuery);
-		} else if ("0".equals(assignatsAlloc)) {
+		} else if (TIPUS_IDENTIFICACIO_SELECCIONA.equals(assignatsAlloc)) {
 			assignatsAllocWhere = FuncionariFields.FUNCIONARIID.notIn(subQuery);
 		} else {
 			log.warn("Mostrant tots assignatsAlloc");
@@ -375,7 +378,7 @@ public class FuncionariAdminController extends FuncionariController {
 				: "";
 		log.info("actiusSelectvalue ==> " + actiusSelectvalue);
 
-		if ("0".equals(actiusSelectvalue)) {
+		if (TIPUS_IDENTIFICACIO_SELECCIONA.equals(actiusSelectvalue)) {
 			return FuncionariFields.DATABAIXA.isNotNull();
 		} else if ("1".equals(actiusSelectvalue)) {
 			return FuncionariFields.DATABAIXA.isNull();
@@ -470,7 +473,7 @@ public class FuncionariAdminController extends FuncionariController {
 		}
 
 		List<StringKeyValue> __tmp = new java.util.ArrayList<StringKeyValue>();
-		__tmp.add(new StringKeyValue("0", "No"));
+		__tmp.add(new StringKeyValue(TIPUS_IDENTIFICACIO_SELECCIONA, "No"));
 		__tmp.add(new StringKeyValue("1", "Sí"));
 		return __tmp;
 	}
@@ -480,12 +483,23 @@ public class FuncionariAdminController extends FuncionariController {
 			Where where) throws I18NException {
 
 		List<StringKeyValue> __tmp = new java.util.ArrayList<StringKeyValue>();
-		__tmp.add(new StringKeyValue("0", I18NUtils.tradueix("tipusidentificacio.0")));
+		__tmp.add(new StringKeyValue(TIPUS_IDENTIFICACIO_SELECCIONA, I18NUtils.tradueix("tipusidentificacio.0")));
 		__tmp.add(new StringKeyValue("1", I18NUtils.tradueix("tipusidentificacio.1")));
 		__tmp.add(new StringKeyValue("2", I18NUtils.tradueix("tipusidentificacio.2")));
 		__tmp.add(new StringKeyValue("3", I18NUtils.tradueix("tipusidentificacio.3")));
 		__tmp.add(new StringKeyValue("4", I18NUtils.tradueix("tipusidentificacio.4")));
 		return __tmp;
+	}
+
+	@Override
+	public void preValidate(HttpServletRequest request, FuncionariForm funcionariForm, BindingResult result)
+			throws I18NException {
+		FuncionariJPA funcionari = funcionariForm.getFuncionari();
+		if (String.valueOf(funcionari.getTipusIdentificador()).equals(TIPUS_IDENTIFICACIO_SELECCIONA)) {
+			result.rejectValue(FuncionariFields.TIPUSIDENTIFICADOR.codeLabel, "error.required",
+					new Object[] { "Número" },
+					"El camp " + FuncionariFields.TIPUSIDENTIFICADOR.codeLabel + " és obligatori");
+		}
 	}
 
 	@Override

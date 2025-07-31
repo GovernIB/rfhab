@@ -111,7 +111,7 @@ public class LlocAdminController extends LlocController {
 			llocFilterForm.addHiddenField(DATACREACIO);
 			llocFilterForm.addHiddenField(ENTITATID);
 			llocFilterForm.addHiddenField(OBSERVACIONS);
-			// llocFilterForm.addHiddenField(DATABAIXA);
+			llocFilterForm.addHiddenField(DATABAIXA);
 
 			{
 				AdditionalField<Long, String> adfield0 = new AdditionalField<Long, String>();
@@ -124,7 +124,7 @@ public class LlocAdminController extends LlocController {
 
 			{
 				AdditionalField<Long, String> adfield = new AdditionalField<Long, String>();
-				adfield.setCodeName(FuncionariFields.NOM.codeLabel);
+				adfield.setCodeName(FuncionariLlocFields.FUNCIONARIID.codeLabel);
 				adfield.setPosition(2);
 				adfield.setEscapeXml(false);
 				adfield.setValueMap(new HashMap<Long, String>());

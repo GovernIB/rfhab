@@ -1808,8 +1808,8 @@
           "digits": 0,
           "isNotNullable": true,
           "labels": {
-            "ca": "Funcionari",
-            "es": "Funcionario"
+            "ca": "Funcionari/ària",
+            "es": "Funcionario/a"
           },
           "javaName": "funcionariID",
           "javaType": "long",
@@ -2513,11 +2513,11 @@
       "nameJava": "Lloc",
       "shortName": "lloc",
       "labels": {
-        "ca": "Lloc de feina",
+        "ca": "lloc de feina",
         "es": "Plaza"
       },
       "labelsPlural": {
-        "ca": "Llocs de feina",
+        "ca": "llocs de feina",
         "es": "Plazas"
       },
       "generate": true,
@@ -2641,8 +2641,8 @@
           "digits": 0,
           "isNotNullable": true,
           "labels": {
-            "ca": "Personal OAMR",
-            "es": "Personal OAMR"
+            "ca": "OAMR",
+            "es": "OAMR"
           },
           "javaName": "personalOamr",
           "javaType": "int",
@@ -2782,8 +2782,8 @@
           "digits": 0,
           "isNotNullable": true,
           "labels": {
-            "ca": "Unitat",
-            "es": "Unidad"
+            "ca": "Unitat orgànica",
+            "es": "Unidad orgánica"
           },
           "javaName": "unitatID",
           "javaType": "long",

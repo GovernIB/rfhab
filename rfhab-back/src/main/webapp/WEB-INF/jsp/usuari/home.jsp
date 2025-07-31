@@ -482,7 +482,7 @@ button[disabled][type="submit"] {
 		}
 		select2Container.removeClass("input-validation-error");
 		return true;
-	}, "Sel·leccioni procediment");
+	}, "<fmt:message key="usuari.tramit.seleccio.procediment.required" />");
 	$.validator.setDefaults({
 		ignore: function (index, el) {
 								const $el = $(el);

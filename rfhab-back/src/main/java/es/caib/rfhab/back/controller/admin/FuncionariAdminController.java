@@ -498,7 +498,7 @@ public class FuncionariAdminController extends FuncionariController {
 		if (String.valueOf(funcionari.getTipusIdentificador()).equals(TIPUS_IDENTIFICACIO_SELECCIONA)) {
 			result.rejectValue(FuncionariFields.TIPUSIDENTIFICADOR.codeLabel, "error.required",
 					new Object[] { "Número" },
-					"El camp " + FuncionariFields.TIPUSIDENTIFICADOR.codeLabel + " és obligatori");
+					"El camp " + I18NUtils.tradueix(FuncionariFields.TIPUSIDENTIFICADOR.codeLabel) + " és obligatori");
 		}
 	}
 

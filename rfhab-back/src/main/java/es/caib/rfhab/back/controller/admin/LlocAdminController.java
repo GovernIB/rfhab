@@ -207,24 +207,6 @@ public class LlocAdminController extends LlocController {
 			});
 			mav.addObject("rols", llistaRols);
 
-			// Pipella Autoritzacions - procediments de Rolsac autoritzats en funció del
-			// codi DIR3 de la unitat
-			HashMap<String, String> procediments = new HashMap<String, String>();
-			if (lloc.getUnitatID() > 0) {
-				try {
-					List<Unitat> unitatsDir3 = unitatEjb.select(UnitatFields.UNITATID.equal(lloc.getUnitatID()));
-					if (unitatsDir3.size() > 0) {
-						procediments = getProcedimentsByDir3(unitatsDir3.get(0).getCodi());
-						procediments.forEach((clave, valor) -> {
-							log.info("Procediment: " + clave + " - " + valor);
-						});
-					}
-				} catch (Exception e) {
-					log.error(e);
-				}
-			}
-			mav.addObject("procediments", procediments);
-
 			// Pipella Històric - Obtenir tots els canvis realitzats al lloc de feina
 			List<Select6Values<Long, String, String, String, String, Timestamp>> historic = historicLlocEjb
 					.getHistoricByLlocId(lloc.getLlocID());
@@ -501,15 +483,6 @@ public class LlocAdminController extends LlocController {
 		}
 
 		return null;
-	}
-
-	private HashMap<String, String> getProcedimentsByDir3(String codiDir3) throws Exception {
-
-		if (rolsacPlugin == null)
-			rolsacPlugin = new RolsacPlugin();
-
-		return rolsacPlugin.obtenirProcedimentsByDir3(codiDir3);
-
 	}
 
 	@Override

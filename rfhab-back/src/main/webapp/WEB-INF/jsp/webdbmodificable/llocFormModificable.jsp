@@ -13,11 +13,6 @@
 				data-toggle="tab" href="#rols" role="tab" aria-controls="rols"
 				aria-selected="false"><fmt:message key="rol.rol.plural"/></a>
 		</li>
-		<li class="nav-item" style="display: none;">
-			<a class="nav-link" id="autoritzacio-tab"
-				data-toggle="tab" href="#autoritzacio" role="tab"
-				aria-controls="autoritzacio" aria-selected="false"><fmt:message key="autoritzacio.autoritzacio.plural"/></a>
-		</li>
 		<li class="nav-item">
 			<a class="nav-link" id="historic-tab"
 				data-toggle="tab" href="#historic" role="tab"
@@ -104,38 +99,6 @@
 			</p>
 		</div>
 		
-		<div class="tab-pane fade" id="autoritzacio" role="tabpanel"
-			aria-labelledby="autoritzacio-tab">
-
-			<c:if test="${isOamr > 0}">
-				<p><fmt:message key="lloc.isoamr"/></p>
-			</c:if>
-
-			<c:if test="${not empty procediments}">
-				<div class="row" style="margin-left: 0px;">
-					<table
-						class="table table-sm table-bordered table-striped table-genapp table-genapp-list"
-						style="width: auto;">
-						<thead>
-							<tr>
-								<th><fmt:message key="autoritzacio.codiSia" /></th>
-								<th><fmt:message key="autoritzacio.procediment" /></th>
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach items="${procediments}" var="procedimentItem">
-								<tr id="autoritzacio_rowid_${procedimentItem.key}">
-									<td>${procedimentItem.key}</td>
-									<td>${procedimentItem.value}</td>
-								</tr>
-							</c:forEach>
-						</tbody>
-					</table>
-				</div>
-			</c:if>
-
-		</div>
-
 		<div class="tab-pane fade" id="historic" role="tabpanel"
 			aria-labelledby="historic-tab">
 

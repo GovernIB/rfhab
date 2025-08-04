@@ -126,6 +126,7 @@
         codilloc varchar2(50 char) not null,
         databaixa timestamp,
         datacreacio timestamp not null,
+        dataalta timestamp,
         entitatid number(19,0) not null,
         nom varchar2(255 char) not null,
         observacions clob,

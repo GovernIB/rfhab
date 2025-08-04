@@ -11,12 +11,13 @@ public class LlocBean implements Lloc {
 	long llocID;// PK
 	java.lang.String codiLloc;
 	java.lang.String nom;
-	int personalOamr;
 	long entitatID;
+	long unitatID;
+	int personalOamr;
+	java.sql.Timestamp dataalta;
 	java.sql.Timestamp dataCreacio;
 	java.sql.Timestamp dataBaixa;
 	java.lang.String observacions;
-	long unitatID;
 
 
   /** Constructor Buit */
@@ -24,48 +25,51 @@ public class LlocBean implements Lloc {
   }
 
   /** Constructor amb tots els camps  */
-  public LlocBean(long llocID , java.lang.String codiLloc , java.lang.String nom , int personalOamr , long entitatID , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , java.lang.String observacions , long unitatID) {
+  public LlocBean(long llocID , java.lang.String codiLloc , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataalta , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , java.lang.String observacions) {
     this.llocID=llocID;
     this.codiLloc=codiLloc;
     this.nom=nom;
-    this.personalOamr=personalOamr;
     this.entitatID=entitatID;
+    this.unitatID=unitatID;
+    this.personalOamr=personalOamr;
+    this.dataalta=dataalta;
     this.dataCreacio=dataCreacio;
     this.dataBaixa=dataBaixa;
     this.observacions=observacions;
-    this.unitatID=unitatID;
 }
   /** Constructor sense valors autoincrementals */
-  public LlocBean(java.lang.String codiLloc , java.lang.String nom , int personalOamr , long entitatID , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , java.lang.String observacions , long unitatID) {
+  public LlocBean(java.lang.String codiLloc , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataalta , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , java.lang.String observacions) {
     this.codiLloc=codiLloc;
     this.nom=nom;
-    this.personalOamr=personalOamr;
     this.entitatID=entitatID;
+    this.unitatID=unitatID;
+    this.personalOamr=personalOamr;
+    this.dataalta=dataalta;
     this.dataCreacio=dataCreacio;
     this.dataBaixa=dataBaixa;
     this.observacions=observacions;
-    this.unitatID=unitatID;
 }
   /** Constructor dels valors Not Null */
-  public LlocBean(long llocID , java.lang.String codiLloc , java.lang.String nom , int personalOamr , long entitatID , java.sql.Timestamp dataCreacio , long unitatID) {
+  public LlocBean(long llocID , java.lang.String codiLloc , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataCreacio) {
     this.llocID=llocID;
     this.codiLloc=codiLloc;
     this.nom=nom;
-    this.personalOamr=personalOamr;
     this.entitatID=entitatID;
-    this.dataCreacio=dataCreacio;
     this.unitatID=unitatID;
+    this.personalOamr=personalOamr;
+    this.dataCreacio=dataCreacio;
 }
   public LlocBean(Lloc __bean) {
     this.setLlocID(__bean.getLlocID());
     this.setCodiLloc(__bean.getCodiLloc());
     this.setNom(__bean.getNom());
-    this.setPersonalOamr(__bean.getPersonalOamr());
     this.setEntitatID(__bean.getEntitatID());
+    this.setUnitatID(__bean.getUnitatID());
+    this.setPersonalOamr(__bean.getPersonalOamr());
+    this.setDataalta(__bean.getDataalta());
     this.setDataCreacio(__bean.getDataCreacio());
     this.setDataBaixa(__bean.getDataBaixa());
     this.setObservacions(__bean.getObservacions());
-    this.setUnitatID(__bean.getUnitatID());
 	}
 
 	public long getLlocID() {
@@ -89,6 +93,20 @@ public class LlocBean implements Lloc {
 		this.nom = _nom_;
 	};
 
+	public long getEntitatID() {
+		return(entitatID);
+	};
+	public void setEntitatID(long _entitatID_) {
+		this.entitatID = _entitatID_;
+	};
+
+	public long getUnitatID() {
+		return(unitatID);
+	};
+	public void setUnitatID(long _unitatID_) {
+		this.unitatID = _unitatID_;
+	};
+
 	public int getPersonalOamr() {
 		return(personalOamr);
 	};
@@ -96,11 +114,11 @@ public class LlocBean implements Lloc {
 		this.personalOamr = _personalOamr_;
 	};
 
-	public long getEntitatID() {
-		return(entitatID);
+	public java.sql.Timestamp getDataalta() {
+		return(dataalta);
 	};
-	public void setEntitatID(long _entitatID_) {
-		this.entitatID = _entitatID_;
+	public void setDataalta(java.sql.Timestamp _dataalta_) {
+		this.dataalta = _dataalta_;
 	};
 
 	public java.sql.Timestamp getDataCreacio() {
@@ -124,13 +142,6 @@ public class LlocBean implements Lloc {
 		this.observacions = _observacions_;
 	};
 
-	public long getUnitatID() {
-		return(unitatID);
-	};
-	public void setUnitatID(long _unitatID_) {
-		this.unitatID = _unitatID_;
-	};
-
 
 
   // ======================================
@@ -141,12 +152,13 @@ public class LlocBean implements Lloc {
     __tmp.setLlocID(__bean.getLlocID());
     __tmp.setCodiLloc(__bean.getCodiLloc());
     __tmp.setNom(__bean.getNom());
-    __tmp.setPersonalOamr(__bean.getPersonalOamr());
     __tmp.setEntitatID(__bean.getEntitatID());
+    __tmp.setUnitatID(__bean.getUnitatID());
+    __tmp.setPersonalOamr(__bean.getPersonalOamr());
+    __tmp.setDataalta(__bean.getDataalta());
     __tmp.setDataCreacio(__bean.getDataCreacio());
     __tmp.setDataBaixa(__bean.getDataBaixa());
     __tmp.setObservacions(__bean.getObservacions());
-    __tmp.setUnitatID(__bean.getUnitatID());
 		return __tmp;
 	}
 

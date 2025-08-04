@@ -23,12 +23,20 @@ public class LlocQueryPath extends org.fundaciobit.genapp.common.query.QueryPath
     return new StringField(getQueryPath(), LlocFields.NOM);
   }
 
+  public LongField ENTITATID() {
+    return new LongField(getQueryPath(), LlocFields.ENTITATID);
+  }
+
+  public LongField UNITATID() {
+    return new LongField(getQueryPath(), LlocFields.UNITATID);
+  }
+
   public IntegerField PERSONALOAMR() {
     return new IntegerField(getQueryPath(), LlocFields.PERSONALOAMR);
   }
 
-  public LongField ENTITATID() {
-    return new LongField(getQueryPath(), LlocFields.ENTITATID);
+  public TimestampField DATAALTA() {
+    return new TimestampField(getQueryPath(), LlocFields.DATAALTA);
   }
 
   public TimestampField DATACREACIO() {
@@ -41,10 +49,6 @@ public class LlocQueryPath extends org.fundaciobit.genapp.common.query.QueryPath
 
   public StringField OBSERVACIONS() {
     return new StringField(getQueryPath(), LlocFields.OBSERVACIONS);
-  }
-
-  public LongField UNITATID() {
-    return new LongField(getQueryPath(), LlocFields.UNITATID);
   }
 
 

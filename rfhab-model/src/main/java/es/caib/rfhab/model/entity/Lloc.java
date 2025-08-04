@@ -11,11 +11,17 @@ public interface Lloc extends org.fundaciobit.genapp.common.IGenAppEntity {
 	public java.lang.String getNom();
 	public void setNom(java.lang.String _nom_);
 
+	public long getEntitatID();
+	public void setEntitatID(long _entitatID_);
+
+	public long getUnitatID();
+	public void setUnitatID(long _unitatID_);
+
 	public int getPersonalOamr();
 	public void setPersonalOamr(int _personalOamr_);
 
-	public long getEntitatID();
-	public void setEntitatID(long _entitatID_);
+	public java.sql.Timestamp getDataalta();
+	public void setDataalta(java.sql.Timestamp _dataalta_);
 
 	public java.sql.Timestamp getDataCreacio();
 	public void setDataCreacio(java.sql.Timestamp _dataCreacio_);
@@ -25,9 +31,6 @@ public interface Lloc extends org.fundaciobit.genapp.common.IGenAppEntity {
 
 	public java.lang.String getObservacions();
 	public void setObservacions(java.lang.String _observacions_);
-
-	public long getUnitatID();
-	public void setUnitatID(long _unitatID_);
 
 
 

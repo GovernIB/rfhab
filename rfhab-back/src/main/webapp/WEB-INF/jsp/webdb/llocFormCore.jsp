@@ -38,6 +38,73 @@
         </tr>
         </c:if>
         
+        <c:if test="${!gen:contains(__theForm.hiddenFields,LlocFields.ENTITATID)}">
+        <tr id="lloc_entitatID_rowid">
+          <td id="lloc_entitatID_columnlabelid">
+            <label>
+              <fmt:message key="${(empty __theForm.labels[LlocFields.ENTITATID])?'lloc.entitatID':__theForm.labels[LlocFields.ENTITATID]}" /> &nbsp;(*)
+             </label>
+              <c:if test="${not empty __theForm.help[LlocFields.ENTITATID]}">
+              <i class="fas fa-info-circle" title="${__theForm.help[LlocFields.ENTITATID]}" ></i>
+              </c:if>
+            </td>
+          <td id="lloc_entitatID_columnvalueid">
+          <form:errors path="lloc.entitatID" cssClass="errorField alert alert-danger" />
+          <c:if test="${gen:contains(__theForm.readOnlyFields ,LlocFields.ENTITATID)}" >
+          <form:hidden path="lloc.entitatID"/>
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.lloc.entitatID,__theForm.listOfEntitatForEntitatID)}"  />
+          </c:if>
+          <c:if test="${!gen:contains(__theForm.readOnlyFields ,LlocFields.ENTITATID)}" >
+          <c:set var="containEmptyValue"  value="false" />
+          <form:select id="lloc_entitatID"  onchange="if(typeof onChangeEntitatID == 'function') {  onChangeEntitatID(this); };"  cssClass="form-control col-md-9-optional" path="lloc.entitatID">
+            <c:forEach items="${__theForm.listOfEntitatForEntitatID}" var="tmp">
+                <form:option value="${tmp.key}">${tmp.value}</form:option>
+                <c:if test="${empty tmp.key}">
+                  <c:set var="containEmptyValue"  value="true" />
+                </c:if>
+            </c:forEach>
+          </form:select>
+          </c:if>
+           </td>
+        </tr>
+        </c:if>
+        
+        <c:if test="${!gen:contains(__theForm.hiddenFields,LlocFields.UNITATID)}">
+        <tr id="lloc_unitatID_rowid">
+          <td id="lloc_unitatID_columnlabelid">
+            <label>
+              <fmt:message key="${(empty __theForm.labels[LlocFields.UNITATID])?'lloc.unitatID':__theForm.labels[LlocFields.UNITATID]}" /> &nbsp;(*)
+             </label>
+              <c:if test="${not empty __theForm.help[LlocFields.UNITATID]}">
+              <i class="fas fa-info-circle" title="${__theForm.help[LlocFields.UNITATID]}" ></i>
+              </c:if>
+            </td>
+          <td id="lloc_unitatID_columnvalueid">
+          <form:errors path="lloc.unitatID" cssClass="errorField alert alert-danger" />
+          <c:if test="${gen:contains(__theForm.readOnlyFields ,LlocFields.UNITATID)}" >
+          <form:hidden path="lloc.unitatID"/>
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.lloc.unitatID,__theForm.listOfUnitatForUnitatID)}"  />
+          </c:if>
+          <c:if test="${!gen:contains(__theForm.readOnlyFields ,LlocFields.UNITATID)}" >
+          <c:set var="containEmptyValue"  value="false" />
+          <form:select id="lloc_unitatID"  onchange="if(typeof onChangeUnitatID == 'function') {  onChangeUnitatID(this); };"  cssClass="form-control col-md-9-optional" path="lloc.unitatID">
+            <c:forEach items="${__theForm.listOfUnitatForUnitatID}" var="tmp">
+                <form:option value="${tmp.key}">${tmp.value}</form:option>
+                <c:if test="${empty tmp.key}">
+                  <c:set var="containEmptyValue"  value="true" />
+                </c:if>
+            </c:forEach>
+          <script>
+              $(document).ready(function() {
+                  $('#lloc_unitatID').select2();
+              });
+          </script>
+          </form:select>
+          </c:if>
+           </td>
+        </tr>
+        </c:if>
+        
         <c:if test="${!gen:contains(__theForm.hiddenFields,LlocFields.PERSONALOAMR)}">
         <tr id="lloc_personalOamr_rowid">
           <td id="lloc_personalOamr_columnlabelid">
@@ -69,34 +136,39 @@
         </tr>
         </c:if>
         
-        <c:if test="${!gen:contains(__theForm.hiddenFields,LlocFields.ENTITATID)}">
-        <tr id="lloc_entitatID_rowid">
-          <td id="lloc_entitatID_columnlabelid">
+        <c:if test="${!gen:contains(__theForm.hiddenFields,LlocFields.DATAALTA)}">
+        <tr id="lloc_dataalta_rowid">
+          <td id="lloc_dataalta_columnlabelid">
             <label>
-              <fmt:message key="${(empty __theForm.labels[LlocFields.ENTITATID])?'lloc.entitatID':__theForm.labels[LlocFields.ENTITATID]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[LlocFields.DATAALTA])?'lloc.dataalta':__theForm.labels[LlocFields.DATAALTA]}" />
              </label>
-              <c:if test="${not empty __theForm.help[LlocFields.ENTITATID]}">
-              <i class="fas fa-info-circle" title="${__theForm.help[LlocFields.ENTITATID]}" ></i>
+              <c:if test="${not empty __theForm.help[LlocFields.DATAALTA]}">
+              <i class="fas fa-info-circle" title="${__theForm.help[LlocFields.DATAALTA]}" ></i>
               </c:if>
             </td>
-          <td id="lloc_entitatID_columnvalueid">
-          <form:errors path="lloc.entitatID" cssClass="errorField alert alert-danger" />
-          <c:if test="${gen:contains(__theForm.readOnlyFields ,LlocFields.ENTITATID)}" >
-          <form:hidden path="lloc.entitatID"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.lloc.entitatID,__theForm.listOfEntitatForEntitatID)}"  />
-          </c:if>
-          <c:if test="${!gen:contains(__theForm.readOnlyFields ,LlocFields.ENTITATID)}" >
-          <c:set var="containEmptyValue"  value="false" />
-          <form:select id="lloc_entitatID"  onchange="if(typeof onChangeEntitatID == 'function') {  onChangeEntitatID(this); };"  cssClass="form-control col-md-9-optional" path="lloc.entitatID">
-            <c:forEach items="${__theForm.listOfEntitatForEntitatID}" var="tmp">
-                <form:option value="${tmp.key}">${tmp.value}</form:option>
-                <c:if test="${empty tmp.key}">
-                  <c:set var="containEmptyValue"  value="true" />
-                </c:if>
-            </c:forEach>
-          </form:select>
-          </c:if>
-           </td>
+          <td id="lloc_dataalta_columnvalueid">
+    <form:errors path="lloc.dataalta" cssClass="errorField alert alert-danger" />
+            <div class="form-group"  style="margin-bottom: 0px;" >
+                <div class="input-group date" id="lloc_dataalta" data-target-input="nearest">
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocFields.DATAALTA)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#lloc_dataalta" path="lloc.dataalta" />
+                    <c:if test="${!gen:contains(__theForm.readOnlyFields ,LlocFields.DATAALTA)}" >
+                    <div class="input-group-append"  data-target="#lloc_dataalta"  data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                    </c:if>
+                </div>
+            </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#lloc_dataalta').datetimepicker({
+                    format: '${gen:getJSDateTimePattern()}',
+                    locale: '${lang}',
+                    icons: {
+                       time: 'far fa-clock'
+                    }
+                });
+            });
+        </script>           </td>
         </tr>
         </c:if>
         
@@ -207,42 +279,6 @@
       </script>   </td>
    </tr>
    </table>
-           </td>
-        </tr>
-        </c:if>
-        
-        <c:if test="${!gen:contains(__theForm.hiddenFields,LlocFields.UNITATID)}">
-        <tr id="lloc_unitatID_rowid">
-          <td id="lloc_unitatID_columnlabelid">
-            <label>
-              <fmt:message key="${(empty __theForm.labels[LlocFields.UNITATID])?'lloc.unitatID':__theForm.labels[LlocFields.UNITATID]}" /> &nbsp;(*)
-             </label>
-              <c:if test="${not empty __theForm.help[LlocFields.UNITATID]}">
-              <i class="fas fa-info-circle" title="${__theForm.help[LlocFields.UNITATID]}" ></i>
-              </c:if>
-            </td>
-          <td id="lloc_unitatID_columnvalueid">
-          <form:errors path="lloc.unitatID" cssClass="errorField alert alert-danger" />
-          <c:if test="${gen:contains(__theForm.readOnlyFields ,LlocFields.UNITATID)}" >
-          <form:hidden path="lloc.unitatID"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.lloc.unitatID,__theForm.listOfUnitatForUnitatID)}"  />
-          </c:if>
-          <c:if test="${!gen:contains(__theForm.readOnlyFields ,LlocFields.UNITATID)}" >
-          <c:set var="containEmptyValue"  value="false" />
-          <form:select id="lloc_unitatID"  onchange="if(typeof onChangeUnitatID == 'function') {  onChangeUnitatID(this); };"  cssClass="form-control col-md-9-optional" path="lloc.unitatID">
-            <c:forEach items="${__theForm.listOfUnitatForUnitatID}" var="tmp">
-                <form:option value="${tmp.key}">${tmp.value}</form:option>
-                <c:if test="${empty tmp.key}">
-                  <c:set var="containEmptyValue"  value="true" />
-                </c:if>
-            </c:forEach>
-          <script>
-              $(document).ready(function() {
-                  $('#lloc_unitatID').select2();
-              });
-          </script>
-          </form:select>
-          </c:if>
            </td>
         </tr>
         </c:if>

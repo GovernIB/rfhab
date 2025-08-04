@@ -21,11 +21,17 @@
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.NOM)}">
         <th>${rfh:getSortIcons(__theFilterForm,LlocFields.NOM)}</th>
         </c:if>
+        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.ENTITATID)}">
+        <th>${rfh:getSortIcons(__theFilterForm,LlocFields.ENTITATID)}</th>
+        </c:if>
+        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.UNITATID)}">
+        <th>${rfh:getSortIcons(__theFilterForm,LlocFields.UNITATID)}</th>
+        </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.PERSONALOAMR)}">
         <th>${rfh:getSortIcons(__theFilterForm,LlocFields.PERSONALOAMR)}</th>
         </c:if>
-        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.ENTITATID)}">
-        <th>${rfh:getSortIcons(__theFilterForm,LlocFields.ENTITATID)}</th>
+        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.DATAALTA)}">
+        <th>${rfh:getSortIcons(__theFilterForm,LlocFields.DATAALTA)}</th>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.DATACREACIO)}">
         <th>${rfh:getSortIcons(__theFilterForm,LlocFields.DATACREACIO)}</th>
@@ -35,9 +41,6 @@
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.OBSERVACIONS)}">
         <th>${rfh:getSortIcons(__theFilterForm,LlocFields.OBSERVACIONS)}</th>
-        </c:if>
-        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.UNITATID)}">
-        <th>${rfh:getSortIcons(__theFilterForm,LlocFields.UNITATID)}</th>
         </c:if>
 
 

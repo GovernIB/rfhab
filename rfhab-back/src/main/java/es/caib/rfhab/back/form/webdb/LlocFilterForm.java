@@ -65,17 +65,6 @@ public class LlocFilterForm extends RFHabBaseFilterForm implements LlocFields {
   }
 
 
-  private java.util.List<java.lang.Integer> personalOamrSelect;
-
-  public java.util.List<java.lang.Integer> getPersonalOamrSelect() {
-    return this.personalOamrSelect;
-  }
-
-  public void setPersonalOamrSelect(java.util.List<java.lang.Integer> personalOamrSelect) {
-    this.personalOamrSelect = personalOamrSelect;
-  }
-
-
   private java.lang.Long entitatIDDesde;
 
   public java.lang.Long getEntitatIDDesde() {
@@ -95,6 +84,61 @@ public class LlocFilterForm extends RFHabBaseFilterForm implements LlocFields {
 
   public void setEntitatIDFins(java.lang.Long entitatIDFins) {
     this.entitatIDFins = entitatIDFins;
+  }
+
+
+  private java.lang.Long unitatIDDesde;
+
+  public java.lang.Long getUnitatIDDesde() {
+    return this.unitatIDDesde;
+  }
+
+  public void setUnitatIDDesde(java.lang.Long unitatIDDesde) {
+    this.unitatIDDesde = unitatIDDesde;
+  }
+
+
+  private java.lang.Long unitatIDFins;
+
+  public java.lang.Long getUnitatIDFins() {
+    return this.unitatIDFins;
+  }
+
+  public void setUnitatIDFins(java.lang.Long unitatIDFins) {
+    this.unitatIDFins = unitatIDFins;
+  }
+
+
+  private java.util.List<java.lang.Integer> personalOamrSelect;
+
+  public java.util.List<java.lang.Integer> getPersonalOamrSelect() {
+    return this.personalOamrSelect;
+  }
+
+  public void setPersonalOamrSelect(java.util.List<java.lang.Integer> personalOamrSelect) {
+    this.personalOamrSelect = personalOamrSelect;
+  }
+
+
+  private java.sql.Timestamp dataaltaDesde;
+
+  public java.sql.Timestamp getDataaltaDesde() {
+    return this.dataaltaDesde;
+  }
+
+  public void setDataaltaDesde(java.sql.Timestamp dataaltaDesde) {
+    this.dataaltaDesde = dataaltaDesde;
+  }
+
+
+  private java.sql.Timestamp dataaltaFins;
+
+  public java.sql.Timestamp getDataaltaFins() {
+    return this.dataaltaFins;
+  }
+
+  public void setDataaltaFins(java.sql.Timestamp dataaltaFins) {
+    this.dataaltaFins = dataaltaFins;
   }
 
 
@@ -153,28 +197,6 @@ public class LlocFilterForm extends RFHabBaseFilterForm implements LlocFields {
   }
 
 
-  private java.lang.Long unitatIDDesde;
-
-  public java.lang.Long getUnitatIDDesde() {
-    return this.unitatIDDesde;
-  }
-
-  public void setUnitatIDDesde(java.lang.Long unitatIDDesde) {
-    this.unitatIDDesde = unitatIDDesde;
-  }
-
-
-  private java.lang.Long unitatIDFins;
-
-  public java.lang.Long getUnitatIDFins() {
-    return this.unitatIDFins;
-  }
-
-  public void setUnitatIDFins(java.lang.Long unitatIDFins) {
-    this.unitatIDFins = unitatIDFins;
-  }
-
-
   public LlocFilterForm() {
   }
   
@@ -184,26 +206,28 @@ public class LlocFilterForm extends RFHabBaseFilterForm implements LlocFields {
     this.llocIDFins = __toClone.llocIDFins;
     this.codiLloc = __toClone.codiLloc;
     this.nom = __toClone.nom;
-    this.personalOamrSelect = __toClone.personalOamrSelect;
     this.entitatIDDesde = __toClone.entitatIDDesde;
     this.entitatIDFins = __toClone.entitatIDFins;
+    this.unitatIDDesde = __toClone.unitatIDDesde;
+    this.unitatIDFins = __toClone.unitatIDFins;
+    this.personalOamrSelect = __toClone.personalOamrSelect;
+    this.dataaltaDesde = __toClone.dataaltaDesde;
+    this.dataaltaFins = __toClone.dataaltaFins;
     this.dataCreacioDesde = __toClone.dataCreacioDesde;
     this.dataCreacioFins = __toClone.dataCreacioFins;
     this.dataBaixaDesde = __toClone.dataBaixaDesde;
     this.dataBaixaFins = __toClone.dataBaixaFins;
     this.observacions = __toClone.observacions;
-    this.unitatIDDesde = __toClone.unitatIDDesde;
-    this.unitatIDFins = __toClone.unitatIDFins;
-    this.mapOfValuesForPersonalOamr = __toClone.mapOfValuesForPersonalOamr;
     this.mapOfEntitatForEntitatID = __toClone.mapOfEntitatForEntitatID;
     this.mapOfUnitatForUnitatID = __toClone.mapOfUnitatForUnitatID;
+    this.mapOfValuesForPersonalOamr = __toClone.mapOfValuesForPersonalOamr;
   }
   
   /* ========= UTILS ========== */
 
   @Override
   public List<Field<?>> getDefaultFilterByFields() {
-    return new java.util.ArrayList<Field<?>>(Arrays.asList(new Field<?>[] { CODILLOC ,NOM ,PERSONALOAMR ,UNITATID }));
+    return new java.util.ArrayList<Field<?>>(Arrays.asList(new Field<?>[] { CODILLOC ,NOM ,UNITATID ,PERSONALOAMR }));
   }
 
   @Override
@@ -231,18 +255,6 @@ public class LlocFilterForm extends RFHabBaseFilterForm implements LlocFields {
    // -----------------------
    // Maps de referencies.
    // -----------------------
-  private Map<String, String> mapOfValuesForPersonalOamr;
-
-  public Map<String, String> getMapOfValuesForPersonalOamr() {
-    return this.mapOfValuesForPersonalOamr;
-  }
-
-  public void setMapOfValuesForPersonalOamr(Map<String, String> mapOfValuesForPersonalOamr) {
-    this.mapOfValuesForPersonalOamr = mapOfValuesForPersonalOamr;
-  }
-
-
-
   private Map<String, String> mapOfEntitatForEntitatID;
 
   public Map<String, String> getMapOfEntitatForEntitatID() {
@@ -263,6 +275,18 @@ public class LlocFilterForm extends RFHabBaseFilterForm implements LlocFields {
 
   public void setMapOfUnitatForUnitatID(Map<String, String> mapOfUnitatForUnitatID) {
     this.mapOfUnitatForUnitatID = mapOfUnitatForUnitatID;
+  }
+
+
+
+  private Map<String, String> mapOfValuesForPersonalOamr;
+
+  public Map<String, String> getMapOfValuesForPersonalOamr() {
+    return this.mapOfValuesForPersonalOamr;
+  }
+
+  public void setMapOfValuesForPersonalOamr(Map<String, String> mapOfValuesForPersonalOamr) {
+    this.mapOfValuesForPersonalOamr = mapOfValuesForPersonalOamr;
   }
 
 

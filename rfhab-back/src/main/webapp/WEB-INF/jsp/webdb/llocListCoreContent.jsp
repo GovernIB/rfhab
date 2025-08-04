@@ -39,6 +39,22 @@
           ${lloc.nom}
           </td>
         </c:if>
+        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.ENTITATID)}">
+          <td>
+          <c:set var="tmp">${lloc.entitatID}</c:set>
+          <c:if test="${not empty tmp}">
+          ${__theFilterForm.mapOfEntitatForEntitatID[tmp]}
+          </c:if>
+          </td>
+        </c:if>
+        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.UNITATID)}">
+          <td>
+          <c:set var="tmp">${lloc.unitatID}</c:set>
+          <c:if test="${not empty tmp}">
+          ${__theFilterForm.mapOfUnitatForUnitatID[tmp]}
+          </c:if>
+          </td>
+        </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.PERSONALOAMR)}">
           <td>
           <c:set var="tmp">${lloc.personalOamr}</c:set>
@@ -47,13 +63,8 @@
           </c:if>
           </td>
         </c:if>
-        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.ENTITATID)}">
-          <td>
-          <c:set var="tmp">${lloc.entitatID}</c:set>
-          <c:if test="${not empty tmp}">
-          ${__theFilterForm.mapOfEntitatForEntitatID[tmp]}
-          </c:if>
-          </td>
+        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.DATAALTA)}">
+          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${lloc.dataalta}" /></td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.DATACREACIO)}">
           <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${lloc.dataCreacio}" /></td>
@@ -64,14 +75,6 @@
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.OBSERVACIONS)}">
           <td>
           ${lloc.observacions}
-          </td>
-        </c:if>
-        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.UNITATID)}">
-          <td>
-          <c:set var="tmp">${lloc.unitatID}</c:set>
-          <c:if test="${not empty tmp}">
-          ${__theFilterForm.mapOfUnitatForUnitatID[tmp]}
-          </c:if>
           </td>
         </c:if>
 

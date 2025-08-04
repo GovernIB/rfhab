@@ -42,21 +42,21 @@ public class LlocValidator<I extends Lloc>
         "genapp.validation.required",
         new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(NOM)));
 
-    __vr.rejectIfEmptyOrWhitespace(__target__,PERSONALOAMR, 
-        "genapp.validation.required",
-        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(PERSONALOAMR)));
-
     __vr.rejectIfEmptyOrWhitespace(__target__,ENTITATID, 
         "genapp.validation.required",
         new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(ENTITATID)));
 
-    __vr.rejectIfEmptyOrWhitespace(__target__,DATACREACIO, 
-        "genapp.validation.required",
-        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(DATACREACIO)));
-
     __vr.rejectIfEmptyOrWhitespace(__target__,UNITATID, 
         "genapp.validation.required",
         new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(UNITATID)));
+
+    __vr.rejectIfEmptyOrWhitespace(__target__,PERSONALOAMR, 
+        "genapp.validation.required",
+        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(PERSONALOAMR)));
+
+    __vr.rejectIfEmptyOrWhitespace(__target__,DATACREACIO, 
+        "genapp.validation.required",
+        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(DATACREACIO)));
 
     // Check size
     if (__vr.getFieldErrorCount(CODILLOC) == 0) {

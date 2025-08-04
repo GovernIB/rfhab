@@ -19,9 +19,9 @@ public class LlocForm extends RFHabBaseForm {
   public LlocForm(LlocForm __toClone) {
     super(__toClone);
       this.lloc = __toClone.lloc;
-    this.listOfValuesForPersonalOamr = __toClone.listOfValuesForPersonalOamr;
     this.listOfEntitatForEntitatID = __toClone.listOfEntitatForEntitatID;
     this.listOfUnitatForUnitatID = __toClone.listOfUnitatForUnitatID;
+    this.listOfValuesForPersonalOamr = __toClone.listOfValuesForPersonalOamr;
   }
   
   public LlocForm(LlocJPA lloc, boolean nou) {
@@ -37,18 +37,6 @@ public class LlocForm extends RFHabBaseForm {
   }
   
   
-  private List<StringKeyValue> listOfValuesForPersonalOamr;
-
-  public List<StringKeyValue> getListOfValuesForPersonalOamr() {
-    return this.listOfValuesForPersonalOamr;
-  }
-
-  public void setListOfValuesForPersonalOamr(List<StringKeyValue> listOfValuesForPersonalOamr) {
-    this.listOfValuesForPersonalOamr = listOfValuesForPersonalOamr;
-  }
-
-
-
   private List<StringKeyValue> listOfEntitatForEntitatID;
 
   public List<StringKeyValue> getListOfEntitatForEntitatID() {
@@ -69,6 +57,18 @@ public class LlocForm extends RFHabBaseForm {
 
   public void setListOfUnitatForUnitatID(List<StringKeyValue> listOfUnitatForUnitatID) {
     this.listOfUnitatForUnitatID = listOfUnitatForUnitatID;
+  }
+
+
+
+  private List<StringKeyValue> listOfValuesForPersonalOamr;
+
+  public List<StringKeyValue> getListOfValuesForPersonalOamr() {
+    return this.listOfValuesForPersonalOamr;
+  }
+
+  public void setListOfValuesForPersonalOamr(List<StringKeyValue> listOfValuesForPersonalOamr) {
+    this.listOfValuesForPersonalOamr = listOfValuesForPersonalOamr;
   }
 
 

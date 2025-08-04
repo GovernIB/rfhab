@@ -2634,32 +2634,6 @@
           "foreignKeys": []
         },
         {
-          "isAutoIncrement": false,
-          "sqlName": "personaloamr",
-          "sqlType": 4,
-          "size": 10,
-          "digits": 0,
-          "isNotNullable": true,
-          "labels": {
-            "ca": "OAMR",
-            "es": "OAMR"
-          },
-          "javaName": "personalOamr",
-          "javaType": "int",
-          "traduible": false,
-          "showInWebList": true,
-          "showInReferenceList": false,
-          "transientField": false,
-          "minAllowedValue": "0,1",
-          "filter": true,
-          "orderBy": 0,
-          "groupBy": false,
-          "webFieldInfo": {
-            "webtype": 16
-          },
-          "foreignKeys": []
-        },
-        {
           "index": "rfh_lloc_entitatid_fk_i",
           "isAutoIncrement": false,
           "sqlName": "entitatid",
@@ -2699,6 +2673,97 @@
           ]
         },
         {
+          "index": "rfh_lloc_unitatid_fk_i",
+          "isAutoIncrement": false,
+          "sqlName": "unitatid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Unitat orgànica",
+            "es": "Unidad orgánica"
+          },
+          "javaName": "unitatID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "maxAllowedValue": "search",
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_lloc_unitat_unitatid_fk",
+              "table": "rfh_unitat",
+              "field": "unitatid",
+              "type": 1
+            }
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_lloc_unitat_unitatid_fk",
+              "table": "rfh_unitat",
+              "field": "unitatid",
+              "type": 1
+            }
+          ]
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "personaloamr",
+          "sqlType": 4,
+          "size": 10,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "OAMR",
+            "es": "OAMR"
+          },
+          "javaName": "personalOamr",
+          "javaType": "int",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "minAllowedValue": "0,1",
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 16
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "dataalta",
+          "sqlType": 93,
+          "size": 29,
+          "digits": 6,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Data d\u0027alta",
+            "es": "Fecha de alta"
+          },
+          "javaName": "dataalta",
+          "javaType": "java.sql.Timestamp",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 7
+          },
+          "foreignKeys": []
+        },
+        {
           "isAutoIncrement": false,
           "sqlName": "datacreacio",
           "sqlType": 93,
@@ -2706,8 +2771,8 @@
           "digits": 6,
           "isNotNullable": true,
           "labels": {
-            "ca": "Data alta",
-            "es": "Fecha de alta"
+            "ca": "Data de creació",
+            "es": "Fecha de creación"
           },
           "javaName": "dataCreacio",
           "javaType": "java.sql.Timestamp",
@@ -2772,46 +2837,6 @@
             "webtype": 2
           },
           "foreignKeys": []
-        },
-        {
-          "index": "rfh_lloc_unitatid_fk_i",
-          "isAutoIncrement": false,
-          "sqlName": "unitatid",
-          "sqlType": -5,
-          "size": 19,
-          "digits": 0,
-          "isNotNullable": true,
-          "labels": {
-            "ca": "Unitat orgànica",
-            "es": "Unidad orgánica"
-          },
-          "javaName": "unitatID",
-          "javaType": "long",
-          "traduible": false,
-          "showInWebList": true,
-          "showInReferenceList": false,
-          "transientField": false,
-          "maxAllowedValue": "search",
-          "filter": true,
-          "orderBy": 0,
-          "groupBy": false,
-          "webFieldInfo": {
-            "webtype": 3,
-            "foreignKey": {
-              "name": "rfh_lloc_unitat_unitatid_fk",
-              "table": "rfh_unitat",
-              "field": "unitatid",
-              "type": 1
-            }
-          },
-          "foreignKeys": [
-            {
-              "name": "rfh_lloc_unitat_unitatid_fk",
-              "table": "rfh_unitat",
-              "field": "unitatid",
-              "type": 1
-            }
-          ]
         }
       ]
     },

@@ -141,8 +141,8 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 
 			for (Object[] obj : result) {
 
-				LlocJPA llocJPA = new LlocJPA((long) obj[1], (String) obj[4], (String) obj[2], (int) obj[5],
-						(long) entitatId, (Timestamp) obj[6], (Timestamp) obj[7], (String) obj[8], (long) obj[3]);
+				LlocJPA llocJPA = new LlocJPA((long) obj[1], (String) obj[4], (String) obj[2], (long) entitatId,
+						(long) obj[3], (int) obj[5], (Timestamp) obj[6], (Timestamp) obj[7], (String) obj[8]);
 
 				llocsOcupats.put((Long) obj[0], llocJPA);
 			}

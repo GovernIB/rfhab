@@ -153,6 +153,7 @@ create sequence rfh_usuarientitat_seq start with 1000 increment by  1;
         codilloc varchar2(50 char) not null,
         databaixa timestamp,
         datacreacio timestamp not null,
+        dataalta timestamp,
         entitatid number(19,0) not null,
         nom varchar2(255 char) not null,
         observacions long,

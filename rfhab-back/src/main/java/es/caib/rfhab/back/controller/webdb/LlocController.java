@@ -196,16 +196,6 @@ public class LlocController
     Map<String, String> _tmp;
     List<StringKeyValue> _listSKV;
 
-    // Field personalOamr
-    {
-      _listSKV = getReferenceListForPersonalOamr(request, mav, filterForm, list, groupByItemsMap, null);
-      _tmp = Utils.listToMap(_listSKV);
-      filterForm.setMapOfValuesForPersonalOamr(_tmp);
-      if (filterForm.getGroupByFields().contains(PERSONALOAMR)) {
-        fillValuesToGroupByItems(_tmp, groupByItemsMap, PERSONALOAMR, false);
-      };
-    }
-
     // Field entitatID
     {
       _listSKV = getReferenceListForEntitatID(request, mav, filterForm, list, groupByItemsMap, null);
@@ -226,6 +216,16 @@ public class LlocController
       };
     }
 
+    // Field personalOamr
+    {
+      _listSKV = getReferenceListForPersonalOamr(request, mav, filterForm, list, groupByItemsMap, null);
+      _tmp = Utils.listToMap(_listSKV);
+      filterForm.setMapOfValuesForPersonalOamr(_tmp);
+      if (filterForm.getGroupByFields().contains(PERSONALOAMR)) {
+        fillValuesToGroupByItems(_tmp, groupByItemsMap, PERSONALOAMR, false);
+      };
+    }
+
 
     return groupByItemsMap;
   }
@@ -241,9 +241,9 @@ public class LlocController
 
     java.util.Map<Field<?>, java.util.Map<String, String>> __mapping;
     __mapping = new java.util.HashMap<Field<?>, java.util.Map<String, String>>();
-    __mapping.put(PERSONALOAMR, filterForm.getMapOfValuesForPersonalOamr());
     __mapping.put(ENTITATID, filterForm.getMapOfEntitatForEntitatID());
     __mapping.put(UNITATID, filterForm.getMapOfUnitatForUnitatID());
+    __mapping.put(PERSONALOAMR, filterForm.getMapOfValuesForPersonalOamr());
     exportData(request, response, dataExporterID, filterForm,
           list, allFields, __mapping, PRIMARYKEY_FIELDS);
   }
@@ -292,15 +292,6 @@ public class LlocController
   public void fillReferencesForForm(LlocForm llocForm,
     HttpServletRequest request, ModelAndView mav) throws I18NException {
     // Comprovam si ja esta definida la llista
-    if (llocForm.getListOfValuesForPersonalOamr() == null) {
-      List<StringKeyValue> _listSKV = getReferenceListForPersonalOamr(request, mav, llocForm, null);
-
-      if(_listSKV != null && !_listSKV.isEmpty()) { 
-          java.util.Collections.sort(_listSKV, STRINGKEYVALUE_COMPARATOR);
-      }
-      llocForm.setListOfValuesForPersonalOamr(_listSKV);
-    }
-    // Comprovam si ja esta definida la llista
     if (llocForm.getListOfEntitatForEntitatID() == null) {
       List<StringKeyValue> _listSKV = getReferenceListForEntitatID(request, mav, llocForm, null);
 
@@ -317,6 +308,15 @@ public class LlocController
           java.util.Collections.sort(_listSKV, STRINGKEYVALUE_COMPARATOR);
       }
       llocForm.setListOfUnitatForUnitatID(_listSKV);
+    }
+    // Comprovam si ja esta definida la llista
+    if (llocForm.getListOfValuesForPersonalOamr() == null) {
+      List<StringKeyValue> _listSKV = getReferenceListForPersonalOamr(request, mav, llocForm, null);
+
+      if(_listSKV != null && !_listSKV.isEmpty()) { 
+          java.util.Collections.sort(_listSKV, STRINGKEYVALUE_COMPARATOR);
+      }
+      llocForm.setListOfValuesForPersonalOamr(_listSKV);
     }
     
   }
@@ -628,37 +628,6 @@ public java.lang.Long stringToPK(String value) {
   }
 
 
-  public List<StringKeyValue> getReferenceListForPersonalOamr(HttpServletRequest request,
-       ModelAndView mav, LlocForm llocForm, Where where)  throws I18NException {
-    if (llocForm.isHiddenField(PERSONALOAMR)) {
-      return EMPTY_STRINGKEYVALUE_LIST;
-    }
-    return getReferenceListForPersonalOamr(request, mav, where);
-  }
-
-
-  public List<StringKeyValue> getReferenceListForPersonalOamr(HttpServletRequest request,
-       ModelAndView mav, LlocFilterForm llocFilterForm,
-       List<Lloc> list, Map<Field<?>, GroupByItem> _groupByItemsMap, Where where)  throws I18NException {
-    if (llocFilterForm.isHiddenField(PERSONALOAMR)
-       && !llocFilterForm.isGroupByField(PERSONALOAMR)
-       && !llocFilterForm.isFilterByField(PERSONALOAMR)) {
-      return EMPTY_STRINGKEYVALUE_LIST;
-    }
-    Where _w = null;
-    return getReferenceListForPersonalOamr(request, mav, Where.AND(where,_w));
-  }
-
-
-  public List<StringKeyValue> getReferenceListForPersonalOamr(HttpServletRequest request,
-       ModelAndView mav, Where where)  throws I18NException {
-    List<StringKeyValue> __tmp = new java.util.ArrayList<StringKeyValue>();
-    __tmp.add(new StringKeyValue("0" , "0"));
-    __tmp.add(new StringKeyValue("1" , "1"));
-    return __tmp;
-  }
-
-
   public List<StringKeyValue> getReferenceListForEntitatID(HttpServletRequest request,
        ModelAndView mav, LlocForm llocForm, Where where)  throws I18NException {
     if (llocForm.isHiddenField(ENTITATID)) {
@@ -734,6 +703,37 @@ public java.lang.Long stringToPK(String value) {
   public List<StringKeyValue> getReferenceListForUnitatID(HttpServletRequest request,
        ModelAndView mav, Where where)  throws I18NException {
     return unitatRefList.getReferenceList(UnitatFields.UNITATID, where );
+  }
+
+
+  public List<StringKeyValue> getReferenceListForPersonalOamr(HttpServletRequest request,
+       ModelAndView mav, LlocForm llocForm, Where where)  throws I18NException {
+    if (llocForm.isHiddenField(PERSONALOAMR)) {
+      return EMPTY_STRINGKEYVALUE_LIST;
+    }
+    return getReferenceListForPersonalOamr(request, mav, where);
+  }
+
+
+  public List<StringKeyValue> getReferenceListForPersonalOamr(HttpServletRequest request,
+       ModelAndView mav, LlocFilterForm llocFilterForm,
+       List<Lloc> list, Map<Field<?>, GroupByItem> _groupByItemsMap, Where where)  throws I18NException {
+    if (llocFilterForm.isHiddenField(PERSONALOAMR)
+       && !llocFilterForm.isGroupByField(PERSONALOAMR)
+       && !llocFilterForm.isFilterByField(PERSONALOAMR)) {
+      return EMPTY_STRINGKEYVALUE_LIST;
+    }
+    Where _w = null;
+    return getReferenceListForPersonalOamr(request, mav, Where.AND(where,_w));
+  }
+
+
+  public List<StringKeyValue> getReferenceListForPersonalOamr(HttpServletRequest request,
+       ModelAndView mav, Where where)  throws I18NException {
+    List<StringKeyValue> __tmp = new java.util.ArrayList<StringKeyValue>();
+    __tmp.add(new StringKeyValue("0" , "0"));
+    __tmp.add(new StringKeyValue("1" , "1"));
+    return __tmp;
   }
 
 

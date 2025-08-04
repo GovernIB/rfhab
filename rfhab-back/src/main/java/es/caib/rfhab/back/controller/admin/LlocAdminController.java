@@ -254,7 +254,8 @@ public class LlocAdminController extends LlocController {
 				getContextWeb() + "/tornar", AdditionalButtonStyle.SECONDARY));
 
 		llocForm.addReadOnlyField(ENTITATID);
-		llocForm.addReadOnlyField(DATACREACIO);
+		llocForm.addHiddenField(LlocFields.DATABAIXA);
+		llocForm.addHiddenField(LlocFields.DATACREACIO);
 
 		llocForm.setCancelButtonVisible(false);
 		llocForm.setAttachedAdditionalJspCode(true);

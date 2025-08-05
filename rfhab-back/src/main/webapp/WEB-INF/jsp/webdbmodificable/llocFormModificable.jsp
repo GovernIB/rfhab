@@ -250,6 +250,7 @@
 	</c:forEach>
 
 	function onChangeUnitatID(event) {
+		//TODO: #75 revisar si finalment es vol canviar entitat per Unitat superior
 		let unitatIdSeleccionat = +event.value;
 		let resultat = findUnitatMare(unitats, unitatIdSeleccionat);
 
@@ -276,21 +277,23 @@
 
 						if ("true" != "${isView}") {
 
-							var nouTr = document.createElement("tr");
+							const nouTr = document.createElement("tr");
 							nouTr.id = "lloc_numerocai_rowid";
 
-							var nouTd1 = document.createElement("td");
+							const nouTd1 = document.createElement("td");
 							nouTd1.id = "lloc_numerocai_columnlabelid";
 							nouTd1.innerHTML = '<label style="font-weight:bold; text-align:right;"><fmt:message key="historic.numeroCai"/></label>';
 							nouTr.appendChild(nouTd1);
 
-							var nouTd2 = document.createElement("td");
+							const nouTd2 = document.createElement("td");
 							nouTd2.id = "lloc_numerocai_columnvalueid";
 							nouTd2.innerHTML = '<input type="text" name="numerocai" id="numerocai" class="form-control w-75"></input>';
 							nouTr.appendChild(nouTd2);
 
-							var taula = document.getElementById("lloc_tableid");
-							taula.appendChild(nouTr);
+							const taula = document.getElementById("lloc_tableid");
+							const tbody = taula.querySelector("tbody");
+							const observacionsTr = tbody.querySelector("#lloc_observacions_rowid");
+							tbody.insertBefore(nouTr, observacionsTr);
 						}
 					});
 </script>

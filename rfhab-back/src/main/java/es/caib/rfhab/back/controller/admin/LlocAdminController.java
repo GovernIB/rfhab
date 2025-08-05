@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +14,7 @@ import org.apache.log4j.Logger;
 import org.fundaciobit.genapp.common.StringKeyValue;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.i18n.I18NValidationException;
+import org.fundaciobit.genapp.common.query.Select;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.query.selectcolumn.Select6Values;
 import org.fundaciobit.genapp.common.utils.Utils;
@@ -20,6 +22,7 @@ import org.fundaciobit.genapp.common.web.form.AdditionalButton;
 import org.fundaciobit.genapp.common.web.form.AdditionalButtonStyle;
 import org.fundaciobit.genapp.common.web.form.AdditionalField;
 import org.fundaciobit.genapp.common.web.i18n.I18NUtils;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,7 +52,6 @@ import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.entity.Rol;
 import es.caib.rfhab.model.entity.Unitat;
 import es.caib.rfhab.model.fields.EntitatFields;
-import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.FuncionariLlocFields;
 import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.model.fields.LlocRolFields;
@@ -92,6 +94,17 @@ public class LlocAdminController extends LlocController {
 
 	protected RolsacPlugin rolsacPlugin = null;
 
+	private void setUnitatRefListSelects(String language) {
+		Select<?>[] selects;
+		if (language == "es") {
+			selects = new Select<?>[] { UnitatFields.CODI.select, UnitatFields.DENOMINACIO.select };
+		} else {
+			selects = new Select<?>[] { UnitatFields.CODI.select, UnitatFields.COOFICIAL.select };
+		}
+		log.info("setUnitatRefListSelects: " + selects.length + " language: " + language);
+		unitatRefList.setSelects(selects);
+	}
+
 	@Override
 	public String getTileForm() {
 		return "llocFormAdmin";
@@ -105,6 +118,10 @@ public class LlocAdminController extends LlocController {
 	@Override
 	public LlocFilterForm getLlocFilterForm(Integer pagina, ModelAndView mav, HttpServletRequest request)
 			throws I18NException {
+		LoginInfo loginInfo = LoginInfo.getInstance();
+		String lang = LocaleContextHolder.getLocale().getLanguage();
+
+		setUnitatRefListSelects(lang);
 
 		LlocFilterForm llocFilterForm = super.getLlocFilterForm(pagina, mav, request);
 
@@ -143,7 +160,7 @@ public class LlocAdminController extends LlocController {
 				llocFilterForm.addAdditionalField(adfield2);
 			}
 		}
-		List<StringKeyValue> _unitatsTemp = getUnitatsByEntitatArrel(mav, LoginInfo.getInstance().getEntitatIDActual(),
+		List<StringKeyValue> _unitatsTemp = getUnitatsByEntitatArrel(mav, loginInfo.getEntitatIDActual(),
 				false);
 		Map<String, String> unitatsFiltreCerca = Utils.listToMap(_unitatsTemp);
 		unitatsFiltreCerca.put("", I18NUtils.tradueix("tots"));
@@ -163,8 +180,12 @@ public class LlocAdminController extends LlocController {
 	@Override
 	public LlocForm getLlocForm(LlocJPA _jpa, boolean __isView, HttpServletRequest request, ModelAndView mav)
 			throws I18NException {
+		LoginInfo loginInfo = LoginInfo.getInstance();
+		String lang = LocaleContextHolder.getLocale().getLanguage();
 
 		mav.addObject("isView", __isView);
+
+		setUnitatRefListSelects(lang);
 
 		LlocForm llocForm = super.getLlocForm(_jpa, __isView, request, mav);
 		LlocJPA lloc = llocForm.getLloc();
@@ -175,7 +196,7 @@ public class LlocAdminController extends LlocController {
 			mav.addObject("isNew", llocForm.isNou());
 
 			lloc.setDataCreacio(new Timestamp(System.currentTimeMillis()));
-			lloc.setEntitatID(LoginInfo.getInstance().getEntitatIDActual());
+			lloc.setEntitatID(loginInfo.getEntitatIDActual());
 
 			mav.addObject("historic", new ArrayList<HistoricLloc>());
 			List<StringKeyValue> unitatsEntitat = getReferenceListForUnitatID(request, mav, llocForm, null);
@@ -279,8 +300,10 @@ public class LlocAdminController extends LlocController {
 		mapFuncionari.clear();
 		mapRols.clear();
 
+		LoginInfo loginInfo = LoginInfo.getInstance();
+		String lang = LocaleContextHolder.getLocale().getLanguage();
 		HashMap<Long, Funcionari> llistaFuncionarisActius = llocLogicaEjb.getCurrentFuncionarisByLloc(null,
-				LoginInfo.getInstance().getEntitatIDActual());
+				loginInfo.getEntitatIDActual());
 
 		for (Lloc lloc : list) {
 
@@ -288,7 +311,7 @@ public class LlocAdminController extends LlocController {
 			final boolean donatdeBaixa = lloc.getDataBaixa() != null;
 
 			if (!llocsOcupats.contains(llocID)) {
-				if(!donatdeBaixa){
+				if (!donatdeBaixa) {
 					// Botó per assignar funcionari
 					filterForm.addAdditionalButtonByPK(llocID,
 							new AdditionalButton("fa fa-user-plus", "lloc.assignarfuncionari",
@@ -309,20 +332,21 @@ public class LlocAdminController extends LlocController {
 						"lloc.treurefuncionari", "/admin/funcionarilloc/treure/{0}", AdditionalButtonStyle.INFO));
 			}
 
-			if(donatdeBaixa){
+			if (donatdeBaixa) {
 				// Botó per donar d'alta un lloc de feina
 				String jsOpenModalDonarAlta = "javascript:createDivModal(traduccions.type['titol.lloc.donaralta.continuar'], traduccions.type['missatge.lloc.donaralta.continuar'], '"
-					+ request.getContextPath() + getContextWeb() + "/" + llocID + "/donaralta/"
-					+ "', '', 'lloc-donaralta-id', 'fa-laptop-medical');\r\n" + //
-					"        $('#lloc-donaralta-id').modal('show');\r\n";
-				filterForm.addAdditionalButtonByPK(llocID, new AdditionalButton("fas fa-laptop-medical", "lloc.donaralta",
-						jsOpenModalDonarAlta, AdditionalButtonStyle.DANGER));
-			}else{
+						+ request.getContextPath() + getContextWeb() + "/" + llocID + "/donaralta/"
+						+ "', '', 'lloc-donaralta-id', 'fa-laptop-medical');\r\n" + //
+						"        $('#lloc-donaralta-id').modal('show');\r\n";
+				filterForm.addAdditionalButtonByPK(llocID,
+						new AdditionalButton("fas fa-laptop-medical", "lloc.donaralta",
+								jsOpenModalDonarAlta, AdditionalButtonStyle.DANGER));
+			} else {
 				// Botó per donar de baixa un lloc de feina
 				String jsOpenModalDonarBaixa = "javascript:createDivModal(traduccions.type['titol.lloc.donarbaixa.continuar'], traduccions.type['missatge.lloc.donarbaixa.continuar'], '"
-					+ request.getContextPath() + getContextWeb() + "/" + llocID + "/delete/"
-					+ "', '', 'lloc-donarbaixa-id', 'fa-laptop-code');\r\n" + //
-					"        $('#lloc-donarbaixa-id').modal('show');\r\n";
+						+ request.getContextPath() + getContextWeb() + "/" + llocID + "/delete/"
+						+ "', '', 'lloc-donarbaixa-id', 'fa-laptop-code');\r\n" + //
+						"        $('#lloc-donarbaixa-id').modal('show');\r\n";
 				filterForm.addAdditionalButtonByPK(llocID, new AdditionalButton("fas fa-laptop-code", "lloc.donarbaixa",
 						jsOpenModalDonarBaixa, AdditionalButtonStyle.DANGER));
 			}
@@ -351,9 +375,13 @@ public class LlocAdminController extends LlocController {
 			Unitat unitatAct = unitatEjb.findByPrimaryKey(lloc.getUnitatID());
 			if (unitatAct != null) {
 				List<Unitat> unitatSuperior = unitatEjb.select(UnitatFields.CODI.equal(unitatAct.getSuperior()));
-				if (unitatSuperior != null && unitatSuperior.size() > 0)
+				if (unitatSuperior != null && unitatSuperior.size() > 0) {
 					mapUnitatSuperior.put(llocID,
-							unitatSuperior.get(0).getCodi() + " " + unitatSuperior.get(0).getDenominacio());
+							unitatSuperior.get(0).getCodi() + " "
+									+ (lang == "es" ? unitatSuperior.get(0).getDenominacio()
+											: unitatSuperior.get(0).getCooficial()));
+
+				}
 
 			}
 
@@ -509,6 +537,8 @@ public class LlocAdminController extends LlocController {
 			ModelAndView mav, long entitatId, boolean setEntitatsToTheModel) throws I18NException {
 		List<StringKeyValue> unitatsResult = new ArrayList<>();
 
+		String lang = LocaleContextHolder.getLocale().getLanguage();
+
 		Entitat entitat = entitatEjb.findByPrimaryKey(entitatId);
 		if (entitat == null) {
 			log.info("No hi ha entitat associada al lloc de feina");
@@ -525,7 +555,7 @@ public class LlocAdminController extends LlocController {
 		for (Unitat u : referenciades) {
 			// System.out.println("Unitat referenciada: " + u.getCodi());
 			unitatsResult.add(new StringKeyValue(String.valueOf(u.getUnitatID()),
-					u.getCodi() + " " + u.getCooficial() + " " + u.getDenominacio()));
+					u.getCodi() + " " + (lang == "es" ? u.getDenominacio() : u.getCooficial())));
 		}
 		mav.addObject("unitats", referenciades);
 		if (setEntitatsToTheModel) {

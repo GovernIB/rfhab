@@ -534,7 +534,7 @@ public class FuncionariAdminController extends FuncionariController {
 			if (lloc != null) {
 				mapFuncionari.put(funcionariID, lloc.getCodiLloc());
 				mapFuncionari2.put(funcionariID, unitatEJB.findByPrimaryKey(lloc.getUnitatID()).getCodi());
-				mapFuncionari3.put(funcionariID, ((lloc.getPersonalOamr() > 0) ? "<i class=\"fa fa-check\"></i>"
+				mapFuncionari3.put(funcionariID, ((lloc.getPersonalOamr() > 1) ? "<i class=\"fa fa-check\"></i>"
 						: "<i class=\"fa fa-times\"></i>"));
 			} else {
 				mapFuncionari.put(funcionariID, "");

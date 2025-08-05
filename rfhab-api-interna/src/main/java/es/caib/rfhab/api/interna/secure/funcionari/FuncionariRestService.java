@@ -283,7 +283,7 @@ public class FuncionariRestService extends RestUtils {
 			Boolean isOamr = false;
 			for (Lloc llocItem : llocsItems){
 				log.info("Lloc ocupat: " + llocItem.getCodiLloc() + " - Personal OAMR: "  + llocItem.getPersonalOamr() + " - Unitat: " + llocItem.getUnitatID());
-				isOamr = (llocItem.getPersonalOamr() > 0);
+				isOamr = (llocItem.getPersonalOamr() > 1);
 			}
 
 			// TODO si retorna més d'un lloc, pensar si retornar ERROR

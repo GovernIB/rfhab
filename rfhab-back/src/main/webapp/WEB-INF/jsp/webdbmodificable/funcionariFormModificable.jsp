@@ -39,11 +39,14 @@
 									<td>${lloc.llocID}</td>
 									<td>${lloc.codiLloc}</td>
 									<td>${lloc.nom}</td>
-									<td align="center"><c:if test="${lloc.personalOamr > 0}">
+									<td align="center">
+										<c:if test="${lloc.personalOamr > 1}">
 											<i class="fa fa-check" aria-hidden="true"></i>
-										</c:if> <c:if test="${lloc.personalOamr < 1}">
+										</c:if> 
+										<c:if test="${lloc.personalOamr < 2}">
 											<i class="fa fa-times" aria-hidden="true"></i>
-										</c:if></td>
+										</c:if>
+									</td>
 									<td><fmt:formatDate pattern="${gen:getDateTimePattern()}"
 											value="${lloc.dataBaixa}" /></td>
 									<td><a class="btn btn-primary btn-sm"
@@ -182,11 +185,14 @@
 									<td>${lloc.llocID}</td>
 									<td>${lloc.codiLloc}</td>
 									<td>${lloc.nom}</td>
-									<td align="center"><c:if test="${lloc.personalOamr > 0}">
+									<td align="center">
+										<c:if test="${lloc.personalOamr > 1}">
 											<i class="fa fa-check" aria-hidden="true"></i>
-										</c:if> <c:if test="${lloc.personalOamr < 1}">
+										</c:if> 
+										<c:if test="${lloc.personalOamr < 2}">
 											<i class="fa fa-times" aria-hidden="true"></i>
-										</c:if></td>
+										</c:if>
+									</td>
 									<td><fmt:formatDate pattern="${gen:getDateTimePattern()}"
 											value="${lloc.dataInici}" /></td>
 									<td><fmt:formatDate pattern="${gen:getDateTimePattern()}"

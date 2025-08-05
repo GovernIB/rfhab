@@ -2729,7 +2729,7 @@
           "showInWebList": true,
           "showInReferenceList": false,
           "transientField": false,
-          "minAllowedValue": "0,1",
+          "minAllowedValue": "0,1, 2",
           "filter": true,
           "orderBy": 0,
           "groupBy": false,

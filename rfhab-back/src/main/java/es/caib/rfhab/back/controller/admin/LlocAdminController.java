@@ -70,6 +70,8 @@ public class LlocAdminController extends LlocController {
 
 	protected final Logger log = Logger.getLogger(getClass());
 
+	private static final String TIPUS_PERSONAL_OAMR = "0";
+
 	@EJB(mappedName = HistoricLlocLogicaService.JNDI_NAME)
 	protected HistoricLlocLogicaService historicLlocEjb;
 
@@ -244,11 +246,6 @@ public class LlocAdminController extends LlocController {
 		}
 
 		mav.addObject("lloc", lloc);
-		if (lloc != null && lloc.getPersonalOamr() > 0) {
-			mav.addObject("isOamr", 1);
-		} else {
-			mav.addObject("isOamr", 0);
-		}
 
 		llocForm.addAdditionalButton(new AdditionalButton(" fas fa-long-arrow-alt-left", "tornar",
 				getContextWeb() + "/tornar", AdditionalButtonStyle.SECONDARY));
@@ -366,9 +363,16 @@ public class LlocAdminController extends LlocController {
 		}
 	}
 
+	@Override
 	public void preValidate(HttpServletRequest request, LlocForm llocForm, BindingResult result) throws I18NException {
 		LlocJPA lloc = llocForm.getLloc();
 		lloc.setEntitatID(Long.parseLong(request.getParameter("lloc.entitatID")));
+
+		if (String.valueOf(lloc.getPersonalOamr()).equals(TIPUS_PERSONAL_OAMR)) {
+			result.rejectValue(LlocFields.PERSONALOAMR.codeLabel, "error.required",
+					new Object[] { "Número" },
+					"El camp " + I18NUtils.tradueix(LlocFields.PERSONALOAMR.codeLabel) + " és obligatori");
+		}
 	}
 
 	@Override
@@ -399,8 +403,9 @@ public class LlocAdminController extends LlocController {
 	public List<StringKeyValue> getReferenceListForPersonalOamr(HttpServletRequest request, ModelAndView mav,
 			Where where) throws I18NException {
 		List<StringKeyValue> __tmp = new java.util.ArrayList<StringKeyValue>();
-		__tmp.add(new StringKeyValue("0", "No"));
-		__tmp.add(new StringKeyValue("1", "Sí"));
+		__tmp.add(new StringKeyValue(TIPUS_PERSONAL_OAMR, I18NUtils.tradueix("personaloamr.0")));
+		__tmp.add(new StringKeyValue("1", "No"));
+		__tmp.add(new StringKeyValue("2", "Sí"));
 		return __tmp;
 	}
 

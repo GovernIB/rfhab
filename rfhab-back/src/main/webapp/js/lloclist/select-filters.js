@@ -28,11 +28,11 @@ function replaceOamrFilter() {
       text: "Tots",
     },
     {
-      value: "1",
+      value: "2",
       text: "Si",
     },
     {
-      value: "0",
+      value: "1",
       text: "No",
     },
   ];
@@ -178,11 +178,11 @@ function addOamrSelectFilter(filterCookieName) {
       text: "Tots",
     },
     {
-      value: "1",
+      value: "2",
       text: "Si",
     },
     {
-      value: "0",
+      value: "1",
       text: "No",
     },
   ];

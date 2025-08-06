@@ -18,6 +18,7 @@ import org.fundaciobit.genapp.common.query.Select;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.query.selectcolumn.Select6Values;
 import org.fundaciobit.genapp.common.utils.Utils;
+import org.fundaciobit.genapp.common.web.HtmlUtils;
 import org.fundaciobit.genapp.common.web.form.AdditionalButton;
 import org.fundaciobit.genapp.common.web.form.AdditionalButtonStyle;
 import org.fundaciobit.genapp.common.web.form.AdditionalField;
@@ -239,6 +240,18 @@ public class LlocAdminController extends LlocController {
 					+ " " + x.getValue4() + " " + x.getValue5() + " " + x.getValue6()));
 
 			mav.addObject("historic", historic);
+
+			String jsOpenModalGuardar = "javascript:createDivModal('"
+					+ I18NUtils.tradueix("lloc.modificar.guardar.titol") + "', '"
+					+ I18NUtils.tradueix("lloc.modificar.guardar.missatge")
+					+ "', '', 'llocForm', 'lloc-save-modal-id', 'fa-save');\r\n" +
+					"        $('#lloc-save-modal-id').modal('show');\r\n";
+			AdditionalButton guardarButton = new AdditionalButton("",
+					"genapp.save",
+					jsOpenModalGuardar,
+					AdditionalButtonStyle.PRIMARY);
+			llocForm.addAdditionalButton(guardarButton);
+			llocForm.setSaveButtonVisible(false);
 
 			// botons donar de baixa/alta
 			if (lloc.getDataBaixa() == null) {
@@ -601,7 +614,13 @@ public class LlocAdminController extends LlocController {
 
 	@Override
 	public String getRedirectWhenModified(HttpServletRequest request, LlocForm llocForm, Throwable __e) {
-		return UrlUtils.getRefererRedirect(request, super.getRedirectWhenModified(request, llocForm, __e));
+		LlocJPA lloc = llocForm.getLloc();
+		String msg = I18NUtils.tradueix("lloc.modificar.success",
+				new String[] { I18NUtils.tradueix(getEntityNameCode()),
+						I18NUtils.tradueix("lloc.codiLloc").toLowerCase(), lloc.getCodiLloc() });
+		HtmlUtils.deleteMessages(request);
+		HtmlUtils.saveMessageSuccess(request, msg);
+		return "redirect:" + getContextWeb() + "/" + lloc.getLlocID() + "/edit/";
 	}
 
 	@Override

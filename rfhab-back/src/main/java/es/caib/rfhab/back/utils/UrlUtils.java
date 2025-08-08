@@ -5,6 +5,7 @@ import java.net.URL;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import es.caib.rfhab.commons.utils.Constants;
 
@@ -21,10 +22,13 @@ public class UrlUtils {
         HttpSession session = request.getSession();
         Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
         session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+        String actualReferer = request.getHeader("referer") != null ? request.getHeader("referer") : "";
         String redirectUrl = "";
         try {
+            // Comprovar si no tenc referer o si el referer és igual a la pàgina on estic
             if (refererUrl == null || refererUrl.toString().isEmpty() || refererUrl.toString().equals("/")
-                    || new URL(refererUrl.toString()).getPath().isEmpty()) {
+                    || new URL(refererUrl.toString()).getPath().isEmpty()
+                    || StringUtils.strip(refererUrl.toString(), "/").equals(StringUtils.strip(actualReferer, "/"))) {
                 redirectUrl = defaultRedirect;
             }
         } catch (MalformedURLException e) {
@@ -34,7 +38,7 @@ public class UrlUtils {
         if (redirectUrl.isEmpty()) {
             redirectUrl = "redirect:" + refererUrl;
         }
-        
+
         log.info("Redirigint cap a " + redirectUrl);
         return redirectUrl;
     }

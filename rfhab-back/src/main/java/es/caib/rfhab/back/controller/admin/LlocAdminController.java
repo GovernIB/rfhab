@@ -483,12 +483,12 @@ public class LlocAdminController extends LlocController {
 				? request.getParameter("numeroCai")
 				: "";
 
-		llocLogicaEjb.donarDeAltaAndHistory(llocID, numeroCai,
+		Lloc llocActualitzat = llocLogicaEjb.donarDeAltaAndHistory(llocID, numeroCai,
 				LoginInfo.getInstance().getUsuariPersona().getUsuariID());
 
 		// createMessageSuccess(request, "success.modification", llocID);//
 		// funcionari.donaralta.exit
-		return getRedirectWhenModified(request, null, null);
+		return getRedirectWhenModified(request, new LlocForm(new LlocJPA(llocActualitzat), false), null);
 	}
 
 	/**
@@ -665,6 +665,7 @@ public class LlocAdminController extends LlocController {
 	@Override
 	public String getRedirectWhenModified(HttpServletRequest request, LlocForm llocForm, Throwable __e) {
 		if (llocForm == null || llocForm.getLloc() == null) {
+			log.info("LlocForm o LlocJPA no disponibles per redirigir després de la modificació.");
 			return UrlUtils.getRefererRedirect(request, super.getRedirectWhenModified(request, llocForm, __e));
 		}
 		LlocJPA lloc = llocForm.getLloc();

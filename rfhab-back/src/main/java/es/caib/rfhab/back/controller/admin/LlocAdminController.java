@@ -23,9 +23,11 @@ import org.fundaciobit.genapp.common.web.form.AdditionalButton;
 import org.fundaciobit.genapp.common.web.form.AdditionalButtonStyle;
 import org.fundaciobit.genapp.common.web.form.AdditionalField;
 import org.fundaciobit.genapp.common.web.i18n.I18NUtils;
+import org.fundaciobit.genapp.common.web.validation.ValidationWebUtils;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -193,6 +195,7 @@ public class LlocAdminController extends LlocController {
 
 		llocForm.setDeleteButtonVisible(false);
 
+		final boolean donatdeBaixa = lloc.getDataBaixa() != null || lloc.getDataalta() == null;
 		if (llocForm.isNou()) {
 			mav.addObject("isNew", llocForm.isNou());
 
@@ -206,6 +209,20 @@ public class LlocAdminController extends LlocController {
 				lloc.setUnitatID(Long.parseLong(unitatsEntitat.get(0).key));
 			}
 			log.info("Unitat ID seleccionada: " + lloc.getUnitatID());
+
+			// botó donar d'alta lloc
+			String jsOpenModalDonarAlta = "javascript:createDivModal(traduccions.type['titol.lloc.donaralta.continuar'], '"
+					+ I18NUtils.tradueix("lloc.donaralta.missatgecontinuar", lloc.getCodiLloc()) + "', '"
+					+ "', 'lloc-save-modal-id', 'lloc-donaralta-id', 'fa-laptop-medical', '"
+					+ request.getContextPath() + getContextWeb() + "/newialta/"
+					+ "');\r\n" + //
+					"        $('#lloc-donaralta-id').modal('show');\r\n";
+			AdditionalButton donarDeAltaButton = new AdditionalButton("fas fa-laptop-medical",
+					"lloc.donaralta",
+					jsOpenModalDonarAlta,
+					AdditionalButtonStyle.SUCCESS);
+			llocForm.addAdditionalButton(donarDeAltaButton);
+			llocForm.addReadOnlyField(LlocFields.DATAALTA);
 		} else {
 			// Pipella Funcionari assignat- Obtenir tots els funcionaris relacionats amb el
 			// lloc (actuals, sense data fi)
@@ -254,9 +271,11 @@ public class LlocAdminController extends LlocController {
 			llocForm.setSaveButtonVisible(false);
 
 			// botons donar de baixa/alta
-			if (lloc.getDataBaixa() == null) {
+			if (!donatdeBaixa) {
+				// Lloc donat d'alta
 				// botó donar de baixa lloc
-				String jsOpenModalDonarBaixa = "javascript:createDivModal(traduccions.type['titol.lloc.donarbaixa.continuar'], traduccions.type['missatge.lloc.donarbaixa.continuar'], '"
+				String jsOpenModalDonarBaixa = "javascript:createDivModal(traduccions.type['titol.lloc.donarbaixa.continuar'], '"
+						+ I18NUtils.tradueix("lloc.donarbaixa.missatgecontinuar", lloc.getCodiLloc()) + "', '"
 						+ request.getContextPath() + getContextWeb() + "/" + llocID + "/delete/"
 						+ "', '', 'lloc-donarbaixa-id', 'fa-laptop-code');\r\n" + //
 						"        $('#lloc-donarbaixa-id').modal('show');\r\n";
@@ -266,25 +285,30 @@ public class LlocAdminController extends LlocController {
 						AdditionalButtonStyle.DANGER);
 				llocForm.addAdditionalButton(donarDeBaixaButton);
 			} else {
+				// Lloc donat de baixa
+				llocForm.addReadOnlyField(LlocFields.DATAALTA);
+
 				// botó donar d'alta lloc
-				String jsOpenModalDonarAlta = "javascript:createDivModal(traduccions.type['titol.lloc.donaralta.continuar'], traduccions.type['missatge.lloc.donaralta.continuar'], '"
+				String jsOpenModalDonarAlta = "javascript:createDivModal(traduccions.type['titol.lloc.donaralta.continuar'], '"
+						+ I18NUtils.tradueix("lloc.donaralta.missatgecontinuar", lloc.getCodiLloc()) + "', '"
 						+ request.getContextPath() + getContextWeb() + "/" + llocID + "/donaralta/"
 						+ "', '', 'lloc-donaralta-id', 'fa-laptop-medical');\r\n" + //
 						"        $('#lloc-donaralta-id').modal('show');\r\n";
 				AdditionalButton donarDeAltaButton = new AdditionalButton("fas fa-laptop-medical",
 						"lloc.donaralta",
 						jsOpenModalDonarAlta,
-						AdditionalButtonStyle.DANGER);
+						AdditionalButtonStyle.SUCCESS);
 				llocForm.addAdditionalButton(donarDeAltaButton);
 			}
 		}
 
+		mav.addObject("donatdeBaixa", donatdeBaixa);
 		mav.addObject("lloc", lloc);
 
 		llocForm.addAdditionalButton(new AdditionalButton(" fas fa-long-arrow-alt-left", "tornar",
 				getContextWeb() + "/tornar", AdditionalButtonStyle.SECONDARY));
 
-		llocForm.addReadOnlyField(ENTITATID);
+		llocForm.addReadOnlyField(LlocFields.ENTITATID);
 		llocForm.addHiddenField(LlocFields.DATABAIXA);
 		llocForm.addHiddenField(LlocFields.DATACREACIO);
 
@@ -321,7 +345,7 @@ public class LlocAdminController extends LlocController {
 		for (Lloc lloc : list) {
 
 			final Long llocID = lloc.getLlocID();
-			final boolean donatdeBaixa = lloc.getDataBaixa() != null;
+			final boolean donatdeBaixa = lloc.getDataBaixa() != null || lloc.getDataalta() == null;
 
 			if (!llocsOcupats.contains(llocID)) {
 				if (!donatdeBaixa) {
@@ -343,25 +367,6 @@ public class LlocAdminController extends LlocController {
 				// Botó per desassignar funcionari
 				filterForm.addAdditionalButtonByPK(llocID, new AdditionalButton("fa fa-user-times",
 						"lloc.treurefuncionari", "/admin/funcionarilloc/treure/{0}", AdditionalButtonStyle.INFO));
-			}
-
-			if (donatdeBaixa) {
-				// Botó per donar d'alta un lloc de feina
-				String jsOpenModalDonarAlta = "javascript:createDivModal(traduccions.type['titol.lloc.donaralta.continuar'], traduccions.type['missatge.lloc.donaralta.continuar'], '"
-						+ request.getContextPath() + getContextWeb() + "/" + llocID + "/donaralta/"
-						+ "', '', 'lloc-donaralta-id', 'fa-laptop-medical');\r\n" + //
-						"        $('#lloc-donaralta-id').modal('show');\r\n";
-				filterForm.addAdditionalButtonByPK(llocID,
-						new AdditionalButton("fas fa-laptop-medical", "lloc.donaralta",
-								jsOpenModalDonarAlta, AdditionalButtonStyle.DANGER));
-			} else {
-				// Botó per donar de baixa un lloc de feina
-				String jsOpenModalDonarBaixa = "javascript:createDivModal(traduccions.type['titol.lloc.donarbaixa.continuar'], traduccions.type['missatge.lloc.donarbaixa.continuar'], '"
-						+ request.getContextPath() + getContextWeb() + "/" + llocID + "/delete/"
-						+ "', '', 'lloc-donarbaixa-id', 'fa-laptop-code');\r\n" + //
-						"        $('#lloc-donarbaixa-id').modal('show');\r\n";
-				filterForm.addAdditionalButtonByPK(llocID, new AdditionalButton("fas fa-laptop-code", "lloc.donarbaixa",
-						jsOpenModalDonarBaixa, AdditionalButtonStyle.DANGER));
 			}
 
 			// Comprobam els rols assignats a un lloc de feina
@@ -399,8 +404,11 @@ public class LlocAdminController extends LlocController {
 			}
 
 			// Afegir el botó d'assignar rols
-			filterForm.addAdditionalButtonByPK(llocID, new AdditionalButton("far fa-check-square", "rol.assignarrol",
-					LlocRolAdminController.CONTEXTWEB + "/assignar/" + llocID, AdditionalButtonStyle.INFO));
+			if (!donatdeBaixa) {
+				filterForm.addAdditionalButtonByPK(llocID,
+						new AdditionalButton("far fa-check-square", "rol.assignarrol",
+								LlocRolAdminController.CONTEXTWEB + "/assignar/" + llocID, AdditionalButtonStyle.INFO));
+			}
 		}
 	}
 
@@ -463,7 +471,8 @@ public class LlocAdminController extends LlocController {
 		llocLogicaEjb.donarDeBaixaLlocAndHistory(llocId, numeroCai,
 				LoginInfo.getInstance().getUsuariPersona().getUsuariID());
 
-		createMessageSuccess(request, "success.modification", llocId);// funcionari.donaralta.exit
+		// createMessageSuccess(request, "success.modification", llocId);//
+		// funcionari.donaralta.exit
 	}
 
 	@RequestMapping(value = "/{llocID}/donaralta")
@@ -477,8 +486,49 @@ public class LlocAdminController extends LlocController {
 		llocLogicaEjb.donarDeAltaAndHistory(llocID, numeroCai,
 				LoginInfo.getInstance().getUsuariPersona().getUsuariID());
 
-		createMessageSuccess(request, "success.modification", llocID);// funcionari.donaralta.exit
+		// createMessageSuccess(request, "success.modification", llocID);//
+		// funcionari.donaralta.exit
 		return getRedirectWhenModified(request, null, null);
+	}
+
+	/**
+	 * Guarda un nou Lloc i seguidament el dona d'alta.
+	 * redirigint-lo a la pantalla de modificació.
+	 */
+	@RequestMapping(value = "/newialta", method = RequestMethod.POST)
+	public String crearLlocIdonarDalta(@ModelAttribute LlocForm llocForm,
+			BindingResult result, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		if (!isActiveFormNew()) {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return null;
+		}
+
+		LlocJPA lloc = llocForm.getLloc();
+
+		try {
+			preValidate(request, llocForm, result);
+			getWebValidator().validate(llocForm, result);
+			postValidate(request, llocForm, result);
+
+			if (result.hasErrors()) {
+				result.reject("error.form");
+				return getTileForm();
+			} else {
+				lloc = create(request, lloc);
+				createMessageSuccess(request, "success.creation", lloc.getLlocID());
+				llocForm.setLloc(lloc);
+				return donarDeAlta(lloc.getLlocID(), request, response);
+			}
+		} catch (Throwable __e) {
+			if (__e instanceof I18NValidationException) {
+				ValidationWebUtils.addFieldErrorsToBindingResult(result, (I18NValidationException) __e);
+				return getTileForm();
+			}
+			String msg = createMessageError(request, "error.creation", null, __e);
+			log.error(msg, __e);
+			return getTileForm();
+		}
 	}
 
 	@RequestMapping(value = "/tornar", method = RequestMethod.GET)
@@ -614,6 +664,9 @@ public class LlocAdminController extends LlocController {
 
 	@Override
 	public String getRedirectWhenModified(HttpServletRequest request, LlocForm llocForm, Throwable __e) {
+		if (llocForm == null || llocForm.getLloc() == null) {
+			return UrlUtils.getRefererRedirect(request, super.getRedirectWhenModified(request, llocForm, __e));
+		}
 		LlocJPA lloc = llocForm.getLloc();
 		String msg = I18NUtils.tradueix("lloc.modificar.success",
 				new String[] { I18NUtils.tradueix(getEntityNameCode()),
@@ -625,7 +678,19 @@ public class LlocAdminController extends LlocController {
 
 	@Override
 	public String getRedirectWhenDelete(HttpServletRequest request, java.lang.Long llocID, Throwable __e) {
-		return UrlUtils.getRefererRedirect(request, super.getRedirectWhenDelete(request, llocID, __e));
+		if (llocID != null) {
+			LlocJPA lloc = llocLogicaEjb.findByPrimaryKey(llocID);
+			if (lloc == null) {
+				String __msg = createMessageError(request, "error.notfound", llocID);
+				log.error(__msg);
+			} else {
+				String msg = I18NUtils.tradueix("lloc.donarbaixa.exit",
+						new String[] { I18NUtils.tradueix(getEntityNameCode()), lloc.getCodiLloc() });
+				HtmlUtils.deleteMessages(request);
+				HtmlUtils.saveMessageSuccess(request, msg);
+			}
+		}
+		return "redirect:" + getContextWeb() + "/" + llocID + "/edit/";
 	}
 
 	@Override

@@ -385,7 +385,7 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 		}
 
 		String llocCodi = lloc.getCodiLloc();
-		if (lloc.getDataBaixa() != null) {
+		if (lloc.getDataBaixa() != null || lloc.getDataalta() == null) {
 			throw new I18NValidationException(new I18NFieldError(FuncionariFields.DATABAIXA,
 					new I18NTranslation("funcionarilloc.error.lloc.baixa", llocCodi)));
 		}

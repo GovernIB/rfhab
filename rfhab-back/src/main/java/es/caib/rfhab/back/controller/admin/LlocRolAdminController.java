@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.fundaciobit.genapp.common.i18n.I18NException;
+import org.fundaciobit.genapp.common.i18n.I18NFieldError;
+import org.fundaciobit.genapp.common.i18n.I18NTranslation;
 import org.fundaciobit.genapp.common.i18n.I18NValidationException;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.web.form.AdditionalButton;
@@ -35,8 +37,10 @@ import es.caib.rfhab.back.security.LoginInfo;
 import es.caib.rfhab.ejb.LlocRolService;
 import es.caib.rfhab.ejb.RolService;
 import es.caib.rfhab.model.entity.LlocRol;
+import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.LlocRolFields;
 import es.caib.rfhab.model.fields.RolFields;
+import es.caib.rfhab.persistence.LlocJPA;
 import es.caib.rfhab.persistence.LlocRolJPA;
 
 @Controller
@@ -181,6 +185,14 @@ public class LlocRolAdminController extends LlocRolController {
 			return null;
 		}
 
+		LlocRolJPA llocRolActual = llocRolForm.getLlocRol();
+		LlocJPA lloc = llocRolActual.getLloc();
+		String llocCodi = lloc.getCodiLloc();
+		if (lloc.getDataBaixa() != null || lloc.getDataalta() == null) {
+			throw new I18NValidationException(new I18NFieldError(FuncionariFields.DATABAIXA,
+					new I18NTranslation("llocrol.error.lloc.baixa", llocCodi)));
+		}
+
 		try {
 
 			log.info("------ START Crear LlocRolPost ----");
@@ -198,14 +210,14 @@ public class LlocRolAdminController extends LlocRolController {
 
 			// Obtener los roles de un funcionario
 			List<LlocRol> anticsRols = llocRolEjb
-					.select(LlocRolFields.LLOCID.equal(llocRolForm.getLlocRol().getLlocID()));
+					.select(LlocRolFields.LLOCID.equal(llocRolActual.getLlocID()));
 
 			// Crear los nuevos roles
 			for (Long rolId : rolsMarcats) {
 				LlocRolJPA llocRol = new LlocRolJPA();
-				llocRol.setLlocID(llocRolForm.getLlocRol().getLlocID());
+				llocRol.setLlocID(llocRolActual.getLlocID());
 				llocRol.setRolID(rolId);
-				llocRol.setDataCreacio(llocRolForm.getLlocRol().getDataCreacio());
+				llocRol.setDataCreacio(llocRolActual.getDataCreacio());
 				llocRol = create(request, llocRol);
 				llocRolForm.setLlocRol(llocRol);
 			}

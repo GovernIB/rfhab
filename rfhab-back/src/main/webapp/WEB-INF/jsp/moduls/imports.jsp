@@ -140,7 +140,7 @@
         }
     }
 
-    function createDivModal(tituloDialog, msgDialog, url, formName, modalId='myModal', titolIcona='fa-trash') {
+    function createDivModal(tituloDialog, msgDialog, url, formName, modalId='myModal', titolIcona='fa-trash', urlFormAction='') {
         $('body')
                 .append('<div id="' + modalId + '" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'
                         + '<div class="modal-dialog" role="document">'
@@ -160,10 +160,10 @@
                         + traduccions.type['boto.cancelar']
                         + '</button>'
                         + '<button class="btn btn-danger" type="button" onclick="'
-                        + (formName ? ('submitTo(\'' + formName + '\',') : 'goTo(')
+                        + (formName ? ('submitTo(\'' + formName + '\',\'' + urlFormAction + '\')') : 'goTo('
                         + '\''
                         + url
-                        + '\')">'
+                        + '\')') + '">'
                         + traduccions.type['boto.continuar'] + '</button>' + '</div>' + '</div>' + '</div>' + '</div>');
     }
 
@@ -178,8 +178,6 @@
             "missatge.funcionari.donaralta.continuar" : "<fmt:message key="funcionari.donaralta.missatgecontinuar"/>",
             "titol.funcionari.donarbaixa.continuar" : "<fmt:message key="funcionari.donarbaixa"/>",
             "titol.funcionari.donaralta.continuar" : "<fmt:message key="funcionari.donaralta"/>",
-            "missatge.lloc.donarbaixa.continuar" : "<fmt:message key="lloc.donarbaixa.missatgecontinuar"/>",
-            "missatge.lloc.donaralta.continuar" : "<fmt:message key="lloc.donaralta.missatgecontinuar"/>",
             "titol.lloc.donarbaixa.continuar" : "<fmt:message key="lloc.donarbaixa"/>",
             "titol.lloc.donaralta.continuar" : "<fmt:message key="lloc.donaralta"/>"
         }

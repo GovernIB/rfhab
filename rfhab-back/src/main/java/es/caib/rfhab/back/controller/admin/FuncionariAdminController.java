@@ -184,7 +184,7 @@ public class FuncionariAdminController extends FuncionariController {
 				AdditionalButton donarDeAltaButton = new AdditionalButton("fas fa-user-plus",
 						"funcionari.donaralta",
 						jsOpenModalDonarAlta,
-						AdditionalButtonStyle.DANGER);
+						AdditionalButtonStyle.SUCCESS);
 				funcionariForm.addAdditionalButton(donarDeAltaButton);
 			}
 		}

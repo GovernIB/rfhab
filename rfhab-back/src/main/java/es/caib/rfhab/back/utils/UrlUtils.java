@@ -15,7 +15,7 @@ import es.caib.rfhab.commons.utils.Constants;
  */
 public class UrlUtils {
 
-    protected static final Logger log = Logger.getLogger(Utils.class);
+    protected static final Logger log = Logger.getLogger(UrlUtils.class);
 
     public static String getRefererRedirect(HttpServletRequest request, String defaultRedirect) {
         HttpSession session = request.getSession();

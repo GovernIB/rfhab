@@ -359,10 +359,12 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 		historic.setLlocID(llocID);
 		historic.setNumeroCai(numeroCai);
 		historic.setUsuariID(usuariId);
-		historicLlocLogicaEjb.create(historic, "Lloc de feina " + lloc.getCodiLloc() + " donat d'alta de nou");
+		historicLlocLogicaEjb.create(historic, "Lloc de feina " + lloc.getCodiLloc() + " donat d'alta"
+				+ (lloc.getDataalta() != null ? " de nou" : ""));
 
 		// el donam de baixa
 		lloc.setDataBaixa(null);
+		lloc.setDataalta(new Timestamp(System.currentTimeMillis()));
 		return update(lloc);
 	}
 }

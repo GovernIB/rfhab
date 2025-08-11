@@ -376,15 +376,21 @@ public class LlocAdminController extends LlocController {
 				List<Rol> rolsLloc = llocLogicaEjb.getRolsByLlocID(llocID);
 				String rolsLlocStr = "";
 				for (Rol rol : rolsLloc) {
-					Long llocRolID = llocRolLogicaEjb.getLlocRolIDByLlocAndRol(llocID, rol.getRolID());
-					String urlEsborrar = request.getContextPath() + LlocRolAdminController.CONTEXTWEB + "/" + llocRolID
-							+ "/delete";
-					String botoEsborrarTitle = I18NUtils.tradueix("lloc.habilitacio.botoEsborrar");
-					String botoEsborrar = "<a style='margin-left:5px;' href='" + urlEsborrar + "' title='"
-							+ botoEsborrarTitle
-							+ "' alt='" + botoEsborrarTitle
-							+ "'><i class='fas fa-times' style='color:white;'></i></a>";
-					rolsLlocStr += "<span class='badge badge-secondary'>" + rol.getCodi() + botoEsborrar + "</span>";
+					// Long llocRolID = llocRolLogicaEjb.getLlocRolIDByLlocAndRol(llocID,
+					// rol.getRolID());
+					// String urlEsborrar = request.getContextPath() +
+					// LlocRolAdminController.CONTEXTWEB + "/" + llocRolID
+					// + "/delete";
+					// String botoEsborrarTitle =
+					// I18NUtils.tradueix("lloc.habilitacio.botoEsborrar");
+					// String botoEsborrar = "<a style='margin-left:5px;' href='" + urlEsborrar + "'
+					// title='"
+					// + botoEsborrarTitle
+					// + "' alt='" + botoEsborrarTitle
+					// + "'><i class='fas fa-times' style='color:white;'></i></a>";
+					// rolsLlocStr += "<span class='badge badge-secondary'>" + rol.getCodi() +
+					// botoEsborrar + "</span>";
+					rolsLlocStr += "<span class='badge badge-secondary'>" + rol.getCodi() + "</span>";
 				}
 				mapRols.put(llocID, rolsLlocStr);
 			}
@@ -404,11 +410,12 @@ public class LlocAdminController extends LlocController {
 			}
 
 			// Afegir el botó d'assignar rols
-			if (!donatdeBaixa) {
-				filterForm.addAdditionalButtonByPK(llocID,
-						new AdditionalButton("far fa-check-square", "rol.assignarrol",
-								LlocRolAdminController.CONTEXTWEB + "/assignar/" + llocID, AdditionalButtonStyle.INFO));
-			}
+			// if (!donatdeBaixa) {
+			// filterForm.addAdditionalButtonByPK(llocID,
+			// new AdditionalButton("far fa-check-square", "rol.assignarrol",
+			// LlocRolAdminController.CONTEXTWEB + "/assignar/" + llocID,
+			// AdditionalButtonStyle.INFO));
+			// }
 		}
 	}
 

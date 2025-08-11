@@ -171,6 +171,7 @@ public class LlocAdminController extends LlocController {
 		log.info("unitatsFiltreCerca: " + unitatsFiltreCerca.size());
 		log.info(unitatsFiltreCerca);
 
+		llocFilterForm.setViewButtonVisible(true);
 		llocFilterForm.setDeleteButtonVisible(false);
 		llocFilterForm.setDeleteSelectedButtonVisible(false);
 		llocFilterForm.setVisibleMultipleSelection(false);
@@ -270,35 +271,37 @@ public class LlocAdminController extends LlocController {
 			llocForm.addAdditionalButton(guardarButton);
 			llocForm.setSaveButtonVisible(false);
 
-			// botons donar de baixa/alta
-			if (!donatdeBaixa) {
-				// Lloc donat d'alta
-				// botó donar de baixa lloc
-				String jsOpenModalDonarBaixa = "javascript:createDivModal(traduccions.type['titol.lloc.donarbaixa.continuar'], '"
-						+ I18NUtils.tradueix("lloc.donarbaixa.missatgecontinuar", lloc.getCodiLloc()) + "', '"
-						+ request.getContextPath() + getContextWeb() + "/" + llocID + "/delete/"
-						+ "', '', 'lloc-donarbaixa-id', 'fa-laptop-code');\r\n" + //
-						"        $('#lloc-donarbaixa-id').modal('show');\r\n";
-				AdditionalButton donarDeBaixaButton = new AdditionalButton("fas fa-laptop-code",
-						"lloc.donarbaixa",
-						jsOpenModalDonarBaixa,
-						AdditionalButtonStyle.DANGER);
-				llocForm.addAdditionalButton(donarDeBaixaButton);
-			} else {
-				// Lloc donat de baixa
-				llocForm.addReadOnlyField(LlocFields.DATAALTA);
+			// botons donar de baixa/alta (no els volem veure al mode consulta)
+			if (!__isView) {
+				if (!donatdeBaixa) {
+					// Lloc donat d'alta
+					// botó donar de baixa lloc
+					String jsOpenModalDonarBaixa = "javascript:createDivModal(traduccions.type['titol.lloc.donarbaixa.continuar'], '"
+							+ I18NUtils.tradueix("lloc.donarbaixa.missatgecontinuar", lloc.getCodiLloc()) + "', '"
+							+ request.getContextPath() + getContextWeb() + "/" + llocID + "/delete/"
+							+ "', '', 'lloc-donarbaixa-id', 'fa-laptop-code');\r\n" + //
+							"        $('#lloc-donarbaixa-id').modal('show');\r\n";
+					AdditionalButton donarDeBaixaButton = new AdditionalButton("fas fa-laptop-code",
+							"lloc.donarbaixa",
+							jsOpenModalDonarBaixa,
+							AdditionalButtonStyle.DANGER);
+					llocForm.addAdditionalButton(donarDeBaixaButton);
+				} else {
+					// Lloc donat de baixa
+					llocForm.addReadOnlyField(LlocFields.DATAALTA);
 
-				// botó donar d'alta lloc
-				String jsOpenModalDonarAlta = "javascript:createDivModal(traduccions.type['titol.lloc.donaralta.continuar'], '"
-						+ I18NUtils.tradueix("lloc.donaralta.missatgecontinuar", lloc.getCodiLloc()) + "', '"
-						+ request.getContextPath() + getContextWeb() + "/" + llocID + "/donaralta/"
-						+ "', '', 'lloc-donaralta-id', 'fa-laptop-medical');\r\n" + //
-						"        $('#lloc-donaralta-id').modal('show');\r\n";
-				AdditionalButton donarDeAltaButton = new AdditionalButton("fas fa-laptop-medical",
-						"lloc.donaralta",
-						jsOpenModalDonarAlta,
-						AdditionalButtonStyle.SUCCESS);
-				llocForm.addAdditionalButton(donarDeAltaButton);
+					// botó donar d'alta lloc
+					String jsOpenModalDonarAlta = "javascript:createDivModal(traduccions.type['titol.lloc.donaralta.continuar'], '"
+							+ I18NUtils.tradueix("lloc.donaralta.missatgecontinuar", lloc.getCodiLloc()) + "', '"
+							+ request.getContextPath() + getContextWeb() + "/" + llocID + "/donaralta/"
+							+ "', '', 'lloc-donaralta-id', 'fa-laptop-medical');\r\n" + //
+							"        $('#lloc-donaralta-id').modal('show');\r\n";
+					AdditionalButton donarDeAltaButton = new AdditionalButton("fas fa-laptop-medical",
+							"lloc.donaralta",
+							jsOpenModalDonarAlta,
+							AdditionalButtonStyle.SUCCESS);
+					llocForm.addAdditionalButton(donarDeAltaButton);
+				}
 			}
 		}
 
@@ -309,8 +312,11 @@ public class LlocAdminController extends LlocController {
 				getContextWeb() + "/tornar", AdditionalButtonStyle.SECONDARY));
 
 		llocForm.addReadOnlyField(LlocFields.ENTITATID);
-		llocForm.addHiddenField(LlocFields.DATABAIXA);
 		llocForm.addHiddenField(LlocFields.DATACREACIO);
+		// només el volem veure al mode consulta
+		if (!__isView) {
+			llocForm.addHiddenField(LlocFields.DATABAIXA);
+		}
 
 		llocForm.setCancelButtonVisible(false);
 		llocForm.setAttachedAdditionalJspCode(true);

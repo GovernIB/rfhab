@@ -31,7 +31,7 @@
 			aria-labelledby="funcionaris-tab">
 
 			<c:if test="${funcionaris.isEmpty()}">
-				<div class="alert alert-warning" role="alert"><fmt:message key="lloc.admin.rols.sense"/></div>
+				<div class="alert alert-warning" role="alert"><fmt:message key="lloc.admin.funcionari.sense"/></div>
 			</c:if>
 
 			<c:if test="${not funcionaris.isEmpty()}">
@@ -45,7 +45,7 @@
 								<th><fmt:message key="funcionari.nom"/></th>
 								<th><fmt:message key="funcionariLloc.dataInici"/></th>
 								<th><fmt:message key="funcionariLloc.dataFi"/></th>
-								<th>&nbsp;</th>
+								<!-- <th>&nbsp;</th> -->
 							</tr>
 						</thead>
 						<tbody>
@@ -53,9 +53,9 @@
 								<tr id="rol_rowid_${funcionariItem.funcionariID}">
 									<td>${funcionariItem.numero}</td>
 									<td>${funcionariItem.nom}&nbsp;${funcionariItem.llinatge1}&nbsp;${funcionariItem.llinatge2}</td>
-									<td><fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${funcionariItem.dataInici}" /></td>
-									<td><fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${funcionariItem.dataFi}" /></td>
-									<td><a class="btn btn-primary btn-sm" href="<c:url value="/admin/funcionari/view/${funcionariItem.funcionariID}"/>"><fmt:message key="detall"/></a></td>
+									<td><fmt:formatDate pattern="dd/MM/yyyy" value="${funcionariItem.dataInici}" /></td>
+									<td><fmt:formatDate pattern="dd/MM/yyyy" value="${funcionariItem.dataFi}" /></td>
+									<!-- <td><a class="btn btn-primary btn-sm" href="<c:url value="/admin/funcionari/view/${funcionariItem.funcionariID}"/>"><fmt:message key="detall"/></a></td> -->
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -85,8 +85,9 @@
 							<c:forEach var="rol" items="${rols}">
 								<tr id="rol_rowid_${rol.rolID}">
 									<td>${rol.codi}</td>
-									<td><c:set var="tmp">${rol.nomID}</c:set> <c:if
-											test="${not empty tmp}">${rol.nom.traduccions[lang].valor}</c:if>
+									<td>
+										<c:set var="tmp">${rol.nomID}</c:set>
+										<c:if test="${not empty tmp}">${rol.nom.traduccions[lang].valor}</c:if>
 									</td>
 								</tr>
 							</c:forEach>
@@ -94,6 +95,7 @@
 					</table>
 				</div>
 			</c:if>
+			<!-- todo: lleva botó -->
 			<p>
 				<a class="btn btn-primary btn-sm ${(donatdeBaixa ? "disabled" : "")}"
 					href="<c:url value="/admin/llochabilitacio/assignar/${lloc.llocID}"/>"><fmt:message key="lloc.assignar.nou.rol"/></a>
@@ -125,7 +127,7 @@
 						<tbody>
 							<c:forEach var="h" items="${historic}">
 								<tr>
-									<td>${h.value6}</td>
+									<td><fmt:formatDate pattern="dd/MM/yyyy HH:mm:ss" value="${h.value6}" /></td>
 									<td>${h.value2}</td>
 									<td>${h.value3}&nbsp;${h.value4}&nbsp;${h.value5}</td>
 									<td><a href="<c:url value="/admin/historiclloc/view/${h.value1}"/>" class="btn btn-secondary"><i
@@ -156,20 +158,22 @@
 						<thead>
 							<tr>
 								<th><fmt:message key="funcionari.numero"/></th>
+								<th><fmt:message key="tipusidentificacio.1"/></th>
 								<th><fmt:message key="funcionari.nom"/></th>
 								<th><fmt:message key="funcionariLloc.dataInici"/></th>
 								<th><fmt:message key="funcionariLloc.dataFi"/></th>
-								<th>&nbsp;</th>
+								<!-- <th>&nbsp;</th> -->
 							</tr>
 						</thead>
 						<tbody>
 							<c:forEach var="funcionariItem" items="${funcionarisHistoric}">
 								<tr id="rol_rowid_${funcionariItem.funcionariID}">
 									<td>${funcionariItem.numero}</td>
+									<td>${funcionariItem.identificador}</td>
 									<td>${funcionariItem.nom}&nbsp;${funcionariItem.llinatge1}&nbsp;${funcionariItem.llinatge2}</td>
-									<td><fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${funcionariItem.dataInici}" /></td>
-									<td><fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${funcionariItem.dataFi}" /></td>
-									<td><a class="btn btn-primary btn-sm" href="<c:url value="/admin/funcionari/view/${funcionariItem.funcionariID}"/>"><fmt:message key="detall"/></a></td>
+									<td><fmt:formatDate pattern="dd/MM/yyyy" value="${funcionariItem.dataInici}" /></td>
+									<td><fmt:formatDate pattern="dd/MM/yyyy" value="${funcionariItem.dataFi}" /></td>
+									<!-- <td><a class="btn btn-primary btn-sm" href="<c:url value="/admin/funcionari/view/${funcionariItem.funcionariID}"/>"><fmt:message key="detall"/></a></td> -->
 								</tr>
 							</c:forEach>
 						</tbody>

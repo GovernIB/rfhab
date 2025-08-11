@@ -1417,8 +1417,8 @@
           "digits": 0,
           "isNotNullable": true,
           "labels": {
-            "ca": "Número",
-            "es": "Número"
+            "ca": "Codi",
+            "es": "Código"
           },
           "javaName": "numero",
           "javaType": "java.lang.String",
@@ -1846,8 +1846,8 @@
           "digits": 0,
           "isNotNullable": false,
           "labels": {
-            "ca": "Data inici",
-            "es": "Fecha inicio"
+            "ca": "Data d\u0027alta",
+            "es": "Fecha de alta"
           },
           "javaName": "dataInici",
           "javaType": "java.sql.Date",
@@ -1871,8 +1871,8 @@
           "digits": 0,
           "isNotNullable": false,
           "labels": {
-            "ca": "Data fi",
-            "es": "Fecha fin"
+            "ca": "Data de baixa",
+            "es": "Fecha de baja"
           },
           "javaName": "dataFi",
           "javaType": "java.sql.Date",
@@ -1896,8 +1896,8 @@
           "digits": 6,
           "isNotNullable": true,
           "labels": {
-            "ca": "Data d\u0027alta",
-            "es": "Fecha de alta"
+            "ca": "Data creació",
+            "es": "Fecha de creación"
           },
           "javaName": "dataCreacio",
           "javaType": "java.sql.Timestamp",
@@ -2307,8 +2307,8 @@
           "digits": 6,
           "isNotNullable": true,
           "labels": {
-            "ca": "Data alta",
-            "es": "Fecha alta"
+            "ca": "Data d\u0027alta",
+            "es": "Fecha de alta"
           },
           "javaName": "dataCreacio",
           "javaType": "java.sql.Timestamp",

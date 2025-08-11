@@ -12,6 +12,8 @@ public class FuncionariLlocDAO implements java.io.Serializable {
 
 	private Long funcionariID = null;
 	private String numero = null;
+	private String identificador = null;
+	private Integer tipusIdentificador = null;
 	private String nom = null;
 	private String llinatge1 = null;
 	private String llinatge2 = null;
@@ -33,6 +35,22 @@ public class FuncionariLlocDAO implements java.io.Serializable {
 
 	public void setNumero(String numero) {
 		this.numero = numero;
+	}
+
+	public String getIdentificador() {
+		return identificador;
+	}
+
+	public void setIdentificador(String identificador) {
+		this.identificador = identificador;
+	}
+
+	public Integer getTipusIdentificador() {
+		return tipusIdentificador;
+	}
+
+	public void setTipusIdentificador(Integer tipusIdentificador) {
+		this.tipusIdentificador = tipusIdentificador;
 	}
 
 	public String getNom() {
@@ -85,6 +103,8 @@ public class FuncionariLlocDAO implements java.io.Serializable {
 		if (funcionari != null) {
 			this.funcionariID = funcionari.getFuncionariID();
 			this.numero = funcionari.getNumero();
+			this.identificador = funcionari.getIdentificador();
+			this.tipusIdentificador = funcionari.getTipusIdentificador();
 			this.nom = funcionari.getNom();
 			this.llinatge1 = funcionari.getLlinatge1();
 			this.llinatge2 = funcionari.getLlinatge2();

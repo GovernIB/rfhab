@@ -1,5 +1,6 @@
 <%@ include file="/WEB-INF/jsp/moduls/includes.jsp"%>
 
+<c:if test="${__theForm.view}">
 <div class="col-12">
 	<ul class="nav nav-tabs" id="myTab" role="tablist"
 		style="margin-bottom: 20px;">
@@ -178,6 +179,7 @@
 		</div>	
 	</div>
 </div>
+</c:if>
 
 <script type="text/javascript">
 	function findUnitatByArrel(unitats, unitatId) {

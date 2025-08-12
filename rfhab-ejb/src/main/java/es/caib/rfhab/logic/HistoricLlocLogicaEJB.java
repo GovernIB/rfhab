@@ -10,8 +10,8 @@ import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.query.OrderBy;
 import org.fundaciobit.genapp.common.query.OrderType;
 import org.fundaciobit.genapp.common.query.Where;
-import org.fundaciobit.genapp.common.query.selectcolumn.Select6Columns;
-import org.fundaciobit.genapp.common.query.selectcolumn.Select6Values;
+import org.fundaciobit.genapp.common.query.selectcolumn.Select7Columns;
+import org.fundaciobit.genapp.common.query.selectcolumn.Select7Values;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,6 +25,7 @@ import es.caib.rfhab.persistence.HistoricLlocJPA;
 
 /**
  * 
+ * @autor jagarcia
  * @autor jpou
  *
  */
@@ -33,19 +34,20 @@ public class HistoricLlocLogicaEJB extends HistoricLlocEJB implements HistoricLl
 
 	@Override
 	@PermitAll
-	public List<Select6Values<Long, String, String, String, String, Timestamp>> getHistoricByLlocId(Long llocId)
+	public List<Select7Values<Long, String, String, String, String, Timestamp, String>> getHistoricByLlocId(Long llocId)
 			throws I18NException {
 
-		Select6Columns<Long, String, String, String, String, Timestamp> s6c = new Select6Columns<Long, String, String, String, String, Timestamp>(
+		Select7Columns<Long, String, String, String, String, Timestamp, String> s7c = new Select7Columns<Long, String, String, String, String, Timestamp, String>(
 				HistoricLlocFields.HISTORICLLOCID.select, HistoricLlocFields.NUMEROCAI.select,
 				new UsuariQueryPath().NOM().select, new UsuariQueryPath().LLINATGE1().select,
-				new UsuariQueryPath().LLINATGE2().select, HistoricLlocFields.DATACREACIO.select);
+				new UsuariQueryPath().LLINATGE2().select, HistoricLlocFields.DATACREACIO.select,
+				HistoricLlocFields.OBSERVACIONS.select);
 
 		Where w = HistoricLlocFields.LLOCID.equal(llocId);
 
 		OrderBy orderBy = new OrderBy(HistoricLlocFields.DATACREACIO, OrderType.DESC);
 
-		return this.executeQuery(s6c, w, orderBy);
+		return this.executeQuery(s7c, w, orderBy);
 
 	}
 

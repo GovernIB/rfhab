@@ -121,17 +121,27 @@
 								<th><fmt:message key="historicLloc.dataCreacio" /></th>
 								<th><fmt:message key="historicLloc.numeroCai"/></th>
 								<th><fmt:message key="historicLloc.usuariID"/></th>
-								<th>&nbsp;</th>
+								<th><fmt:message key="historiclloc.modificacions" /></th>
 							</tr>
 						</thead>
 						<tbody>
 							<c:forEach var="h" items="${historic}">
 								<tr>
-									<td><fmt:formatDate pattern="dd/MM/yyyy HH:mm:ss" value="${h.value6}" /></td>
-									<td>${h.value2}</td>
-									<td>${h.value3}&nbsp;${h.value4}&nbsp;${h.value5}</td>
-									<td><a href="<c:url value="/admin/historiclloc/view/${h.value1}"/>" class="btn btn-secondary"><i
-											class="far fa-eye" title="<fmt:message key="lloc.historic.veuredetall"/>"></i></a></td>
+									<td><fmt:formatDate pattern="dd/MM/yyyy HH:mm:ss" value="${h.dataCreacio}" /></td>
+									<td>${h.numeroCai}</td>
+									<td>${h.usuariId}</td>
+									<td>
+										<c:if test="${ h.vell == null || h.nou == null }">
+											${h.observacions}
+										</c:if>
+
+										<c:if test="${ h.vell != null && h.nou != null }">
+											<c:set var="vell" value="${h.vell}" />
+											<c:set var="nou" value="${h.nou}" />
+											<!-- <c:set var="diferenciesDictionary" value="${diferenciesDictionary}" /> -->
+											<%@include file="diferenciesTable.jsp" %>
+										</c:if>
+									</td>
 								</tr>
 							</c:forEach>
 						</tbody>

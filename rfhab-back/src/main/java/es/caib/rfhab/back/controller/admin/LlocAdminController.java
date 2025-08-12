@@ -17,6 +17,7 @@ import org.fundaciobit.genapp.common.i18n.I18NValidationException;
 import org.fundaciobit.genapp.common.query.Select;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.query.selectcolumn.Select6Values;
+import org.fundaciobit.genapp.common.query.selectcolumn.Select7Values;
 import org.fundaciobit.genapp.common.utils.Utils;
 import org.fundaciobit.genapp.common.web.HtmlUtils;
 import org.fundaciobit.genapp.common.web.form.AdditionalButton;
@@ -34,6 +35,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.JsonParseException;
+
 import es.caib.rfhab.back.controller.webdb.LlocController;
 import es.caib.rfhab.back.form.webdb.LlocFilterForm;
 import es.caib.rfhab.back.form.webdb.LlocForm;
@@ -47,7 +50,11 @@ import es.caib.rfhab.logic.HistoricLlocLogicaService;
 import es.caib.rfhab.logic.LlocLogicaService;
 import es.caib.rfhab.logic.LlocRolLogicaService;
 import es.caib.rfhab.logic.UnitatLogicaUserService;
+import es.caib.rfhab.logic.utils.DbDaoDictionaries;
 import es.caib.rfhab.logic.utils.FuncionariLlocDAO;
+import es.caib.rfhab.logic.utils.HistoricCanvisLlocDAO;
+import es.caib.rfhab.logic.utils.HistoricLlocDAO;
+import es.caib.rfhab.logic.utils.JsonUtils;
 import es.caib.rfhab.model.entity.Entitat;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.HistoricLloc;
@@ -249,15 +256,9 @@ public class LlocAdminController extends LlocController {
 			});
 			mav.addObject("rols", llistaRols);
 
-			// Pipella Històric - Obtenir tots els canvis realitzats al lloc de feina
-			List<Select6Values<Long, String, String, String, String, Timestamp>> historic = historicLlocEjb
-					.getHistoricByLlocId(lloc.getLlocID());
-			log.info("HistoricLloc.size: " + historic.size());
-
-			historic.forEach(x -> log.info("HistoricLloc: " + x.getValue1() + " " + x.getValue2() + " " + x.getValue3()
-					+ " " + x.getValue4() + " " + x.getValue5() + " " + x.getValue6()));
-
-			mav.addObject("historic", historic);
+			// Pipella Històric - Obtenir tots els canvis realitzats al lloc de feina (ja
+			// només ho mostram al mode consulta)
+			mav.addObject("historic", new ArrayList<HistoricLloc>());
 
 			String jsOpenModalGuardar = "javascript:createDivModal('"
 					+ I18NUtils.tradueix("lloc.modificar.guardar.titol") + "', '"
@@ -302,6 +303,41 @@ public class LlocAdminController extends LlocController {
 							AdditionalButtonStyle.SUCCESS);
 					llocForm.addAdditionalButton(donarDeAltaButton);
 				}
+			} else {
+				// Pipella Històric - Obtenir tots els canvis realitzats al lloc de feina (ja
+				// només ho mostram al mode consulta)
+				List<Select7Values<Long, String, String, String, String, Timestamp, String>> historic = historicLlocEjb
+						.getHistoricByLlocId(lloc.getLlocID());
+				log.info("HistoricLloc.size: " + historic.size());
+
+				List<HistoricCanvisLlocDAO> historicCanvis = new ArrayList<>();
+				historic.forEach(
+						x -> {
+							log.info("HistoricLloc: " + x.getValue1() + " " + x.getValue2() + " " + x.getValue3()
+									+ " " + x.getValue4() + " " + x.getValue5() + " " + x.getValue6());
+							try {
+								historicCanvis.add(
+										new HistoricCanvisLlocDAO(
+												x.getValue3() + " " + x.getValue4() + " " + x.getValue5(),
+												x.getValue7(), x.getValue2(), x.getValue6()));
+							} catch (I18NException e) {
+								log.error("Error al crear HistoricCanvisLlocDAO amb id " + x.getValue1(), e);
+								HtmlUtils.saveMessageError(request,
+										"Error al crear HistoricCanvisLlocDAO amb data " + x.getValue6());
+								try {
+									historicCanvis.add(
+											new HistoricCanvisLlocDAO(
+													x.getValue3() + " " + x.getValue4() + " " + x.getValue5(),
+													"", x.getValue2(), x.getValue6()));
+								} catch (I18NException e1) {
+									log.error("Error desconegut al crear HistoricCanvisLlocDAO amb id " + x.getValue1(),
+											e);
+								}
+							}
+						});
+
+				mav.addObject("diferenciesDictionary", DbDaoDictionaries.HistoricLloc);
+				mav.addObject("historic", historicCanvis);
 			}
 		}
 

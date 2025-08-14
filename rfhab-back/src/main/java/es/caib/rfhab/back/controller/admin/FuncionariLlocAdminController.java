@@ -5,10 +5,8 @@ import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.i18n.I18NValidationException;
-import org.fundaciobit.genapp.common.web.HtmlUtils;
 import org.fundaciobit.genapp.common.web.form.AdditionalButton;
 import org.fundaciobit.genapp.common.web.form.AdditionalButtonStyle;
-import org.fundaciobit.genapp.common.web.i18n.I18NUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +22,7 @@ import es.caib.rfhab.back.security.LoginInfo;
 import es.caib.rfhab.back.utils.UrlUtils;
 import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.commons.utils.StringUtils;
+import es.caib.rfhab.logic.FuncionariLlocLogicaService;
 import es.caib.rfhab.logic.FuncionariLogicaService;
 import es.caib.rfhab.logic.HistoricLlocLogicaService;
 import es.caib.rfhab.logic.HistoricLogicaService;
@@ -50,6 +49,9 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 
 	@EJB(mappedName = LlocLogicaService.JNDI_NAME)
 	protected LlocLogicaService llocEjb;
+
+	@EJB(mappedName = FuncionariLlocLogicaService.JNDI_NAME)
+	protected FuncionariLlocLogicaService funcionariLlocEjb;
 
 	@Override
 	public String getTileForm() {
@@ -121,23 +123,8 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 				: "";
 
 		FuncionariLlocJPA funcionariLlocJPA = null;
-		try {
-			funcionariLlocJPA = funcionariEjb.assignarFuncionari(funcionariLloc, numeroCai,
-					LoginInfo.getInstance().getUsuariPersona().getUsuariID());
-		} catch (I18NValidationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			String msg = I18NUtils.getMessage((I18NValidationException) e);
-			HtmlUtils.saveMessageError(request, msg);
-		}
-
-		// if (errorsControlats) {
-		// String msg = I18NUtils.tradueix("funcionarilloc.error.funcionari.baixa",
-		// funcionariIdentificador);
-		// HtmlUtils.saveMessageError(request, msg);
-
-		// return funcionariLlocJPA;
-		// }
+		funcionariLlocJPA = funcionariLlocEjb.assignarFuncionari(funcionariLloc, numeroCai,
+				LoginInfo.getInstance().getUsuariPersona().getUsuariID());
 
 		return funcionariLlocJPA;
 	}

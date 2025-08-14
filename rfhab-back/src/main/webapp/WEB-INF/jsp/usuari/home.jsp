@@ -329,19 +329,41 @@ button[disabled][type="submit"] {
 							</div>
 
 							<div class="form-group">
-								<label><fmt:message key="usuari.tramit.seleccio.tramit" /></label>
-								<p id="spinner-carregant-tramits" style="text-align: center; display: none;">
-									<svg style="width:20%;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150"><path fill="none" stroke="#007BFF" stroke-width="15" stroke-linecap="round" stroke-dasharray="300 385" stroke-dashoffset="0" d="M275 75c0 31-27 50-50 50-58 0-92-100-150-100-28 0-50 22-50 50s23 50 50 50c58 0 92-100 150-100 24 0 50 19 50 50Z"><animate attributeName="stroke-dashoffset" calcMode="spline" dur="2" values="685;-685" keySplines="0 0 1 1" repeatCount="indefinite"></animate></path></svg>
-								</p>
-								<input id="pas2_tramit" name="tramit" type="text" disabled
-									class="form-control"
-									placeholder="<fmt:message key="usuari.tramit.seleccio.tramit.placeholder" />"
-									data-bind="value: Tramit" data-val="true"
-									data-val-required="<fmt:message key="usuari.tramit.seleccio.tramit.placeholder" />">
-								<input type="hidden" id="tramitId" class="form-control always-validate" name="tramitId" value="1" />
-								<input type="hidden" id="tramitVersio" name="tramitVersio" value="1" />
-								<input type="hidden" id="tramitParametres" name="tramitParametres" value="1" />
-								<input type="hidden" id="idTraTel" name="idTraTel" value="1" />
+								<label for="pas2_tramit" class="w-100">
+									<fmt:message key="usuari.tramit.seleccio.tramit" />
+									<c:set var="containsValues" value="false" />
+									<select id="pas2_tramit" name="tramit-select" class="form-control input-ample-tota-linia" onchange="if(typeof onSelectedTramit == 'function') {  onSelectedTramit(this); };">
+										<c:forEach items="${tramitsProcediment}" var="tmp">
+											<option value="${tmp.data}">${tmp.value}</option>
+											<c:if test="${not empty tmp.data}">
+												<c:set var="containsValues"  value="true" />
+											</c:if>
+										</c:forEach>
+										<c:if test="${containsValues}">
+											<option value="" selected="true" >"<fmt:message key="usuari.tramit.seleccio.tramit.placeholder" />"</option>
+										</c:if>
+									</select>
+									<script>
+										$(document).ready(function() {
+											$('#pas2_tramit').select2(
+												{
+													placeholder: "<fmt:message key="usuari.tramit.seleccio.tramit.placeholder" />",
+													allowClear: true,
+													language: "${lang}",
+													minimumInputLength: 0,
+													disabled: true
+												}
+											);
+
+											const select2Container = $("#pas2_tramit").closest('label').find('.select2');
+											select2Container.addClass("input-ample-tota-linia");
+										});
+									</script>
+									<input type="hidden" id="tramitId" class="form-control always-validate" data-rule-tramit="true" name="tramitId" value="" />
+									<input type="hidden" id="tramitVersio"  name="tramitVersio" value="1" />
+									<input type="hidden" id="tramitParametres"  name="tramitParametres" value="1" />
+									<input type="hidden" id="idTraTel" name="idTraTel" value="1" />
+								</label>
 							</div>
 						</div>
 					</div>
@@ -483,17 +505,18 @@ button[disabled][type="submit"] {
 		select2Container.removeClass("input-validation-error");
 		return true;
 	}, "<fmt:message key="usuari.tramit.seleccio.procediment.required" />");
+	$.validator.addMethod("tramit", function(value, element) {
+		const select2Container = $("#pas2_tramit").closest('label').find('.select2');
+		if (value === "null" || !value) {
+			// If the value is null or empty, add an error class to the select2 container
+			select2Container.addClass("input-validation-error");
+			return false;
+		}
+		select2Container.removeClass("input-validation-error");
+		return true;
+	}, "<fmt:message key="usuari.tramit.seleccio.tramit.required" />");
 	$.validator.setDefaults({
-		ignore: function (index, el) {
-								const $el = $(el);
-
-								if ($el.hasClass('always-validate')) {
-									return false;
-								}
-
-								// Default behavior
-								return $el.is(':hidden');
-							}
+		ignore: ":hidden:not(.always-validate)"
 	});
 
 	(function(factory) {
@@ -889,7 +912,7 @@ button[disabled][type="submit"] {
 					};
 
 					form.validateView = function(view) {
-						var index = form.views.index(view);
+						let index = form.views.index(view);
 
 						if (form.validate().subset(view)) {
 							$.data(view, msfJqueryData.validated, true);
@@ -910,20 +933,20 @@ button[disabled][type="submit"] {
 						length = typeof length === 'undefined' ? form.views.length
 								: length;
 
-						var validationIgnore = ""; // Saving the existing validator ignore settings to reset them after validating multi-step form
-						var isValid = true;
+						let validationIgnore = ""; // Saving the existing validator ignore settings to reset them after validating multi-step form
+						let isValid = true;
 
 						//remember original validation setings for ignores
 						if ($(form).data("validator")) {
-							var formValidatorSettings = $(form).data(
+							const formValidatorSettings = $(form).data(
 									"validator").settings;
 							validationIgnore = formValidatorSettings.ignore;
 
-							var currentValidationIgnoreSettingsArray = validationIgnore
+							const currentValidationIgnoreSettingsArray = validationIgnore
 									.split(",");
 							if (currentValidationIgnoreSettingsArray.length >= 1) {
 								// Remove the ":hidden" selector from validator ignore settings as we want our hidden fieldsets/steps to be validated before final submit
-								var hiddenIndex = $.inArray(":hidden",
+								const hiddenIndex = $.inArray(":hidden",
 										currentValidationIgnoreSettingsArray);
 								currentValidationIgnoreSettingsArray.splice(
 										hiddenIndex, 1);
@@ -932,7 +955,7 @@ button[disabled][type="submit"] {
 							}
 						}
 
-						for (var i = currentIndex; i < currentIndex + length; i++) {
+						for (let i = currentIndex; i < currentIndex + length; i++) {
 							if (!form.validateView(form.views[i])) {
 								isValid = false;
 
@@ -1019,7 +1042,8 @@ button[disabled][type="submit"] {
 			"msf:viewChanged",
 			function(event, data) {
 				var progress = Math
-						.round((data.completedSteps / data.totalSteps) * 100);
+						.round((data.currentIndex / data.totalSteps) * 100);
+						// .round((data.completedSteps / data.totalSteps) * 100);
 
 				$(".progress-bar").css("width", progress + "%").attr(
 						'aria-valuenow', progress);
@@ -1039,6 +1063,21 @@ button[disabled][type="submit"] {
 						}
 					);
 					const select2Container = pas2Procediment.closest('label').find('.select2');
+					select2Container.addClass("input-ample-tota-linia");
+				}
+				const pas2Tramit = $('#pas2_tramit');
+				if (pas2Tramit && (!pas2Tramit.data('select2') || $('#pas2_tramit+.select2').css("display") == "none" || $('#pas2_tramit+.select2').css("display") == "hidden"))
+				{
+					pas2Tramit.select2(
+						{
+							placeholder: "<fmt:message key="usuari.tramit.seleccio.tramit.placeholder" />",
+							allowClear: true,
+							language: "${lang}",
+							minimumInputLength: 0,
+							disabled: true
+						}
+					);
+					const select2Container = pas2Tramit.closest('label').find('.select2');
 					select2Container.addClass("input-ample-tota-linia");
 				}
 			});
@@ -1067,12 +1106,24 @@ button[disabled][type="submit"] {
 	
 	var tramitsProcediment = [];
 
+	function actualitzaSelect2options(select, novesOpcions){
+		// Remove all options from the select list
+		select.empty();
+		// Insert the new ones from the array above
+		novesOpcions.forEach(t => {
+			const newOption = new Option(t.value, t.data, false, false);
+			select.append(newOption).trigger('change');
+		});
+		// clear selection
+		select.val(null).trigger('change');
+	}
+
 	function actualitzaLlistatDeTramits(procediment){
 		const pas2Tramit = $("#pas2_tramit");
 		if(procediment === 'null' || !procediment){
 			tramitsProcediment = [];
 			pas2Tramit.prop("disabled", true);
-			pas2Tramit.autocomplete().setOptions({ lookup: tramitsProcediment });
+			actualitzaSelect2options(pas2Tramit, tramitsProcediment);
 			return;
 		}
 		pas2Tramit.prop("disabled", false);
@@ -1118,7 +1169,7 @@ button[disabled][type="submit"] {
 				console.log('Tramits per al procediment ' + procediment + ': ', tramitsProcediment);
 
 				$('#spinner-carregant-tramits').hide();
-				pas2Tramit.autocomplete().setOptions({ lookup: tramitsProcediment });
+				actualitzaSelect2options(pas2Tramit, tramitsProcediment);
 				pas2Tramit.show();
 			})
 			.catch(error => {
@@ -1138,41 +1189,44 @@ button[disabled][type="submit"] {
 		if(pas2_procediment_id != suggestion.value) {
 			pas2_procediment_id = suggestion.value;
 			pas2_tramit_value = null;
-			$('#pas2_tramit').val('');
+			$('#pas2_tramit').val('').trigger('change');
+
 			console.log('You selected: ' + pas2_procediment_id);
 
 			$('#procediment-id').val(pas2_procediment_id);
-			$('#tramitId').val(1);
-			$('#tramitVersio').val(1);
-			$('#tramitParametres').val(1);
-			$('#idTraTel').val(1);
+			// $('#tramitId').val(null);
+			// $('#tramitVersio').val(1);
+			// $('#tramitParametres').val(1);
+			// $('#idTraTel').val(1);
 			actualitzaLlistatDeTramits(pas2_procediment_id);
 		}
 	}
 
-	// https://github.com/devbridge/jQuery-Autocomplete
-	$('#pas2_tramit').autocomplete({
-	    lookup: tramitsProcediment,
-	    minChars: 1,
-	    showNoSuggestionNotice: true,
-        noSuggestionNotice: 'Sorry, no matching results',
-	    onSelect: function (suggestion) {
-			if(pas2_tramit_value != suggestion.data) {
-				pas2_tramit_value = suggestion.data;
-	        	console.log('You selected: ' + suggestion.value + ', ' + suggestion.data + 
-	        		'::: procediment: ' + suggestion.procediment + 
-	        		', llengua: ' + suggestion.llengua +
-	        		', tramitId: ' + suggestion.tramitId +
-	        		', tramitVersio: ' + suggestion.tramitVersio +
-	        		', tramitParametres: ' + suggestion.tramitParametres +
-	        		', idTraTel: ' + suggestion.idTraTel);
-				$('#tramitId').val(suggestion.tramitId);
-				$('#tramitVersio').val(suggestion.tramitVersio);
-				$('#tramitParametres').val(suggestion.tramitParametres);
-				$('#idTraTel').val(suggestion.idTraTel);
+	function onSelectedTramit(select2) {
+			if(pas2_tramit_value != select2.value) {
+				pas2_tramit_value = select2.value;
+	        	console.log('You selected: ' + pas2_tramit_value);
+				if(!pas2_tramit_value || pas2_tramit_value === 'null'){
+					$('#tramitId').val(null);
+					$('#tramitVersio').val(1);
+					$('#tramitParametres').val(1);
+					$('#idTraTel').val(1);
+					return;
+				}
+				const tramitSeleccionat = tramitsProcediment.find(tramit => tramit.data === pas2_tramit_value);
+	        	console.log('Found selected: ' + tramitSeleccionat.value + ', ' + tramitSeleccionat.data + 
+	        		'::: procediment: ' + tramitSeleccionat.procediment + 
+	        		', llengua: ' + tramitSeleccionat.llengua +
+	        		', tramitId: ' + tramitSeleccionat.tramitId +
+	        		', tramitVersio: ' + tramitSeleccionat.tramitVersio +
+	        		', tramitParametres: ' + tramitSeleccionat.tramitParametres +
+	        		', idTraTel: ' + tramitSeleccionat.idTraTel);
+				$('#tramitId').val(tramitSeleccionat.tramitId);
+				$('#tramitVersio').val(tramitSeleccionat.tramitVersio);
+				$('#tramitParametres').val(tramitSeleccionat.tramitParametres);
+				$('#idTraTel').val(tramitSeleccionat.idTraTel);
 			}
-	    }
-	});
+	}
 </script>
 
 <script type="text/javascript">
@@ -1283,6 +1337,8 @@ button[disabled][type="submit"] {
 			let errorText = "No s'ha pogut descarregar el fitxer: " + fitxerId;//TODO:afegir missatge a traduccions
 			console.error(errorText);
 			inserirMsg('danger', errorText);
+			$('#modal-spinner-carregant').hide();
+			$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
 			return;
 		}
 
@@ -1297,6 +1353,7 @@ button[disabled][type="submit"] {
 		});
 		fetch(request)
 			.then(response => {
+				$('#modal-spinner-carregant').hide();
 				$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
 				if (!response.ok) {
 					throw new Error('Error al descarregar el fitxer: ' + response.statusText);
@@ -1315,6 +1372,7 @@ button[disabled][type="submit"] {
 			.catch(error => {
 				let errorText = 'Error descarregant el fitxer: ' + error.message;//TODO:afegir missatge a traduccions
 				inserirMsg('danger', errorText);
+				$('#modal-spinner-carregant').hide();
 				$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
 			});
 	}
@@ -1386,6 +1444,7 @@ button[disabled][type="submit"] {
 				error: function(xhr, status, error) {
 					let errorText = 'Error consultant el document imprimible: ' + (xhr.responseText || error);
 					inserirMsg('danger', errorText);
+					$('#modal-spinner-carregant').hide();
 					$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
 				}
 			});
@@ -1423,8 +1482,6 @@ button[disabled][type="submit"] {
 				success: function(data, status, xhr) {
 					console.log("Resposta correcta del guardat a arxiu: ", data);
 
-					$('#modal-spinner-carregant').hide();
-
 					if (data && typeof data === "object") {
 						if (data.hasOwnProperty("error")) {
 							// Hi ha errors, mostra'ls per pantalla
@@ -1451,12 +1508,14 @@ button[disabled][type="submit"] {
 								}
 							}
 							if(!documentImmprimibleTancaraElModal){
+								$('#modal-spinner-carregant').hide();
 								$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
 							}
 						}
 					} else {
 						let errorText = "Resposta invàlida del servidor.";
 						inserirMsg('danger', errorText);
+						$('#modal-spinner-carregant').hide();
 						$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
 					}	
 					

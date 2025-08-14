@@ -352,6 +352,8 @@ public class LlocAdminController extends LlocController {
 		// només el volem veure al mode consulta
 		if (!__isView) {
 			llocForm.addHiddenField(LlocFields.DATABAIXA);
+		} else {
+			llocForm.setSaveButtonVisible(false);
 		}
 
 		llocForm.setCancelButtonVisible(false);

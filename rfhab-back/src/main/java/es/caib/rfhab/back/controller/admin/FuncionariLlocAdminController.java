@@ -177,6 +177,6 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 
 	@Override
 	public String getRedirectWhenCreated(HttpServletRequest request, FuncionariLlocForm funcionariLlocForm) {
-		return UrlUtils.getRefererRedirect(request, super.getRedirectWhenCreated(request, funcionariLlocForm));
+		return UrlUtils.getRefererRedirect(request, super.getRedirectWhenCreated(request, funcionariLlocForm), false);
 	}
 }

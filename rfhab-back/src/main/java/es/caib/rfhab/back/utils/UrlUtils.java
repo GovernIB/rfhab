@@ -19,6 +19,11 @@ public class UrlUtils {
     protected static final Logger log = Logger.getLogger(UrlUtils.class);
 
     public static String getRefererRedirect(HttpServletRequest request, String defaultRedirect) {
+        return getRefererRedirect(request, defaultRedirect, true);
+    }
+
+    public static String getRefererRedirect(HttpServletRequest request, String defaultRedirect,
+            boolean checkSameReferer) {
         HttpSession session = request.getSession();
         Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
         session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
@@ -28,7 +33,8 @@ public class UrlUtils {
             // Comprovar si no tenc referer o si el referer és igual a la pàgina on estic
             if (refererUrl == null || refererUrl.toString().isEmpty() || refererUrl.toString().equals("/")
                     || new URL(refererUrl.toString()).getPath().isEmpty()
-                    || StringUtils.strip(refererUrl.toString(), "/").equals(StringUtils.strip(actualReferer, "/"))) {
+                    || (checkSameReferer && StringUtils.strip(refererUrl.toString(), "/")
+                            .equals(StringUtils.strip(actualReferer, "/")))) {
                 redirectUrl = defaultRedirect;
             }
         } catch (MalformedURLException e) {

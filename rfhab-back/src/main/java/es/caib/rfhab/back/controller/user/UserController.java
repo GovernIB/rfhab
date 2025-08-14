@@ -187,10 +187,12 @@ public class UserController extends UsuariController {
 			@RequestParam(value = "ciutadaTipusIdentificacio", required = false) String ciutadaTipusIdentificacio,
 			@RequestParam(value = "ciutadaNif", required = false) String ciutadaNif,
 			@RequestParam(value = "ciutadaNom", required = false) String ciutadaNom,
-			@RequestParam(value = "ciutadaLlinatges", required = false) String ciutadaLlinatges,
+			@RequestParam(value = "ciutadaLlinatge1", required = false) String ciutadaLlinatge1,
+			@RequestParam(value = "ciutadaLlinatge2", required = false) String ciutadaLlinatge2,
 			@RequestParam(value = "representant", required = false) Boolean representant,
 			@RequestParam(value = "representantNom", required = false) String representantNom,
-			@RequestParam(value = "representantLlinatges", required = false) String representantLlinatges,
+			@RequestParam(value = "representantLlinatge1", required = false) String representantLlinatge1,
+			@RequestParam(value = "representantLlinatge2", required = false) String representantLlinatge2,
 			@RequestParam(value = "representantTipusIdentificacio", required = false) String representantTipusIdentificacio,
 			@RequestParam(value = "representantIdentificacio", required = false) String representantIdentificacio,
 			@RequestParam(value = "procediment", required = false) String procediment,
@@ -209,12 +211,12 @@ public class UserController extends UsuariController {
 		log.info("XYZ YYY ciutadaTipusIdentificacio = " + ciutadaTipusIdentificacio);
 		log.info("XYZ YYY ciutadaNif = " + ciutadaNif);
 		log.info("XYZ YYY ciutadaNom = " + ciutadaNom);
-		log.info("XYZ YYY ciutadaLlinatges = " + ciutadaLlinatges);
-		String[] ciutadaLlinatgesList = ciutadaLlinatges.split(" ");
-		log.info("XYZ YYY ciutadaLlinatgesList = " + ciutadaLlinatgesList);
+		log.info("XYZ YYY ciutadaLlinatge1 = " + ciutadaLlinatge1);
+		log.info("XYZ YYY ciutadaLlinatge2 = " + ciutadaLlinatge2);
 		log.info("XYZ YYY representant = " + representant);
 		log.info("XYZ YYY representantNom = " + representantNom);
-		log.info("XYZ YYY representantLlinatges = " + representantLlinatges);
+		log.info("XYZ YYY representantLlinatge1 = " + representantLlinatge1);
+		log.info("XYZ YYY representantLlinatge2 = " + representantLlinatge2);
 		log.info("XYZ YYY representantTipusIdentificacio = " + representantTipusIdentificacio);
 		log.info("XYZ YYY representantIdentificacio = " + representantIdentificacio);
 		log.info("XYZ YYY procediment = " + procediment);
@@ -251,15 +253,11 @@ public class UserController extends UsuariController {
 			funcionari.setTipusIdentificador(1);
 			funcionari.setUsuari(username);
 
-			RpersonaInfo interessatTramit = new RpersonaInfo(
-					ciutadaLlinatgesList.length > 0 ? ciutadaLlinatgesList[0] : "",
-					ciutadaLlinatgesList.length > 1 ? ciutadaLlinatgesList[1] : "", ciutadaNif, ciutadaNom);
+			RpersonaInfo interessatTramit = new RpersonaInfo(ciutadaLlinatge1, ciutadaLlinatge2, ciutadaNif,
+					ciutadaNom);
 			RpersonaInfo representantTramit = null;
 			if (representant != null && representant) {
-				String[] representantLlinatgesList = representantLlinatges.split(" ");
-				representantTramit = new RpersonaInfo(
-						representantLlinatgesList.length > 0 ? representantLlinatgesList[0] : "",
-						representantLlinatgesList.length > 1 ? representantLlinatgesList[1] : "", representantNom,
+				representantTramit = new RpersonaInfo(representantLlinatge1, representantLlinatge2, representantNom,
 						representantIdentificacio);
 			}
 
@@ -303,10 +301,12 @@ public class UserController extends UsuariController {
 			@RequestParam(value = "ciutadaTipusIdentificacio", required = false) String ciutadaTipusIdentificacio,
 			@RequestParam(value = "ciutadaNif", required = false) String ciutadaNif,
 			@RequestParam(value = "ciutadaNom", required = false) String ciutadaNom,
-			@RequestParam(value = "ciutadaLlinatges", required = false) String ciutadaLlinatges,
+			@RequestParam(value = "ciutadaLlinatge1", required = false) String ciutadaLlinatge1,
+			@RequestParam(value = "ciutadaLlinatge2", required = false) String ciutadaLlinatge2,
 			@RequestParam(value = "representant", required = false) Boolean representant,
 			@RequestParam(value = "representantNom", required = false) String representantNom,
-			@RequestParam(value = "representantLlinatges", required = false) String representantLlinatges,
+			@RequestParam(value = "representantLlinatge1", required = false) String representantLlinatge1,
+			@RequestParam(value = "representantLlinatge2", required = false) String representantLlinatge2,
 			@RequestParam(value = "representantTipusIdentificacio", required = false) String representantTipusIdentificacio,
 			@RequestParam(value = "representantIdentificacio", required = false) String representantIdentificacio,
 			@RequestParam(value = "procediment", required = false) String procediment,
@@ -325,10 +325,12 @@ public class UserController extends UsuariController {
 		log.info("XYZ YYY ciutadaTipusIdentificacio = " + ciutadaTipusIdentificacio);
 		log.info("XYZ YYY ciutadaNif = " + ciutadaNif);
 		log.info("XYZ YYY ciutadaNom = " + ciutadaNom);
-		log.info("XYZ YYY ciutadaLlinatges = " + ciutadaLlinatges);
+		log.info("XYZ YYY ciutadaLlinatge1 = " + ciutadaLlinatge1);
+		log.info("XYZ YYY ciutadaLlinatge2 = " + ciutadaLlinatge2);
 		log.info("XYZ YYY representant = " + representant);
 		log.info("XYZ YYY representantNom = " + representantNom);
-		log.info("XYZ YYY representantLlinatges = " + representantLlinatges);
+		log.info("XYZ YYY representantLlinatge1 = " + representantLlinatge1);
+		log.info("XYZ YYY representantLlinatge2 = " + representantLlinatge2);
 		log.info("XYZ YYY representantTipusIdentificacio = " + representantTipusIdentificacio);
 		log.info("XYZ YYY representantIdentificacio = " + representantIdentificacio);
 		log.info("XYZ YYY procediment = " + procediment);

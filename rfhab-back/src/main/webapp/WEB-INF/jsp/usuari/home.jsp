@@ -199,11 +199,23 @@ button[disabled][type="submit"] {
 							</div>
 
 							<div class="form-group">
-								<label><fmt:message key="usuari.tramit.dades.llinatges" /></label> <input id="pas1_llinatges"
-									name="llinatges" type="text" class="form-control"
-									placeholder="<fmt:message key="usuari.tramit.dades.llinatges.placeholder" />" data-bind="value: Llinatges"
+								<label>
+									<fmt:message key="usuari.tramit.dades.llinatge1" />
+								</label> 
+								<input id="pas1_llinatge1"
+									name="llinatge1" type="text" class="form-control"
+									placeholder="<fmt:message key="usuari.tramit.dades.llinatge1.placeholder" />" data-bind="value: Llinatge1"
 									data-val="true"
-									data-val-required="<fmt:message key="usuari.tramit.dades.llinatges.required" />">
+									data-val-required="<fmt:message key="usuari.tramit.dades.llinatge1.required" />">
+							</div>
+							<div class="form-group">
+								<label>
+									<fmt:message key="usuari.tramit.dades.llinatge2" />
+								</label> 
+								<input id="pas1_llinatge2"
+									name="llinatge2" type="text" class="form-control"
+									placeholder="<fmt:message key="usuari.tramit.dades.llinatge2.placeholder" />" data-bind="value: Llinatge2"
+									data-val="true">
 							</div>
 
 							<div class="form-group">
@@ -242,19 +254,29 @@ button[disabled][type="submit"] {
 									<label><fmt:message key="usuari.tramit.dades.representant.nom" /></label>
 									<input
 										id="pas1_representant_nom" name="representant_nom" type="text"
-										class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.nom.placeholder" />" data-bind="value: Nom"
+										class="form-control"
+										placeholder="<fmt:message key="usuari.tramit.dades.nom.placeholder" />" data-bind="value: Nom"
 										data-val="true" data-val-required="<fmt:message key="usuari.tramit.dades.nom.required" />"
 										data-rule-required="#representant:checked">
 								</div>
 
 								<div class="form-group">
-									<label><fmt:message key="usuari.tramit.dades.representant.llinatges" /></label>
+									<label><fmt:message key="usuari.tramit.dades.representant.llinatge1" /></label>
 									<input
-										id="pas1_representant_llinatges" name="representant_llinatges"
-										type="text" class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.llinatges.placeholder" />"
-										data-bind="value: Llinatges" data-val="true"
-										data-val-required="<fmt:message key="usuari.tramit.dades.llinatges.required" />"
+										id="pas1_representant_llinatge1" name="representant_llinatge1"
+										type="text" class="form-control"
+										placeholder="<fmt:message key="usuari.tramit.dades.llinatge1.placeholder" />"
+										data-bind="value: RepreLlinatge1" data-val="true"
+										data-val-required="<fmt:message key="usuari.tramit.dades.llinatge1.required" />"
 										data-rule-required="#representant:checked">
+								</div>
+								<div class="form-group">
+									<label><fmt:message key="usuari.tramit.dades.representant.llinatge2" /></label>
+									<input
+										id="pas1_representant_llinatge2" name="representant_llinatge2"
+										type="text" class="form-control"
+										placeholder="<fmt:message key="usuari.tramit.dades.llinatge2.placeholder" />"
+										data-bind="value: RepreLlinatge2" data-val="true" >
 								</div>
 
 								<div class="form-group">
@@ -1817,10 +1839,12 @@ button[disabled][type="submit"] {
 			ciutadaTipusIdentificacio: $form.find('#pas1_tipusIdentificacio').val() || '',
 			ciutadaNif: $form.find('#pas1_identificacion').val() || '',
 			ciutadaNom: $form.find('#pas1_nom').val() || '',
-			ciutadaLlinatges: $form.find('#pas1_llinatges').val() || '',
+			ciutadaLlinatge1: $form.find('#pas1_llinatge1').val() || '',
+			ciutadaLlinatge2: $form.find('#pas1_llinatge2').val() || '',
 			representant: $form.find('#representant').is(':checked') ? 'true' : 'false',
 			representantNom: $form.find('#pas1_representant_nom').val() || '',
-			representantLlinatges: $form.find('#pas1_representant_llinatges').val() || '',
+			representantLlinatge1: $form.find('#pas1_representant_llinatge1').val() || '',
+			representantLlinatge2: $form.find('#pas1_representant_llinatge2').val() || '',
 			representantTipusIdentificacio: $form.find('#pas1_representant_tipusIdentificacio').val() || '',
 			representantIdentificacio: $form.find('#pas1_representant_identificacion').val() || '',
 			procediment: $form.find('#procediment-id').val() || '',

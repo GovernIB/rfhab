@@ -26,13 +26,14 @@ public class UrlUtils {
             boolean checkSameReferer) {
         HttpSession session = request.getSession();
         Object refererUrl = session.getAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
+        log.info("refererUrl: " + refererUrl);
         session.removeAttribute(Constants.REFERER_SESSION_ATTRIBUTE);
         String actualReferer = request.getHeader("referer") != null ? request.getHeader("referer") : "";
         String redirectUrl = "";
         try {
             // Comprovar si no tenc referer o si el referer és igual a la pàgina on estic
             if (refererUrl == null || refererUrl.toString().isEmpty() || refererUrl.toString().equals("/")
-                    || new URL(refererUrl.toString()).getPath().isEmpty()
+                    || new URL(refererUrl.toString()).getPath().replaceFirst("/", "").isEmpty()
                     || (checkSameReferer && StringUtils.strip(refererUrl.toString(), "/")
                             .equals(StringUtils.strip(actualReferer, "/")))) {
                 redirectUrl = defaultRedirect;

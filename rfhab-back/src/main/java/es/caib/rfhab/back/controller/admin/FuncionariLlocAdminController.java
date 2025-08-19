@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.fundaciobit.genapp.common.StringKeyValue;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.i18n.I18NValidationException;
@@ -46,9 +48,15 @@ import es.caib.rfhab.persistence.FuncionariLlocJPA;
  * @author jpou
  */
 @Controller
-@RequestMapping(value = "/admin/funcionarilloc")
+@RequestMapping(value = FuncionariLlocAdminController.CONTEXTWEB)
 @SessionAttributes(types = { FuncionariLlocForm.class, FuncionariLlocFilterForm.class })
 public class FuncionariLlocAdminController extends FuncionariLlocController {
+
+	private static final String LLOC_ID_SESSION_ATTRIBUTE_NAME = "LlocId";
+
+	private static final String FUNCIONARI_ID_SESSION_ATTRIBUTE_NAME = "FuncionariId";
+
+	public static final String CONTEXTWEB = "/admin/funcionarilloc";
 
 	@EJB(mappedName = HistoricLlocLogicaService.JNDI_NAME)
 	protected HistoricLlocLogicaService historicLlocLogicaEjb;
@@ -101,16 +109,24 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 
 		FuncionariLlocForm funcionariLlocForm = super.getFuncionariLlocForm(_jpa, __isView, request, mav);
 
+		HttpSession currentSession = request.getSession();
 		if (funcionariLlocForm.isNou()) {
 			FuncionariLlocJPA funcionariLloc = funcionariLlocForm.getFuncionariLloc();
-			if (request.getSession() != null && request.getSession().getAttribute("LlocId") != null) {
-				funcionariLloc.setLlocID((long) request.getSession().getAttribute("LlocId"));
-				funcionariLlocForm.addReadOnlyField(LLOCID);
+			if (currentSession != null) {
+				Object llocIdAttribute = currentSession.getAttribute(LLOC_ID_SESSION_ATTRIBUTE_NAME);
+				if (llocIdAttribute != null) {
+					funcionariLloc.setLlocID((long) llocIdAttribute);
+					funcionariLlocForm.addReadOnlyField(LLOCID);
+				}
 			}
 
-			if (request.getSession() != null && request.getSession().getAttribute("FuncionariId") != null) {
-				funcionariLloc.setFuncionariID((long) request.getSession().getAttribute("FuncionariId"));
-				funcionariLlocForm.addReadOnlyField(FUNCIONARIID);
+			if (currentSession != null) {
+				Object funcionariIdAttribute = currentSession.getAttribute(FUNCIONARI_ID_SESSION_ATTRIBUTE_NAME);
+				if (funcionariIdAttribute != null) {
+					funcionariLloc.setFuncionariID(
+							(long) funcionariIdAttribute);
+					funcionariLlocForm.addReadOnlyField(FUNCIONARIID);
+				}
 			}
 
 			funcionariLloc.setUsuariID(LoginInfo.getInstance().getUsuariPersona().getUsuariID());
@@ -124,7 +140,7 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 		funcionariLlocForm.addReadOnlyField(DATACREACIO);
 
 		funcionariLlocForm.setTitleCode("funcionarilloc.titol");
-		request.getSession().setAttribute(Constants.REFERER_SESSION_ATTRIBUTE, request.getHeader("referer"));
+		currentSession.setAttribute(Constants.REFERER_SESSION_ATTRIBUTE, request.getHeader("referer"));
 
 		return funcionariLlocForm;
 	}
@@ -147,15 +163,15 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 
 	@RequestMapping(value = "/assignarfuncionari/{funcionariId}", method = RequestMethod.GET)
 	public String assignarFuncionariLloc(HttpServletRequest request, @PathVariable("funcionariId") Long funcionariId) {
-		request.getSession().setAttribute("FuncionariId", funcionariId);
-		return "redirect:/admin/funcionarilloc/new";
+		request.getSession().setAttribute(FUNCIONARI_ID_SESSION_ATTRIBUTE_NAME, funcionariId);
+		return "redirect:" + FuncionariLlocAdminController.CONTEXTWEB + "/new";
 	}
 
 	@RequestMapping(value = "/assignar/{llocId}", method = RequestMethod.GET)
 	public String assignarFuncionari(HttpServletRequest request, @PathVariable("llocId") Long llocId) {
 
-		request.getSession().setAttribute("LlocId", llocId);
-		return "redirect:/admin/funcionarilloc/new";
+		request.getSession().setAttribute(LLOC_ID_SESSION_ATTRIBUTE_NAME, llocId);
+		return "redirect:" + FuncionariLlocAdminController.CONTEXTWEB + "/new";
 	}
 
 	@RequestMapping(value = "/treure/{llocId}", method = RequestMethod.GET)
@@ -173,7 +189,9 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 				LoginInfo.getInstance().getUsuariPersona().getUsuariID(), false, false);
 
 		createMessageSuccess(request, "success.modification", llocId);// funcionari.donaralta.exit
-		return getRedirectWhenCreated(request, null);
+		FuncionariLlocJPA funcionariLlocFake = new FuncionariLlocJPA();
+		funcionariLlocFake.setLlocID(llocId);
+		return getRedirectWhenCreated(request, new FuncionariLlocForm(funcionariLlocFake, false));
 	}
 
 	@Override
@@ -215,6 +233,22 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 
 	@Override
 	public String getRedirectWhenCreated(HttpServletRequest request, FuncionariLlocForm funcionariLlocForm) {
+		if (funcionariLlocForm != null) {
+			FuncionariLlocJPA funcionariLloc = funcionariLlocForm.getFuncionariLloc();
+			if (funcionariLloc != null) {
+				Long funcionariId = funcionariLloc.getFuncionariID();
+				Long llocId = funcionariLloc.getLlocID();
+				if (funcionariId != null) {
+					request.getSession().setAttribute(FUNCIONARI_ID_SESSION_ATTRIBUTE_NAME, funcionariId);
+				}
+				if (llocId != null) {
+					request.getSession().setAttribute(LLOC_ID_SESSION_ATTRIBUTE_NAME, llocId);
+				}
+
+				return "redirect:" + FuncionariLlocAdminController.CONTEXTWEB + "/new";
+			}
+		}
+
 		return UrlUtils.getRefererRedirect(request, super.getRedirectWhenCreated(request, funcionariLlocForm), false);
 	}
 

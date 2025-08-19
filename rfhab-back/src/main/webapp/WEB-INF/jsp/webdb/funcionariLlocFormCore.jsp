@@ -58,6 +58,11 @@
                   <c:set var="containEmptyValue"  value="true" />
                 </c:if>
             </c:forEach>
+          <script>
+              $(document).ready(function() {
+                  $('#funcionariLloc_funcionariID').select2();
+              });
+          </script>
           </form:select>
           </c:if>
            </td>

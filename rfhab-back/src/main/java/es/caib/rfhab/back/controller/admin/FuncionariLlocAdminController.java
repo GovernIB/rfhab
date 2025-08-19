@@ -1,6 +1,7 @@
 package es.caib.rfhab.back.controller.admin;
 
 import java.lang.reflect.Field;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.List;
@@ -114,11 +115,15 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 
 			funcionariLloc.setUsuariID(LoginInfo.getInstance().getUsuariPersona().getUsuariID());
 			funcionariLloc.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+			funcionariLloc.setDataInici(new Date(System.currentTimeMillis()));
+			funcionariLlocForm.addHiddenField(FuncionariLlocFields.DATACREACIO);
+			funcionariLlocForm.addHiddenField(FuncionariLlocFields.DATAFI);
 		}
 
 		funcionariLlocForm.addHiddenField(USUARIID);
 		funcionariLlocForm.addReadOnlyField(DATACREACIO);
 
+		funcionariLlocForm.setTitleCode("funcionarilloc.titol");
 		request.getSession().setAttribute(Constants.REFERER_SESSION_ATTRIBUTE, request.getHeader("referer"));
 
 		return funcionariLlocForm;

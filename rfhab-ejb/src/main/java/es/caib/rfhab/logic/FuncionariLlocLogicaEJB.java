@@ -18,9 +18,7 @@ import es.caib.rfhab.ejb.FuncionariLlocEJB;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.FuncionariLloc;
 import es.caib.rfhab.model.entity.Lloc;
-import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.FuncionariLlocFields;
-import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.persistence.FuncionariLlocJPA;
 import es.caib.rfhab.persistence.HistoricJPA;
 import es.caib.rfhab.persistence.HistoricLlocJPA;
@@ -156,7 +154,6 @@ public class FuncionariLlocLogicaEJB extends FuncionariLlocEJB implements Funcio
 		}
 
 		// no permetre que un funcionari estigui assignat a més d'un lloc de feina
-		// (TODO:limitar llistat de funcionaris a funcionarilloc)
 		if (isFuncionariAssignat(funcionariID)) {
 			throw new I18NValidationException(
 					java.util.Collections.singletonList(new I18NFieldError(FuncionariLlocFields.FUNCIONARIID,
@@ -207,5 +204,11 @@ public class FuncionariLlocLogicaEJB extends FuncionariLlocEJB implements Funcio
 		historicLogicaEjb.create(historicFuncionari, historicLlocObservacions);
 
 		return funcionariLlocJPA;
+	}
+
+	public List<FuncionariLloc> getFuncionariLlocsActualmentNoAssignats(long funcionariID, long llocID) throws I18NException {
+		return select(Where
+				.AND(FuncionariLlocFields.FUNCIONARIID.equal(funcionariID), FuncionariLlocFields.LLOCID.equal(llocID),
+						FuncionariLlocFields.DATAFI.isNotNull()));
 	}
 }

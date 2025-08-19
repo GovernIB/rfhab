@@ -7,8 +7,10 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
+import org.fundaciobit.genapp.common.StringKeyValue;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.i18n.I18NValidationException;
+import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.web.form.AdditionalButton;
 import org.fundaciobit.genapp.common.web.form.AdditionalButtonStyle;
 import org.springframework.stereotype.Controller;
@@ -34,6 +36,8 @@ import es.caib.rfhab.logic.FuncionariLogicaService;
 import es.caib.rfhab.logic.HistoricLlocLogicaService;
 import es.caib.rfhab.logic.HistoricLogicaService;
 import es.caib.rfhab.logic.LlocLogicaService;
+import es.caib.rfhab.model.fields.FuncionariFields;
+import es.caib.rfhab.model.fields.FuncionariLlocFields;
 import es.caib.rfhab.persistence.FuncionariLlocJPA;
 
 /**
@@ -165,6 +169,28 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 
 		createMessageSuccess(request, "success.modification", llocId);// funcionari.donaralta.exit
 		return getRedirectWhenCreated(request, null);
+	}
+
+	@Override
+	public List<StringKeyValue> getReferenceListForFuncionariID(HttpServletRequest request,
+			ModelAndView mav, Where where) throws I18NException {
+		LoginInfo loginInfo = LoginInfo.getInstance();
+		Long entitatActual = loginInfo.getEntitatIDActual();
+		Where funcionarisFromEntitatActualWhere = FuncionariFields.ENTITATID.equal(entitatActual);
+
+		List<StringKeyValue> funcionarisList = funcionariRefList.getReferenceList(FuncionariFields.FUNCIONARIID,
+				Where.AND(where, funcionarisFromEntitatActualWhere));
+
+		funcionarisList.removeIf(funcionari -> {
+			try {
+				return funcionariLlocEjb.isFuncionariAssignat(Long.parseLong(funcionari.getKey()));
+			} catch (I18NException e) {
+				log.error("Error checking if funcionari is assigned", e);
+				return false;
+			}
+		});
+
+		return funcionarisList;
 	}
 
 	@RequestMapping(value = "/tornar", method = RequestMethod.GET)

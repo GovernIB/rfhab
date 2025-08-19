@@ -269,7 +269,10 @@ public class LlocAdminController extends LlocController {
 					"genapp.save",
 					jsOpenModalGuardar,
 					AdditionalButtonStyle.PRIMARY);
-			llocForm.addAdditionalButton(guardarButton);
+			// no el volem veure al mode de consulta
+			if (!__isView) {
+				llocForm.addAdditionalButton(guardarButton);
+			}
 			llocForm.setSaveButtonVisible(false);
 
 			// botons donar de baixa/alta (no els volem veure al mode consulta)
@@ -352,8 +355,6 @@ public class LlocAdminController extends LlocController {
 		// només el volem veure al mode consulta
 		if (!__isView) {
 			llocForm.addHiddenField(LlocFields.DATABAIXA);
-		} else {
-			llocForm.setSaveButtonVisible(false);
 		}
 
 		llocForm.setCancelButtonVisible(false);

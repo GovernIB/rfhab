@@ -173,7 +173,17 @@ public class FuncionariLlocLogicaEJB extends FuncionariLlocEJB implements Funcio
 		// Cream assignació
 		log.info("Validacions correctes, creant assignació de funcionari " + funcionariID
 				+ " a lloc " + llocID);
-		FuncionariLlocJPA funcionariLlocJPA = (FuncionariLlocJPA) create(funcionariLloc);
+		// he de mirar si s'està assignant un funcionari que en el passat ja va ser
+		// assignat i desassignat
+		List<FuncionariLloc> funcionariLlocAnteriors = getFuncionariLlocsActualmentNoAssignats(funcionariID, llocID);
+		FuncionariLlocJPA funcionariLlocJPA;
+		if (funcionariLlocAnteriors != null && funcionariLlocAnteriors.size() > 0) {
+			funcionariLloc.setDataFi(null);
+			funcionariLloc.setFuncionarillocID(funcionariLlocAnteriors.get(0).getFuncionarillocID());
+			funcionariLlocJPA = (FuncionariLlocJPA) update(funcionariLloc);
+		} else {
+			funcionariLlocJPA = (FuncionariLlocJPA) create(funcionariLloc);
+		}
 
 		// Cream històrics
 		log.info("Creant històrics de funcionari i lloc");

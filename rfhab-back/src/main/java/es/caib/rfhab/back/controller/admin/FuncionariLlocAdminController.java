@@ -1,6 +1,10 @@
 package es.caib.rfhab.back.controller.admin;
 
+import java.lang.reflect.Field;
 import java.sql.Timestamp;
+import java.util.Iterator;
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 import org.fundaciobit.genapp.common.i18n.I18NException;
@@ -8,12 +12,15 @@ import org.fundaciobit.genapp.common.i18n.I18NValidationException;
 import org.fundaciobit.genapp.common.web.form.AdditionalButton;
 import org.fundaciobit.genapp.common.web.form.AdditionalButtonStyle;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
-
 import es.caib.rfhab.back.controller.webdb.FuncionariLlocController;
 import es.caib.rfhab.back.form.webdb.FuncionariLlocFilterForm;
 import es.caib.rfhab.back.form.webdb.FuncionariLlocForm;
@@ -178,5 +185,44 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 	@Override
 	public String getRedirectWhenCreated(HttpServletRequest request, FuncionariLlocForm funcionariLlocForm) {
 		return UrlUtils.getRefererRedirect(request, super.getRedirectWhenCreated(request, funcionariLlocForm), false);
+	}
+
+	@Override
+	public void postValidate(HttpServletRequest request, FuncionariLlocForm funcionariLlocForm, BindingResult result)
+			throws I18NException {
+
+		if (result.hasFieldErrors(get(FuncionariLlocFields.FUNCIONARIID))
+				&& result.hasFieldErrors(get(FuncionariLlocFields.LLOCID))) {
+			removeFieldErrors(result, get(FuncionariLlocFields.FUNCIONARIID));
+			removeFieldErrors(result, get(FuncionariLlocFields.LLOCID));
+		}
+	}
+
+	public void removeFieldErrors(BindingResult bindingResult, String fieldName) {
+		if (!(bindingResult instanceof BeanPropertyBindingResult)) {
+			throw new IllegalArgumentException("Només funciona amb BeanPropertyBindingResult");
+		}
+		BeanPropertyBindingResult br = (BeanPropertyBindingResult) bindingResult;
+		try {
+			Field errorsField = BeanPropertyBindingResult.class.getSuperclass().getSuperclass()
+					.getDeclaredField("errors"); // està definit a AbstractBindingResult
+			errorsField.setAccessible(true);
+
+			List<ObjectError> errors = (List<ObjectError>) errorsField.get(br);
+
+			Iterator<ObjectError> it = errors.iterator();
+			while (it.hasNext()) {
+				ObjectError err = it.next();
+				if (err instanceof FieldError) {
+					FieldError fe = (FieldError) err;
+					if (fe.getField().equals(fieldName)) {
+						it.remove(); // elimina el error
+					}
+				}
+			}
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			log.error("No se pudo acceder a los errores internos: " + e.getMessage(), e);
+			throw new RuntimeException("No se pudo acceder a los errores internos: " + e.getMessage(), e);
+		}
 	}
 }

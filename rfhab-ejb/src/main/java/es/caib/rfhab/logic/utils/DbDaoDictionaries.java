@@ -2,9 +2,7 @@ package es.caib.rfhab.logic.utils;
 
 import java.util.Map;
 
-import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.fields.FuncionariFields;
-import es.caib.rfhab.model.fields.HistoricFields;
 import es.caib.rfhab.model.fields.HistoricLlocFields;
 import es.caib.rfhab.model.fields.LlocFields;
 
@@ -12,10 +10,11 @@ public final class DbDaoDictionaries {
 
     // TODO: que les keys siguin els noms de les propietats dels DAOs, extrets amb
     // reflexió
-    // HistoricLloc - HistoricLlocDAO
+    // HistoricLloc (camp observacions) - HistoricLlocDAO
     public static final Map<String, String> HistoricLloc = Map.ofEntries(
             Map.entry("llocID", HistoricLlocFields.LLOCID.javaName),
             Map.entry("codiLloc", LlocFields.CODILLOC.javaName),
+            Map.entry("codiLlocPropi", LlocFields.CODILLOCPROPI.javaName),
             Map.entry("nom", LlocFields.NOM.javaName),
             Map.entry("unitatID", LlocFields.UNITATID.javaName),
             Map.entry("personalOamr", LlocFields.PERSONALOAMR.javaName),

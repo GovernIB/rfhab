@@ -21,6 +21,7 @@ public class HistoricLlocDAO {
 
 	private Long llocID = null;
 	private String codiLloc = null;
+	private String codiLlocPropi = null;
 	private String nom = null;
 	private Long unitatID = null;
 	private Integer personalOamr = null;
@@ -48,6 +49,14 @@ public class HistoricLlocDAO {
 
 	public void setCodiLloc(String codiLloc) {
 		this.codiLloc = codiLloc;
+	}
+
+	public String getCodiLlocPropi() {
+		return codiLlocPropi;
+	}
+
+	public void setCodiLlocPropi(String codiLlocPropi) {
+		this.codiLlocPropi = codiLlocPropi;
 	}
 
 	public String getNom() {
@@ -138,6 +147,7 @@ public class HistoricLlocDAO {
 	public HistoricLlocDAO(Lloc lloc) {
 		this.llocID = lloc.getLlocID();
 		this.codiLloc = lloc.getCodiLloc();
+		this.codiLlocPropi = lloc.getCodiLlocPropi();
 		this.nom = lloc.getNom();
 		this.unitatID = lloc.getUnitatID();
 		this.personalOamr = lloc.getPersonalOamr();

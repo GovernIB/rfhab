@@ -226,6 +226,31 @@ public class LlocAdminController extends LlocController {
 					AdditionalButtonStyle.SUCCESS);
 			llocForm.addAdditionalButton(donarDeAltaButton);
 			llocForm.addReadOnlyField(LlocFields.DATAALTA);
+
+			// CODI LLOC PROPI DE RFHAB
+			int nouNumber = 1;
+			Object maxLlocCodiPropi = null;
+			try {
+				maxLlocCodiPropi = llocLogicaEjb.getMaxLlocCodiPropi();
+			} catch (SecurityException e) {
+				throw new I18NException(e.getMessage());
+			} catch (NoSuchFieldException e) {
+				throw new I18NException(e.getMessage());
+			}
+			if (maxLlocCodiPropi != null) {
+				// Extreu la part numèrica de la cadena
+				String numericPart = maxLlocCodiPropi.toString()
+						.substring(Constants.LLOC_CODILLOCPROPI_PLACEHOLDER_PREFIX.length());
+				// Converteix la part numèrica a un enter, suma 1 i torna a formar la cadena
+				nouNumber = Integer.parseInt(numericPart);
+				nouNumber += 1;
+			}
+			// Format numèric amb el mateix nombre de dígits que l'original
+			String updatedNumericPart = String
+					.format("%0" + Constants.LLOC_CODILLOCPROPI_PLACEHOLDER_NUMERICPART.length() + "d", nouNumber);
+			// Reconstrueix la cadena amb el prefix i el nou valor numèric
+			String nouLlocCodiPropi = Constants.LLOC_CODILLOCPROPI_PLACEHOLDER_PREFIX + updatedNumericPart;
+			lloc.setCodiLlocPropi(nouLlocCodiPropi);
 		} else {
 			// Pipella Funcionari assignat- Obtenir tots els funcionaris relacionats amb el
 			// lloc (actuals, sense data fi)
@@ -338,6 +363,7 @@ public class LlocAdminController extends LlocController {
 				mav.addObject("historic", historicCanvis);
 			}
 		}
+		mav.addObject("LLOC_CODILLOCPROPI_PLACEHOLDER", Constants.LLOC_CODILLOCPROPI_PLACEHOLDER);
 
 		mav.addObject("donatdeBaixa", donatdeBaixa);
 		mav.addObject("lloc", lloc);
@@ -346,6 +372,8 @@ public class LlocAdminController extends LlocController {
 				getContextWeb() + "/tornar", AdditionalButtonStyle.SECONDARY));
 
 		llocForm.addReadOnlyField(LlocFields.ENTITATID);
+		llocForm.addReadOnlyField(LlocFields.CODILLOCPROPI);
+		// llocForm.addHiddenField(LlocFields.CODILLOCPROPI);//TODO
 		llocForm.addHiddenField(LlocFields.DATACREACIO);
 		// només el volem veure al mode consulta
 		if (!__isView) {

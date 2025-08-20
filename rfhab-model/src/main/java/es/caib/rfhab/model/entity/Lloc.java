@@ -32,6 +32,9 @@ public interface Lloc extends org.fundaciobit.genapp.common.IGenAppEntity {
 	public java.lang.String getObservacions();
 	public void setObservacions(java.lang.String _observacions_);
 
+	public java.lang.String getCodiLlocPropi();
+	public void setCodiLlocPropi(java.lang.String _codiLlocPropi_);
+
 
 
   // ======================================

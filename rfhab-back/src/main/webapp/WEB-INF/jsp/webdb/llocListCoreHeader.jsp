@@ -42,6 +42,9 @@
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.OBSERVACIONS)}">
         <th>${rfh:getSortIcons(__theFilterForm,LlocFields.OBSERVACIONS)}</th>
         </c:if>
+        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.CODILLOCPROPI)}">
+        <th>${rfh:getSortIcons(__theFilterForm,LlocFields.CODILLOCPROPI)}</th>
+        </c:if>
 
 
         <c:forEach var="__entry" items="${__theFilterForm.additionalFields}">

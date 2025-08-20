@@ -40,9 +40,18 @@ public interface Constants {
   public static final String FUNCIONARI_NUMERO_PLACEHOLDER = FUNCIONARI_NUMERO_PLACEHOLDER_PREFIX
       + FUNCIONARI_NUMERO_PLACEHOLDER_NUMERICPART;
   public static final String SQL_LIKE_ESCAPE_PATTERN = "^";
-  public static final String SQL_NUMERO_PATTERN = FUNCIONARI_NUMERO_PLACEHOLDER
+  public static final String SQL_FUNCIONARI_NUMERO_PATTERN = FUNCIONARI_NUMERO_PLACEHOLDER
       .replaceAll("_", SQL_LIKE_ESCAPE_PATTERN + "_")
       .replaceAll("X", "_");
+
+  public static final String LLOC_CODILLOCPROPI_PLACEHOLDER_PREFIX = "LF";
+  public static final String LLOC_CODILLOCPROPI_PLACEHOLDER_NUMERICPART = "XXXXXX";
+  public static final String LLOC_CODILLOCPROPI_PLACEHOLDER = LLOC_CODILLOCPROPI_PLACEHOLDER_PREFIX
+      + LLOC_CODILLOCPROPI_PLACEHOLDER_NUMERICPART;
+  public static final String SQL_LLOC_CODILLOCPROPI_PATTERN = LLOC_CODILLOCPROPI_PLACEHOLDER
+      .replaceAll("_", SQL_LIKE_ESCAPE_PATTERN + "_")
+      .replaceAll("X", "_");
+
   public static final String REFERER_SESSION_ATTRIBUTE = "referer";
 
   // PLUGIN ARXIU

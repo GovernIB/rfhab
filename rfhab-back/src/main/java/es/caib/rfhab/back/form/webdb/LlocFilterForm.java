@@ -197,6 +197,17 @@ public class LlocFilterForm extends RFHabBaseFilterForm implements LlocFields {
   }
 
 
+  private java.lang.String codiLlocPropi;
+
+  public java.lang.String getCodiLlocPropi() {
+    return this.codiLlocPropi;
+  }
+
+  public void setCodiLlocPropi(java.lang.String codiLlocPropi) {
+    this.codiLlocPropi = codiLlocPropi;
+  }
+
+
   public LlocFilterForm() {
   }
   
@@ -218,6 +229,7 @@ public class LlocFilterForm extends RFHabBaseFilterForm implements LlocFields {
     this.dataBaixaDesde = __toClone.dataBaixaDesde;
     this.dataBaixaFins = __toClone.dataBaixaFins;
     this.observacions = __toClone.observacions;
+    this.codiLlocPropi = __toClone.codiLlocPropi;
     this.mapOfEntitatForEntitatID = __toClone.mapOfEntitatForEntitatID;
     this.mapOfUnitatForUnitatID = __toClone.mapOfUnitatForUnitatID;
     this.mapOfValuesForPersonalOamr = __toClone.mapOfValuesForPersonalOamr;

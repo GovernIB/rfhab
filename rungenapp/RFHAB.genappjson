@@ -2838,6 +2838,33 @@
             "webtype": 2
           },
           "foreignKeys": []
+        },
+        {
+          "unique": "rfh_lloc_codillocpropi_uk",
+          "isAutoIncrement": false,
+          "sqlName": "codillocpropi",
+          "sqlType": 12,
+          "size": 50,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "codi lloc propi",
+            "es": "Código Puesto propio"
+          },
+          "javaName": "codiLlocPropi",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "minAllowedValue": "^LF\\d{6}$",
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
         }
       ]
     },

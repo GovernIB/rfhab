@@ -18,6 +18,7 @@ public class LlocBean implements Lloc {
 	java.sql.Timestamp dataCreacio;
 	java.sql.Timestamp dataBaixa;
 	java.lang.String observacions;
+	java.lang.String codiLlocPropi;
 
 
   /** Constructor Buit */
@@ -25,7 +26,7 @@ public class LlocBean implements Lloc {
   }
 
   /** Constructor amb tots els camps  */
-  public LlocBean(long llocID , java.lang.String codiLloc , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataalta , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , java.lang.String observacions) {
+  public LlocBean(long llocID , java.lang.String codiLloc , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataalta , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , java.lang.String observacions , java.lang.String codiLlocPropi) {
     this.llocID=llocID;
     this.codiLloc=codiLloc;
     this.nom=nom;
@@ -36,9 +37,10 @@ public class LlocBean implements Lloc {
     this.dataCreacio=dataCreacio;
     this.dataBaixa=dataBaixa;
     this.observacions=observacions;
+    this.codiLlocPropi=codiLlocPropi;
 }
   /** Constructor sense valors autoincrementals */
-  public LlocBean(java.lang.String codiLloc , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataalta , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , java.lang.String observacions) {
+  public LlocBean(java.lang.String codiLloc , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataalta , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , java.lang.String observacions , java.lang.String codiLlocPropi) {
     this.codiLloc=codiLloc;
     this.nom=nom;
     this.entitatID=entitatID;
@@ -48,9 +50,10 @@ public class LlocBean implements Lloc {
     this.dataCreacio=dataCreacio;
     this.dataBaixa=dataBaixa;
     this.observacions=observacions;
+    this.codiLlocPropi=codiLlocPropi;
 }
   /** Constructor dels valors Not Null */
-  public LlocBean(long llocID , java.lang.String codiLloc , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataCreacio) {
+  public LlocBean(long llocID , java.lang.String codiLloc , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataCreacio , java.lang.String codiLlocPropi) {
     this.llocID=llocID;
     this.codiLloc=codiLloc;
     this.nom=nom;
@@ -58,6 +61,7 @@ public class LlocBean implements Lloc {
     this.unitatID=unitatID;
     this.personalOamr=personalOamr;
     this.dataCreacio=dataCreacio;
+    this.codiLlocPropi=codiLlocPropi;
 }
   public LlocBean(Lloc __bean) {
     this.setLlocID(__bean.getLlocID());
@@ -70,6 +74,7 @@ public class LlocBean implements Lloc {
     this.setDataCreacio(__bean.getDataCreacio());
     this.setDataBaixa(__bean.getDataBaixa());
     this.setObservacions(__bean.getObservacions());
+    this.setCodiLlocPropi(__bean.getCodiLlocPropi());
 	}
 
 	public long getLlocID() {
@@ -142,6 +147,13 @@ public class LlocBean implements Lloc {
 		this.observacions = _observacions_;
 	};
 
+	public java.lang.String getCodiLlocPropi() {
+		return(codiLlocPropi);
+	};
+	public void setCodiLlocPropi(java.lang.String _codiLlocPropi_) {
+		this.codiLlocPropi = _codiLlocPropi_;
+	};
+
 
 
   // ======================================
@@ -159,6 +171,7 @@ public class LlocBean implements Lloc {
     __tmp.setDataCreacio(__bean.getDataCreacio());
     __tmp.setDataBaixa(__bean.getDataBaixa());
     __tmp.setObservacions(__bean.getObservacions());
+    __tmp.setCodiLlocPropi(__bean.getCodiLlocPropi());
 		return __tmp;
 	}
 

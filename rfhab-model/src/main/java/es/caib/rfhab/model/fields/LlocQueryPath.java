@@ -51,6 +51,10 @@ public class LlocQueryPath extends org.fundaciobit.genapp.common.query.QueryPath
     return new StringField(getQueryPath(), LlocFields.OBSERVACIONS);
   }
 
+  public StringField CODILLOCPROPI() {
+    return new StringField(getQueryPath(), LlocFields.CODILLOCPROPI);
+  }
+
 
 
   @Override

@@ -10,9 +10,12 @@ import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.query.Where;
 
+import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.ejb.LlocEJB;
 import es.caib.rfhab.ejb.LlocRolService;
 import es.caib.rfhab.ejb.RolService;
@@ -128,7 +131,7 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 
 			StringBuilder customQuery = new StringBuilder(
 					"Select fl.funcionariID, l.llocID, l.nom, l.unitatID, l.codiLloc, "
-							+ "l.personalOamr, l.dataAlta, l.dataCreacio, l.dataBaixa, l.observacions FROM FuncionariLlocJPA as fl "
+							+ "l.personalOamr, l.dataAlta, l.dataCreacio, l.dataBaixa, l.observacions, l.codillocpropi FROM FuncionariLlocJPA as fl "
 							+ " inner join LlocJPA as l on l.llocID = fl.llocID "
 							+ " where (fl.dataInici < :avui or fl.dataInici is null) "
 							+ " and (fl.dataFi > :avui or fl.dataFi is null) " + " and l.entitatID = :entitatId");
@@ -143,7 +146,7 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 
 				LlocJPA llocJPA = new LlocJPA((long) obj[1], (String) obj[4], (String) obj[2], (long) entitatId,
 						(long) obj[3], (int) obj[5], (Timestamp) obj[6], (Timestamp) obj[7], (Timestamp) obj[8],
-						(String) obj[9]);
+						(String) obj[9], (String) obj[10]);
 
 				llocsOcupats.put((Long) obj[0], llocJPA);
 			}
@@ -366,5 +369,29 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 		lloc.setDataBaixa(null);
 		lloc.setDataalta(new Timestamp(System.currentTimeMillis()));
 		return update(lloc);
+	}
+
+	@Override
+	@PermitAll
+	public Object getMaxLlocCodiPropi() throws SecurityException, NoSuchFieldException {
+
+		StringBuilder queryString = new StringBuilder(
+				"select max(rf." + LlocFields.CODILLOCPROPI.javaName + ") from " + LlocJPA.class.getName()
+						+ " rf where rf." + LlocFields.CODILLOCPROPI.javaName + " like '"
+						+ Constants.SQL_LLOC_CODILLOCPROPI_PATTERN
+						+ "' escape '" + Constants.SQL_LIKE_ESCAPE_PATTERN + "'");
+		Class<?> codiPropiClass = LlocFields.CODILLOCPROPI.getClass().getField("javaName").getType();// TODO:comentar a
+																										// anadal que
+																										// getJavaClass
+																										// no
+																										// funciona
+																										// perquè
+																										// javaClass és
+																										// javaName
+		TypedQuery<?> query = getEntityManager().createQuery(queryString.toString(),
+				codiPropiClass);
+		List<?> resultats = query.getResultList();
+
+		return (resultats != null && !resultats.isEmpty()) ? (resultats.get(0)) : null;
 	}
 }

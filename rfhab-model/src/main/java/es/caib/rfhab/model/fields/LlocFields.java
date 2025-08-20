@@ -22,6 +22,7 @@ public interface LlocFields extends java.io.Serializable {
 	 public static final TimestampField DATACREACIO = new TimestampField(_TABLE_MODEL, "dataCreacio", "datacreacio");
 	 public static final TimestampField DATABAIXA = new TimestampField(_TABLE_MODEL, "dataBaixa", "databaixa");
 	 public static final StringField OBSERVACIONS = new StringField(_TABLE_MODEL, "observacions", "observacions");
+	 public static final StringField CODILLOCPROPI = new StringField(_TABLE_MODEL, "codiLlocPropi", "codillocpropi");
 
 
   public static final Field<?>[] ALL_LLOC_FIELDS = {
@@ -34,7 +35,8 @@ public interface LlocFields extends java.io.Serializable {
     DATAALTA,
     DATACREACIO,
     DATABAIXA,
-    OBSERVACIONS
+    OBSERVACIONS,
+    CODILLOCPROPI
   };
 
 

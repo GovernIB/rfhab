@@ -54,4 +54,6 @@ public interface LlocLogicaService extends LlocService {
 			throws I18NException;
 
 	public Lloc donarDeAltaAndHistory(java.lang.Long llocID, String numeroCai, long usuariId) throws I18NException;
+
+	public Object getMaxLlocCodiPropi() throws SecurityException, NoSuchFieldException;
 }

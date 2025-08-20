@@ -290,6 +290,7 @@
 					function(event) {
 
 						document.getElementById("lloc.codiLloc").placeholder = "PFH_XXXXXXX";
+						document.getElementById("lloc.codiLlocPropi").placeholder = '${LLOC_CODILLOCPROPI_PLACEHOLDER}';
 
 						if ("true" != "${isView}") {
 

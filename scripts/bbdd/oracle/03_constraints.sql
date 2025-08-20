@@ -181,6 +181,9 @@
     alter table rfh_lloc 
        add constraint rfh_lloc_codilloc_uk unique (codilloc);
 
+    alter table rfh_lloc 
+       add constraint rfh_lloc_codillocpropi_uk unique (codillocpropi);
+
     alter table rfh_usuari 
        add constraint rfh_usuari_username_uk unique (username);
 

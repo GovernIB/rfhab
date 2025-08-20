@@ -63,6 +63,9 @@ public class LlocJPA implements Lloc {
     @Type(type = "org.hibernate.type.TextType")
     java.lang.String observacions;
 
+    @Column(name="codillocpropi",nullable = false,unique = true,length = 50)
+    java.lang.String codiLlocPropi;
+
 
 
   /** Constructor Buit */
@@ -70,7 +73,7 @@ public class LlocJPA implements Lloc {
   }
 
   /** Constructor amb tots els camps  */
-  public LlocJPA(long llocID , java.lang.String codiLloc , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataalta , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , java.lang.String observacions) {
+  public LlocJPA(long llocID , java.lang.String codiLloc , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataalta , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , java.lang.String observacions , java.lang.String codiLlocPropi) {
     this.llocID=llocID;
     this.codiLloc=codiLloc;
     this.nom=nom;
@@ -81,9 +84,10 @@ public class LlocJPA implements Lloc {
     this.dataCreacio=dataCreacio;
     this.dataBaixa=dataBaixa;
     this.observacions=observacions;
+    this.codiLlocPropi=codiLlocPropi;
 }
   /** Constructor sense valors autoincrementals */
-  public LlocJPA(java.lang.String codiLloc , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataalta , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , java.lang.String observacions) {
+  public LlocJPA(java.lang.String codiLloc , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataalta , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , java.lang.String observacions , java.lang.String codiLlocPropi) {
     this.codiLloc=codiLloc;
     this.nom=nom;
     this.entitatID=entitatID;
@@ -93,9 +97,10 @@ public class LlocJPA implements Lloc {
     this.dataCreacio=dataCreacio;
     this.dataBaixa=dataBaixa;
     this.observacions=observacions;
+    this.codiLlocPropi=codiLlocPropi;
 }
   /** Constructor dels valors Not Null */
-  public LlocJPA(long llocID , java.lang.String codiLloc , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataCreacio) {
+  public LlocJPA(long llocID , java.lang.String codiLloc , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataCreacio , java.lang.String codiLlocPropi) {
     this.llocID=llocID;
     this.codiLloc=codiLloc;
     this.nom=nom;
@@ -103,6 +108,7 @@ public class LlocJPA implements Lloc {
     this.unitatID=unitatID;
     this.personalOamr=personalOamr;
     this.dataCreacio=dataCreacio;
+    this.codiLlocPropi=codiLlocPropi;
 }
   public LlocJPA(Lloc __bean) {
     this.setLlocID(__bean.getLlocID());
@@ -115,6 +121,7 @@ public class LlocJPA implements Lloc {
     this.setDataCreacio(__bean.getDataCreacio());
     this.setDataBaixa(__bean.getDataBaixa());
     this.setObservacions(__bean.getObservacions());
+    this.setCodiLlocPropi(__bean.getCodiLlocPropi());
 	}
 
 	public long getLlocID() {
@@ -185,6 +192,13 @@ public class LlocJPA implements Lloc {
 	};
 	public void setObservacions(java.lang.String _observacions_) {
 		this.observacions = _observacions_;
+	};
+
+	public java.lang.String getCodiLlocPropi() {
+		return(codiLlocPropi);
+	};
+	public void setCodiLlocPropi(java.lang.String _codiLlocPropi_) {
+		this.codiLlocPropi = _codiLlocPropi_;
 	};
 
 
@@ -297,6 +311,7 @@ public class LlocJPA implements Lloc {
     __tmp.setDataCreacio(__bean.getDataCreacio());
     __tmp.setDataBaixa(__bean.getDataBaixa());
     __tmp.setObservacions(__bean.getObservacions());
+    __tmp.setCodiLlocPropi(__bean.getCodiLlocPropi());
 		return __tmp;
 	}
 

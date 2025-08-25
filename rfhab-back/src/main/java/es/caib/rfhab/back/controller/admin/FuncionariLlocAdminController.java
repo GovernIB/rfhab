@@ -114,15 +114,14 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 			FuncionariLlocJPA funcionariLloc = funcionariLlocForm.getFuncionariLloc();
 			if (currentSession != null) {
 				Object llocIdAttribute = currentSession.getAttribute(LLOC_ID_SESSION_ATTRIBUTE_NAME);
-				if (llocIdAttribute != null) {
+				if (llocIdAttribute != null && !llocIdAttribute.toString().isEmpty() && ((long) llocIdAttribute) != 0) {
 					funcionariLloc.setLlocID((long) llocIdAttribute);
 					funcionariLlocForm.addReadOnlyField(LLOCID);
 				}
-			}
 
-			if (currentSession != null) {
 				Object funcionariIdAttribute = currentSession.getAttribute(FUNCIONARI_ID_SESSION_ATTRIBUTE_NAME);
-				if (funcionariIdAttribute != null) {
+				if (funcionariIdAttribute != null && !funcionariIdAttribute.toString().isEmpty()
+						&& ((long) funcionariIdAttribute) != 0) {
 					funcionariLloc.setFuncionariID(
 							(long) funcionariIdAttribute);
 					funcionariLlocForm.addReadOnlyField(FUNCIONARIID);
@@ -196,6 +195,20 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 
 	@Override
 	public List<StringKeyValue> getReferenceListForFuncionariID(HttpServletRequest request,
+			ModelAndView mav, FuncionariLlocForm funcionariLlocForm, Where where) throws I18NException {
+		if (funcionariLlocForm.isHiddenField(FUNCIONARIID)) {
+			return EMPTY_STRINGKEYVALUE_LIST;
+		}
+		Where _where = null;
+		if (funcionariLlocForm.isReadOnlyField(FUNCIONARIID)) {
+			_where = FuncionariFields.FUNCIONARIID.equal(funcionariLlocForm.getFuncionariLloc().getFuncionariID());
+			return funcionariRefList.getReferenceList(FuncionariFields.FUNCIONARIID, _where);
+		}
+		return getReferenceListForFuncionariID(request, mav, Where.AND(where, _where));
+	}
+
+	@Override
+	public List<StringKeyValue> getReferenceListForFuncionariID(HttpServletRequest request,
 			ModelAndView mav, Where where) throws I18NException {
 		LoginInfo loginInfo = LoginInfo.getInstance();
 		Long entitatActual = loginInfo.getEntitatIDActual();
@@ -239,9 +252,11 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 				Long funcionariId = funcionariLloc.getFuncionariID();
 				Long llocId = funcionariLloc.getLlocID();
 				if (funcionariId != null) {
+					log.info("redirigint amb funcionariId=" + funcionariId);
 					request.getSession().setAttribute(FUNCIONARI_ID_SESSION_ATTRIBUTE_NAME, funcionariId);
 				}
 				if (llocId != null) {
+					log.info("redirigint amb llocId=" + llocId);
 					request.getSession().setAttribute(LLOC_ID_SESSION_ATTRIBUTE_NAME, llocId);
 				}
 

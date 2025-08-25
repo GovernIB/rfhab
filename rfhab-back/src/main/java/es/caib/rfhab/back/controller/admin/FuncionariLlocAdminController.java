@@ -236,7 +236,7 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 
 	@Override
 	public String getRedirectWhenCancel(HttpServletRequest request, java.lang.Long historicID) {
-		return UrlUtils.getRefererRedirect(request, "redirect:/admin/funcionari/list/1");
+		return UrlUtils.getRefererRedirect(request, "redirect:" + LlocAdminController.CONTEXTWEB + "/list/1");
 	}
 
 	@Override

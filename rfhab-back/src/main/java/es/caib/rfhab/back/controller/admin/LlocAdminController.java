@@ -71,9 +71,11 @@ import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
  * @author jpou
  */
 @Controller
-@RequestMapping(value = "/admin/lloc")
+@RequestMapping(value = LlocAdminController.CONTEXTWEB)
 @SessionAttributes(types = { LlocForm.class, LlocFilterForm.class })
 public class LlocAdminController extends LlocController {
+
+	public static final String CONTEXTWEB = "/admin/lloc";
 
 	protected final Logger log = Logger.getLogger(getClass());
 

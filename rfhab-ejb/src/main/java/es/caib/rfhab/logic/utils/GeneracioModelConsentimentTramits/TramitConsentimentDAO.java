@@ -1,4 +1,6 @@
+
 package es.caib.rfhab.logic.utils.GeneracioModelConsentimentTramits;
+import java.util.Date;
 
 public class TramitConsentimentDAO {
     private String interessatNom;
@@ -10,6 +12,17 @@ public class TramitConsentimentDAO {
     private String representantLlinatge2;
     private String representantNif;
 
+    private String funcionariNom;
+    private String funcionariLlinatge1;
+    private String funcionariLlinatge2;
+    private String funcionariCodi;
+    
+    private String procedimentNom;
+    private String procedimentCodi;
+    private String tramitNom;
+    private String tramitCodi;
+    private Date dataTramit;
+
     // Constructor buit
     public TramitConsentimentDAO() {
     }
@@ -17,7 +30,8 @@ public class TramitConsentimentDAO {
     // Constructor amb totes les propietats
     public TramitConsentimentDAO(String interessatNom, String interessatLlinatge1, String interessatLlinatge2,
             String interessatNif, String representantNom, String representantLlinatge1, String representantLlinatge2,
-            String representantNif) {
+            String representantNif, String funcionariNom, String funcionariLlinatge1, String funcionariLlinatge2,
+            String funcionariCodi, String procedimentNom, String procedimentCodi, String tramitNom, String tramitCodi, Date dataTramit) {
         this.interessatNom = interessatNom;
         this.interessatLlinatge1 = interessatLlinatge1;
         this.interessatLlinatge2 = interessatLlinatge2;
@@ -26,6 +40,15 @@ public class TramitConsentimentDAO {
         this.representantLlinatge1 = representantLlinatge1;
         this.representantLlinatge2 = representantLlinatge2;
         this.representantNif = representantNif;
+        this.funcionariNom = funcionariNom;
+        this.funcionariLlinatge1 = funcionariLlinatge1;
+        this.funcionariLlinatge2 = funcionariLlinatge2;
+        this.funcionariCodi = funcionariCodi;
+        this.procedimentNom = procedimentNom;
+        this.procedimentCodi = procedimentCodi;
+        this.tramitNom = tramitNom;
+        this.tramitCodi = tramitCodi;
+        this.dataTramit = dataTramit;
     }
 
     public String getInteressatNom() {
@@ -90,5 +113,77 @@ public class TramitConsentimentDAO {
 
     public void setRepresentantNif(String representantNif) {
         this.representantNif = representantNif;
+    }
+
+    public String getFuncionariNom() {
+        return funcionariNom;
+    }
+
+    public void setFuncionariNom(String funcionariNom) {
+        this.funcionariNom = funcionariNom;
+    }
+
+    public String getFuncionariLlinatge1() {
+        return funcionariLlinatge1;
+    }
+
+    public void setFuncionariLlinatge1(String funcionariLlinatge1) {
+        this.funcionariLlinatge1 = funcionariLlinatge1;
+    }
+
+    public String getFuncionariLlinatge2() {
+        return funcionariLlinatge2;
+    }
+
+    public void setFuncionariLlinatge2(String funcionariLlinatge2) {
+        this.funcionariLlinatge2 = funcionariLlinatge2;
+    }
+
+    public String getFuncionariCodi() {
+        return funcionariCodi;
+    }
+
+    public void setFuncionariCodi(String funcionariCodi) {
+        this.funcionariCodi = funcionariCodi;
+    }
+
+    public String getProcedimentNom() {
+        return procedimentNom;
+    }
+
+    public void setProcedimentNom(String procedimentNom) {
+        this.procedimentNom = procedimentNom;
+    }
+
+    public String getProcedimentCodi() {
+        return procedimentCodi;
+    }
+
+    public void setProcedimentCodi(String procedimentCodi) {
+        this.procedimentCodi = procedimentCodi;
+    }
+
+    public String getTramitNom() {
+        return tramitNom;
+    }
+
+    public void setTramitNom(String tramitNom) {
+        this.tramitNom = tramitNom;
+    }
+
+    public String getTramitCodi() {
+        return tramitCodi;
+    }
+
+    public void setTramitCodi(String tramitCodi) {
+        this.tramitCodi = tramitCodi;
+    }
+
+    public Date getDataTramit() {
+        return dataTramit;
+    }
+
+    public void setDataTramit(Date dataTramit) {
+        this.dataTramit = dataTramit;
     }
 }

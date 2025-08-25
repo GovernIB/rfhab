@@ -55,19 +55,27 @@ public class OdtToPdfServiceTest {
 
         return Arrays.asList(new Object[][] {
                 { PlantillaOdtModelConsentiment.buildFreemarkerContext(new TramitConsentimentDAO("Joanot", "Colom",
-                        "No en tenien", "4561123111A", null, null, null, null)), PLANTILLA_BASICA,
-                        PLANTILLA_BASICA + "_1.pdf" },
-                { PlantillaOdtModelConsentiment.buildFreemarkerContext(new TramitConsentimentDAO("Joanot", "Colom",
-                        "No en tenien", "4561123111A", null, null, null, null)), PLANTILLA_PROVES_CAT_ODT,
-                        PLANTILLA_PROVES_CAT_ODT + "_1.pdf" },
+                        "No en tenien", "4561123111A", null, null, null, null, "Llorenç", "Cartutxo", "", "FH77766655",
+                        "Procediment BLABLALBA", "45243343", "tramit bliblibli", "987SDFJ", new java.util.Date())),
+                        PLANTILLA_BASICA, PLANTILLA_BASICA + "_1.pdf" },
+                { PlantillaOdtModelConsentiment.buildFreemarkerContext(
+                        new TramitConsentimentDAO("Joanot", "Colom", "No en tenien", "4561123111A", null, null, null,
+                                null, "Joan", "Rois", "de Corella", "FH99988800", "Procediment 25 de proves",
+                                "8767h9987i", "Tramit blaaaaaaa", "09uj99o", new java.util.Date())),
+                        PLANTILLA_PROVES_CAT_ODT, PLANTILLA_PROVES_CAT_ODT + "_1.pdf" },
                 { PlantillaOdtModelConsentiment.buildFreemarkerContext(new TramitConsentimentDAO("Joanot", "Martorell",
-                        "No en tenien", "9561123111Q", "Martí Joan", "de Galba", null, "55522211W")),
-                        PLANTILLA_PROVES_CAT_ODT,
-                        PLANTILLA_PROVES_CAT_ODT + "_2.pdf" },
+                        "No en tenien", "9561123111Q", "Martí Joan", "de Galba", null, "55522211W", "Company",
+                        "Sense Llinatge2", null, "FLJSDIOFSD8",
+                        "Procediment de proves nom una mica llarg per fer proves de tot tipus blalblalbal",
+                        "43534 CODIAMBESPAIS 2348o2",
+                        "tramit mooooooooooolt llarg també, amb signes de tot tipus ?¡¿!|ººªªçÇ[]+``^*5331/ per cobrir TOTES les proves possibles.,,;-_%&$€€)()",
+                        "324LKJ", new java.util.Date())),
+                        PLANTILLA_PROVES_CAT_ODT, PLANTILLA_PROVES_CAT_ODT + "_2.pdf" },
                 { PlantillaOdtModelConsentiment.buildFreemarkerContext(new TramitConsentimentDAO("Joanot", "Martorell",
-                        "No en tenien", "9561123111Q", "Martí Joan", "de Galba", null, "55522211W")),
-                        PLANTILLA_PROVES_CAST_ODT,
-                        PLANTILLA_PROVES_CAST_ODT + "_2.pdf" },
+                        "No en tenien", "9561123111Q", "Martí Joan", "de Galba", null, "55522211W", "Ñimiñomi",
+                        "pirpirpi", "porpopopÇÇ", "777uuuJJN99", "Proc. proves", "TP111222333444", "Tràmit provesssss",
+                        "444666777888uuj", new java.util.Date())),
+                        PLANTILLA_PROVES_CAST_ODT, PLANTILLA_PROVES_CAST_ODT + "_2.pdf" },
         });
     }
 

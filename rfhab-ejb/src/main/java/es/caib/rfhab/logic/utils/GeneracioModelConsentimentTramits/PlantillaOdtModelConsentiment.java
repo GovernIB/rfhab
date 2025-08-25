@@ -20,6 +20,15 @@ public class PlantillaOdtModelConsentiment {
         dades.put("representantLlinatge1", tramitInfo.getRepresentantLlinatge1());
         dades.put("representantLlinatge2", tramitInfo.getRepresentantLlinatge2());
         dades.put("representantNif", tramitInfo.getRepresentantNif());
+        dades.put("funcionariNom", tramitInfo.getFuncionariNom());
+        dades.put("funcionariLlinatge1", tramitInfo.getFuncionariLlinatge1());
+        dades.put("funcionariLlinatge2", tramitInfo.getFuncionariLlinatge2());
+        dades.put("funcionariCodi", tramitInfo.getFuncionariCodi());
+        dades.put("procedimentNom", tramitInfo.getProcedimentNom());
+        dades.put("procedimentCodi", tramitInfo.getProcedimentCodi());
+        dades.put("tramitNom", tramitInfo.getTramitNom());
+        dades.put("tramitCodi", tramitInfo.getTramitCodi());
+        dades.put("dataTramit", tramitInfo.getDataTramit());
         return dades;
     }
 }

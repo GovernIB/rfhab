@@ -22,7 +22,7 @@ import fr.opensagres.xdocreport.template.formatter.FieldsMetadata;
 public class OdtToPdfService {
 
     /**
-     * Genera un document ODT a partir d'un projecte GenApp i una plantilla.
+     * Genera un document ODT a partir d'una plantilla.
      * 
      * @param map          Map amb les dades per Freemarker
      * @param templateFile Plantilla ODT (amb camps Freemarker)
@@ -36,7 +36,21 @@ public class OdtToPdfService {
     }
 
     /**
-     * Genera un PDF a partir d'un projecte GenApp i una plantilla, sense guardar
+     * Genera un document ODT a partir d'una plantilla.
+     * 
+     * @param map          Map amb les dades per Freemarker
+     * @param templateFile Plantilla ODT (amb camps Freemarker)
+     * @return ODT com a byte[]
+     * @throws Exception
+     */
+    public static byte[] generateOdt(Map<String, Object> map, InputStream templateFile) throws Exception {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        generateUsingXDocReport(map, templateFile, out);
+        return out.toByteArray();
+    }
+
+    /**
+     * Genera un PDF a partir d'un fitxer ODT, sense guardar
      * fitxers al disc.
      * 
      * @param map          Map amb les dades per Freemarker
@@ -44,12 +58,9 @@ public class OdtToPdfService {
      * @return PDF com a byte[]
      * @throws Exception
      */
-    public static byte[] generatePdf(Map<String, Object> map, File templateFile) throws Exception {
-        // Primer genera l'ODT en memòria
-        byte[] odtBytes = generateOdt(map, templateFile);
-
+    public static byte[] generatePdf(byte[] odtTemplateBytes) throws Exception {
         // Ara converteix l'ODT a PDF en memòria
-        ByteArrayInputStream odtInput = new ByteArrayInputStream(odtBytes);
+        ByteArrayInputStream odtInput = new ByteArrayInputStream(odtTemplateBytes);
         ByteArrayOutputStream pdfOutput = new ByteArrayOutputStream();
 
         OdfTextDocument document = OdfTextDocument.loadDocument(odtInput);
@@ -60,18 +71,60 @@ public class OdtToPdfService {
     }
 
     /**
+     * Genera un PDF a partir d'una plantilla ODT, sense guardar
+     * fitxers al disc.
+     * 
+     * @param map             Map amb les dades per Freemarker
+     * @param odtTemplateFile Plantilla ODT (amb camps Freemarker)
+     * @return PDF com a byte[]
+     * @throws Exception
+     */
+    public static byte[] generatePdf(Map<String, Object> map, InputStream odtTemplateFile) throws Exception {
+        // Primer genera l'ODT en memòria
+        byte[] odtBytes = generateOdt(map, odtTemplateFile);
+
+        // Ara converteix l'ODT a PDF en memòria
+        return generatePdf(odtBytes);
+    }
+
+    /**
+     * Genera un PDF a partir d'una plantilla ODT, sense guardar
+     * fitxers al disc.
+     * 
+     * @param map             Map amb les dades per Freemarker
+     * @param odtTemplateFile Plantilla ODT (amb camps Freemarker)
+     * @return PDF com a byte[]
+     * @throws Exception
+     */
+    public static byte[] generatePdf(Map<String, Object> map, File odtTemplateFile) throws Exception {
+        // Primer genera l'ODT en memòria
+        byte[] odtBytes = generateOdt(map, odtTemplateFile);
+
+        // Ara converteix l'ODT a PDF en memòria
+        return generatePdf(odtBytes);
+    }
+
+    /**
      * Utilitza XDocReport i Freemarker per fusionar la plantilla amb el context.
      */
     private static void generateUsingXDocReport(Map<String, Object> map, File templateFile, OutputStream outStream)
             throws IOException, XDocReportException {
         try (InputStream in = new FileInputStream(templateFile)) {
-            IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Freemarker);
-            FieldsMetadata metadata = report.createFieldsMetadata();
-            report.setFieldsMetadata(metadata);
-            IContext context = report.createContext();
-            context.putMap(map);
-            report.process(context, outStream);
+            generateUsingXDocReport(map, in, outStream);
         }
+    }
+
+    /**
+     * Utilitza XDocReport i Freemarker per fusionar la plantilla amb el context.
+     */
+    private static void generateUsingXDocReport(Map<String, Object> map, InputStream in, OutputStream outStream)
+            throws IOException, XDocReportException {
+        IXDocReport report = XDocReportRegistry.getRegistry().loadReport(in, TemplateEngineKind.Freemarker);
+        FieldsMetadata metadata = report.createFieldsMetadata();
+        report.setFieldsMetadata(metadata);
+        IContext context = report.createContext();
+        context.putMap(map);
+        report.process(context, outStream);
     }
 
     // Exemple d'ús 1 per a una aplicació web (Spring, etc.)

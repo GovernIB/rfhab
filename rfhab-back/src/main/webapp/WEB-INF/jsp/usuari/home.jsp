@@ -801,40 +801,35 @@ button[disabled][type="submit"] {
 
 									//if this is not the last view do not allow the enter key to submit the form as it is not completed yet                  
 									if (index !== form.views.length - 1) {
-										$(view)
-												.find(':input')
+										$(view).find(':input')
 												.not('textarea')
 												.keypress(
-														function(e) {
-															if (e.which === 13) // Enter key = keycode 13
-															{
-																form.nextNavButton
-																		.click();
-																return false;
-															}
-														});
+													function(e) {
+														if (e.which === 13) // Enter key = keycode 13
+														{
+															form.nextNavButton
+																	.click();
+															return false;
+														}
+													});
 									}
 
-									$(view)
-											.on(
+									$(view).on(
 													'show',
 													function(e) {
 														if (this !== e.target)
 															return;
 
 														var view = e.target;
-														$
-																.data(
-																		view,
-																		msfJqueryData.visited,
-																		true);
+														$.data(view,
+																msfJqueryData.visited,
+																true);
 
 														var index = form.views
 																.index(view);
 														var step = form.steps[index];
 
-														$(step)
-																.addClass(
+														$(step).addClass(
 																		msfCssClasses.statuses.stepActive);
 														//form.setStatusCssClass(step, msfCssClasses.statuses.stepActive);
 
@@ -846,10 +841,13 @@ button[disabled][type="submit"] {
 														}
 
 														if (index == form.views.length - 2) {
-															form.nextNavButton
-																	.hide();
-															form.submitNavButton
-																	.show();
+															form.nextNavButton.hide();
+															form.submitNavButton.show();
+
+															const dataObj = getFormData();
+															if(JSON.stringify(MODEL_CONSENTIMENT_FORM_ENVIAT) !== JSON.stringify(dataObj) ){
+																actualitzaModelConsentiment(dataObj);
+															}
 														} else if (index == form.views.length - 1) {
 															form.nextNavButton
 																	.hide();
@@ -865,56 +863,54 @@ button[disabled][type="submit"] {
 														}
 													});
 
-									$(view)
-											.on(
-													'hide',
-													function(e) {
-														if (this !== e.target)
-															return;
+									$(view).on('hide',
+												function(e) {
+													if (this !== e.target)
+														return;
 
-														var index = form.views
-																.index(e.target);
-														var step = form.steps[index];
+													var index = form.views
+															.index(e.target);
+													var step = form.steps[index];
 
-														$(step)
-																.removeClass(
-																		msfCssClasses.statuses.stepActive);
+													$(step)
+															.removeClass(
+																	msfCssClasses.statuses.stepActive);
 
-														if ($
-																.data(
-																		e.target,
-																		msfJqueryData.validated)
-																&& $
-																		.data(
-																				e.target,
-																				msfJqueryData.visited)) {
-															form
-																	.setStatusCssClass(
-																			step,
-																			msfCssClasses.statuses.stepComplete);
-														} else if ($
-																.data(
-																		e.target,
-																		msfJqueryData.visited)) {
-															form
-																	.setStatusCssClass(
-																			step,
-																			msfCssClasses.statuses.stepIncomplete);
-														} else {
-															form
-																	.setStatusCssClass(
-																			step,
-																			"");
-														}
+													if ($
+															.data(
+																	e.target,
+																	msfJqueryData.validated)
+															&& $
+																	.data(
+																			e.target,
+																			msfJqueryData.visited)) {
+														form
+																.setStatusCssClass(
+																		step,
+																		msfCssClasses.statuses.stepComplete);
+													} else if ($
+															.data(
+																	e.target,
+																	msfJqueryData.visited)) {
+														form
+																.setStatusCssClass(
+																		step,
+																		msfCssClasses.statuses.stepIncomplete);
+													} else {
+														form
+																.setStatusCssClass(
+																		step,
+																		"");
+													}
 
-														//hide all navigation buttons, display choices will be set on show event
-														form.backNavButton
-																.hide();
-														form.nextNavButton
-																.hide();
-														form.submitNavButton
-																.hide();
-													});
+													//hide all navigation buttons, display choices will be set on show event
+													form.backNavButton
+															.hide();
+													form.nextNavButton
+															.hide();
+													form.submitNavButton
+															.hide();
+												});
 
 									//initially hide each view
 									$(view).hide();
@@ -1259,6 +1255,7 @@ button[disabled][type="submit"] {
 	const CARREGANT_IFRAME_DIGITALIB_ID = 'modal-body-carregant';
 	var FITXER_ENCRYPTED_ID = [];
 	var POLLING_CHECK_SCAN_WEB_FINAL_RUNNING = false;
+	var MODEL_CONSENTIMENT_FORM_ENVIAT = {};
 
 	function showIframePdf(url) {
 		const iframe = document.getElementById('iframe-pdf');
@@ -1396,6 +1393,39 @@ button[disabled][type="submit"] {
 				inserirMsg('danger', errorText);
 				$('#modal-spinner-carregant').hide();
 				$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
+			});
+	}
+
+	async function actualitzaModelConsentiment(dataObj){
+		console.log("Descarregar model consentiment");
+		MODEL_CONSENTIMENT_FORM_ENVIAT = dataObj;
+		
+		const url = "<%=request.getContextPath() + "/usuari/modelConsentiment/"%>";
+
+		console.log("Descarregant model consentiment, URL: " + url);
+		console.log("Descarregant model consentiment, dataObj: ", dataObj);
+		const request = new Request(url, {
+			method: 'POST',
+			body: JSON.stringify(dataObj),
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			responseType: 'blob'
+		});
+		fetch(request)
+			.then(response => {
+				if (!response.ok) {
+					throw new Error('Error al descarregar el model consentiment: ' + response.statusText);
+				}
+				return response.blob();
+			})
+			.then(blob => {
+				const file = downloadPdf(blob, true);
+				showIframePdf(file);
+			})
+			.catch(error => {
+				let errorText = 'Error descarregant el fitxer: ' + error.message;//TODO:afegir missatge a traduccions
+				inserirMsg('danger', errorText);
 			});
 	}
 
@@ -1833,6 +1863,8 @@ button[disabled][type="submit"] {
 
 	function getFormData() {
 		let $form = $('.msf');
+		const procedimentRolsacId = $form.find('#procediment-id').val() || '';
+		const tramitId = $form.find('#tramitId').val() || '';
 		let data = {
 			languageUI: $('html').attr('lang') || '', // suposant que el languageUI ve del lang de l'html
 			interessats: [],
@@ -1847,8 +1879,11 @@ button[disabled][type="submit"] {
 			representantLlinatge2: $form.find('#pas1_representant_llinatge2').val() || '',
 			representantTipusIdentificacio: $form.find('#pas1_representant_tipusIdentificacio').val() || '',
 			representantIdentificacio: $form.find('#pas1_representant_identificacion').val() || '',
-			procediment: $form.find('#procediment-id').val() || '',
-			tramitCodi: $form.find('#tramitId').val() || '',
+			procediment: procedimentRolsacId,
+			procedimentNom: procediments.find(proc => proc.codiRolsac === procedimentRolsacId)?.nom,
+			procedimentCodiSia: procediments.find(proc => proc.codiRolsac === procedimentRolsacId)?.codiSia,
+			tramitNom: tramitsProcediment.find(tra => tra.tramitId === tramitId)?.data,
+			tramitCodi: tramitId,
 			tramitVersio: $form.find('#tramitVersio').val() || '',
 			tramitParametres: $form.find('#tramitParametres').val() || '',
 			idTraTel: $form.find('#idTraTel').val() || '',

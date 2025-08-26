@@ -3,7 +3,7 @@ package es.caib.rfhab.back.controller.user;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -16,9 +16,11 @@ import org.fundaciobit.genapp.common.StringKeyValue;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.web.HtmlUtils;
+import org.fundaciobit.pluginsib.core.v3.utils.FileUtils;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,12 +35,16 @@ import es.caib.rfhab.back.form.dto.ScanWebResult;
 import es.caib.rfhab.back.form.webdb.UsuariFilterForm;
 import es.caib.rfhab.back.form.webdb.UsuariForm;
 import es.caib.rfhab.back.security.LoginInfo;
+import es.caib.rfhab.commons.utils.OdtToPdfService;
 import es.caib.rfhab.logic.ActivitatLogicaService;
 import es.caib.rfhab.logic.EntitatLogicaService;
 import es.caib.rfhab.logic.FitxerPublicLogicaService;
 import es.caib.rfhab.logic.ScanWebLogicaService;
 import es.caib.rfhab.logic.SistramitLogicaService;
 import es.caib.rfhab.logic.UnitatLogicaUserService;
+import es.caib.rfhab.logic.utils.GeneracioModelConsentimentTramits.PlantillaOdtModelConsentiment;
+import es.caib.rfhab.logic.utils.GeneracioModelConsentimentTramits.TramitConsentimentDAO;
+import es.caib.rfhab.logic.utils.GeneracioModelConsentimentTramits.TramitConsentimentDTO;
 import es.caib.rfhab.logic.utils.TicketAccesDto.RpersonaInfo;
 import es.caib.rfhab.model.entity.Entitat;
 import es.caib.rfhab.model.entity.Fitxer;
@@ -62,6 +68,12 @@ import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
 public class UserController extends UsuariController {
 
 	public static final String CONTEXTWEB = "/usuari/";
+
+	private static final String CARPETA_PLANTILLES = "/rfhab_plantilles/";
+	private static final String PLANTILLA_PROVES_CAT_ODT = UserController.CARPETA_PLANTILLES
+			+ "model_consentiment_def_i_protec_dades.odt";
+	private static final String PLANTILLA_PROVES_CAST_ODT = UserController.CARPETA_PLANTILLES
+			+ "model_consentiment_def_i_protec_dades_cast.odt";
 
 	@EJB(mappedName = SistramitLogicaService.JNDI_NAME)
 	protected SistramitLogicaService sistramitLogicaEjb;
@@ -303,17 +315,6 @@ public class UserController extends UsuariController {
 			@RequestParam(value = "ciutadaNom", required = false) String ciutadaNom,
 			@RequestParam(value = "ciutadaLlinatge1", required = false) String ciutadaLlinatge1,
 			@RequestParam(value = "ciutadaLlinatge2", required = false) String ciutadaLlinatge2,
-			@RequestParam(value = "representant", required = false) Boolean representant,
-			@RequestParam(value = "representantNom", required = false) String representantNom,
-			@RequestParam(value = "representantLlinatge1", required = false) String representantLlinatge1,
-			@RequestParam(value = "representantLlinatge2", required = false) String representantLlinatge2,
-			@RequestParam(value = "representantTipusIdentificacio", required = false) String representantTipusIdentificacio,
-			@RequestParam(value = "representantIdentificacio", required = false) String representantIdentificacio,
-			@RequestParam(value = "procediment", required = false) String procediment,
-			@RequestParam(value = "tramitCodi", required = false) String tramitCodi,
-			@RequestParam(value = "tramitVersio", required = false) String tramitVersio,
-			@RequestParam(value = "tramitParametres", required = false) String tramitParametres,
-			@RequestParam(value = "idTraTel", required = false) String idTraTel,
 			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		log.info("XYZ ZZZ ENTRANT A PREPARESCANWEB");
@@ -325,21 +326,6 @@ public class UserController extends UsuariController {
 		log.info("XYZ YYY ciutadaTipusIdentificacio = " + ciutadaTipusIdentificacio);
 		log.info("XYZ YYY ciutadaNif = " + ciutadaNif);
 		log.info("XYZ YYY ciutadaNom = " + ciutadaNom);
-		log.info("XYZ YYY ciutadaLlinatge1 = " + ciutadaLlinatge1);
-		log.info("XYZ YYY ciutadaLlinatge2 = " + ciutadaLlinatge2);
-		log.info("XYZ YYY representant = " + representant);
-		log.info("XYZ YYY representantNom = " + representantNom);
-		log.info("XYZ YYY representantLlinatge1 = " + representantLlinatge1);
-		log.info("XYZ YYY representantLlinatge2 = " + representantLlinatge2);
-		log.info("XYZ YYY representantTipusIdentificacio = " + representantTipusIdentificacio);
-		log.info("XYZ YYY representantIdentificacio = " + representantIdentificacio);
-		log.info("XYZ YYY procediment = " + procediment);
-		log.info("XYZ YYY tramitCodi = " + tramitCodi);
-		log.info("XYZ YYY tramitVersio = " + tramitVersio);
-		log.info("XYZ YYY tramitParametres = " + tramitParametres);
-		log.info("XYZ YYY idTraTel = " + idTraTel);
-		// TODO:aquí sobra info que s'ha d'emprar per generar el pdf plantilla que
-		// descarregarà l'usuari
 
 		LoginInfo loginInfo = LoginInfo.getInstance();
 		Usuari usuari = loginInfo.getUsuariPersona();
@@ -371,6 +357,78 @@ public class UserController extends UsuariController {
 				ciutadaNif, ciutadaNom);
 
 		return transactionPreparedOrErrors;
+	}
+
+	@RequestMapping(value = "/modelConsentiment", method = RequestMethod.POST)
+	@ResponseBody
+	public void modelConsentiment(@RequestBody TramitConsentimentDTO tramitConsentimentDto,
+			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		log.info("XYZ ZZZ ENTRANT A modelConsentiment");
+
+		log.info("XYZ YYY languageUI = " + tramitConsentimentDto.languageUI);
+		log.info("XYZ YYY interessats = " + tramitConsentimentDto.interessats);
+		List<String> interessatsList = Arrays.asList(tramitConsentimentDto.interessats.split("--"));
+		log.info("XYZ YYY interessatsList = " + interessatsList);
+		log.info("XYZ YYY ciutadaTipusIdentificacio = " + tramitConsentimentDto.ciutadaTipusIdentificacio);
+		log.info("XYZ YYY ciutadaNif = " + tramitConsentimentDto.ciutadaNif);
+		log.info("XYZ YYY ciutadaNom = " + tramitConsentimentDto.ciutadaNom);
+		log.info("XYZ YYY ciutadaLlinatge1 = " + tramitConsentimentDto.ciutadaLlinatge1);
+		log.info("XYZ YYY ciutadaLlinatge2 = " + tramitConsentimentDto.ciutadaLlinatge2);
+		log.info("XYZ YYY representant = " + tramitConsentimentDto.representant);
+		log.info("XYZ YYY representantNom = " + tramitConsentimentDto.representantNom);
+		log.info("XYZ YYY representantLlinatge1 = " + tramitConsentimentDto.representantLlinatge1);
+		log.info("XYZ YYY representantLlinatge2 = " + tramitConsentimentDto.representantLlinatge2);
+		log.info("XYZ YYY representantTipusIdentificacio = " + tramitConsentimentDto.representantTipusIdentificacio);
+		log.info("XYZ YYY representantIdentificacio = " + tramitConsentimentDto.representantIdentificacio);
+		log.info("XYZ YYY procediment = " + tramitConsentimentDto.procediment);
+		log.info("XYZ YYY procedimentNom = " + tramitConsentimentDto.procedimentNom);
+		log.info("XYZ YYY procedimentCodiSia = " + tramitConsentimentDto.procedimentCodiSia);
+		log.info("XYZ YYY tramitNom = " + tramitConsentimentDto.tramitNom);
+		log.info("XYZ YYY tramitCodi = " + tramitConsentimentDto.tramitCodi);
+		log.info("XYZ YYY tramitVersio = " + tramitConsentimentDto.tramitVersio);
+		log.info("XYZ YYY tramitParametres = " + tramitConsentimentDto.tramitParametres);
+		log.info("XYZ YYY idTraTel = " + tramitConsentimentDto.idTraTel);
+
+		LoginInfo loginInfo = LoginInfo.getInstance();
+		Usuari usuari = loginInfo.getUsuariPersona();
+		String username = usuari.getUsername();
+		String funcionariAdministracioID = usuari.getNif();
+		String funcionariNom = (usuari.getNom() != null ? usuari.getNom() : "") + " "
+				+ (usuari.getLlinatge1() != null ? usuari.getLlinatge1() : "") + " "
+				+ (usuari.getLlinatge2() != null ? usuari.getLlinatge2() : "");
+		String funcionariDir3 = getCodiDIR3(request, username);// codiDIR3 del lloc de feina del funcionari
+
+		log.info("XYZ YYY username = " + username);
+		log.info("XYZ YYY funcionariAdministracioID = " + funcionariAdministracioID);
+		log.info("XYZ YYY funcionariNom = " + funcionariNom);
+		log.info("XYZ YYY funcionariDir3 = " + funcionariDir3);
+
+		TramitConsentimentDAO tramitConsentimentDAO = new TramitConsentimentDAO(tramitConsentimentDto.ciutadaNom,
+				tramitConsentimentDto.ciutadaLlinatge1,
+				tramitConsentimentDto.ciutadaLlinatge2, tramitConsentimentDto.ciutadaNif,
+				tramitConsentimentDto.representant ? tramitConsentimentDto.representantNom : null,
+				tramitConsentimentDto.representant ? tramitConsentimentDto.representantLlinatge1 : null,
+				tramitConsentimentDto.representant ? tramitConsentimentDto.representantLlinatge2 : null,
+				tramitConsentimentDto.representant ? tramitConsentimentDto.representantIdentificacio : null,
+				usuari.getNom(), usuari.getLlinatge1(),
+				usuari.getLlinatge2(), funcionariDir3,
+				tramitConsentimentDto.procedimentNom, tramitConsentimentDto.procedimentCodiSia,
+				tramitConsentimentDto.tramitNom, tramitConsentimentDto.tramitCodi, new java.util.Date());
+		Map<String, Object> freemarkerDadesMap = PlantillaOdtModelConsentiment
+				.buildFreemarkerContext(tramitConsentimentDAO);
+		String plantillaModelConsentimentPath = tramitConsentimentDto.languageUI.startsWith("es")
+				? UserController.PLANTILLA_PROVES_CAST_ODT
+				: UserController.PLANTILLA_PROVES_CAT_ODT;
+		log.info("Plantilla model consentiment: " + plantillaModelConsentimentPath);
+		try (InputStream templateFile = getClass().getResourceAsStream(plantillaModelConsentimentPath)) {
+			getResource(plantillaModelConsentimentPath);
+			byte[] pdf = OdtToPdfService.generatePdf(freemarkerDadesMap, templateFile);
+			log.info("PDF generat correctament!");
+			response.setContentType("application/pdf");
+			response.setHeader("Content-Disposition", "attachment;filename=\"document.pdf\"");
+			response.getOutputStream().write(pdf);
+		}
 	}
 
 	@RequestMapping(value = "/checkfinalscanweb/", method = RequestMethod.GET)
@@ -579,5 +637,9 @@ public class UserController extends UsuariController {
 		// + getContextWeb();
 		return request.getScheme() + "://" + request.getServerName() + ":"
 				+ +request.getServerPort() + request.getContextPath();
+	}
+
+	protected byte[] getResource(String path) throws Exception {
+		return FileUtils.toByteArray(getClass().getResourceAsStream(path));
 	}
 }

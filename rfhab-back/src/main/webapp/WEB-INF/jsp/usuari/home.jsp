@@ -398,8 +398,11 @@ button[disabled][type="submit"] {
 							<h3>3 <fmt:message key="usuari.tramit.documentacio.titol" /></h3>
 
 							<div class="form-group pdfVisor">
-								<embed id="embed-pdf" src="/rfhabback/dummy.pdf" width="100%" height="600"
-									type="application/pdf">
+								<div class="col-12" style="min-height: 325px;" id="spinner-carregant-iframepdf" style="display: none;">
+									<p  style="text-align: center;">
+										<svg style="width:20%;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150"><path fill="none" stroke="#007BFF" stroke-width="15" stroke-linecap="round" stroke-dasharray="300 385" stroke-dashoffset="0" d="M275 75c0 31-27 50-50 50-58 0-92-100-150-100-28 0-50 22-50 50s23 50 50 50c58 0 92-100 150-100 24 0 50 19 50 50Z"><animate attributeName="stroke-dashoffset" calcMode="spline" dur="2" values="685;-685" keySplines="0 0 1 1" repeatCount="indefinite"></animate></path></svg>
+									</p>
+								</div>
 								<iframe id="iframe-pdf" style="display: none;" src="" type="application/pdf" width="100%" height="600" style="overflow: auto;"></iframe>
 								<input style="display: none;" id="input-pdf" name="inputPdf" type="text" class="form-control" 
 									data-bind="value: Pdf" data-val="true" data-val-required="<fmt:message key="usuari.tramit.iniciar.apoderament" />">
@@ -1257,20 +1260,27 @@ button[disabled][type="submit"] {
 	var POLLING_CHECK_SCAN_WEB_FINAL_RUNNING = false;
 	var MODEL_CONSENTIMENT_FORM_ENVIAT = {};
 
+	function showSpinnerCarregantIframePdf() {
+		const spinnerCarregant = document.getElementById('spinner-carregant-iframepdf');
+		spinnerCarregant.style.display = 'block';
+	}
+
+	function hideSpinnerCarregantIframePdf() {
+		const spinnerCarregant = document.getElementById('spinner-carregant-iframepdf');
+		spinnerCarregant.style.display = 'none';
+	}
+
 	function showIframePdf(url) {
 		const iframe = document.getElementById('iframe-pdf');
-		const embed = document.getElementById('embed-pdf');
 		iframe.style.display = 'block';
 		iframe.src = url;
 
-		embed.style.display = 'none';
+		hideSpinnerCarregantIframePdf();
 	}
 
-	function showEmbedPdf(url) {
+	function hideIframePdf(url) {
 		const iframe = document.getElementById('iframe-pdf');
-		const embed = document.getElementById('embed-pdf');
-		embed.style.display = 'block';
-		embed.src = url;
+		showSpinnerCarregantIframePdf();
 
 		iframe.style.display = 'none';
 		iframe.src = '';
@@ -1399,6 +1409,7 @@ button[disabled][type="submit"] {
 	async function actualitzaModelConsentiment(dataObj){
 		console.log("Descarregar model consentiment");
 		MODEL_CONSENTIMENT_FORM_ENVIAT = dataObj;
+		hideIframePdf();
 		
 		const url = "<%=request.getContextPath() + "/usuari/modelConsentiment/"%>";
 
@@ -1426,6 +1437,7 @@ button[disabled][type="submit"] {
 			.catch(error => {
 				let errorText = 'Error descarregant el fitxer: ' + error.message;//TODO:afegir missatge a traduccions
 				inserirMsg('danger', errorText);
+				hideSpinnerCarregantIframePdf();
 			});
 	}
 

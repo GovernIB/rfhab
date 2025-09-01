@@ -218,7 +218,7 @@ public class LlocAdminController extends LlocController {
 			// botó donar d'alta lloc
 			String jsOpenModalDonarAlta = "javascript:createDivModal(traduccions.type['titol.lloc.donaralta.continuar'], '"
 					+ I18NUtils.tradueix("lloc.donaralta.missatgecontinuar", lloc.getCodiLloc()) + "', '"
-					+ "', 'lloc-save-modal-id', 'lloc-donaralta-id', 'fa-laptop-medical', '"
+					+ "', 'llocForm', 'lloc-donaralta-id', 'fa-laptop-medical', '"
 					+ request.getContextPath() + getContextWeb() + "/newialta/"
 					+ "');\r\n" + //
 					"        $('#lloc-donaralta-id').modal('show');\r\n";
@@ -576,6 +576,7 @@ public class LlocAdminController extends LlocController {
 	public String crearLlocIdonarDalta(@ModelAttribute LlocForm llocForm,
 			BindingResult result, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
+		log.info("crearLlocIdonarDalta() llocForm: " + llocForm);
 		if (!isActiveFormNew()) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			return null;
@@ -589,6 +590,7 @@ public class LlocAdminController extends LlocController {
 			postValidate(request, llocForm, result);
 
 			if (result.hasErrors()) {
+				log.info("Errors al validar el formulari: " + result.getAllErrors());
 				result.reject("error.form");
 				return getTileForm();
 			} else {
@@ -610,7 +612,9 @@ public class LlocAdminController extends LlocController {
 
 	@RequestMapping(value = "/tornar", method = RequestMethod.GET)
 	public String tornar(HttpServletRequest request) {
-		return UrlUtils.getRefererRedirect(request, "redirect:" + getContextWeb() + "/list/1");
+		return "redirect:" + getContextWeb() + "/list/1";
+		// return UrlUtils.getRefererRedirect(request, "redirect:" + getContextWeb() +
+		// "/list/1");
 	}
 
 	@Override

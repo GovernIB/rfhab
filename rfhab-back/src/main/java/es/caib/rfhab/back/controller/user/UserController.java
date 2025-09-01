@@ -355,6 +355,7 @@ public class UserController extends UsuariController {
 		HashMap<String, String> transactionPreparedOrErrors = scanWebLogicaEjb.escaneig(firstPartReturnUrl,
 				username, languageUI, funcionariNom, funcionariAdministracioID, funcionariDir3, interessatsList, organs,
 				ciutadaNif, ciutadaNom);
+		log.info("XYZ YYY prepareScanweb acabat. Resultat: " + transactionPreparedOrErrors);
 
 		return transactionPreparedOrErrors;
 	}

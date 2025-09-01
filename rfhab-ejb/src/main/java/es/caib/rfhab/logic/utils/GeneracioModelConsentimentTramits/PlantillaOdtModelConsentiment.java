@@ -29,6 +29,28 @@ public class PlantillaOdtModelConsentiment {
         dades.put("tramitNom", tramitInfo.getTramitNom());
         dades.put("tramitCodi", tramitInfo.getTramitCodi());
         dades.put("dataTramit", tramitInfo.getDataTramit());
+
+        dades.put("interessatAdreca", tramitInfo.getInteressatAdreca());
+        dades.put("interessatAdrecaNumero", tramitInfo.getInteressatAdrecaNumero());
+        dades.put("interessatAdrecaEscala", tramitInfo.getInteressatAdrecaEscala());
+        dades.put("interessatAdrecaPis", tramitInfo.getInteressatAdrecaPis());
+        dades.put("interessatAdrecaPorta", tramitInfo.getInteressatAdrecaPorta());
+        dades.put("interessatAdrecaMunicipi", tramitInfo.getInteressatAdrecaMunicipi());
+        dades.put("interessatAdrecaCodiPostal", tramitInfo.getInteressatAdrecaCodiPostal());
+        dades.put("interessatTelefon", tramitInfo.getInteressatTelefon());
+        dades.put("interessatCorreu", tramitInfo.getInteressatCorreu());
+        dades.put("representantAdreca", tramitInfo.getRepresentantAdreca());
+        dades.put("representantAdrecaNumero", tramitInfo.getRepresentantAdrecaNumero());
+        dades.put("representantAdrecaEscala", tramitInfo.getRepresentantAdrecaEscala());
+        dades.put("representantAdrecaPis", tramitInfo.getRepresentantAdrecaPis());
+        dades.put("representantAdrecaPorta", tramitInfo.getRepresentantAdrecaPorta());
+        dades.put("representantAdrecaMunicipi", tramitInfo.getRepresentantAdrecaMunicipi());
+        dades.put("representantAdrecaCodiPostal", tramitInfo.getRepresentantAdrecaCodiPostal());
+        dades.put("representantTelefon", tramitInfo.getRepresentantTelefon());
+        dades.put("representantCorreu", tramitInfo.getRepresentantCorreu());
+        dades.put("representantMitjaAcreditacio", tramitInfo.getRepresentantMitjaAcreditacio());
+        dades.put("representantRea", tramitInfo.getRepresentantRea());
+        dades.put("representantAltres", tramitInfo.getRepresentantAltres());
         return dades;
     }
 }

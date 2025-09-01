@@ -1,4 +1,3 @@
-
 package es.caib.rfhab.logic.utils.GeneracioModelConsentimentTramits;
 
 public class TramitConsentimentDTO {
@@ -23,6 +22,28 @@ public class TramitConsentimentDTO {
     public String tramitVersio;
     public String tramitParametres;
     public String idTraTel;
+
+    public String interessatAdreca;
+    public String interessatAdrecaNumero;
+    public String interessatAdrecaEscala;
+    public String interessatAdrecaPis;
+    public String interessatAdrecaPorta;
+    public String interessatAdrecaMunicipi;
+    public String interessatAdrecaCodiPostal;
+    public String interessatTelefon;
+    public String interessatCorreu;
+    public String representantAdreca;
+    public String representantAdrecaNumero;
+    public String representantAdrecaEscala;
+    public String representantAdrecaPis;
+    public String representantAdrecaPorta;
+    public String representantAdrecaMunicipi;
+    public String representantAdrecaCodiPostal;
+    public String representantTelefon;
+    public String representantCorreu;
+    public String representantMitjaAcreditacio;
+    public String representantRea;
+    public String representantAltres;
 
     public TramitConsentimentDTO() {
     }

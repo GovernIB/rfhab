@@ -1,4 +1,3 @@
-
 package es.caib.rfhab.logic.utils.GeneracioModelConsentimentTramits;
 import java.util.Date;
 
@@ -23,6 +22,28 @@ public class TramitConsentimentDAO {
     private String tramitCodi;
     private Date dataTramit;
 
+    private String interessatAdreca;
+    private String interessatAdrecaNumero;
+    private String interessatAdrecaEscala;
+    private String interessatAdrecaPis;
+    private String interessatAdrecaPorta;
+    private String interessatAdrecaMunicipi;
+    private String interessatAdrecaCodiPostal;
+    private String interessatTelefon;
+    private String interessatCorreu;
+    private String representantAdreca;
+    private String representantAdrecaNumero;
+    private String representantAdrecaEscala;
+    private String representantAdrecaPis;
+    private String representantAdrecaPorta;
+    private String representantAdrecaMunicipi;
+    private String representantAdrecaCodiPostal;
+    private String representantTelefon;
+    private String representantCorreu;
+    private String representantMitjaAcreditacio;
+    private String representantRea;
+    private String representantAltres;
+
     // Constructor buit
     public TramitConsentimentDAO() {
     }
@@ -31,7 +52,14 @@ public class TramitConsentimentDAO {
     public TramitConsentimentDAO(String interessatNom, String interessatLlinatge1, String interessatLlinatge2,
             String interessatNif, String representantNom, String representantLlinatge1, String representantLlinatge2,
             String representantNif, String funcionariNom, String funcionariLlinatge1, String funcionariLlinatge2,
-            String funcionariCodi, String procedimentNom, String procedimentCodi, String tramitNom, String tramitCodi, Date dataTramit) {
+            String funcionariCodi, String procedimentNom, String procedimentCodi, String tramitNom, String tramitCodi, Date dataTramit,
+
+            String interessatAdreca, String interessatAdrecaNumero, String interessatAdrecaEscala, String interessatAdrecaPis, String interessatAdrecaPorta,
+            String interessatAdrecaMunicipi, String interessatAdrecaCodiPostal, String interessatTelefon, String interessatCorreu,
+            String representantAdreca, String representantAdrecaNumero, String representantAdrecaEscala, String representantAdrecaPis, String representantAdrecaPorta,
+            String representantAdrecaMunicipi, String representantAdrecaCodiPostal, String representantTelefon, String representantCorreu,
+            String representantMitjaAcreditacio, String representantRea, String representantAltres
+    ) {
         this.interessatNom = interessatNom;
         this.interessatLlinatge1 = interessatLlinatge1;
         this.interessatLlinatge2 = interessatLlinatge2;
@@ -49,6 +77,28 @@ public class TramitConsentimentDAO {
         this.tramitNom = tramitNom;
         this.tramitCodi = tramitCodi;
         this.dataTramit = dataTramit;
+
+        this.interessatAdreca = interessatAdreca;
+        this.interessatAdrecaNumero = interessatAdrecaNumero;
+        this.interessatAdrecaEscala = interessatAdrecaEscala;
+        this.interessatAdrecaPis = interessatAdrecaPis;
+        this.interessatAdrecaPorta = interessatAdrecaPorta;
+        this.interessatAdrecaMunicipi = interessatAdrecaMunicipi;
+        this.interessatAdrecaCodiPostal = interessatAdrecaCodiPostal;
+        this.interessatTelefon = interessatTelefon;
+        this.interessatCorreu = interessatCorreu;
+        this.representantAdreca = representantAdreca;
+        this.representantAdrecaNumero = representantAdrecaNumero;
+        this.representantAdrecaEscala = representantAdrecaEscala;
+        this.representantAdrecaPis = representantAdrecaPis;
+        this.representantAdrecaPorta = representantAdrecaPorta;
+        this.representantAdrecaMunicipi = representantAdrecaMunicipi;
+        this.representantAdrecaCodiPostal = representantAdrecaCodiPostal;
+        this.representantTelefon = representantTelefon;
+        this.representantCorreu = representantCorreu;
+        this.representantMitjaAcreditacio = representantMitjaAcreditacio;
+        this.representantRea = representantRea;
+        this.representantAltres = representantAltres;
     }
 
     public String getInteressatNom() {
@@ -186,4 +236,68 @@ public class TramitConsentimentDAO {
     public void setDataTramit(Date dataTramit) {
         this.dataTramit = dataTramit;
     }
+
+    // Getters i setters de les noves propietats
+    public String getInteressatAdreca() { return interessatAdreca; }
+    public void setInteressatAdreca(String interessatAdreca) { this.interessatAdreca = interessatAdreca; }
+
+    public String getInteressatAdrecaNumero() { return interessatAdrecaNumero; }
+    public void setInteressatAdrecaNumero(String interessatAdrecaNumero) { this.interessatAdrecaNumero = interessatAdrecaNumero; }
+
+    public String getInteressatAdrecaEscala() { return interessatAdrecaEscala; }
+    public void setInteressatAdrecaEscala(String interessatAdrecaEscala) { this.interessatAdrecaEscala = interessatAdrecaEscala; }
+
+    public String getInteressatAdrecaPis() { return interessatAdrecaPis; }
+    public void setInteressatAdrecaPis(String interessatAdrecaPis) { this.interessatAdrecaPis = interessatAdrecaPis; }
+
+    public String getInteressatAdrecaPorta() { return interessatAdrecaPorta; }
+    public void setInteressatAdrecaPorta(String interessatAdrecaPorta) { this.interessatAdrecaPorta = interessatAdrecaPorta; }
+
+    public String getInteressatAdrecaMunicipi() { return interessatAdrecaMunicipi; }
+    public void setInteressatAdrecaMunicipi(String interessatAdrecaMunicipi) { this.interessatAdrecaMunicipi = interessatAdrecaMunicipi; }
+
+    public String getInteressatAdrecaCodiPostal() { return interessatAdrecaCodiPostal; }
+    public void setInteressatAdrecaCodiPostal(String interessatAdrecaCodiPostal) { this.interessatAdrecaCodiPostal = interessatAdrecaCodiPostal; }
+
+    public String getInteressatTelefon() { return interessatTelefon; }
+    public void setInteressatTelefon(String interessatTelefon) { this.interessatTelefon = interessatTelefon; }
+
+    public String getInteressatCorreu() { return interessatCorreu; }
+    public void setInteressatCorreu(String interessatCorreu) { this.interessatCorreu = interessatCorreu; }
+
+    public String getRepresentantAdreca() { return representantAdreca; }
+    public void setRepresentantAdreca(String representantAdreca) { this.representantAdreca = representantAdreca; }
+
+    public String getRepresentantAdrecaNumero() { return representantAdrecaNumero; }
+    public void setRepresentantAdrecaNumero(String representantAdrecaNumero) { this.representantAdrecaNumero = representantAdrecaNumero; }
+
+    public String getRepresentantAdrecaEscala() { return representantAdrecaEscala; }
+    public void setRepresentantAdrecaEscala(String representantAdrecaEscala) { this.representantAdrecaEscala = representantAdrecaEscala; }
+
+    public String getRepresentantAdrecaPis() { return representantAdrecaPis; }
+    public void setRepresentantAdrecaPis(String representantAdrecaPis) { this.representantAdrecaPis = representantAdrecaPis; }
+
+    public String getRepresentantAdrecaPorta() { return representantAdrecaPorta; }
+    public void setRepresentantAdrecaPorta(String representantAdrecaPorta) { this.representantAdrecaPorta = representantAdrecaPorta; }
+
+    public String getRepresentantAdrecaMunicipi() { return representantAdrecaMunicipi; }
+    public void setRepresentantAdrecaMunicipi(String representantAdrecaMunicipi) { this.representantAdrecaMunicipi = representantAdrecaMunicipi; }
+
+    public String getRepresentantAdrecaCodiPostal() { return representantAdrecaCodiPostal; }
+    public void setRepresentantAdrecaCodiPostal(String representantAdrecaCodiPostal) { this.representantAdrecaCodiPostal = representantAdrecaCodiPostal; }
+
+    public String getRepresentantTelefon() { return representantTelefon; }
+    public void setRepresentantTelefon(String representantTelefon) { this.representantTelefon = representantTelefon; }
+
+    public String getRepresentantCorreu() { return representantCorreu; }
+    public void setRepresentantCorreu(String representantCorreu) { this.representantCorreu = representantCorreu; }
+
+    public String getRepresentantMitjaAcreditacio() { return representantMitjaAcreditacio; }
+    public void setRepresentantMitjaAcreditacio(String representantMitjaAcreditacio) { this.representantMitjaAcreditacio = representantMitjaAcreditacio; }
+
+    public String getRepresentantRea() { return representantRea; }
+    public void setRepresentantRea(String representantRea) { this.representantRea = representantRea; }
+
+    public String getRepresentantAltres() { return representantAltres; }
+    public void setRepresentantAltres(String representantAltres) { this.representantAltres = representantAltres; }
 }

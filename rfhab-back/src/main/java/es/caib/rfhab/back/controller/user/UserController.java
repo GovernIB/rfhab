@@ -405,7 +405,8 @@ public class UserController extends UsuariController {
 		log.info("XYZ YYY funcionariNom = " + funcionariNom);
 		log.info("XYZ YYY funcionariDir3 = " + funcionariDir3);
 
-		TramitConsentimentDAO tramitConsentimentDAO = new TramitConsentimentDAO(tramitConsentimentDto.ciutadaNom,
+		TramitConsentimentDAO tramitConsentimentDAO = new TramitConsentimentDAO(
+				tramitConsentimentDto.ciutadaNom,
 				tramitConsentimentDto.ciutadaLlinatge1,
 				tramitConsentimentDto.ciutadaLlinatge2, tramitConsentimentDto.ciutadaNif,
 				tramitConsentimentDto.representant ? tramitConsentimentDto.representantNom : null,
@@ -415,7 +416,30 @@ public class UserController extends UsuariController {
 				usuari.getNom(), usuari.getLlinatge1(),
 				usuari.getLlinatge2(), funcionariDir3,
 				tramitConsentimentDto.procedimentNom, tramitConsentimentDto.procedimentCodiSia,
-				tramitConsentimentDto.tramitNom, tramitConsentimentDto.tramitCodi, new java.util.Date());
+				tramitConsentimentDto.tramitNom, tramitConsentimentDto.tramitCodi, new java.util.Date(),
+
+				tramitConsentimentDto.interessatAdreca,
+				tramitConsentimentDto.interessatAdrecaNumero,
+				tramitConsentimentDto.interessatAdrecaEscala,
+				tramitConsentimentDto.interessatAdrecaPis,
+				tramitConsentimentDto.interessatAdrecaPorta,
+				tramitConsentimentDto.interessatAdrecaMunicipi,
+				tramitConsentimentDto.interessatAdrecaCodiPostal,
+				tramitConsentimentDto.interessatTelefon,
+				tramitConsentimentDto.interessatCorreu,
+				tramitConsentimentDto.representantAdreca,
+				tramitConsentimentDto.representantAdrecaNumero,
+				tramitConsentimentDto.representantAdrecaEscala,
+				tramitConsentimentDto.representantAdrecaPis,
+				tramitConsentimentDto.representantAdrecaPorta,
+				tramitConsentimentDto.representantAdrecaMunicipi,
+				tramitConsentimentDto.representantAdrecaCodiPostal,
+				tramitConsentimentDto.representantTelefon,
+				tramitConsentimentDto.representantCorreu,
+				tramitConsentimentDto.representantMitjaAcreditacio,
+				tramitConsentimentDto.representantRea,
+				tramitConsentimentDto.representantAltres
+		);
 		Map<String, Object> freemarkerDadesMap = PlantillaOdtModelConsentiment
 				.buildFreemarkerContext(tramitConsentimentDAO);
 		String plantillaModelConsentimentPath = tramitConsentimentDto.languageUI.startsWith("es")

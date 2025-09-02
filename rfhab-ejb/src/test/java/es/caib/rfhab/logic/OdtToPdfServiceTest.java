@@ -2,6 +2,7 @@ package es.caib.rfhab.logic;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -9,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import org.fundaciobit.genapp.common.i18n.I18NException;
+import org.fundaciobit.pluginsib.core.v3.utils.FileUtils;
 import org.jboss.logging.Logger;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -21,6 +23,7 @@ import org.junit.runners.Parameterized.Parameters;
 import es.caib.rfhab.commons.utils.OdtToPdfService;
 import es.caib.rfhab.logic.utils.GeneracioModelConsentimentTramits.PlantillaOdtModelConsentiment;
 import es.caib.rfhab.logic.utils.GeneracioModelConsentimentTramits.TramitConsentimentDAO;
+import fr.opensagres.odfdom.converter.pdf.PdfOptions;
 
 @RunWith(Parameterized.class)
 public class OdtToPdfServiceTest {
@@ -117,6 +120,15 @@ public class OdtToPdfServiceTest {
                                 + nomFitxerSortida);
                 try {
                         File templateFile = new File(nomFitxerPlantilla);
+                        // byte[] templateFileBytes;
+                        // byte[] pdf;
+                        // try (java.io.FileInputStream fis = new java.io.FileInputStream(templateFile))
+                        // {
+                        // // templateFileBytes = FileUtils.toByteArray(fis);
+                        // ByteArrayOutputStream out = new ByteArrayOutputStream();
+                        // pdf = OdtToPdfService.generatePdfUsingXDocReport(freemarkerDadesMap, fis,
+                        // out);
+                        // }
 
                         // Genera PDF en memòria i el desa a disc
                         byte[] pdf = OdtToPdfService.generatePdf(freemarkerDadesMap, templateFile);

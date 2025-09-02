@@ -185,10 +185,10 @@ button[disabled][type="submit"] {
 				</div>
 			</div>
 
-			<div class="msf-content">
+			<div class="msf-content h60-scroll-y w-100">
 				<div class="msf-view">
-					<div class="row">
-						<div class="col-md-12">
+					<div class="row justify-content-center">
+						<div class="col-12 col-lg-10 col-xl-8">
 
 							<h3>1 <fmt:message key="usuari.tramit.dades.titol" /></h3>
 
@@ -218,29 +218,94 @@ button[disabled][type="submit"] {
 									data-val="true">
 							</div>
 
-							<div class="form-group">
-								<label><fmt:message key="usuari.tramit.dades.tipusidentificacio" /></label>
-								<select
-									id="pas1_tipusIdentificacio" name="tipusIdentificacio"
-									class="form-control"
-									data-bind="options: availableTypes, selectedOptions: chosenType, optionsCaption: '<fmt:message key="usuari.tramit.dades.numeroidentificacio.placeholder" />'"
-									data-val="true"
-									data-val-required="<fmt:message key="usuari.tramit.dades.tipusidentificacio.required" />">
-									<option value="DNI"><fmt:message key="usuari.tramit.dades.tipusidentificacio.dni" /></option>
-									<option value="NIE"><fmt:message key="usuari.tramit.dades.tipusidentificacio.nie" /></option>
-									<option value="Passaport"><fmt:message key="usuari.tramit.dades.tipusidentificacio.passaport" /></option>
-									<option value="Altres"><fmt:message key="usuari.tramit.dades.tipusidentificacio.altres" /></option>
-								</select>
+							<div class="row">
+								<div class="form-group col-6 col-md-4 col-lg-3 col-xl-2">
+									<label><fmt:message key="usuari.tramit.dades.tipusidentificacio" /></label>
+									<select
+										size
+										id="pas1_tipusIdentificacio" name="tipusIdentificacio"
+										class="form-control"
+										data-bind="options: availableTypes, selectedOptions: chosenType, optionsCaption: '<fmt:message key="usuari.tramit.dades.numeroidentificacio.placeholder" />'"
+										data-val="true"
+										data-val-required="<fmt:message key="usuari.tramit.dades.tipusidentificacio.required" />">
+										<option value="DNI"><fmt:message key="usuari.tramit.dades.tipusidentificacio.dni" /></option>
+										<option value="NIE"><fmt:message key="usuari.tramit.dades.tipusidentificacio.nie" /></option>
+										<option value="Passaport"><fmt:message key="usuari.tramit.dades.tipusidentificacio.passaport" /></option>
+										<option value="Altres"><fmt:message key="usuari.tramit.dades.tipusidentificacio.altres" /></option>
+									</select>
+								</div>
+	
+								<div class="form-group col-6 col-md-8 col-lg-9 col-xl-10">
+									<label><fmt:message key="usuari.tramit.dades.numeroidentificacio" /></label>
+									<input
+										id="pas1_identificacion" name="identificacio" type="text"
+										class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.numeroidentificacio" />"
+										data-bind="value: Identificacio" data-val="true"
+										data-val-required="<fmt:message key="usuari.tramit.dades.numeroidentificacio.required" />">
+								</div>
 							</div>
-
+							<!-- Camps addicionals per interessat -->
 							<div class="form-group">
-								<label><fmt:message key="usuari.tramit.dades.numeroidentificacio" /></label> <input
-									id="pas1_identificacion" name="identificacio" type="text"
-									class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.numeroidentificacio" />"
-									data-bind="value: Identificacio" data-val="true"
-									data-val-required="<fmt:message key="usuari.tramit.dades.numeroidentificacio.required" />">
+								<label><fmt:message key="usuari.tramit.dades.interessatadreca" /></label>
+								<input
+									id="pas1_interessat_adreca" name="interessat_adreca" type="text"
+									class="form-control" placeholder="<fmt:message key='usuari.tramit.dades.interessatadreca.placeholder' />"
+									data-bind="value: InteressatAdreca" data-val="true">
 							</div>
-
+							<div class="row">
+								<div class="form-group col-6 col-md-3">
+									<label><fmt:message key="usuari.tramit.dades.interessatadrecanumero" /></label>
+									<input id="pas1_interessat_adreca_numero" name="interessat_adreca_numero" type="text"
+										class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.interessatadrecanumero.placeholder" />"
+										data-bind="value: InteressatAdrecaNumero" data-val="false">
+								</div>
+								<div class="form-group col-6 col-md-3">
+									<label><fmt:message key="usuari.tramit.dades.interessatadrecaescala" /></label>
+									<input id="pas1_interessat_adreca_escala" name="interessat_adreca_escala" type="text"
+										class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.interessatadrecaescala.placeholder" />"
+										data-bind="value: InteressatAdrecaEscala" data-val="false">
+								</div>
+								<div class="form-group col-6 col-md-3">
+									<label><fmt:message key="usuari.tramit.dades.interessatadrecapis" /></label>
+									<input id="pas1_interessat_adreca_pis" name="interessat_adreca_pis" type="text"
+										class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.interessatadrecapis.placeholder" />"
+										data-bind="value: InteressatAdrecaPis" data-val="false">
+								</div>
+								<div class="form-group col-6 col-md-3">
+									<label><fmt:message key="usuari.tramit.dades.interessatadrecaporta" /></label>
+									<input id="pas1_interessat_adreca_porta" name="interessat_adreca_porta" type="text"
+										class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.interessatadrecaporta.placeholder" />"
+										data-bind="value: InteressatAdrecaPorta" data-val="false">
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group col-12 col-md-8">
+									<label><fmt:message key="usuari.tramit.dades.interessatadrecamunicipi" /></label>
+									<input id="pas1_interessat_adreca_municipi" name="interessat_adreca_municipi" type="text"
+										class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.interessatadrecamunicipi.placeholder" />"
+										data-bind="value: InteressatAdrecaMunicipi" data-val="false">
+								</div>
+								<div class="form-group col-12 col-md-4">
+									<label><fmt:message key="usuari.tramit.dades.interessatadrecacodipostal" /></label>
+									<input id="pas1_interessat_adreca_codipostal" name="interessat_adreca_codipostal" type="text"
+										class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.interessatadrecacodipostal.placeholder" />"
+										data-bind="value: InteressatAdrecaCodiPostal" data-val="false">
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-group col-12 col-md-6">
+									<label><fmt:message key="usuari.tramit.dades.interessattelefon" /></label>
+									<input id="pas1_interessat_telefon" name="interessat_telefon" type="text"
+										class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.interessattelefon.placeholder" />"
+										data-bind="value: InteressatTelefon" data-val="false">
+								</div>
+								<div class="form-group col-12 col-md-6">
+									<label><fmt:message key="usuari.tramit.dades.interessatcorreu" /></label>
+									<input id="pas1_interessat_correu" name="interessat_correu" type="email"
+										class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.interessatcorreu.placeholder" />"
+										data-bind="value: InteressatCorreu" data-val="false">
+								</div>
+							</div>
 							<div class="form-group">
 								<input type="checkbox" name="representant" value="representant"
 									id="representant"> <fmt:message key="usuari.tramit.dades.representant" />
@@ -279,40 +344,123 @@ button[disabled][type="submit"] {
 										data-bind="value: RepreLlinatge2" data-val="true" >
 								</div>
 
-								<div class="form-group">
-									<label><fmt:message key="usuari.tramit.dades.representant.tipusidentificacio" /></label>
-									<select
-										id="pas1_representant_tipusIdentificacio"
-										name="representant_tipusIdentificacio" class="form-control"
-										data-bind="options: availableTypes, selectedOptions: chosenType, optionsCaption: '"<fmt:message key="usuari.tramit.dades.tipusidentificacio.placeholder" />"'"
-										data-val="true"
-										data-val-required="<fmt:message key="usuari.tramit.dades.tipusidentificacio.required" />"
-										data-rule-required="#representant:checked">
-										<option value="DNI"><fmt:message key="usuari.tramit.dades.tipusidentificacio.dni" /></option>
-										<option value="NIE"><fmt:message key="usuari.tramit.dades.tipusidentificacio.nie" /></option>
-										<option value="Passaport"><fmt:message key="usuari.tramit.dades.tipusidentificacio.passaport" /></option>
-										<option value="Altres"><fmt:message key="usuari.tramit.dades.tipusidentificacio.altres" /></option>
-									</select>
+								<div class="row">
+									<div class="form-group col-6 col-md-4 col-lg-3 col-xl-2">
+										<label><fmt:message key="usuari.tramit.dades.representant.tipusidentificacio" /></label>
+										<select
+											size
+											id="pas1_representant_tipusIdentificacio"
+											name="representant_tipusIdentificacio" class="form-control"
+											data-bind="options: availableTypes, selectedOptions: chosenType, optionsCaption: '"<fmt:message key="usuari.tramit.dades.tipusidentificacio.placeholder" />"'"
+											data-val="true"
+											data-val-required="<fmt:message key="usuari.tramit.dades.tipusidentificacio.required" />"
+											data-rule-required="#representant:checked">
+											<option value="DNI"><fmt:message key="usuari.tramit.dades.tipusidentificacio.dni" /></option>
+											<option value="NIE"><fmt:message key="usuari.tramit.dades.tipusidentificacio.nie" /></option>
+											<option value="Passaport"><fmt:message key="usuari.tramit.dades.tipusidentificacio.passaport" /></option>
+											<option value="Altres"><fmt:message key="usuari.tramit.dades.tipusidentificacio.altres" /></option>
+										</select>
+									</div>
+
+									<div class="form-group col-6 col-md-8 col-lg-9 col-xl-10">
+										<label><fmt:message key="usuari.tramit.dades.representant.numeroidentificacio" /></label> <input
+											id="pas1_representant_identificacion"
+											name="representant_identificacio" type="text"
+											class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.numeroidentificacio.placeholder" />"
+											data-bind="value: Identificacio" data-val="true"
+											data-val-required="<fmt:message key="usuari.tramit.dades.numeroidentificacio.required" />"
+											data-rule-required="#representant:checked">
+									</div>
 								</div>
 
 								<div class="form-group">
-									<label><fmt:message key="usuari.tramit.dades.representant.numeroidentificacio" /></label> <input
-										id="pas1_representant_identificacion"
-										name="representant_identificacio" type="text"
-										class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.numeroidentificacio.placeholder" />"
-										data-bind="value: Identificacio" data-val="true"
-										data-val-required="<fmt:message key="usuari.tramit.dades.numeroidentificacio.required" />"
-										data-rule-required="#representant:checked">
+									<label><fmt:message key="usuari.tramit.dades.representantadreca" /></label>
+									<input id="pas1_representant_adreca" name="representant_adreca" type="text"
+										class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.representantadreca.placeholder" />"
+										data-bind="value: RepresentantAdreca" data-val="false">
 								</div>
-
+								<div class="row">
+									<div class="form-group col-6 col-md-3">
+										<label><fmt:message key="usuari.tramit.dades.representantadrecanumero" /></label>
+										<input id="pas1_representant_adreca_numero" name="representant_adreca_numero" type="text"
+											class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.representantadrecanumero.placeholder" />"
+											data-bind="value: RepresentantAdrecaNumero" data-val="false">
+									</div>
+									<div class="form-group col-6 col-md-3">
+										<label><fmt:message key="usuari.tramit.dades.representantadrecaescala" /></label>
+										<input id="pas1_representant_adreca_escala" name="representant_adreca_escala" type="text"
+											class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.representantadrecaescala.placeholder" />"
+											data-bind="value: RepresentantAdrecaEscala" data-val="false">
+									</div>
+									<div class="form-group col-6 col-md-3">
+										<label><fmt:message key="usuari.tramit.dades.representantadrecapis" /></label>
+										<input id="pas1_representant_adreca_pis" name="representant_adreca_pis" type="text"
+											class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.representantadrecapis.placeholder" />"
+											data-bind="value: RepresentantAdrecaPis" data-val="false">
+									</div>
+									<div class="form-group col-6 col-md-3">
+										<label><fmt:message key="usuari.tramit.dades.representantadrecaporta" /></label>
+										<input id="pas1_representant_adreca_porta" name="representant_adreca_porta" type="text"
+											class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.representantadrecaporta.placeholder" />"
+											data-bind="value: RepresentantAdrecaPorta" data-val="false">
+									</div>
+								</div>
+								<div class="row">
+									<div class="form-group col-12 col-md-8">
+										<label><fmt:message key="usuari.tramit.dades.representantadrecamunicipi" /></label>
+										<input id="pas1_representant_adreca_municipi" name="representant_adreca_municipi" type="text"
+											class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.representantadrecamunicipi.placeholder" />"
+											data-bind="value: RepresentantAdrecaMunicipi" data-val="false">
+									</div>
+									<div class="form-group col-12 col-md-4">
+										<label><fmt:message key="usuari.tramit.dades.representantadrecacodipostal" /></label>
+										<input id="pas1_representant_adreca_codipostal" name="representant_adreca_codipostal" type="text"
+											class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.representantadrecacodipostal.placeholder" />"
+											data-bind="value: RepresentantAdrecaCodiPostal" data-val="false">
+									</div>
+								</div>
+								<div class="row">
+									<div class="form-group col-12 col-md-6">
+										<label><fmt:message key="usuari.tramit.dades.representanttelefon" /></label>
+										<input id="pas1_representant_telefon" name="representant_telefon" type="text"
+											class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.representanttelefon.placeholder" />"
+											data-bind="value: RepresentantTelefon" data-val="false">
+									</div>
+									<div class="form-group col-12 col-md-6">
+										<label><fmt:message key="usuari.tramit.dades.representantcorreu" /></label>
+										<input id="pas1_representant_correu" name="representant_correu" type="email"
+											class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.representantcorreu.placeholder" />"
+											data-bind="value: RepresentantCorreu" data-val="false">
+									</div>									
+								</div>
+								<div class="row">
+									<div class="form-group col-12 col-md-6 col-lg-4">
+										<label>Mitjà d'acreditació</label>
+										<input id="pas1_representant_mitja_acreditacio" name="representant_mitja_acreditacio" type="text"
+											class="form-control" placeholder="Mitjà d'acreditació"
+											data-bind="value: RepresentantMitjaAcreditacio" data-val="false">
+									</div>
+									<div class="form-group col-12 col-md-6 col-lg-8">
+										<label>REA</label>
+										<input id="pas1_representant_rea" name="representant_rea" type="text"
+											class="form-control" placeholder="REA"
+											data-bind="value: RepresentantRea" data-val="false">
+									</div>
+									<div class="form-group col-12 col-md-12 col-lg-12">
+										<label>Altres</label>
+										<input id="pas1_representant_altres" name="representant_altres" type="text"
+											class="form-control" placeholder="Altres"
+											data-bind="value: RepresentantAltres" data-val="false">
+									</div>									
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 
 				<div class="msf-view">
-					<div class="row">
-						<div class="col-md-12">
+					<div class="row justify-content-center">
+						<div class="col-12 col-lg-10 col-xl-8">
 
 							<h3>2 <fmt:message key="usuari.tramit.seleccio.titol" /></h3>
 
@@ -392,18 +540,18 @@ button[disabled][type="submit"] {
 				</div>
 
 				<div class="msf-view">
-					<div class="row">
-						<div class="col-md-12">
+					<div class="row justify-content-center">
+						<div class="col-12 col-lg-10 col-xl-8">
 
 							<h3>3 <fmt:message key="usuari.tramit.documentacio.titol" /></h3>
 
 							<div class="form-group pdfVisor">
-								<div class="col-12" style="min-height: 325px;" id="spinner-carregant-iframepdf" style="display: none;">
+								<div class="col-12" style="min-height: 325px; max-height: 45vh;" id="spinner-carregant-iframepdf" style="display: none;">
 									<p  style="text-align: center;">
 										<svg style="width:20%;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150"><path fill="none" stroke="#007BFF" stroke-width="15" stroke-linecap="round" stroke-dasharray="300 385" stroke-dashoffset="0" d="M275 75c0 31-27 50-50 50-58 0-92-100-150-100-28 0-50 22-50 50s23 50 50 50c58 0 92-100 150-100 24 0 50 19 50 50Z"><animate attributeName="stroke-dashoffset" calcMode="spline" dur="2" values="685;-685" keySplines="0 0 1 1" repeatCount="indefinite"></animate></path></svg>
 									</p>
 								</div>
-								<iframe id="iframe-pdf" style="display: none;" src="" type="application/pdf" width="100%" height="600" style="overflow: auto;"></iframe>
+								<iframe id="iframe-pdf" style="display: none;" src="" type="application/pdf" width="100%" height="600" style="overflow: auto; max-height: 45vh;"></iframe>
 								<input style="display: none;" id="input-pdf" name="inputPdf" type="text" class="form-control" 
 									data-bind="value: Pdf" data-val="true" data-val-required="<fmt:message key="usuari.tramit.iniciar.apoderament" />">
 							</div>
@@ -425,8 +573,8 @@ button[disabled][type="submit"] {
 				</div>
 
 				<div class="msf-view">
-					<div class="row">
-						<div class="col-md-12" style="min-height: 325px;" id="div-iniciar-tramit">
+					<div class="row justify-content-center">
+						<div class="col-12 col-lg-10 col-xl-8" style="min-height: 325px;" id="div-iniciar-tramit">
 
 							<h3><fmt:message key="usuari.tramit.iniciar.titol" /></h3>
 
@@ -437,12 +585,12 @@ button[disabled][type="submit"] {
 							</p>
 
 						</div>
-						<div class="col-md-12" style="min-height: 325px;" id="div-iniciar-tramit-error" style="display: none;">
+						<div class="col-12 col-lg-10 col-xl-8" style="min-height: 325px;" id="div-iniciar-tramit-error" style="display: none;">
 							<p class="text-danger">
 								<fmt:message key="usuari.tramit.iniciar.error" />
 							</p>
 						</div>
-						<div class="col-md-12" style="min-height: 325px;" id="spinner-carregant-iniciartramit" style="display: none;">
+						<div class="col-12 col-lg-10 col-xl-8" style="min-height: 325px;" id="spinner-carregant-iniciartramit" style="display: none;">
 							<p  style="text-align: center;">
 								<svg style="width:20%;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150"><path fill="none" stroke="#007BFF" stroke-width="15" stroke-linecap="round" stroke-dasharray="300 385" stroke-dashoffset="0" d="M275 75c0 31-27 50-50 50-58 0-92-100-150-100-28 0-50 22-50 50s23 50 50 50c58 0 92-100 150-100 24 0 50 19 50 50Z"><animate attributeName="stroke-dashoffset" calcMode="spline" dur="2" values="685;-685" keySplines="0 0 1 1" repeatCount="indefinite"></animate></path></svg>
 							</p>
@@ -1885,12 +2033,35 @@ button[disabled][type="submit"] {
 			ciutadaNom: $form.find('#pas1_nom').val() || '',
 			ciutadaLlinatge1: $form.find('#pas1_llinatge1').val() || '',
 			ciutadaLlinatge2: $form.find('#pas1_llinatge2').val() || '',
+			// Noves propietats interessat
+			interessatAdreca: $form.find('#pas1_interessat_adreca').val() || '',
+			interessatAdrecaNumero: $form.find('#pas1_interessat_adreca_numero').val() || '',
+			interessatAdrecaEscala: $form.find('#pas1_interessat_adreca_escala').val() || '',
+			interessatAdrecaPis: $form.find('#pas1_interessat_adreca_pis').val() || '',
+			interessatAdrecaPorta: $form.find('#pas1_interessat_adreca_porta').val() || '',
+			interessatAdrecaMunicipi: $form.find('#pas1_interessat_adreca_municipi').val() || '',
+			interessatAdrecaCodiPostal: $form.find('#pas1_interessat_adreca_codipostal').val() || '',
+			interessatTelefon: $form.find('#pas1_interessat_telefon').val() || '',
+			interessatCorreu: $form.find('#pas1_interessat_correu').val() || '',
 			representant: $form.find('#representant').is(':checked') ? 'true' : 'false',
 			representantNom: $form.find('#pas1_representant_nom').val() || '',
 			representantLlinatge1: $form.find('#pas1_representant_llinatge1').val() || '',
 			representantLlinatge2: $form.find('#pas1_representant_llinatge2').val() || '',
 			representantTipusIdentificacio: $form.find('#pas1_representant_tipusIdentificacio').val() || '',
 			representantIdentificacio: $form.find('#pas1_representant_identificacion').val() || '',
+			// Noves propietats representant
+			representantAdreca: $form.find('#pas1_representant_adreca').val() || '',
+			representantAdrecaNumero: $form.find('#pas1_representant_adreca_numero').val() || '',
+			representantAdrecaEscala: $form.find('#pas1_representant_adreca_escala').val() || '',
+			representantAdrecaPis: $form.find('#pas1_representant_adreca_pis').val() || '',
+			representantAdrecaPorta: $form.find('#pas1_representant_adreca_porta').val() || '',
+			representantAdrecaMunicipi: $form.find('#pas1_representant_adreca_municipi').val() || '',
+			representantAdrecaCodiPostal: $form.find('#pas1_representant_adreca_codipostal').val() || '',
+			representantTelefon: $form.find('#pas1_representant_telefon').val() || '',
+			representantCorreu: $form.find('#pas1_representant_correu').val() || '',
+			representantMitjaAcreditacio: $form.find('#pas1_representant_mitja_acreditacio').val() || '',
+			representantRea: $form.find('#pas1_representant_rea').val() || '',
+			representantAltres: $form.find('#pas1_representant_altres').val() || '',
 			procediment: procedimentRolsacId,
 			procedimentNom: procediments.find(proc => proc.codiRolsac === procedimentRolsacId)?.nom,
 			procedimentCodiSia: procediments.find(proc => proc.codiRolsac === procedimentRolsacId)?.codiSia,

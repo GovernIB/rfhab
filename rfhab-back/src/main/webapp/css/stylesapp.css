@@ -1,8 +1,22 @@
 
 /* Estils especifics de l'APP */
 
+.justify-content-center {
+    justify-content: center;
+}
+
 .w-100 {
     width: 100%;
+}
+
+.h100-scroll  {
+  max-height: 100vh;
+  overflow: auto;
+}
+
+.h60-scroll-y  {
+  max-height: 60vh;
+  overflow-y: auto;
 }
 
 .input-ample-tota-linia {

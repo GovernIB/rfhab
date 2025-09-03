@@ -193,6 +193,7 @@
 
 <%-- Element Utils JS --%>
 <script src="<c:url value="/js/formmodificable-element-utils/filter-utils.js"/>"></script>
+<script src="<c:url value="/js/formmodificable-element-utils/select-input-utils.js"/>"></script>
 <script src="<c:url value="/js/element-utils/select-utils.js"/>"></script>
 <script src="<c:url value="/js/element-utils/table-utils.js"/>"></script>
 <script src="<c:url value="/js/lloclist/select-filters.js"/>"></script>

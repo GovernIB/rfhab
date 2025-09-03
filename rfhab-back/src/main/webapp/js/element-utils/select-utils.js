@@ -6,3 +6,18 @@ function displayOptionsFromSelect(element) {
   }
   return txt;
 }
+
+function getSelectedOptions(sel) {
+  var opts = [],
+    opt;
+  var len = sel.options.length;
+  for (var i = 0; i < len; i++) {
+    opt = sel.options[i];
+
+    if (opt.selected) {
+      opts.push(opt);
+    }
+  }
+
+  return opts;
+}

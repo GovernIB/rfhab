@@ -1,3 +1,6 @@
+<script src="<c:url value="/js/select2.min.js"/>"></script>
+<script src="<c:url value="/js/select2_i18n/${lang}.js"/>"></script>
+
 <%@ include file="/WEB-INF/jsp/moduls/includes.jsp"%>
 
 <c:if test="${__theForm.view}">
@@ -279,6 +282,12 @@
 		// document.querySelector('[id="lloc.entitatID"]+input').value = "${gen:findValue(entitatId,__theForm.listOfEntitatForEntitatID)}";
 	}
 	
+	function onSelectedHabilitacioLloc(select2) {
+		const optionsSelected = getSelectedOptions(select2.target);
+		console.log('You selected: ', getSelectedOptions(select2.target));
+		$('#habilitacionsSeleccionadesId').val([].reduce((acumulator, current) => acumulator + "," + current.value));
+	}
+
 	document
 			.addEventListener(
 					"DOMContentLoaded",
@@ -290,24 +299,53 @@
 						document.getElementById("lloc.codiLlocPropi").placeholder = '${LLOC_CODILLOCPROPI_PLACEHOLDER}';
 
 						if ("true" != "${isView}") {
-
-							const nouTr = document.createElement("tr");
-							nouTr.id = "lloc_numerocai_rowid";
+							//afegeix input numero CAI
+							const nouNumeroCaiTr = document.createElement("tr");
+							nouNumeroCaiTr.id = "lloc_numerocai_rowid";
 
 							const nouTd1 = document.createElement("td");
 							nouTd1.id = "lloc_numerocai_columnlabelid";
 							nouTd1.innerHTML = '<label style="font-weight:bold; text-align:right;"><fmt:message key="historic.numeroCai"/></label>';
-							nouTr.appendChild(nouTd1);
+							nouNumeroCaiTr.appendChild(nouTd1);
 
 							const nouTd2 = document.createElement("td");
 							nouTd2.id = "lloc_numerocai_columnvalueid";
 							nouTd2.innerHTML = '<input type="text" name="numerocai" id="numerocai" class="form-control w-75"></input>';
-							nouTr.appendChild(nouTd2);
+							nouNumeroCaiTr.appendChild(nouTd2);
 
 							const taula = document.getElementById("lloc_tableid");
 							const tbody = taula.querySelector("tbody");
 							const observacionsTr = tbody.querySelector("#lloc_observacions_rowid");
-							tbody.insertBefore(nouTr, observacionsTr);
+							tbody.insertBefore(nouNumeroCaiTr, observacionsTr);
+
+							//afegeix input habilitacions
+							const optionsHabilitacions = [
+								{
+								value: "",
+								text: "Cap",
+								},
+								{
+								value: "1",
+								text: "Actius",
+								},
+								{
+								value: "0",
+								text: "Inactius",
+								},
+							];
+							const llocHabilitacionsSelectId = "lloc_habilitacions_seleccionades_id";
+							const nouHabilitacionsTr = createTrInputFormSelect("lloc_habilitacions_rowid", "lloc_habilitacions_columnlabelid", '<fmt:message key="rol.rol.plural"/>', "lloc_habilitacions_columnvalueid", "habilitacionsSeleccionadesId", llocHabilitacionsSelectId, "llocHabilitacionsSeleccionades", optionsHabilitacions, onSelectedHabilitacioLloc, true);
+							const dataDaltaTr = tbody.querySelector("#lloc_dataalta_rowid");
+							tbody.insertBefore(nouHabilitacionsTr, dataDaltaTr);
+								$('#' + llocHabilitacionsSelectId).select2(
+								{
+									placeholder: "",
+									allowClear: true,
+									language: "${lang}",
+									minimumInputLength: 0,
+									disabled: false
+								}
+							);
 						}
 					});
 </script>

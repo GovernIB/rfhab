@@ -368,7 +368,6 @@ public class LlocAdminController extends LlocController {
 		}
 		mav.addObject("LLOC_CODILLOCPROPI_PLACEHOLDER", Constants.LLOC_CODILLOCPROPI_PLACEHOLDER);
 
-		mav.addObject("donatdeBaixa", donatdeBaixa);
 		mav.addObject("lloc", lloc);
 
 		llocForm.addAdditionalButton(new AdditionalButton(" fas fa-long-arrow-alt-left", "tornar",

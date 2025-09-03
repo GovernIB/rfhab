@@ -67,10 +67,10 @@
 		<div class="tab-pane fade" id="rols" role="tabpanel"
 			aria-labelledby="rols-tab">
 
-			<c:if test="${rolsFuncionari.isEmpty()}">
+			<c:if test="${rols.isEmpty()}">
 				<div class="alert alert-warning" role="alert"><fmt:message key="lloc.admin.rols.sense"/></div>
 			</c:if>
-			<c:if test="${not rolsFuncionari.isEmpty()}">
+			<c:if test="${not rols.isEmpty()}">
 				<div class="row" style="margin-left: 0px;">
 					<table
 						class="table table-sm table-bordered table-striped table-genapp table-genapp-list"
@@ -95,11 +95,6 @@
 					</table>
 				</div>
 			</c:if>
-			<!-- todo: lleva botó -->
-			<p>
-				<a class="btn btn-primary btn-sm ${(donatdeBaixa ? "disabled" : "")}"
-					href="<c:url value="/admin/llochabilitacio/assignar/${lloc.llocID}"/>"><fmt:message key="lloc.assignar.nou.rol"/></a>
-			</p>
 		</div>
 		
 		<div class="tab-pane fade" id="historic" role="tabpanel"
@@ -288,8 +283,10 @@
 			.addEventListener(
 					"DOMContentLoaded",
 					function(event) {
-
-						document.getElementById("lloc.codiLloc").placeholder = "PFH_XXXXXXX";
+						const codiLlocInput = document.getElementById("lloc.codiLloc");
+						if(codiLlocInput){
+							codiLlocInput.placeholder = "PFH_XXXXXXX";
+						}
 						document.getElementById("lloc.codiLlocPropi").placeholder = '${LLOC_CODILLOCPROPI_PLACEHOLDER}';
 
 						if ("true" != "${isView}") {

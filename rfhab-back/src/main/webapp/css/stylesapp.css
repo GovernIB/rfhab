@@ -1,33 +1,40 @@
-
 /* Estils especifics de l'APP */
 
 .justify-content-center {
-    justify-content: center;
+  justify-content: center;
 }
 
 .w-100 {
-    width: 100%;
+  width: 100%;
 }
 
-.h100-scroll  {
+.h100-scroll {
   max-height: 100vh;
   overflow: auto;
 }
 
-.h60-scroll-y  {
+.h60-scroll-y {
   max-height: 60vh;
   overflow-y: auto;
 }
 
 .input-ample-tota-linia {
-    display: block;
-    margin: 0.375rem 0rem;
-    
-    font-size: 1rem;
-    font-weight: normal;
-    color: #495057;
+  display: block;
+  margin: 0.375rem 0rem;
+
+  font-size: 1rem;
+  font-weight: normal;
+  color: #495057;
 }
-.input-ample-tota-linia .select2-container--default .select2-selection--single .select2-selection__rendered{
-    color: inherit;
-    line-height: inherit;
+.input-ample-tota-linia
+  .select2-container--default
+  .select2-selection--single
+  .select2-selection__rendered {
+  color: inherit;
+  line-height: inherit;
+}
+.flex-childs-centered {
+  justify-content: center;
+  display: flex;
+  align-items: center;
 }

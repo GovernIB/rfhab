@@ -1410,7 +1410,7 @@ button[disabled][type="submit"] {
 
 	function showSpinnerCarregantIframePdf() {
 		const spinnerCarregant = document.getElementById('spinner-carregant-iframepdf');
-		spinnerCarregant.style.display = 'block';
+		spinnerCarregant.style.display = 'flex';
 	}
 
 	function hideSpinnerCarregantIframePdf() {

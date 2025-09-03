@@ -19,6 +19,10 @@ public class LlocQueryPath extends org.fundaciobit.genapp.common.query.QueryPath
     return new StringField(getQueryPath(), LlocFields.CODILLOC);
   }
 
+  public StringField CODILLOCPROPI() {
+    return new StringField(getQueryPath(), LlocFields.CODILLOCPROPI);
+  }
+
   public StringField NOM() {
     return new StringField(getQueryPath(), LlocFields.NOM);
   }
@@ -49,10 +53,6 @@ public class LlocQueryPath extends org.fundaciobit.genapp.common.query.QueryPath
 
   public StringField OBSERVACIONS() {
     return new StringField(getQueryPath(), LlocFields.OBSERVACIONS);
-  }
-
-  public StringField CODILLOCPROPI() {
-    return new StringField(getQueryPath(), LlocFields.CODILLOCPROPI);
   }
 
 

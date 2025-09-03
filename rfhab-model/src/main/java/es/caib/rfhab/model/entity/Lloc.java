@@ -8,6 +8,9 @@ public interface Lloc extends org.fundaciobit.genapp.common.IGenAppEntity {
 	public java.lang.String getCodiLloc();
 	public void setCodiLloc(java.lang.String _codiLloc_);
 
+	public java.lang.String getCodiLlocPropi();
+	public void setCodiLlocPropi(java.lang.String _codiLlocPropi_);
+
 	public java.lang.String getNom();
 	public void setNom(java.lang.String _nom_);
 
@@ -31,9 +34,6 @@ public interface Lloc extends org.fundaciobit.genapp.common.IGenAppEntity {
 
 	public java.lang.String getObservacions();
 	public void setObservacions(java.lang.String _observacions_);
-
-	public java.lang.String getCodiLlocPropi();
-	public void setCodiLlocPropi(java.lang.String _codiLlocPropi_);
 
 
 

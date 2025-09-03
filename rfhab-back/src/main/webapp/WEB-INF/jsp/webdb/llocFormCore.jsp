@@ -20,6 +20,24 @@
         </tr>
         </c:if>
         
+        <c:if test="${!gen:contains(__theForm.hiddenFields,LlocFields.CODILLOCPROPI)}">
+        <tr id="lloc_codiLlocPropi_rowid">
+          <td id="lloc_codiLlocPropi_columnlabelid">
+            <label>
+              <fmt:message key="${(empty __theForm.labels[LlocFields.CODILLOCPROPI])?'lloc.codiLlocPropi':__theForm.labels[LlocFields.CODILLOCPROPI]}" /> &nbsp;(*)
+             </label>
+              <c:if test="${not empty __theForm.help[LlocFields.CODILLOCPROPI]}">
+              <i class="fas fa-info-circle" title="${__theForm.help[LlocFields.CODILLOCPROPI]}" ></i>
+              </c:if>
+            </td>
+          <td id="lloc_codiLlocPropi_columnvalueid">
+            <form:errors path="lloc.codiLlocPropi" cssClass="errorField alert alert-danger" />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocFields.CODILLOCPROPI)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,LlocFields.CODILLOCPROPI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="lloc.codiLlocPropi"   />
+
+           </td>
+        </tr>
+        </c:if>
+        
         <c:if test="${!gen:contains(__theForm.hiddenFields,LlocFields.NOM)}">
         <tr id="lloc_nom_rowid">
           <td id="lloc_nom_columnlabelid">
@@ -279,24 +297,6 @@
       </script>   </td>
    </tr>
    </table>
-           </td>
-        </tr>
-        </c:if>
-        
-        <c:if test="${!gen:contains(__theForm.hiddenFields,LlocFields.CODILLOCPROPI)}">
-        <tr id="lloc_codiLlocPropi_rowid">
-          <td id="lloc_codiLlocPropi_columnlabelid">
-            <label>
-              <fmt:message key="${(empty __theForm.labels[LlocFields.CODILLOCPROPI])?'lloc.codiLlocPropi':__theForm.labels[LlocFields.CODILLOCPROPI]}" /> &nbsp;(*)
-             </label>
-              <c:if test="${not empty __theForm.help[LlocFields.CODILLOCPROPI]}">
-              <i class="fas fa-info-circle" title="${__theForm.help[LlocFields.CODILLOCPROPI]}" ></i>
-              </c:if>
-            </td>
-          <td id="lloc_codiLlocPropi_columnvalueid">
-            <form:errors path="lloc.codiLlocPropi" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocFields.CODILLOCPROPI)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,LlocFields.CODILLOCPROPI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="lloc.codiLlocPropi"   />
-
            </td>
         </tr>
         </c:if>

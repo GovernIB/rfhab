@@ -38,6 +38,10 @@ public class LlocValidator<I extends Lloc>
         "genapp.validation.required",
         new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(CODILLOC)));
 
+    __vr.rejectIfEmptyOrWhitespace(__target__,CODILLOCPROPI, 
+        "genapp.validation.required",
+        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(CODILLOCPROPI)));
+
     __vr.rejectIfEmptyOrWhitespace(__target__,NOM, 
         "genapp.validation.required",
         new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(NOM)));
@@ -58,32 +62,12 @@ public class LlocValidator<I extends Lloc>
         "genapp.validation.required",
         new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(DATACREACIO)));
 
-    __vr.rejectIfEmptyOrWhitespace(__target__,CODILLOCPROPI, 
-        "genapp.validation.required",
-        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(CODILLOCPROPI)));
-
     // Check size
     if (__vr.getFieldErrorCount(CODILLOC) == 0) {
       java.lang.String __codilloc = __target__.getCodiLloc();
       if (__codilloc!= null && __codilloc.length() > 50) {
         __vr.rejectValue(CODILLOC, "genapp.validation.sizeexceeds",
             new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(CODILLOC)), new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(50)));
-      }
-    }
-
-    if (__vr.getFieldErrorCount(NOM) == 0) {
-      java.lang.String __nom = __target__.getNom();
-      if (__nom!= null && __nom.length() > 255) {
-        __vr.rejectValue(NOM, "genapp.validation.sizeexceeds",
-            new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(NOM)), new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(255)));
-      }
-    }
-
-    if (__vr.getFieldErrorCount(OBSERVACIONS) == 0) {
-      java.lang.String __observacions = __target__.getObservacions();
-      if (__observacions!= null && __observacions.length() > 2147483647) {
-        __vr.rejectValue(OBSERVACIONS, "genapp.validation.sizeexceeds",
-            new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(OBSERVACIONS)), new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(2147483647)));
       }
     }
 
@@ -103,6 +87,22 @@ public class LlocValidator<I extends Lloc>
           __vr.rejectValue(CODILLOCPROPI, "genapp.validation.malformed",
              new org.fundaciobit.genapp.common.i18n.I18NArgumentString(val), new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(CODILLOCPROPI)));
         }
+      }
+    }
+
+    if (__vr.getFieldErrorCount(NOM) == 0) {
+      java.lang.String __nom = __target__.getNom();
+      if (__nom!= null && __nom.length() > 255) {
+        __vr.rejectValue(NOM, "genapp.validation.sizeexceeds",
+            new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(NOM)), new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(255)));
+      }
+    }
+
+    if (__vr.getFieldErrorCount(OBSERVACIONS) == 0) {
+      java.lang.String __observacions = __target__.getObservacions();
+      if (__observacions!= null && __observacions.length() > 2147483647) {
+        __vr.rejectValue(OBSERVACIONS, "genapp.validation.sizeexceeds",
+            new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(OBSERVACIONS)), new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(2147483647)));
       }
     }
 

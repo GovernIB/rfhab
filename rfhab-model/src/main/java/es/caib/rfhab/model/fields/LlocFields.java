@@ -14,6 +14,7 @@ public interface LlocFields extends java.io.Serializable {
 
 	 public static final LongField LLOCID = new LongField(_TABLE_MODEL, "llocID", "llocid");  // PK
 	 public static final StringField CODILLOC = new StringField(_TABLE_MODEL, "codiLloc", "codilloc");
+	 public static final StringField CODILLOCPROPI = new StringField(_TABLE_MODEL, "codiLlocPropi", "codillocpropi");
 	 public static final StringField NOM = new StringField(_TABLE_MODEL, "nom", "nom");
 	 public static final LongField ENTITATID = new LongField(_TABLE_MODEL, "entitatID", "entitatid");
 	 public static final LongField UNITATID = new LongField(_TABLE_MODEL, "unitatID", "unitatid");
@@ -22,12 +23,12 @@ public interface LlocFields extends java.io.Serializable {
 	 public static final TimestampField DATACREACIO = new TimestampField(_TABLE_MODEL, "dataCreacio", "datacreacio");
 	 public static final TimestampField DATABAIXA = new TimestampField(_TABLE_MODEL, "dataBaixa", "databaixa");
 	 public static final StringField OBSERVACIONS = new StringField(_TABLE_MODEL, "observacions", "observacions");
-	 public static final StringField CODILLOCPROPI = new StringField(_TABLE_MODEL, "codiLlocPropi", "codillocpropi");
 
 
   public static final Field<?>[] ALL_LLOC_FIELDS = {
     LLOCID,
     CODILLOC,
+    CODILLOCPROPI,
     NOM,
     ENTITATID,
     UNITATID,
@@ -35,8 +36,7 @@ public interface LlocFields extends java.io.Serializable {
     DATAALTA,
     DATACREACIO,
     DATABAIXA,
-    OBSERVACIONS,
-    CODILLOCPROPI
+    OBSERVACIONS
   };
 
 

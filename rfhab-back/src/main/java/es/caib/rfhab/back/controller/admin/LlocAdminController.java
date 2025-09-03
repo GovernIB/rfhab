@@ -133,11 +133,12 @@ public class LlocAdminController extends LlocController {
 		LlocFilterForm llocFilterForm = super.getLlocFilterForm(pagina, mav, request);
 
 		if (llocFilterForm.isNou()) {
-			llocFilterForm.addHiddenField(LLOCID);
-			llocFilterForm.addHiddenField(DATACREACIO);
-			llocFilterForm.addHiddenField(ENTITATID);
-			llocFilterForm.addHiddenField(OBSERVACIONS);
-			llocFilterForm.addHiddenField(DATABAIXA);
+			llocFilterForm.addHiddenField(LlocFields.LLOCID);
+			llocFilterForm.addHiddenField(LlocFields.DATACREACIO);
+			llocFilterForm.addHiddenField(LlocFields.ENTITATID);
+			llocFilterForm.addHiddenField(LlocFields.OBSERVACIONS);
+			llocFilterForm.addHiddenField(LlocFields.DATABAIXA);
+			llocFilterForm.addHiddenField(LlocFields.CODILLOC);
 
 			{
 				AdditionalField<Long, String> adfield0 = new AdditionalField<Long, String>();
@@ -375,7 +376,7 @@ public class LlocAdminController extends LlocController {
 
 		llocForm.addReadOnlyField(LlocFields.ENTITATID);
 		llocForm.addReadOnlyField(LlocFields.CODILLOCPROPI);
-		// llocForm.addHiddenField(LlocFields.CODILLOCPROPI);//TODO
+		llocForm.addHiddenField(LlocFields.CODILLOC);
 		llocForm.addHiddenField(LlocFields.DATACREACIO);
 		// només el volem veure al mode consulta
 		if (!__isView) {

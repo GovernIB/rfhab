@@ -10,6 +10,7 @@ public class LlocBean implements Lloc {
 
 	long llocID;// PK
 	java.lang.String codiLloc;
+	java.lang.String codiLlocPropi;
 	java.lang.String nom;
 	long entitatID;
 	long unitatID;
@@ -18,7 +19,6 @@ public class LlocBean implements Lloc {
 	java.sql.Timestamp dataCreacio;
 	java.sql.Timestamp dataBaixa;
 	java.lang.String observacions;
-	java.lang.String codiLlocPropi;
 
 
   /** Constructor Buit */
@@ -26,9 +26,10 @@ public class LlocBean implements Lloc {
   }
 
   /** Constructor amb tots els camps  */
-  public LlocBean(long llocID , java.lang.String codiLloc , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataalta , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , java.lang.String observacions , java.lang.String codiLlocPropi) {
+  public LlocBean(long llocID , java.lang.String codiLloc , java.lang.String codiLlocPropi , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataalta , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , java.lang.String observacions) {
     this.llocID=llocID;
     this.codiLloc=codiLloc;
+    this.codiLlocPropi=codiLlocPropi;
     this.nom=nom;
     this.entitatID=entitatID;
     this.unitatID=unitatID;
@@ -37,11 +38,11 @@ public class LlocBean implements Lloc {
     this.dataCreacio=dataCreacio;
     this.dataBaixa=dataBaixa;
     this.observacions=observacions;
-    this.codiLlocPropi=codiLlocPropi;
 }
   /** Constructor sense valors autoincrementals */
-  public LlocBean(java.lang.String codiLloc , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataalta , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , java.lang.String observacions , java.lang.String codiLlocPropi) {
+  public LlocBean(java.lang.String codiLloc , java.lang.String codiLlocPropi , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataalta , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , java.lang.String observacions) {
     this.codiLloc=codiLloc;
+    this.codiLlocPropi=codiLlocPropi;
     this.nom=nom;
     this.entitatID=entitatID;
     this.unitatID=unitatID;
@@ -50,22 +51,22 @@ public class LlocBean implements Lloc {
     this.dataCreacio=dataCreacio;
     this.dataBaixa=dataBaixa;
     this.observacions=observacions;
-    this.codiLlocPropi=codiLlocPropi;
 }
   /** Constructor dels valors Not Null */
-  public LlocBean(long llocID , java.lang.String codiLloc , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataCreacio , java.lang.String codiLlocPropi) {
+  public LlocBean(long llocID , java.lang.String codiLloc , java.lang.String codiLlocPropi , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataCreacio) {
     this.llocID=llocID;
     this.codiLloc=codiLloc;
+    this.codiLlocPropi=codiLlocPropi;
     this.nom=nom;
     this.entitatID=entitatID;
     this.unitatID=unitatID;
     this.personalOamr=personalOamr;
     this.dataCreacio=dataCreacio;
-    this.codiLlocPropi=codiLlocPropi;
 }
   public LlocBean(Lloc __bean) {
     this.setLlocID(__bean.getLlocID());
     this.setCodiLloc(__bean.getCodiLloc());
+    this.setCodiLlocPropi(__bean.getCodiLlocPropi());
     this.setNom(__bean.getNom());
     this.setEntitatID(__bean.getEntitatID());
     this.setUnitatID(__bean.getUnitatID());
@@ -74,7 +75,6 @@ public class LlocBean implements Lloc {
     this.setDataCreacio(__bean.getDataCreacio());
     this.setDataBaixa(__bean.getDataBaixa());
     this.setObservacions(__bean.getObservacions());
-    this.setCodiLlocPropi(__bean.getCodiLlocPropi());
 	}
 
 	public long getLlocID() {
@@ -89,6 +89,13 @@ public class LlocBean implements Lloc {
 	};
 	public void setCodiLloc(java.lang.String _codiLloc_) {
 		this.codiLloc = _codiLloc_;
+	};
+
+	public java.lang.String getCodiLlocPropi() {
+		return(codiLlocPropi);
+	};
+	public void setCodiLlocPropi(java.lang.String _codiLlocPropi_) {
+		this.codiLlocPropi = _codiLlocPropi_;
 	};
 
 	public java.lang.String getNom() {
@@ -147,13 +154,6 @@ public class LlocBean implements Lloc {
 		this.observacions = _observacions_;
 	};
 
-	public java.lang.String getCodiLlocPropi() {
-		return(codiLlocPropi);
-	};
-	public void setCodiLlocPropi(java.lang.String _codiLlocPropi_) {
-		this.codiLlocPropi = _codiLlocPropi_;
-	};
-
 
 
   // ======================================
@@ -163,6 +163,7 @@ public class LlocBean implements Lloc {
     LlocBean __tmp = new LlocBean();
     __tmp.setLlocID(__bean.getLlocID());
     __tmp.setCodiLloc(__bean.getCodiLloc());
+    __tmp.setCodiLlocPropi(__bean.getCodiLlocPropi());
     __tmp.setNom(__bean.getNom());
     __tmp.setEntitatID(__bean.getEntitatID());
     __tmp.setUnitatID(__bean.getUnitatID());
@@ -171,7 +172,6 @@ public class LlocBean implements Lloc {
     __tmp.setDataCreacio(__bean.getDataCreacio());
     __tmp.setDataBaixa(__bean.getDataBaixa());
     __tmp.setObservacions(__bean.getObservacions());
-    __tmp.setCodiLlocPropi(__bean.getCodiLlocPropi());
 		return __tmp;
 	}
 

@@ -285,7 +285,11 @@
 	function onSelectedHabilitacioLloc(select2) {
 		const optionsSelected = getSelectedOptions(select2.target);
 		console.log('You selected: ', getSelectedOptions(select2.target));
-		$('#habilitacionsSeleccionadesId').val([].reduce((acumulator, current) => acumulator + "," + current.value));
+		let habilitacionsSeleccionades = "";
+		if(optionsSelected && optionsSelected.length > 0){
+			habilitacionsSeleccionades = optionsSelected.map(option => option.value).join(",");
+		}
+		$('#habilitacionsSeleccionadesId').val(habilitacionsSeleccionades);
 	}
 
 	document

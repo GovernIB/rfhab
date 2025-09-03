@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GenerationType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Index;
-import javax.persistence.UniqueConstraint;
 import javax.persistence.GeneratedValue;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.ForeignKey;
@@ -21,9 +20,7 @@ import javax.persistence.Id;
         @Index(name="rfh_funcionarientitat_pk_i", columnList = "funcionarillocid"),
         @Index(name="rfh_funcionarilloc_llocid_fk_i", columnList = "llocid"),
         @Index(name="rfh_funlloc_funcionariid_fk_i", columnList = "funcionariid"),
-        @Index(name="rfh_funlloc_usuariid_fk_i", columnList = "usuariid")},
-           uniqueConstraints = {
-            @UniqueConstraint(name="rfh_funlloc_multiple_uk", columnNames={"llocid","funcionariid"}) } )
+        @Index(name="rfh_funlloc_usuariid_fk_i", columnList = "usuariid")})
 @SequenceGenerator(name="FUNCIONARILLOC_SEQ", sequenceName="rfh_funcionarilloc_seq", allocationSize=1, initialValue=1000)
 @javax.xml.bind.annotation.XmlRootElement
 public class FuncionariLlocJPA implements FuncionariLloc {

@@ -262,8 +262,6 @@ create index rfh_funcionarilloc_llocid_fk_i on rfh_funcionarilloc (llocid);
 create index rfh_funlloc_funcionariid_fk_i on rfh_funcionarilloc (funcionariid);
 create index rfh_funlloc_usuariid_fk_i on rfh_funcionarilloc (usuariid);
 
-    alter table rfh_funcionarilloc 
-       add constraint rfh_funlloc_multiple_uk unique (llocid, funcionariid);
 create index rfh_historic_pk_i on rfh_historic (historicid);
 create index rfh_historic_funcionariid_fk_i on rfh_historic (funcionariid);
 create index rfh_historic_usuariid_fk_i on rfh_historic (usuariid);

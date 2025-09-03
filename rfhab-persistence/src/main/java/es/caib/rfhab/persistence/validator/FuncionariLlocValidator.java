@@ -54,45 +54,12 @@ public class FuncionariLlocValidator<I extends FuncionariLloc>
       // Fitxers 
       // ====== Check Unique MULTIPLES - NOU =======
 
-      // Check Unique MULTIPLE for (llocid, funcionariid)
-      if (__vr.getFieldErrorCount(LLOCID) == 0 && __vr.getFieldErrorCount(FUNCIONARIID) == 0) {
-        java.lang.Long __llocid = __target__.getLlocID();
-        java.lang.Long __funcionariid = __target__.getFuncionariID();
-        Long __count_ = null;
-        try { __count_ = __funcionariLlocManager.count(org.fundaciobit.genapp.common.query.Where.AND(LLOCID.equal(__llocid), FUNCIONARIID.equal(__funcionariid))); } catch(org.fundaciobit.genapp.common.i18n.I18NException e) { e.printStackTrace(); };
-        if (__count_ == null || __count_ != 0) {        
-            __vr.rejectValue(LLOCID, "genapp.validation.unique",
-                new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(__llocid)),
-                     new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(LLOCID)));
-            __vr.rejectValue(FUNCIONARIID, "genapp.validation.unique",
-                new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(__funcionariid)),
-                     new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(FUNCIONARIID)));
-        }
-      }
-
       // Check Unique - no PK
       // Check Unique - PK no AutoIncrement amb UNA SOLA PK 
     } else {
       // ================ UPDATE
 
       // ====== Check Unique MULTIPLES - EDIT  =======
-
-      // Check Unique MULTIPLE for (llocid, funcionariid)
-      if (__vr.getFieldErrorCount(LLOCID) == 0 && __vr.getFieldErrorCount(FUNCIONARIID) == 0 && __vr.getFieldErrorCount(FUNCIONARILLOCID) == 0) {
-        java.lang.Long __llocid = __target__.getLlocID();
-        java.lang.Long __funcionariid = __target__.getFuncionariID();
-        java.lang.Long __funcionarillocid = __target__.getFuncionarillocID();
-        Long __count_ = null;
-        try { __count_ = __funcionariLlocManager.count(org.fundaciobit.genapp.common.query.Where.AND(LLOCID.equal(__llocid), FUNCIONARIID.equal(__funcionariid), FUNCIONARILLOCID.notEqual(__funcionarillocid))); } catch(org.fundaciobit.genapp.common.i18n.I18NException e) { e.printStackTrace(); };
-        if (__count_ == null || __count_ != 0) {        
-            __vr.rejectValue(LLOCID, "genapp.validation.unique",
-                new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(__llocid)),
-                     new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(LLOCID)));
-            __vr.rejectValue(FUNCIONARIID, "genapp.validation.unique",
-                new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(__funcionariid)),
-                     new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(FUNCIONARIID)));
-        }
-      }
 
       // Check Unique - no PK
     }

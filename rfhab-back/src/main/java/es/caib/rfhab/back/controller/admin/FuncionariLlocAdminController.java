@@ -1,9 +1,7 @@
 package es.caib.rfhab.back.controller.admin;
 
-import java.lang.reflect.Field;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -17,10 +15,6 @@ import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.web.form.AdditionalButton;
 import org.fundaciobit.genapp.common.web.form.AdditionalButtonStyle;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -115,6 +109,7 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 			if (currentSession != null) {
 				Object llocIdAttribute = currentSession.getAttribute(LLOC_ID_SESSION_ATTRIBUTE_NAME);
 				if (llocIdAttribute != null && !llocIdAttribute.toString().isEmpty() && ((long) llocIdAttribute) != 0) {
+					log.info("getFuncionariLlocForm llocId detectat, assignant: " + llocIdAttribute);
 					funcionariLloc.setLlocID((long) llocIdAttribute);
 					funcionariLlocForm.addReadOnlyField(LLOCID);
 				}
@@ -122,6 +117,7 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 				Object funcionariIdAttribute = currentSession.getAttribute(FUNCIONARI_ID_SESSION_ATTRIBUTE_NAME);
 				if (funcionariIdAttribute != null && !funcionariIdAttribute.toString().isEmpty()
 						&& ((long) funcionariIdAttribute) != 0) {
+					log.info("getFuncionariLlocForm funcionariId detectat, assignant: " + funcionariIdAttribute);
 					funcionariLloc.setFuncionariID(
 							(long) funcionariIdAttribute);
 					funcionariLlocForm.addReadOnlyField(FUNCIONARIID);
@@ -163,13 +159,14 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 	@RequestMapping(value = "/assignarfuncionari/{funcionariId}", method = RequestMethod.GET)
 	public String assignarFuncionariLloc(HttpServletRequest request, @PathVariable("funcionariId") Long funcionariId) {
 		request.getSession().setAttribute(FUNCIONARI_ID_SESSION_ATTRIBUTE_NAME, funcionariId);
+		request.getSession().removeAttribute(LLOC_ID_SESSION_ATTRIBUTE_NAME);
 		return "redirect:" + FuncionariLlocAdminController.CONTEXTWEB + "/new";
 	}
 
 	@RequestMapping(value = "/assignar/{llocId}", method = RequestMethod.GET)
 	public String assignarFuncionari(HttpServletRequest request, @PathVariable("llocId") Long llocId) {
-
 		request.getSession().setAttribute(LLOC_ID_SESSION_ATTRIBUTE_NAME, llocId);
+		request.getSession().removeAttribute(FUNCIONARI_ID_SESSION_ATTRIBUTE_NAME);
 		return "redirect:" + FuncionariLlocAdminController.CONTEXTWEB + "/new";
 	}
 
@@ -251,13 +248,17 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 			if (funcionariLloc != null) {
 				Long funcionariId = funcionariLloc.getFuncionariID();
 				Long llocId = funcionariLloc.getLlocID();
-				if (funcionariId != null) {
+				if (funcionariId != null && funcionariId != 0) {
 					log.info("redirigint amb funcionariId=" + funcionariId);
 					request.getSession().setAttribute(FUNCIONARI_ID_SESSION_ATTRIBUTE_NAME, funcionariId);
+				} else {
+					request.getSession().removeAttribute(FUNCIONARI_ID_SESSION_ATTRIBUTE_NAME);
 				}
-				if (llocId != null) {
+				if (llocId != null && llocId != 0) {
 					log.info("redirigint amb llocId=" + llocId);
 					request.getSession().setAttribute(LLOC_ID_SESSION_ATTRIBUTE_NAME, llocId);
+				} else {
+					request.getSession().removeAttribute(LLOC_ID_SESSION_ATTRIBUTE_NAME);
 				}
 
 				return "redirect:" + FuncionariLlocAdminController.CONTEXTWEB + "/new";
@@ -265,44 +266,5 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 		}
 
 		return UrlUtils.getRefererRedirect(request, super.getRedirectWhenCreated(request, funcionariLlocForm), false);
-	}
-
-	@Override
-	public void postValidate(HttpServletRequest request, FuncionariLlocForm funcionariLlocForm, BindingResult result)
-			throws I18NException {
-
-		if (result.hasFieldErrors(get(FuncionariLlocFields.FUNCIONARIID))
-				&& result.hasFieldErrors(get(FuncionariLlocFields.LLOCID))) {
-			removeFieldErrors(result, get(FuncionariLlocFields.FUNCIONARIID));
-			removeFieldErrors(result, get(FuncionariLlocFields.LLOCID));
-		}
-	}
-
-	public void removeFieldErrors(BindingResult bindingResult, String fieldName) {
-		if (!(bindingResult instanceof BeanPropertyBindingResult)) {
-			throw new IllegalArgumentException("Només funciona amb BeanPropertyBindingResult");
-		}
-		BeanPropertyBindingResult br = (BeanPropertyBindingResult) bindingResult;
-		try {
-			Field errorsField = BeanPropertyBindingResult.class.getSuperclass().getSuperclass()
-					.getDeclaredField("errors"); // està definit a AbstractBindingResult
-			errorsField.setAccessible(true);
-
-			List<ObjectError> errors = (List<ObjectError>) errorsField.get(br);
-
-			Iterator<ObjectError> it = errors.iterator();
-			while (it.hasNext()) {
-				ObjectError err = it.next();
-				if (err instanceof FieldError) {
-					FieldError fe = (FieldError) err;
-					if (fe.getField().equals(fieldName)) {
-						it.remove(); // elimina el error
-					}
-				}
-			}
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			log.error("No se pudo acceder a los errores internos: " + e.getMessage(), e);
-			throw new RuntimeException("No se pudo acceder a los errores internos: " + e.getMessage(), e);
-		}
 	}
 }

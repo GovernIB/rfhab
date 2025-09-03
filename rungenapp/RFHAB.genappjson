@@ -1953,15 +1953,6 @@
             }
           ]
         }
-      ],
-      "multipleUniques": [
-        {
-          "name": "rfh_funlloc_multiple_uk",
-          "sqlColumns": [
-            "llocid",
-            "funcionariid"
-          ]
-        }
       ]
     },
     {

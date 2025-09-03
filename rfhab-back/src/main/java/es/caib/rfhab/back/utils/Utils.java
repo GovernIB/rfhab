@@ -1,9 +1,9 @@
 package es.caib.rfhab.back.utils;
 
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -12,12 +12,17 @@ import org.fundaciobit.genapp.common.query.Field;
 import org.fundaciobit.genapp.common.query.OrderBy;
 import org.fundaciobit.genapp.common.query.OrderType;
 import org.fundaciobit.genapp.common.web.i18n.I18NUtils;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.fundaciobit.genapp.common.web.form.AdditionalField;
 import org.fundaciobit.genapp.common.web.form.BaseFilterForm;
 
 /**
  * 
  * @author anadal
+ * @author jpou
  * 
  */
 public class Utils {
@@ -113,8 +118,9 @@ public class Utils {
         return str.substring(1, str.length() - 1).replace(" ", "");
     }
 
-    public static final Comparator<StringKeyValue> STRINGKEYVALUECOMPARATOR=new Comparator<StringKeyValue>() {
-        @Override public int compare(StringKeyValue o1,StringKeyValue o2) {
+    public static final Comparator<StringKeyValue> STRINGKEYVALUECOMPARATOR = new Comparator<StringKeyValue>() {
+        @Override
+        public int compare(StringKeyValue o1, StringKeyValue o2) {
             return o1.value.compareToIgnoreCase(o2.value);
         }
     };
@@ -123,4 +129,31 @@ public class Utils {
         Collections.sort(listNovaFirma, STRINGKEYVALUECOMPARATOR);
     }
 
+    public void removeFieldErrors(BindingResult bindingResult, String fieldName) {
+        if (!(bindingResult instanceof BeanPropertyBindingResult)) {
+            throw new IllegalArgumentException("Només funciona amb BeanPropertyBindingResult");
+        }
+        BeanPropertyBindingResult br = (BeanPropertyBindingResult) bindingResult;
+        try {
+            java.lang.reflect.Field errorsField = BeanPropertyBindingResult.class.getSuperclass().getSuperclass()
+                    .getDeclaredField("errors"); // està definit a AbstractBindingResult
+            errorsField.setAccessible(true);
+
+            List<ObjectError> errors = (List<ObjectError>) errorsField.get(br);
+
+            Iterator<ObjectError> it = errors.iterator();
+            while (it.hasNext()) {
+                ObjectError err = it.next();
+                if (err instanceof FieldError) {
+                    FieldError fe = (FieldError) err;
+                    if (fe.getField().equals(fieldName)) {
+                        it.remove(); // elimina el error
+                    }
+                }
+            }
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            log.error("No se pudo acceder a los errores internos: " + e.getMessage(), e);
+            throw new RuntimeException("No se pudo acceder a los errores internos: " + e.getMessage(), e);
+        }
+    }
 }

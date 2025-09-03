@@ -170,17 +170,7 @@ public class FuncionariLlocLogicaEJB extends FuncionariLlocEJB implements Funcio
 		// Cream assignació
 		log.info("Validacions correctes, creant assignació de funcionari " + funcionariID
 				+ " a lloc " + llocID);
-		// he de mirar si s'està assignant un funcionari que en el passat ja va ser
-		// assignat i desassignat
-		List<FuncionariLloc> funcionariLlocAnteriors = getFuncionariLlocsActualmentNoAssignats(funcionariID, llocID);
-		FuncionariLlocJPA funcionariLlocJPA;
-		if (funcionariLlocAnteriors != null && funcionariLlocAnteriors.size() > 0) {
-			funcionariLloc.setDataFi(null);
-			funcionariLloc.setFuncionarillocID(funcionariLlocAnteriors.get(0).getFuncionarillocID());
-			funcionariLlocJPA = (FuncionariLlocJPA) update(funcionariLloc);
-		} else {
-			funcionariLlocJPA = (FuncionariLlocJPA) create(funcionariLloc);
-		}
+		FuncionariLlocJPA funcionariLlocJPA = (FuncionariLlocJPA) create(funcionariLloc);
 
 		// Cream històrics
 		log.info("Creant històrics de funcionari i lloc");
@@ -206,7 +196,8 @@ public class FuncionariLlocLogicaEJB extends FuncionariLlocEJB implements Funcio
 		return funcionariLlocJPA;
 	}
 
-	public List<FuncionariLloc> getFuncionariLlocsActualmentNoAssignats(long funcionariID, long llocID) throws I18NException {
+	public List<FuncionariLloc> getFuncionariLlocsActualmentNoAssignats(long funcionariID, long llocID)
+			throws I18NException {
 		return select(Where
 				.AND(FuncionariLlocFields.FUNCIONARIID.equal(funcionariID), FuncionariLlocFields.LLOCID.equal(llocID),
 						FuncionariLlocFields.DATAFI.isNotNull()));

@@ -152,6 +152,7 @@ create sequence rfh_usuarientitat_seq start 1000 increment 1;
        llocid int8 DEFAULT nextval('rfh_lloc_seq'::regclass) not null,
         codilloc varchar(50) not null,
         codillocpropi varchar(50) not null,
+        expansio varchar2(50 char),
         databaixa timestamp,
         datacreacio timestamp not null,
         dataalta timestamp,
@@ -274,7 +275,7 @@ create index rfh_lloc_entitatid_fk_i on rfh_lloc (entitatid);
 create index rfh_lloc_unitatid_fk_i on rfh_lloc (unitatid);
 
     alter table rfh_lloc 
-       add constraint rfh_lloc_codilloc_uk unique (codilloc);
+       add constraint rfh_lloc_codillocexpansio_uk unique (codilloc, expansio);
     alter table rfh_lloc 
        add constraint rfh_lloc_codillocpropi_uk unique (codillocpropi);
 create index rfh_llocrol_pk_i on rfh_llocrol (llocrolid);

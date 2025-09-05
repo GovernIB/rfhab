@@ -2575,7 +2575,6 @@
           ]
         },
         {
-          "unique": "rfh_lloc_codilloc_uk",
           "isAutoIncrement": false,
           "sqlName": "codilloc",
           "sqlType": 12,
@@ -2619,6 +2618,31 @@
           "showInReferenceList": false,
           "transientField": false,
           "minAllowedValue": "^LF\\d{6}$",
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "expansio",
+          "sqlType": 12,
+          "size": 50,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Expansió",
+            "es": "Expansión"
+          },
+          "javaName": "expansio",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
           "filter": false,
           "orderBy": 0,
           "groupBy": false,
@@ -2856,6 +2880,15 @@
             "webtype": 2
           },
           "foreignKeys": []
+        }
+      ],
+      "multipleUniques": [
+        {
+          "name": "rfh_lloc_codillocexpansio_uk",
+          "sqlColumns": [
+            "expansio",
+            "codilloc"
+          ]
         }
       ]
     },

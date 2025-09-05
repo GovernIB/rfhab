@@ -15,6 +15,7 @@ public interface LlocFields extends java.io.Serializable {
 	 public static final LongField LLOCID = new LongField(_TABLE_MODEL, "llocID", "llocid");  // PK
 	 public static final StringField CODILLOC = new StringField(_TABLE_MODEL, "codiLloc", "codilloc");
 	 public static final StringField CODILLOCPROPI = new StringField(_TABLE_MODEL, "codiLlocPropi", "codillocpropi");
+	 public static final StringField EXPANSIO = new StringField(_TABLE_MODEL, "expansio", "expansio");
 	 public static final StringField NOM = new StringField(_TABLE_MODEL, "nom", "nom");
 	 public static final LongField ENTITATID = new LongField(_TABLE_MODEL, "entitatID", "entitatid");
 	 public static final LongField UNITATID = new LongField(_TABLE_MODEL, "unitatID", "unitatid");
@@ -29,6 +30,7 @@ public interface LlocFields extends java.io.Serializable {
     LLOCID,
     CODILLOC,
     CODILLOCPROPI,
+    EXPANSIO,
     NOM,
     ENTITATID,
     UNITATID,

@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.UniqueConstraint;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -24,7 +25,9 @@ import javax.persistence.Id;
 @Table(name = "rfh_lloc" , indexes = { 
         @Index(name="rfh_lloc_pk_i", columnList = "llocid"),
         @Index(name="rfh_lloc_entitatid_fk_i", columnList = "entitatid"),
-        @Index(name="rfh_lloc_unitatid_fk_i", columnList = "unitatid")})
+        @Index(name="rfh_lloc_unitatid_fk_i", columnList = "unitatid")},
+           uniqueConstraints = {
+            @UniqueConstraint(name="rfh_lloc_codillocexpansio_uk", columnNames={"expansio","codilloc"}) } )
 @SequenceGenerator(name="LLOC_SEQ", sequenceName="rfh_lloc_seq", allocationSize=1, initialValue=1000)
 @javax.xml.bind.annotation.XmlRootElement
 public class LlocJPA implements Lloc {
@@ -34,11 +37,14 @@ public class LlocJPA implements Lloc {
     @Column(name="llocid",nullable = false,length = 19)
     long llocID;
 
-    @Column(name="codilloc",nullable = false,unique = true,length = 50)
+    @Column(name="codilloc",nullable = false,length = 50)
     java.lang.String codiLloc;
 
     @Column(name="codillocpropi",nullable = false,unique = true,length = 50)
     java.lang.String codiLlocPropi;
+
+    @Column(name="expansio",length = 50)
+    java.lang.String expansio;
 
     @Column(name="nom",nullable = false,length = 255)
     java.lang.String nom;
@@ -73,10 +79,11 @@ public class LlocJPA implements Lloc {
   }
 
   /** Constructor amb tots els camps  */
-  public LlocJPA(long llocID , java.lang.String codiLloc , java.lang.String codiLlocPropi , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataalta , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , java.lang.String observacions) {
+  public LlocJPA(long llocID , java.lang.String codiLloc , java.lang.String codiLlocPropi , java.lang.String expansio , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataalta , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , java.lang.String observacions) {
     this.llocID=llocID;
     this.codiLloc=codiLloc;
     this.codiLlocPropi=codiLlocPropi;
+    this.expansio=expansio;
     this.nom=nom;
     this.entitatID=entitatID;
     this.unitatID=unitatID;
@@ -87,9 +94,10 @@ public class LlocJPA implements Lloc {
     this.observacions=observacions;
 }
   /** Constructor sense valors autoincrementals */
-  public LlocJPA(java.lang.String codiLloc , java.lang.String codiLlocPropi , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataalta , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , java.lang.String observacions) {
+  public LlocJPA(java.lang.String codiLloc , java.lang.String codiLlocPropi , java.lang.String expansio , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataalta , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , java.lang.String observacions) {
     this.codiLloc=codiLloc;
     this.codiLlocPropi=codiLlocPropi;
+    this.expansio=expansio;
     this.nom=nom;
     this.entitatID=entitatID;
     this.unitatID=unitatID;
@@ -114,6 +122,7 @@ public class LlocJPA implements Lloc {
     this.setLlocID(__bean.getLlocID());
     this.setCodiLloc(__bean.getCodiLloc());
     this.setCodiLlocPropi(__bean.getCodiLlocPropi());
+    this.setExpansio(__bean.getExpansio());
     this.setNom(__bean.getNom());
     this.setEntitatID(__bean.getEntitatID());
     this.setUnitatID(__bean.getUnitatID());
@@ -143,6 +152,13 @@ public class LlocJPA implements Lloc {
 	};
 	public void setCodiLlocPropi(java.lang.String _codiLlocPropi_) {
 		this.codiLlocPropi = _codiLlocPropi_;
+	};
+
+	public java.lang.String getExpansio() {
+		return(expansio);
+	};
+	public void setExpansio(java.lang.String _expansio_) {
+		this.expansio = _expansio_;
 	};
 
 	public java.lang.String getNom() {
@@ -304,6 +320,7 @@ public class LlocJPA implements Lloc {
     __tmp.setLlocID(__bean.getLlocID());
     __tmp.setCodiLloc(__bean.getCodiLloc());
     __tmp.setCodiLlocPropi(__bean.getCodiLlocPropi());
+    __tmp.setExpansio(__bean.getExpansio());
     __tmp.setNom(__bean.getNom());
     __tmp.setEntitatID(__bean.getEntitatID());
     __tmp.setUnitatID(__bean.getUnitatID());

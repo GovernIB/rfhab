@@ -21,6 +21,9 @@
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.CODILLOCPROPI)}">
         <th>${rfh:getSortIcons(__theFilterForm,LlocFields.CODILLOCPROPI)}</th>
         </c:if>
+        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.EXPANSIO)}">
+        <th>${rfh:getSortIcons(__theFilterForm,LlocFields.EXPANSIO)}</th>
+        </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.NOM)}">
         <th>${rfh:getSortIcons(__theFilterForm,LlocFields.NOM)}</th>
         </c:if>

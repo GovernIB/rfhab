@@ -176,7 +176,7 @@
       add constraint rfh_funcionari_identific_uk unique (identificador);
 
     alter table rfh_lloc 
-       add constraint rfh_lloc_codilloc_uk unique (codilloc);
+       add constraint rfh_lloc_codillocexpansio_uk unique (codilloc, expansio);
 
     alter table rfh_lloc 
        add constraint rfh_lloc_codillocpropi_uk unique (codillocpropi);

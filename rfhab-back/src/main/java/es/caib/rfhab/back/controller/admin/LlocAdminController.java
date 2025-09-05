@@ -139,6 +139,7 @@ public class LlocAdminController extends LlocController {
 			llocFilterForm.addHiddenField(LlocFields.OBSERVACIONS);
 			llocFilterForm.addHiddenField(LlocFields.DATABAIXA);
 			llocFilterForm.addHiddenField(LlocFields.CODILLOC);
+			llocFilterForm.addHiddenField(LlocFields.EXPANSIO);
 
 			{
 				AdditionalField<Long, String> adfield0 = new AdditionalField<Long, String>();
@@ -376,6 +377,7 @@ public class LlocAdminController extends LlocController {
 		llocForm.addReadOnlyField(LlocFields.ENTITATID);
 		llocForm.addReadOnlyField(LlocFields.CODILLOCPROPI);
 		llocForm.addHiddenField(LlocFields.CODILLOC);
+		llocForm.addHiddenField(LlocFields.EXPANSIO);
 		llocForm.addHiddenField(LlocFields.DATACREACIO);
 		// només el volem veure al mode consulta
 		if (!__isView) {

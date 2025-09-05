@@ -11,6 +11,9 @@ public interface Lloc extends org.fundaciobit.genapp.common.IGenAppEntity {
 	public java.lang.String getCodiLlocPropi();
 	public void setCodiLlocPropi(java.lang.String _codiLlocPropi_);
 
+	public java.lang.String getExpansio();
+	public void setExpansio(java.lang.String _expansio_);
+
 	public java.lang.String getNom();
 	public void setNom(java.lang.String _nom_);
 

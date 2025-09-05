@@ -131,7 +131,7 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 
 			StringBuilder customQuery = new StringBuilder(
 					"Select fl.funcionariID, l.llocID, l.nom, l.unitatID, l.codiLloc, "
-							+ "l.personalOamr, l.dataAlta, l.dataCreacio, l.dataBaixa, l.observacions, l.codillocpropi FROM FuncionariLlocJPA as fl "
+							+ "l.personalOamr, l.dataAlta, l.dataCreacio, l.dataBaixa, l.observacions, l.codillocpropi, l.expansio FROM FuncionariLlocJPA as fl "
 							+ " inner join LlocJPA as l on l.llocID = fl.llocID "
 							+ " where (fl.dataInici < :avui or fl.dataInici is null) "
 							+ " and (fl.dataFi > :avui or fl.dataFi is null) " + " and l.entitatID = :entitatId");
@@ -144,7 +144,8 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 
 			for (Object[] obj : result) {
 
-				LlocJPA llocJPA = new LlocJPA((long) obj[1], (String) obj[4], (String) obj[10], (String) obj[2],
+				LlocJPA llocJPA = new LlocJPA((long) obj[1], (String) obj[4], (String) obj[10], (String) obj[11],
+						(String) obj[2],
 						(long) entitatId,
 						(long) obj[3], (int) obj[5], (Timestamp) obj[6], (Timestamp) obj[7], (Timestamp) obj[8],
 						(String) obj[9]);

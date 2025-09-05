@@ -125,6 +125,7 @@
        llocid number(19,0) not null,
         codilloc varchar2(50 char) not null,
         codillocpropi varchar2(50 char) not null,
+        expansio varchar2(50 char),
         databaixa timestamp,
         datacreacio timestamp not null,
         dataalta timestamp,

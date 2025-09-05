@@ -65,6 +65,17 @@ public class LlocFilterForm extends RFHabBaseFilterForm implements LlocFields {
   }
 
 
+  private java.lang.String expansio;
+
+  public java.lang.String getExpansio() {
+    return this.expansio;
+  }
+
+  public void setExpansio(java.lang.String expansio) {
+    this.expansio = expansio;
+  }
+
+
   private java.lang.String nom;
 
   public java.lang.String getNom() {
@@ -217,6 +228,7 @@ public class LlocFilterForm extends RFHabBaseFilterForm implements LlocFields {
     this.llocIDFins = __toClone.llocIDFins;
     this.codiLloc = __toClone.codiLloc;
     this.codiLlocPropi = __toClone.codiLlocPropi;
+    this.expansio = __toClone.expansio;
     this.nom = __toClone.nom;
     this.entitatIDDesde = __toClone.entitatIDDesde;
     this.entitatIDFins = __toClone.entitatIDFins;

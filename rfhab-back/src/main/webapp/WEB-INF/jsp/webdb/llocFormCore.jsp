@@ -38,6 +38,24 @@
         </tr>
         </c:if>
         
+        <c:if test="${!gen:contains(__theForm.hiddenFields,LlocFields.EXPANSIO)}">
+        <tr id="lloc_expansio_rowid">
+          <td id="lloc_expansio_columnlabelid">
+            <label>
+              <fmt:message key="${(empty __theForm.labels[LlocFields.EXPANSIO])?'lloc.expansio':__theForm.labels[LlocFields.EXPANSIO]}" />
+             </label>
+              <c:if test="${not empty __theForm.help[LlocFields.EXPANSIO]}">
+              <i class="fas fa-info-circle" title="${__theForm.help[LlocFields.EXPANSIO]}" ></i>
+              </c:if>
+            </td>
+          <td id="lloc_expansio_columnvalueid">
+            <form:errors path="lloc.expansio" cssClass="errorField alert alert-danger" />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocFields.EXPANSIO)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,LlocFields.EXPANSIO)? ' uneditable-input' : ''}"  style="" maxlength="50" path="lloc.expansio"   />
+
+           </td>
+        </tr>
+        </c:if>
+        
         <c:if test="${!gen:contains(__theForm.hiddenFields,LlocFields.NOM)}">
         <tr id="lloc_nom_rowid">
           <td id="lloc_nom_columnlabelid">

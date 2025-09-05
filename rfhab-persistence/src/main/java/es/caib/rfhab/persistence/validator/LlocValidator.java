@@ -90,6 +90,14 @@ public class LlocValidator<I extends Lloc>
       }
     }
 
+    if (__vr.getFieldErrorCount(EXPANSIO) == 0) {
+      java.lang.String __expansio = __target__.getExpansio();
+      if (__expansio!= null && __expansio.length() > 50) {
+        __vr.rejectValue(EXPANSIO, "genapp.validation.sizeexceeds",
+            new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(EXPANSIO)), new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(50)));
+      }
+    }
+
     if (__vr.getFieldErrorCount(NOM) == 0) {
       java.lang.String __nom = __target__.getNom();
       if (__nom!= null && __nom.length() > 255) {
@@ -111,18 +119,23 @@ public class LlocValidator<I extends Lloc>
       // Fitxers 
       // ====== Check Unique MULTIPLES - NOU =======
 
-      // Check Unique - no PK
-      if (__vr.getFieldErrorCount(CODILLOC) == 0) {
+      // Check Unique MULTIPLE for (expansio, codilloc)
+      if (__vr.getFieldErrorCount(EXPANSIO) == 0 && __vr.getFieldErrorCount(CODILLOC) == 0) {
+        java.lang.String __expansio = __target__.getExpansio();
         java.lang.String __codilloc = __target__.getCodiLloc();
         Long __count_ = null;
-        try { __count_ = __llocManager.count(org.fundaciobit.genapp.common.query.Where.AND(CODILLOC.equal(__codilloc))); } catch(org.fundaciobit.genapp.common.i18n.I18NException e) { e.printStackTrace(); };
+        try { __count_ = __llocManager.count(org.fundaciobit.genapp.common.query.Where.AND(EXPANSIO.equal(__expansio), CODILLOC.equal(__codilloc))); } catch(org.fundaciobit.genapp.common.i18n.I18NException e) { e.printStackTrace(); };
         if (__count_ == null || __count_ != 0) {        
+            __vr.rejectValue(EXPANSIO, "genapp.validation.unique",
+                new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(__expansio)),
+                     new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(EXPANSIO)));
             __vr.rejectValue(CODILLOC, "genapp.validation.unique",
                 new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(__codilloc)),
                      new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(CODILLOC)));
         }
       }
 
+      // Check Unique - no PK
       if (__vr.getFieldErrorCount(CODILLOCPROPI) == 0) {
         java.lang.String __codillocpropi = __target__.getCodiLlocPropi();
         Long __count_ = null;
@@ -140,19 +153,24 @@ public class LlocValidator<I extends Lloc>
 
       // ====== Check Unique MULTIPLES - EDIT  =======
 
-      // Check Unique - no PK
-      if (__vr.getFieldErrorCount(CODILLOC) == 0 && __vr.getFieldErrorCount(LLOCID) == 0) {
+      // Check Unique MULTIPLE for (expansio, codilloc)
+      if (__vr.getFieldErrorCount(EXPANSIO) == 0 && __vr.getFieldErrorCount(CODILLOC) == 0 && __vr.getFieldErrorCount(LLOCID) == 0) {
+        java.lang.String __expansio = __target__.getExpansio();
         java.lang.String __codilloc = __target__.getCodiLloc();
         java.lang.Long __llocid = __target__.getLlocID();
         Long __count_ = null;
-        try { __count_ = __llocManager.count(org.fundaciobit.genapp.common.query.Where.AND(CODILLOC.equal(__codilloc), LLOCID.notEqual(__llocid))); } catch(org.fundaciobit.genapp.common.i18n.I18NException e) { e.printStackTrace(); };
+        try { __count_ = __llocManager.count(org.fundaciobit.genapp.common.query.Where.AND(EXPANSIO.equal(__expansio), CODILLOC.equal(__codilloc), LLOCID.notEqual(__llocid))); } catch(org.fundaciobit.genapp.common.i18n.I18NException e) { e.printStackTrace(); };
         if (__count_ == null || __count_ != 0) {        
+            __vr.rejectValue(EXPANSIO, "genapp.validation.unique",
+                new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(__expansio)),
+                     new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(EXPANSIO)));
             __vr.rejectValue(CODILLOC, "genapp.validation.unique",
                 new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(__codilloc)),
                      new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(CODILLOC)));
         }
       }
 
+      // Check Unique - no PK
       if (__vr.getFieldErrorCount(CODILLOCPROPI) == 0 && __vr.getFieldErrorCount(LLOCID) == 0) {
         java.lang.String __codillocpropi = __target__.getCodiLlocPropi();
         java.lang.Long __llocid = __target__.getLlocID();

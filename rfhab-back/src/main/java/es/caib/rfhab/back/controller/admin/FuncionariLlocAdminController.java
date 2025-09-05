@@ -135,6 +135,7 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 		funcionariLlocForm.addReadOnlyField(DATACREACIO);
 
 		funcionariLlocForm.setTitleCode("funcionarilloc.titol");
+		funcionariLlocForm.setAttachedAdditionalJspCode(true);
 		currentSession.setAttribute(Constants.REFERER_SESSION_ATTRIBUTE, request.getHeader("referer"));
 
 		return funcionariLlocForm;
@@ -145,12 +146,15 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 			throws I18NException, I18NValidationException {
 
 		// TODO:revisar això #38
-		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numeroCai")))
-				? request.getParameter("numeroCai")
+		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numerocai")))
+				? request.getParameter("numerocai")
+				: "";
+		final String observacions = (StringUtils.isNotEmpty(request.getParameter("observacions")))
+				? request.getParameter("observacions")
 				: "";
 
 		FuncionariLlocJPA funcionariLlocJPA = null;
-		funcionariLlocJPA = funcionariLlocEjb.assignarFuncionari(funcionariLloc, numeroCai,
+		funcionariLlocJPA = funcionariLlocEjb.assignarFuncionari(funcionariLloc, numeroCai, observacions,
 				LoginInfo.getInstance().getUsuariPersona().getUsuariID());
 
 		return funcionariLlocJPA;

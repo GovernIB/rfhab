@@ -314,7 +314,7 @@
 
 							const nouTd2 = document.createElement("td");
 							nouTd2.id = "lloc_numerocai_columnvalueid";
-							nouTd2.innerHTML = '<input type="text" name="numerocai" id="numerocai" class="form-control w-75"></input>';
+							nouTd2.innerHTML = '<input type="text" name="numerocai" id="numerocai" class="form-control w-100"></input>';
 							nouNumeroCaiTr.appendChild(nouTd2);
 
 							const taula = document.getElementById("lloc_tableid");

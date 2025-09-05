@@ -118,12 +118,13 @@ public class FuncionariLlocLogicaEJB extends FuncionariLlocEJB implements Funcio
 	}
 
 	@PermitAll
-	public FuncionariLlocJPA assignarFuncionari(FuncionariLlocJPA funcionariLloc, String numeroCai, long usuarId)
+	public FuncionariLlocJPA assignarFuncionari(FuncionariLlocJPA funcionariLloc, String numeroCai, String observacions,
+			long usuarId)
 			throws I18NException, I18NValidationException {
 		long funcionariID = funcionariLloc.getFuncionariID();
 		long llocID = funcionariLloc.getLlocID();
 		log.info(numeroCai + " --> assignant funcionari " + funcionariID + " a lloc "
-				+ llocID);
+				+ llocID + " amb observacions " + observacions);
 
 		// Validam
 		Funcionari funcionari = funcionariLogicaEjb.findByPrimaryKey(funcionariID);
@@ -190,6 +191,12 @@ public class FuncionariLlocLogicaEJB extends FuncionariLlocEJB implements Funcio
 
 		String historicLlocObservacions = "Nova assignació de funcionari " + funcionariIdentificador + " (id "
 				+ funcionariIdString + ") a lloc " + llocCodi + " (id " + llocIdString + ")";
+		if (numeroCai != null && !numeroCai.isEmpty()) {
+			historicLlocObservacions += " --> CAI: " + numeroCai;
+		}
+		if (observacions != null && !observacions.isEmpty()) {
+			historicLlocObservacions += " --> Observacions: " + observacions;
+		}
 		historicLlocLogicaEjb.create(historicLloc, historicLlocObservacions);
 		historicLogicaEjb.create(historicFuncionari, historicLlocObservacions);
 

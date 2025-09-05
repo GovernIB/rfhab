@@ -36,7 +36,8 @@ public interface FuncionariLlocLogicaService extends FuncionariLlocService {
 
 	public boolean isLlocAssignat(long llocID) throws I18NException;
 
-	public FuncionariLlocJPA assignarFuncionari(FuncionariLlocJPA funcionariLloc, String numeroCai, long usuarId)
+	public FuncionariLlocJPA assignarFuncionari(FuncionariLlocJPA funcionariLloc, String numeroCai, String observacions,
+			long usuarId)
 			throws I18NException, I18NValidationException;
 
 	public List<FuncionariLloc> getFuncionariLlocsActualmentNoAssignats(long funcionariID, long llocID)

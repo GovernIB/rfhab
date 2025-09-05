@@ -21,6 +21,7 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import es.caib.rfhab.commons.utils.Configuracio;
 import es.caib.rfhab.pluginsib.rolsac.client.v1.api.ProcedimientosApi;
 import es.caib.rfhab.pluginsib.rolsac.client.v1.api.TramitesApi;
+import es.caib.rfhab.pluginsib.rolsac.client.v1.model.Plantillas;
 import es.caib.rfhab.pluginsib.rolsac.client.v1.model.Procedimientos;
 import es.caib.rfhab.pluginsib.rolsac.client.v1.model.RespuestaProcedimientos;
 import es.caib.rfhab.pluginsib.rolsac.client.v1.model.RespuestaTramites;
@@ -320,15 +321,26 @@ public class RolsacPlugin implements IRolsacPlugin {
 							+ tramit.getLinkProcedimiento().getCodigo() +
 							" " + llengua + " " + tramit.getVersio() + " " + tramit.getParametros() + " "
 							+ tramit.getIdTraTel());
+					Plantillas plantillaTramit = tramit.getPlantilla();
 					resultats.put(String.valueOf(tramit.getCodigo()),
 							new String[] {
-									tramit.getNombre().replace("'", "`"),
+									(plantillaTramit != null && plantillaTramit.getNombre() != null)
+											? plantillaTramit.getNombre().replace("'", "`")
+											: tramit.getNombre().replace("'", "`"),
 									tramit.getLinkProcedimiento().getCodigo(),
 									llengua,
-									String.valueOf(tramit.getCodigo()),
-									String.valueOf(tramit.getVersio()),
-									tramit.getParametros(),
-									tramit.getIdTraTel()
+									(tramit.getCodigo() != null)
+											? String.valueOf(tramit.getCodigo())
+											: String.valueOf(plantillaTramit.getCodigo()),
+									(plantillaTramit != null && plantillaTramit.getVersion() != null)
+											? String.valueOf(plantillaTramit.getVersion())
+											: String.valueOf(tramit.getVersio()),
+									(plantillaTramit != null && plantillaTramit.getParametros() != null)
+											? String.valueOf(plantillaTramit.getParametros())
+											: String.valueOf(tramit.getParametros()),
+									(plantillaTramit != null && plantillaTramit.getIdentificador() != null)
+											? String.valueOf(plantillaTramit.getIdentificador().trim())
+											: String.valueOf(tramit.getIdTraTel().trim()),
 							});
 				}
 

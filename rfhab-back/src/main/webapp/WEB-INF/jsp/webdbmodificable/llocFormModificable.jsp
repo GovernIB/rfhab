@@ -350,6 +350,10 @@
 									disabled: false
 								}
 							);
+
+							//mostra observacions com a soft wrap
+							const taObservacions = document.getElementById('lloc.observacions');
+							taObservacions.wrap='soft';
 						}
 					});
 </script>

@@ -226,23 +226,23 @@
 
 						if ("true" != "${isView}") {
 
-							var nouTr = document.createElement("tr");
-							nouTr.id = "funcionari_numerocai_rowid";
+							const nouTrNumeroCai = document.createElement("tr");
+							nouTrNumeroCai.id = "funcionari_numerocai_rowid";
 
-							var nouTd1 = document.createElement("td");
-							nouTd1.id = "funcionari_numerocai_columnlabelid";
-							nouTd1.innerHTML = '<label style="text-align:right"><fmt:message key="historic.numeroCai"/></label>';
-							nouTr.appendChild(nouTd1);
+							const nouTd1NumeroCai = document.createElement("td");
+							nouTd1NumeroCai.id = "funcionari_numerocai_columnlabelid";
+							nouTd1NumeroCai.innerHTML = '<label style="text-align:right"><fmt:message key="historic.numeroCai"/></label>';
+							nouTrNumeroCai.appendChild(nouTd1NumeroCai);
 
-							var nouTd2 = document.createElement("td");
-							nouTd2.id = "funcionari_numerocai_columnvalueid";
-							nouTd2.innerHTML = '<input type="text" name="numerocai" id="numerocai" class="form-control w-75"></input>';
-							nouTr.appendChild(nouTd2);
+							const nouTd2NumeroCai = document.createElement("td");
+							nouTd2NumeroCai.id = "funcionari_numerocai_columnvalueid";
+							nouTd2NumeroCai.innerHTML = '<input type="text" maxlength="50" name="numerocai" id="numerocai" class="form-control w-75"></input>';
+							nouTrNumeroCai.appendChild(nouTd2NumeroCai);
 
-							var taula = document
+							const taulaFuncionariForm = document
 									.getElementById("funcionari_tableid");
-							var cos = taula.getElementsByTagName("tbody")[0];
-							cos.appendChild(nouTr);
+							const cosFuncionariForm = taulaFuncionariForm.getElementsByTagName("tbody")[0];
+							cosFuncionariForm.appendChild(nouTrNumeroCai);
 						}
 					});		
 </script>

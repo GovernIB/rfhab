@@ -307,15 +307,15 @@
 							const nouNumeroCaiTr = document.createElement("tr");
 							nouNumeroCaiTr.id = "lloc_numerocai_rowid";
 
-							const nouTd1 = document.createElement("td");
-							nouTd1.id = "lloc_numerocai_columnlabelid";
-							nouTd1.innerHTML = '<label style="font-weight:bold; text-align:right;"><fmt:message key="historic.numeroCai"/></label>';
-							nouNumeroCaiTr.appendChild(nouTd1);
+							const nouTd1NumeroCai = document.createElement("td");
+							nouTd1NumeroCai.id = "lloc_numerocai_columnlabelid";
+							nouTd1NumeroCai.innerHTML = '<label style="font-weight:bold; text-align:right;"><fmt:message key="historic.numeroCai"/></label>';
+							nouNumeroCaiTr.appendChild(nouTd1NumeroCai);
 
-							const nouTd2 = document.createElement("td");
-							nouTd2.id = "lloc_numerocai_columnvalueid";
-							nouTd2.innerHTML = '<input type="text" name="numerocai" id="numerocai" class="form-control w-100"></input>';
-							nouNumeroCaiTr.appendChild(nouTd2);
+							const nouTd2NumeroCai = document.createElement("td");
+							nouTd2NumeroCai.id = "lloc_numerocai_columnvalueid";
+							nouTd2NumeroCai.innerHTML = '<input type="text" maxlength="50" name="numerocai" id="numerocai" class="form-control w-100"></input>';
+							nouNumeroCaiTr.appendChild(nouTd2NumeroCai);
 
 							const taula = document.getElementById("lloc_tableid");
 							const tbody = taula.querySelector("tbody");

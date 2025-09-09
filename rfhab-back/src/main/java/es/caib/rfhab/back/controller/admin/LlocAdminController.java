@@ -230,31 +230,6 @@ public class LlocAdminController extends LlocController {
 					AdditionalButtonStyle.SUCCESS);
 			llocForm.addAdditionalButton(donarDeAltaButton);
 			llocForm.addReadOnlyField(LlocFields.DATAALTA);
-
-			// CODI LLOC PROPI DE RFHAB
-			int nouNumber = 1;
-			Object maxLlocCodiPropi = null;
-			try {
-				maxLlocCodiPropi = llocLogicaEjb.getMaxLlocCodiPropi();
-			} catch (SecurityException e) {
-				throw new I18NException(e.getMessage());
-			} catch (NoSuchFieldException e) {
-				throw new I18NException(e.getMessage());
-			}
-			if (maxLlocCodiPropi != null) {
-				// Extreu la part numèrica de la cadena
-				String numericPart = maxLlocCodiPropi.toString()
-						.substring(Constants.LLOC_CODILLOCPROPI_PLACEHOLDER_PREFIX.length());
-				// Converteix la part numèrica a un enter, suma 1 i torna a formar la cadena
-				nouNumber = Integer.parseInt(numericPart);
-				nouNumber += 1;
-			}
-			// Format numèric amb el mateix nombre de dígits que l'original
-			String updatedNumericPart = String
-					.format("%0" + Constants.LLOC_CODILLOCPROPI_PLACEHOLDER_NUMERICPART.length() + "d", nouNumber);
-			// Reconstrueix la cadena amb el prefix i el nou valor numèric
-			String nouLlocCodiPropi = Constants.LLOC_CODILLOCPROPI_PLACEHOLDER_PREFIX + updatedNumericPart;
-			lloc.setCodiLlocPropi(nouLlocCodiPropi);
 		} else {
 			// Pipella Funcionari assignat- Obtenir tots els funcionaris relacionats amb el
 			// lloc (actuals, sense data fi)
@@ -305,10 +280,12 @@ public class LlocAdminController extends LlocController {
 					// Lloc donat d'alta
 					// botó donar de baixa lloc
 					String urlGoTo = request.getContextPath() + getContextWeb() + "/" + llocID + "/delete/";
-					String actionButtonOnClickCallback = "goTo(encodeURI(\\'" + urlGoTo + "\\' + \\'?numerocai=\\' + document.getElementById(\\'numerocai\\').value))";
+					String actionButtonOnClickCallback = "goTo(encodeURI(\\'" + urlGoTo
+							+ "\\' + \\'?numerocai=\\' + document.getElementById(\\'numerocai\\').value))";
 					String jsOpenModalDonarBaixa = "javascript:createDivModal(traduccions.type['titol.lloc.donarbaixa.continuar'], '"
 							+ I18NUtils.tradueix("lloc.donarbaixa.missatgecontinuar", lloc.getCodiLloc()) + "', '"
-							+ urlGoTo + "', '', 'lloc-donarbaixa-id', 'fa-laptop-code', '', '" + actionButtonOnClickCallback + "');\r\n" + //
+							+ urlGoTo + "', '', 'lloc-donarbaixa-id', 'fa-laptop-code', '', '"
+							+ actionButtonOnClickCallback + "');\r\n" + //
 							"        $('#lloc-donarbaixa-id').modal('show');\r\n";
 					AdditionalButton donarDeBaixaButton = new AdditionalButton("fas fa-laptop-code",
 							"lloc.donarbaixa",
@@ -392,6 +369,40 @@ public class LlocAdminController extends LlocController {
 		request.getSession().setAttribute(Constants.REFERER_SESSION_ATTRIBUTE, request.getHeader("referer"));
 
 		return llocForm;
+	}
+
+	private String getNouLlocCodiPropi(String codiLloc, String expansio) throws I18NException {
+		List<Lloc> llocsAmbMateixCodi = llocLogicaEjb.select(LlocFields.CODILLOC.equal(codiLloc));
+		if (llocsAmbMateixCodi != null && llocsAmbMateixCodi.size() > 0) {
+			return llocsAmbMateixCodi.get(0).getCodiLlocPropi();
+		}
+		return generaNouLlocCodiPropi();
+	}
+
+	private String generaNouLlocCodiPropi() throws I18NException {
+		int nouNumber = 1;
+		Object maxLlocCodiPropi = null;
+		try {
+			maxLlocCodiPropi = llocLogicaEjb.getMaxLlocCodiPropi();
+		} catch (SecurityException e) {
+			throw new I18NException(e.getMessage());
+		} catch (NoSuchFieldException e) {
+			throw new I18NException(e.getMessage());
+		}
+		if (maxLlocCodiPropi != null) {
+			// Extreu la part numèrica de la cadena
+			String numericPart = maxLlocCodiPropi.toString()
+					.substring(Constants.LLOC_CODILLOCPROPI_PLACEHOLDER_PREFIX.length());
+			// Converteix la part numèrica a un enter, suma 1 i torna a formar la cadena
+			nouNumber = Integer.parseInt(numericPart);
+			nouNumber += 1;
+		}
+		// Format numèric amb el mateix nombre de dígits que l'original
+		String updatedNumericPart = String
+				.format("%0" + Constants.LLOC_CODILLOCPROPI_PLACEHOLDER_NUMERICPART.length() + "d", nouNumber);
+		// Reconstrueix la cadena amb el prefix i el nou valor numèric
+		String nouLlocCodiPropi = Constants.LLOC_CODILLOCPROPI_PLACEHOLDER_PREFIX + updatedNumericPart;
+		return nouLlocCodiPropi;
 	}
 
 	@Override
@@ -498,6 +509,10 @@ public class LlocAdminController extends LlocController {
 		LlocJPA lloc = llocForm.getLloc();
 		lloc.setEntitatID(Long.parseLong(request.getParameter("lloc.entitatID")));
 
+		// CODI LLOC PROPI DE RFHAB
+		String nouLlocCodiPropi = getNouLlocCodiPropi(lloc.getCodiLloc(), lloc.getExpansio());
+		lloc.setCodiLlocPropi(nouLlocCodiPropi);
+
 		if (String.valueOf(lloc.getPersonalOamr()).equals(TIPUS_PERSONAL_OAMR)) {
 			result.rejectValue(LlocFields.PERSONALOAMR.codeLabel, "error.required",
 					new Object[] { "Número" },
@@ -508,6 +523,7 @@ public class LlocAdminController extends LlocController {
 	@Override
 	public LlocJPA create(HttpServletRequest request, LlocJPA lloc) throws I18NException, I18NValidationException {
 		lloc.setEntitatID(Long.parseLong(request.getParameter("lloc.entitatID")));
+
 		LlocJPA newLloc = super.create(request, lloc);
 		log.info("Lloc creat: " + lloc.getLlocID());
 

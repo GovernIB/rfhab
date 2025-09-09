@@ -43,7 +43,7 @@ public class LlocJPA implements Lloc {
     @Column(name="expansio",length = 50)
     java.lang.String expansio;
 
-    @Column(name="codillocpropi",nullable = false,unique = true,length = 50)
+    @Column(name="codillocpropi",nullable = false,length = 50)
     java.lang.String codiLlocPropi;
 
     @Column(name="nom",nullable = false,length = 255)

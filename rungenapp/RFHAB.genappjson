@@ -2625,7 +2625,6 @@
           "foreignKeys": []
         },
         {
-          "unique": "rfh_lloc_codillocpropi_uk",
           "isAutoIncrement": false,
           "sqlName": "codillocpropi",
           "sqlType": 12,

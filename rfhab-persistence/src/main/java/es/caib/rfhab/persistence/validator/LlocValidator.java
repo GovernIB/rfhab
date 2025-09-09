@@ -136,17 +136,6 @@ public class LlocValidator<I extends Lloc>
       }
 
       // Check Unique - no PK
-      if (__vr.getFieldErrorCount(CODILLOCPROPI) == 0) {
-        java.lang.String __codillocpropi = __target__.getCodiLlocPropi();
-        Long __count_ = null;
-        try { __count_ = __llocManager.count(org.fundaciobit.genapp.common.query.Where.AND(CODILLOCPROPI.equal(__codillocpropi))); } catch(org.fundaciobit.genapp.common.i18n.I18NException e) { e.printStackTrace(); };
-        if (__count_ == null || __count_ != 0) {        
-            __vr.rejectValue(CODILLOCPROPI, "genapp.validation.unique",
-                new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(__codillocpropi)),
-                     new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(CODILLOCPROPI)));
-        }
-      }
-
       // Check Unique - PK no AutoIncrement amb UNA SOLA PK 
     } else {
       // ================ UPDATE
@@ -171,18 +160,6 @@ public class LlocValidator<I extends Lloc>
       }
 
       // Check Unique - no PK
-      if (__vr.getFieldErrorCount(CODILLOCPROPI) == 0 && __vr.getFieldErrorCount(LLOCID) == 0) {
-        java.lang.String __codillocpropi = __target__.getCodiLlocPropi();
-        java.lang.Long __llocid = __target__.getLlocID();
-        Long __count_ = null;
-        try { __count_ = __llocManager.count(org.fundaciobit.genapp.common.query.Where.AND(CODILLOCPROPI.equal(__codillocpropi), LLOCID.notEqual(__llocid))); } catch(org.fundaciobit.genapp.common.i18n.I18NException e) { e.printStackTrace(); };
-        if (__count_ == null || __count_ != 0) {        
-            __vr.rejectValue(CODILLOCPROPI, "genapp.validation.unique",
-                new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(__codillocpropi)),
-                     new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(CODILLOCPROPI)));
-        }
-      }
-
     }
 
     // Fields with References to Other tables 

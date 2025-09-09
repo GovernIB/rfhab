@@ -186,7 +186,7 @@ button[disabled][type="submit"] {
 			</div>
 
 			<div class="msf-content h60-scroll-y w-100">
-				<div class="msf-view">
+				<div class="msf-view container-fluid">
 					<div class="row justify-content-center">
 						<div class="col-12 col-lg-10 col-xl-8">
 
@@ -458,7 +458,7 @@ button[disabled][type="submit"] {
 					</div>
 				</div>
 
-				<div class="msf-view">
+				<div class="msf-view container-fluid">
 					<div class="row justify-content-center">
 						<div class="col-12 col-lg-10 col-xl-8">
 
@@ -539,7 +539,7 @@ button[disabled][type="submit"] {
 					</div>
 				</div>
 
-				<div class="msf-view">
+				<div class="msf-view container-fluid">
 					<div class="row justify-content-center">
 						<div class="col-12 col-lg-10 col-xl-8">
 
@@ -572,7 +572,7 @@ button[disabled][type="submit"] {
 					</div>
 				</div>
 
-				<div class="msf-view">
+				<div class="msf-view container-fluid">
 					<div class="row justify-content-center">
 						<div class="col-12 col-lg-10 col-xl-8" style="min-height: 325px;" id="div-iniciar-tramit">
 
@@ -1867,7 +1867,7 @@ button[disabled][type="submit"] {
 	}
 
 	function afegeixIframeDigitalib(redirectUrl){
-		$('#' + CARREGANT_IFRAME_DIGITALIB_ID).append('<iframe id="' + IFRAME_DIGITALIB_ID + '" src="'+ redirectUrl +'" style="width:100%; height:450px; border:none;"></iframe>');
+		$('#' + CARREGANT_IFRAME_DIGITALIB_ID).append('<iframe id="' + IFRAME_DIGITALIB_ID + '" src="'+ redirectUrl +'" style="width:100%; height:55vh; min-height:450px; border:none;"></iframe>');
 
 		const iframe = document.getElementById(IFRAME_DIGITALIB_ID);
 		// Detectar error de càrrega

@@ -367,6 +367,9 @@ public class LlocAdminController extends LlocController {
 				mav.addObject("diferenciesDictionary", DbDaoDictionaries.HistoricLloc);
 				mav.addObject("historic", historicCanvis);
 			}
+
+			llocForm.addReadOnlyField(LlocFields.CODILLOC);
+			llocForm.addReadOnlyField(LlocFields.EXPANSIO);
 		}
 		mav.addObject("LLOC_CODILLOCPROPI_PLACEHOLDER", Constants.LLOC_CODILLOCPROPI_PLACEHOLDER);
 
@@ -377,8 +380,6 @@ public class LlocAdminController extends LlocController {
 
 		llocForm.addReadOnlyField(LlocFields.ENTITATID);
 		llocForm.addReadOnlyField(LlocFields.CODILLOCPROPI);
-		llocForm.addHiddenField(LlocFields.CODILLOC);
-		llocForm.addHiddenField(LlocFields.EXPANSIO);
 		llocForm.addHiddenField(LlocFields.DATACREACIO);
 		// només el volem veure al mode consulta
 		if (!__isView) {

@@ -19,12 +19,12 @@ public class LlocQueryPath extends org.fundaciobit.genapp.common.query.QueryPath
     return new StringField(getQueryPath(), LlocFields.CODILLOC);
   }
 
-  public StringField CODILLOCPROPI() {
-    return new StringField(getQueryPath(), LlocFields.CODILLOCPROPI);
-  }
-
   public StringField EXPANSIO() {
     return new StringField(getQueryPath(), LlocFields.EXPANSIO);
+  }
+
+  public StringField CODILLOCPROPI() {
+    return new StringField(getQueryPath(), LlocFields.CODILLOCPROPI);
   }
 
   public StringField NOM() {

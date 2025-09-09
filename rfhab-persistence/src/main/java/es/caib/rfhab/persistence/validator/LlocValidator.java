@@ -71,6 +71,14 @@ public class LlocValidator<I extends Lloc>
       }
     }
 
+    if (__vr.getFieldErrorCount(EXPANSIO) == 0) {
+      java.lang.String __expansio = __target__.getExpansio();
+      if (__expansio!= null && __expansio.length() > 50) {
+        __vr.rejectValue(EXPANSIO, "genapp.validation.sizeexceeds",
+            new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(EXPANSIO)), new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(50)));
+      }
+    }
+
     if (__vr.getFieldErrorCount(CODILLOCPROPI) == 0) {
       java.lang.String __codillocpropi = __target__.getCodiLlocPropi();
       if (__codillocpropi!= null && __codillocpropi.length() > 50) {
@@ -87,14 +95,6 @@ public class LlocValidator<I extends Lloc>
           __vr.rejectValue(CODILLOCPROPI, "genapp.validation.malformed",
              new org.fundaciobit.genapp.common.i18n.I18NArgumentString(val), new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(CODILLOCPROPI)));
         }
-      }
-    }
-
-    if (__vr.getFieldErrorCount(EXPANSIO) == 0) {
-      java.lang.String __expansio = __target__.getExpansio();
-      if (__expansio!= null && __expansio.length() > 50) {
-        __vr.rejectValue(EXPANSIO, "genapp.validation.sizeexceeds",
-            new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(EXPANSIO)), new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(50)));
       }
     }
 

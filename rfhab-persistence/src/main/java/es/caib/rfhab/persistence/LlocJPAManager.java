@@ -55,8 +55,8 @@ public class LlocJPAManager
         return list.toArray(new Lloc[list.size()]);
     };
 
-    public Lloc create( java.lang.String _codiLloc_, java.lang.String _codiLlocPropi_, java.lang.String _expansio_, java.lang.String _nom_, long _entitatID_, long _unitatID_, int _personalOamr_, java.sql.Timestamp _dataalta_, java.sql.Timestamp _dataCreacio_, java.sql.Timestamp _dataBaixa_, java.lang.String _observacions_) throws I18NException {
-        LlocJPA __bean =  new LlocJPA(_codiLloc_,_codiLlocPropi_,_expansio_,_nom_,_entitatID_,_unitatID_,_personalOamr_,_dataalta_,_dataCreacio_,_dataBaixa_,_observacions_);
+    public Lloc create( java.lang.String _codiLloc_, java.lang.String _expansio_, java.lang.String _codiLlocPropi_, java.lang.String _nom_, long _entitatID_, long _unitatID_, int _personalOamr_, java.sql.Timestamp _dataalta_, java.sql.Timestamp _dataCreacio_, java.sql.Timestamp _dataBaixa_, java.lang.String _observacions_) throws I18NException {
+        LlocJPA __bean =  new LlocJPA(_codiLloc_,_expansio_,_codiLlocPropi_,_nom_,_entitatID_,_unitatID_,_personalOamr_,_dataalta_,_dataCreacio_,_dataBaixa_,_observacions_);
         return create(__bean);
     }
 

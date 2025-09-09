@@ -10,8 +10,8 @@ public class LlocBean implements Lloc {
 
 	long llocID;// PK
 	java.lang.String codiLloc;
-	java.lang.String codiLlocPropi;
 	java.lang.String expansio;
+	java.lang.String codiLlocPropi;
 	java.lang.String nom;
 	long entitatID;
 	long unitatID;
@@ -27,11 +27,11 @@ public class LlocBean implements Lloc {
   }
 
   /** Constructor amb tots els camps  */
-  public LlocBean(long llocID , java.lang.String codiLloc , java.lang.String codiLlocPropi , java.lang.String expansio , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataalta , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , java.lang.String observacions) {
+  public LlocBean(long llocID , java.lang.String codiLloc , java.lang.String expansio , java.lang.String codiLlocPropi , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataalta , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , java.lang.String observacions) {
     this.llocID=llocID;
     this.codiLloc=codiLloc;
-    this.codiLlocPropi=codiLlocPropi;
     this.expansio=expansio;
+    this.codiLlocPropi=codiLlocPropi;
     this.nom=nom;
     this.entitatID=entitatID;
     this.unitatID=unitatID;
@@ -42,10 +42,10 @@ public class LlocBean implements Lloc {
     this.observacions=observacions;
 }
   /** Constructor sense valors autoincrementals */
-  public LlocBean(java.lang.String codiLloc , java.lang.String codiLlocPropi , java.lang.String expansio , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataalta , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , java.lang.String observacions) {
+  public LlocBean(java.lang.String codiLloc , java.lang.String expansio , java.lang.String codiLlocPropi , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataalta , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , java.lang.String observacions) {
     this.codiLloc=codiLloc;
-    this.codiLlocPropi=codiLlocPropi;
     this.expansio=expansio;
+    this.codiLlocPropi=codiLlocPropi;
     this.nom=nom;
     this.entitatID=entitatID;
     this.unitatID=unitatID;
@@ -69,8 +69,8 @@ public class LlocBean implements Lloc {
   public LlocBean(Lloc __bean) {
     this.setLlocID(__bean.getLlocID());
     this.setCodiLloc(__bean.getCodiLloc());
-    this.setCodiLlocPropi(__bean.getCodiLlocPropi());
     this.setExpansio(__bean.getExpansio());
+    this.setCodiLlocPropi(__bean.getCodiLlocPropi());
     this.setNom(__bean.getNom());
     this.setEntitatID(__bean.getEntitatID());
     this.setUnitatID(__bean.getUnitatID());
@@ -95,18 +95,18 @@ public class LlocBean implements Lloc {
 		this.codiLloc = _codiLloc_;
 	};
 
-	public java.lang.String getCodiLlocPropi() {
-		return(codiLlocPropi);
-	};
-	public void setCodiLlocPropi(java.lang.String _codiLlocPropi_) {
-		this.codiLlocPropi = _codiLlocPropi_;
-	};
-
 	public java.lang.String getExpansio() {
 		return(expansio);
 	};
 	public void setExpansio(java.lang.String _expansio_) {
 		this.expansio = _expansio_;
+	};
+
+	public java.lang.String getCodiLlocPropi() {
+		return(codiLlocPropi);
+	};
+	public void setCodiLlocPropi(java.lang.String _codiLlocPropi_) {
+		this.codiLlocPropi = _codiLlocPropi_;
 	};
 
 	public java.lang.String getNom() {
@@ -174,8 +174,8 @@ public class LlocBean implements Lloc {
     LlocBean __tmp = new LlocBean();
     __tmp.setLlocID(__bean.getLlocID());
     __tmp.setCodiLloc(__bean.getCodiLloc());
-    __tmp.setCodiLlocPropi(__bean.getCodiLlocPropi());
     __tmp.setExpansio(__bean.getExpansio());
+    __tmp.setCodiLlocPropi(__bean.getCodiLlocPropi());
     __tmp.setNom(__bean.getNom());
     __tmp.setEntitatID(__bean.getEntitatID());
     __tmp.setUnitatID(__bean.getUnitatID());

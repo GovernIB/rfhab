@@ -34,14 +34,14 @@
           ${lloc.codiLloc}
           </td>
         </c:if>
-        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.CODILLOCPROPI)}">
-          <td>
-          ${lloc.codiLlocPropi}
-          </td>
-        </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.EXPANSIO)}">
           <td>
           ${lloc.expansio}
+          </td>
+        </c:if>
+        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.CODILLOCPROPI)}">
+          <td>
+          ${lloc.codiLlocPropi}
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.NOM)}">

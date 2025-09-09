@@ -81,19 +81,6 @@
 
 
         </c:if>
-        <c:if test="${gen:contains(__theFilterForm.filterByFields ,LlocFields.CODILLOCPROPI)}">
-            <%-- FILTRE STRING --%>
-            <div class="input-prepend" style="padding-right: 4px;padding-bottom: 4px;">
-              <fmt:message key="lloc.codiLlocPropi" var="codiLlocPropi" />
-              <fmt:message key="genapp.form.searchby" var="cercapercodiLlocPropi" >                
-                 <fmt:param value="${codiLlocPropi}"/>
-              </fmt:message>
-              <span class="add-on"><c:out value="${codiLlocPropi}" />:</span>
-              <form:input cssClass="search-query input-medium" placeholder="${cercapercodiLlocPropi}" path="codiLlocPropi" />
-            </div>
-
-
-        </c:if>
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,LlocFields.EXPANSIO)}">
             <%-- FILTRE STRING --%>
             <div class="input-prepend" style="padding-right: 4px;padding-bottom: 4px;">
@@ -103,6 +90,19 @@
               </fmt:message>
               <span class="add-on"><c:out value="${expansio}" />:</span>
               <form:input cssClass="search-query input-medium" placeholder="${cercaperexpansio}" path="expansio" />
+            </div>
+
+
+        </c:if>
+        <c:if test="${gen:contains(__theFilterForm.filterByFields ,LlocFields.CODILLOCPROPI)}">
+            <%-- FILTRE STRING --%>
+            <div class="input-prepend" style="padding-right: 4px;padding-bottom: 4px;">
+              <fmt:message key="lloc.codiLlocPropi" var="codiLlocPropi" />
+              <fmt:message key="genapp.form.searchby" var="cercapercodiLlocPropi" >                
+                 <fmt:param value="${codiLlocPropi}"/>
+              </fmt:message>
+              <span class="add-on"><c:out value="${codiLlocPropi}" />:</span>
+              <form:input cssClass="search-query input-medium" placeholder="${cercapercodiLlocPropi}" path="codiLlocPropi" />
             </div>
 
 

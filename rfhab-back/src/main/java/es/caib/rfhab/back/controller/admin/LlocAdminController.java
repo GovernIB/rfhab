@@ -304,10 +304,11 @@ public class LlocAdminController extends LlocController {
 				if (!donatdeBaixa) {
 					// Lloc donat d'alta
 					// botó donar de baixa lloc
+					String urlGoTo = request.getContextPath() + getContextWeb() + "/" + llocID + "/delete/";
+					String actionButtonOnClickCallback = "goTo(encodeURI(\\'" + urlGoTo + "\\' + \\'?numerocai=\\' + document.getElementById(\\'numerocai\\').value))";
 					String jsOpenModalDonarBaixa = "javascript:createDivModal(traduccions.type['titol.lloc.donarbaixa.continuar'], '"
 							+ I18NUtils.tradueix("lloc.donarbaixa.missatgecontinuar", lloc.getCodiLloc()) + "', '"
-							+ request.getContextPath() + getContextWeb() + "/" + llocID + "/delete/"
-							+ "', '', 'lloc-donarbaixa-id', 'fa-laptop-code');\r\n" + //
+							+ urlGoTo + "', '', 'lloc-donarbaixa-id', 'fa-laptop-code', '', '" + actionButtonOnClickCallback + "');\r\n" + //
 							"        $('#lloc-donarbaixa-id').modal('show');\r\n";
 					AdditionalButton donarDeBaixaButton = new AdditionalButton("fas fa-laptop-code",
 							"lloc.donarbaixa",
@@ -321,8 +322,8 @@ public class LlocAdminController extends LlocController {
 					// botó donar d'alta lloc
 					String jsOpenModalDonarAlta = "javascript:createDivModal(traduccions.type['titol.lloc.donaralta.continuar'], '"
 							+ I18NUtils.tradueix("lloc.donaralta.missatgecontinuar", lloc.getCodiLloc()) + "', '"
-							+ request.getContextPath() + getContextWeb() + "/" + llocID + "/donaralta/"
-							+ "', '', 'lloc-donaralta-id', 'fa-laptop-medical');\r\n" + //
+							+ "', 'llocForm', 'lloc-donaralta-id', 'fa-laptop-medical', '"
+							+ request.getContextPath() + getContextWeb() + "/donaralta/" + "');\r\n" + //
 							"        $('#lloc-donaralta-id').modal('show');\r\n";
 					AdditionalButton donarDeAltaButton = new AdditionalButton("fas fa-laptop-medical",
 							"lloc.donaralta",
@@ -542,9 +543,8 @@ public class LlocAdminController extends LlocController {
 		long llocId = lloc.getLlocID();
 		log.info("'Esborrant' (donant de baixa) lloc amb ID " + llocId);
 
-		// TODO:revisar això #38
-		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numeroCai")))
-				? request.getParameter("numeroCai")
+		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numerocai")))
+				? request.getParameter("numerocai")
 				: "";
 
 		llocLogicaEjb.donarDeBaixaLlocAndHistory(llocId, numeroCai,
@@ -554,15 +554,14 @@ public class LlocAdminController extends LlocController {
 		// funcionari.donaralta.exit
 	}
 
-	@RequestMapping(value = "/{llocID}/donaralta")
-	public String donarDeAlta(@PathVariable("llocID") java.lang.Long llocID, HttpServletRequest request,
+	@RequestMapping(value = "/donaralta", method = RequestMethod.POST)
+	public String donarDeAlta(@ModelAttribute LlocForm llocForm, HttpServletRequest request,
 			HttpServletResponse response) throws I18NException {
-		// TODO:revisar això #38
-		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numeroCai")))
-				? request.getParameter("numeroCai")
+		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numerocai")))
+				? request.getParameter("numerocai")
 				: "";
 
-		Lloc llocActualitzat = llocLogicaEjb.donarDeAltaAndHistory(llocID, numeroCai,
+		Lloc llocActualitzat = llocLogicaEjb.donarDeAltaAndHistory(llocForm.getLloc().getLlocID(), numeroCai,
 				LoginInfo.getInstance().getUsuariPersona().getUsuariID());
 
 		// createMessageSuccess(request, "success.modification", llocID);//
@@ -599,7 +598,7 @@ public class LlocAdminController extends LlocController {
 				lloc = create(request, lloc);
 				createMessageSuccess(request, "success.creation", lloc.getLlocID());
 				llocForm.setLloc(lloc);
-				return donarDeAlta(lloc.getLlocID(), request, response);
+				return donarDeAlta(llocForm, request, response);
 			}
 		} catch (Throwable __e) {
 			if (__e instanceof I18NValidationException) {

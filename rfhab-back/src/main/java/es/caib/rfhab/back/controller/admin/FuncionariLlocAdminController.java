@@ -145,7 +145,6 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 	public FuncionariLlocJPA create(HttpServletRequest request, FuncionariLlocJPA funcionariLloc)
 			throws I18NException, I18NValidationException {
 
-		// TODO:revisar això #38
 		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numerocai")))
 				? request.getParameter("numerocai")
 				: "";
@@ -180,9 +179,8 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 
 		log.info("Desassignant funcionari(s) del lloc " + llocId);
 
-		// TODO:revisar això #38
-		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numeroCai")))
-				? request.getParameter("numeroCai")
+		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numerocai")))
+				? request.getParameter("numerocai")
 				: "";
 
 		funcionariEjb.dessassignarFuncionariAndHistory(null, llocId, numeroCai,

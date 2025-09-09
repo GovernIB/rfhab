@@ -140,7 +140,7 @@
         }
     }
 
-    function createDivModal(tituloDialog, msgDialog, url, formName, modalId='myModal', titolIcona='fa-trash', urlFormAction='') {
+    function createDivModal(tituloDialog, msgDialog, url, formName, modalId='myModal', titolIcona='fa-trash', urlFormAction='', actionButtonOnClick=null) {
         $('body')
                 .append('<div id="' + modalId + '" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'
                         + '<div class="modal-dialog" role="document">'
@@ -160,10 +160,11 @@
                         + traduccions.type['boto.cancelar']
                         + '</button>'
                         + '<button class="btn btn-danger" type="button" onclick="'
-                        + (formName ? ('submitTo(\'' + formName + '\',\'' + urlFormAction + '\')') : 'goTo('
-                        + '\''
-                        + url
-                        + '\')') + '">'
+                        + (actionButtonOnClick != null ? ('eval(' + actionButtonOnClick + ')') : 
+                            (formName ? ('submitTo(\'' + formName + '\',\'' + urlFormAction + '\')') : 'goTo('
+                                + '\''
+                                + url
+                                + '\')')) + '">'
                         + traduccions.type['boto.continuar'] + '</button>' + '</div>' + '</div>' + '</div>' + '</div>');
     }
 

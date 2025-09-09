@@ -306,6 +306,8 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 
 	public Funcionari donarDeBaixaFuncionariAndHistory(Funcionari funcionari, final String numeroCai, long usuariId)
 			throws I18NException {
+		log.info("Donant de baixa funcionari amb ID " + funcionari.getFuncionariID() + " per a l'usuari " + usuariId
+				+ " i CAI " + numeroCai);
 		return dessassignarFuncionariAndHistory(funcionari, null, numeroCai, usuariId, true, false);
 	}
 
@@ -334,7 +336,8 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 
 		StringBuilder queryString = new StringBuilder(
 				"select max(rf." + FuncionariFields.NUMERO.javaName + ") from " + FuncionariJPA.class.getName()
-						+ " rf where rf." + FuncionariFields.NUMERO.javaName + " like '" + Constants.SQL_FUNCIONARI_NUMERO_PATTERN
+						+ " rf where rf." + FuncionariFields.NUMERO.javaName + " like '"
+						+ Constants.SQL_FUNCIONARI_NUMERO_PATTERN
 						+ "' escape '" + Constants.SQL_LIKE_ESCAPE_PATTERN + "'");
 		Class<?> numeroClass = FuncionariFields.NUMERO.getClass().getField("javaName").getType();// TODO:comentar a
 																									// anadal que

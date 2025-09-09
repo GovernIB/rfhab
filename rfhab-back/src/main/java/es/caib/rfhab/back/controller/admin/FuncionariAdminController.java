@@ -23,6 +23,7 @@ import org.fundaciobit.genapp.common.web.form.AdditionalField;
 import org.fundaciobit.genapp.common.web.i18n.I18NUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -166,9 +167,12 @@ public class FuncionariAdminController extends FuncionariController {
 			// botons donar de baixa/alta
 			if (funcionari.getDataBaixa() == null) {
 				// botó donar de baixa funcionari
+				String urlGoTo = request.getContextPath() + getContextWeb() + "/" + funcionariId + "/delete/";
+				String actionButtonOnClickCallback = "goTo(encodeURI(\\'" + urlGoTo
+						+ "\\' + \\'?numerocai=\\' + document.getElementById(\\'numerocai\\').value))";
 				String jsOpenModalDonarBaixa = "javascript:createDivModal(traduccions.type['titol.funcionari.donarbaixa.continuar'], traduccions.type['missatge.funcionari.donarbaixa.continuar'], '"
-						+ request.getContextPath() + getContextWeb() + "/" + funcionariId + "/delete/"
-						+ "', '', 'func-donarbaixa-id', 'fa-user-times');\r\n" + //
+						+ urlGoTo + "', '', 'func-donarbaixa-id', 'fa-user-times', '', '" + actionButtonOnClickCallback
+						+ "');\r\n" + //
 						"        $('#func-donarbaixa-id').modal('show');\r\n";
 				AdditionalButton donarDeBaixaButton = new AdditionalButton("fas fa-user-times",
 						"funcionari.donarbaixa",
@@ -178,8 +182,9 @@ public class FuncionariAdminController extends FuncionariController {
 			} else {
 				// botó donar d'alta funcionari
 				String jsOpenModalDonarAlta = "javascript:createDivModal(traduccions.type['titol.funcionari.donaralta.continuar'], traduccions.type['missatge.funcionari.donaralta.continuar'], '"
-						+ request.getContextPath() + getContextWeb() + "/" + funcionariId + "/donaralta/"
-						+ "', '', 'func-donaralta-id', 'fa-user-plus');\r\n" + //
+						+ "', 'funcionariForm', 'func-donaralta-id', 'fa-user-plus', '"
+						+ request.getContextPath() + getContextWeb() + "/donaralta/"
+						+ "');\r\n" + //
 						"        $('#func-donaralta-id').modal('show');\r\n";
 				AdditionalButton donarDeAltaButton = new AdditionalButton("fas fa-user-plus",
 						"funcionari.donaralta",
@@ -394,29 +399,29 @@ public class FuncionariAdminController extends FuncionariController {
 		long funcionariId = funcionari.getFuncionariID();
 		log.info("'Esborrant' (donant de baixa) funcionari amb ID " + funcionariId);
 
-		// TODO:revisar això #38
-		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numeroCai")))
-				? request.getParameter("numeroCai")
+		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numerocai")))
+				? request.getParameter("numerocai")
 				: "";
 
 		funcionariEJB.donarDeBaixaFuncionariAndHistory(funcionari, numeroCai,
 				LoginInfo.getInstance().getUsuariPersona().getUsuariID());
 
-		createMessageSuccess(request, "success.modification", funcionariId);// funcionari.donaralta.exit
+		// createMessageSuccess(request, "success.modification", funcionariId);//
+		// funcionari.donaralta.exit
 	}
 
-	@RequestMapping(value = "/{funcionariID}/donaralta")
-	public String donarDeAlta(@PathVariable("funcionariID") java.lang.Long funcionariID, HttpServletRequest request,
+	@RequestMapping(value = "/donaralta")
+	public String donarDeAlta(@ModelAttribute FuncionariForm funcionariForm, HttpServletRequest request,
 			HttpServletResponse response) throws I18NException {
-		// TODO:revisar això #38
-		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numeroCai")))
-				? request.getParameter("numeroCai")
+		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numerocai")))
+				? request.getParameter("numerocai")
 				: "";
 
-		funcionariEJB.donarDeAltaAndHistory(funcionariID, numeroCai,
+		long funcionariId = funcionariForm.getFuncionari().getFuncionariID();
+		funcionariEJB.donarDeAltaAndHistory(funcionariId, numeroCai,
 				LoginInfo.getInstance().getUsuariPersona().getUsuariID());
 
-		createMessageSuccess(request, "success.modification", funcionariID);// funcionari.donaralta.exit
+		createMessageSuccess(request, "success.modification", funcionariId);// funcionari.donaralta.exit
 		return getRedirectWhenModified(request, null, null);
 	}
 

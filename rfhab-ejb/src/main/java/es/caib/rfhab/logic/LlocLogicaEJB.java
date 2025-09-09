@@ -346,11 +346,12 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 
 	public Funcionari donarDeBaixaLlocAndHistory(long llocId, final String numeroCai, long usuariId)
 			throws I18NException {
+		log.info("Donant de baixa Lloc amb ID " + llocId + " per a l'usuari " + usuariId + " amb CAI " + numeroCai);
 		return funcionariLogicaEjb.dessassignarFuncionariAndHistory(null, llocId, numeroCai, usuariId, false, true);
 	}
 
 	public Lloc donarDeAltaAndHistory(java.lang.Long llocID, String numeroCai, long usuariId) throws I18NException {
-		log.info("Donant d'alta Lloc amb ID " + llocID);
+		log.info("Donant d'alta Lloc amb ID " + llocID + " per a l'usuari " + usuariId + " amb CAI " + numeroCai);
 
 		LlocJPA lloc = findByPrimaryKey(llocID);
 		if (lloc == null) {

@@ -23,7 +23,7 @@
 
 <%@ include file="/WEB-INF/jsp/moduls/imports.jsp"%>
 </head>
-<body>
+<body class="header-content-footer">
 
     <!--  INICI CAPÇALERA -->
 

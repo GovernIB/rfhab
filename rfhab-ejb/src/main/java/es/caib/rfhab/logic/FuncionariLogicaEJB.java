@@ -5,7 +5,6 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
@@ -353,6 +352,7 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 		return (resultats != null && !resultats.isEmpty()) ? (resultats.get(0)) : null;
 	}
 
+	@Override
 	@PermitAll
 	public Funcionari donarDeAltaAndHistory(java.lang.Long funcionariID, String numeroCai, long usuarId)
 			throws I18NException {
@@ -378,7 +378,7 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 	}
 
 	@Override
-	@RolesAllowed({ Constants.ROLE_EJB_FULL_ACCESS, Constants.ROLE_EJB_BASIC_ACCESS, Constants.ROLE_EJB_WS_ACCESS })
+	@PermitAll
 	public FuncionariJPA findByNif(String nif) throws I18NException {
 		List<Funcionari> funcionaris = super.select(FuncionariFields.IDENTIFICADOR.equal(nif));
 		if (funcionaris == null || funcionaris.size() == 0) {

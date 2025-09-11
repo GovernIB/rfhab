@@ -399,16 +399,16 @@ public class UserController extends UsuariController {
 		Usuari usuari = loginInfo.getUsuariPersona();
 		String username = usuari.getUsername();
 		String funcionariAdministracioID = usuari.getNif();
-		String funcionariNom = (usuari.getNom() != null ? usuari.getNom() : "") + " "
-				+ (usuari.getLlinatge1() != null ? usuari.getLlinatge1() : "") + " "
-				+ (usuari.getLlinatge2() != null ? usuari.getLlinatge2() : "");
 		// String funcionariDir3 = getCodiDIR3(request, username);// codiDIR3 del lloc
 		// de feina del funcionari
-		FuncionariJPA funcionari = funcionariLogicaEjb.findByNif(usuari.getNif());
+		FuncionariJPA funcionari = funcionariLogicaEjb.findByNif(funcionariAdministracioID);
 		if (funcionari == null) {
-			throw new I18NException("funcionari.error.noexisteixnif", usuari.getNif());
+			throw new I18NException("funcionari.error.noexisteixnif", funcionariAdministracioID);
 		}
 		String funcionariCodi = funcionari.getNumero();
+		String funcionariNom = (funcionari.getNom() != null ? funcionari.getNom() : "") + " "
+				+ (funcionari.getLlinatge1() != null ? funcionari.getLlinatge1() : "") + " "
+				+ (funcionari.getLlinatge2() != null ? funcionari.getLlinatge2() : "");
 
 		log.info("XYZ YYY username = " + username);
 		log.info("XYZ YYY funcionariAdministracioID = " + funcionariAdministracioID);
@@ -423,8 +423,8 @@ public class UserController extends UsuariController {
 				tramitConsentimentDto.representant ? tramitConsentimentDto.representantLlinatge1 : null,
 				tramitConsentimentDto.representant ? tramitConsentimentDto.representantLlinatge2 : null,
 				tramitConsentimentDto.representant ? tramitConsentimentDto.representantIdentificacio : null,
-				usuari.getNom(), usuari.getLlinatge1(),
-				usuari.getLlinatge2(), funcionariCodi,
+				funcionari.getNom(), funcionari.getLlinatge1(),
+				funcionari.getLlinatge2(), funcionariCodi,
 				tramitConsentimentDto.procedimentNom, tramitConsentimentDto.procedimentCodiSia,
 				tramitConsentimentDto.tramitNom, tramitConsentimentDto.tramitCodi, new java.util.Date(),
 

@@ -39,6 +39,7 @@ import es.caib.rfhab.commons.utils.OdtToPdfService;
 import es.caib.rfhab.logic.ActivitatLogicaService;
 import es.caib.rfhab.logic.EntitatLogicaService;
 import es.caib.rfhab.logic.FitxerPublicLogicaService;
+import es.caib.rfhab.logic.FuncionariLogicaService;
 import es.caib.rfhab.logic.ScanWebLogicaService;
 import es.caib.rfhab.logic.SistramitLogicaService;
 import es.caib.rfhab.logic.UnitatLogicaUserService;
@@ -89,6 +90,9 @@ public class UserController extends UsuariController {
 
 	@EJB(mappedName = EntitatLogicaService.JNDI_NAME)
 	protected EntitatLogicaService entitatLogicaEjb;
+
+	@EJB(mappedName = FuncionariLogicaService.JNDI_NAME)
+	protected FuncionariLogicaService funcionariLogicaEjb;
 
 	private RolsacPlugin rolsacPlugin;
 
@@ -398,12 +402,18 @@ public class UserController extends UsuariController {
 		String funcionariNom = (usuari.getNom() != null ? usuari.getNom() : "") + " "
 				+ (usuari.getLlinatge1() != null ? usuari.getLlinatge1() : "") + " "
 				+ (usuari.getLlinatge2() != null ? usuari.getLlinatge2() : "");
-		String funcionariDir3 = getCodiDIR3(request, username);// codiDIR3 del lloc de feina del funcionari
+		// String funcionariDir3 = getCodiDIR3(request, username);// codiDIR3 del lloc
+		// de feina del funcionari
+		FuncionariJPA funcionari = funcionariLogicaEjb.findByNif(usuari.getNif());
+		if (funcionari == null) {
+			throw new I18NException("funcionari.error.noexisteixnif", usuari.getNif());
+		}
+		String funcionariCodi = funcionari.getNumero();
 
 		log.info("XYZ YYY username = " + username);
 		log.info("XYZ YYY funcionariAdministracioID = " + funcionariAdministracioID);
 		log.info("XYZ YYY funcionariNom = " + funcionariNom);
-		log.info("XYZ YYY funcionariDir3 = " + funcionariDir3);
+		log.info("XYZ YYY funcionariCodi = " + funcionariCodi);
 
 		TramitConsentimentDAO tramitConsentimentDAO = new TramitConsentimentDAO(
 				tramitConsentimentDto.ciutadaNom,
@@ -414,7 +424,7 @@ public class UserController extends UsuariController {
 				tramitConsentimentDto.representant ? tramitConsentimentDto.representantLlinatge2 : null,
 				tramitConsentimentDto.representant ? tramitConsentimentDto.representantIdentificacio : null,
 				usuari.getNom(), usuari.getLlinatge1(),
-				usuari.getLlinatge2(), funcionariDir3,
+				usuari.getLlinatge2(), funcionariCodi,
 				tramitConsentimentDto.procedimentNom, tramitConsentimentDto.procedimentCodiSia,
 				tramitConsentimentDto.tramitNom, tramitConsentimentDto.tramitCodi, new java.util.Date(),
 
@@ -438,8 +448,7 @@ public class UserController extends UsuariController {
 				tramitConsentimentDto.representantCorreu,
 				tramitConsentimentDto.representantMitjaAcreditacio,
 				tramitConsentimentDto.representantRea,
-				tramitConsentimentDto.representantAltres
-		);
+				tramitConsentimentDto.representantAltres);
 		Map<String, Object> freemarkerDadesMap = PlantillaOdtModelConsentiment
 				.buildFreemarkerContext(tramitConsentimentDAO);
 		String plantillaModelConsentimentPath = tramitConsentimentDto.languageUI.startsWith("es")

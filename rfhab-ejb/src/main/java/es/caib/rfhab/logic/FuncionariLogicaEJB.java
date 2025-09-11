@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
@@ -375,4 +376,18 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 		funcionari.setDataBaixa(null);
 		return update(funcionari);
 	}
+
+	@Override
+	@RolesAllowed({ Constants.ROLE_EJB_FULL_ACCESS, Constants.ROLE_EJB_BASIC_ACCESS, Constants.ROLE_EJB_WS_ACCESS })
+	public FuncionariJPA findByNif(String nif) throws I18NException {
+		List<Funcionari> funcionaris = super.select(FuncionariFields.IDENTIFICADOR.equal(nif));
+		if (funcionaris == null || funcionaris.size() == 0) {
+			return null;
+		}
+		if (funcionaris.size() > 1) {
+			throw new I18NException("funcionari.error.mesdun", nif);
+		}
+		return (FuncionariJPA) funcionaris.get(0);
+	}
+
 }

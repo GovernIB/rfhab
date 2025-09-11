@@ -6,6 +6,7 @@ import org.fundaciobit.genapp.common.i18n.I18NException;
 import es.caib.rfhab.ejb.FuncionariService;
 import es.caib.rfhab.logic.utils.HistoricFuncionariDAO;
 import es.caib.rfhab.model.entity.Funcionari;
+import es.caib.rfhab.persistence.FuncionariJPA;
 
 /**
  * 
@@ -40,4 +41,6 @@ public interface FuncionariLogicaService extends FuncionariService {
 
 	public Funcionari donarDeAltaAndHistory(java.lang.Long funcionariID, String numeroCai, long usuarId)
 			throws I18NException;
+
+	public FuncionariJPA findByNif(String nif) throws I18NException;
 }

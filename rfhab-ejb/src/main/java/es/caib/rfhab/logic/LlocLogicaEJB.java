@@ -3,8 +3,10 @@ package es.caib.rfhab.logic;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
@@ -82,7 +84,7 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 			// actualitzam rolsllocs segons rolsSeleccionats
 			List<String> habilitacionsToInsert = new ArrayList<String>();
 			if (habilitacionsSeleccionades != null) {
-				habilitacionsToInsert = java.util.Arrays.asList(habilitacionsSeleccionades);
+				habilitacionsToInsert = Arrays.stream(habilitacionsSeleccionades).collect(Collectors.toList());
 			}
 			Where llocRolsByLlocId = LlocRolFields.LLOCID.equal(newLloc.getLlocID());
 			List<LlocRol> llocsRolsOld = llocRolEjb.select(llocRolsByLlocId);
@@ -143,7 +145,7 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 
 			return newLloc;
 		} catch (Exception e) {
-			log.error(e.getMessage());
+			log.error(e);
 			throw new I18NException("error.modification", String.valueOf(lloc.getLlocID()));
 		}
 	}

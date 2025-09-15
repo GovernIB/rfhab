@@ -337,7 +337,7 @@
 							const nouHabilitacionsTr = createTrInputFormSelect("lloc_habilitacions_rowid", "lloc_habilitacions_columnlabelid", '<fmt:message key="rol.rol.plural"/>', "lloc_habilitacions_columnvalueid", "habilitacionsSeleccionadesId", llocHabilitacionsSelectId, "llocHabilitacionsSeleccionades", optionsHabilitacions, habilitacionsSeleccionades, onSelectedHabilitacioLloc, true);
 							const dataDaltaTr = tbody.querySelector("#lloc_dataalta_rowid");
 							tbody.insertBefore(nouHabilitacionsTr, dataDaltaTr);
-								$('#' + llocHabilitacionsSelectId).select2(
+							$('#' + llocHabilitacionsSelectId).select2(
 								{
 									placeholder: "",
 									allowClear: true,

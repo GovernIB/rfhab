@@ -534,7 +534,7 @@ public class LlocAdminController extends LlocController {
 		String habilitacionsSeleccionadesId = request.getParameter("habilitacionsSeleccionadesId");
 		log.info("Creant Lloc amb habilitacions seleccionades: " + habilitacionsSeleccionadesId);
 		String[] llocHabilitacionsSeleccionades = habilitacionsSeleccionadesId.split(",");
-		log.info("Creant Lloc amb habilitacions seleccionades List: " + llocHabilitacionsSeleccionades);
+		log.info("Creant Lloc amb habilitacions seleccionades List: " + llocHabilitacionsSeleccionades.length);
 		
 		Long usuariId = LoginInfo.getInstance().getUsuariPersona().getUsuariID();
 
@@ -551,7 +551,7 @@ public class LlocAdminController extends LlocController {
 		String habilitacionsSeleccionadesId = request.getParameter("habilitacionsSeleccionadesId");
 		log.info("Actualitzant Lloc amb habilitacions seleccionades: " + habilitacionsSeleccionadesId);
 		String[] llocHabilitacionsSeleccionades = habilitacionsSeleccionadesId.split(",");
-		log.info("Actualitzant Lloc amb habilitacions seleccionades List: " + llocHabilitacionsSeleccionades);
+		log.info("Actualitzant Lloc amb habilitacions seleccionades List: " + llocHabilitacionsSeleccionades.length);
 
 		String numeroCai = request.getParameter("numerocai");
 		Long usuariId = LoginInfo.getInstance().getUsuariPersona().getUsuariID();

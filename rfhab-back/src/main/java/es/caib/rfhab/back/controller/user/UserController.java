@@ -16,6 +16,7 @@ import org.fundaciobit.genapp.common.StringKeyValue;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.web.HtmlUtils;
+import org.fundaciobit.genapp.common.web.i18n.I18NUtils;
 import org.fundaciobit.pluginsib.core.v3.utils.FileUtils;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -399,19 +400,30 @@ public class UserController extends UsuariController {
 		Usuari usuari = loginInfo.getUsuariPersona();
 		String username = usuari.getUsername();
 		String funcionariAdministracioID = usuari.getNif();
+
+		log.info("XYZ YYY username = " + username);
+		log.info("XYZ YYY funcionariAdministracioID = " + funcionariAdministracioID);
+
 		// String funcionariDir3 = getCodiDIR3(request, username);// codiDIR3 del lloc
 		// de feina del funcionari
 		FuncionariJPA funcionari = funcionariLogicaEjb.findByNif(funcionariAdministracioID);
 		if (funcionari == null) {
-			throw new I18NException("funcionari.error.noexisteixnif", funcionariAdministracioID);
+			String errorNoExisteixNif = I18NUtils.tradueix("funcionari.error.noexisteixnif",
+					new String[] { funcionariAdministracioID });
+			log.error("error a modelConsentiment: " + errorNoExisteixNif);
+			response.resetBuffer();
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.setHeader("Content-Type", "application/json");
+			response.getOutputStream().write(("{\"errorMessage\":\"" + errorNoExisteixNif + "\"}").getBytes("UTF-8"));
+			response.flushBuffer(); // marks response as committed -- if we don't do this the request will go
+									// through normally!
+			return;
 		}
 		String funcionariCodi = funcionari.getNumero();
 		String funcionariNom = (funcionari.getNom() != null ? funcionari.getNom() : "") + " "
 				+ (funcionari.getLlinatge1() != null ? funcionari.getLlinatge1() : "") + " "
 				+ (funcionari.getLlinatge2() != null ? funcionari.getLlinatge2() : "");
 
-		log.info("XYZ YYY username = " + username);
-		log.info("XYZ YYY funcionariAdministracioID = " + funcionariAdministracioID);
 		log.info("XYZ YYY funcionariNom = " + funcionariNom);
 		log.info("XYZ YYY funcionariCodi = " + funcionariCodi);
 

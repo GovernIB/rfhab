@@ -1574,7 +1574,7 @@ button[disabled][type="submit"] {
 		fetch(request)
 			.then(response => {
 				if (!response.ok) {
-					throw new Error('Error al descarregar el model consentiment: ' + response.statusText);
+					return Promise.reject(response)
 				}
 				return response.blob();
 			})
@@ -1583,8 +1583,12 @@ button[disabled][type="submit"] {
 				showIframePdf(file);
 			})
 			.catch(error => {
-				let errorText = 'Error descarregant el fitxer: ' + error.message;//TODO:afegir missatge a traduccions
-				inserirMsg('danger', errorText);
+				console.log(error.status, error.statusText);
+				error.json().then((json) => {
+					let errorText = 'Error al descarregar el model consentiment: ';
+					console.log(errorText, (json.errorMessage ? json.errorMessage : json));
+					inserirMsg('danger', 'Error: ' + (json.errorMessage ? json.errorMessage : json));
+				})
 				hideSpinnerCarregantIframePdf();
 			});
 	}

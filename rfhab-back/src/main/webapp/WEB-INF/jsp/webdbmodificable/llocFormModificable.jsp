@@ -3,6 +3,21 @@
 
 <%@ include file="/WEB-INF/jsp/moduls/includes.jsp"%>
 
+<table id="tableauxtodelete">
+	<tbody>
+		<tr id="lloc_unitatsuperiorID_rowid">
+			<td id="lloc_unitatsuperiorID_columnlabelid">
+				<label>
+					<fmt:message key="unitat.superior" />
+				</label>
+			</td>
+			<td id="lloc_unitatsuperiorID_columnvalueid">
+				<input id="lloc_unitatsuperiorID" type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.lloc.unitatID,__theForm.listOfUnitatForUnitatID)}"   />
+			</td>
+		</tr>
+	</tbody>
+</table>
+
 <c:if test="${__theForm.view}">
 <div class="col-12">
 	<ul class="nav nav-tabs" id="myTab" role="tablist"
@@ -209,6 +224,12 @@
 		return null;
 	}
 
+	function findUnitatSuperior(unitats, unitatId) {
+		// Cerca la unitat inicial amb el unitatId especificat
+		const unitatActual = unitats.find(unitat => unitat.unitatID === unitatId);
+		return unitats.find(unitat => unitat.codi === unitatActual.superior) || null;
+	}
+
 	function findUnitatMare(unitats, unitatId) {
 		// Cerca la unitat inicial amb el unitatId especificat
 		let unitatMare = unitats.find(unitat => unitat.unitatID === unitatId);
@@ -251,7 +272,9 @@
 			"unitatID": +"${item.unitatID}",
 			"codi": "${item.codi}",
 			"arrel": "${item.arrel}",
-			"superior": "${item.superior}"
+			"superior": "${item.superior}",
+			"cooficial": "${item.cooficial}",
+			"denominacio": "${item.denominacio}"
 		});
 	</c:forEach>
 	let entitats = [];
@@ -264,7 +287,6 @@
 	</c:forEach>
 
 	function onChangeUnitatID(event) {
-		//TODO: #75 revisar si finalment es vol canviar entitat per Unitat superior
 		let unitatIdSeleccionat = +event.value;
 		let resultat = findUnitatMare(unitats, unitatIdSeleccionat);
 
@@ -274,12 +296,20 @@
 			console.log("No s'ha trobat cap unitat amb el codi " + unitatIdSeleccionat + " a l'arrel.");
 		}
 
+		const unitatSuperior = findUnitatSuperior(unitats, unitatIdSeleccionat);
+
 		let llocEntitatUnitatId = resultat ? resultat.unitatID : null; // Obté el unitatID de la unitat trobada
 		let entitatTrobada = entitats.find(entitat => entitat.unitatID == llocEntitatUnitatId);
 		let entitatId = entitatTrobada ? entitatTrobada.entitatID : null;
 		document.getElementById("lloc.entitatID").value = entitatId;
 		document.querySelector('[id="lloc.entitatID"]+input').value = entitatTrobada?.nom;
 		// document.querySelector('[id="lloc.entitatID"]+input').value = "${gen:findValue(entitatId,__theForm.listOfEntitatForEntitatID)}";
+		if(unitatSuperior){
+			document.getElementById("lloc_unitatsuperiorID").value = unitatSuperior.codi + " " + ("${lang}".toUpperCase() == 'ES' ? unitatSuperior?.denominacio : unitatSuperior?.cooficial);
+		}
+		else{
+			document.getElementById("lloc_unitatsuperiorID").value = null;
+		}
 	}
 	
 	function onSelectedHabilitacioLloc(select2) {
@@ -302,6 +332,9 @@
 						}
 						document.getElementById("lloc.codiLlocPropi").placeholder = '${LLOC_CODILLOCPROPI_PLACEHOLDER}';
 
+						const taula = document.getElementById("lloc_tableid");
+						const tbody = taula.querySelector("tbody");
+
 						if ("true" != "${isView}") {
 							//afegeix input numero CAI
 							const nouNumeroCaiTr = document.createElement("tr");
@@ -317,8 +350,6 @@
 							nouTd2NumeroCai.innerHTML = '<input type="text" maxlength="50" name="numerocai" id="numerocai" class="form-control w-100"></input>';
 							nouNumeroCaiTr.appendChild(nouTd2NumeroCai);
 
-							const taula = document.getElementById("lloc_tableid");
-							const tbody = taula.querySelector("tbody");
 							const observacionsTr = tbody.querySelector("#lloc_observacions_rowid");
 							tbody.insertBefore(nouNumeroCaiTr, observacionsTr);
 
@@ -351,5 +382,18 @@
 							const taObservacions = document.getElementById('lloc.observacions');
 							taObservacions.wrap='soft';
 						}
+
+						//oculta entitatid i mostra unitat superior
+						const lloc_entitatID_rowid = document.getElementById("lloc_entitatID_rowid");
+						const lloc_unitatsuperiorID_rowid = document.getElementById("lloc_unitatsuperiorID_rowid");
+						tbody.insertBefore(lloc_unitatsuperiorID_rowid, lloc_entitatID_rowid);
+						lloc_entitatID_rowid.hidden = true;
+						const tableAuxToDelete = document.getElementById("tableauxtodelete");
+						tableAuxToDelete.remove();
+						let unitatInput = document.getElementById("lloc.unitatID");
+						if(!unitatInput){
+							unitatInput = document.getElementById("lloc_unitatID");
+						}
+						onChangeUnitatID({value: unitatInput.value});
 					});
 </script>

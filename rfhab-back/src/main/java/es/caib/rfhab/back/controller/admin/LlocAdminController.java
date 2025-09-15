@@ -42,6 +42,7 @@ import es.caib.rfhab.back.utils.UrlUtils;
 import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.commons.utils.StringUtils;
 import es.caib.rfhab.ejb.EntitatService;
+import es.caib.rfhab.ejb.RolService;
 import es.caib.rfhab.logic.FuncionariLlocLogicaService;
 import es.caib.rfhab.logic.HistoricLlocLogicaService;
 import es.caib.rfhab.logic.LlocLogicaService;
@@ -98,6 +99,9 @@ public class LlocAdminController extends LlocController {
 
 	@EJB(mappedName = EntitatService.JNDI_NAME)
 	protected EntitatService entitatEjb;
+
+	@EJB(mappedName = RolService.JNDI_NAME)
+	protected RolService habilitacionsEjb;
 
 	protected RolsacPlugin rolsacPlugin = null;
 
@@ -351,6 +355,9 @@ public class LlocAdminController extends LlocController {
 		mav.addObject("LLOC_CODILLOCPROPI_PLACEHOLDER", Constants.LLOC_CODILLOCPROPI_PLACEHOLDER);
 
 		mav.addObject("lloc", lloc);
+		
+		List<Rol> habilitacionsTotes = habilitacionsEjb.select();
+		mav.addObject("habilitacionsTotes", habilitacionsTotes);
 
 		llocForm.addAdditionalButton(new AdditionalButton(" fas fa-long-arrow-alt-left", "tornar",
 				getContextWeb() + "/tornar", AdditionalButtonStyle.SECONDARY));
@@ -524,25 +531,35 @@ public class LlocAdminController extends LlocController {
 	public LlocJPA create(HttpServletRequest request, LlocJPA lloc) throws I18NException, I18NValidationException {
 		lloc.setEntitatID(Long.parseLong(request.getParameter("lloc.entitatID")));
 
-		LlocJPA newLloc = super.create(request, lloc);
-		log.info("Lloc creat: " + lloc.getLlocID());
-
+		String habilitacionsSeleccionadesId = request.getParameter("habilitacionsSeleccionadesId");
+		log.info("Creant Lloc amb habilitacions seleccionades: " + habilitacionsSeleccionadesId);
+		String[] llocHabilitacionsSeleccionades = habilitacionsSeleccionadesId.split(",");
+		log.info("Creant Lloc amb habilitacions seleccionades List: " + llocHabilitacionsSeleccionades);
+		
 		Long usuariId = LoginInfo.getInstance().getUsuariPersona().getUsuariID();
 
 		String numeroCai = request.getParameter("numerocai");
 		log.info("Creant HistoricLloc per a CAI: " + numeroCai + " i usuari: " + usuariId);
-		HistoricLlocJPA historicLloc = llocLogicaEjb.createAndHistory((Lloc) newLloc, numeroCai, usuariId);
-		log.info("HistoricLloc creat: " + historicLloc.getHistoricllocID());
+		LlocJPA newLloc = llocLogicaEjb.createAndHistory(lloc, numeroCai, usuariId, llocHabilitacionsSeleccionades);
+		log.info("Lloc creat amb auditoria: " + newLloc.getLlocID());
 
 		return newLloc;
 	}
 
 	@Override
 	public LlocJPA update(HttpServletRequest request, LlocJPA lloc) throws I18NException, I18NValidationException {
+		String habilitacionsSeleccionadesId = request.getParameter("habilitacionsSeleccionadesId");
+		log.info("Actualitzant Lloc amb habilitacions seleccionades: " + habilitacionsSeleccionadesId);
+		String[] llocHabilitacionsSeleccionades = habilitacionsSeleccionadesId.split(",");
+		log.info("Actualitzant Lloc amb habilitacions seleccionades List: " + llocHabilitacionsSeleccionades);
 
+		String numeroCai = request.getParameter("numerocai");
 		Long usuariId = LoginInfo.getInstance().getUsuariPersona().getUsuariID();
-
-		return (LlocJPA) llocLogicaEjb.updateAndHistory((Lloc) lloc, request.getParameter("numerocai"), usuariId);
+		
+		log.info("Actualitzant HistoricLloc per a CAI: " + numeroCai + " i usuari: " + usuariId);
+		LlocJPA llocActualitzat = (LlocJPA) llocLogicaEjb.updateAndHistory((Lloc) lloc, numeroCai, usuariId, llocHabilitacionsSeleccionades);
+		log.info("Lloc actualitzat amb auditoria: " + llocActualitzat.getLlocID());
+		return llocActualitzat;
 	}
 
 	@Override

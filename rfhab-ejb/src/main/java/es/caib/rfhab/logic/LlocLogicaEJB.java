@@ -34,6 +34,7 @@ import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.model.fields.LlocRolFields;
 import es.caib.rfhab.persistence.HistoricLlocJPA;
 import es.caib.rfhab.persistence.LlocJPA;
+import es.caib.rfhab.persistence.RolJPA;
 
 /**
  * 
@@ -61,7 +62,8 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 
 	@Override
 	@PermitAll
-	public Lloc updateAndHistory(Lloc lloc, String cai, Long usuariId) throws I18NException {
+	public Lloc updateAndHistory(Lloc lloc, String cai, Long usuariId, String[] habilitacionsSeleccionades)
+			throws I18NException {
 		try {
 			Lloc newLloc = null;
 			if (lloc == null) {
@@ -76,6 +78,58 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 			HistoricLlocDAO historicOld = new HistoricLlocDAO(oldLloc);
 			newLloc = update(lloc);
 			log.info("Lloc actualitzat: " + newLloc.getLlocID());
+
+			// actualitzam rolsllocs segons rolsSeleccionats
+			List<String> habilitacionsToInsert = new ArrayList<String>();
+			if (habilitacionsSeleccionades != null) {
+				habilitacionsToInsert = java.util.Arrays.asList(habilitacionsSeleccionades);
+			}
+			Where llocRolsByLlocId = LlocRolFields.LLOCID.equal(newLloc.getLlocID());
+			List<LlocRol> llocsRolsOld = llocRolEjb.select(llocRolsByLlocId);
+			// delete i actualitzar llistat d'inserts
+			if (llocsRolsOld != null) {
+				for (LlocRol llocRolOld : llocsRolsOld) {
+					String rolIdStr = String.valueOf(llocRolOld.getRolID());
+					if (habilitacionsToInsert.contains(rolIdStr)) {
+						// ja existeix, no l'hem d'inserir
+						habilitacionsToInsert.remove(rolIdStr);
+					} else {
+						// no existeix, l'hem de borrar
+						llocRolEjb.delete(llocRolOld);
+						TypedQuery<Long> q = llocRolEjb.getEntityManager().createQuery(
+								"Select count(lr.llocID) from LlocRolJPA as lr where lr.llocID = :llocId",
+								Long.class);
+						q.setParameter("llocId", newLloc.getLlocID());
+						Long count = q.getSingleResult();
+						log.info("Desassignació del rol " + llocRolOld.getRolID() + " al lloc de feina "
+								+ newLloc.getCodiLloc() + ". Ara té " + count + " rols assignats.");
+					}
+				}
+			}
+			// insert
+			for (String rolIdStr : habilitacionsToInsert) {
+				try {
+					if (rolIdStr == null || rolIdStr.isEmpty()) {
+						continue;
+					}
+					Long rolId = Long.parseLong(rolIdStr);
+					// comprovam que el rol existeix
+					RolJPA rol = rolEjb.findByPrimaryKey(rolId);
+					if (rol != null) {
+						LlocRol llocRol = new es.caib.rfhab.persistence.LlocRolJPA();
+						llocRol.setLlocID(newLloc.getLlocID());
+						llocRol.setRolID(rolId);
+						llocRol.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+						llocRolEjb.create(llocRol);
+						log.info("Assignació del rol " + rol.getNom() + " al lloc de feina " + newLloc.getCodiLloc());
+					} else {
+						log.warn("No s'ha trobat el Rol amb ID " + rolId + ". No s'assigna al Lloc amb ID "
+								+ lloc.getLlocID());
+					}
+				} catch (NumberFormatException nfe) {
+					log.error("Error assignant rol al lloc de feina. El valor del rol no és numèric: " + rolIdStr);
+				}
+			}
 
 			HistoricLlocJPA historicLloc = new HistoricLlocJPA();
 			historicLloc.setLlocID(oldLloc.getLlocID());
@@ -96,11 +150,44 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 
 	@Override
 	@PermitAll
-	public HistoricLlocJPA createAndHistory(Lloc lloc, String cai, Long usuariId) throws I18NException {
+	public LlocJPA createAndHistory(Lloc lloc, String cai, Long usuariId, String[] rolsSeleccionats)
+			throws I18NException {
 		try {
-			HistoricLlocJPA historicLloc = null;
+			LlocJPA llocJpa = null;
 
 			if (lloc != null) {
+				llocJpa = (LlocJPA) create(lloc);
+				log.info("Lloc creat: " + lloc.getLlocID());
+				// cream rolsllocs segons rolsSeleccionats
+				if (rolsSeleccionats != null) {
+					for (String rolIdStr : rolsSeleccionats) {
+						try {
+							if (rolIdStr == null || rolIdStr.isEmpty()) {
+								continue;
+							}
+							Long rolId = Long.parseLong(rolIdStr);
+							// comprovam que el rol existeix
+							RolJPA rol = rolEjb.findByPrimaryKey(rolId);
+							if (rol != null) {
+								LlocRol llocRol = new es.caib.rfhab.persistence.LlocRolJPA();
+								llocRol.setLlocID(llocJpa.getLlocID());
+								llocRol.setRolID(rolId);
+								llocRol.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+								llocRolEjb.create(llocRol);
+								log.info("Assignació del rol " + rol.getNom() + " al lloc de feina "
+										+ llocJpa.getCodiLloc());
+							} else {
+								log.warn("No s'ha trobat el Rol amb ID " + rolId + ". No s'assigna al Lloc amb ID "
+										+ lloc.getLlocID());
+							}
+						} catch (NumberFormatException nfe) {
+							log.error("Error assignant rol al lloc de feina. El valor del rol no és numèric: "
+									+ rolIdStr);
+						}
+					}
+				}
+
+				HistoricLlocJPA historicLloc = null;
 				historicLloc = new HistoricLlocJPA();
 				historicLloc.setLlocID(lloc.getLlocID());
 				historicLloc.setNumeroCai(cai);
@@ -110,10 +197,12 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 				HistoricLlocDAO historicNew = new HistoricLlocDAO(lloc);
 				HistoricLlocDAO historicOld = new HistoricLlocDAO();
 				historicLlocLogicaEjb.create(historicLloc, historicNew, historicOld);
+				log.info("HistoricLloc creat: " + historicLloc.getHistoricllocID());
+
 			} else
 				throw new I18NException("error.creation", "<lloc null>");
 
-			return historicLloc;
+			return llocJpa;
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			throw new I18NException("error.creation", String.valueOf(lloc.getLlocID()));

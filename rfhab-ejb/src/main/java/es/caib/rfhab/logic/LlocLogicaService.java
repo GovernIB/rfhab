@@ -27,9 +27,9 @@ public interface LlocLogicaService extends LlocService {
 
 	public static final String JNDI_NAME = "java:app/rfhab-ejb/LlocLogicaEJB!es.caib.rfhab.logic.LlocLogicaService";
 
-	public HistoricLlocJPA createAndHistory(Lloc lloc, String cai, Long usuariId) throws I18NException;
+	public LlocJPA createAndHistory(Lloc lloc, String cai, Long usuariId, String[] rolsSeleccionats) throws I18NException;
 
-	public Lloc updateAndHistory(Lloc lloc, String cai, Long usuariId) throws I18NException;
+	public Lloc updateAndHistory(Lloc lloc, String cai, Long usuariId, String[] habilitacionsSeleccionades) throws I18NException;
 
 	public HashMap<Long, LlocJPA> getAllLlocsOcupats(Long entitatId) throws I18NException;
 

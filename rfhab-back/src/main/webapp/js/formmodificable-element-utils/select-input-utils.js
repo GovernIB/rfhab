@@ -31,6 +31,7 @@ function createTrInputFormSelect(
   selectId,
   selectName,
   options,
+  optionsSelected,
   onChangeCallback,
   multiple
 ) {
@@ -59,6 +60,7 @@ function createTrInputFormSelect(
     onChangeCallback,
     multiple
   );
+  selectForInput.value = optionsSelected;
   nouTd2.appendChild(selectForInput);
   nouTd2.appendChild(nouInputInvisible);
   nouTr.appendChild(nouTd2);

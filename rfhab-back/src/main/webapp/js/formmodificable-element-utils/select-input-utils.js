@@ -79,7 +79,7 @@ function createTrInputFormSelect(
     onChangeCallback,
     multiple
   );
-  selectForInput.value = optionsSelected;
+  // selectForInput.value = optionsSelected;//MOLT IMPORTANT NO FER AQUESTA ASSIGNACIÓ, JA QUE EL SELECT D'HTML NOMÉS SUPORTA UN VALOR
 
   nouTd2.appendChild(selectForInput);
   nouTd2.appendChild(nouInputInvisible);

@@ -3,13 +3,19 @@ package es.caib.rfhab.logic;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
+import javax.ws.rs.core.Response.Status;
+
+import org.fundaciobit.genapp.common.i18n.I18NCommonUtils;
 import org.fundaciobit.genapp.common.i18n.I18NException;
+import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.utils.Utils;
+import org.fundaciobit.pluginsib.utils.rest.RestException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -380,7 +386,9 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 	@Override
 	@PermitAll
 	public FuncionariJPA findByNif(String nif) throws I18NException {
-		List<Funcionari> funcionaris = super.select(FuncionariFields.IDENTIFICADOR.equal(nif));
+		List<Funcionari> funcionaris = super.select(Where.OR(FuncionariFields.IDENTIFICADOR.equal(nif),
+				FuncionariFields.IDENTIFICADOR.equal(nif.toUpperCase()),
+				FuncionariFields.IDENTIFICADOR.equal(nif.toLowerCase())));
 		if (funcionaris == null || funcionaris.size() == 0) {
 			return null;
 		}
@@ -388,6 +396,21 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 			throw new I18NException("funcionari.error.mesdun", nif);
 		}
 		return (FuncionariJPA) funcionaris.get(0);
+	}
+
+	@Override
+	@PermitAll
+	public FuncionariJPA obtenirFuncionariByNif(String language, String funcionariNif) throws I18NException {
+		FuncionariJPA funcionari = findByNif(funcionariNif);
+
+		if (funcionari == null) {
+			String errorNoExisteixNif = I18NCommonUtils.tradueix(new Locale(language),
+					"funcionari.error.noexisteixnif",
+					new String[] { funcionariNif });
+			log.error(errorNoExisteixNif);
+			throw new RestException(errorNoExisteixNif, Status.BAD_REQUEST);
+		}
+		return funcionari;
 	}
 
 }

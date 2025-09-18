@@ -43,10 +43,10 @@
 
  -- INICI FKs
 
-    alter table rfh_activitat 
-       add constraint rfh_activitat_autoritza_aut_fk 
-       foreign key (autoritzacioid) 
-       references rfh_autoritzacio;
+   --  alter table rfh_activitat 
+   --     add constraint rfh_activitat_autoritza_aut_fk 
+   --     foreign key (autoritzacioid) 
+   --     references rfh_autoritzacio;
 
     alter table rfh_activitat 
        add constraint rfh_activitat_funcionari_fu_fk 

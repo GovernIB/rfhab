@@ -62,10 +62,7 @@
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.AUTORITZACIOID)}">
           <td>
-          <c:set var="tmp">${activitat.autoritzacioID}</c:set>
-          <c:if test="${not empty tmp}">
-          ${__theFilterForm.mapOfAutoritzacioForAutoritzacioID[tmp]}
-          </c:if>
+          ${activitat.autoritzacioID}
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.DATACREACIO)}">
@@ -144,6 +141,19 @@
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.URL)}">
           <td>
           ${activitat.url}
+          </td>
+        </c:if>
+        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.DATAACTIVITAT)}">
+          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${activitat.dataActivitat}" /></td>
+        </c:if>
+        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.IDACTUACIOTRAMIT)}">
+          <td>
+          ${activitat.idActuacioTramit}
+          </td>
+        </c:if>
+        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.PROCEDIMENT)}">
+          <td>
+          ${activitat.procediment}
           </td>
         </c:if>
 

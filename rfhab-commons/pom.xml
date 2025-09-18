@@ -95,6 +95,13 @@
 			<artifactId>freemarker</artifactId>
 			<version>2.3.32</version>
 		</dependency>
+
+		<dependency>
+            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+            <artifactId>jackson-jaxrs-json-provider</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
 	</dependencies>
 
 </project>

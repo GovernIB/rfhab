@@ -1,5 +1,5 @@
 -- create index rfh_activitat_pk_i on rfh_activitat (activitatid);
-create index rfh_activitat_autoritzaid_fk_i on rfh_activitat (autoritzacioid);
+-- create index rfh_activitat_autoritzaid_fk_i on rfh_activitat (autoritzacioid);
 create index rfh_autoritza_funid_fk_i on rfh_autoritzacio (llocid);
 -- create index rfh_digitalib_pk_i on rfh_digitalib (digitalid);
 create index rfh_digitalib_usuariid_fk_i on rfh_digitalib (usuariid);

@@ -35,9 +35,6 @@ public class ActivitatWebValidator extends AbstractWebValidator<ActivitatForm, A
   @javax.ejb.EJB(mappedName = es.caib.rfhab.ejb.ActivitatService.JNDI_NAME)
   protected es.caib.rfhab.ejb.ActivitatService activitatEjb;
 
-  @javax.ejb.EJB(mappedName = es.caib.rfhab.ejb.AutoritzacioService.JNDI_NAME)
-  protected es.caib.rfhab.ejb.AutoritzacioService autoritzacioEjb;
-
   @javax.ejb.EJB(mappedName = es.caib.rfhab.ejb.FuncionariService.JNDI_NAME)
   protected es.caib.rfhab.ejb.FuncionariService funcionariEjb;
 
@@ -83,7 +80,7 @@ public class ActivitatWebValidator extends AbstractWebValidator<ActivitatForm, A
 
     BeanValidatorResult<Activitat> __vr = new BeanValidatorResult<Activitat>();
     validator.validate(__vr, __bean,
-      isNou, activitatEjb, autoritzacioEjb, funcionariEjb);
+      isNou, activitatEjb, funcionariEjb);
 
     if (__vr.hasErrors()) {
         List<I18NFieldError> vrErrors = __vr.getErrors();

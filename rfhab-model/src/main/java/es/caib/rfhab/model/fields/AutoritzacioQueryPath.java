@@ -64,20 +64,6 @@ public class AutoritzacioQueryPath extends org.fundaciobit.genapp.common.query.Q
   }
 
 
-/* L'ús d'aquest camp (OneToMany) llança una exception:
- [Illegal attempt to dereference a collection]
-
- // TODO Solució dins el mètode testOneByOneDirect de la classe TestJPA 
-
-  public ActivitatQueryPath ACTIVITATS() {
-    return new ActivitatQueryPath(new QueryPath() {
-      public String getQueryPath() {
-          return AutoritzacioQueryPath.this.getQueryPath() + "activitats" + ".";
-      }
-    });
-  }
-*/
-
   public LlocQueryPath LLOC() {
     return new LlocQueryPath(new QueryPath() {
       public String getQueryPath() {

@@ -75,10 +75,6 @@ public class ActivitatController
   @Autowired
   protected FuncionariRefList funcionariRefList;
 
-  // References 
-  @Autowired
-  protected AutoritzacioRefList autoritzacioRefList;
-
   /**
    * Llistat de totes Activitat
    */
@@ -219,16 +215,6 @@ public class ActivitatController
       };
     }
 
-    // Field autoritzacioID
-    {
-      _listSKV = getReferenceListForAutoritzacioID(request, mav, filterForm, list, groupByItemsMap, null);
-      _tmp = Utils.listToMap(_listSKV);
-      filterForm.setMapOfAutoritzacioForAutoritzacioID(_tmp);
-      if (filterForm.getGroupByFields().contains(AUTORITZACIOID)) {
-        fillValuesToGroupByItems(_tmp, groupByItemsMap, AUTORITZACIOID, false);
-      };
-    }
-
 
     return groupByItemsMap;
   }
@@ -246,7 +232,6 @@ public class ActivitatController
     __mapping = new java.util.HashMap<Field<?>, java.util.Map<String, String>>();
     __mapping.put(FUNCIONARIID, filterForm.getMapOfFuncionariForFuncionariID());
     __mapping.put(TIPUS, filterForm.getMapOfValuesForTipus());
-    __mapping.put(AUTORITZACIOID, filterForm.getMapOfAutoritzacioForAutoritzacioID());
     exportData(request, response, dataExporterID, filterForm,
           list, allFields, __mapping, PRIMARYKEY_FIELDS);
   }
@@ -311,15 +296,6 @@ public class ActivitatController
           java.util.Collections.sort(_listSKV, STRINGKEYVALUE_COMPARATOR);
       }
       activitatForm.setListOfValuesForTipus(_listSKV);
-    }
-    // Comprovam si ja esta definida la llista
-    if (activitatForm.getListOfAutoritzacioForAutoritzacioID() == null) {
-      List<StringKeyValue> _listSKV = getReferenceListForAutoritzacioID(request, mav, activitatForm, null);
-
-      if(_listSKV != null && !_listSKV.isEmpty()) { 
-          java.util.Collections.sort(_listSKV, STRINGKEYVALUE_COMPARATOR);
-      }
-      activitatForm.setListOfAutoritzacioForAutoritzacioID(_listSKV);
     }
     
   }
@@ -699,46 +675,6 @@ public java.lang.Long stringToPK(String value) {
     __tmp.add(new StringKeyValue("1" , "1"));
     __tmp.add(new StringKeyValue("2" , "2"));
     return __tmp;
-  }
-
-
-  public List<StringKeyValue> getReferenceListForAutoritzacioID(HttpServletRequest request,
-       ModelAndView mav, ActivitatForm activitatForm, Where where)  throws I18NException {
-    if (activitatForm.isHiddenField(AUTORITZACIOID)) {
-      return EMPTY_STRINGKEYVALUE_LIST;
-    }
-    Where _where = null;
-    if (activitatForm.isReadOnlyField(AUTORITZACIOID)) {
-      _where = AutoritzacioFields.AUTORITZACIOID.equal(activitatForm.getActivitat().getAutoritzacioID());
-    }
-    return getReferenceListForAutoritzacioID(request, mav, Where.AND(where, _where));
-  }
-
-
-  public List<StringKeyValue> getReferenceListForAutoritzacioID(HttpServletRequest request,
-       ModelAndView mav, ActivitatFilterForm activitatFilterForm,
-       List<Activitat> list, Map<Field<?>, GroupByItem> _groupByItemsMap, Where where)  throws I18NException {
-    if (activitatFilterForm.isHiddenField(AUTORITZACIOID)
-       && !activitatFilterForm.isGroupByField(AUTORITZACIOID)) {
-      return EMPTY_STRINGKEYVALUE_LIST;
-    }
-    Where _w = null;
-    if (!_groupByItemsMap.containsKey(AUTORITZACIOID)) {
-      // OBTENIR TOTES LES CLAUS (PK) i despres només cercar referències d'aquestes PK
-      java.util.Set<java.lang.Long> _pkList = new java.util.HashSet<java.lang.Long>();
-      for (Activitat _item : list) {
-        if(_item.getAutoritzacioID() == null) { continue; };
-        _pkList.add(_item.getAutoritzacioID());
-        }
-        _w = AutoritzacioFields.AUTORITZACIOID.in(_pkList);
-      }
-    return getReferenceListForAutoritzacioID(request, mav, Where.AND(where,_w));
-  }
-
-
-  public List<StringKeyValue> getReferenceListForAutoritzacioID(HttpServletRequest request,
-       ModelAndView mav, Where where)  throws I18NException {
-    return autoritzacioRefList.getReferenceList(AutoritzacioFields.AUTORITZACIOID, where );
   }
 
 

@@ -1,6 +1,6 @@
 
-    alter table rfh_activitat 
-       drop constraint if exists rfh_activitat_autoritza_aut_fk;
+   --  alter table rfh_activitat 
+   --     drop constraint if exists rfh_activitat_autoritza_aut_fk;
 
     alter table rfh_activitat 
        drop constraint if exists rfh_activitat_funcionari_fu_fk;

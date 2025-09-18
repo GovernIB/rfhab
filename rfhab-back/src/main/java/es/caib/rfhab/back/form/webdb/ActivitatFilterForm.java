@@ -362,6 +362,50 @@ public class ActivitatFilterForm extends RFHabBaseFilterForm implements Activita
   }
 
 
+  private java.sql.Timestamp dataActivitatDesde;
+
+  public java.sql.Timestamp getDataActivitatDesde() {
+    return this.dataActivitatDesde;
+  }
+
+  public void setDataActivitatDesde(java.sql.Timestamp dataActivitatDesde) {
+    this.dataActivitatDesde = dataActivitatDesde;
+  }
+
+
+  private java.sql.Timestamp dataActivitatFins;
+
+  public java.sql.Timestamp getDataActivitatFins() {
+    return this.dataActivitatFins;
+  }
+
+  public void setDataActivitatFins(java.sql.Timestamp dataActivitatFins) {
+    this.dataActivitatFins = dataActivitatFins;
+  }
+
+
+  private java.lang.String idActuacioTramit;
+
+  public java.lang.String getIdActuacioTramit() {
+    return this.idActuacioTramit;
+  }
+
+  public void setIdActuacioTramit(java.lang.String idActuacioTramit) {
+    this.idActuacioTramit = idActuacioTramit;
+  }
+
+
+  private java.lang.String procediment;
+
+  public java.lang.String getProcediment() {
+    return this.procediment;
+  }
+
+  public void setProcediment(java.lang.String procediment) {
+    this.procediment = procediment;
+  }
+
+
   public ActivitatFilterForm() {
   }
   
@@ -398,9 +442,12 @@ public class ActivitatFilterForm extends RFHabBaseFilterForm implements Activita
     this.estatDesde = __toClone.estatDesde;
     this.estatFins = __toClone.estatFins;
     this.url = __toClone.url;
+    this.dataActivitatDesde = __toClone.dataActivitatDesde;
+    this.dataActivitatFins = __toClone.dataActivitatFins;
+    this.idActuacioTramit = __toClone.idActuacioTramit;
+    this.procediment = __toClone.procediment;
     this.mapOfFuncionariForFuncionariID = __toClone.mapOfFuncionariForFuncionariID;
     this.mapOfValuesForTipus = __toClone.mapOfValuesForTipus;
-    this.mapOfAutoritzacioForAutoritzacioID = __toClone.mapOfAutoritzacioForAutoritzacioID;
   }
   
   /* ========= UTILS ========== */
@@ -455,18 +502,6 @@ public class ActivitatFilterForm extends RFHabBaseFilterForm implements Activita
 
   public void setMapOfValuesForTipus(Map<String, String> mapOfValuesForTipus) {
     this.mapOfValuesForTipus = mapOfValuesForTipus;
-  }
-
-
-
-  private Map<String, String> mapOfAutoritzacioForAutoritzacioID;
-
-  public Map<String, String> getMapOfAutoritzacioForAutoritzacioID() {
-    return this.mapOfAutoritzacioForAutoritzacioID;
-  }
-
-  public void setMapOfAutoritzacioForAutoritzacioID(Map<String, String> mapOfAutoritzacioForAutoritzacioID) {
-    this.mapOfAutoritzacioForAutoritzacioID = mapOfAutoritzacioForAutoritzacioID;
   }
 
 

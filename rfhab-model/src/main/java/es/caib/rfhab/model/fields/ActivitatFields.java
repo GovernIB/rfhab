@@ -35,6 +35,9 @@ public interface ActivitatFields extends java.io.Serializable {
 	 public static final StringField ARXIUEXPEDIENTID = new StringField(_TABLE_MODEL, "arxiuExpedientID", "arxiuexpedientid");
 	 public static final IntegerField ESTAT = new IntegerField(_TABLE_MODEL, "estat", "estat");
 	 public static final StringField URL = new StringField(_TABLE_MODEL, "url", "url");
+	 public static final TimestampField DATAACTIVITAT = new TimestampField(_TABLE_MODEL, "dataActivitat", "dataactivitat");
+	 public static final StringField IDACTUACIOTRAMIT = new StringField(_TABLE_MODEL, "idActuacioTramit", "idactuaciotramit");
+	 public static final StringField PROCEDIMENT = new StringField(_TABLE_MODEL, "procediment", "procediment");
 
 
   public static final Field<?>[] ALL_ACTIVITAT_FIELDS = {
@@ -60,7 +63,10 @@ public interface ActivitatFields extends java.io.Serializable {
     ARXIUDOCUMENTID,
     ARXIUEXPEDIENTID,
     ESTAT,
-    URL
+    URL,
+    DATAACTIVITAT,
+    IDACTUACIOTRAMIT,
+    PROCEDIMENT
   };
 
 

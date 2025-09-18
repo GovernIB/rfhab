@@ -19,7 +19,7 @@ public class ActivitatBean implements Activitat {
 	java.lang.String interessatNom;
 	java.lang.String interessatLlinatge1;
 	java.lang.String interessatLlinatge2;
-	int interessatTipus;
+	java.lang.Integer interessatTipus;
 	java.lang.String interessatIdentificacio;
 	java.lang.String representantNom;
 	java.lang.String representantLlinatge1;
@@ -31,6 +31,9 @@ public class ActivitatBean implements Activitat {
 	java.lang.String arxiuExpedientID;
 	int estat;
 	java.lang.String url;
+	java.sql.Timestamp dataActivitat;
+	java.lang.String idActuacioTramit;
+	java.lang.String procediment;
 
 
   /** Constructor Buit */
@@ -38,7 +41,7 @@ public class ActivitatBean implements Activitat {
   }
 
   /** Constructor amb tots els camps  */
-  public ActivitatBean(long activitatID , long funcionariID , int tipus , java.lang.String registre , java.lang.String tramit , java.lang.String codiSia , java.lang.Long autoritzacioID , java.sql.Timestamp dataCreacio , java.lang.String interessatNom , java.lang.String interessatLlinatge1 , java.lang.String interessatLlinatge2 , int interessatTipus , java.lang.String interessatIdentificacio , java.lang.String representantNom , java.lang.String representantLlinatge1 , java.lang.String representantLlinatge2 , java.lang.Integer representantTipus , java.lang.String representantIdentificacio , java.lang.Integer tramitVersio , java.lang.String arxiuDocumentID , java.lang.String arxiuExpedientID , int estat , java.lang.String url) {
+  public ActivitatBean(long activitatID , long funcionariID , int tipus , java.lang.String registre , java.lang.String tramit , java.lang.String codiSia , java.lang.Long autoritzacioID , java.sql.Timestamp dataCreacio , java.lang.String interessatNom , java.lang.String interessatLlinatge1 , java.lang.String interessatLlinatge2 , java.lang.Integer interessatTipus , java.lang.String interessatIdentificacio , java.lang.String representantNom , java.lang.String representantLlinatge1 , java.lang.String representantLlinatge2 , java.lang.Integer representantTipus , java.lang.String representantIdentificacio , java.lang.Integer tramitVersio , java.lang.String arxiuDocumentID , java.lang.String arxiuExpedientID , int estat , java.lang.String url , java.sql.Timestamp dataActivitat , java.lang.String idActuacioTramit , java.lang.String procediment) {
     this.activitatID=activitatID;
     this.funcionariID=funcionariID;
     this.tipus=tipus;
@@ -62,9 +65,12 @@ public class ActivitatBean implements Activitat {
     this.arxiuExpedientID=arxiuExpedientID;
     this.estat=estat;
     this.url=url;
+    this.dataActivitat=dataActivitat;
+    this.idActuacioTramit=idActuacioTramit;
+    this.procediment=procediment;
 }
   /** Constructor sense valors autoincrementals */
-  public ActivitatBean(long funcionariID , int tipus , java.lang.String registre , java.lang.String tramit , java.lang.String codiSia , java.lang.Long autoritzacioID , java.sql.Timestamp dataCreacio , java.lang.String interessatNom , java.lang.String interessatLlinatge1 , java.lang.String interessatLlinatge2 , int interessatTipus , java.lang.String interessatIdentificacio , java.lang.String representantNom , java.lang.String representantLlinatge1 , java.lang.String representantLlinatge2 , java.lang.Integer representantTipus , java.lang.String representantIdentificacio , java.lang.Integer tramitVersio , java.lang.String arxiuDocumentID , java.lang.String arxiuExpedientID , int estat , java.lang.String url) {
+  public ActivitatBean(long funcionariID , int tipus , java.lang.String registre , java.lang.String tramit , java.lang.String codiSia , java.lang.Long autoritzacioID , java.sql.Timestamp dataCreacio , java.lang.String interessatNom , java.lang.String interessatLlinatge1 , java.lang.String interessatLlinatge2 , java.lang.Integer interessatTipus , java.lang.String interessatIdentificacio , java.lang.String representantNom , java.lang.String representantLlinatge1 , java.lang.String representantLlinatge2 , java.lang.Integer representantTipus , java.lang.String representantIdentificacio , java.lang.Integer tramitVersio , java.lang.String arxiuDocumentID , java.lang.String arxiuExpedientID , int estat , java.lang.String url , java.sql.Timestamp dataActivitat , java.lang.String idActuacioTramit , java.lang.String procediment) {
     this.funcionariID=funcionariID;
     this.tipus=tipus;
     this.registre=registre;
@@ -87,19 +93,18 @@ public class ActivitatBean implements Activitat {
     this.arxiuExpedientID=arxiuExpedientID;
     this.estat=estat;
     this.url=url;
+    this.dataActivitat=dataActivitat;
+    this.idActuacioTramit=idActuacioTramit;
+    this.procediment=procediment;
 }
   /** Constructor dels valors Not Null */
-  public ActivitatBean(long activitatID , long funcionariID , int tipus , java.sql.Timestamp dataCreacio , java.lang.String interessatNom , java.lang.String interessatLlinatge1 , java.lang.String interessatLlinatge2 , int interessatTipus , java.lang.String interessatIdentificacio , int estat) {
+  public ActivitatBean(long activitatID , long funcionariID , int tipus , java.sql.Timestamp dataCreacio , int estat , java.sql.Timestamp dataActivitat) {
     this.activitatID=activitatID;
     this.funcionariID=funcionariID;
     this.tipus=tipus;
     this.dataCreacio=dataCreacio;
-    this.interessatNom=interessatNom;
-    this.interessatLlinatge1=interessatLlinatge1;
-    this.interessatLlinatge2=interessatLlinatge2;
-    this.interessatTipus=interessatTipus;
-    this.interessatIdentificacio=interessatIdentificacio;
     this.estat=estat;
+    this.dataActivitat=dataActivitat;
 }
   public ActivitatBean(Activitat __bean) {
     this.setActivitatID(__bean.getActivitatID());
@@ -125,6 +130,9 @@ public class ActivitatBean implements Activitat {
     this.setArxiuExpedientID(__bean.getArxiuExpedientID());
     this.setEstat(__bean.getEstat());
     this.setUrl(__bean.getUrl());
+    this.setDataActivitat(__bean.getDataActivitat());
+    this.setIdActuacioTramit(__bean.getIdActuacioTramit());
+    this.setProcediment(__bean.getProcediment());
 	}
 
 	public long getActivitatID() {
@@ -204,10 +212,10 @@ public class ActivitatBean implements Activitat {
 		this.interessatLlinatge2 = _interessatLlinatge2_;
 	};
 
-	public int getInteressatTipus() {
+	public java.lang.Integer getInteressatTipus() {
 		return(interessatTipus);
 	};
-	public void setInteressatTipus(int _interessatTipus_) {
+	public void setInteressatTipus(java.lang.Integer _interessatTipus_) {
 		this.interessatTipus = _interessatTipus_;
 	};
 
@@ -288,6 +296,27 @@ public class ActivitatBean implements Activitat {
 		this.url = _url_;
 	};
 
+	public java.sql.Timestamp getDataActivitat() {
+		return(dataActivitat);
+	};
+	public void setDataActivitat(java.sql.Timestamp _dataActivitat_) {
+		this.dataActivitat = _dataActivitat_;
+	};
+
+	public java.lang.String getIdActuacioTramit() {
+		return(idActuacioTramit);
+	};
+	public void setIdActuacioTramit(java.lang.String _idActuacioTramit_) {
+		this.idActuacioTramit = _idActuacioTramit_;
+	};
+
+	public java.lang.String getProcediment() {
+		return(procediment);
+	};
+	public void setProcediment(java.lang.String _procediment_) {
+		this.procediment = _procediment_;
+	};
+
 
 
   // ======================================
@@ -318,6 +347,9 @@ public class ActivitatBean implements Activitat {
     __tmp.setArxiuExpedientID(__bean.getArxiuExpedientID());
     __tmp.setEstat(__bean.getEstat());
     __tmp.setUrl(__bean.getUrl());
+    __tmp.setDataActivitat(__bean.getDataActivitat());
+    __tmp.setIdActuacioTramit(__bean.getIdActuacioTramit());
+    __tmp.setProcediment(__bean.getProcediment());
 		return __tmp;
 	}
 

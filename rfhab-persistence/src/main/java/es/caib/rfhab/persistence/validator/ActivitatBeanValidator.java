@@ -19,8 +19,6 @@ public class ActivitatBeanValidator
   // EJB's
   protected final es.caib.rfhab.model.dao.IActivitatManager __activitatManager;
 
-  protected final es.caib.rfhab.model.dao.IAutoritzacioManager __autoritzacioManager;
-
   protected final es.caib.rfhab.model.dao.IFuncionariManager __funcionariManager;
 
 
@@ -28,20 +26,16 @@ public class ActivitatBeanValidator
 
 
   public ActivitatBeanValidator(es.caib.rfhab.model.dao.IActivitatManager __activitatManager,
-     es.caib.rfhab.model.dao.IAutoritzacioManager __autoritzacioManager,
      es.caib.rfhab.model.dao.IFuncionariManager __funcionariManager) { 
     this.__activitatManager = __activitatManager;
-    this.__autoritzacioManager = __autoritzacioManager;
     this.__funcionariManager = __funcionariManager;
     _validator = new ActivitatValidator<ActivitatJPA>();
   }
 
   public ActivitatBeanValidator(ActivitatValidator<ActivitatJPA> _validator,
      es.caib.rfhab.model.dao.IActivitatManager __activitatManager,
-     es.caib.rfhab.model.dao.IAutoritzacioManager __autoritzacioManager,
      es.caib.rfhab.model.dao.IFuncionariManager __funcionariManager) {
     this.__activitatManager = __activitatManager;
-    this.__autoritzacioManager = __autoritzacioManager;
     this.__funcionariManager = __funcionariManager;
     this._validator = _validator;
   }
@@ -49,7 +43,7 @@ public class ActivitatBeanValidator
   @Override
   public List<I18NFieldError> validate(ActivitatJPA target, boolean isNou) throws I18NException {
     BeanValidatorResult<ActivitatJPA> _bvr_ = new BeanValidatorResult<ActivitatJPA>();
-    _validator.validate(_bvr_, target, isNou, __activitatManager, __autoritzacioManager, __funcionariManager);
+    _validator.validate(_bvr_, target, isNou, __activitatManager, __funcionariManager);
     return _bvr_.getErrors();
   }
 }

@@ -81,6 +81,15 @@
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.URL)}">
         <th>${rfh:getSortIcons(__theFilterForm,ActivitatFields.URL)}</th>
         </c:if>
+        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.DATAACTIVITAT)}">
+        <th>${rfh:getSortIcons(__theFilterForm,ActivitatFields.DATAACTIVITAT)}</th>
+        </c:if>
+        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.IDACTUACIOTRAMIT)}">
+        <th>${rfh:getSortIcons(__theFilterForm,ActivitatFields.IDACTUACIOTRAMIT)}</th>
+        </c:if>
+        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.PROCEDIMENT)}">
+        <th>${rfh:getSortIcons(__theFilterForm,ActivitatFields.PROCEDIMENT)}</th>
+        </c:if>
 
 
         <c:forEach var="__entry" items="${__theFilterForm.additionalFields}">

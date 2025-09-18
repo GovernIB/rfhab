@@ -435,6 +435,82 @@
 
 
         </c:if>
+        <c:if test="${gen:contains(__theFilterForm.filterByFields ,ActivitatFields.DATAACTIVITAT)}">
+<%-- FILTRE DATE-TIME --%>
+            <div class="input-group" style="padding-right:4px;padding-bottom:4px;align-items:center;">
+              <span class="add-on"><fmt:message key="activitat.dataActivitat" />:</span>
+              <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
+            <div class="form-group"  style="margin-bottom: 0px;" >
+                <div class="input-group date" id="dataActivitatDesde" data-target-input="nearest">
+                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataActivitatDesde" path="dataActivitatDesde" />
+                    <c:if test="${!false}" >
+                    <div class="input-group-append"  data-target="#dataActivitatDesde"  data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                    </c:if>
+                </div>
+            </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#dataActivitatDesde').datetimepicker({
+                    format: '${gen:getJSDateTimePattern()}',
+                    locale: '${lang}',
+                    icons: {
+                       time: 'far fa-clock'
+                    }
+                });
+            });
+        </script>              <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
+            <div class="form-group"  style="margin-bottom: 0px;" >
+                <div class="input-group date" id="dataActivitatFins" data-target-input="nearest">
+                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataActivitatFins" path="dataActivitatFins" />
+                    <c:if test="${!false}" >
+                    <div class="input-group-append"  data-target="#dataActivitatFins"  data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                    </c:if>
+                </div>
+            </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#dataActivitatFins').datetimepicker({
+                    format: '${gen:getJSDateTimePattern()}',
+                    locale: '${lang}',
+                    icons: {
+                       time: 'far fa-clock'
+                    }
+                });
+            });
+        </script>            </div>
+
+    
+        </c:if>
+        <c:if test="${gen:contains(__theFilterForm.filterByFields ,ActivitatFields.IDACTUACIOTRAMIT)}">
+            <%-- FILTRE STRING --%>
+            <div class="input-prepend" style="padding-right: 4px;padding-bottom: 4px;">
+              <fmt:message key="activitat.idActuacioTramit" var="idActuacioTramit" />
+              <fmt:message key="genapp.form.searchby" var="cercaperidActuacioTramit" >                
+                 <fmt:param value="${idActuacioTramit}"/>
+              </fmt:message>
+              <span class="add-on"><c:out value="${idActuacioTramit}" />:</span>
+              <form:input cssClass="search-query input-medium" placeholder="${cercaperidActuacioTramit}" path="idActuacioTramit" />
+            </div>
+
+
+        </c:if>
+        <c:if test="${gen:contains(__theFilterForm.filterByFields ,ActivitatFields.PROCEDIMENT)}">
+            <%-- FILTRE STRING --%>
+            <div class="input-prepend" style="padding-right: 4px;padding-bottom: 4px;">
+              <fmt:message key="activitat.procediment" var="procediment" />
+              <fmt:message key="genapp.form.searchby" var="cercaperprocediment" >                
+                 <fmt:param value="${procediment}"/>
+              </fmt:message>
+              <span class="add-on"><c:out value="${procediment}" />:</span>
+              <form:input cssClass="search-query input-medium" placeholder="${cercaperprocediment}" path="procediment" />
+            </div>
+
+
+        </c:if>
 
       <c:forEach var="__entry" items="${__theFilterForm.additionalFields}">
       <c:if test="${ __entry.key >= 0 && not empty __entry.value.searchBy }">

@@ -129,31 +129,9 @@
               </c:if>
             </td>
           <td id="activitat_autoritzacioID_columnvalueid">
-          <form:errors path="activitat.autoritzacioID" cssClass="errorField alert alert-danger" />
-          <c:if test="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.AUTORITZACIOID)}" >
-          <form:hidden path="activitat.autoritzacioID"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.activitat.autoritzacioID,__theForm.listOfAutoritzacioForAutoritzacioID)}"  />
-          </c:if>
-          <c:if test="${!gen:contains(__theForm.readOnlyFields ,ActivitatFields.AUTORITZACIOID)}" >
-          <c:set var="containEmptyValue"  value="false" />
-          <form:select id="activitat_autoritzacioID"  onchange="if(typeof onChangeAutoritzacioID == 'function') {  onChangeAutoritzacioID(this); };"  cssClass="form-control col-md-9-optional" path="activitat.autoritzacioID">
-            <c:forEach items="${__theForm.listOfAutoritzacioForAutoritzacioID}" var="tmp">
-                <form:option value="${tmp.key}">${tmp.value}</form:option>
-                <c:if test="${empty tmp.key}">
-                  <c:set var="containEmptyValue"  value="true" />
-                </c:if>
-            </c:forEach>
-            <%-- El camp pot ser null, per la qual cosa afegim una entrada buida si no s'ha definit abans --%>
-            <c:if test="${not containEmptyValue}">
-              <c:if test="${empty __theForm.activitat.autoritzacioID }">
-                  <form:option value="" selected="true" ></form:option>
-              </c:if>
-              <c:if test="${not empty __theForm.activitat.autoritzacioID }">
-                  <form:option value="" ></form:option>
-              </c:if>
-            </c:if>
-          </form:select>
-          </c:if>
+            <form:errors path="activitat.autoritzacioID" cssClass="errorField alert alert-danger" />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.AUTORITZACIOID)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.AUTORITZACIOID)? ' uneditable-input' : ''}"  style=""  path="activitat.autoritzacioID"   />
+
            </td>
         </tr>
         </c:if>
@@ -198,7 +176,7 @@
         <tr id="activitat_interessatNom_rowid">
           <td id="activitat_interessatNom_columnlabelid">
             <label>
-              <fmt:message key="${(empty __theForm.labels[ActivitatFields.INTERESSATNOM])?'activitat.interessatNom':__theForm.labels[ActivitatFields.INTERESSATNOM]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[ActivitatFields.INTERESSATNOM])?'activitat.interessatNom':__theForm.labels[ActivitatFields.INTERESSATNOM]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.INTERESSATNOM]}">
               <i class="fas fa-info-circle" title="${__theForm.help[ActivitatFields.INTERESSATNOM]}" ></i>
@@ -237,7 +215,7 @@
         <tr id="activitat_interessatLlinatge1_rowid">
           <td id="activitat_interessatLlinatge1_columnlabelid">
             <label>
-              <fmt:message key="${(empty __theForm.labels[ActivitatFields.INTERESSATLLINATGE1])?'activitat.interessatLlinatge1':__theForm.labels[ActivitatFields.INTERESSATLLINATGE1]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[ActivitatFields.INTERESSATLLINATGE1])?'activitat.interessatLlinatge1':__theForm.labels[ActivitatFields.INTERESSATLLINATGE1]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.INTERESSATLLINATGE1]}">
               <i class="fas fa-info-circle" title="${__theForm.help[ActivitatFields.INTERESSATLLINATGE1]}" ></i>
@@ -276,7 +254,7 @@
         <tr id="activitat_interessatLlinatge2_rowid">
           <td id="activitat_interessatLlinatge2_columnlabelid">
             <label>
-              <fmt:message key="${(empty __theForm.labels[ActivitatFields.INTERESSATLLINATGE2])?'activitat.interessatLlinatge2':__theForm.labels[ActivitatFields.INTERESSATLLINATGE2]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[ActivitatFields.INTERESSATLLINATGE2])?'activitat.interessatLlinatge2':__theForm.labels[ActivitatFields.INTERESSATLLINATGE2]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.INTERESSATLLINATGE2]}">
               <i class="fas fa-info-circle" title="${__theForm.help[ActivitatFields.INTERESSATLLINATGE2]}" ></i>
@@ -315,7 +293,7 @@
         <tr id="activitat_interessatTipus_rowid">
           <td id="activitat_interessatTipus_columnlabelid">
             <label>
-              <fmt:message key="${(empty __theForm.labels[ActivitatFields.INTERESSATTIPUS])?'activitat.interessatTipus':__theForm.labels[ActivitatFields.INTERESSATTIPUS]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[ActivitatFields.INTERESSATTIPUS])?'activitat.interessatTipus':__theForm.labels[ActivitatFields.INTERESSATTIPUS]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.INTERESSATTIPUS]}">
               <i class="fas fa-info-circle" title="${__theForm.help[ActivitatFields.INTERESSATTIPUS]}" ></i>
@@ -333,7 +311,7 @@
         <tr id="activitat_interessatIdentificacio_rowid">
           <td id="activitat_interessatIdentificacio_columnlabelid">
             <label>
-              <fmt:message key="${(empty __theForm.labels[ActivitatFields.INTERESSATIDENTIFICACIO])?'activitat.interessatIdentificacio':__theForm.labels[ActivitatFields.INTERESSATIDENTIFICACIO]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[ActivitatFields.INTERESSATIDENTIFICACIO])?'activitat.interessatIdentificacio':__theForm.labels[ActivitatFields.INTERESSATIDENTIFICACIO]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.INTERESSATIDENTIFICACIO]}">
               <i class="fas fa-info-circle" title="${__theForm.help[ActivitatFields.INTERESSATIDENTIFICACIO]}" ></i>
@@ -649,6 +627,78 @@
       </script>   </td>
    </tr>
    </table>
+           </td>
+        </tr>
+        </c:if>
+        
+        <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.DATAACTIVITAT)}">
+        <tr id="activitat_dataActivitat_rowid">
+          <td id="activitat_dataActivitat_columnlabelid">
+            <label>
+              <fmt:message key="${(empty __theForm.labels[ActivitatFields.DATAACTIVITAT])?'activitat.dataActivitat':__theForm.labels[ActivitatFields.DATAACTIVITAT]}" /> &nbsp;(*)
+             </label>
+              <c:if test="${not empty __theForm.help[ActivitatFields.DATAACTIVITAT]}">
+              <i class="fas fa-info-circle" title="${__theForm.help[ActivitatFields.DATAACTIVITAT]}" ></i>
+              </c:if>
+            </td>
+          <td id="activitat_dataActivitat_columnvalueid">
+    <form:errors path="activitat.dataActivitat" cssClass="errorField alert alert-danger" />
+            <div class="form-group"  style="margin-bottom: 0px;" >
+                <div class="input-group date" id="activitat_dataActivitat" data-target-input="nearest">
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.DATAACTIVITAT)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#activitat_dataActivitat" path="activitat.dataActivitat" />
+                    <c:if test="${!gen:contains(__theForm.readOnlyFields ,ActivitatFields.DATAACTIVITAT)}" >
+                    <div class="input-group-append"  data-target="#activitat_dataActivitat"  data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                    </c:if>
+                </div>
+            </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#activitat_dataActivitat').datetimepicker({
+                    format: '${gen:getJSDateTimePattern()}',
+                    locale: '${lang}',
+                    icons: {
+                       time: 'far fa-clock'
+                    }
+                });
+            });
+        </script>           </td>
+        </tr>
+        </c:if>
+        
+        <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.IDACTUACIOTRAMIT)}">
+        <tr id="activitat_idActuacioTramit_rowid">
+          <td id="activitat_idActuacioTramit_columnlabelid">
+            <label>
+              <fmt:message key="${(empty __theForm.labels[ActivitatFields.IDACTUACIOTRAMIT])?'activitat.idActuacioTramit':__theForm.labels[ActivitatFields.IDACTUACIOTRAMIT]}" />
+             </label>
+              <c:if test="${not empty __theForm.help[ActivitatFields.IDACTUACIOTRAMIT]}">
+              <i class="fas fa-info-circle" title="${__theForm.help[ActivitatFields.IDACTUACIOTRAMIT]}" ></i>
+              </c:if>
+            </td>
+          <td id="activitat_idActuacioTramit_columnvalueid">
+            <form:errors path="activitat.idActuacioTramit" cssClass="errorField alert alert-danger" />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.IDACTUACIOTRAMIT)? 'true' : 'false'}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.IDACTUACIOTRAMIT)? ' uneditable-input' : ''}"  style="" maxlength="255" path="activitat.idActuacioTramit"   />
+
+           </td>
+        </tr>
+        </c:if>
+        
+        <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.PROCEDIMENT)}">
+        <tr id="activitat_procediment_rowid">
+          <td id="activitat_procediment_columnlabelid">
+            <label>
+              <fmt:message key="${(empty __theForm.labels[ActivitatFields.PROCEDIMENT])?'activitat.procediment':__theForm.labels[ActivitatFields.PROCEDIMENT]}" />
+             </label>
+              <c:if test="${not empty __theForm.help[ActivitatFields.PROCEDIMENT]}">
+              <i class="fas fa-info-circle" title="${__theForm.help[ActivitatFields.PROCEDIMENT]}" ></i>
+              </c:if>
+            </td>
+          <td id="activitat_procediment_columnvalueid">
+            <form:errors path="activitat.procediment" cssClass="errorField alert alert-danger" />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.PROCEDIMENT)? 'true' : 'false'}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.PROCEDIMENT)? ' uneditable-input' : ''}"  style="" maxlength="150" path="activitat.procediment"   />
+
            </td>
         </tr>
         </c:if>

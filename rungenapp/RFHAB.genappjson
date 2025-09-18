@@ -199,7 +199,6 @@
           "foreignKeys": []
         },
         {
-          "index": "rfh_activitat_autoritzaid_fk_i",
           "isAutoIncrement": false,
           "sqlName": "autoritzacioid",
           "sqlType": -5,
@@ -220,22 +219,9 @@
           "orderBy": 0,
           "groupBy": false,
           "webFieldInfo": {
-            "webtype": 3,
-            "foreignKey": {
-              "name": "rfh_act_autoritzacioid_fk",
-              "table": "rfh_autoritzacio",
-              "field": "autoritzacioid",
-              "type": 1
-            }
+            "webtype": 14
           },
-          "foreignKeys": [
-            {
-              "name": "rfh_activitat_autoritza_aut_fk",
-              "table": "rfh_autoritzacio",
-              "field": "autoritzacioid",
-              "type": 1
-            }
-          ]
+          "foreignKeys": []
         },
         {
           "isAutoIncrement": false,
@@ -268,7 +254,7 @@
           "sqlType": 12,
           "size": 255,
           "digits": 0,
-          "isNotNullable": true,
+          "isNotNullable": false,
           "labels": {
             "ca": "Nom de l\u0027interessat",
             "es": "Nombre del interesado"
@@ -293,7 +279,7 @@
           "sqlType": 12,
           "size": 255,
           "digits": 0,
-          "isNotNullable": true,
+          "isNotNullable": false,
           "labels": {
             "ca": "Primer llinatge de l\u0027interessat",
             "es": "Primer apellido del interesado"
@@ -318,7 +304,7 @@
           "sqlType": 12,
           "size": 255,
           "digits": 0,
-          "isNotNullable": true,
+          "isNotNullable": false,
           "labels": {
             "ca": "Segon llinatge de l\u0027interessat",
             "es": "Segundo apellido del interesado"
@@ -343,13 +329,13 @@
           "sqlType": 4,
           "size": 10,
           "digits": 0,
-          "isNotNullable": true,
+          "isNotNullable": false,
           "labels": {
             "ca": "Tipus identificació interessat",
             "es": "Tipo de identificación del interesado"
           },
           "javaName": "interessatTipus",
-          "javaType": "int",
+          "javaType": "java.lang.Integer",
           "traduible": false,
           "showInWebList": true,
           "showInReferenceList": false,
@@ -368,7 +354,7 @@
           "sqlType": 12,
           "size": 50,
           "digits": 0,
-          "isNotNullable": true,
+          "isNotNullable": false,
           "labels": {
             "ca": "Identificació interessat",
             "es": "Identificación interesado"
@@ -636,6 +622,81 @@
             "webtype": 2
           },
           "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "dataactivitat",
+          "sqlType": 93,
+          "size": 29,
+          "digits": 6,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Data d\u0027actuació",
+            "es": "Fecha de actuación"
+          },
+          "javaName": "dataActivitat",
+          "javaType": "java.sql.Timestamp",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 7
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "idactuaciotramit",
+          "sqlType": 12,
+          "size": 255,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "ID d\u0027actuació de tràmit",
+            "es": "ID de actuación de Trámite"
+          },
+          "javaName": "idActuacioTramit",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "procediment",
+          "sqlType": 12,
+          "size": 150,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Procediment",
+            "es": "Procedimiento"
+          },
+          "javaName": "procediment",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
         }
       ]
     },
@@ -686,14 +747,7 @@
               "nom"
             ]
           },
-          "foreignKeys": [
-            {
-              "name": "rfh_activitat_autoritza_aut_fk",
-              "table": "rfh_activitat",
-              "field": "autoritzacioid",
-              "type": 0
-            }
-          ]
+          "foreignKeys": []
         },
         {
           "index": "rfh_autoritza_funid_fk_i",

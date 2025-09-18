@@ -5,7 +5,6 @@ import org.apache.log4j.Logger;
 import es.caib.rfhab.model.entity.Activitat;
 import org.fundaciobit.genapp.common.query.Field;
 import es.caib.rfhab.model.fields.ActivitatFields;
-import es.caib.rfhab.model.fields.AutoritzacioFields;
 import es.caib.rfhab.model.fields.FuncionariFields;
 
 import org.fundaciobit.genapp.common.validation.IValidatorResult;
@@ -30,7 +29,6 @@ public class ActivitatValidator<I extends Activitat>
   /** Constructor */
   public void validate(IValidatorResult<I> __vr,I __target__, boolean __isNou__
     ,es.caib.rfhab.model.dao.IActivitatManager __activitatManager
-    ,es.caib.rfhab.model.dao.IAutoritzacioManager __autoritzacioManager
     ,es.caib.rfhab.model.dao.IFuncionariManager __funcionariManager) {
 
     // Valors Not Null
@@ -46,29 +44,13 @@ public class ActivitatValidator<I extends Activitat>
         "genapp.validation.required",
         new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(DATACREACIO)));
 
-    __vr.rejectIfEmptyOrWhitespace(__target__,INTERESSATNOM, 
-        "genapp.validation.required",
-        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(INTERESSATNOM)));
-
-    __vr.rejectIfEmptyOrWhitespace(__target__,INTERESSATLLINATGE1, 
-        "genapp.validation.required",
-        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(INTERESSATLLINATGE1)));
-
-    __vr.rejectIfEmptyOrWhitespace(__target__,INTERESSATLLINATGE2, 
-        "genapp.validation.required",
-        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(INTERESSATLLINATGE2)));
-
-    __vr.rejectIfEmptyOrWhitespace(__target__,INTERESSATTIPUS, 
-        "genapp.validation.required",
-        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(INTERESSATTIPUS)));
-
-    __vr.rejectIfEmptyOrWhitespace(__target__,INTERESSATIDENTIFICACIO, 
-        "genapp.validation.required",
-        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(INTERESSATIDENTIFICACIO)));
-
     __vr.rejectIfEmptyOrWhitespace(__target__,ESTAT, 
         "genapp.validation.required",
         new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(ESTAT)));
+
+    __vr.rejectIfEmptyOrWhitespace(__target__,DATAACTIVITAT, 
+        "genapp.validation.required",
+        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(DATAACTIVITAT)));
 
     // Check size
     if (__vr.getFieldErrorCount(REGISTRE) == 0) {
@@ -183,6 +165,22 @@ public class ActivitatValidator<I extends Activitat>
       }
     }
 
+    if (__vr.getFieldErrorCount(IDACTUACIOTRAMIT) == 0) {
+      java.lang.String __idactuaciotramit = __target__.getIdActuacioTramit();
+      if (__idactuaciotramit!= null && __idactuaciotramit.length() > 255) {
+        __vr.rejectValue(IDACTUACIOTRAMIT, "genapp.validation.sizeexceeds",
+            new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(IDACTUACIOTRAMIT)), new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(255)));
+      }
+    }
+
+    if (__vr.getFieldErrorCount(PROCEDIMENT) == 0) {
+      java.lang.String __procediment = __target__.getProcediment();
+      if (__procediment!= null && __procediment.length() > 150) {
+        __vr.rejectValue(PROCEDIMENT, "genapp.validation.sizeexceeds",
+            new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(PROCEDIMENT)), new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(150)));
+      }
+    }
+
     if (__isNou__) { // Creació
       // ================ CREATION
       // Fitxers 
@@ -208,20 +206,6 @@ public class ActivitatValidator<I extends Activitat>
          new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("funcionari.funcionari"),
          new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("funcionari.funcionariID"),
          new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(__funcionariid)));
-      }
-    }
-
-    if (__vr.getFieldErrorCount(AUTORITZACIOID) == 0) {
-      java.lang.Long __autoritzacioid = __target__.getAutoritzacioID();
-      if (__autoritzacioid != null ) {
-        Long __count_ = null;
-        try { __count_ = __autoritzacioManager.count(AutoritzacioFields.AUTORITZACIOID.equal(__autoritzacioid)); } catch(org.fundaciobit.genapp.common.i18n.I18NException e) { e.printStackTrace(); };
-        if (__count_ == null || __count_ == 0) {        
-          __vr.rejectValue(AUTORITZACIOID, "error.notfound",
-         new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("autoritzacio.autoritzacio"),
-         new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("autoritzacio.autoritzacioID"),
-         new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(__autoritzacioid)));
-        }
       }
     }
 

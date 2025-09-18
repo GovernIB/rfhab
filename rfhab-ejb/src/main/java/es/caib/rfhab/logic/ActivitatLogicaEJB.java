@@ -4,14 +4,25 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.ws.rs.core.Response.Status;
+
 import org.fundaciobit.genapp.common.filesystem.FileSystemManager;
+import org.fundaciobit.genapp.common.i18n.I18NCommonUtils;
 import org.fundaciobit.genapp.common.i18n.I18NException;
+import org.fundaciobit.genapp.common.i18n.I18NFieldError;
+import org.fundaciobit.genapp.common.query.Where;
+import org.fundaciobit.genapp.common.validation.BeanValidatorResult;
+import org.fundaciobit.pluginsib.utils.rest.RestException;
+
 import es.caib.pluginsib.arxiu.api.ArxiuException;
 import es.caib.pluginsib.arxiu.api.ConsultaFiltre;
 import es.caib.pluginsib.arxiu.api.ConsultaOperacio;
@@ -21,13 +32,18 @@ import es.caib.pluginsib.arxiu.api.ContingutOrigen;
 import es.caib.pluginsib.arxiu.api.DocumentContingut;
 import es.caib.pluginsib.arxiu.api.DocumentEstatElaboracio;
 import es.caib.pluginsib.arxiu.api.DocumentTipus;
+import es.caib.rfhab.commons.utils.ActivitatEstat;
 import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.commons.utils.FileNameCleaner;
+import es.caib.rfhab.commons.utils.IdentificacioTipus;
+import es.caib.rfhab.commons.utils.RegistreActivitatTipus;
 import es.caib.rfhab.ejb.ActivitatEJB;
 import es.caib.rfhab.model.entity.Activitat;
 import es.caib.rfhab.model.entity.Fitxer;
 import es.caib.rfhab.model.fields.ActivitatFields;
+import es.caib.rfhab.persistence.ActivitatJPA;
 import es.caib.rfhab.persistence.FitxerJPA;
+import es.caib.rfhab.persistence.validator.ActivitatValidator;
 import es.caib.rfhab.pluginsib.arxiu.ArxiuPlugin;
 import es.caib.rfhab.pluginsib.arxiu.model.DocumentInfo;
 
@@ -42,6 +58,9 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 
 	@EJB(mappedName = FitxerPublicLogicaService.JNDI_NAME)
 	protected FitxerPublicLogicaService fitxerLogicaEjb;
+
+	@EJB(mappedName = FuncionariLogicaService.JNDI_NAME)
+	protected FuncionariLogicaService funcionariLogicaEjb;
 
 	ArxiuPlugin pluginArxiu = new ArxiuPlugin();
 
@@ -287,5 +306,147 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 		 * listaFiltros.add(filtro);
 		 */
 		return listaFiltros;
+	}
+
+	@Override
+	public Activitat createIupdate(Activitat activitatAcrear, Activitat activitatAactualitzar) throws I18NException {
+		if (activitatAactualitzar != null) {
+			update(activitatAactualitzar);
+		}
+		return create(activitatAcrear);
+	}
+
+	private void setActivitatTipusCompareix(String tramit, String tramitVersio, String procediment,
+			String arxiuExpedientId, String arxiuDocumentId, String nomInteressat,
+			String llinatge1Interessat, String llinatge2Interessat, IdentificacioTipus tipusIdentificacioInteressat,
+			String identificacioInteressat, String nomRepresentant, String llinatge1Representant,
+			String llinatge2Representant, IdentificacioTipus tipusIdentificacioRepresentant,
+			String identificacioRepresentant, ActivitatJPA act) {
+		act.setTramit(tramit);
+		act.setTramitVersio(tramitVersio != null && !tramitVersio.isEmpty() ? Integer.valueOf(tramitVersio) : null);
+		act.setProcediment(procediment);
+		act.setArxiuExpedientID(arxiuExpedientId);
+		act.setArxiuDocumentID(arxiuDocumentId);
+
+		act.setInteressatTipus(tipusIdentificacioInteressat != null ? tipusIdentificacioInteressat.getValue() : null);
+		act.setInteressatIdentificacio(identificacioInteressat);
+		act.setInteressatNom(nomInteressat);
+		act.setInteressatLlinatge1(llinatge1Interessat);
+		act.setInteressatLlinatge2(llinatge2Interessat);
+
+		act.setRepresentantTipus(
+				tipusIdentificacioRepresentant != null ? tipusIdentificacioRepresentant.getValue() : null);
+		act.setRepresentantIdentificacio(identificacioRepresentant);
+		act.setRepresentantNom(nomRepresentant);
+		act.setRepresentantLlinatge1(llinatge1Representant);
+		act.setRepresentantLlinatge2(llinatge2Representant);
+	}
+
+	@Override
+	public Activitat registraNovaActivitat(String language, ActivitatValidator<Activitat> validator,
+			RegistreActivitatTipus tipus, String csvCopiaAutentica, String registre,
+			String idActuacioTramitFh, String tramit, String tramitVersio, String procediment, String nomInteressat,
+			String llinatge1Interessat, String llinatge2Interessat, IdentificacioTipus tipusIdentificacioInteressat,
+			String identificacioInteressat, String nomRepresentant, String llinatge1Representant,
+			String llinatge2Representant, IdentificacioTipus tipusIdentificacioRepresentant,
+			String identificacioRepresentant, String arxiuExpedientId, String arxiuDocumentId, Timestamp dataActivitat,
+			Long funcionariId) throws I18NException {
+		ActivitatJPA act = new ActivitatJPA();
+		Activitat actTramitRelacionada = null;
+		act.setFuncionariID(funcionariId);
+		act.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+		act.setDataActivitat(dataActivitat);
+		act.setTipus(tipus.getValue());
+		act.setEstat(ActivitatEstat.ACABAT.getValue());
+
+		// Validar tipus d'activitat
+		switch (tipus) {
+			case COPIA:
+				act.setUrl(csvCopiaAutentica);
+				break;
+			case COMPAREIX:
+				act.setIdActuacioTramit(idActuacioTramitFh);
+				setActivitatTipusCompareix(tramit, tramitVersio, procediment, arxiuExpedientId, arxiuDocumentId,
+						nomInteressat, llinatge1Interessat,
+						llinatge2Interessat, tipusIdentificacioInteressat, identificacioInteressat, nomRepresentant,
+						llinatge1Representant, llinatge2Representant, tipusIdentificacioRepresentant,
+						identificacioRepresentant, act);
+				act.setEstat(ActivitatEstat.INICIAT.getValue());
+				break;
+			case TRAMIT:
+				act.setRegistre(registre);
+				act.setIdActuacioTramit(idActuacioTramitFh);
+				// recuperam dades de l'activitat COMPAREIX
+				List<Activitat> activitatsTramitIniciades = select(
+						Where.AND(ActivitatFields.IDACTUACIOTRAMIT.equal(idActuacioTramitFh),
+								ActivitatFields.ESTAT.equal(ActivitatEstat.INICIAT.getValue())));
+				if (activitatsTramitIniciades == null || activitatsTramitIniciades.size() == 0) {
+					String errorNoExisteixActCompareix = I18NCommonUtils.tradueix(new Locale(language),
+							"activitat.error.noexisteixactivitatambestatiactuaciotramit",
+							new String[] { ActivitatEstat.INICIAT.toString(), idActuacioTramitFh });
+					log.error(errorNoExisteixActCompareix);
+					throw new RestException(errorNoExisteixActCompareix, Status.BAD_REQUEST);
+				}
+				actTramitRelacionada = activitatsTramitIniciades.get(0);
+				setActivitatTipusCompareix(actTramitRelacionada.getTramit(),
+						actTramitRelacionada.getTramitVersio() != null
+								? actTramitRelacionada.getTramitVersio().toString()
+								: null,
+						actTramitRelacionada.getProcediment(),
+						actTramitRelacionada.getArxiuExpedientID(), actTramitRelacionada.getArxiuDocumentID(),
+						actTramitRelacionada.getInteressatNom(), actTramitRelacionada.getInteressatLlinatge1(),
+						actTramitRelacionada.getInteressatLlinatge2(),
+						IdentificacioTipus.fromValue(actTramitRelacionada.getInteressatTipus()),
+						actTramitRelacionada.getInteressatIdentificacio(),
+						actTramitRelacionada.getRepresentantNom(),
+						actTramitRelacionada.getRepresentantLlinatge1(),
+						actTramitRelacionada.getRepresentantLlinatge2(),
+						actTramitRelacionada.getRepresentantTipus() != null
+								? IdentificacioTipus.fromValue(actTramitRelacionada.getRepresentantTipus())
+								: null,
+						actTramitRelacionada.getRepresentantIdentificacio(), act);
+
+				// canviam l'estat de l'activitat COMPAREIX
+				actTramitRelacionada.setEstat(ActivitatEstat.ACABAT.getValue());
+				break;
+		}
+
+		// Enregistrar activitat
+		Activitat newAct;
+		BeanValidatorResult<Activitat> __vr = new BeanValidatorResult<Activitat>();
+
+		validator.validate(__vr, act, true, this, funcionariLogicaEjb);
+
+		if (__vr.hasErrors()) {
+			List<I18NFieldError> vrErrors = __vr.getErrors();
+			List<String> errorsMsg = new ArrayList<String>();
+			// errorsMsg.add(I18NUtils.tradueix("error.form"));
+			for (I18NFieldError i18nFieldError : vrErrors) {
+				// errorsMsg.add(I18NUtils.tradueix("error.creation",
+				// i18nFieldError.getTranslation().getCode(),
+				// I18NUtils.tradueixArguments(i18nFieldError.getTranslation().getArgs())));
+
+				// String[] argumentsTraduits =
+				// I18NUtils.tradueixArguments(i18nFieldError.getTranslation().getArgs());
+				// errorsMsg.add(I18NUtils.tradueix(i18nFieldError.getTranslation().getCode(),
+				// argumentsTraduits));
+				errorsMsg.add(I18NCommonUtils.tradueix(new Locale(language), i18nFieldError.getTranslation().getCode(),
+						Arrays.stream(i18nFieldError.getTranslation().getArgs()).map(arg -> arg.getValue())
+								.toArray(size -> new String[size])));
+			}
+			String msg = errorsMsg.toString();
+			log.error(msg);
+			throw new RestException(msg, Status.BAD_REQUEST);
+		} else {
+			newAct = createIupdate(act, actTramitRelacionada);
+		}
+
+		String successMsg = String.valueOf(I18NCommonUtils.tradueix(new Locale(language), "success.creation",
+				new String[] { I18NCommonUtils.tradueix(new Locale(language), "activitat.activitat"),
+						I18NCommonUtils.tradueix(new Locale(language), "activitat.activitatID"),
+						String.valueOf(newAct.getActivitatID()),
+						"" }));
+		log.info(successMsg);
+		return newAct;
 	}
 }

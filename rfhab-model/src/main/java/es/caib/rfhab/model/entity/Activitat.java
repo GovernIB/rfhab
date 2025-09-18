@@ -35,8 +35,8 @@ public interface Activitat extends org.fundaciobit.genapp.common.IGenAppEntity {
 	public java.lang.String getInteressatLlinatge2();
 	public void setInteressatLlinatge2(java.lang.String _interessatLlinatge2_);
 
-	public int getInteressatTipus();
-	public void setInteressatTipus(int _interessatTipus_);
+	public java.lang.Integer getInteressatTipus();
+	public void setInteressatTipus(java.lang.Integer _interessatTipus_);
 
 	public java.lang.String getInteressatIdentificacio();
 	public void setInteressatIdentificacio(java.lang.String _interessatIdentificacio_);
@@ -70,6 +70,15 @@ public interface Activitat extends org.fundaciobit.genapp.common.IGenAppEntity {
 
 	public java.lang.String getUrl();
 	public void setUrl(java.lang.String _url_);
+
+	public java.sql.Timestamp getDataActivitat();
+	public void setDataActivitat(java.sql.Timestamp _dataActivitat_);
+
+	public java.lang.String getIdActuacioTramit();
+	public void setIdActuacioTramit(java.lang.String _idActuacioTramit_);
+
+	public java.lang.String getProcediment();
+	public void setProcediment(java.lang.String _procediment_);
 
 
 

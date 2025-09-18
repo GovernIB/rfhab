@@ -61,6 +61,15 @@
 			</exclusions>
 		</dependency>
 
+		<!-- Externas -->
+		
+        <dependency>
+			<groupId>org.fundaciobit.genapp</groupId>
+			<artifactId>genapp-core</artifactId>
+			<version>${genapp.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
         <!-- Anotacions de documentació de openapi -->
         <dependency>
             <groupId>io.swagger.core.v3</groupId>

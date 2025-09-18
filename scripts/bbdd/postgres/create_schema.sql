@@ -23,13 +23,14 @@ create sequence rfh_usuarientitat_seq start 1000 increment 1;
         autoritzacioid int8,
         codisia varchar(150),
         datacreacio timestamp not null,
+        dataactivitat timestamp not null,
         estat int4 not null,
         funcionariid int8 not null,
-        interessatidentificacio varchar(50) not null,
-        interessatllinatge1 varchar(255) not null,
-        interessatllinatge2 varchar(255) not null,
-        interessatnom varchar(255) not null,
-        interessattipus int4 not null,
+        interessatidentificacio varchar(50),
+        interessatllinatge1 varchar(255),
+        interessatllinatge2 varchar(255),
+        interessatnom varchar(255),
+        interessattipus int4,
         registre varchar(50),
         representantidentificacio varchar(50),
         representantllinatge1 varchar(255),
@@ -38,8 +39,10 @@ create sequence rfh_usuarientitat_seq start 1000 increment 1;
         representanttipus int4,
         tipus int4 not null,
         tramit varchar(150),
+        procediment varchar(150),
         tramitversio int4,
         url varchar(255),
+        idactuaciotramit varchar(255),
         CONSTRAINT rfh_activitat_pk primary key (activitatid)
     );
 
@@ -245,7 +248,7 @@ create sequence rfh_usuarientitat_seq start 1000 increment 1;
     );
 create index rfh_activitat_pk_i on rfh_activitat (activitatid);
 create index rfh_activitat_fun_fk_i on rfh_activitat (funcionariid);
-create index rfh_activitat_autoritzaid_fk_i on rfh_activitat (autoritzacioid);
+-- create index rfh_activitat_autoritzaid_fk_i on rfh_activitat (autoritzacioid);
 create index rfh_autoritzacio_pk_i on rfh_autoritzacio (autoritzacioid);
 create index rfh_autoritza_funid_fk_i on rfh_autoritzacio (llocid);
 create index rfh_autoritza_funcid_fk_i on rfh_autoritzacio (funcionariid);
@@ -300,10 +303,10 @@ create index rfh_usuarient_usuariid_fk_i on rfh_usuarientitat (usuariid);
     alter table rfh_usuarientitat 
        add constraint rfh_usuarient_multiple_uk unique (entitatid, usuariid);
 
-    alter table rfh_activitat 
-       add constraint rfh_activitat_autoritza_aut_fk 
-       foreign key (autoritzacioid) 
-       references rfh_autoritzacio;
+   --  alter table rfh_activitat 
+   --     add constraint rfh_activitat_autoritza_aut_fk 
+   --     foreign key (autoritzacioid) 
+   --     references rfh_autoritzacio;
 
     alter table rfh_activitat 
        add constraint rfh_activitat_funcionari_fu_fk 

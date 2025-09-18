@@ -4,19 +4,16 @@ import es.caib.rfhab.model.entity.*;
 import javax.persistence.Table;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GenerationType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.ForeignKey;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import java.util.Set;
-import org.hibernate.annotations.Type;
-import java.util.HashSet;
-import javax.persistence.GenerationType;
 import javax.persistence.Index;
 import javax.persistence.GeneratedValue;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
 import javax.persistence.FetchType;
+import org.hibernate.annotations.Type;
 import javax.persistence.Id;
 
 
@@ -214,19 +211,6 @@ public class AutoritzacioJPA implements Autoritzacio {
         return __result;
     }
 
-// EXP  Field:autoritzacioid | Table: rfh_activitat | Type: 0  
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "autoritzacio")
-    private Set<ActivitatJPA> activitats = new HashSet<ActivitatJPA>(0);
-    public  Set<ActivitatJPA> getActivitats() {
-    return this.activitats;
-  }
-
-    public void setActivitats(Set<ActivitatJPA> activitats) {
-      this.activitats = activitats;
-    }
-
-
 // IMP Field:llocid | Table: rfh_lloc | Type: 1  
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -300,10 +284,6 @@ public class AutoritzacioJPA implements Autoritzacio {
     __tmp = toJPA(__jpa);
     __alreadyCopied.put(__jpa, __tmp);
     // Copia de beans complexes (EXP)
-    if(!"ActivitatJPA".equals(origenJPA) 
-       && ( !org.fundaciobit.genapp.common.utils.Utils.isEmpty(__jpa.activitats) || org.hibernate.Hibernate.isInitialized(__jpa.getActivitats())) ) {
-      __tmp.setActivitats(ActivitatJPA.copyJPA(__jpa.getActivitats(), __alreadyCopied,"AutoritzacioJPA"));
-    }
     // Copia de beans complexes (IMP)
     if(!"LlocJPA".equals(origenJPA) && 
        (!org.fundaciobit.genapp.common.utils.Utils.isEmpty(__jpa.lloc) || org.hibernate.Hibernate.isInitialized(__jpa.getLloc()) ) ) {

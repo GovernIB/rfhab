@@ -18,8 +18,7 @@ import javax.persistence.Id;
 @Entity(name = "ActivitatJPA")
 @Table(name = "rfh_activitat" , indexes = { 
         @Index(name="rfh_activitat_pk_i", columnList = "activitatid"),
-        @Index(name="rfh_activitat_fun_fk_i", columnList = "funcionariid"),
-        @Index(name="rfh_activitat_autoritzaid_fk_i", columnList = "autoritzacioid")})
+        @Index(name="rfh_activitat_fun_fk_i", columnList = "funcionariid")})
 @SequenceGenerator(name="ACTIVITAT_SEQ", sequenceName="rfh_activitat_seq", allocationSize=1, initialValue=1000)
 @javax.xml.bind.annotation.XmlRootElement
 public class ActivitatJPA implements Activitat {
@@ -50,19 +49,19 @@ public class ActivitatJPA implements Activitat {
     @Column(name="datacreacio",nullable = false,length = 29,precision = 6)
     java.sql.Timestamp dataCreacio;
 
-    @Column(name="interessatnom",nullable = false,length = 255)
+    @Column(name="interessatnom",length = 255)
     java.lang.String interessatNom;
 
-    @Column(name="interessatllinatge1",nullable = false,length = 255)
+    @Column(name="interessatllinatge1",length = 255)
     java.lang.String interessatLlinatge1;
 
-    @Column(name="interessatllinatge2",nullable = false,length = 255)
+    @Column(name="interessatllinatge2",length = 255)
     java.lang.String interessatLlinatge2;
 
-    @Column(name="interessattipus",nullable = false,length = 10)
-    int interessatTipus;
+    @Column(name="interessattipus",length = 10)
+    java.lang.Integer interessatTipus;
 
-    @Column(name="interessatidentificacio",nullable = false,length = 50)
+    @Column(name="interessatidentificacio",length = 50)
     java.lang.String interessatIdentificacio;
 
     @Column(name="representantnom",length = 255)
@@ -95,6 +94,15 @@ public class ActivitatJPA implements Activitat {
     @Column(name="url",length = 255)
     java.lang.String url;
 
+    @Column(name="dataactivitat",nullable = false,length = 29,precision = 6)
+    java.sql.Timestamp dataActivitat;
+
+    @Column(name="idactuaciotramit",length = 255)
+    java.lang.String idActuacioTramit;
+
+    @Column(name="procediment",length = 150)
+    java.lang.String procediment;
+
 
 
   /** Constructor Buit */
@@ -102,7 +110,7 @@ public class ActivitatJPA implements Activitat {
   }
 
   /** Constructor amb tots els camps  */
-  public ActivitatJPA(long activitatID , long funcionariID , int tipus , java.lang.String registre , java.lang.String tramit , java.lang.String codiSia , java.lang.Long autoritzacioID , java.sql.Timestamp dataCreacio , java.lang.String interessatNom , java.lang.String interessatLlinatge1 , java.lang.String interessatLlinatge2 , int interessatTipus , java.lang.String interessatIdentificacio , java.lang.String representantNom , java.lang.String representantLlinatge1 , java.lang.String representantLlinatge2 , java.lang.Integer representantTipus , java.lang.String representantIdentificacio , java.lang.Integer tramitVersio , java.lang.String arxiuDocumentID , java.lang.String arxiuExpedientID , int estat , java.lang.String url) {
+  public ActivitatJPA(long activitatID , long funcionariID , int tipus , java.lang.String registre , java.lang.String tramit , java.lang.String codiSia , java.lang.Long autoritzacioID , java.sql.Timestamp dataCreacio , java.lang.String interessatNom , java.lang.String interessatLlinatge1 , java.lang.String interessatLlinatge2 , java.lang.Integer interessatTipus , java.lang.String interessatIdentificacio , java.lang.String representantNom , java.lang.String representantLlinatge1 , java.lang.String representantLlinatge2 , java.lang.Integer representantTipus , java.lang.String representantIdentificacio , java.lang.Integer tramitVersio , java.lang.String arxiuDocumentID , java.lang.String arxiuExpedientID , int estat , java.lang.String url , java.sql.Timestamp dataActivitat , java.lang.String idActuacioTramit , java.lang.String procediment) {
     this.activitatID=activitatID;
     this.funcionariID=funcionariID;
     this.tipus=tipus;
@@ -126,9 +134,12 @@ public class ActivitatJPA implements Activitat {
     this.arxiuExpedientID=arxiuExpedientID;
     this.estat=estat;
     this.url=url;
+    this.dataActivitat=dataActivitat;
+    this.idActuacioTramit=idActuacioTramit;
+    this.procediment=procediment;
 }
   /** Constructor sense valors autoincrementals */
-  public ActivitatJPA(long funcionariID , int tipus , java.lang.String registre , java.lang.String tramit , java.lang.String codiSia , java.lang.Long autoritzacioID , java.sql.Timestamp dataCreacio , java.lang.String interessatNom , java.lang.String interessatLlinatge1 , java.lang.String interessatLlinatge2 , int interessatTipus , java.lang.String interessatIdentificacio , java.lang.String representantNom , java.lang.String representantLlinatge1 , java.lang.String representantLlinatge2 , java.lang.Integer representantTipus , java.lang.String representantIdentificacio , java.lang.Integer tramitVersio , java.lang.String arxiuDocumentID , java.lang.String arxiuExpedientID , int estat , java.lang.String url) {
+  public ActivitatJPA(long funcionariID , int tipus , java.lang.String registre , java.lang.String tramit , java.lang.String codiSia , java.lang.Long autoritzacioID , java.sql.Timestamp dataCreacio , java.lang.String interessatNom , java.lang.String interessatLlinatge1 , java.lang.String interessatLlinatge2 , java.lang.Integer interessatTipus , java.lang.String interessatIdentificacio , java.lang.String representantNom , java.lang.String representantLlinatge1 , java.lang.String representantLlinatge2 , java.lang.Integer representantTipus , java.lang.String representantIdentificacio , java.lang.Integer tramitVersio , java.lang.String arxiuDocumentID , java.lang.String arxiuExpedientID , int estat , java.lang.String url , java.sql.Timestamp dataActivitat , java.lang.String idActuacioTramit , java.lang.String procediment) {
     this.funcionariID=funcionariID;
     this.tipus=tipus;
     this.registre=registre;
@@ -151,19 +162,18 @@ public class ActivitatJPA implements Activitat {
     this.arxiuExpedientID=arxiuExpedientID;
     this.estat=estat;
     this.url=url;
+    this.dataActivitat=dataActivitat;
+    this.idActuacioTramit=idActuacioTramit;
+    this.procediment=procediment;
 }
   /** Constructor dels valors Not Null */
-  public ActivitatJPA(long activitatID , long funcionariID , int tipus , java.sql.Timestamp dataCreacio , java.lang.String interessatNom , java.lang.String interessatLlinatge1 , java.lang.String interessatLlinatge2 , int interessatTipus , java.lang.String interessatIdentificacio , int estat) {
+  public ActivitatJPA(long activitatID , long funcionariID , int tipus , java.sql.Timestamp dataCreacio , int estat , java.sql.Timestamp dataActivitat) {
     this.activitatID=activitatID;
     this.funcionariID=funcionariID;
     this.tipus=tipus;
     this.dataCreacio=dataCreacio;
-    this.interessatNom=interessatNom;
-    this.interessatLlinatge1=interessatLlinatge1;
-    this.interessatLlinatge2=interessatLlinatge2;
-    this.interessatTipus=interessatTipus;
-    this.interessatIdentificacio=interessatIdentificacio;
     this.estat=estat;
+    this.dataActivitat=dataActivitat;
 }
   public ActivitatJPA(Activitat __bean) {
     this.setActivitatID(__bean.getActivitatID());
@@ -189,6 +199,9 @@ public class ActivitatJPA implements Activitat {
     this.setArxiuExpedientID(__bean.getArxiuExpedientID());
     this.setEstat(__bean.getEstat());
     this.setUrl(__bean.getUrl());
+    this.setDataActivitat(__bean.getDataActivitat());
+    this.setIdActuacioTramit(__bean.getIdActuacioTramit());
+    this.setProcediment(__bean.getProcediment());
 	}
 
 	public long getActivitatID() {
@@ -268,10 +281,10 @@ public class ActivitatJPA implements Activitat {
 		this.interessatLlinatge2 = _interessatLlinatge2_;
 	};
 
-	public int getInteressatTipus() {
+	public java.lang.Integer getInteressatTipus() {
 		return(interessatTipus);
 	};
-	public void setInteressatTipus(int _interessatTipus_) {
+	public void setInteressatTipus(java.lang.Integer _interessatTipus_) {
 		this.interessatTipus = _interessatTipus_;
 	};
 
@@ -352,6 +365,27 @@ public class ActivitatJPA implements Activitat {
 		this.url = _url_;
 	};
 
+	public java.sql.Timestamp getDataActivitat() {
+		return(dataActivitat);
+	};
+	public void setDataActivitat(java.sql.Timestamp _dataActivitat_) {
+		this.dataActivitat = _dataActivitat_;
+	};
+
+	public java.lang.String getIdActuacioTramit() {
+		return(idActuacioTramit);
+	};
+	public void setIdActuacioTramit(java.lang.String _idActuacioTramit_) {
+		this.idActuacioTramit = _idActuacioTramit_;
+	};
+
+	public java.lang.String getProcediment() {
+		return(procediment);
+	};
+	public void setProcediment(java.lang.String _procediment_) {
+		this.procediment = _procediment_;
+	};
+
 
 
     @Override
@@ -379,20 +413,6 @@ public class ActivitatJPA implements Activitat {
 
     public  void setFuncionari(FuncionariJPA funcionari) {
     this.funcionari = funcionari;
-  }
-
-// IMP Field:autoritzacioid | Table: rfh_autoritzacio | Type: 1  
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "autoritzacioid", referencedColumnName ="autoritzacioID", nullable = true, insertable=false, updatable=false, foreignKey=@ForeignKey(name="rfh_activitat_autoritza_aut_fk"))
-    private AutoritzacioJPA autoritzacio;
-
-    public AutoritzacioJPA getAutoritzacio() {
-    return this.autoritzacio;
-  }
-
-    public  void setAutoritzacio(AutoritzacioJPA autoritzacio) {
-    this.autoritzacio = autoritzacio;
   }
 
 
@@ -423,6 +443,9 @@ public class ActivitatJPA implements Activitat {
     __tmp.setArxiuExpedientID(__bean.getArxiuExpedientID());
     __tmp.setEstat(__bean.getEstat());
     __tmp.setUrl(__bean.getUrl());
+    __tmp.setDataActivitat(__bean.getDataActivitat());
+    __tmp.setIdActuacioTramit(__bean.getIdActuacioTramit());
+    __tmp.setProcediment(__bean.getProcediment());
 		return __tmp;
 	}
 
@@ -456,10 +479,6 @@ public class ActivitatJPA implements Activitat {
     if(!"FuncionariJPA".equals(origenJPA) && 
        (!org.fundaciobit.genapp.common.utils.Utils.isEmpty(__jpa.funcionari) || org.hibernate.Hibernate.isInitialized(__jpa.getFuncionari()) ) ) {
       __tmp.setFuncionari(FuncionariJPA.copyJPA(__jpa.getFuncionari(), __alreadyCopied,"ActivitatJPA"));
-    }
-    if(!"AutoritzacioJPA".equals(origenJPA) && 
-       (!org.fundaciobit.genapp.common.utils.Utils.isEmpty(__jpa.autoritzacio) || org.hibernate.Hibernate.isInitialized(__jpa.getAutoritzacio()) ) ) {
-      __tmp.setAutoritzacio(AutoritzacioJPA.copyJPA(__jpa.getAutoritzacio(), __alreadyCopied,"ActivitatJPA"));
     }
 
     return __tmp;

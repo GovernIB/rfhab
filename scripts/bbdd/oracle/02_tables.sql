@@ -6,13 +6,14 @@
         autoritzacioid number(19,0),
         codisia varchar2(150 char),
         datacreacio timestamp not null,
+        dataactivitat timestamp not null,
         estat number(10,0) not null,
         funcionariid number(19,0) not null,
-        interessatidentificacio varchar2(50 char) not null,
-        interessatllinatge1 varchar2(255 char) not null,
-        interessatllinatge2 varchar2(255 char) not null,
-        interessatnom varchar2(255 char) not null,
-        interessattipus number(10,0) not null,
+        interessatidentificacio varchar2(50 char),
+        interessatllinatge1 varchar2(255 char),
+        interessatllinatge2 varchar2(255 char),
+        interessatnom varchar2(255 char) 
+        interessattipus number(10,0),
         registre varchar2(50 char),
         representantidentificacio varchar2(50 char),
         representantllinatge1 varchar2(255 char),
@@ -21,8 +22,10 @@
         representanttipus number(10,0),
         tipus number(10,0) not null,
         tramit varchar2(150 char),
+        procediment varchar2(150 char),
         tramitversio number(10,0),
-        url varchar2(255 char)
+        url varchar2(255 char),
+        idactuaciotramit varchar2(255 char)
     );
 
     create table rfh_autoritzacio (

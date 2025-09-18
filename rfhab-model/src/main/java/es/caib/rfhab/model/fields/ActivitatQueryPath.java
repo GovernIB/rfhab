@@ -103,6 +103,18 @@ public class ActivitatQueryPath extends org.fundaciobit.genapp.common.query.Quer
     return new StringField(getQueryPath(), ActivitatFields.URL);
   }
 
+  public TimestampField DATAACTIVITAT() {
+    return new TimestampField(getQueryPath(), ActivitatFields.DATAACTIVITAT);
+  }
+
+  public StringField IDACTUACIOTRAMIT() {
+    return new StringField(getQueryPath(), ActivitatFields.IDACTUACIOTRAMIT);
+  }
+
+  public StringField PROCEDIMENT() {
+    return new StringField(getQueryPath(), ActivitatFields.PROCEDIMENT);
+  }
+
 
 
   @Override
@@ -116,14 +128,6 @@ public class ActivitatQueryPath extends org.fundaciobit.genapp.common.query.Quer
     return new FuncionariQueryPath(new QueryPath() {
       public String getQueryPath() {
           return ActivitatQueryPath.this.getQueryPath() + "funcionari" + ".";
-      }
-    });
-  }
-
-  public AutoritzacioQueryPath AUTORITZACIO() {
-    return new AutoritzacioQueryPath(new QueryPath() {
-      public String getQueryPath() {
-          return ActivitatQueryPath.this.getQueryPath() + "autoritzacio" + ".";
       }
     });
   }

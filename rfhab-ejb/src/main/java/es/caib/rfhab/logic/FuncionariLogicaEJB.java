@@ -2,6 +2,7 @@ package es.caib.rfhab.logic;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -30,6 +31,7 @@ import es.caib.rfhab.model.entity.Historic;
 import es.caib.rfhab.model.entity.HistoricLloc;
 import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.fields.FuncionariFields;
+import es.caib.rfhab.model.fields.FuncionariLlocFields;
 import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.HistoricJPA;
 import es.caib.rfhab.persistence.HistoricLlocJPA;
@@ -118,6 +120,17 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 		 */
 
 		return false;
+	}
+
+	@Override
+	@PermitAll
+	public boolean isFuncionariActiu(FuncionariJPA funcionari) throws I18NException {
+		Timestamp ara = new Timestamp(System.currentTimeMillis());
+		Timestamp funcionariDataCreacio = funcionari.getDataCreacio();
+		Timestamp funcionariDataBaixa = funcionari.getDataBaixa();
+		boolean donatDalta = funcionariDataCreacio != null && funcionariDataCreacio.compareTo(ara) <= 0;
+		boolean donatDeBaixa = funcionariDataBaixa != null && funcionariDataBaixa.compareTo(ara) <= 0;
+		return donatDalta && !donatDeBaixa;
 	}
 
 	@Override
@@ -400,7 +413,8 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 
 	@Override
 	@PermitAll
-	public FuncionariJPA obtenirFuncionariByNif(String language, String funcionariNif) throws I18NException {
+	public FuncionariJPA comprovarFuncionariActiuByNif(String language, String funcionariNif, boolean checkLloc)
+			throws I18NException {
 		FuncionariJPA funcionari = findByNif(funcionariNif);
 
 		if (funcionari == null) {
@@ -410,7 +424,55 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 			log.error(errorNoExisteixNif);
 			throw new RestException(errorNoExisteixNif, Status.BAD_REQUEST);
 		}
+		if (!isFuncionariActiu(funcionari)) {
+			String errorNoActiu = I18NCommonUtils.tradueix(new Locale(language),
+					"funcionari.error.noactiu",
+					new String[] { funcionariNif });
+			log.error(errorNoActiu);
+			throw new RestException(errorNoActiu, Status.BAD_REQUEST);
+		}
+
+		if (!checkLloc) {
+			return funcionari;
+		}
+
+		Where funcionariAssignatW = FuncionariLlocFields.FUNCIONARIID.equal(funcionari.getFuncionariID());
+		Where funcionariActualmentAssignat = funcionariLlocLogicaEjb.getWhereFuncionariIsCurrent(funcionariAssignatW);
+		List<FuncionariLloc> funcionarisLlocs = funcionariLlocLogicaEjb.select(funcionariActualmentAssignat);
+		if (funcionarisLlocs == null || funcionarisLlocs.size() == 0) {
+			String errorNoAssignat = I18NCommonUtils.tradueix(new Locale(language),
+					"funcionari.error.noassignatlloc",
+					new String[] { funcionariNif });
+			log.error(errorNoAssignat);
+			throw new RestException(errorNoAssignat, Status.BAD_REQUEST);
+		}
+
+		boolean llocActiu = false;
+		Timestamp ara = new Timestamp(System.currentTimeMillis());
+		List<Lloc> llocsOcupatsPerFuncionari = new ArrayList<Lloc>();
+		List<Lloc> llocsNoActiusOcupatsPerFuncionari = new ArrayList<Lloc>();
+		for (FuncionariLloc fl : funcionarisLlocs) {
+			Lloc lloc = llocEjb.findByPrimaryKey(fl.getLlocID());
+			if (lloc != null) {
+				llocsOcupatsPerFuncionari.add(lloc);
+				Timestamp llocDataAlta = lloc.getDataalta();
+				if (lloc.getDataBaixa() == null && llocDataAlta != null && llocDataAlta.compareTo(ara) <= 0) {
+					llocActiu = true;
+					break;
+				} else {
+					llocsNoActiusOcupatsPerFuncionari.add(lloc);
+				}
+			}
+		}
+
+		if (!llocActiu) {
+			String errorLlocNoActiu = I18NCommonUtils.tradueix(new Locale(language),
+					"funcionari.error.llocnoactiu",
+					new String[] { funcionariNif, llocsNoActiusOcupatsPerFuncionari.get(0).getCodiLlocPropi() });
+			log.error(errorLlocNoActiu);
+			throw new RestException(errorLlocNoActiu, Status.BAD_REQUEST);
+		}
+
 		return funcionari;
 	}
-
 }

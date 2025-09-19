@@ -191,7 +191,7 @@ public class RegistreActivitatFuncionariService extends RestUtils {
 					parseDateTimeISO8601ToDate(dataActivitatStr, "data", language).getTime());
 
 			// validar codi de funcionari
-			FuncionariJPA funcionari = funcionariLogicaEjb.obtenirFuncionariByNif(language, funcionariNif);
+			FuncionariJPA funcionari = funcionariLogicaEjb.comprovarFuncionariActiuByNif(language, funcionariNif, true);
 			Long funcionariId = funcionari.getFuncionariID();
 
 			String funcionariNom = (funcionari.getNom() != null ? funcionari.getNom() : "") + " "

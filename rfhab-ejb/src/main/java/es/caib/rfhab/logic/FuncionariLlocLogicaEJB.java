@@ -44,16 +44,17 @@ public class FuncionariLlocLogicaEJB extends FuncionariLlocEJB implements Funcio
 	protected HistoricLlocLogicaService historicLlocLogicaEjb;
 
 	public Where getWhereFuncionariIsCurrent() {
-		Where w1 = Where.AND(FuncionariLlocFields.DATAINICI.lessThanOrEqual(new Date(System.currentTimeMillis())),
-				FuncionariLlocFields.DATAFI.greaterThan(new Date(System.currentTimeMillis())));
+		Date ara = new Date(System.currentTimeMillis());
+		Where w1 = Where.AND(FuncionariLlocFields.DATAINICI.lessThanOrEqual(ara),
+				FuncionariLlocFields.DATAFI.greaterThan(ara));
 
-		Where w2 = Where.AND(FuncionariLlocFields.DATAINICI.lessThanOrEqual(new Date(System.currentTimeMillis())),
+		Where w2 = Where.AND(FuncionariLlocFields.DATAINICI.lessThanOrEqual(ara),
 				FuncionariLlocFields.DATAFI.isNull());
 
 		Where w3 = Where.AND(FuncionariLlocFields.DATAINICI.isNull(), FuncionariLlocFields.DATAFI.isNull());
 
 		Where w4 = Where.AND(FuncionariLlocFields.DATAINICI.isNull(),
-				FuncionariLlocFields.DATAFI.greaterThan(new Date(System.currentTimeMillis())));
+				FuncionariLlocFields.DATAFI.greaterThan(ara));
 
 		return Where.OR(w1, w2, w3, w4);
 	}

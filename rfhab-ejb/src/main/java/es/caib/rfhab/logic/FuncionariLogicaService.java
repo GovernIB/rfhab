@@ -1,14 +1,7 @@
 package es.caib.rfhab.logic;
 
-import java.util.Locale;
-
 import javax.ejb.Local;
-import javax.ws.rs.core.Response.Status;
-
-import org.fundaciobit.genapp.common.i18n.I18NCommonUtils;
 import org.fundaciobit.genapp.common.i18n.I18NException;
-import org.fundaciobit.pluginsib.utils.rest.RestException;
-
 import es.caib.rfhab.ejb.FuncionariService;
 import es.caib.rfhab.logic.utils.HistoricFuncionariDAO;
 import es.caib.rfhab.model.entity.Funcionari;
@@ -50,5 +43,8 @@ public interface FuncionariLogicaService extends FuncionariService {
 
 	public FuncionariJPA findByNif(String nif) throws I18NException;
 
-	public FuncionariJPA obtenirFuncionariByNif(String language, String funcionariNif) throws I18NException;
+	public boolean isFuncionariActiu(FuncionariJPA funcionari) throws I18NException;
+
+	public FuncionariJPA comprovarFuncionariActiuByNif(String language, String funcionariNif, boolean checkLloc)
+			throws I18NException;
 }

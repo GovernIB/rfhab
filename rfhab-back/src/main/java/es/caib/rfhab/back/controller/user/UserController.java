@@ -426,6 +426,8 @@ public class UserController extends UsuariController {
 
 		log.info("XYZ YYY funcionariNom = " + funcionariNom);
 		log.info("XYZ YYY funcionariCodi = " + funcionariCodi);
+		// String funcionariDir3 = getCodiDIR3(request, username);// codiDIR3 del lloc de feina del funcionari
+		// log.info("XYZ YYY funcionariDir3 = " + funcionariDir3);
 
 		TramitConsentimentDAO tramitConsentimentDAO = new TramitConsentimentDAO(
 				tramitConsentimentDto.ciutadaNom,

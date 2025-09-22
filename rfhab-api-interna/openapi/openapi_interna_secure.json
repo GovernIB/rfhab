@@ -74,12 +74,12 @@
         }, {
           "name" : "tipus",
           "in" : "query",
-          "description" : "Tipus de l'activitat:<br />&emsp;<i>1 - Còpia autèntica<br />&emsp;2 - Inici tràmit<br />&emsp;3 - Final tràmit</i>",
+          "description" : "Tipus de l'activitat:<br />&emsp;<i>1 - Còpia autèntica<br />&emsp;2 - Final tràmit</i>",
           "required" : true,
           "schema" : {
             "type" : "string",
-            "description" : "1 - Còpia autèntica<br />&emsp;2 - Inici tràmit<br />&emsp;3 - Final tràmit",
-            "enum" : [ "1", "2", "3" ]
+            "description" : "1 - Còpia autèntica<br />&emsp;2 - Final tràmit",
+            "enum" : [ "1", "2" ]
           }
         }, {
           "name" : "data",
@@ -112,135 +112,6 @@
           "description" : "Identificador associat a l'activitat de tràmit iniciada que es preten marcar com a finalitzada",
           "schema" : {
             "type" : "string"
-          }
-        }, {
-          "name" : "tramit",
-          "in" : "query",
-          "description" : "Codi del tràmit associat a l'activitat",
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "tramitversio",
-          "in" : "query",
-          "description" : "Versió del tràmit associat a l'activitat",
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "procediment",
-          "in" : "query",
-          "description" : "Codi del procediment associat a l'activitat",
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "nominteressat",
-          "in" : "query",
-          "description" : "Nom de l'interessat/da del tràmit",
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "llinatge1interessat",
-          "in" : "query",
-          "description" : "Primer Llinatge de l'interessat/da del tràmit",
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "llinatge2interessat",
-          "in" : "query",
-          "description" : "Segon Llinatge de l'interessat/da del tràmit",
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "tipusidentificaciointeressat",
-          "in" : "query",
-          "description" : "Tipus d'identificació de l'interessat/da del tràmit:<br />&emsp;<i>1 - DNI<br />&emsp;2 - NIE<br />&emsp;3 - Passaport<br />&emsp;4 - Altres</i>",
-          "schema" : {
-            "type" : "string",
-            "description" : "1 - DNI<br />&emsp;2 - NIE<br />&emsp;3 - Passaport<br />&emsp;4 - Altres",
-            "enum" : [ "1", "2", "3", "4" ]
-          }
-        }, {
-          "name" : "identificaciointeressat",
-          "in" : "query",
-          "description" : "Identificació de l'interessat/da del tràmit",
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "nomrepresentant",
-          "in" : "query",
-          "description" : "Nom del/de la representant de l'interessat/da del tràmit",
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "llinatge1representant",
-          "in" : "query",
-          "description" : "Primer Llinatge del/de la representant de l'interessat/da del tràmit",
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "llinatge2representant",
-          "in" : "query",
-          "description" : "Segon Llinatge del/de la representant de l'interessat/da del tràmit",
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "tipusidentificaciorepresentant",
-          "in" : "query",
-          "description" : "Tipus d'identificació del/de la representant de l'interessat/da del tràmit:<br />&emsp;<i>1 - DNI<br />&emsp;2 - NIE<br />&emsp;3 - Passaport<br />&emsp;4 - Altres</i>",
-          "schema" : {
-            "type" : "string",
-            "description" : "1 - DNI<br />&emsp;2 - NIE<br />&emsp;3 - Passaport<br />&emsp;4 - Altres",
-            "enum" : [ "1", "2", "3", "4" ]
-          }
-        }, {
-          "name" : "identificaciorepresentant",
-          "in" : "query",
-          "description" : "Identificació del/de la representant de l'interessat/da del tràmit",
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "arxiuexpedientid",
-          "in" : "query",
-          "description" : "Identificació de l'expedient d'Arxiu que conté el Model de consentiment firmat",
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "arxiudocumentid",
-          "in" : "query",
-          "description" : "Identificació del document d'Arxiu que conté el Model de consentiment firmat",
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "codisia",
-          "in" : "query",
-          "description" : "Codi SIA associat a l'activitat",
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          }
-        }, {
-          "name" : "autoritzacio",
-          "in" : "query",
-          "description" : "Codi de l'autorització associat a l'activitat",
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
           }
         } ],
         "responses" : {

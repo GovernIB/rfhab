@@ -3,12 +3,14 @@ package es.caib.rfhab.commons.utils;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import io.swagger.v3.oas.annotations.Hidden;
+
 public enum RegistreActivitatTipus {
     // Quan fa una còpia autèntica des de DIGITALIB, en aquest cas, DIGITALIB hauria d'informar al RFHAB de que realitza una còpia autèntica.
     COPIA(RegistreActivitatTipusValues.COPIA_NAME, RegistreActivitatTipusValues.COPIA_VALUE_STR,
             RegistreActivitatTipusValues.COPIA_DESCRIPTION),
     // Quan inicia un tràmit com a funcionari habilitat. Event propi registre de funcionaris habilitats, que genera el registre.
-    COMPAREIX(RegistreActivitatTipusValues.COMPAREIX_NAME, RegistreActivitatTipusValues.COMPAREIX_VALUE_STR,
+    @Hidden COMPAREIX(RegistreActivitatTipusValues.COMPAREIX_NAME, RegistreActivitatTipusValues.COMPAREIX_VALUE_STR,
             RegistreActivitatTipusValues.COMPAREIX_DESCRIPTION),
     // Finalització de tràmit com a funcionari habilitat. L'event el registraria SISTRA2.
     TRAMIT(RegistreActivitatTipusValues.TRAMIT_NAME, RegistreActivitatTipusValues.TRAMIT_VALUE_STR,

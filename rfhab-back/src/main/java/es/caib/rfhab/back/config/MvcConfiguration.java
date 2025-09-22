@@ -2,7 +2,15 @@ package es.caib.rfhab.back.config;
 
 import java.util.Locale;
 
+import javax.ejb.EJB;
+
+import es.caib.rfhab.back.controller.user.UserController;
+import es.caib.rfhab.back.security.UsuariIsFuncionariActiuInterceptor;
 import es.caib.rfhab.commons.utils.Configuracio;
+import es.caib.rfhab.logic.FuncionariLogicaService;
+import es.caib.rfhab.logic.UsuariLogicaService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -28,13 +36,22 @@ import org.springframework.web.util.UrlPathHelper;
 
 /**
  * 
- * @author anadal
+ * @author jpou
  *
  */
 @Configuration
-@ComponentScan(basePackages = {"es.caib.rfhab"})
+@ComponentScan(basePackages = { "es.caib.rfhab" })
 @EnableWebMvc
 public class MvcConfiguration extends WebMvcConfigurerAdapter {
+
+	// @Autowired
+	// private FuncionariLogicaService funcionariLogicaEjb;
+
+	@EJB(mappedName = FuncionariLogicaService.JNDI_NAME)
+	protected FuncionariLogicaService funcionariLogicaEjb;
+
+	@EJB(mappedName = UsuariLogicaService.JNDI_NAME)
+	protected UsuariLogicaService usuariLogicaEjb;
 
 	@Bean
 	public LocaleChangeInterceptor localeChangeInterceptor() {
@@ -46,13 +63,16 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(localeChangeInterceptor());
+		registry.addInterceptor(new UsuariIsFuncionariActiuInterceptor(funcionariLogicaEjb, usuariLogicaEjb))
+				.addPathPatterns(UserController.CONTEXTWEB + "**"); // Protegeix tot el controlador UserController
+
 	}
 
 	@Bean
 	public LocaleResolver localeResolver() {
-	    SessionLocaleResolver slr = new es.caib.rfhab.back.utils.RFHabSessionLocaleResolver();
-	    slr.setDefaultLocale(new Locale(Configuracio.getDefaultLanguage()));
-	    return slr;
+		SessionLocaleResolver slr = new es.caib.rfhab.back.utils.RFHabSessionLocaleResolver();
+		slr.setDefaultLocale(new Locale(Configuracio.getDefaultLanguage()));
+		return slr;
 	}
 
 	@Bean
@@ -84,7 +104,7 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 
 	@Bean
 	public BeanPostProcessor beanPostProcessor() {
-	    return new es.caib.rfhab.back.security.DefaultRolesPrefixPostProcessor();
+		return new es.caib.rfhab.back.security.DefaultRolesPrefixPostProcessor();
 	}
 
 	@Bean
@@ -94,7 +114,7 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 
 	@Bean
 	public HandlerExceptionResolver getFileSizeExceeds() {
-	  return new es.caib.rfhab.back.utils.RFHabMaxUploadSizeExceededExceptionHandler();
+		return new es.caib.rfhab.back.utils.RFHabMaxUploadSizeExceededExceptionHandler();
 	}
 
 	@Bean
@@ -112,16 +132,16 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 
 		return messageSource;
 	}
-	
+
 	@Override
-    public void configurePathMatch(PathMatchConfigurer configurer) {
-        
-        System.setProperty("org.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH", "true");
-        
-        UrlPathHelper urlPathHelper = new UrlPathHelper();
-        urlPathHelper.setUrlDecode(false);
-        configurer.setUrlPathHelper(urlPathHelper);
-    }
+	public void configurePathMatch(PathMatchConfigurer configurer) {
+
+		System.setProperty("org.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH", "true");
+
+		UrlPathHelper urlPathHelper = new UrlPathHelper();
+		urlPathHelper.setUrlDecode(false);
+		configurer.setUrlPathHelper(urlPathHelper);
+	}
 
 	/*
 	 * @Bean public LocalValidatorFactoryBean validator() {

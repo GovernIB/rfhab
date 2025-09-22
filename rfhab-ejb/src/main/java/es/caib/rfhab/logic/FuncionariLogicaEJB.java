@@ -10,14 +10,10 @@ import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
-import javax.ws.rs.core.Response.Status;
-
 import org.fundaciobit.genapp.common.i18n.I18NCommonUtils;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.utils.Utils;
-import org.fundaciobit.pluginsib.utils.rest.RestException;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -422,14 +418,14 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 					"funcionari.error.noexisteixnif",
 					new String[] { funcionariNif });
 			log.error(errorNoExisteixNif);
-			throw new RestException(errorNoExisteixNif, Status.BAD_REQUEST);
+			throw new I18NException(errorNoExisteixNif);
 		}
 		if (!isFuncionariActiu(funcionari)) {
 			String errorNoActiu = I18NCommonUtils.tradueix(new Locale(language),
 					"funcionari.error.noactiu",
 					new String[] { funcionariNif });
 			log.error(errorNoActiu);
-			throw new RestException(errorNoActiu, Status.BAD_REQUEST);
+			throw new I18NException(errorNoActiu);
 		}
 
 		if (!checkLloc) {
@@ -444,7 +440,7 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 					"funcionari.error.noassignatlloc",
 					new String[] { funcionariNif });
 			log.error(errorNoAssignat);
-			throw new RestException(errorNoAssignat, Status.BAD_REQUEST);
+			throw new I18NException(errorNoAssignat);
 		}
 
 		boolean llocActiu = false;
@@ -470,7 +466,7 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 					"funcionari.error.llocnoactiu",
 					new String[] { funcionariNif, llocsNoActiusOcupatsPerFuncionari.get(0).getCodiLlocPropi() });
 			log.error(errorLlocNoActiu);
-			throw new RestException(errorLlocNoActiu, Status.BAD_REQUEST);
+			throw new I18NException(errorLlocNoActiu);
 		}
 
 		return funcionari;

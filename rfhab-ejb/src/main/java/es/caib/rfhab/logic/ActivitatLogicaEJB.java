@@ -385,7 +385,7 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 							"activitat.error.noexisteixactivitatambestatiactuaciotramit",
 							new String[] { ActivitatEstat.INICIAT.toString(), idActuacioTramitFh });
 					log.error(errorNoExisteixActCompareix);
-					throw new RestException(errorNoExisteixActCompareix, Status.BAD_REQUEST);
+					throw new I18NException(errorNoExisteixActCompareix);
 				}
 				actTramitRelacionada = activitatsTramitIniciades.get(0);
 				setActivitatTipusCompareix(actTramitRelacionada.getTramit(),
@@ -436,7 +436,7 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 			}
 			String msg = errorsMsg.toString();
 			log.error(msg);
-			throw new RestException(msg, Status.BAD_REQUEST);
+			throw new I18NException(msg);
 		} else {
 			newAct = createIupdate(act, actTramitRelacionada);
 		}

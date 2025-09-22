@@ -10,6 +10,7 @@ import es.caib.rfhab.persistence.UsuariJPA;
 /**
  * 
  * @author jagarcia
+ * @author jpou
  *
  */
 @Local
@@ -24,5 +25,7 @@ public interface UsuariLogicaService extends UsuariService {
 	public UsuariJPA findByNif(String nif) throws I18NException;
 
 	public UsuariJPA update(UsuariJPA usuari) throws I18NException, javax.ejb.EJBException;
+
+	public String checkIsActiuIteNif(UsuariJPA usuari, String language) throws I18NException;
 
 }

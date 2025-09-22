@@ -25,6 +25,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.log4j.Logger;
+import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.pluginsib.utils.rest.RestException;
 import org.fundaciobit.pluginsib.utils.rest.RestExceptionInfo;
 import org.fundaciobit.pluginsib.utils.rest.RestUtils;
@@ -208,9 +209,9 @@ public class RegistreActivitatFuncionariService extends RestUtils {
 					tipusIdentificacioRepresentant, identificacioRepresentant, arxiuExpedientId, arxiuDocumentId,
 					dataActivitat, funcionariId);
 			return "Operació realitzada correctament";// TODO: #73 traduïr
-		} catch (RestException re) {
+		} catch (I18NException re) {
 			log.error(re.getMessage(), re);
-			throw re;
+			throw new RestException(re.getMessage(), Status.BAD_REQUEST);
 		} catch (Throwable th) {
 			String msg = "Error desconegut enregistrant activitat: " + th.getMessage();
 			log.error(msg, th);

@@ -81,12 +81,68 @@ public class RegistreActivitatFuncionariService extends RestUtils {
 	/**
 	 * Registra una activitat d'un funcionari
 	 * 
-	 * @param funcionariNif
-	 * @param tipus
-	 * @param registre
-	 * @param tramit
-	 * @param codiSia
-	 * @param autoritzacio
+	 * @param language                       Idioma en que s'han de retornar els
+	 *                                       missatges. Obligatori
+	 * @param funcionariNif                  NIF del/de la funcionari/ària que
+	 *                                       realitza la activitat. Obligatori
+	 * @param tipus                          Tipus de l'activitat. Obligatori
+	 * @param dataActivitatStr               Data de registre de l'activitat.
+	 *                                       Obligatori
+	 * @param csvCopiaAutentica              Identificador de còpia autèntica.
+	 *                                       Obligatori pel tipus d'activitat 1
+	 * @param registre                       Número de registre associat a
+	 *                                       l'activitat. Obligatori pel tipus
+	 *                                       d'activitat 2
+	 * @param idActuacioTramitFh             Identificador associat a l'activitat de
+	 *                                       tràmit iniciada que es preten marcar
+	 *                                       com a finalitzada. Obligatori pel tipus
+	 *                                       d'activitat 2
+	 * @param tramit                         Codi del tràmit associat a l'activitat.
+	 *                                       Obligatori pel tipus d'activitat 3
+	 * @param tramitVersio                   Versió del tràmit associat a
+	 *                                       l'activitat. Obligatori pel tipus
+	 *                                       d'activitat 3
+	 * @param procediment                    Codi del procediment associat a
+	 *                                       l'activitat. Obligatori pel tipus
+	 *                                       d'activitat 3
+	 * @param nomInteressat                  Nom de l'interessat/da del tràmit.
+	 *                                       Obligatori pel tipus d'activitat 3
+	 * @param llinatge1Interessat            Primer Llinatge de l'interessat/da del
+	 *                                       tràmit. Obligatori pel tipus
+	 *                                       d'activitat 3
+	 * @param llinatge2Interessat            Segon Llinatge de l'interessat/da del
+	 *                                       tràmit. Obligatori pel tipus
+	 *                                       d'activitat 3
+	 * @param tipusIdentificacioInteressat   Tipus d'identificació de
+	 *                                       l'interessat/da del tràmit. Obligatori
+	 *                                       pel tipus d'activitat 3
+	 * @param identificacioInteressat        Identificació de l'interessat/da del
+	 *                                       tràmit. Obligatori pel tipus
+	 *                                       d'activitat 3
+	 * @param nomRepresentant                Nom del/de la representant de
+	 *                                       l'interessat/da del tràmit. Obligatori
+	 *                                       pel tipus d'activitat 3
+	 * @param llinatge1Representant          Primer Llinatge del/de la representant
+	 *                                       de l'interessat/da del tràmit.
+	 *                                       Obligatori pel tipus d'activitat 3
+	 * @param llinatge2Representant          Segon Llinatge del/de la representant
+	 *                                       de l'interessat/da del tràmit.
+	 *                                       Obligatori pel tipus d'activitat 3
+	 * @param tipusIdentificacioRepresentant Tipus d'identificació del/de la
+	 *                                       representant de l'interessat/da del
+	 *                                       tràmit. Obligatori pel tipus
+	 *                                       d'activitat 3
+	 * @param identificacioRepresentant      Identificació del/de la representant de
+	 *                                       l'interessat/da del tràmit. Obligatori
+	 *                                       pel tipus d'activitat 3
+	 * @param arxiuExpedientId               Identificador de l'expedient a Arxiu.
+	 *                                       Obligatori pel tipus d'activitat 3
+	 * @param arxiuDocumentId                Identificador del document a Arxiu.
+	 *                                       Obligatori pel tipus d'activitat 3
+	 * @param codiSia                        Codi SIA del funcionari. Opcional
+	 * @param autorització                   Codi de lautorització del funcionari.
+	 *                                       Opcional
+	 * 
 	 * @return
 	 */
 
@@ -122,32 +178,32 @@ public class RegistreActivitatFuncionariService extends RestUtils {
 			@Parameter(description = "Data de registre de l\'activitat", required = true, example = "2025-08-31T06:15:00+00:00", schema = @Schema(implementation = String.class, pattern = DATE_PATTERN_ISO8601_DATE_AND_TIME)) @NotNull @QueryParam("data") String dataActivitatStr,
 
 			// COPIA
-			@Parameter(description = "Identificador de còpia autèntica, podria ser un identificador intern de digitalib o bé el csv de la còpia autèntica", required = false, example = "klñjjskadfjklsdkl/asdlfjsd", schema = @Schema(type = "string")) @QueryParam("identificadorCopiaAutentica") String csvCopiaAutentica,
+			@Parameter(description = "Identificador de còpia autèntica, podria ser un identificador intern de digitalib o bé el csv de la còpia autèntica. Obligatori pel tipus d'activitat 1", required = false, example = "klñjjskadfjklsdkl/asdlfjsd", schema = @Schema(type = "string")) @QueryParam("identificadorCopiaAutentica") String csvCopiaAutentica,
 
 			// TRAMIT
-			@Parameter(description = "Número de registre associat a l\'activitat", required = false, example = "", schema = @Schema(type = "string")) @QueryParam("registre") String registre,
-			@Parameter(description = "Identificador associat a l\'activitat de tràmit iniciada que es preten marcar com a finalitzada", required = false, example = "", schema = @Schema(type = "string")) @QueryParam("idActuacioTramitFh ") String idActuacioTramitFh,
+			@Parameter(description = "Número de registre associat a l\'activitat. Obligatori pel tipus d'activitat 2", required = false, example = "", schema = @Schema(type = "string")) @QueryParam("registre") String registre,
+			@Parameter(description = "Identificador associat a l\'activitat de tràmit iniciada que es preten marcar com a finalitzada. Obligatori pel tipus d'activitat 2", required = false, example = "", schema = @Schema(type = "string")) @QueryParam("idActuacioTramitFh ") String idActuacioTramitFh,
 
 			// COMPAREIX (ocults)
-			@Parameter(description = "Codi del tràmit associat a l\'activitat", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam("tramit") String tramit,
-			@Parameter(description = "Versió del tràmit associat a l\'activitat", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam("tramitversio") String tramitVersio,
-			@Parameter(description = "Codi del procediment associat a l\'activitat", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam("procediment") String procediment,
-			@Parameter(description = "Nom de l\'interessat/da del tràmit", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam("nominteressat") String nomInteressat,
-			@Parameter(description = "Primer Llinatge de l\'interessat/da del tràmit", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam("llinatge1interessat") String llinatge1Interessat,
-			@Parameter(description = "Segon Llinatge de l\'interessat/da del tràmit", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam("llinatge2interessat") String llinatge2Interessat,
-			@Parameter(description = "Tipus d'identificació de l\'interessat/da del tràmit:<br />&emsp;<i>"
+			@Parameter(description = "Codi del tràmit associat a l\'activitat. Obligatori pel tipus d'activitat 3", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam("tramit") String tramit,
+			@Parameter(description = "Versió del tràmit associat a l\'activitat. Obligatori pel tipus d'activitat 3", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam("tramitversio") String tramitVersio,
+			@Parameter(description = "Codi del procediment associat a l\'activitat. Obligatori pel tipus d'activitat 3", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam("procediment") String procediment,
+			@Parameter(description = "Nom de l\'interessat/da del tràmit. Obligatori pel tipus d'activitat 3", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam("nominteressat") String nomInteressat,
+			@Parameter(description = "Primer Llinatge de l\'interessat/da del tràmit. Obligatori pel tipus d'activitat 3", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam("llinatge1interessat") String llinatge1Interessat,
+			@Parameter(description = "Segon Llinatge de l\'interessat/da del tràmit. Obligatori pel tipus d'activitat 3", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam("llinatge2interessat") String llinatge2Interessat,
+			@Parameter(description = "Tipus d'identificació de l\'interessat/da del tràmit. Obligatori pel tipus d'activitat 3:<br />&emsp;<i>"
 					+ IdentificacioTipusValues.DESCRIPTION_ALL_VALUES
 					+ "</i>", required = false, example = "", schema = @Schema(type = "IdentificacioTipus", description = IdentificacioTipusValues.DESCRIPTION_ALL_VALUES), hidden = true) @QueryParam("tipusidentificaciointeressat") IdentificacioTipus tipusIdentificacioInteressat,
-			@Parameter(description = "Identificació de l\'interessat/da del tràmit", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam("identificaciointeressat") String identificacioInteressat,
-			@Parameter(description = "Nom del/de la representant de l\'interessat/da del tràmit", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam("nomrepresentant") String nomRepresentant,
-			@Parameter(description = "Primer Llinatge del/de la representant de l\'interessat/da del tràmit", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam("llinatge1representant") String llinatge1Representant,
-			@Parameter(description = "Segon Llinatge del/de la representant de l\'interessat/da del tràmit", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam("llinatge2representant") String llinatge2Representant,
-			@Parameter(description = "Tipus d'identificació del/de la representant de l\'interessat/da del tràmit:<br />&emsp;<i>"
+			@Parameter(description = "Identificació de l\'interessat/da del tràmit. Obligatori pel tipus d'activitat 3", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam("identificaciointeressat") String identificacioInteressat,
+			@Parameter(description = "Nom del/de la representant de l\'interessat/da del tràmit. Obligatori pel tipus d'activitat 3", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam("nomrepresentant") String nomRepresentant,
+			@Parameter(description = "Primer Llinatge del/de la representant de l\'interessat/da del tràmit. Obligatori pel tipus d'activitat 3", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam("llinatge1representant") String llinatge1Representant,
+			@Parameter(description = "Segon Llinatge del/de la representant de l\'interessat/da del tràmit. Obligatori pel tipus d'activitat 3", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam("llinatge2representant") String llinatge2Representant,
+			@Parameter(description = "Tipus d'identificació del/de la representant de l\'interessat/da del tràmit. Obligatori pel tipus d'activitat 3:<br />&emsp;<i>"
 					+ IdentificacioTipusValues.DESCRIPTION_ALL_VALUES
 					+ "</i>", required = false, example = "", schema = @Schema(type = "IdentificacioTipus", description = IdentificacioTipusValues.DESCRIPTION_ALL_VALUES), hidden = true) @QueryParam("tipusidentificaciorepresentant") IdentificacioTipus tipusIdentificacioRepresentant,
-			@Parameter(description = "Identificació del/de la representant de l\'interessat/da del tràmit", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam("identificaciorepresentant") String identificacioRepresentant,
-			@Parameter(description = "Identificació de l'expedient d'Arxiu que conté el Model de consentiment firmat", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam("arxiuexpedientid") String arxiuExpedientId,
-			@Parameter(description = "Identificació del document d'Arxiu que conté el Model de consentiment firmat", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam("arxiudocumentid") String arxiuDocumentId,
+			@Parameter(description = "Identificació del/de la representant de l\'interessat/da del tràmit. Obligatori pel tipus d'activitat 3", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam("identificaciorepresentant") String identificacioRepresentant,
+			@Parameter(description = "Identificació de l'expedient d'Arxiu que conté el Model de consentiment firmat. Obligatori pel tipus d'activitat 3", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam("arxiuexpedientid") String arxiuExpedientId,
+			@Parameter(description = "Identificació del document d'Arxiu que conté el Model de consentiment firmat. Obligatori pel tipus d'activitat 3", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam("arxiudocumentid") String arxiuDocumentId,
 
 			// No emprats... (ocults)
 			@Parameter(description = "Codi SIA associat a l\'activitat", required = false, example = "", array = @ArraySchema(schema = @Schema(type = "string")), hidden = true) @QueryParam("codisia") String codiSia,
@@ -159,7 +215,6 @@ public class RegistreActivitatFuncionariService extends RestUtils {
 			 * Juan&tipus=1&registre=R0001&tramit=T001&codisia=XXX&autoritzacio=5
 			 */
 
-			// TODO: esborrar tots els "ca" i demanar la llengua com un paràmetre més
 			StringBuilder sb = new StringBuilder();
 			sb.append("Llengua: " + language + "\n");
 			sb.append("Funcionari: " + funcionariNif + "\n");

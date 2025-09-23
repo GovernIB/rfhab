@@ -37,7 +37,8 @@ public class RegistreActivitatValidator extends ActivitatValidator<Activitat> {
                 __vr.rejectIfEmptyOrWhitespace(__target__,
                         ActivitatFields.URL,
                         "genapp.validation.required",
-                        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("identificadorCopiaAutentica"));
+                        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(
+                                RegistreActivitatServiceParams.IDENTIFICADORCOPIAAUTENTICA));
                 // __vr.rejectIfEmptyOrWhitespace(__target__,
                 // new StringField(_TABLE_MODEL, "identificadorCopiaAutentica",
                 // "identificadorCopiaAutentica"),
@@ -50,36 +51,43 @@ public class RegistreActivitatValidator extends ActivitatValidator<Activitat> {
                 __vr.rejectIfEmptyOrWhitespace(__target__,
                         ActivitatFields.TRAMIT,
                         "genapp.validation.required",
-                        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("tramit"));
+                        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(RegistreActivitatServiceParams.TRAMIT));
                 __vr.rejectIfEmptyOrWhitespace(__target__,
                         ActivitatFields.PROCEDIMENT,
                         "genapp.validation.required",
-                        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("procediment"));
+                        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(
+                                RegistreActivitatServiceParams.PROCEDIMENT));
                 __vr.rejectIfEmptyOrWhitespace(__target__,
                         ActivitatFields.ARXIUEXPEDIENTID,
                         "genapp.validation.required",
-                        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("arxiuexpedientid"));
+                        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(
+                                RegistreActivitatServiceParams.ARXIUEXPEDIENTID));
                 __vr.rejectIfEmptyOrWhitespace(__target__,
                         ActivitatFields.ARXIUDOCUMENTID,
                         "genapp.validation.required",
-                        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("arxiudocumentid"));
+                        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(
+                                RegistreActivitatServiceParams.ARXIUDOCUMENTID));
 
                 __vr.rejectIfEmptyOrWhitespace(__target__,
                         ActivitatFields.INTERESSATNOM,
                         "genapp.validation.required",
-                        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("nominteressat"));
+                        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(
+                                RegistreActivitatServiceParams.NOMINTERESSAT));
                 __vr.rejectIfEmptyOrWhitespace(__target__,
                         ActivitatFields.INTERESSATLLINATGE1,
                         "genapp.validation.required",
-                        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("llinatge1interessat"));
+                        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(
+                                RegistreActivitatServiceParams.LLINATGE1INTERESSAT));
                 __vr.rejectIfEmptyOrWhitespace(__target__,
                         ActivitatFields.INTERESSATTIPUS,
                         "genapp.validation.required",
-                        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("tipusidentificaciointeressat"));
+                        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(
+                                RegistreActivitatServiceParams.TIPUSIDENTIFICACIOINTERESSAT));
                 __vr.rejectIfEmptyOrWhitespace(__target__,
                         ActivitatFields.INTERESSATIDENTIFICACIO,
                         "genapp.validation.required",
-                        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("identificaciointeressat"));
+                        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(
+                                RegistreActivitatServiceParams.IDENTIFICACIOINTERESSAT));
 
                 Object representantNom = __vr.getFieldValue(__target__, ActivitatFields.REPRESENTANTNOM);
                 Object representantLlinatge1 = __vr.getFieldValue(__target__, ActivitatFields.REPRESENTANTLLINATGE1);
@@ -94,35 +102,42 @@ public class RegistreActivitatValidator extends ActivitatValidator<Activitat> {
                     __vr.rejectIfEmptyOrWhitespace(__target__,
                             ActivitatFields.REPRESENTANTNOM,
                             "activitat.validation.noinformatrepresentant",
-                            new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("nomrepresentant"));
+                            new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(
+                                    RegistreActivitatServiceParams.NOMREPRESENTANT));
                     __vr.rejectIfEmptyOrWhitespace(__target__,
                             ActivitatFields.REPRESENTANTLLINATGE1,
                             "activitat.validation.noinformatrepresentant",
-                            new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("llinatge1representant"));
+                            new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(
+                                    RegistreActivitatServiceParams.LLINATGE1REPRESENTANT));
                     __vr.rejectIfEmptyOrWhitespace(__target__,
                             ActivitatFields.REPRESENTANTTIPUS,
                             "activitat.validation.noinformatrepresentant",
-                            new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("tipusidentificaciorepresentant"));
+                            new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(
+                                    RegistreActivitatServiceParams.TIPUSIDENTIFICACIOREPRESENTANT));
                     __vr.rejectIfEmptyOrWhitespace(__target__,
                             ActivitatFields.REPRESENTANTIDENTIFICACIO,
                             "activitat.validation.noinformatrepresentant",
-                            new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("identificaciorepresentant"));
+                            new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(
+                                    RegistreActivitatServiceParams.IDENTIFICACIOREPRESENTANT));
                 }
                 __vr.rejectIfEmptyOrWhitespace(__target__,
                         ActivitatFields.IDACTUACIOTRAMIT,
                         "genapp.validation.required",
-                        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("idActuacioTramitFh"));
+                        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(
+                                RegistreActivitatServiceParams.IDACTUACIOTRAMITFH));
 
                 break;
             case TRAMIT:
                 __vr.rejectIfEmptyOrWhitespace(__target__,
                         ActivitatFields.REGISTRE,
                         "genapp.validation.required",
-                        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("registre"));
+                        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(
+                                RegistreActivitatServiceParams.REGISTRE));
                 __vr.rejectIfEmptyOrWhitespace(__target__,
                         ActivitatFields.IDACTUACIOTRAMIT,
                         "genapp.validation.required",
-                        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("idActuacioTramitFh"));
+                        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(
+                                RegistreActivitatServiceParams.IDACTUACIOTRAMITFH));
 
                 break;
         }

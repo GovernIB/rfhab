@@ -1,4 +1,4 @@
-package es.caib.rfhab.api.interna.secure.activitat;
+package es.caib.rfhab.logic.utils.RegistreActivitatService;
 
 /**
  * 

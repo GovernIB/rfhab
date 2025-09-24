@@ -554,6 +554,8 @@ button[disabled][type="submit"] {
 								<iframe id="iframe-pdf" style="display: none; overflow: auto; max-height: 44.5vh;" src="" type="application/pdf" width="100%" height="600"></iframe>
 								<input style="display: none;" id="input-pdf" name="inputPdf" type="text" class="form-control" 
 									data-bind="value: Pdf" data-val="true" data-val-required="<fmt:message key="usuari.tramit.iniciar.apoderament" />">
+								<input type="hidden" id="expedientId" name="expedientId" value="" />
+								<input type="hidden" id="documentId" name="documentId" value="" />
 							</div>
 
 							<div class="row buttonsDiv">
@@ -813,7 +815,7 @@ button[disabled][type="submit"] {
 						form.trigger(msfEventTypes.viewChanged, {
 							currentIndex : index,
 							previousIndex : previousIndex,
-							totalSteps : form.steps.length - 1,
+							totalSteps : form.steps.length,
 							completedSteps : completedSteps
 						});
 					}
@@ -1211,7 +1213,7 @@ button[disabled][type="submit"] {
 			"msf:viewChanged",
 			function(event, data) {
 				var progress = Math
-						.round((data.currentIndex / data.totalSteps) * 100);
+						.round(((data.currentIndex + 1) / data.totalSteps) * 100);
 						// .round((data.completedSteps / data.totalSteps) * 100);
 
 				$(".progress-bar").css("width", progress + "%").attr(
@@ -1716,6 +1718,8 @@ button[disabled][type="submit"] {
 											" i ID de document: " + documentId);//TODO: ficar codi de traduccions
 										documentImmprimibleTancaraElModal = true;
 										documentImprimible(documentId);
+										$('#arxiuExpedientId').val(expedientId);
+										$('#arxiuDocumentId').val(documentId);
 									}
 									else {
 										let errorText = "No s'ha pogut guardar el fitxer amb ID d'expedient " + expedientId + " dins Arxiu.";//TODO: ficar codi de traduccions
@@ -2074,6 +2078,9 @@ button[disabled][type="submit"] {
 			tramitVersio: $form.find('#tramitVersio').val() || '',
 			tramitParametres: $form.find('#tramitParametres').val() || '',
 			idTraTel: $form.find('#idTraTel').val() || '',
+			//registre activitat ticket FH
+			arxiuExpedientId: $form.find('#arxiuExpedientId').val() || '',
+			arxiuDocumentId: $form.find('#arxiuDocumentId').val() || '',
 		};
 
 		data.interessats.push(data.ciutadaNif);

@@ -13,5 +13,6 @@ public interface SistramitLogicaService {
 
     public String getTicketAccesoFh(Funcionari funcionari, String codiDir3, RpersonaInfo interessat,
             RpersonaInfo representant, String idTramiteCatalogo, String ticketLanguage, String ticketParametros,
-            boolean servicioCatalogo, String tramite, Integer tramiteVersion) throws I18NException;
+            boolean servicioCatalogo, String tramite, Integer tramiteVersion, String idActuacionFH)
+            throws I18NException;
 }

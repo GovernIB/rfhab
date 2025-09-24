@@ -5,16 +5,26 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.annotation.security.PermitAll;
+import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 import org.fundaciobit.genapp.common.i18n.I18NCommonUtils;
 import org.fundaciobit.genapp.common.i18n.I18NException;
+
+import es.caib.rfhab.commons.utils.IdentificacioTipus;
+import es.caib.rfhab.commons.utils.RegistreActivitatTipus;
 import es.caib.rfhab.ejb.UsuariEJB;
+import es.caib.rfhab.logic.utils.RegistreActivitatService.RegistreActivitatValidator;
+import es.caib.rfhab.logic.utils.TicketAccesDto.RpersonaInfo;
+import es.caib.rfhab.model.entity.Activitat;
+import es.caib.rfhab.model.entity.Funcionari;
+import es.caib.rfhab.model.entity.Usuari;
 import es.caib.rfhab.model.fields.EntitatFields;
 import es.caib.rfhab.model.fields.UsuariEntitatFields;
 import es.caib.rfhab.model.fields.UsuariFields;
 import es.caib.rfhab.persistence.UsuariJPA;
+import es.caib.rfhab.persistence.validator.ActivitatValidator;
 
 /**
  * 
@@ -25,6 +35,14 @@ import es.caib.rfhab.persistence.UsuariJPA;
 
 @Stateless
 public class UsuariLogicaEJB extends UsuariEJB implements UsuariLogicaService {
+
+	@EJB(mappedName = ActivitatLogicaService.JNDI_NAME)
+	protected ActivitatLogicaService activitatLogicaEjb;
+
+	@EJB(mappedName = SistramitLogicaService.JNDI_NAME)
+	protected SistramitLogicaService sistramitLogicaEjb;
+
+	protected ActivitatValidator<Activitat> activitatValidator = new RegistreActivitatValidator();
 
 	@Override
 	@PermitAll
@@ -90,7 +108,24 @@ public class UsuariLogicaEJB extends UsuariEJB implements UsuariLogicaService {
 
 	@Override
 	@PermitAll
-	public String checkIsActiuIteNif(UsuariJPA usuari, String language) throws I18NException {
+	public String checkIsActiuIteNif(Integer usuariId, String language) throws I18NException {
+		Usuari usuari = findByPrimaryKey(usuariId);
+		if (usuari == null) {
+			String errorNoActiu = I18NCommonUtils.tradueix(new Locale(language),
+					"error.notfound",
+					new String[] { I18NCommonUtils.tradueix(new Locale(language), "usuari.usuari"),
+							I18NCommonUtils.tradueix(new Locale(language), "usuari.usuariID"),
+							String.valueOf(usuariId) });
+			log.error(errorNoActiu);
+			throw new I18NException(errorNoActiu);
+		}
+
+		return checkIsActiuIteNif(usuari, language);
+	}
+
+	@Override
+	@PermitAll
+	public String checkIsActiuIteNif(Usuari usuari, String language) throws I18NException {
 		String userName = usuari.getUsername();
 		String userNif = usuari.getNif();
 		if (!usuari.isActiu()) {
@@ -122,4 +157,43 @@ public class UsuariLogicaEJB extends UsuariEJB implements UsuariLogicaService {
 
 		return userNif;
 	}
+
+	/**
+	 * Retorna el ticket d'accés per a fer un tràmit a SISTRA.
+	 * 
+	 * @return String amb el ticket d'accés.
+	 * @throws I18NException
+	 */
+	@Override
+	@PermitAll
+	public String registraActivitatIobteTicketAccessFh(Funcionari funcionari, String codiDir3, RpersonaInfo interessat,
+			RpersonaInfo representant, String idTramiteCatalogo, String ticketLanguage, String ticketParametros,
+			boolean servicioCatalogo, String tramite, String tramitVersio, long usuariId, Timestamp dataActivitat,
+			String procediment, String arxiuExpedientId, String arxiuDocumentId) throws I18NException {
+		try {
+			String idActuacioTramitFh = java.util.UUID.randomUUID().toString();
+			Activitat newAct = activitatLogicaEjb.registraNovaActivitat(ticketLanguage, activitatValidator,
+					RegistreActivitatTipus.COMPAREIX, null,
+					null,
+					idActuacioTramitFh, tramite, tramitVersio, procediment,
+					interessat.getNombre(), interessat.getApellido1(), interessat.getApellido2(),
+					IdentificacioTipus.DNI,
+					interessat.getNif(), representant != null ? representant.getNombre() : null,
+					representant != null ? representant.getApellido1() : null,
+					representant != null ? representant.getApellido2() : null,
+					representant != null ? IdentificacioTipus.DNI : null,
+					representant != null ? representant.getNif() : null, arxiuExpedientId, arxiuDocumentId,
+					dataActivitat, usuariId);
+
+			return sistramitLogicaEjb.getTicketAccesoFh(funcionari, codiDir3, interessat, representant,
+					idTramiteCatalogo, ticketLanguage, ticketParametros, servicioCatalogo, tramite,
+					Integer.valueOf(tramitVersio),
+					idActuacioTramitFh);
+
+		} catch (Exception e) {
+			log.error("Error registrant nova actualitzat. Error: " + e.getMessage());
+			throw e;
+		}
+	}
+
 }

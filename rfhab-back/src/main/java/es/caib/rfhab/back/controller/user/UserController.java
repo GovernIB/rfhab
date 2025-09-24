@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.io.InputStream;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -44,6 +45,7 @@ import es.caib.rfhab.logic.FuncionariLogicaService;
 import es.caib.rfhab.logic.ScanWebLogicaService;
 import es.caib.rfhab.logic.SistramitLogicaService;
 import es.caib.rfhab.logic.UnitatLogicaUserService;
+import es.caib.rfhab.logic.UsuariLogicaService;
 import es.caib.rfhab.logic.utils.GeneracioModelConsentimentTramits.PlantillaOdtModelConsentiment;
 import es.caib.rfhab.logic.utils.GeneracioModelConsentimentTramits.TramitConsentimentDAO;
 import es.caib.rfhab.logic.utils.GeneracioModelConsentimentTramits.TramitConsentimentDTO;
@@ -76,6 +78,9 @@ public class UserController extends UsuariController {
 			+ "model_consentiment_def_i_protec_dades.odt";
 	private static final String PLANTILLA_PROVES_CAST_ODT = UserController.CARPETA_PLANTILLES
 			+ "model_consentiment_def_i_protec_dades_cast.odt";
+
+	@EJB(mappedName = UsuariLogicaService.JNDI_NAME)
+	protected UsuariLogicaService usuariLogicaEjb;
 
 	@EJB(mappedName = SistramitLogicaService.JNDI_NAME)
 	protected SistramitLogicaService sistramitLogicaEjb;
@@ -216,7 +221,9 @@ public class UserController extends UsuariController {
 			@RequestParam(value = "tramitCodi", required = true) String tramitCodi,
 			@RequestParam(value = "tramitVersio", required = true) String tramitVersio,
 			@RequestParam(value = "tramitParametres", required = false) String tramitParametres,
-			@RequestParam(value = "idTraTel", required = false) String idTraTel,
+			@RequestParam(value = "idTraTel", required = true) String idTraTel,
+			@RequestParam(value = "arxiuExpedientId", required = true) String arxiuExpedientId,
+			@RequestParam(value = "arxiuDocumentId", required = true) String arxiuDocumentId,
 			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		log.info("XYZ ZZZ ENTRANT A ticketAccesFh");
@@ -253,10 +260,15 @@ public class UserController extends UsuariController {
 		Entitat entitat = entitatLogicaEjb.findByPrimaryKey(loginInfo.getEntitatID());
 		Unitat unitat = unitatLogicaEjb.findByPrimaryKey(entitat.getUnitatID());
 
+		long usuariId = usuari.getUsuariID();
+		Timestamp dataActivitat = new Timestamp(System.currentTimeMillis());
+
 		log.info("XYZ YYY username = " + username);
 		log.info("XYZ YYY funcionariAdministracioID = " + funcionariAdministracioID);
 		log.info("XYZ YYY funcionariNom = " + funcionariNom);
 		log.info("XYZ YYY funcionariDir3 = " + funcionariDir3);
+		log.info("XYZ YYY usuariId = " + usuariId);
+		log.info("XYZ YYY dataActivitat = " + dataActivitat);
 
 		String urlTramit = null;
 		try {
@@ -298,9 +310,11 @@ public class UserController extends UsuariController {
 				log.error(missatge);
 				return missatge;
 			}
-			urlTramit = sistramitLogicaEjb.getTicketAccesoFh(funcionari, funcionariDir3, interessatTramit,
+			urlTramit = usuariLogicaEjb.registraActivitatIobteTicketAccessFh(funcionari, funcionariDir3,
+					interessatTramit,
 					representantTramit,
-					tramitCodi, languageUI, tramitParametres, false, idTraTel, Integer.valueOf(tramitVersio));
+					tramitCodi, languageUI, tramitParametres, false, idTraTel, tramitVersio, usuariId,
+					dataActivitat, procediment, arxiuExpedientId, arxiuDocumentId);
 		} catch (Exception e) {
 			log.error("Error retrieving ticket access. Message: " + e.getMessage());
 			log.error("Error retrieving ticket access. LocalizedMessage: " + e.getLocalizedMessage());
@@ -426,7 +440,8 @@ public class UserController extends UsuariController {
 
 		log.info("XYZ YYY funcionariNom = " + funcionariNom);
 		log.info("XYZ YYY funcionariCodi = " + funcionariCodi);
-		// String funcionariDir3 = getCodiDIR3(request, username);// codiDIR3 del lloc de feina del funcionari
+		// String funcionariDir3 = getCodiDIR3(request, username);// codiDIR3 del lloc
+		// de feina del funcionari
 		// log.info("XYZ YYY funcionariDir3 = " + funcionariDir3);
 
 		TramitConsentimentDAO tramitConsentimentDAO = new TramitConsentimentDAO(

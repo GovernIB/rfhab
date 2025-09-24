@@ -1,10 +1,9 @@
-package es.caib.rfhab.back.controller.admin;
+package es.caib.rfhab.back.controller.user;
 
 import java.sql.Timestamp;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-
 import org.fundaciobit.genapp.common.StringKeyValue;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.query.Where;
@@ -23,18 +22,20 @@ import es.caib.rfhab.back.form.webdb.ActivitatForm;
 import es.caib.rfhab.persistence.ActivitatJPA;
 
 @Controller
-@RequestMapping("/admin/activitat")
+@RequestMapping(ActivitatUserController.CONTEXTWEB)
 @SessionAttributes(types = { ActivitatForm.class, ActivitatFilterForm.class })
-public class ActivitatAdminController extends ActivitatController {
+public class ActivitatUserController extends ActivitatController {
+
+	public static final String CONTEXTWEB = "/user/activitat/";
 
 	@Override
 	public String getTileForm() {
-		return "activitatFormAdmin";
+		return "activitatFormUser";
 	}
 
 	@Override
 	public String getTileList() {
-		return "activitatListAdmin";
+		return "activitatListUser";
 	}
 
 	@Override
@@ -46,7 +47,7 @@ public class ActivitatAdminController extends ActivitatController {
 		if (activitatFilterForm.isNou()) {
 			activitatFilterForm.addHiddenField(ACTIVITATID);
 			activitatFilterForm.addHiddenField(FUNCIONARIID);
-			
+
 			activitatFilterForm.addAdditionalButton(new AdditionalButton(" fas fa-long-arrow-alt-left", "tornar",
 					getContextWeb() + "/tornar", AdditionalButtonStyle.SECONDARY));
 		}
@@ -88,10 +89,9 @@ public class ActivitatAdminController extends ActivitatController {
 		__tmp.add(new StringKeyValue("2", I18NUtils.tradueix("tipusregistre.2")));
 		return __tmp;
 	}
-	
+
 	@RequestMapping(value = "/tornar", method = RequestMethod.GET)
 	public String tornar(HttpServletRequest request) {
 		return "redirect:/admin/funcionari/list/1";
 	}
-
 }

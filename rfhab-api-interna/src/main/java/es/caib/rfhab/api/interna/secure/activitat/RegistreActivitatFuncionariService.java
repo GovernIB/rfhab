@@ -8,6 +8,8 @@ import es.caib.rfhab.commons.utils.RegistreActivitatTipusValues;
 import es.caib.rfhab.logic.ActivitatLogicaService;
 import es.caib.rfhab.logic.AutoritzacioLogicaService;
 import es.caib.rfhab.logic.FuncionariLogicaService;
+import es.caib.rfhab.logic.utils.RegistreActivitatService.RegistreActivitatServiceParams;
+import es.caib.rfhab.logic.utils.RegistreActivitatService.RegistreActivitatValidator;
 import es.caib.rfhab.model.entity.Activitat;
 import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.validator.ActivitatValidator;
@@ -182,6 +184,7 @@ public class RegistreActivitatFuncionariService extends RestUtils {
 
 			// TRAMIT
 			@Parameter(description = "Número de registre associat a l\'activitat. Obligatori pel tipus d'activitat 2", required = false, example = "", schema = @Schema(type = "string")) @QueryParam(RegistreActivitatServiceParams.REGISTRE) String registre,
+			// TRAMIT I COMPAREIX
 			@Parameter(description = "Identificador associat a l\'activitat de tràmit iniciada que es preten marcar com a finalitzada. Obligatori pel tipus d'activitat 2", required = false, example = "", schema = @Schema(type = "string")) @QueryParam(RegistreActivitatServiceParams.IDACTUACIOTRAMITFH) String idActuacioTramitFh,
 
 			// COMPAREIX (ocults)

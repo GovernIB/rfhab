@@ -4594,6 +4594,7 @@
           "showInWebList": true,
           "showInReferenceList": false,
           "transientField": false,
+          "minAllowedValue": "[a-z0-9!#$%\u0026\u0027*+/\u003d?^_`{|}~-]+(?:\\.[a-z0-9!#$%\u0026\u0027*+/\u003d?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
           "filter": true,
           "orderBy": 0,
           "groupBy": false,

@@ -78,7 +78,8 @@ public class SistramitLogicaEJBTest {
             RpersonaInfo interessat = new RpersonaInfo("Botó", "Jaume", "99999972C", "Mateu");
             RpersonaInfo representant = null;
 
-            urlTramit = sistramitLogicaEjb.getTicketAccesoFh(funcionari, codiDir3Fh, interessat, representant, "3860378", tramitLlengua, "", false, "CAIB.TESTS_OLD.TEST-FIRMA", 5);
+            urlTramit = sistramitLogicaEjb.getTicketAccesoFh(funcionari, codiDir3Fh, interessat, representant,
+                    "3860378", tramitLlengua, "", false, "CAIB.TESTS_OLD.TEST-FIRMA", 5, null);
         } catch (Exception e) {
             log.error("Error retrieving ticket access. Message: " + e.getMessage());
             log.error("Error retrieving ticket access. LocalizedMessage: " + e.getLocalizedMessage());

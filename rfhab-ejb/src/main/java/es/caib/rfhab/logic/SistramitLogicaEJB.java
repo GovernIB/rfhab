@@ -51,14 +51,16 @@ public class SistramitLogicaEJB implements SistramitLogicaService {
     }
 
     /**
-     * Retorna el ticket d'accés per a la Fundació Hospital de la Santa Creu i Sant
-     * Pau.
+     * Retorna el ticket d'accés per a fer un tràmit a SISTRA.
      * 
      * @return String amb el ticket d'accés.
      * @throws I18NException
      */
     @Override
-    public String getTicketAccesoFh(Funcionari funcionari, String codiDir3, RpersonaInfo interessat, RpersonaInfo representant, String idTramiteCatalogo, String ticketLanguage, String ticketParametros, boolean servicioCatalogo, String tramite, Integer tramiteVersion) throws I18NException {
+    public String getTicketAccesoFh(Funcionari funcionari, String codiDir3, RpersonaInfo interessat,
+            RpersonaInfo representant, String idTramiteCatalogo, String ticketLanguage, String ticketParametros,
+            boolean servicioCatalogo, String tramite, Integer tramiteVersion, String idActuacionFH)
+            throws I18NException {
         final String entitat = "ticketAccesoFH";
 
         final RestTemplate restTemplate = new RestTemplate();
@@ -66,9 +68,12 @@ public class SistramitLogicaEJB implements SistramitLogicaService {
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED);
 
-        RfuncionarioHabilitadoInfo funcionarioHabilitat = RfuncionarioHabilitadoInfo.fromFuncionari(funcionari, codiDir3);
-        RtramiteFH tramit = new RtramiteFH(idTramiteCatalogo, ticketLanguage, ticketParametros, servicioCatalogo, tramite, tramiteVersion);
-        InfoTicketDto requestBodyDto = new InfoTicketDto(funcionarioHabilitat, interessat, representant, tramit);
+        RfuncionarioHabilitadoInfo funcionarioHabilitat = RfuncionarioHabilitadoInfo.fromFuncionari(funcionari,
+                codiDir3);
+        RtramiteFH tramit = new RtramiteFH(idTramiteCatalogo, ticketLanguage, ticketParametros, servicioCatalogo,
+                tramite, tramiteVersion);
+        InfoTicketDto requestBodyDto = new InfoTicketDto(idActuacionFH, funcionarioHabilitat, interessat, representant,
+                tramit);
 
         log.info("Sistramit: " + entitat + " request: " + JsonUtils.toJson(requestBodyDto));
         final ResponseEntity<String> responseTicketAccesFh = restTemplate

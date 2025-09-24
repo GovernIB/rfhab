@@ -9,12 +9,22 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 public class InfoTicketDto implements java.io.Serializable {
 
+	private String idActuacionFH = null;
 	private RfuncionarioHabilitadoInfo funcionarioHabilitado = null;
 	private RpersonaInfo interesado = null;
 	private RpersonaInfo representante = null;
 	private RtramiteFH tramiteFH = null;
 
 	// Getters i setters
+	@JsonInclude(JsonInclude.Include.NON_NULL) // Inclou només camps no nuls al JSON
+	public String getIdActuacionFH() {
+		return idActuacionFH;
+	}
+
+	public void setIdActuacionFH(String idActuacionFH) {
+		this.idActuacionFH = idActuacionFH;
+	}
+
 	public RfuncionarioHabilitadoInfo getFuncionarioHabilitado() {
 		return funcionarioHabilitado;
 	}
@@ -53,9 +63,11 @@ public class InfoTicketDto implements java.io.Serializable {
 		super();
 	}
 
-	public InfoTicketDto(RfuncionarioHabilitadoInfo funcionarioHabilitado, RpersonaInfo interesado,
+	public InfoTicketDto(String idActuacionFH, RfuncionarioHabilitadoInfo funcionarioHabilitado,
+			RpersonaInfo interesado,
 			RpersonaInfo representante, RtramiteFH tramiteFH) {
 		super();
+		this.idActuacionFH = idActuacionFH;
 		this.funcionarioHabilitado = funcionarioHabilitado;
 		this.interesado = interesado;
 		this.representante = representante;

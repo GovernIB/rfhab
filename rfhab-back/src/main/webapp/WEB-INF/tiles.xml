@@ -80,6 +80,14 @@
 		<put-attribute name="contingut" value="/WEB-INF/jsp/moduls/blanc.jsp" />
 	</definition>
 
+    <definition name="activitatFormUser" extends="usuari">
+        <put-attribute name="titol" value="activitat.activitat" />
+        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/activitatForm.jsp" />
+    </definition>
+    
+    <definition name="activitatListUser" extends="usuari">
+        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/activitatList.jsp" />
+    </definition>
 
 	<!--  ===========  COMMON  ================== -->
 
@@ -209,16 +217,7 @@
     <definition name="historicListAdmin" extends="admin">
         <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/historicList.jsp" />
     </definition>
-    
-    <definition name="activitatFormAdmin" extends="admin">
-        <put-attribute name="titol" value="activitat.activitat" />
-        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/activitatForm.jsp" />
-    </definition>
-    
-    <definition name="activitatListAdmin" extends="admin">
-        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/activitatList.jsp" />
-    </definition>
-    
+        
     <definition name="autoritzacioFormAdmin" extends="admin">
         <put-attribute name="titol" value="autoritzacio.autoritzacio" />
         <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/autoritzacioForm.jsp" />

@@ -168,7 +168,7 @@ public class UsuariLogicaEJB extends UsuariEJB implements UsuariLogicaService {
 	@PermitAll
 	public String registraActivitatIobteTicketAccessFh(Funcionari funcionari, String codiDir3, RpersonaInfo interessat,
 			RpersonaInfo representant, String idTramiteCatalogo, String ticketLanguage, String ticketParametros,
-			boolean servicioCatalogo, String tramite, String tramitVersio, long usuariId, Timestamp dataActivitat,
+			boolean servicioCatalogo, String tramite, String tramitVersio, Timestamp dataActivitat,
 			String procediment, String arxiuExpedientId, String arxiuDocumentId) throws I18NException {
 		try {
 			String idActuacioTramitFh = java.util.UUID.randomUUID().toString();
@@ -183,7 +183,7 @@ public class UsuariLogicaEJB extends UsuariEJB implements UsuariLogicaService {
 					representant != null ? representant.getApellido2() : null,
 					representant != null ? IdentificacioTipus.DNI : null,
 					representant != null ? representant.getNif() : null, arxiuExpedientId, arxiuDocumentId,
-					dataActivitat, usuariId);
+					dataActivitat, funcionari.getFuncionariID());
 
 			return sistramitLogicaEjb.getTicketAccesoFh(funcionari, codiDir3, interessat, representant,
 					idTramiteCatalogo, ticketLanguage, ticketParametros, servicioCatalogo, tramite,
@@ -191,7 +191,7 @@ public class UsuariLogicaEJB extends UsuariEJB implements UsuariLogicaService {
 					idActuacioTramitFh);
 
 		} catch (Exception e) {
-			log.error("Error registrant nova actualitzat. Error: " + e.getMessage());
+			log.error("Error registrant nova activitat de INICI tràmit. Error: " + e.getMessage());
 			throw e;
 		}
 	}

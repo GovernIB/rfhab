@@ -554,8 +554,8 @@ button[disabled][type="submit"] {
 								<iframe id="iframe-pdf" style="display: none; overflow: auto; max-height: 44.5vh;" src="" type="application/pdf" width="100%" height="600"></iframe>
 								<input style="display: none;" id="input-pdf" name="inputPdf" type="text" class="form-control" 
 									data-bind="value: Pdf" data-val="true" data-val-required="<fmt:message key="usuari.tramit.iniciar.apoderament" />">
-								<input type="hidden" id="expedientId" name="expedientId" value="" />
-								<input type="hidden" id="documentId" name="documentId" value="" />
+								<input type="hidden" id="arxiuExpedientId" name="arxiuExpedientId" value="" />
+								<input type="hidden" id="arxiuDocumentId" name="arxiuDocumentId" value="" />
 							</div>
 
 							<div class="row buttonsDiv">

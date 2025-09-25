@@ -248,39 +248,29 @@ public class UserController extends UsuariController {
 		log.info("XYZ YYY tramitVersio = " + tramitVersio);
 		log.info("XYZ YYY tramitParametres = " + tramitParametres);
 		log.info("XYZ YYY idTraTel = " + idTraTel);
+		log.info("XYZ YYY arxiuExpedientId = " + arxiuExpedientId);
+		log.info("XYZ YYY arxiuDocumentId = " + arxiuDocumentId);
 
 		LoginInfo loginInfo = LoginInfo.getInstance();
 		Usuari usuari = loginInfo.getUsuariPersona();
 		String username = usuari.getUsername();
 		String funcionariAdministracioID = usuari.getNif();
-		String funcionariNom = (usuari.getNom() != null ? usuari.getNom() : "") + " "
-				+ (usuari.getLlinatge1() != null ? usuari.getLlinatge1() : "") + " "
-				+ (usuari.getLlinatge2() != null ? usuari.getLlinatge2() : "");
 		String funcionariDir3 = getCodiDIR3(request, username);// codiDIR3 del lloc de feina del funcionari
 		Entitat entitat = entitatLogicaEjb.findByPrimaryKey(loginInfo.getEntitatID());
-		Unitat unitat = unitatLogicaEjb.findByPrimaryKey(entitat.getUnitatID());
+		// Unitat unitat = unitatLogicaEjb.findByPrimaryKey(entitat.getUnitatID());
 
-		long usuariId = usuari.getUsuariID();
 		Timestamp dataActivitat = new Timestamp(System.currentTimeMillis());
-
-		log.info("XYZ YYY username = " + username);
-		log.info("XYZ YYY funcionariAdministracioID = " + funcionariAdministracioID);
-		log.info("XYZ YYY funcionariNom = " + funcionariNom);
-		log.info("XYZ YYY funcionariDir3 = " + funcionariDir3);
-		log.info("XYZ YYY usuariId = " + usuariId);
-		log.info("XYZ YYY dataActivitat = " + dataActivitat);
 
 		String urlTramit = null;
 		try {
-			Funcionari funcionari = new FuncionariJPA();
-			funcionari.setCorreu(usuari.getCorreu());
-			funcionari.setEntitatID(entitat.getEntitatID());
-			funcionari.setIdentificador(funcionariAdministracioID);
-			funcionari.setLlinatge1(usuari.getLlinatge1());
-			funcionari.setLlinatge2(usuari.getLlinatge2());
-			funcionari.setNom(funcionariNom);
-			funcionari.setTipusIdentificador(1);
-			funcionari.setUsuari(username);
+			Funcionari funcionari = funcionariLogicaEjb.comprovarFuncionariActiuByNif(languageUI,
+					funcionariAdministracioID, true);
+			log.info("XYZ YYY username = " + username);
+			log.info("XYZ YYY funcionariAdministracioID = " + funcionariAdministracioID);
+			log.info("XYZ YYY funcionariNom = " + funcionari.getNom());
+			log.info("XYZ YYY funcionariNumero = " + funcionari.getNumero());
+			log.info("XYZ YYY funcionariDir3 = " + funcionariDir3);
+			log.info("XYZ YYY dataActivitat = " + dataActivitat);
 
 			RpersonaInfo interessatTramit = new RpersonaInfo(ciutadaLlinatge1, ciutadaLlinatge2, ciutadaNif,
 					ciutadaNom);
@@ -313,7 +303,7 @@ public class UserController extends UsuariController {
 			urlTramit = usuariLogicaEjb.registraActivitatIobteTicketAccessFh(funcionari, funcionariDir3,
 					interessatTramit,
 					representantTramit,
-					tramitCodi, languageUI, tramitParametres, false, idTraTel, tramitVersio, usuariId,
+					tramitCodi, languageUI, tramitParametres, false, idTraTel, tramitVersio,
 					dataActivitat, procediment, arxiuExpedientId, arxiuDocumentId);
 		} catch (Exception e) {
 			log.error("Error retrieving ticket access. Message: " + e.getMessage());

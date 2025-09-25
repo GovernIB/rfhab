@@ -37,7 +37,7 @@ public interface UsuariLogicaService extends UsuariService {
 
 	public String registraActivitatIobteTicketAccessFh(Funcionari funcionari, String codiDir3, RpersonaInfo interessat,
 			RpersonaInfo representant, String idTramiteCatalogo, String ticketLanguage, String ticketParametros,
-			boolean servicioCatalogo, String tramite, String tramitVersio, long usuariId, Timestamp dataActivitat,
+			boolean servicioCatalogo, String tramite, String tramitVersio, Timestamp dataActivitat,
 			String procediment, String arxiuExpedientId, String arxiuDocumentId) throws I18NException;
 
 }

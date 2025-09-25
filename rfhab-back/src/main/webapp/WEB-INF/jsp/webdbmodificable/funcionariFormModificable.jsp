@@ -99,14 +99,14 @@
 							<c:forEach var="activitat" items="${activitatItems}">
 								<tr id="activitat_rowid_${activitat.activitatID}">
 									<td>${activitat.tipus}</td>
-									<td>${activitat.tipus}</td>
+									<td>${activitat.registre}</td>
 									<td>${activitat.tramit}</td>
 									<td>${activitat.codiSia}</td>
 									<td><fmt:formatDate pattern="${gen:getDateTimePattern()}"
 											value="${activitat.dataCreacio}" /></td>
 									<td>${activitat.estat}</td>
 									<td><a
-										href="<c:url value="/admin/activitat/view/${activitat.activitatID}"/>"
+										href="<c:url value="/user/activitat/view/${activitat.activitatID}"/>"
 										class="btn btn-primary btn-sm" target="_blank"><i
 											class="far fa-eye" title="Veure detall"></i></a></td>
 								</tr>

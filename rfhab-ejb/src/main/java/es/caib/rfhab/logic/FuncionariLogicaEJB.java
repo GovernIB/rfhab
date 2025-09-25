@@ -131,37 +131,28 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 
 	@Override
 	@PermitAll
-	public Funcionari createAndHistory(Funcionari funcionari, String cai, Long usuariId) throws I18NException {
+	public FuncionariJPA createAndHistory(Funcionari funcionari, String cai, Long usuariId) throws I18NException {
 
-		HistoricJPA historic = new HistoricJPA();
+		FuncionariJPA funcionariJpa = null;
+
+		if (funcionari == null) {
+			throw new I18NException("error.creation", "<funcionari null>");
+		}
 
 		try {
-
 			log.info("Creant funcionari: " + funcionari.getNom() + " " + funcionari.getLlinatge1() + " "
 					+ funcionari.getLlinatge2());
-
-			historic.setNumeroCai(cai);
-			historic.setFuncionariID(funcionari.getFuncionariID());
-			historic.setDataCreacio(new Timestamp(System.currentTimeMillis()));
-			historic.setUsuariID(usuariId);
-
-			HistoricFuncionariDAO newFuncionari = new HistoricFuncionariDAO(funcionari);
-			ObjectMapper mapper = new ObjectMapper();
-			String canvis = mapper.writeValueAsString(newFuncionari);
-			historic.setObservacions(canvis);
-
-			Historic nou = historicLogicaEjb.create(historic);
-
+			funcionariJpa = (FuncionariJPA) create(funcionari);
+			log.info("Funcionari creat: " + funcionariJpa.getFuncionariID());
+			Historic nou = historicLogicaEjb.create(funcionariJpa, cai , usuariId);
 			log.info("Historic de funcionari creat: " + nou.getHistoricID());
-
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			throw new I18NException("error.creation",
 					String.valueOf(funcionari.getFuncionariID()) + " (CAI: " + cai + ")");
 		}
 
-		return funcionari;
-
+		return funcionariJpa;
 	}
 
 	@Override
@@ -471,4 +462,33 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 
 		return funcionari;
 	}
+
+	@Override
+	@PermitAll
+	public String getNouFuncionariNumero() throws I18NException {
+		int nouNumber = 1;
+		Object maxFuncionariNumero = null;
+		try {
+			maxFuncionariNumero = getMaxFuncionariNumero();
+		} catch (SecurityException e) {
+			throw new I18NException(e.getMessage());
+		} catch (NoSuchFieldException e) {
+			throw new I18NException(e.getMessage());
+		}
+		if (maxFuncionariNumero != null) {
+			// Extreu la part numèrica de la cadena
+			String numericPart = maxFuncionariNumero.toString()
+					.substring(Constants.FUNCIONARI_NUMERO_PLACEHOLDER_PREFIX.length());
+			// Converteix la part numèrica a un enter, suma 1 i torna a formar la cadena
+			nouNumber = Integer.parseInt(numericPart);
+			nouNumber += 1;
+		}
+		// Format numèric amb el mateix nombre de dígits que l'original
+		String updatedNumericPart = String
+				.format("%0" + Constants.FUNCIONARI_NUMERO_PLACEHOLDER_NUMERICPART.length() + "d", nouNumber);
+		// Reconstrueix la cadena amb el prefix i el nou valor numèric
+		String nouFuncionariNumero = Constants.FUNCIONARI_NUMERO_PLACEHOLDER_PREFIX + updatedNumericPart;
+		return nouFuncionariNumero;
+	}
+
 }

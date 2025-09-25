@@ -13,16 +13,12 @@ import java.util.Locale;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.ws.rs.core.Response.Status;
-
 import org.fundaciobit.genapp.common.filesystem.FileSystemManager;
 import org.fundaciobit.genapp.common.i18n.I18NCommonUtils;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.i18n.I18NFieldError;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.validation.BeanValidatorResult;
-import org.fundaciobit.pluginsib.utils.rest.RestException;
-
 import es.caib.pluginsib.arxiu.api.ArxiuException;
 import es.caib.pluginsib.arxiu.api.ConsultaFiltre;
 import es.caib.pluginsib.arxiu.api.ConsultaOperacio;

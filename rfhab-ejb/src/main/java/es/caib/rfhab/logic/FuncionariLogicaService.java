@@ -2,6 +2,8 @@ package es.caib.rfhab.logic;
 
 import javax.ejb.Local;
 import org.fundaciobit.genapp.common.i18n.I18NException;
+
+import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.ejb.FuncionariService;
 import es.caib.rfhab.logic.utils.HistoricFuncionariDAO;
 import es.caib.rfhab.model.entity.Funcionari;
@@ -24,7 +26,7 @@ public interface FuncionariLogicaService extends FuncionariService {
 
 	public boolean isFuncionariHabilitat(Long funcionariId, String codiRol, Long entitatId) throws I18NException;
 
-	public Funcionari createAndHistory(Funcionari funcionari, String cai, Long usuariId) throws I18NException;
+	public FuncionariJPA createAndHistory(Funcionari funcionari, String cai, Long usuariId) throws I18NException;
 
 	public Funcionari updateAndHistory(Funcionari funcionari, String cai, Long usuariId) throws I18NException;
 
@@ -47,4 +49,6 @@ public interface FuncionariLogicaService extends FuncionariService {
 
 	public FuncionariJPA comprovarFuncionariActiuByNif(String language, String funcionariNif, boolean checkLloc)
 			throws I18NException;
+
+	public String getNouFuncionariNumero() throws I18NException;
 }

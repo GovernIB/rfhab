@@ -67,21 +67,22 @@ public class HistoricLogicaEJB extends HistoricEJB implements HistoricLogicaServ
 	@Override
 	@PermitAll
 	public HistoricJPA create(Funcionari funcionari, String cai, Long usuariId) throws I18NException {
+		HistoricJPA historic = null;
+
+		if (funcionari == null) {
+			throw new I18NException("error.creation", "<lloc null>");
+		}
+
 		try {
-			HistoricJPA historic = null;
+			historic = new HistoricJPA();
+			historic.setFuncionariID(funcionari.getFuncionariID());
+			historic.setNumeroCai(cai);
+			historic.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+			historic.setUsuariID(usuariId);
 
-			if (funcionari != null) {
-				historic = new HistoricJPA();
-				historic.setFuncionariID(funcionari.getFuncionariID());
-				historic.setNumeroCai(cai);
-				historic.setDataCreacio(new Timestamp(System.currentTimeMillis()));
-				historic.setUsuariID(usuariId);
-
-				HistoricFuncionariDAO historicNew = new HistoricFuncionariDAO(funcionari);
-				HistoricFuncionariDAO historicOld = new HistoricFuncionariDAO();
-				this.create(historic, historicNew, historicOld);
-			} else
-				throw new I18NException("error.creation", "<lloc null>");
+			HistoricFuncionariDAO historicNew = new HistoricFuncionariDAO(funcionari);
+			HistoricFuncionariDAO historicOld = new HistoricFuncionariDAO();
+			this.create(historic, historicNew, historicOld);
 
 			return historic;
 		} catch (Exception e) {

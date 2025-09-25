@@ -24,7 +24,6 @@ import org.fundaciobit.genapp.common.web.i18n.I18NUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
@@ -53,7 +52,6 @@ import es.caib.rfhab.model.fields.FuncionariLlocFields;
 import es.caib.rfhab.model.fields.FuncionariLlocQueryPath;
 import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.persistence.FuncionariJPA;
-import es.caib.rfhab.persistence.HistoricJPA;
 import es.caib.rfhab.persistence.LlocJPA;
 
 /*
@@ -119,28 +117,7 @@ public class FuncionariAdminController extends FuncionariController {
 				funcionari.setEntitatID(entitatIDActual);
 			}
 
-			int nouNumber = 1;
-			Object maxFuncionariNumero = null;
-			try {
-				maxFuncionariNumero = funcionariEJB.getMaxFuncionariNumero();
-			} catch (SecurityException e) {
-				throw new I18NException(e.getMessage());
-			} catch (NoSuchFieldException e) {
-				throw new I18NException(e.getMessage());
-			}
-			if (maxFuncionariNumero != null) {
-				// Extreu la part numèrica de la cadena
-				String numericPart = maxFuncionariNumero.toString()
-						.substring(Constants.FUNCIONARI_NUMERO_PLACEHOLDER_PREFIX.length());
-				// Converteix la part numèrica a un enter, suma 1 i torna a formar la cadena
-				nouNumber = Integer.parseInt(numericPart);
-				nouNumber += 1;
-			}
-			// Format numèric amb el mateix nombre de dígits que l'original
-			String updatedNumericPart = String
-					.format("%0" + Constants.FUNCIONARI_NUMERO_PLACEHOLDER_NUMERICPART.length() + "d", nouNumber);
-			// Reconstrueix la cadena amb el prefix i el nou valor numèric
-			String nouFuncionariNumero = Constants.FUNCIONARI_NUMERO_PLACEHOLDER_PREFIX + updatedNumericPart;
+			String nouFuncionariNumero = funcionariEJB.getNouFuncionariNumero();
 			funcionari.setNumero(nouFuncionariNumero);
 		} else {
 			long funcionariId = funcionari.getFuncionariID();
@@ -428,15 +405,10 @@ public class FuncionariAdminController extends FuncionariController {
 	@Override
 	public FuncionariJPA create(HttpServletRequest request, FuncionariJPA funcionari)
 			throws I18NException, I18NValidationException {
-		FuncionariJPA newFuncionari = super.create(request, funcionari);
-		log.info("Funcionari creat: " + newFuncionari.getFuncionariID());
-
 		Long usuariId = LoginInfo.getInstance().getUsuariPersona().getUsuariID();
-
 		String numeroCai = request.getParameter("numerocai");
-		log.info("Creant Historic per a CAI: " + numeroCai + " i usuari: " + usuariId);
-		HistoricJPA historic = historicEjb.create(newFuncionari, numeroCai, usuariId);
-		log.info("Historic creat: " + historic.getHistoricID());
+		log.info("Creant Funcionari i Historic per a CAI: " + numeroCai + " i usuari: " + usuariId);
+		FuncionariJPA newFuncionari = funcionariEJB.createAndHistory(funcionari, numeroCai, usuariId);
 
 		return newFuncionari;
 	}

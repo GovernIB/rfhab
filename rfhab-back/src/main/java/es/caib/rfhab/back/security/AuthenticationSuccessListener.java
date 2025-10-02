@@ -16,7 +16,7 @@ import es.caib.rfhab.commons.utils.Configuracio;
 import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.logic.AuthenticationLogicaService;
 import es.caib.rfhab.logic.IdiomaLogicaService;
-import es.caib.rfhab.logic.UnitatLogicaUserService;
+import es.caib.rfhab.logic.UnitatLogicaService;
 import es.caib.rfhab.logic.utils.EjbManager;
 import es.caib.rfhab.persistence.EntitatJPA;
 import es.caib.rfhab.persistence.IdiomaJPA;
@@ -64,7 +64,7 @@ public class AuthenticationSuccessListener implements ApplicationListener<Intera
     
     protected IdiomaLogicaService idiomaLogicaEjb;
     
-    protected UnitatLogicaUserService unitatEjb;
+    protected UnitatLogicaService unitatEjb;
 
 
     @Override

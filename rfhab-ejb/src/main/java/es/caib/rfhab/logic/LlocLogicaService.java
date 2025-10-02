@@ -13,7 +13,6 @@ import es.caib.rfhab.logic.utils.FuncionariLlocLlocDAO;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.entity.Rol;
-import es.caib.rfhab.persistence.HistoricLlocJPA;
 import es.caib.rfhab.persistence.LlocJPA;
 
 /**
@@ -27,9 +26,11 @@ public interface LlocLogicaService extends LlocService {
 
 	public static final String JNDI_NAME = "java:app/rfhab-ejb/LlocLogicaEJB!es.caib.rfhab.logic.LlocLogicaService";
 
-	public LlocJPA createAndHistory(Lloc lloc, String cai, Long usuariId, String[] rolsSeleccionats) throws I18NException;
+	public LlocJPA createAndHistory(Lloc lloc, String cai, Long usuariId, String[] rolsSeleccionats)
+			throws I18NException;
 
-	public Lloc updateAndHistory(Lloc lloc, String cai, Long usuariId, String[] habilitacionsSeleccionades) throws I18NException;
+	public Lloc updateAndHistory(Lloc lloc, String cai, Long usuariId, String[] habilitacionsSeleccionades)
+			throws I18NException;
 
 	public HashMap<Long, LlocJPA> getAllLlocsOcupats(Long entitatId) throws I18NException;
 
@@ -39,6 +40,8 @@ public interface LlocLogicaService extends LlocService {
 			throws I18NException;
 
 	public List<Lloc> getLlocByFuncionariID(Long funcionariId, boolean current) throws I18NException;
+
+	public List<Lloc> getLlocsByCodiIexpansio(String codiLloc, String expansio) throws I18NException;
 
 	public List<Funcionari> getFuncionarisByLlocID(Long llocId) throws I18NException;
 
@@ -56,4 +59,7 @@ public interface LlocLogicaService extends LlocService {
 	public Lloc donarDeAltaAndHistory(java.lang.Long llocID, String numeroCai, long usuariId) throws I18NException;
 
 	public Object getMaxLlocCodiPropi() throws SecurityException, NoSuchFieldException;
+
+	public String getNouLlocCodiPropi(String codiLloc, String expansio) throws I18NException;
+
 }

@@ -40,14 +40,16 @@ import es.caib.rfhab.back.form.webdb.LlocForm;
 import es.caib.rfhab.back.security.LoginInfo;
 import es.caib.rfhab.back.utils.UrlUtils;
 import es.caib.rfhab.commons.utils.Constants;
+import es.caib.rfhab.commons.utils.PersonalOamrTipus;
 import es.caib.rfhab.commons.utils.StringUtils;
 import es.caib.rfhab.ejb.EntitatService;
 import es.caib.rfhab.ejb.RolService;
+import es.caib.rfhab.logic.EntitatLogicaService;
 import es.caib.rfhab.logic.FuncionariLlocLogicaService;
 import es.caib.rfhab.logic.HistoricLlocLogicaService;
 import es.caib.rfhab.logic.LlocLogicaService;
 import es.caib.rfhab.logic.LlocRolLogicaService;
-import es.caib.rfhab.logic.UnitatLogicaUserService;
+import es.caib.rfhab.logic.UnitatLogicaService;
 import es.caib.rfhab.logic.utils.DbDaoDictionaries;
 import es.caib.rfhab.logic.utils.FuncionariLlocDAO;
 import es.caib.rfhab.logic.utils.HistoricCanvisLlocDAO;
@@ -63,7 +65,6 @@ import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.model.fields.LlocRolFields;
 import es.caib.rfhab.model.fields.RolFields;
 import es.caib.rfhab.model.fields.UnitatFields;
-import es.caib.rfhab.persistence.HistoricLlocJPA;
 import es.caib.rfhab.persistence.LlocJPA;
 import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
 
@@ -94,11 +95,11 @@ public class LlocAdminController extends LlocController {
 	@EJB(mappedName = LlocRolLogicaService.JNDI_NAME)
 	protected LlocRolLogicaService llocRolLogicaEjb;
 
-	@EJB(mappedName = UnitatLogicaUserService.JNDI_NAME)
-	protected UnitatLogicaUserService unitatEjb;
+	@EJB(mappedName = UnitatLogicaService.JNDI_NAME)
+	protected UnitatLogicaService unitatEjb;
 
-	@EJB(mappedName = EntitatService.JNDI_NAME)
-	protected EntitatService entitatEjb;
+	@EJB(mappedName = EntitatLogicaService.JNDI_NAME)
+	protected EntitatLogicaService entitatLogicaEjb;
 
 	@EJB(mappedName = RolService.JNDI_NAME)
 	protected RolService habilitacionsEjb;
@@ -355,7 +356,7 @@ public class LlocAdminController extends LlocController {
 		mav.addObject("LLOC_CODILLOCPROPI_PLACEHOLDER", Constants.LLOC_CODILLOCPROPI_PLACEHOLDER);
 
 		mav.addObject("lloc", lloc);
-		
+
 		List<Rol> habilitacionsTotes = habilitacionsEjb.select();
 		mav.addObject("habilitacionsTotes", habilitacionsTotes);
 
@@ -376,40 +377,6 @@ public class LlocAdminController extends LlocController {
 		request.getSession().setAttribute(Constants.REFERER_SESSION_ATTRIBUTE, request.getHeader("referer"));
 
 		return llocForm;
-	}
-
-	private String getNouLlocCodiPropi(String codiLloc, String expansio) throws I18NException {
-		List<Lloc> llocsAmbMateixCodi = llocLogicaEjb.select(LlocFields.CODILLOC.equal(codiLloc));
-		if (llocsAmbMateixCodi != null && llocsAmbMateixCodi.size() > 0) {
-			return llocsAmbMateixCodi.get(0).getCodiLlocPropi();
-		}
-		return generaNouLlocCodiPropi();
-	}
-
-	private String generaNouLlocCodiPropi() throws I18NException {
-		int nouNumber = 1;
-		Object maxLlocCodiPropi = null;
-		try {
-			maxLlocCodiPropi = llocLogicaEjb.getMaxLlocCodiPropi();
-		} catch (SecurityException e) {
-			throw new I18NException(e.getMessage());
-		} catch (NoSuchFieldException e) {
-			throw new I18NException(e.getMessage());
-		}
-		if (maxLlocCodiPropi != null) {
-			// Extreu la part numèrica de la cadena
-			String numericPart = maxLlocCodiPropi.toString()
-					.substring(Constants.LLOC_CODILLOCPROPI_PLACEHOLDER_PREFIX.length());
-			// Converteix la part numèrica a un enter, suma 1 i torna a formar la cadena
-			nouNumber = Integer.parseInt(numericPart);
-			nouNumber += 1;
-		}
-		// Format numèric amb el mateix nombre de dígits que l'original
-		String updatedNumericPart = String
-				.format("%0" + Constants.LLOC_CODILLOCPROPI_PLACEHOLDER_NUMERICPART.length() + "d", nouNumber);
-		// Reconstrueix la cadena amb el prefix i el nou valor numèric
-		String nouLlocCodiPropi = Constants.LLOC_CODILLOCPROPI_PLACEHOLDER_PREFIX + updatedNumericPart;
-		return nouLlocCodiPropi;
 	}
 
 	@Override
@@ -517,7 +484,7 @@ public class LlocAdminController extends LlocController {
 		lloc.setEntitatID(Long.parseLong(request.getParameter("lloc.entitatID")));
 
 		// CODI LLOC PROPI DE RFHAB
-		String nouLlocCodiPropi = getNouLlocCodiPropi(lloc.getCodiLloc(), lloc.getExpansio());
+		String nouLlocCodiPropi = llocLogicaEjb.getNouLlocCodiPropi(lloc.getCodiLloc(), lloc.getExpansio());
 		lloc.setCodiLlocPropi(nouLlocCodiPropi);
 
 		if (String.valueOf(lloc.getPersonalOamr()).equals(TIPUS_PERSONAL_OAMR)) {
@@ -535,7 +502,7 @@ public class LlocAdminController extends LlocController {
 		log.info("Creant Lloc amb habilitacions seleccionades: " + habilitacionsSeleccionadesId);
 		String[] llocHabilitacionsSeleccionades = habilitacionsSeleccionadesId.split(",");
 		log.info("Creant Lloc amb habilitacions seleccionades List: " + llocHabilitacionsSeleccionades.length);
-		
+
 		Long usuariId = LoginInfo.getInstance().getUsuariPersona().getUsuariID();
 
 		String numeroCai = request.getParameter("numerocai");
@@ -555,9 +522,10 @@ public class LlocAdminController extends LlocController {
 
 		String numeroCai = request.getParameter("numerocai");
 		Long usuariId = LoginInfo.getInstance().getUsuariPersona().getUsuariID();
-		
+
 		log.info("Actualitzant HistoricLloc per a CAI: " + numeroCai + " i usuari: " + usuariId);
-		LlocJPA llocActualitzat = (LlocJPA) llocLogicaEjb.updateAndHistory((Lloc) lloc, numeroCai, usuariId, llocHabilitacionsSeleccionades);
+		LlocJPA llocActualitzat = (LlocJPA) llocLogicaEjb.updateAndHistory((Lloc) lloc, numeroCai, usuariId,
+				llocHabilitacionsSeleccionades);
 		log.info("Lloc actualitzat amb auditoria: " + llocActualitzat.getLlocID());
 		return llocActualitzat;
 	}
@@ -567,8 +535,8 @@ public class LlocAdminController extends LlocController {
 			Where where) throws I18NException {
 		List<StringKeyValue> __tmp = new java.util.ArrayList<StringKeyValue>();
 		__tmp.add(new StringKeyValue(TIPUS_PERSONAL_OAMR, I18NUtils.tradueix("personaloamr.0")));
-		__tmp.add(new StringKeyValue("1", "No"));
-		__tmp.add(new StringKeyValue("2", "Sí"));
+		__tmp.add(new StringKeyValue(PersonalOamrTipus.NO.getValue().toString(), PersonalOamrTipus.NO.getDescripcio()));
+		__tmp.add(new StringKeyValue(PersonalOamrTipus.SI.getValue().toString(), PersonalOamrTipus.SI.getDescripcio()));
 		return __tmp;
 	}
 
@@ -718,7 +686,7 @@ public class LlocAdminController extends LlocController {
 
 		String lang = LocaleContextHolder.getLocale().getLanguage();
 
-		Entitat entitat = entitatEjb.findByPrimaryKey(entitatId);
+		Entitat entitat = entitatLogicaEjb.findByPrimaryKey(entitatId);
 		if (entitat == null) {
 			log.info("No hi ha entitat associada al lloc de feina");
 			return EMPTY_STRINGKEYVALUE_LIST;
@@ -729,7 +697,7 @@ public class LlocAdminController extends LlocController {
 			return EMPTY_STRINGKEYVALUE_LIST;
 		}
 
-		List<Unitat> referenciades = findAllReferencingUnitats(unitatEjb.select(), unitatArrel.getCodi());
+		List<Unitat> referenciades = unitatEjb.findAllReferencingUnitats(unitatEjb.select(), unitatArrel.getCodi());
 
 		for (Unitat u : referenciades) {
 			// System.out.println("Unitat referenciada: " + u.getCodi());
@@ -738,39 +706,12 @@ public class LlocAdminController extends LlocController {
 		}
 		mav.addObject("unitats", referenciades);
 		if (setEntitatsToTheModel) {
-			List<Entitat> entitats = entitatEjb.select(EntitatFields.UNITATID
+			List<Entitat> entitats = entitatLogicaEjb.select(EntitatFields.UNITATID
 					.in(unitatsResult.stream().map(u -> Long.parseLong(u.key)).toArray(Long[]::new)));
 			mav.addObject("entitats", entitats);
 		}
 
 		return unitatsResult;
-	}
-
-	public static List<Unitat> findAllReferencingUnitats(List<Unitat> unitats, String codiInicial) {
-		List<Unitat> result = new ArrayList<>();
-		List<String> codisPendents = new ArrayList<>();
-		codisPendents.add(codiInicial);
-		boolean entitatArrelAfegida = false;
-
-		while (!codisPendents.isEmpty()) {
-			String codiActual = codisPendents.remove(0);
-
-			for (Unitat unitat : unitats) {
-				// aquí només hauria d'entrar un pic per afegir la unitat "arrel". LLevar si no
-				// es vol aquesta unitat. Però revisar el jsp perquè no està preparat per això,
-				// ja que cerca l'entitat "arrel" dins el llistat d'unitats.
-				if (!entitatArrelAfegida && codiInicial.equals(unitat.getCodi())) {
-					result.add(0, unitat);
-					entitatArrelAfegida = true;
-				}
-				if (codiActual.equals(unitat.getSuperior())) {
-					result.add(unitat);
-					codisPendents.add(unitat.getCodi());
-				}
-			}
-		}
-
-		return result;
 	}
 
 	@Override
@@ -785,7 +726,7 @@ public class LlocAdminController extends LlocController {
 			return UrlUtils.getRefererRedirect(request, super.getRedirectWhenModified(request, llocForm, __e));
 		}
 		LlocJPA lloc = llocForm.getLloc();
-		String msg = I18NUtils.tradueix("lloc.modificar.success",
+		String msg = I18NUtils.tradueix("model.modificar.success",
 				new String[] { I18NUtils.tradueix(getEntityNameCode()),
 						I18NUtils.tradueix("lloc.codiLloc").toLowerCase(), lloc.getCodiLloc() });
 		HtmlUtils.deleteMessages(request);

@@ -1,5 +1,6 @@
 package es.caib.rfhab.api.interna.secure.funcionari;
 
+import es.caib.rfhab.api.interna.utils.I18NLogicUtilsApiInterna;
 import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.commons.utils.IdentificacioTipus;
 import es.caib.rfhab.commons.utils.IdentificacioTipusValues;
@@ -13,9 +14,6 @@ import es.caib.rfhab.ejb.RolService;
 import es.caib.rfhab.ejb.UnitatService;
 import es.caib.rfhab.logic.FuncionariLogicaService;
 import es.caib.rfhab.logic.UsuariLogicaService;
-import es.caib.rfhab.logic.utils.RegistreActivitatService.RegistreActivitatServiceParams;
-import es.caib.rfhab.logic.utils.RegistreActivitatService.RegistreActivitatValidator;
-import es.caib.rfhab.model.entity.Activitat;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.entity.Rol;
@@ -26,7 +24,6 @@ import es.caib.rfhab.model.fields.LlocRolFields;
 import es.caib.rfhab.model.fields.RolFields;
 import es.caib.rfhab.model.fields.UnitatFields;
 import es.caib.rfhab.persistence.FuncionariJPA;
-import es.caib.rfhab.persistence.validator.ActivitatValidator;
 import es.caib.rfhab.persistence.validator.FuncionariValidator;
 import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
 
@@ -135,10 +132,6 @@ public class FuncionariRestService extends RestUtils {
 	protected static final String SECURITY_NAME = "BasicAuth";
 
 	protected ObjectMapper mapper = new ObjectMapper();
-
-	public static final int TIPUS_COPIA = 1;
-	public static final int TIPUS_TRAMIT = 2;
-	public static final int TIPUS_COMPAREIX = 3;
 
 	@Path("/habilitat")
 	@GET
@@ -458,11 +451,9 @@ public class FuncionariRestService extends RestUtils {
 	/**
 	 * Registra un/a funcionari/ària habilitat nou a RFHab
 	 * 
-	 * @param language    Idioma en que s'han de retornar els missatges. Obligatori
-	 * @param usuariId    Identificador de l'usuari que està realitzant el registre
-	 *                    d'un nou FH. Obligatori
-	 * @param donarDeAlta Si es true, el FH es dona d'alta automàticament a Rfhab.
-	 *                    Opcional (per defecte false)
+	 * @param language Idioma en que s'han de retornar els missatges. Obligatori
+	 * @param usuariId Identificador de l'usuari que està realitzant el registre
+	 *                 d'un nou FH. Obligatori
 	 * 
 	 * @return
 	 */
@@ -492,35 +483,46 @@ public class FuncionariRestService extends RestUtils {
 					@ExampleObject(name = "Català", value = "ca"),
 					@ExampleObject(name = "Castellano", value = "es") }, schema = @Schema(defaultValue = "ca", implementation = String.class)) @QueryParam("language") String language,
 			@Parameter(description = "Identificador de l'usuari que està realitzant el registre d'un nou FH", required = true, example = "9999", schema = @Schema(type = "int")) @NotNull @QueryParam("usuariid") Integer usuariId,
-			@Parameter(description = "Donar d'alta nou FH", required = false, example = "false", schema = @Schema(defaultValue = "false", implementation = String.class)) @QueryParam("donardealta") boolean donarDeAlta,
 			@Parameter(description = "Nom del funcionari", required = true) @QueryParam("nom") @NotNull String nom,
 			@Parameter(description = "Primer llinatge", required = true) @QueryParam("llinatge1") @NotNull String llinatge1,
 			@Parameter(description = "Segon llinatge", required = false) @QueryParam("llinatge2") String llinatge2,
 			@Parameter(description = "Tipus d'identificació del funcionari/ària:<br />&emsp;<i>"
 					+ IdentificacioTipusValues.DESCRIPTION_ALL_VALUES
-					+ "</i>", required = true, example = "", schema = @Schema(type = "IdentificacioTipus", description = IdentificacioTipusValues.DESCRIPTION_ALL_VALUES), hidden = true) @NotNull @QueryParam("tipusIdentificador") IdentificacioTipus tipusIdentificador,
+					+ "</i>", required = true, example = "", schema = @Schema(type = "IdentificacioTipus", description = IdentificacioTipusValues.DESCRIPTION_ALL_VALUES)) @NotNull @QueryParam("tipusIdentificador") IdentificacioTipus tipusIdentificador,
 			@Parameter(description = "Identificador", required = true) @NotNull @QueryParam("identificador") String identificador,
-			@Parameter(description = "Correu electrònic", required = false, schema = @Schema(implementation = String.class, pattern = CORREU_PATTERN)) @QueryParam("correu") String correu,
-			@Parameter(description = "EntitatID", required = true) @QueryParam("entitatId") @NotNull Long entitatId,
+			@Parameter(description = "Usuari", required = true, schema = @Schema(implementation = String.class)) @QueryParam("username") @NotNull String username,
+			@Parameter(description = "Correu electrònic", required = true, schema = @Schema(implementation = String.class, pattern = CORREU_PATTERN)) @QueryParam("correu") @NotNull String correu,
+			@Parameter(description = "EntitatID", required = true, example = "1000") @QueryParam("entitatId") @NotNull Long entitatId,
 			@Parameter(description = "Número CAI", required = false) @QueryParam("numerocai") String numeroCai,
 			@Parameter(description = "Data de baixa", required = false, example = "2025-08-31T06:15:00+00:00", schema = @Schema(implementation = String.class, pattern = DATE_PATTERN_ISO8601_DATE_AND_TIME)) @QueryParam("databaixa") String dataBaixaStr) {
 		try {
 			StringBuilder sb = new StringBuilder();
 			sb.append("Llengua: " + language + "\n");
-			sb.append("Usuari: " + usuariId + "\n");
-			sb.append("Donar d'alta: " + donarDeAlta + "\n");
+			sb.append("Usuari actuant: " + usuariId + "\n");
+			sb.append("Nom: " + nom + "\n");
+			sb.append("Llinatge1: " + llinatge1 + "\n");
+			sb.append("Llinatge2: " + llinatge2 + "\n");
+			sb.append("TipusIdentificador: " + tipusIdentificador.getValue() + "\n");
+			sb.append("Identificador: " + identificador + "\n");
+			sb.append("Usuari: " + username + "\n");
+			sb.append("Correu: " + correu + "\n");
+			sb.append("EntitatId: " + entitatId + "\n");
+			sb.append("NumeroCai: " + numeroCai + "\n");
+			sb.append("DataBaixa: " + dataBaixaStr + "\n");
 
 			log.info(sb.toString());
 
-			Timestamp dataBaixa = new Timestamp(
-					parseDateTimeISO8601ToDate(dataBaixaStr, "data", language).getTime());
+			Timestamp dataBaixa = null;
+			if (dataBaixaStr != null && !dataBaixaStr.isEmpty()) {
+				dataBaixa = new Timestamp(
+						parseDateTimeISO8601ToDate(dataBaixaStr, "data", language).getTime());
+			}
 
 			Timestamp dataCreacio = new Timestamp(System.currentTimeMillis());
 
 			// validar codi de funcionari
 			String usuariNif = usuariLogicaEjb.checkIsActiuIteNif(usuariId, language);
 			FuncionariJPA funcionariActuant = funcionariEjb.comprovarFuncionariActiuByNif(language, usuariNif, true);
-			Long funcionariActuantId = funcionariActuant.getFuncionariID();
 
 			String funcionariActuantNom = (funcionariActuant.getNom() != null ? funcionariActuant.getNom() : "") + " "
 					+ (funcionariActuant.getLlinatge1() != null ? funcionariActuant.getLlinatge1() : "") + " "
@@ -536,7 +538,7 @@ public class FuncionariRestService extends RestUtils {
 			funcionariNou.setIdentificador(identificador);
 			funcionariNou.setCorreu(correu);
 			funcionariNou.setNumero(funcionariEjb.getNouFuncionariNumero());
-			funcionariNou.setUsuari(usuariId.toString());
+			funcionariNou.setUsuari(username);
 			funcionariNou.setEntitatID(entitatId);
 			funcionariNou.setDataCreacio(dataCreacio);
 			funcionariNou.setDataBaixa(dataBaixa);
@@ -560,7 +562,8 @@ public class FuncionariRestService extends RestUtils {
 					// errorsMsg.add(I18NUtils.tradueix(i18nFieldError.getTranslation().getCode(),
 					// argumentsTraduits));
 					errorsMsg.add(
-							I18NCommonUtils.tradueix(new Locale(language), i18nFieldError.getTranslation().getCode(),
+							I18NLogicUtilsApiInterna.tradueix(new Locale(language),
+									i18nFieldError.getTranslation().getCode(),
 									Arrays.stream(i18nFieldError.getTranslation().getArgs()).map(arg -> arg.getValue())
 											.toArray(size -> new String[size])));
 				}
@@ -570,25 +573,203 @@ public class FuncionariRestService extends RestUtils {
 			} else {
 				// Cream funcionari i auditoria
 				funcionariCreat = funcionariEjb.createAndHistory(funcionariNou, numeroCai, usuariId.longValue());
-				if (donarDeAlta) {
-					long funcionariId = funcionariCreat.getFuncionariID();
-					funcionariEjb.donarDeAltaAndHistory(funcionariId, numeroCai, usuariId);
-				}
 			}
 
-			String successMsg = String.valueOf(I18NCommonUtils.tradueix(new Locale(language), "success.creation",
-					new String[] { I18NCommonUtils.tradueix(new Locale(language), "funcionari.funcionari"),
-							I18NCommonUtils.tradueix(new Locale(language), "funcionari.funcionariID"),
+			String successMsg = String.valueOf(I18NLogicUtilsApiInterna.tradueix(new Locale(language),
+					"success.creation",
+					new String[] { I18NLogicUtilsApiInterna.tradueix(new Locale(language), "funcionari.funcionari"),
+							I18NLogicUtilsApiInterna.tradueix(new Locale(language), "funcionari.funcionariID"),
 							String.valueOf(funcionariCreat.getFuncionariID()),
 							"" }));
 			log.info(successMsg);
 
-			return "Operació realitzada correctament";// TODO: #73 traduïr
+			return I18NCommonUtils.tradueix(new Locale(language), "operacio.success");
 		} catch (I18NException re) {
 			log.error(re.getMessage(), re);
 			throw new RestException(re.getMessage(), Status.BAD_REQUEST);
 		} catch (Throwable th) {
-			String msg = "Error desconegut enregistrant nou FH: " + th.getMessage();
+			String msg = I18NCommonUtils.tradueix(new Locale(language), "funcionari.error.desconegut",
+					new String[] { th.getMessage() });
+			log.error(msg, th);
+			throw new RestException(msg, th, Status.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	/**
+	 * Donar d'alta un/a funcionari/ària habilitat que previament ha estat donat de
+	 * baixa
+	 * 
+	 * @param language Idioma en que s'han de retornar els missatges. Obligatori
+	 * @param usuariId Identificador de l'usuari que està realitzant l'acció
+	 *                 de donar d'alta el FH. Obligatori
+	 * 
+	 * @return
+	 */
+
+	@Path("/donaralta")
+	@POST
+	@Hidden
+	@RolesAllowed({ Constants.RFH_WS })
+	@SecurityRequirement(name = FuncionariRestService.SECURITY_NAME)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Operation(tags = {
+			FuncionariRestService.TAG_NAME }, operationId = "nouFuncionariHabilitat", summary = "Registra un/a funcionari/ària habilitat nou a RFHab")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Operació realitzada correctament.", content = {
+					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = String.class)) }),
+			@ApiResponse(responseCode = "400", description = "Paràmetres incorrectes", content = {
+					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = RestExceptionInfo.class)) }),
+			@ApiResponse(responseCode = "401", description = "No Autenticat", content = {
+					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = String.class)) }),
+			@ApiResponse(responseCode = "403", description = "No Autoritzat", content = {
+					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = String.class)) }),
+			@ApiResponse(responseCode = "500", description = "Error no controlat", content = {
+					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = RestExceptionInfo.class)) }), })
+	public String donarAlta(
+			@Parameter(name = "language", description = "Idioma en que s'han de retornar les dades(Només suportat 'ca' o 'es')", in = ParameterIn.QUERY, required = false, examples = {
+					@ExampleObject(name = "Català", value = "ca"),
+					@ExampleObject(name = "Castellano", value = "es") }, schema = @Schema(defaultValue = "ca", implementation = String.class)) @QueryParam("language") String language,
+			@Parameter(description = "Identificador de l'usuari que està realitzant el registre d'un nou FH", required = true, example = "9999", schema = @Schema(type = "int")) @NotNull @QueryParam("usuariid") Integer usuariId,
+			@Parameter(description = "Identificador (NIF, NIE o passaport)", required = true) @NotNull @QueryParam("identificador") String identificador,
+			@Parameter(description = "Número CAI", required = false, schema = @Schema(defaultValue = "", implementation = String.class)) @QueryParam("numerocai") String numeroCai) {
+		try {
+			StringBuilder sb = new StringBuilder();
+			sb.append("Llengua: " + language + "\n");
+			sb.append("Usuari: " + usuariId + "\n");
+			sb.append("Funcionari identificador: " + identificador + "\n");
+			sb.append("Número CAI: " + numeroCai + "\n");
+			log.info(sb.toString());
+			if (numeroCai == null) {
+				numeroCai = "";
+				log.info("XYZ YYY numeroCai = " + numeroCai);
+			}
+
+			// validar codi de funcionari
+			String usuariNif = usuariLogicaEjb.checkIsActiuIteNif(usuariId, language);
+			FuncionariJPA funcionariActuant = funcionariEjb.comprovarFuncionariActiuByNif(language, usuariNif, true);
+
+			String funcionariActuantNom = (funcionariActuant.getNom() != null ? funcionariActuant.getNom() : "") + " "
+					+ (funcionariActuant.getLlinatge1() != null ? funcionariActuant.getLlinatge1() : "") + " "
+					+ (funcionariActuant.getLlinatge2() != null ? funcionariActuant.getLlinatge2() : "");
+
+			log.info("XYZ YYY funcionariActuantNom = " + funcionariActuantNom);
+
+			Funcionari funcionariAdonarDeAlta = funcionariEjb.findByNif(identificador);
+			if (funcionariAdonarDeAlta == null) {
+				throw new I18NException(I18NLogicUtilsApiInterna.tradueix(new Locale(language),
+						"funcionari.error.noexisteixnif",
+						new String[] { identificador }));
+			}
+			long funcionariId = funcionariAdonarDeAlta.getFuncionariID();
+			funcionariEjb.donarDeAltaAndHistory(funcionariId, numeroCai, usuariId);
+
+			String successMsg = String.valueOf(I18NLogicUtilsApiInterna.tradueix(new Locale(language),
+					"success.modification",
+					new String[] { I18NLogicUtilsApiInterna.tradueix(new Locale(language), "funcionari.funcionari"),
+							I18NLogicUtilsApiInterna.tradueix(new Locale(language), "funcionari.funcionariID"),
+							String.valueOf(funcionariId),
+							"" }));
+			log.info(successMsg);
+
+			return I18NCommonUtils.tradueix(new Locale(language), "operacio.success");
+		} catch (I18NException re) {
+			log.error(re.getMessage(), re);
+			throw new RestException(re.getMessage(), Status.BAD_REQUEST);
+		} catch (Throwable th) {
+			String msg = I18NCommonUtils.tradueix(new Locale(language), "funcionari.error.desconegut",
+					new String[] { th.getMessage() });
+			log.error(msg, th);
+			throw new RestException(msg, th, Status.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	/**
+	 * Donar de baixa un/a funcionari/ària habilitat
+	 * 
+	 * @param language Idioma en que s'han de retornar els missatges. Obligatori
+	 * @param usuariId Identificador de l'usuari que està realitzant l'acció
+	 *                 de donar d'alta el FH. Obligatori
+	 * 
+	 * @return
+	 */
+
+	@Path("/donarbaixa")
+	@POST
+	@Hidden
+	@RolesAllowed({ Constants.RFH_WS })
+	@SecurityRequirement(name = FuncionariRestService.SECURITY_NAME)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Operation(tags = {
+			FuncionariRestService.TAG_NAME }, operationId = "nouFuncionariHabilitat", summary = "Registra un/a funcionari/ària habilitat nou a RFHab")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Operació realitzada correctament.", content = {
+					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = String.class)) }),
+			@ApiResponse(responseCode = "400", description = "Paràmetres incorrectes", content = {
+					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = RestExceptionInfo.class)) }),
+			@ApiResponse(responseCode = "401", description = "No Autenticat", content = {
+					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = String.class)) }),
+			@ApiResponse(responseCode = "403", description = "No Autoritzat", content = {
+					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = String.class)) }),
+			@ApiResponse(responseCode = "500", description = "Error no controlat", content = {
+					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = RestExceptionInfo.class)) }), })
+	public String donarBaixa(
+			@Parameter(name = "language", description = "Idioma en que s'han de retornar les dades(Només suportat 'ca' o 'es')", in = ParameterIn.QUERY, required = false, examples = {
+					@ExampleObject(name = "Català", value = "ca"),
+					@ExampleObject(name = "Castellano", value = "es") }, schema = @Schema(defaultValue = "ca", implementation = String.class)) @QueryParam("language") String language,
+			@Parameter(description = "Identificador de l'usuari que està realitzant el registre d'un nou FH", required = true, example = "9999", schema = @Schema(type = "int")) @NotNull @QueryParam("usuariid") Integer usuariId,
+			@Parameter(description = "Identificador (NIF, NIE o passaport)", required = true) @NotNull @QueryParam("identificador") String identificador,
+			@Parameter(description = "Número CAI", required = false, schema = @Schema(defaultValue = "", implementation = String.class)) @QueryParam("numerocai") String numeroCai) {
+		try {
+			StringBuilder sb = new StringBuilder();
+			sb.append("Llengua: " + language + "\n");
+			sb.append("Usuari: " + usuariId + "\n");
+			sb.append("Funcionari identificador: " + identificador + "\n");
+			sb.append("Número CAI: " + numeroCai + "\n");
+			log.info(sb.toString());
+
+			if (numeroCai == null) {
+				numeroCai = "";
+				log.info("XYZ YYY numeroCai = " + numeroCai);
+			}
+
+			// validar codi de funcionari
+			String usuariNif = usuariLogicaEjb.checkIsActiuIteNif(usuariId, language);
+			FuncionariJPA funcionariActuant = funcionariEjb.comprovarFuncionariActiuByNif(language, usuariNif, true);
+
+			String funcionariActuantNom = (funcionariActuant.getNom() != null ? funcionariActuant.getNom() : "") + " "
+					+ (funcionariActuant.getLlinatge1() != null ? funcionariActuant.getLlinatge1() : "") + " "
+					+ (funcionariActuant.getLlinatge2() != null ? funcionariActuant.getLlinatge2() : "");
+
+			log.info("XYZ YYY funcionariActuantNom = " + funcionariActuantNom);
+
+			Funcionari funcionariAdonarDeBaixa = funcionariEjb.findByNif(identificador);
+			if (funcionariAdonarDeBaixa == null) {
+				throw new I18NException(I18NLogicUtilsApiInterna.tradueix(new Locale(language),
+						"funcionari.error.noexisteixnif",
+						new String[] { identificador }));
+			}
+
+			funcionariEjb.donarDeBaixaFuncionariAndHistory(funcionariAdonarDeBaixa, numeroCai, usuariId);
+
+			String successMsg = String.valueOf(I18NLogicUtilsApiInterna.tradueix(new Locale(language),
+					"success.modification",
+					new String[] {
+							I18NLogicUtilsApiInterna.tradueix(new Locale(language), "success.modification"),
+							I18NLogicUtilsApiInterna.tradueix(new Locale(language), "funcionari.funcionari",
+									"funcionari.identificador"),
+							identificador }));
+
+			log.info(successMsg);
+
+			return I18NCommonUtils.tradueix(new Locale(language), "operacio.success");
+		} catch (I18NException re) {
+			log.error(re.getMessage(), re);
+			throw new RestException(re.getMessage(), Status.BAD_REQUEST);
+		} catch (Throwable th) {
+			String msg = I18NCommonUtils.tradueix(new Locale(language), "funcionari.error.desconegut",
+					new String[] { th.getMessage() });
 			log.error(msg, th);
 			throw new RestException(msg, th, Status.INTERNAL_SERVER_ERROR);
 		}

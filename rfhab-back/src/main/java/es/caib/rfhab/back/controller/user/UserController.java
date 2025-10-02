@@ -44,7 +44,7 @@ import es.caib.rfhab.logic.FitxerPublicLogicaService;
 import es.caib.rfhab.logic.FuncionariLogicaService;
 import es.caib.rfhab.logic.ScanWebLogicaService;
 import es.caib.rfhab.logic.SistramitLogicaService;
-import es.caib.rfhab.logic.UnitatLogicaUserService;
+import es.caib.rfhab.logic.UnitatLogicaService;
 import es.caib.rfhab.logic.UsuariLogicaService;
 import es.caib.rfhab.logic.utils.GeneracioModelConsentimentTramits.PlantillaOdtModelConsentiment;
 import es.caib.rfhab.logic.utils.GeneracioModelConsentimentTramits.TramitConsentimentDAO;
@@ -91,8 +91,8 @@ public class UserController extends UsuariController {
 	@EJB(mappedName = ScanWebLogicaService.JNDI_NAME)
 	protected ScanWebLogicaService scanWebLogicaEjb;
 
-	@EJB(mappedName = UnitatLogicaUserService.JNDI_NAME)
-	protected UnitatLogicaUserService unitatLogicaEjb;
+	@EJB(mappedName = UnitatLogicaService.JNDI_NAME)
+	protected UnitatLogicaService unitatLogicaEjb;
 
 	@EJB(mappedName = EntitatLogicaService.JNDI_NAME)
 	protected EntitatLogicaService entitatLogicaEjb;

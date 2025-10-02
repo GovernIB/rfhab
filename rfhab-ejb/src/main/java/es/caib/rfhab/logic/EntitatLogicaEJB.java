@@ -11,6 +11,7 @@ import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.query.SelectMultipleKeyValue;
 
 import es.caib.rfhab.ejb.EntitatEJB;
+import es.caib.rfhab.model.entity.Entitat;
 import es.caib.rfhab.model.fields.EntitatFields;
 import es.caib.rfhab.model.fields.EntitatQueryPath;
 import es.caib.rfhab.model.fields.UnitatFields;
@@ -44,6 +45,20 @@ public class EntitatLogicaEJB extends EntitatEJB implements EntitatLogicaService
 	@PermitAll
 	public EntitatJPA findByPrimaryKey(Long _ID_) {
 		return (EntitatJPA) super.findByPrimaryKey(_ID_);
+	}
+
+	@Override
+	@PermitAll
+	public Entitat findByUnitatId(Long unitatId) throws I18NException {
+		List<Entitat> entitatsTrobades = select(EntitatFields.UNITATID.equal(unitatId));
+		if (entitatsTrobades == null || entitatsTrobades.size() == 0) {
+			return null;
+		}
+		if (entitatsTrobades.size() > 1) {
+			throw new I18NException("entitat.error.mesdunaunitat", unitatId.toString());
+		}
+
+		return entitatsTrobades.get(0);
 	}
 
 	@Override

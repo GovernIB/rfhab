@@ -99,6 +99,35 @@
     <build>
         <finalName>${project.artifactId}</finalName>
         <plugins>
+            <plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/classes</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/../rfhab-ejb/src/main/resources</directory>
+									<includes>
+										<include>logicmissatges_*.properties</include>
+										<include>genapp_*.properties</include>
+										<include>rfhab_genapp_*.properties</include>
+									</includes>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+							<overwrite>true</overwrite>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+
             <!-- Genera el descriptor openapi.json de forma estàtica, després 
                 el posarem l'arrel del WAR -->
             <!-- https://github.com/swagger-api/swagger-core/tree/master/modules/swagger-maven-plugin -->
@@ -143,6 +172,8 @@
                                 <package>es.caib.rfhab.api.interna.config</package>
                                 <package>es.caib.rfhab.api.interna.secure.activitat</package>
                                 <package>es.caib.rfhab.api.interna.secure.funcionari</package>
+                                <package>es.caib.rfhab.api.interna.secure.lloc</package>
+                                <package>es.caib.rfhab.api.interna.secure.funcionarilloc</package>
                             </resourcePackages>
                         </configuration>
                     </execution>

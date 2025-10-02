@@ -9,6 +9,7 @@ import javax.persistence.Query;
 import javax.validation.constraints.NotNull;
 
 import org.fundaciobit.genapp.common.i18n.I18NException;
+import org.fundaciobit.genapp.common.query.Where;
 
 import es.caib.rfhab.ejb.UsuariEntitatEJB;
 import es.caib.rfhab.model.entity.UsuariEntitat;
@@ -19,6 +20,7 @@ import es.caib.rfhab.persistence.UsuariEntitatJPA;
 /**
  * 
  * @autor jagarcia
+ * @autor jpou
  *
  */
 
@@ -36,7 +38,8 @@ public class UsuariEntitatLogicaEJB extends UsuariEntitatEJB implements UsuariEn
 		List<UsuariEntitatJPA> list2 = new ArrayList<UsuariEntitatJPA>(list.size());
 		for (UsuariEntitat usuariEntitat : list) {
 			list2.add((UsuariEntitatJPA) usuariEntitat);
-			System.out.println("UsuariEntitatJPA: " + usuariEntitat.getUsuariEntitatID() + " - " + usuariEntitat.getEntitatID() + " - " + usuariEntitat.getUsuariID());
+			System.out.println("UsuariEntitatJPA: " + usuariEntitat.getUsuariEntitatID() + " - "
+					+ usuariEntitat.getEntitatID() + " - " + usuariEntitat.getUsuariID());
 		}
 
 		return list2;
@@ -53,11 +56,19 @@ public class UsuariEntitatLogicaEJB extends UsuariEntitatEJB implements UsuariEn
 		Query q = getEntityManager().createQuery(query.toString());
 
 		q.setParameter("usuarioID", usuarioID);
-		
+
 		List<EntitatJPA> list = q.getResultList();
-		
+
 		return list;
 
 	}
 
+	@Override
+	@PermitAll
+	public List<UsuariEntitat> findAllByUsuariIdWithEntitatId(@NotNull long usuariID, @NotNull long entitatID)
+			throws I18NException {
+		Where usuariW = UsuariEntitatFields.USUARIID.equal(usuariID);
+		Where entitatW = UsuariEntitatFields.ENTITATID.equal(entitatID);
+		return select(Where.AND(usuariW, entitatW));
+	}
 }

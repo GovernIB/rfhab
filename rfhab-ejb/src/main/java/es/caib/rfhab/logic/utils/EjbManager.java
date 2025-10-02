@@ -8,7 +8,7 @@ import org.fundaciobit.genapp.common.i18n.I18NException;
 
 import es.caib.rfhab.logic.AuthenticationLogicaService;
 import es.caib.rfhab.logic.IdiomaLogicaService;
-import es.caib.rfhab.logic.UnitatLogicaUserService;
+import es.caib.rfhab.logic.UnitatLogicaService;
 
 /**
  * 
@@ -22,7 +22,7 @@ public final class EjbManager {
 
 	protected static AuthenticationLogicaService authenticationLogicaEjb;
 	protected static IdiomaLogicaService idiomaLogicaEjb;
-	protected static UnitatLogicaUserService unitatEjb;
+	protected static UnitatLogicaService unitatEjb;
 
 	public static AuthenticationLogicaService getAuthenticationLogicaEJB() throws I18NException {
 
@@ -49,13 +49,13 @@ public final class EjbManager {
 		return idiomaLogicaEjb;
 	}
 
-	public static UnitatLogicaUserService getUnitatEJB() throws I18NException {
+	public static UnitatLogicaService getUnitatEJB() throws I18NException {
 
 		if (unitatEjb == null) {
 			try {
-				unitatEjb = (UnitatLogicaUserService) new InitialContext().lookup(UnitatLogicaUserService.JNDI_NAME);
+				unitatEjb = (UnitatLogicaService) new InitialContext().lookup(UnitatLogicaService.JNDI_NAME);
 			} catch (Throwable e) {
-				throwNewI18NException(e, "UnitatLogicaUserService");
+				throwNewI18NException(e, "UnitatLogicaService");
 			}
 		}
 		return unitatEjb;

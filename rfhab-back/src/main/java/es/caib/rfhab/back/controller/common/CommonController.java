@@ -15,7 +15,7 @@ import es.caib.rfhab.back.controller.webdb.UsuariController;
 import es.caib.rfhab.back.form.webdb.UsuariForm;
 import es.caib.rfhab.back.security.LoginInfo;
 import es.caib.rfhab.logic.SistramitLogicaService;
-import es.caib.rfhab.logic.UnitatLogicaUserService;
+import es.caib.rfhab.logic.UnitatLogicaService;
 import es.caib.rfhab.persistence.UnitatJPA;
 
 /**
@@ -30,8 +30,8 @@ public class CommonController extends UsuariController {
 
 	protected final Logger log = Logger.getLogger(getClass());
 
-	@EJB(mappedName = UnitatLogicaUserService.JNDI_NAME)
-	protected UnitatLogicaUserService unitatLogicaEjb;
+	@EJB(mappedName = UnitatLogicaService.JNDI_NAME)
+	protected UnitatLogicaService unitatLogicaEjb;
 
 	@RequestMapping(value = "/canviarEntitat/{entitatId}")
 	public ModelAndView canviarEntitat(HttpServletRequest request, HttpServletResponse response,

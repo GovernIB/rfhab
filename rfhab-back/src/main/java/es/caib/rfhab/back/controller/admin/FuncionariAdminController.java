@@ -41,7 +41,7 @@ import es.caib.rfhab.logic.FuncionariLlocLogicaService;
 import es.caib.rfhab.logic.FuncionariLogicaService;
 import es.caib.rfhab.logic.HistoricLogicaService;
 import es.caib.rfhab.logic.LlocLogicaService;
-import es.caib.rfhab.logic.UnitatLogicaUserService;
+import es.caib.rfhab.logic.UnitatLogicaService;
 import es.caib.rfhab.logic.utils.FuncionariLlocLlocDAO;
 import es.caib.rfhab.model.entity.Activitat;
 import es.caib.rfhab.model.entity.Funcionari;
@@ -76,8 +76,8 @@ public class FuncionariAdminController extends FuncionariController {
 	@EJB(mappedName = FuncionariLlocLogicaService.JNDI_NAME)
 	protected FuncionariLlocLogicaService funcionariLlocLogicaEJB;
 
-	@EJB(mappedName = UnitatLogicaUserService.JNDI_NAME)
-	protected UnitatLogicaUserService unitatEJB;
+	@EJB(mappedName = UnitatLogicaService.JNDI_NAME)
+	protected UnitatLogicaService unitatEJB;
 
 	@EJB(mappedName = HistoricLogicaService.JNDI_NAME)
 	protected HistoricLogicaService historicEjb;

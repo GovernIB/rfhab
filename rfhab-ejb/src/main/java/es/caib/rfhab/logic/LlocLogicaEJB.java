@@ -154,55 +154,57 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 	@PermitAll
 	public LlocJPA createAndHistory(Lloc lloc, String cai, Long usuariId, String[] rolsSeleccionats)
 			throws I18NException {
-		try {
-			LlocJPA llocJpa = null;
+		LlocJPA llocJpa = null;
 
-			if (lloc != null) {
-				llocJpa = (LlocJPA) create(lloc);
-				log.info("Lloc creat: " + lloc.getLlocID());
-				// cream rolsllocs segons rolsSeleccionats
-				if (rolsSeleccionats != null) {
-					for (String rolIdStr : rolsSeleccionats) {
-						try {
-							if (rolIdStr == null || rolIdStr.isEmpty()) {
-								continue;
-							}
-							Long rolId = Long.parseLong(rolIdStr);
-							// comprovam que el rol existeix
-							RolJPA rol = rolEjb.findByPrimaryKey(rolId);
-							if (rol != null) {
-								LlocRol llocRol = new es.caib.rfhab.persistence.LlocRolJPA();
-								llocRol.setLlocID(llocJpa.getLlocID());
-								llocRol.setRolID(rolId);
-								llocRol.setDataCreacio(new Timestamp(System.currentTimeMillis()));
-								llocRolEjb.create(llocRol);
-								log.info("Assignació del rol " + rol.getNom() + " al lloc de feina "
-										+ llocJpa.getCodiLloc());
-							} else {
-								log.warn("No s'ha trobat el Rol amb ID " + rolId + ". No s'assigna al Lloc amb ID "
-										+ lloc.getLlocID());
-							}
-						} catch (NumberFormatException nfe) {
-							log.error("Error assignant rol al lloc de feina. El valor del rol no és numèric: "
-									+ rolIdStr);
+		if (lloc == null) {
+			throw new I18NException("error.creation", "<lloc null>");
+		}
+
+		try {
+			log.info("Creant lloc: " + lloc.getCodiLlocPropi() + " --> " + lloc.getCodiLloc() + " - "
+					+ lloc.getExpansio());
+			llocJpa = (LlocJPA) create(lloc);
+			log.info("Lloc creat: " + lloc.getLlocID());
+			// cream rolsllocs segons rolsSeleccionats
+			if (rolsSeleccionats != null) {
+				for (String rolIdStr : rolsSeleccionats) {
+					try {
+						if (rolIdStr == null || rolIdStr.isEmpty()) {
+							continue;
 						}
+						Long rolId = Long.parseLong(rolIdStr);
+						// comprovam que el rol existeix
+						RolJPA rol = rolEjb.findByPrimaryKey(rolId);
+						if (rol != null) {
+							LlocRol llocRol = new es.caib.rfhab.persistence.LlocRolJPA();
+							llocRol.setLlocID(llocJpa.getLlocID());
+							llocRol.setRolID(rolId);
+							llocRol.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+							llocRolEjb.create(llocRol);
+							log.info("Assignació del rol " + rol.getNom() + " al lloc de feina "
+									+ llocJpa.getCodiLloc());
+						} else {
+							log.warn("No s'ha trobat el Rol amb ID " + rolId + ". No s'assigna al Lloc amb ID "
+									+ lloc.getLlocID());
+						}
+					} catch (NumberFormatException nfe) {
+						log.error("Error assignant rol al lloc de feina. El valor del rol no és numèric: "
+								+ rolIdStr);
 					}
 				}
+			}
 
-				HistoricLlocJPA historicLloc = null;
-				historicLloc = new HistoricLlocJPA();
-				historicLloc.setLlocID(lloc.getLlocID());
-				historicLloc.setNumeroCai(cai);
-				historicLloc.setDataCreacio(new Timestamp(System.currentTimeMillis()));
-				historicLloc.setUsuariID(usuariId);
+			HistoricLlocJPA historicLloc = null;
+			historicLloc = new HistoricLlocJPA();
+			historicLloc.setLlocID(lloc.getLlocID());
+			historicLloc.setNumeroCai(cai);
+			historicLloc.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+			historicLloc.setUsuariID(usuariId);
 
-				HistoricLlocDAO historicNew = new HistoricLlocDAO(lloc);
-				HistoricLlocDAO historicOld = new HistoricLlocDAO();
-				historicLlocLogicaEjb.create(historicLloc, historicNew, historicOld);
-				log.info("HistoricLloc creat: " + historicLloc.getHistoricllocID());
-
-			} else
-				throw new I18NException("error.creation", "<lloc null>");
+			HistoricLlocDAO historicNew = new HistoricLlocDAO(lloc);
+			HistoricLlocDAO historicOld = new HistoricLlocDAO();
+			historicLlocLogicaEjb.create(historicLloc, historicNew, historicOld);
+			log.info("HistoricLloc creat: " + historicLloc.getHistoricllocID());
 
 			return llocJpa;
 		} catch (Exception e) {
@@ -339,6 +341,14 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	@PermitAll
+	public List<Lloc> getLlocsByCodiIexpansio(String codiLloc, String expansio) throws I18NException {
+		Where wCodiLloc = LlocFields.CODILLOC.equal(codiLloc);
+		Where wExpansio = LlocFields.EXPANSIO.equal(expansio);
+		return select(Where.AND(wCodiLloc, wExpansio));
 	}
 
 	@Override
@@ -487,5 +497,41 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 		List<?> resultats = query.getResultList();
 
 		return (resultats != null && !resultats.isEmpty()) ? (resultats.get(0)) : null;
+	}
+
+	@Override
+	@PermitAll
+	public String getNouLlocCodiPropi(String codiLloc, String expansio) throws I18NException {
+		List<Lloc> llocsAmbMateixCodi = select(LlocFields.CODILLOC.equal(codiLloc));
+		if (llocsAmbMateixCodi != null && llocsAmbMateixCodi.size() > 0) {
+			return llocsAmbMateixCodi.get(0).getCodiLlocPropi();
+		}
+		return generaNouLlocCodiPropi();
+	}
+
+	private String generaNouLlocCodiPropi() throws I18NException {
+		int nouNumber = 1;
+		Object maxLlocCodiPropi = null;
+		try {
+			maxLlocCodiPropi = getMaxLlocCodiPropi();
+		} catch (SecurityException e) {
+			throw new I18NException(e.getMessage());
+		} catch (NoSuchFieldException e) {
+			throw new I18NException(e.getMessage());
+		}
+		if (maxLlocCodiPropi != null) {
+			// Extreu la part numèrica de la cadena
+			String numericPart = maxLlocCodiPropi.toString()
+					.substring(Constants.LLOC_CODILLOCPROPI_PLACEHOLDER_PREFIX.length());
+			// Converteix la part numèrica a un enter, suma 1 i torna a formar la cadena
+			nouNumber = Integer.parseInt(numericPart);
+			nouNumber += 1;
+		}
+		// Format numèric amb el mateix nombre de dígits que l'original
+		String updatedNumericPart = String
+				.format("%0" + Constants.LLOC_CODILLOCPROPI_PLACEHOLDER_NUMERICPART.length() + "d", nouNumber);
+		// Reconstrueix la cadena amb el prefix i el nou valor numèric
+		String nouLlocCodiPropi = Constants.LLOC_CODILLOCPROPI_PLACEHOLDER_PREFIX + updatedNumericPart;
+		return nouLlocCodiPropi;
 	}
 }

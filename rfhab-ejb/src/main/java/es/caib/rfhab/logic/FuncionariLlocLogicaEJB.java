@@ -118,8 +118,9 @@ public class FuncionariLlocLogicaEJB extends FuncionariLlocEJB implements Funcio
 				FuncionariLlocFields.LLOCID.equal(llocID))) > 0;
 	}
 
+	@Override
 	@PermitAll
-	public FuncionariLlocJPA assignarFuncionari(FuncionariLlocJPA funcionariLloc, String numeroCai, String observacions,
+	public FuncionariLlocJPA assignarFuncionari(FuncionariLloc funcionariLloc, String numeroCai, String observacions,
 			long usuarId)
 			throws I18NException, I18NValidationException {
 		long funcionariID = funcionariLloc.getFuncionariID();

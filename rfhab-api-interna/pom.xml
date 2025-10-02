@@ -127,7 +127,32 @@
 				</executions>
 			</plugin>
 
-
+            <!-- comprovació d'apòstrof dins els fitxers properties -->
+            <!-- El problema és que la tasca Ant <resourcecontains> cerca fitxers en el directori de treball actual, però per defecte només cerca dins l’arxiu JAR/target, no a src/main/resources ni als fitxers copiats per Maven. Això fa que no trobi el fitxer nom_fitxer.properties amb l’apòstrof -->
+            <!-- Durant la fase validate, Maven encara no ha copiat els fitxers de src/main/resources a target/classes. Per això la tasca Ant <resourcecontains> només pot trobar fitxers que ja existeixen al sistema de fitxers en aquell moment (normalment a src/main/resources, no a target/classes) -->
+            <!-- <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <fail message="S'ha trobat un apòstrof (') en algun fitxer .properties!">
+                                    <condition>
+                                        <resourcecontains resource="**/*.properties" substring="'"/>
+                                    </condition>
+                                </fail>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin> -->
+            
             <!-- Genera el descriptor openapi.json de forma estàtica, després 
                 el posarem l'arrel del WAR -->
             <!-- https://github.com/swagger-api/swagger-core/tree/master/modules/swagger-maven-plugin -->

@@ -518,5 +518,103 @@
                 <module>rfhab-api-interna-client-exemplesecure-v1</module>
             </modules>
         </profile>
+        <!-- comprovació d'apòstrof dins els fitxers properties (solució amb Ant estàndard, que funciona amb Java 11+ i sense dependències externes) -->
+        <!-- ALERTA AMB AIXÒ!!! en aquest projecte hi és perquè no vull apòstrefs dins els .properties, però podria no valer ho haver-se de canviar per a un altre projecte -->
+        <profile>
+            <id>apostrophe-check-windows</id>
+            <activation>
+                <os>
+                    <family>Windows</family>
+                </os>
+                <file>
+                    <exists>scripts/mvnvalidations/check_apostrophe.bat</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>3.0.0</version>
+                        <executions>
+                            <execution>
+                                <id>check-apostrophe-windows</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <property name="rfhab.root" value="rfhab-1.0"/>
+                                        <condition property="is.rfhab.root">
+                                            <contains string="${project.basedir}" substring="${rfhab.root}"/>
+                                        </condition>
+                                        <fail unless="is.rfhab.root" message="Saltant comprovació d'apòstrof: només s'executa dins rfhab-1.0"/>
+                                        <fileset id="properties.files" dir="${project.basedir}">
+                                            <include name="**/src/main/resources/*.properties"/>
+                                            <exclude name="**/src/main/resources/ValidationMessages.properties"/>
+                                            <exclude name="**/src/main/resources/ValidationMessages_es.properties"/>
+                                        </fileset>
+                                        <apply executable="cmd" failonerror="true">
+                                            <fileset refid="properties.files"/>
+                                            <arg value="/c"/>
+                                            <arg value="${project.basedir}\scripts\mvnvalidations\check_apostrophe.bat"/>
+                                            <srcfile/>
+                                        </apply>
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>apostrophe-check-unix</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                </os>
+                <file>
+                    <exists>scripts/mvnvalidations/check_apostrophe.bat</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>3.0.0</version>
+                        <executions>
+                            <execution>
+                                <id>check-apostrophe-unix</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <property name="rfhab.root" value="rfhab-1.0"/>
+                                        <condition property="is.rfhab.root">
+                                            <contains string="${project.basedir}" substring="${rfhab.root}"/>
+                                        </condition>
+                                        <fail unless="is.rfhab.root" message="Saltant comprovació d'apòstrof: només s'executa dins rfhab-1.0"/>
+                                        <fileset id="properties.files" dir="${project.basedir}">
+                                            <include name="**/src/main/resources/*.properties"/>
+                                            <exclude name="**/src/main/resources/ValidationMessages.properties"/>
+                                            <exclude name="**/src/main/resources/ValidationMessages_es.properties"/>
+                                        </fileset>
+                                        <apply executable="${project.basedir}/scripts/mvnvalidations/check_apostrophe.sh" failonerror="true">
+                                            <fileset refid="properties.files"/>
+                                            <srcfile/>
+                                        </apply>
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 </project>

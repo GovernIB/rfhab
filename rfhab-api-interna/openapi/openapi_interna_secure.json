@@ -632,6 +632,15 @@
             "type" : "string"
           }
         }, {
+          "name" : "numero",
+          "in" : "query",
+          "description" : "Número del funcionari. Si és buit, el programa ho rellenarà automàticamente amb la seqüència més alta + 1",
+          "schema" : {
+            "pattern" : "FH_\\d\\d\\d\\d\\d\\d\\d",
+            "type" : "string"
+          },
+          "example" : "FH_XXXXXXX"
+        }, {
           "name" : "tipusIdentificador",
           "in" : "query",
           "description" : "Tipus d'identificació del funcionari/ària:<br />&emsp;<i>1 - DNI<br />&emsp;2 - NIE<br />&emsp;3 - Passaport<br />&emsp;4 - Altres</i>",

@@ -486,6 +486,7 @@ public class FuncionariRestService extends RestUtils {
 			@Parameter(description = "Nom del funcionari", required = true) @QueryParam("nom") @NotNull String nom,
 			@Parameter(description = "Primer llinatge", required = true) @QueryParam("llinatge1") @NotNull String llinatge1,
 			@Parameter(description = "Segon llinatge", required = false) @QueryParam("llinatge2") String llinatge2,
+			@Parameter(description = "Número del funcionari. Si és buit, el programa ho rellenarà automàticamente amb la seqüència més alta + 1", required = false, example = Constants.FUNCIONARI_NUMERO_PLACEHOLDER, schema = @Schema(implementation = String.class, pattern = Constants.REGEX_FUNCIONARI_NUMERO_PATTERN)) @QueryParam("numero") String numero,
 			@Parameter(description = "Tipus d'identificació del funcionari/ària:<br />&emsp;<i>"
 					+ IdentificacioTipusValues.DESCRIPTION_ALL_VALUES
 					+ "</i>", required = true, example = "", schema = @Schema(type = "IdentificacioTipus", description = IdentificacioTipusValues.DESCRIPTION_ALL_VALUES)) @NotNull @QueryParam("tipusIdentificador") IdentificacioTipus tipusIdentificador,

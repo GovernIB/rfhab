@@ -75,3 +75,4 @@ rfhab-api-interna-client*
 # scripts/sqlgenerator/*.sql
 rfhab-pluginsib/rfhab-pluginsib-arxiu/arxiuplugin.properties
 rfhab-ejb/sistramit.properties
+rfhab-ejb/carregadormassiu.properties

@@ -10,6 +10,8 @@ import java.util.Properties;
 /**
  * 
  * @author GenApp
+ * @author jagarcia
+ * @author jpou
  * 
  */
 public class Configuracio implements Constants {
@@ -242,6 +244,30 @@ public class Configuracio implements Constants {
 
     public static String getSistramitPassword(Properties properties) {
         return properties.getProperty(SISTRAMIT_PROPERTY_BASE + "contrasenya");
+    }
+
+    public static String getCarregadorMassiuEndpoint() {
+        return getAppSystemProperties().getProperty(CARREGADORMASSIU_PROPERTY_BASE + "url");
+    }
+
+    public static String getCarregadorMassiuUser() {
+        return getAppSystemProperties().getProperty(CARREGADORMASSIU_PROPERTY_BASE + "usuari");
+    }
+
+    public static String getCarregadorMassiuPassword() {
+        return getAppSystemProperties().getProperty(CARREGADORMASSIU_PROPERTY_BASE + "contrasenya");
+    }
+
+    public static String getCarregadorMassiuEndpoint(Properties properties) {
+        return properties.getProperty(CARREGADORMASSIU_PROPERTY_BASE + "url");
+    }
+
+    public static String getCarregadorMassiuUser(Properties properties) {
+        return properties.getProperty(CARREGADORMASSIU_PROPERTY_BASE + "usuari");
+    }
+
+    public static String getCarregadorMassiuPassword(Properties properties) {
+        return properties.getProperty(CARREGADORMASSIU_PROPERTY_BASE + "contrasenya");
     }
 
     public static String getAppSystemProperty(String key) {

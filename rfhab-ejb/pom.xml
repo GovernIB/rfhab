@@ -101,6 +101,11 @@
             <version>${spring.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.odftoolkit</groupId>
+            <artifactId>odfdom-java</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -495,6 +495,7 @@ public class FuncionariRestService extends RestUtils {
 			@Parameter(description = "Correu electrònic", required = true, schema = @Schema(implementation = String.class, pattern = CORREU_PATTERN)) @QueryParam("correu") @NotNull String correu,
 			@Parameter(description = "EntitatID", required = true, example = "1000") @QueryParam("entitatId") @NotNull Long entitatId,
 			@Parameter(description = "Número CAI", required = false) @QueryParam("numerocai") String numeroCai,
+			@Parameter(description = "Observacions", required = false) @QueryParam("observacions") String observacions,
 			@Parameter(description = "Data de baixa", required = false, example = "2025-08-31T06:15:00+00:00", schema = @Schema(implementation = String.class, pattern = DATE_PATTERN_ISO8601_DATE_AND_TIME)) @QueryParam("databaixa") String dataBaixaStr) {
 		try {
 			StringBuilder sb = new StringBuilder();
@@ -503,12 +504,14 @@ public class FuncionariRestService extends RestUtils {
 			sb.append("Nom: " + nom + "\n");
 			sb.append("Llinatge1: " + llinatge1 + "\n");
 			sb.append("Llinatge2: " + llinatge2 + "\n");
+			sb.append("Número FH: " + numero + "\n");
 			sb.append("TipusIdentificador: " + tipusIdentificador.getValue() + "\n");
 			sb.append("Identificador: " + identificador + "\n");
 			sb.append("Usuari: " + username + "\n");
 			sb.append("Correu: " + correu + "\n");
 			sb.append("EntitatId: " + entitatId + "\n");
 			sb.append("NumeroCai: " + numeroCai + "\n");
+			sb.append("Observacions: " + observacions + "\n");
 			sb.append("DataBaixa: " + dataBaixaStr + "\n");
 
 			log.info(sb.toString());
@@ -531,6 +534,11 @@ public class FuncionariRestService extends RestUtils {
 
 			log.info("XYZ YYY funcionariActuantNom = " + funcionariActuantNom);
 
+			if (numero == null || numero.isEmpty()) {
+				numero = funcionariEjb.getNouFuncionariNumero();
+				log.info("XYZ YYY numero = " + numero);
+			}
+
 			Funcionari funcionariNou = new FuncionariJPA();
 			funcionariNou.setNom(nom);
 			funcionariNou.setLlinatge1(llinatge1);
@@ -538,11 +546,12 @@ public class FuncionariRestService extends RestUtils {
 			funcionariNou.setTipusIdentificador(tipusIdentificador.getValue());
 			funcionariNou.setIdentificador(identificador);
 			funcionariNou.setCorreu(correu);
-			funcionariNou.setNumero(funcionariEjb.getNouFuncionariNumero());
+			funcionariNou.setNumero(numero);
 			funcionariNou.setUsuari(username);
 			funcionariNou.setEntitatID(entitatId);
 			funcionariNou.setDataCreacio(dataCreacio);
 			funcionariNou.setDataBaixa(dataBaixa);
+			funcionariNou.setObservacions(observacions);
 
 			// validam funcionari
 			Funcionari funcionariCreat;
@@ -615,7 +624,7 @@ public class FuncionariRestService extends RestUtils {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Operation(tags = {
-			FuncionariRestService.TAG_NAME }, operationId = "nouFuncionariHabilitat", summary = "Registra un/a funcionari/ària habilitat nou a RFHab")
+			FuncionariRestService.TAG_NAME }, operationId = "donarAltaFuncionariHabilitat", summary = "Dona d'alta un/a funcionari/ària habilitat a RFHab")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Operació realitzada correctament.", content = {
 					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = String.class)) }),
@@ -703,7 +712,7 @@ public class FuncionariRestService extends RestUtils {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Operation(tags = {
-			FuncionariRestService.TAG_NAME }, operationId = "nouFuncionariHabilitat", summary = "Registra un/a funcionari/ària habilitat nou a RFHab")
+			FuncionariRestService.TAG_NAME }, operationId = "donarBaixaFuncionariHabilitat", summary = "Dóna de baixa un/a funcionari/ària habilitat a RFHab")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Operació realitzada correctament.", content = {
 					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = String.class)) }),

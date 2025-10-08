@@ -180,8 +180,8 @@
     "/secure/funcionari/donaralta" : {
       "post" : {
         "tags" : [ "FuncionariRestService" ],
-        "summary" : "Registra un/a funcionari/ària habilitat nou a RFHab",
-        "operationId" : "nouFuncionariHabilitat",
+        "summary" : "Dona d'alta un/a funcionari/ària habilitat a RFHab",
+        "operationId" : "donarAltaFuncionariHabilitat",
         "parameters" : [ {
           "name" : "language",
           "in" : "query",
@@ -286,8 +286,8 @@
     "/secure/funcionari/donarbaixa" : {
       "post" : {
         "tags" : [ "FuncionariRestService" ],
-        "summary" : "Registra un/a funcionari/ària habilitat nou a RFHab",
-        "operationId" : "nouFuncionariHabilitat_1",
+        "summary" : "Dóna de baixa un/a funcionari/ària habilitat a RFHab",
+        "operationId" : "donarBaixaFuncionariHabilitat",
         "parameters" : [ {
           "name" : "language",
           "in" : "query",
@@ -579,7 +579,7 @@
       "post" : {
         "tags" : [ "FuncionariRestService" ],
         "summary" : "Registra un/a funcionari/ària habilitat nou a RFHab",
-        "operationId" : "nouFuncionariHabilitat_2",
+        "operationId" : "nouFuncionariHabilitat",
         "parameters" : [ {
           "name" : "language",
           "in" : "query",
@@ -689,6 +689,13 @@
           "name" : "numerocai",
           "in" : "query",
           "description" : "Número CAI",
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "observacions",
+          "in" : "query",
+          "description" : "Observacions",
           "schema" : {
             "type" : "string"
           }

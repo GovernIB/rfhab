@@ -144,7 +144,7 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 					+ funcionari.getLlinatge2());
 			funcionariJpa = (FuncionariJPA) create(funcionari);
 			log.info("Funcionari creat: " + funcionariJpa.getFuncionariID());
-			Historic nou = historicLogicaEjb.create(funcionariJpa, cai , usuariId);
+			Historic nou = historicLogicaEjb.create(funcionariJpa, cai, usuariId);
 			log.info("Historic de funcionari creat: " + nou.getHistoricID());
 		} catch (Exception e) {
 			log.error(e.getMessage());
@@ -483,6 +483,13 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 			nouNumber = Integer.parseInt(numericPart);
 			nouNumber += 1;
 		}
+		String nouFuncionariNumero = getNumeroFhFromNumeric(nouNumber);
+		return nouFuncionariNumero;
+	}
+
+	@Override
+	@PermitAll
+	public String getNumeroFhFromNumeric(int nouNumber) {
 		// Format numèric amb el mateix nombre de dígits que l'original
 		String updatedNumericPart = String
 				.format("%0" + Constants.FUNCIONARI_NUMERO_PLACEHOLDER_NUMERICPART.length() + "d", nouNumber);

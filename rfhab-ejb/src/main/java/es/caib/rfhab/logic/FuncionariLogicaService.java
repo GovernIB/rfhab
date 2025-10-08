@@ -51,4 +51,6 @@ public interface FuncionariLogicaService extends FuncionariService {
 			throws I18NException;
 
 	public String getNouFuncionariNumero() throws I18NException;
+
+	public String getNumeroFhFromNumeric(int nouNumber);
 }

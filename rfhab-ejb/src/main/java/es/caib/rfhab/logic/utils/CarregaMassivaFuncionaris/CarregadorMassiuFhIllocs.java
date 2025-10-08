@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.List;
 import java.util.Properties;
 
+import javax.ejb.EJB;
+
 import org.fundaciobit.genapp.common.i18n.I18NException;
 
 import java.net.URI;
@@ -13,8 +15,14 @@ import java.net.http.HttpResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import es.caib.rfhab.commons.utils.Configuracio;
+import es.caib.rfhab.commons.utils.IdentificacioTipus;
+import es.caib.rfhab.logic.FuncionariLogicaService;
 
 public class CarregadorMassiuFhIllocs {
+
+    @EJB(mappedName = FuncionariLogicaService.JNDI_NAME)
+    protected FuncionariLogicaService funcionariLogicaEjb;
+
     /**
      * Helper per crear un JSON a partir de parells clau-valor.
      */
@@ -52,7 +60,7 @@ public class CarregadorMassiuFhIllocs {
     /**
      * Dona d'alta un nou funcionari habilitat via API REST.
      */
-    public String nouFuncionariHabilitat(FuncionariOdsDTO dto) throws Exception {
+    public String nouFuncionariHabilitat(NouFuncionariHabilitatDTO dto) throws Exception {
         String endpoint = apiUrl + "/secure/funcionari/noufuncionarihabilitat";
         String json = objectMapper.writeValueAsString(dto);
         return doPostJson(endpoint, json);
@@ -61,7 +69,7 @@ public class CarregadorMassiuFhIllocs {
     /**
      * Dona d'alta un funcionari via API REST.
      */
-    public String donarAlta(String identificadorFh, String dataAlta, String observacions) throws Exception {
+    public String donarAltaFh(String identificadorFh, String dataAlta, String observacions) throws Exception {
         String endpoint = apiUrl + "/secure/funcionari/donaralta";
         String json = buildJson("identificadorFh", identificadorFh, "dataAlta", dataAlta, "observacions", observacions);
         return doPostJson(endpoint, json);
@@ -70,7 +78,7 @@ public class CarregadorMassiuFhIllocs {
     /**
      * Dona de baixa un funcionari via API REST.
      */
-    public String donarBaixa(String identificadorFh, String dataBaixa, String observacions) throws Exception {
+    public String donarBaixaFh(String identificadorFh, String dataBaixa, String observacions) throws Exception {
         String endpoint = apiUrl + "/secure/funcionari/donarbaixa";
         String json = buildJson("identificadorFh", identificadorFh, "dataBaixa", dataBaixa, "observacions",
                 observacions);
@@ -208,10 +216,44 @@ public class CarregadorMassiuFhIllocs {
      * Processa un DTO i fa la crida a l'API REST externa (implementació pendent).
      * 
      * @param dto El DTO a processar
+     * @throws Exception
      */
-    private void processaDto(FuncionariOdsDTO dto) {
-        // TODO: Implementar la orquestació de crides a l'API REST externa
+    private void processaDto(FuncionariOdsDTO dto) throws Exception {
+        String dataAltaFh = dto.dataAlta;
+        String dataBaixaFh = dto.dataBaixa;
+        String observacionsAlta = "Observacions alta: " + dto.observacionsAlta + "\n";
+        String observacionsBaixa = "Observacions baixa: " + dto.observacionsBaixa + "\n";
+        String observacions = ((dataAltaFh != null && !dataAltaFh.isEmpty()) ? observacionsAlta : "")
+                + ((dataBaixaFh != null && !dataBaixaFh.isEmpty()) ? observacionsBaixa : "");
 
+        NouFuncionariHabilitatDTO nouFh = new NouFuncionariHabilitatDTO(
+                "ca",
+                null, // TODO
+                dto.nom,
+                dto.primerLlinatge,
+                dto.segonLlinatge,
+                funcionariLogicaEjb.getNumeroFhFromNumeric(Integer.parseInt(dto.numRfh)),
+                IdentificacioTipus.DNI,
+                dto.nif,
+                dto.usuari,
+                dto.adrecaElectronica,
+                null, // TODO
+                dto.numCaiAlta,
+                observacions,
+                null);
+        nouFuncionariHabilitat(nouFh);
+
+        if (dataAltaFh != null && !dataAltaFh.isEmpty()) {
+            donarAltaFh(dto.nif, dataAltaFh, dto.numCaiAlta);
+        }
+
+        if (dataBaixaFh != null && !dataBaixaFh.isEmpty()) {
+            donarBaixaFh(dto.nif, dataBaixaFh, dto.numCaiAlta);
+        }
+
+        // TODO: creació de llocs
+
+        // TODO: assignacions a llocs
     }
 
     public String getOdsFilePath() {

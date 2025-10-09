@@ -1,429 +1,1343 @@
-create sequence rfh_activitat_seq start 1000 increment 1;
-create sequence rfh_autoritzacio_seq start 1000 increment 1;
-create sequence rfh_digitalib_seq start 1000 increment 1;
-create sequence rfh_entitat_seq start 1000 increment 1;
-create sequence rfh_fitxer_seq start 1000 increment 1;
-create sequence rfh_funcionari_seq start 1000 increment 1;
-create sequence rfh_funcionarilloc_seq start 1000 increment 1;
-create sequence rfh_historic_seq start 1000 increment 1;
-create sequence rfh_historiclloc_seq start 1000 increment 1;
-create sequence rfh_lloc_seq start 1000 increment 1;
-create sequence rfh_llocrol_seq start 1000 increment 1;
-create sequence rfh_plugin_seq start 1000 increment 1;
-create sequence rfh_rol_seq start 1000 increment 1;
-create sequence rfh_traduccio_seq start 1000 increment 1;
-create sequence rfh_unitat_seq start 1000 increment 1;
-create sequence rfh_usuari_seq start 1000 increment 1;
-create sequence rfh_usuarientitat_seq start 1000 increment 1;
+--
+-- PostgreSQL database dump
+--
 
-    create table rfh_activitat (
-       activitatid int8 DEFAULT nextval('rfh_activitat_seq'::regclass) not null,
-        arxiudocumentid varchar(255),
-        arxiuexpedientid varchar(255),
-        autoritzacioid int8,
-        codisia varchar(150),
-        datacreacio timestamp not null,
-        dataactivitat timestamp not null,
-        estat int4 not null,
-        funcionariid int8 not null,
-        interessatidentificacio varchar(50),
-        interessatllinatge1 varchar(255),
-        interessatllinatge2 varchar(255),
-        interessatnom varchar(255),
-        interessattipus int4,
-        registre varchar(50),
-        representantidentificacio varchar(50),
-        representantllinatge1 varchar(255),
-        representantllinatge2 varchar(255),
-        representantnom varchar(255),
-        representanttipus int4,
-        tipus int4 not null,
-        tramit varchar(150),
-        procediment varchar(150),
-        tramitversio int4,
-        url varchar(255),
-        idactuaciotramit varchar(255),
-        CONSTRAINT rfh_activitat_pk primary key (activitatid)
-    );
+-- Dumped from database version 17.4
+-- Dumped by pg_dump version 17.4
 
-    create table rfh_autoritzacio (
-       autoritzacioid int8 DEFAULT nextval('rfh_autoritzacio_seq'::regclass) not null,
-        cai varchar(255) not null,
-        codisia varchar(50) not null,
-        datacreacio timestamp not null,
-        datafi date,
-        datainici date,
-        funcionariid int8,
-        llocid int8 not null,
-        observacions text,
-        procediment varchar(255) not null,
-        usuariid int8,
-        CONSTRAINT rfh_autoritzacio_pk primary key (autoritzacioid)
-    );
+-- Started on 2025-10-09 13:22:06
 
-    create table rfh_digitalib (
-       digitalid int8 DEFAULT nextval('rfh_digitalib_seq'::regclass) not null,
-        datacreacio timestamp,
-        entitatid int8 not null,
-        fileinfo text,
-        fitxerid int8 not null,
-        metadades text,
-        missatge text,
-        signedfileinfo text,
-        status int8 not null,
-        transactionid int8,
-        transactionwebid varchar(255),
-        usuariid int8 not null,
-        CONSTRAINT rfh_digitalib_pk primary key (digitalid)
-    );
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
 
-    create table rfh_entitat (
-       entitatid int8 DEFAULT nextval('rfh_entitat_seq'::regclass) not null,
-        actiu boolean not null,
-        databaixa timestamp,
-        nom varchar(255),
-        unitatid int8,
-        CONSTRAINT rfh_entitat_pk primary key (entitatid)
-    );
+--
+-- TOC entry 217 (class 1259 OID 16386)
+-- Name: rfh_activitat_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
 
-    create table rfh_fitxer (
-       fitxerid int8 DEFAULT nextval('rfh_fitxer_seq'::regclass) not null,
-        descripcio varchar(1000) DEFAULT NULL::character varying,
-        mime varchar(255) not null,
-        nom varchar(255) not null,
-        tamany int8 not null,
-        CONSTRAINT rfh_fitxer_pk primary key (fitxerid)
-    );
+CREATE SEQUENCE public.rfh_activitat_seq
+    START WITH 1000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
-    create table rfh_funcionari (
-       funcionariid int8 DEFAULT nextval('rfh_funcionari_seq'::regclass) not null,
-        correu varchar(255) not null,
-        databaixa timestamp,
-        datacreacio timestamp not null,
-        entitatid int8 not null,
-        identificador varchar(50) not null,
-        llinatge1 varchar(255) not null,
-        llinatge2 varchar(255),
-        nom varchar(255) not null,
-        numero varchar(10) not null,
-        observacions text,
-        tipusidentificador int4 not null,
-        usuari varchar(50) not null,
-        CONSTRAINT rfh_funcionari_pk primary key (funcionariid)
-    );
 
-    create table rfh_funcionarilloc (
-       funcionarillocid int8 DEFAULT nextval('rfh_funcionarilloc_seq'::regclass) not null,
-        datacreacio timestamp not null,
-        datafi date,
-        datainici date,
-        funcionariid int8 not null,
-        llocid int8 not null,
-        usuariid int8,
-        CONSTRAINT rfh_funcionarilloc_pk primary key (funcionarillocid)
-    );
+SET default_table_access_method = heap;
 
-    create table rfh_historic (
-       historicid int8 DEFAULT nextval('rfh_historic_seq'::regclass) not null,
-        datacreacio timestamp not null,
-        funcionariid int8 not null,
-        numerocai varchar(50) not null,
-        observacions text,
-        usuariid int8,
-        CONSTRAINT rfh_historic_pk primary key (historicid)
-    );
+--
+-- TOC entry 234 (class 1259 OID 16403)
+-- Name: rfh_activitat; Type: TABLE; Schema: public; Owner: -
+--
 
-    create table rfh_historiclloc (
-       historicllocid int8 DEFAULT nextval('rfh_historiclloc_seq'::regclass) not null,
-        datacreacio timestamp not null,
-        llocid int8 not null,
-        numerocai varchar(50) not null,
-        observacions text,
-        usuariid int8,
-        CONSTRAINT rfh_historiclloc_pk primary key (historicllocid)
-    );
+CREATE TABLE public.rfh_activitat (
+    activitatid bigint DEFAULT nextval('public.rfh_activitat_seq'::regclass) NOT NULL,
+    arxiudocumentid character varying(255),
+    arxiuexpedientid character varying(255),
+    autoritzacioid bigint,
+    codisia character varying(150),
+    datacreacio timestamp without time zone NOT NULL,
+    estat integer NOT NULL,
+    funcionariid bigint NOT NULL,
+    interessatidentificacio character varying(50),
+    interessatllinatge1 character varying(255),
+    interessatllinatge2 character varying(255),
+    interessatnom character varying(255),
+    interessattipus integer,
+    registre character varying(50),
+    representantidentificacio character varying(50),
+    representantllinatge1 character varying(255),
+    representantllinatge2 character varying(255),
+    representantnom character varying(255),
+    representanttipus integer,
+    tipus integer NOT NULL,
+    tramit character varying(150),
+    tramitversio integer,
+    url character varying(255),
+    dataactivitat timestamp without time zone NOT NULL,
+    idactuaciotramit character varying(255),
+    procediment character varying(150)
+);
 
-    create table rfh_idioma (
-       idiomaid varchar(5) not null,
-        nom varchar(50) not null,
-        ordre int4 default 0 not null,
-        suportat boolean DEFAULT true not null,
-        CONSTRAINT rfh_idioma_pk primary key (idiomaid)
-    );
 
-    create table rfh_lloc (
-       llocid int8 DEFAULT nextval('rfh_lloc_seq'::regclass) not null,
-        codilloc varchar(50) not null,
-        codillocpropi varchar(50) not null,
-        expansio varchar2(50 char),
-        databaixa timestamp,
-        datacreacio timestamp not null,
-        dataalta timestamp,
-        entitatid int8 not null,
-        nom varchar(255) not null,
-        observacions text,
-        personaloamr int4 not null,
-        unitatid int8 not null,
-        CONSTRAINT rfh_lloc_pk primary key (llocid)
-    );
+--
+-- TOC entry 218 (class 1259 OID 16387)
+-- Name: rfh_autoritzacio_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
 
-    create table rfh_llocrol (
-       llocrolid int8 DEFAULT nextval('rfh_llocrol_seq'::regclass) not null,
-        datacreacio timestamp not null,
-        llocid int8 not null,
-        rolid int8 not null,
-        CONSTRAINT rfh_llocrol_pk primary key (llocrolid)
-    );
+CREATE SEQUENCE public.rfh_autoritzacio_seq
+    START WITH 1000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
-    create table rfh_plugin (
-       pluginid int8 DEFAULT nextval('rfh_plugin_seq'::regclass) not null,
-        actiu boolean not null,
-        classe varchar(255),
-        datacreacio timestamp,
-        descripcio varchar(255) not null,
-        entitatid int8 not null,
-        nom varchar(255) not null,
-        properties text,
-        tipus varchar(50) not null,
-        CONSTRAINT rfh_plugin_pk primary key (pluginid)
-    );
 
-    create table rfh_rol (
-       rolid int8 DEFAULT nextval('rfh_rol_seq'::regclass) not null,
-        codi varchar(50) not null,
-        datacreacio timestamp,
-        entitatid int8 not null,
-        nomid int8 not null,
-        CONSTRAINT rfh_rol_pk primary key (rolid)
-    );
+--
+-- TOC entry 235 (class 1259 OID 16410)
+-- Name: rfh_autoritzacio; Type: TABLE; Schema: public; Owner: -
+--
 
-    create table rfh_traduccio (
-       traduccioid int8 DEFAULT nextval('rfh_traduccio_seq'::regclass) not null,
-       CONSTRAINT rfh_traduccio_pk primary key (traduccioid)
-    );
+CREATE TABLE public.rfh_autoritzacio (
+    autoritzacioid bigint DEFAULT nextval('public.rfh_autoritzacio_seq'::regclass) NOT NULL,
+    cai character varying(255) NOT NULL,
+    codisia character varying(50) NOT NULL,
+    datacreacio timestamp without time zone NOT NULL,
+    datafi date,
+    datainici date,
+    funcionariid bigint,
+    llocid bigint NOT NULL,
+    observacions text,
+    procediment character varying(255) NOT NULL,
+    usuariid bigint
+);
 
-    create table rfh_traducciomap (
-       traducciomapid int8 not null,
-        valor varchar(4000),
-        idiomaid varchar(10) not null,
-        CONSTRAINT rfh_traducmap_pk primary key (traducciomapid, idiomaid)
-    );
 
-    create table rfh_unitat (
-       unitatid int8 DEFAULT nextval('rfh_unitat_seq'::regclass) not null,
-        arrel varchar(50),
-        arrelversio int4,
-        codi varchar(50) not null,
-        cooficial varchar(255),
-        denominacio varchar(255) not null,
-        estat varchar(5),
-        superior varchar(50),
-        superiorversio int4,
-        versio int4 not null,
-        CONSTRAINT rfh_unitat_pk primary key (unitatid)
-    );
+--
+-- TOC entry 219 (class 1259 OID 16388)
+-- Name: rfh_digitalib_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
 
-    create table rfh_usuari (
-       usuariid int8 DEFAULT nextval('rfh_usuari_seq'::regclass) not null,
-        actiu boolean not null,
-        correu varchar(255) not null,
-        darreraentitat int8,
-        databaixa timestamp,
-        datacreacio timestamp not null,
-        idiomaid varchar(5) not null,
-        llinatge1 varchar(255) not null,
-        llinatge2 varchar(255),
-        nif varchar(50) not null,
-        nom varchar(255) not null,
-        username varchar(255),
-        CONSTRAINT rfh_usuari_pk primary key (usuariid)
-    );
+CREATE SEQUENCE public.rfh_digitalib_seq
+    START WITH 1000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
-    create table rfh_usuarientitat (
-       usuarientitatid int8 DEFAULT nextval('rfh_usuarientitat_seq'::regclass) not null,
-        actiu boolean not null,
-        entitatid int8 not null,
-        usuariid int8 not null,
-        CONSTRAINT rfh_usuarientitat_pk primary key (usuarientitatid)
-    );
-create index rfh_activitat_pk_i on rfh_activitat (activitatid);
-create index rfh_activitat_fun_fk_i on rfh_activitat (funcionariid);
--- create index rfh_activitat_autoritzaid_fk_i on rfh_activitat (autoritzacioid);
-create index rfh_autoritzacio_pk_i on rfh_autoritzacio (autoritzacioid);
-create index rfh_autoritza_funid_fk_i on rfh_autoritzacio (llocid);
-create index rfh_autoritza_funcid_fk_i on rfh_autoritzacio (funcionariid);
-create index rfh_digitalib_pk_i on rfh_digitalib (digitalid);
-create index rfh_digitalib_fitxerid_fk_i on rfh_digitalib (fitxerid);
-create index rfh_digitalib_usuariid_fk_i on rfh_digitalib (usuariid);
-create index rfh_entitat_pk_i on rfh_entitat (entitatid);
-create index rfh_entitat_unitatid_fk_i on rfh_entitat (unitatid);
-create index rfh_fitxer_pk_i on rfh_fitxer (fitxerid);
-create index rfh_funcionari_pk_i on rfh_funcionari (funcionariid);
-   alter table rfh_funcionari
-      add constraint rfh_funcionari_identific_uk unique (identificador);
-create index rfh_funcionarientitat_pk_i on rfh_funcionarilloc (funcionarillocid);
-create index rfh_funcionarilloc_llocid_fk_i on rfh_funcionarilloc (llocid);
-create index rfh_funlloc_funcionariid_fk_i on rfh_funcionarilloc (funcionariid);
-create index rfh_funlloc_usuariid_fk_i on rfh_funcionarilloc (usuariid);
 
-create index rfh_historic_pk_i on rfh_historic (historicid);
-create index rfh_historic_funcionariid_fk_i on rfh_historic (funcionariid);
-create index rfh_historic_usuariid_fk_i on rfh_historic (usuariid);
-create index rfh_historiclloc_pk_i on rfh_historiclloc (historicllocid);
-create index rfh_historiclloc_llocid_fk_i on rfh_historiclloc (llocid);
-create index rfh_historiclloc_usuariid_fk_i on rfh_historiclloc (usuariid);
-create index rfh_idioma_pk_i on rfh_idioma (idiomaid);
-create index rfh_lloc_pk_i on rfh_lloc (llocid);
-create index rfh_lloc_entitatid_fk_i on rfh_lloc (entitatid);
-create index rfh_lloc_unitatid_fk_i on rfh_lloc (unitatid);
+--
+-- TOC entry 236 (class 1259 OID 16417)
+-- Name: rfh_digitalib; Type: TABLE; Schema: public; Owner: -
+--
 
-    alter table rfh_lloc 
-       add constraint rfh_lloc_codillocexpansio_uk unique (codilloc, expansio);
-create index rfh_llocrol_pk_i on rfh_llocrol (llocrolid);
-create index rfh_llocrol_llocid_fk_i on rfh_llocrol (llocid);
-create index rfh_llocrol_rolid_fk_i on rfh_llocrol (rolid);
-create index rfh_plugin_pk_i on rfh_plugin (pluginid);
-create index rfh_plugin_entitatid_fk_i on rfh_plugin (entitatid);
-create index rfh_rol_pk_i on rfh_rol (rolid);
-create index rfh_rol_nomid_fk_i on rfh_rol (nomid);
-create index rfh_traduccio_pk_i on rfh_traduccio (traduccioid);
-CREATE INDEX rfh_traducciomap_idiomaid_fk_i ON rfh_traducciomap (idiomaid);
-CREATE INDEX rfh_traducciomap_pk_i ON rfh_traducciomap (traducciomapid);
-create index rfh_unitat_pk_i on rfh_unitat (unitatid);
-create index rfh_usuari_pk_i on rfh_usuari (usuariid);
-create index rfh_usuari_idiomaid_fk_i on rfh_usuari (idiomaid);
-create index rfh_usuari_darreraentitat_fk_i on rfh_usuari (darreraentitat);
+CREATE TABLE public.rfh_digitalib (
+    digitalid bigint DEFAULT nextval('public.rfh_digitalib_seq'::regclass) NOT NULL,
+    datacreacio timestamp without time zone,
+    entitatid bigint NOT NULL,
+    fileinfo text,
+    fitxerid bigint NOT NULL,
+    metadades text,
+    missatge text,
+    signedfileinfo text,
+    status bigint NOT NULL,
+    transactionid bigint,
+    transactionwebid character varying(255),
+    usuariid bigint NOT NULL
+);
 
-    alter table rfh_usuari 
-       add constraint rfh_usuari_username_uk unique (username);
-create index rfh_usuarientitat_pk_i on rfh_usuarientitat (usuarientitatid);
-create index rfh_usuarient_entitatid_fk_i on rfh_usuarientitat (entitatid);
-create index rfh_usuarient_usuariid_fk_i on rfh_usuarientitat (usuariid);
 
-    alter table rfh_usuarientitat 
-       add constraint rfh_usuarient_multiple_uk unique (entitatid, usuariid);
+--
+-- TOC entry 220 (class 1259 OID 16389)
+-- Name: rfh_entitat_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
 
-   --  alter table rfh_activitat 
-   --     add constraint rfh_activitat_autoritza_aut_fk 
-   --     foreign key (autoritzacioid) 
-   --     references rfh_autoritzacio;
+CREATE SEQUENCE public.rfh_entitat_seq
+    START WITH 1000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
-    alter table rfh_activitat 
-       add constraint rfh_activitat_funcionari_fu_fk 
-       foreign key (funcionariid) 
-       references rfh_funcionari;
 
-    alter table rfh_autoritzacio 
-       add constraint rfh_autoritza_funcionari_i_fk 
-       foreign key (funcionariid) 
-       references rfh_funcionari;
+--
+-- TOC entry 237 (class 1259 OID 16424)
+-- Name: rfh_entitat; Type: TABLE; Schema: public; Owner: -
+--
 
-    alter table rfh_autoritzacio 
-       add constraint rfh_autoritza_lloc_fd_fk 
-       foreign key (llocid) 
-       references rfh_lloc;
+CREATE TABLE public.rfh_entitat (
+    entitatid bigint DEFAULT nextval('public.rfh_entitat_seq'::regclass) NOT NULL,
+    actiu boolean NOT NULL,
+    databaixa timestamp without time zone,
+    nom character varying(255),
+    unitatid bigint
+);
 
-    alter table rfh_digitalib 
-       add constraint rfh_scanweb_fitxer_fitxerid_fk 
-       foreign key (fitxerid) 
-       references rfh_fitxer;
 
-    alter table rfh_digitalib 
-       add constraint rfh_scanweb_usuari_usuariid_fk 
-       foreign key (usuariid) 
-       references rfh_usuari;
+--
+-- TOC entry 221 (class 1259 OID 16390)
+-- Name: rfh_fitxer_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
 
-    alter table rfh_entitat 
-       add constraint rfh_entitat_unitat_unitatid_fk 
-       foreign key (unitatid) 
-       references rfh_unitat;
+CREATE SEQUENCE public.rfh_fitxer_seq
+    START WITH 1000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
-    alter table rfh_funcionarilloc 
-       add constraint rfh_funlloc_funcionari_f_fk 
-       foreign key (funcionariid) 
-       references rfh_funcionari;
 
-    alter table rfh_funcionarilloc 
-       add constraint rfh_funlloc_lloc_llocid_fk 
-       foreign key (llocid) 
-       references rfh_lloc;
+--
+-- TOC entry 238 (class 1259 OID 16429)
+-- Name: rfh_fitxer; Type: TABLE; Schema: public; Owner: -
+--
 
-    alter table rfh_funcionarilloc 
-       add constraint rfh_funlloc_usuari_usuid_fk 
-       foreign key (usuariid) 
-       references rfh_usuari;
+CREATE TABLE public.rfh_fitxer (
+    fitxerid bigint DEFAULT nextval('public.rfh_fitxer_seq'::regclass) NOT NULL,
+    descripcio character varying(1000) DEFAULT NULL::character varying,
+    mime character varying(255) NOT NULL,
+    nom character varying(255) NOT NULL,
+    tamany bigint NOT NULL
+);
 
-    alter table rfh_historic 
-       add constraint rfh_historic_funcionari_f_fk 
-       foreign key (funcionariid) 
-       references rfh_funcionari;
 
-    alter table rfh_historic 
-       add constraint rfh_historic_usuari_usuid_fk 
-       foreign key (usuariid) 
-       references rfh_usuari;
+--
+-- TOC entry 222 (class 1259 OID 16391)
+-- Name: rfh_funcionari_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
 
-    alter table rfh_historiclloc 
-       add constraint rfh_histolloc_lloc_llocid_fk 
-       foreign key (llocid) 
-       references rfh_lloc;
+CREATE SEQUENCE public.rfh_funcionari_seq
+    START WITH 1000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
-    alter table rfh_historiclloc 
-       add constraint rfh_histolloc_usuari_id_fk 
-       foreign key (usuariid) 
-       references rfh_usuari;
 
-    alter table rfh_lloc 
-       add constraint rfh_lloc_entitat_entitatid_fk 
-       foreign key (entitatid) 
-       references rfh_entitat;
+--
+-- TOC entry 239 (class 1259 OID 16436)
+-- Name: rfh_funcionari; Type: TABLE; Schema: public; Owner: -
+--
 
-    alter table rfh_lloc 
-       add constraint rfh_lloc_unitat_unitatid_fk 
-       foreign key (unitatid) 
-       references rfh_unitat;
+CREATE TABLE public.rfh_funcionari (
+    funcionariid bigint DEFAULT nextval('public.rfh_funcionari_seq'::regclass) NOT NULL,
+    correu character varying(255) NOT NULL,
+    databaixa timestamp without time zone,
+    datacreacio timestamp without time zone NOT NULL,
+    entitatid bigint NOT NULL,
+    identificador character varying(50) NOT NULL,
+    llinatge1 character varying(255) NOT NULL,
+    llinatge2 character varying(255),
+    nom character varying(255) NOT NULL,
+    numero character varying(10) NOT NULL,
+    observacions text,
+    tipusidentificador integer NOT NULL,
+    usuari character varying(50) NOT NULL
+);
 
-    alter table rfh_llocrol 
-       add constraint rfh_llocrol_lloc_llocid_fk 
-       foreign key (llocid) 
-       references rfh_lloc;
 
-    alter table rfh_llocrol 
-       add constraint rfh_llocrol_rol_rolid_fk 
-       foreign key (rolid) 
-       references rfh_rol;
+--
+-- TOC entry 223 (class 1259 OID 16392)
+-- Name: rfh_funcionarilloc_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
 
-    alter table rfh_plugin 
-       add constraint rfh_plugin_entitat_entitati_fk 
-       foreign key (entitatid) 
-       references rfh_entitat;
+CREATE SEQUENCE public.rfh_funcionarilloc_seq
+    START WITH 1000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
-    alter table rfh_rol 
-       add constraint rfh_rol_traduccio_nomid_fk 
-       foreign key (nomid) 
-       references rfh_traduccio;
 
-    alter table rfh_traducciomap 
-       add constraint rfh_traducmap_traduccio_fk 
-       foreign key (traducciomapid) 
-       references rfh_traduccio;
+--
+-- TOC entry 240 (class 1259 OID 16443)
+-- Name: rfh_funcionarilloc; Type: TABLE; Schema: public; Owner: -
+--
 
-    alter table rfh_usuari 
-       add constraint rfh_usuari_entitat_last_fk 
-       foreign key (darreraentitat) 
-       references rfh_entitat;
+CREATE TABLE public.rfh_funcionarilloc (
+    funcionarillocid bigint DEFAULT nextval('public.rfh_funcionarilloc_seq'::regclass) NOT NULL,
+    datacreacio timestamp without time zone NOT NULL,
+    datafi date,
+    datainici date,
+    funcionariid bigint NOT NULL,
+    llocid bigint NOT NULL,
+    usuariid bigint
+);
 
-    alter table rfh_usuari 
-       add constraint rfh_usuari_idioma_idiomaid_fk 
-       foreign key (idiomaid) 
-       references rfh_idioma;
 
-    alter table rfh_usuarientitat 
-       add constraint rfh_usuarient_entitat_entit_fk 
-       foreign key (entitatid) 
-       references rfh_entitat;
+--
+-- TOC entry 224 (class 1259 OID 16393)
+-- Name: rfh_historic_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
 
-    alter table rfh_usuarientitat 
-       add constraint rfh_usuarient_usuari_usuari_fk 
-       foreign key (usuariid) 
-       references rfh_usuari;
+CREATE SEQUENCE public.rfh_historic_seq
+    START WITH 1000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- TOC entry 241 (class 1259 OID 16448)
+-- Name: rfh_historic; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.rfh_historic (
+    historicid bigint DEFAULT nextval('public.rfh_historic_seq'::regclass) NOT NULL,
+    datacreacio timestamp without time zone NOT NULL,
+    funcionariid bigint NOT NULL,
+    numerocai character varying(50) NOT NULL,
+    observacions text,
+    usuariid bigint
+);
+
+
+--
+-- TOC entry 225 (class 1259 OID 16394)
+-- Name: rfh_historiclloc_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.rfh_historiclloc_seq
+    START WITH 1000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- TOC entry 242 (class 1259 OID 16455)
+-- Name: rfh_historiclloc; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.rfh_historiclloc (
+    historicllocid bigint DEFAULT nextval('public.rfh_historiclloc_seq'::regclass) NOT NULL,
+    datacreacio timestamp without time zone NOT NULL,
+    llocid bigint NOT NULL,
+    numerocai character varying(50) NOT NULL,
+    observacions text,
+    usuariid bigint
+);
+
+
+--
+-- TOC entry 243 (class 1259 OID 16462)
+-- Name: rfh_idioma; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.rfh_idioma (
+    idiomaid character varying(5) NOT NULL,
+    nom character varying(50) NOT NULL,
+    ordre integer DEFAULT 0 NOT NULL,
+    suportat boolean DEFAULT true NOT NULL
+);
+
+
+--
+-- TOC entry 226 (class 1259 OID 16395)
+-- Name: rfh_lloc_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.rfh_lloc_seq
+    START WITH 1000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- TOC entry 244 (class 1259 OID 16468)
+-- Name: rfh_lloc; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.rfh_lloc (
+    llocid bigint DEFAULT nextval('public.rfh_lloc_seq'::regclass) NOT NULL,
+    codilloc character varying(50) NOT NULL,
+    databaixa timestamp without time zone,
+    datacreacio timestamp without time zone NOT NULL,
+    entitatid bigint NOT NULL,
+    nom character varying(255) NOT NULL,
+    observacions text,
+    personaloamr integer NOT NULL,
+    unitatid bigint NOT NULL,
+    dataalta timestamp without time zone,
+    codillocpropi character varying(50) NOT NULL,
+    expansio character varying(50)
+);
+
+
+--
+-- TOC entry 227 (class 1259 OID 16396)
+-- Name: rfh_llocrol_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.rfh_llocrol_seq
+    START WITH 1000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- TOC entry 245 (class 1259 OID 16475)
+-- Name: rfh_llocrol; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.rfh_llocrol (
+    llocrolid bigint DEFAULT nextval('public.rfh_llocrol_seq'::regclass) NOT NULL,
+    datacreacio timestamp without time zone NOT NULL,
+    llocid bigint NOT NULL,
+    rolid bigint NOT NULL
+);
+
+
+--
+-- TOC entry 228 (class 1259 OID 16397)
+-- Name: rfh_plugin_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.rfh_plugin_seq
+    START WITH 1000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- TOC entry 246 (class 1259 OID 16480)
+-- Name: rfh_plugin; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.rfh_plugin (
+    pluginid bigint DEFAULT nextval('public.rfh_plugin_seq'::regclass) NOT NULL,
+    actiu boolean NOT NULL,
+    classe character varying(255),
+    datacreacio timestamp without time zone,
+    descripcio character varying(255) NOT NULL,
+    entitatid bigint NOT NULL,
+    nom character varying(255) NOT NULL,
+    properties text,
+    tipus character varying(50) NOT NULL
+);
+
+
+--
+-- TOC entry 229 (class 1259 OID 16398)
+-- Name: rfh_rol_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.rfh_rol_seq
+    START WITH 1000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- TOC entry 247 (class 1259 OID 16487)
+-- Name: rfh_rol; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.rfh_rol (
+    rolid bigint DEFAULT nextval('public.rfh_rol_seq'::regclass) NOT NULL,
+    codi character varying(50) NOT NULL,
+    datacreacio timestamp without time zone,
+    entitatid bigint NOT NULL,
+    nomid bigint NOT NULL
+);
+
+
+--
+-- TOC entry 230 (class 1259 OID 16399)
+-- Name: rfh_traduccio_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.rfh_traduccio_seq
+    START WITH 1000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- TOC entry 248 (class 1259 OID 16492)
+-- Name: rfh_traduccio; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.rfh_traduccio (
+    traduccioid bigint DEFAULT nextval('public.rfh_traduccio_seq'::regclass) NOT NULL
+);
+
+
+--
+-- TOC entry 249 (class 1259 OID 16497)
+-- Name: rfh_traducciomap; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.rfh_traducciomap (
+    traducciomapid bigint NOT NULL,
+    valor character varying(4000),
+    idiomaid character varying(10) NOT NULL
+);
+
+
+--
+-- TOC entry 231 (class 1259 OID 16400)
+-- Name: rfh_unitat_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.rfh_unitat_seq
+    START WITH 1000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- TOC entry 250 (class 1259 OID 16504)
+-- Name: rfh_unitat; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.rfh_unitat (
+    unitatid bigint DEFAULT nextval('public.rfh_unitat_seq'::regclass) NOT NULL,
+    arrel character varying(50),
+    arrelversio integer,
+    codi character varying(50) NOT NULL,
+    cooficial character varying(255),
+    denominacio character varying(255) NOT NULL,
+    estat character varying(5),
+    superior character varying(50),
+    superiorversio integer,
+    versio integer NOT NULL
+);
+
+
+--
+-- TOC entry 232 (class 1259 OID 16401)
+-- Name: rfh_usuari_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.rfh_usuari_seq
+    START WITH 1000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- TOC entry 251 (class 1259 OID 16511)
+-- Name: rfh_usuari; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.rfh_usuari (
+    usuariid bigint DEFAULT nextval('public.rfh_usuari_seq'::regclass) NOT NULL,
+    actiu boolean NOT NULL,
+    correu character varying(255) NOT NULL,
+    darreraentitat bigint,
+    databaixa timestamp without time zone,
+    datacreacio timestamp without time zone NOT NULL,
+    idiomaid character varying(5) NOT NULL,
+    llinatge1 character varying(255) NOT NULL,
+    llinatge2 character varying(255),
+    nif character varying(50) NOT NULL,
+    nom character varying(255) NOT NULL,
+    username character varying(255)
+);
+
+
+--
+-- TOC entry 233 (class 1259 OID 16402)
+-- Name: rfh_usuarientitat_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.rfh_usuarientitat_seq
+    START WITH 1000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- TOC entry 252 (class 1259 OID 16518)
+-- Name: rfh_usuarientitat; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.rfh_usuarientitat (
+    usuarientitatid bigint DEFAULT nextval('public.rfh_usuarientitat_seq'::regclass) NOT NULL,
+    actiu boolean NOT NULL,
+    entitatid bigint NOT NULL,
+    usuariid bigint NOT NULL
+);
+
+
+--
+-- TOC entry 4751 (class 2606 OID 16409)
+-- Name: rfh_activitat rfh_activitat_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_activitat
+    ADD CONSTRAINT rfh_activitat_pk PRIMARY KEY (activitatid);
+
+
+--
+-- TOC entry 4756 (class 2606 OID 16416)
+-- Name: rfh_autoritzacio rfh_autoritzacio_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_autoritzacio
+    ADD CONSTRAINT rfh_autoritzacio_pk PRIMARY KEY (autoritzacioid);
+
+
+--
+-- TOC entry 4760 (class 2606 OID 16423)
+-- Name: rfh_digitalib rfh_digitalib_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_digitalib
+    ADD CONSTRAINT rfh_digitalib_pk PRIMARY KEY (digitalid);
+
+
+--
+-- TOC entry 4764 (class 2606 OID 16428)
+-- Name: rfh_entitat rfh_entitat_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_entitat
+    ADD CONSTRAINT rfh_entitat_pk PRIMARY KEY (entitatid);
+
+
+--
+-- TOC entry 4768 (class 2606 OID 16435)
+-- Name: rfh_fitxer rfh_fitxer_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_fitxer
+    ADD CONSTRAINT rfh_fitxer_pk PRIMARY KEY (fitxerid);
+
+
+--
+-- TOC entry 4771 (class 2606 OID 16940)
+-- Name: rfh_funcionari rfh_funcionari_identific_uk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_funcionari
+    ADD CONSTRAINT rfh_funcionari_identific_uk UNIQUE (identificador);
+
+
+--
+-- TOC entry 4773 (class 2606 OID 16442)
+-- Name: rfh_funcionari rfh_funcionari_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_funcionari
+    ADD CONSTRAINT rfh_funcionari_pk PRIMARY KEY (funcionariid);
+
+
+--
+-- TOC entry 4778 (class 2606 OID 16447)
+-- Name: rfh_funcionarilloc rfh_funcionarilloc_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_funcionarilloc
+    ADD CONSTRAINT rfh_funcionarilloc_pk PRIMARY KEY (funcionarillocid);
+
+
+--
+-- TOC entry 4783 (class 2606 OID 16454)
+-- Name: rfh_historic rfh_historic_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_historic
+    ADD CONSTRAINT rfh_historic_pk PRIMARY KEY (historicid);
+
+
+--
+-- TOC entry 4788 (class 2606 OID 16461)
+-- Name: rfh_historiclloc rfh_historiclloc_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_historiclloc
+    ADD CONSTRAINT rfh_historiclloc_pk PRIMARY KEY (historicllocid);
+
+
+--
+-- TOC entry 4792 (class 2606 OID 16467)
+-- Name: rfh_idioma rfh_idioma_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_idioma
+    ADD CONSTRAINT rfh_idioma_pk PRIMARY KEY (idiomaid);
+
+
+--
+-- TOC entry 4795 (class 2606 OID 33338)
+-- Name: rfh_lloc rfh_lloc_codillocexpansio_uk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_lloc
+    ADD CONSTRAINT rfh_lloc_codillocexpansio_uk UNIQUE (expansio, codilloc);
+
+
+--
+-- TOC entry 4798 (class 2606 OID 16474)
+-- Name: rfh_lloc rfh_lloc_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_lloc
+    ADD CONSTRAINT rfh_lloc_pk PRIMARY KEY (llocid);
+
+
+--
+-- TOC entry 4803 (class 2606 OID 16479)
+-- Name: rfh_llocrol rfh_llocrol_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_llocrol
+    ADD CONSTRAINT rfh_llocrol_pk PRIMARY KEY (llocrolid);
+
+
+--
+-- TOC entry 4808 (class 2606 OID 16486)
+-- Name: rfh_plugin rfh_plugin_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_plugin
+    ADD CONSTRAINT rfh_plugin_pk PRIMARY KEY (pluginid);
+
+
+--
+-- TOC entry 4812 (class 2606 OID 16491)
+-- Name: rfh_rol rfh_rol_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_rol
+    ADD CONSTRAINT rfh_rol_pk PRIMARY KEY (rolid);
+
+
+--
+-- TOC entry 4815 (class 2606 OID 16496)
+-- Name: rfh_traduccio rfh_traduccio_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_traduccio
+    ADD CONSTRAINT rfh_traduccio_pk PRIMARY KEY (traduccioid);
+
+
+--
+-- TOC entry 4820 (class 2606 OID 16736)
+-- Name: rfh_traducciomap rfh_traducmap_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_traducciomap
+    ADD CONSTRAINT rfh_traducmap_pk PRIMARY KEY (traducciomapid, idiomaid);
+
+
+--
+-- TOC entry 4822 (class 2606 OID 16510)
+-- Name: rfh_unitat rfh_unitat_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_unitat
+    ADD CONSTRAINT rfh_unitat_pk PRIMARY KEY (unitatid);
+
+
+--
+-- TOC entry 4827 (class 2606 OID 16517)
+-- Name: rfh_usuari rfh_usuari_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_usuari
+    ADD CONSTRAINT rfh_usuari_pk PRIMARY KEY (usuariid);
+
+
+--
+-- TOC entry 4830 (class 2606 OID 16703)
+-- Name: rfh_usuari rfh_usuari_username_uk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_usuari
+    ADD CONSTRAINT rfh_usuari_username_uk UNIQUE (username);
+
+
+--
+-- TOC entry 4833 (class 2606 OID 16571)
+-- Name: rfh_usuarientitat rfh_usuarient_multiple_uk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_usuarientitat
+    ADD CONSTRAINT rfh_usuarient_multiple_uk UNIQUE (entitatid, usuariid);
+
+
+--
+-- TOC entry 4836 (class 2606 OID 16522)
+-- Name: rfh_usuarientitat rfh_usuarientitat_pk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_usuarientitat
+    ADD CONSTRAINT rfh_usuarientitat_pk PRIMARY KEY (usuarientitatid);
+
+
+--
+-- TOC entry 4749 (class 1259 OID 16524)
+-- Name: rfh_activitat_fun_fk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_activitat_fun_fk_i ON public.rfh_activitat USING btree (funcionariid);
+
+
+--
+-- TOC entry 4752 (class 1259 OID 16523)
+-- Name: rfh_activitat_pk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_activitat_pk_i ON public.rfh_activitat USING btree (activitatid);
+
+
+--
+-- TOC entry 4753 (class 1259 OID 16528)
+-- Name: rfh_autoritza_funcid_fk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_autoritza_funcid_fk_i ON public.rfh_autoritzacio USING btree (funcionariid);
+
+
+--
+-- TOC entry 4754 (class 1259 OID 16527)
+-- Name: rfh_autoritza_funid_fk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_autoritza_funid_fk_i ON public.rfh_autoritzacio USING btree (llocid);
+
+
+--
+-- TOC entry 4757 (class 1259 OID 16526)
+-- Name: rfh_autoritzacio_pk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_autoritzacio_pk_i ON public.rfh_autoritzacio USING btree (autoritzacioid);
+
+
+--
+-- TOC entry 4758 (class 1259 OID 16530)
+-- Name: rfh_digitalib_fitxerid_fk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_digitalib_fitxerid_fk_i ON public.rfh_digitalib USING btree (fitxerid);
+
+
+--
+-- TOC entry 4761 (class 1259 OID 16529)
+-- Name: rfh_digitalib_pk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_digitalib_pk_i ON public.rfh_digitalib USING btree (digitalid);
+
+
+--
+-- TOC entry 4762 (class 1259 OID 16531)
+-- Name: rfh_digitalib_usuariid_fk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_digitalib_usuariid_fk_i ON public.rfh_digitalib USING btree (usuariid);
+
+
+--
+-- TOC entry 4765 (class 1259 OID 16532)
+-- Name: rfh_entitat_pk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_entitat_pk_i ON public.rfh_entitat USING btree (entitatid);
+
+
+--
+-- TOC entry 4766 (class 1259 OID 16533)
+-- Name: rfh_entitat_unitatid_fk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_entitat_unitatid_fk_i ON public.rfh_entitat USING btree (unitatid);
+
+
+--
+-- TOC entry 4769 (class 1259 OID 16534)
+-- Name: rfh_fitxer_pk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_fitxer_pk_i ON public.rfh_fitxer USING btree (fitxerid);
+
+
+--
+-- TOC entry 4774 (class 1259 OID 16535)
+-- Name: rfh_funcionari_pk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_funcionari_pk_i ON public.rfh_funcionari USING btree (funcionariid);
+
+
+--
+-- TOC entry 4775 (class 1259 OID 16536)
+-- Name: rfh_funcionarientitat_pk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_funcionarientitat_pk_i ON public.rfh_funcionarilloc USING btree (funcionarillocid);
+
+
+--
+-- TOC entry 4776 (class 1259 OID 16537)
+-- Name: rfh_funcionarilloc_llocid_fk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_funcionarilloc_llocid_fk_i ON public.rfh_funcionarilloc USING btree (llocid);
+
+
+--
+-- TOC entry 4779 (class 1259 OID 16538)
+-- Name: rfh_funlloc_funcionariid_fk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_funlloc_funcionariid_fk_i ON public.rfh_funcionarilloc USING btree (funcionariid);
+
+
+--
+-- TOC entry 4780 (class 1259 OID 16946)
+-- Name: rfh_funlloc_usuariid_fk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_funlloc_usuariid_fk_i ON public.rfh_funcionarilloc USING btree (usuariid);
+
+
+--
+-- TOC entry 4781 (class 1259 OID 16542)
+-- Name: rfh_historic_funcionariid_fk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_historic_funcionariid_fk_i ON public.rfh_historic USING btree (funcionariid);
+
+
+--
+-- TOC entry 4784 (class 1259 OID 16541)
+-- Name: rfh_historic_pk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_historic_pk_i ON public.rfh_historic USING btree (historicid);
+
+
+--
+-- TOC entry 4785 (class 1259 OID 16543)
+-- Name: rfh_historic_usuariid_fk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_historic_usuariid_fk_i ON public.rfh_historic USING btree (usuariid);
+
+
+--
+-- TOC entry 4786 (class 1259 OID 16545)
+-- Name: rfh_historiclloc_llocid_fk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_historiclloc_llocid_fk_i ON public.rfh_historiclloc USING btree (llocid);
+
+
+--
+-- TOC entry 4789 (class 1259 OID 16544)
+-- Name: rfh_historiclloc_pk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_historiclloc_pk_i ON public.rfh_historiclloc USING btree (historicllocid);
+
+
+--
+-- TOC entry 4790 (class 1259 OID 16546)
+-- Name: rfh_historiclloc_usuariid_fk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_historiclloc_usuariid_fk_i ON public.rfh_historiclloc USING btree (usuariid);
+
+
+--
+-- TOC entry 4793 (class 1259 OID 16547)
+-- Name: rfh_idioma_pk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_idioma_pk_i ON public.rfh_idioma USING btree (idiomaid);
+
+
+--
+-- TOC entry 4796 (class 1259 OID 16549)
+-- Name: rfh_lloc_entitatid_fk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_lloc_entitatid_fk_i ON public.rfh_lloc USING btree (entitatid);
+
+
+--
+-- TOC entry 4799 (class 1259 OID 16548)
+-- Name: rfh_lloc_pk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_lloc_pk_i ON public.rfh_lloc USING btree (llocid);
+
+
+--
+-- TOC entry 4800 (class 1259 OID 16550)
+-- Name: rfh_lloc_unitatid_fk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_lloc_unitatid_fk_i ON public.rfh_lloc USING btree (unitatid);
+
+
+--
+-- TOC entry 4801 (class 1259 OID 16554)
+-- Name: rfh_llocrol_llocid_fk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_llocrol_llocid_fk_i ON public.rfh_llocrol USING btree (llocid);
+
+
+--
+-- TOC entry 4804 (class 1259 OID 16553)
+-- Name: rfh_llocrol_pk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_llocrol_pk_i ON public.rfh_llocrol USING btree (llocrolid);
+
+
+--
+-- TOC entry 4805 (class 1259 OID 16555)
+-- Name: rfh_llocrol_rolid_fk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_llocrol_rolid_fk_i ON public.rfh_llocrol USING btree (rolid);
+
+
+--
+-- TOC entry 4806 (class 1259 OID 16557)
+-- Name: rfh_plugin_entitatid_fk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_plugin_entitatid_fk_i ON public.rfh_plugin USING btree (entitatid);
+
+
+--
+-- TOC entry 4809 (class 1259 OID 16556)
+-- Name: rfh_plugin_pk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_plugin_pk_i ON public.rfh_plugin USING btree (pluginid);
+
+
+--
+-- TOC entry 4810 (class 1259 OID 16559)
+-- Name: rfh_rol_nomid_fk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_rol_nomid_fk_i ON public.rfh_rol USING btree (nomid);
+
+
+--
+-- TOC entry 4813 (class 1259 OID 16558)
+-- Name: rfh_rol_pk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_rol_pk_i ON public.rfh_rol USING btree (rolid);
+
+
+--
+-- TOC entry 4816 (class 1259 OID 16560)
+-- Name: rfh_traduccio_pk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_traduccio_pk_i ON public.rfh_traduccio USING btree (traduccioid);
+
+
+--
+-- TOC entry 4817 (class 1259 OID 16737)
+-- Name: rfh_traducciomap_idiomaid_fk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_traducciomap_idiomaid_fk_i ON public.rfh_traducciomap USING btree (idiomaid);
+
+
+--
+-- TOC entry 4818 (class 1259 OID 16734)
+-- Name: rfh_traducciomap_pk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_traducciomap_pk_i ON public.rfh_traducciomap USING btree (traducciomapid);
+
+
+--
+-- TOC entry 4823 (class 1259 OID 16561)
+-- Name: rfh_unitat_pk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_unitat_pk_i ON public.rfh_unitat USING btree (unitatid);
+
+
+--
+-- TOC entry 4824 (class 1259 OID 16564)
+-- Name: rfh_usuari_darreraentitat_fk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_usuari_darreraentitat_fk_i ON public.rfh_usuari USING btree (darreraentitat);
+
+
+--
+-- TOC entry 4825 (class 1259 OID 16563)
+-- Name: rfh_usuari_idiomaid_fk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_usuari_idiomaid_fk_i ON public.rfh_usuari USING btree (idiomaid);
+
+
+--
+-- TOC entry 4828 (class 1259 OID 16562)
+-- Name: rfh_usuari_pk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_usuari_pk_i ON public.rfh_usuari USING btree (usuariid);
+
+
+--
+-- TOC entry 4831 (class 1259 OID 16568)
+-- Name: rfh_usuarient_entitatid_fk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_usuarient_entitatid_fk_i ON public.rfh_usuarientitat USING btree (entitatid);
+
+
+--
+-- TOC entry 4834 (class 1259 OID 16569)
+-- Name: rfh_usuarient_usuariid_fk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_usuarient_usuariid_fk_i ON public.rfh_usuarientitat USING btree (usuariid);
+
+
+--
+-- TOC entry 4837 (class 1259 OID 16567)
+-- Name: rfh_usuarientitat_pk_i; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX rfh_usuarientitat_pk_i ON public.rfh_usuarientitat USING btree (usuarientitatid);
+
+
+--
+-- TOC entry 4838 (class 2606 OID 16577)
+-- Name: rfh_activitat rfh_activitat_funcionari_fu_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_activitat
+    ADD CONSTRAINT rfh_activitat_funcionari_fu_fk FOREIGN KEY (funcionariid) REFERENCES public.rfh_funcionari(funcionariid);
+
+
+--
+-- TOC entry 4839 (class 2606 OID 16725)
+-- Name: rfh_autoritzacio rfh_autoritza_funcionari_i_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_autoritzacio
+    ADD CONSTRAINT rfh_autoritza_funcionari_i_fk FOREIGN KEY (funcionariid) REFERENCES public.rfh_funcionari(funcionariid);
+
+
+--
+-- TOC entry 4840 (class 2606 OID 16587)
+-- Name: rfh_autoritzacio rfh_autoritza_lloc_fd_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_autoritzacio
+    ADD CONSTRAINT rfh_autoritza_lloc_fd_fk FOREIGN KEY (llocid) REFERENCES public.rfh_lloc(llocid);
+
+
+--
+-- TOC entry 4843 (class 2606 OID 16602)
+-- Name: rfh_entitat rfh_entitat_unitat_unitatid_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_entitat
+    ADD CONSTRAINT rfh_entitat_unitat_unitatid_fk FOREIGN KEY (unitatid) REFERENCES public.rfh_unitat(unitatid);
+
+
+--
+-- TOC entry 4844 (class 2606 OID 16607)
+-- Name: rfh_funcionarilloc rfh_funlloc_funcionari_f_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_funcionarilloc
+    ADD CONSTRAINT rfh_funlloc_funcionari_f_fk FOREIGN KEY (funcionariid) REFERENCES public.rfh_funcionari(funcionariid);
+
+
+--
+-- TOC entry 4845 (class 2606 OID 16612)
+-- Name: rfh_funcionarilloc rfh_funlloc_lloc_llocid_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_funcionarilloc
+    ADD CONSTRAINT rfh_funlloc_lloc_llocid_fk FOREIGN KEY (llocid) REFERENCES public.rfh_lloc(llocid);
+
+
+--
+-- TOC entry 4846 (class 2606 OID 16941)
+-- Name: rfh_funcionarilloc rfh_funlloc_usuari_usuid_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_funcionarilloc
+    ADD CONSTRAINT rfh_funlloc_usuari_usuid_fk FOREIGN KEY (usuariid) REFERENCES public.rfh_usuari(usuariid);
+
+
+--
+-- TOC entry 4849 (class 2606 OID 16627)
+-- Name: rfh_historiclloc rfh_histolloc_lloc_llocid_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_historiclloc
+    ADD CONSTRAINT rfh_histolloc_lloc_llocid_fk FOREIGN KEY (llocid) REFERENCES public.rfh_lloc(llocid);
+
+
+--
+-- TOC entry 4850 (class 2606 OID 16632)
+-- Name: rfh_historiclloc rfh_histolloc_usuari_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_historiclloc
+    ADD CONSTRAINT rfh_histolloc_usuari_id_fk FOREIGN KEY (usuariid) REFERENCES public.rfh_usuari(usuariid);
+
+
+--
+-- TOC entry 4847 (class 2606 OID 16617)
+-- Name: rfh_historic rfh_historic_funcionari_f_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_historic
+    ADD CONSTRAINT rfh_historic_funcionari_f_fk FOREIGN KEY (funcionariid) REFERENCES public.rfh_funcionari(funcionariid);
+
+
+--
+-- TOC entry 4848 (class 2606 OID 16622)
+-- Name: rfh_historic rfh_historic_usuari_usuid_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_historic
+    ADD CONSTRAINT rfh_historic_usuari_usuid_fk FOREIGN KEY (usuariid) REFERENCES public.rfh_usuari(usuariid);
+
+
+--
+-- TOC entry 4851 (class 2606 OID 16637)
+-- Name: rfh_lloc rfh_lloc_entitat_entitatid_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_lloc
+    ADD CONSTRAINT rfh_lloc_entitat_entitatid_fk FOREIGN KEY (entitatid) REFERENCES public.rfh_entitat(entitatid);
+
+
+--
+-- TOC entry 4852 (class 2606 OID 16642)
+-- Name: rfh_lloc rfh_lloc_unitat_unitatid_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_lloc
+    ADD CONSTRAINT rfh_lloc_unitat_unitatid_fk FOREIGN KEY (unitatid) REFERENCES public.rfh_unitat(unitatid);
+
+
+--
+-- TOC entry 4853 (class 2606 OID 16647)
+-- Name: rfh_llocrol rfh_llocrol_lloc_llocid_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_llocrol
+    ADD CONSTRAINT rfh_llocrol_lloc_llocid_fk FOREIGN KEY (llocid) REFERENCES public.rfh_lloc(llocid);
+
+
+--
+-- TOC entry 4854 (class 2606 OID 16652)
+-- Name: rfh_llocrol rfh_llocrol_rol_rolid_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_llocrol
+    ADD CONSTRAINT rfh_llocrol_rol_rolid_fk FOREIGN KEY (rolid) REFERENCES public.rfh_rol(rolid);
+
+
+--
+-- TOC entry 4855 (class 2606 OID 16657)
+-- Name: rfh_plugin rfh_plugin_entitat_entitati_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_plugin
+    ADD CONSTRAINT rfh_plugin_entitat_entitati_fk FOREIGN KEY (entitatid) REFERENCES public.rfh_entitat(entitatid);
+
+
+--
+-- TOC entry 4856 (class 2606 OID 16662)
+-- Name: rfh_rol rfh_rol_traduccio_nomid_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_rol
+    ADD CONSTRAINT rfh_rol_traduccio_nomid_fk FOREIGN KEY (nomid) REFERENCES public.rfh_traduccio(traduccioid);
+
+
+--
+-- TOC entry 4841 (class 2606 OID 16592)
+-- Name: rfh_digitalib rfh_scanweb_fitxer_fitxerid_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_digitalib
+    ADD CONSTRAINT rfh_scanweb_fitxer_fitxerid_fk FOREIGN KEY (fitxerid) REFERENCES public.rfh_fitxer(fitxerid);
+
+
+--
+-- TOC entry 4842 (class 2606 OID 16597)
+-- Name: rfh_digitalib rfh_scanweb_usuari_usuariid_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_digitalib
+    ADD CONSTRAINT rfh_scanweb_usuari_usuariid_fk FOREIGN KEY (usuariid) REFERENCES public.rfh_usuari(usuariid);
+
+
+--
+-- TOC entry 4857 (class 2606 OID 16667)
+-- Name: rfh_traducciomap rfh_traducmap_traduccio_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_traducciomap
+    ADD CONSTRAINT rfh_traducmap_traduccio_fk FOREIGN KEY (traducciomapid) REFERENCES public.rfh_traduccio(traduccioid);
+
+
+--
+-- TOC entry 4858 (class 2606 OID 16672)
+-- Name: rfh_usuari rfh_usuari_entitat_last_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_usuari
+    ADD CONSTRAINT rfh_usuari_entitat_last_fk FOREIGN KEY (darreraentitat) REFERENCES public.rfh_entitat(entitatid);
+
+
+--
+-- TOC entry 4859 (class 2606 OID 16677)
+-- Name: rfh_usuari rfh_usuari_idioma_idiomaid_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_usuari
+    ADD CONSTRAINT rfh_usuari_idioma_idiomaid_fk FOREIGN KEY (idiomaid) REFERENCES public.rfh_idioma(idiomaid);
+
+
+--
+-- TOC entry 4860 (class 2606 OID 16682)
+-- Name: rfh_usuarientitat rfh_usuarient_entitat_entit_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_usuarientitat
+    ADD CONSTRAINT rfh_usuarient_entitat_entit_fk FOREIGN KEY (entitatid) REFERENCES public.rfh_entitat(entitatid);
+
+
+--
+-- TOC entry 4861 (class 2606 OID 16687)
+-- Name: rfh_usuarientitat rfh_usuarient_usuari_usuari_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_usuarientitat
+    ADD CONSTRAINT rfh_usuarient_usuari_usuari_fk FOREIGN KEY (usuariid) REFERENCES public.rfh_usuari(usuariid);
+
+
+-- Completed on 2025-10-09 13:22:08
+
+--
+-- PostgreSQL database dump complete
+--
+

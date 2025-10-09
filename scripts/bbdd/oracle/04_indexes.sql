@@ -1,10 +1,13 @@
 -- create index rfh_activitat_pk_i on rfh_activitat (activitatid);
--- create index rfh_activitat_autoritzaid_fk_i on rfh_activitat (autoritzacioid);
 create index rfh_autoritza_funid_fk_i on rfh_autoritzacio (llocid);
--- create index rfh_digitalib_pk_i on rfh_digitalib (digitalid);
 create index rfh_digitalib_usuariid_fk_i on rfh_digitalib (usuariid);
 create index rfh_entitat_unitatid_fk_i on rfh_entitat (unitatid);
 -- create index rfh_funcionari_pk_i on rfh_funcionari (funcionariid);
+-- create index rfh_autoritzacio_pk_i on rfh_autoritzacio (autoritzacioid);
+create index rfh_autoritza_funcid_fk_i on rfh_autoritzacio (funcionariid);
+create index rfh_digitalib_fitxerid_fk_i on rfh_digitalib (fitxerid);
+-- create index rfh_entitat_pk_i on rfh_entitat (entitatid);
+-- create index rfh_fitxer_pk_i on rfh_fitxer (fitxerid);
 create index rfh_funcionarilloc_llocid_fk_i on rfh_funcionarilloc (llocid);
 create index rfh_funlloc_usuariid_fk_i on rfh_funcionarilloc (usuariid);
 create index rfh_historic_funcionariid_fk_i on rfh_historic (funcionariid);

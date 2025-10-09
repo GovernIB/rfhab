@@ -22,15 +22,17 @@ create sequence rfh_usuarientitat_seq start with 1000 increment by  1;
         arxiuexpedientid varchar2(255 char),
         autoritzacioid number(19,0),
         codisia varchar2(150 char),
-        datacreacio timestamp not null,
         dataactivitat timestamp not null,
+        datacreacio timestamp not null,
         estat number(10,0) not null,
         funcionariid number(19,0) not null,
+        idactuaciotramit varchar2(255 char),
         interessatidentificacio varchar2(50 char),
         interessatllinatge1 varchar2(255 char),
         interessatllinatge2 varchar2(255 char),
         interessatnom varchar2(255 char),
         interessattipus number(10,0),
+        procediment varchar2(150 char),
         registre varchar2(50 char),
         representantidentificacio varchar2(50 char),
         representantllinatge1 varchar2(255 char),
@@ -39,10 +41,8 @@ create sequence rfh_usuarientitat_seq start with 1000 increment by  1;
         representanttipus number(10,0),
         tipus number(10,0) not null,
         tramit varchar2(150 char),
-        procediment varchar2(150 char),
         tramitversio number(10,0),
         url varchar2(255 char),
-        idactuaciotramit varchar2(255 char),
         primary key (activitatid)
     );
 
@@ -155,11 +155,11 @@ create sequence rfh_usuarientitat_seq start with 1000 increment by  1;
        llocid number(19,0) not null,
         codilloc varchar2(50 char) not null,
         codillocpropi varchar2(50 char) not null,
-        expansio varchar2(50 char),
         databaixa timestamp,
         datacreacio timestamp not null,
         dataalta timestamp,
         entitatid number(19,0) not null,
+        expansio varchar2(50 char),
         nom varchar2(255 char) not null,
         observacions long,
         personaloamr number(10,0) not null,
@@ -251,7 +251,7 @@ create index rfh_activitat_fun_fk_i on rfh_activitat (funcionariid);
 -- create index rfh_activitat_autoritzaid_fk_i on rfh_activitat (autoritzacioid);
 create index rfh_autoritzacio_pk_i on rfh_autoritzacio (autoritzacioid);
 create index rfh_autoritza_funid_fk_i on rfh_autoritzacio (llocid);
-create index rfh_autoritza_funcionariid_fk_i on rfh_autoritzacio (funcionariid);
+create index rfh_autoritza_funcid_fk_i on rfh_autoritzacio (funcionariid);
 create index rfh_digitalib_pk_i on rfh_digitalib (digitalid);
 create index rfh_digitalib_fitxerid_fk_i on rfh_digitalib (fitxerid);
 create index rfh_digitalib_usuariid_fk_i on rfh_digitalib (usuariid);
@@ -261,11 +261,11 @@ create index rfh_fitxer_pk_i on rfh_fitxer (fitxerid);
 create index rfh_funcionari_pk_i on rfh_funcionari (funcionariid);
    alter table rfh_funcionari
       add constraint rfh_funcionari_identific_uk unique (identificador);
+
 create index rfh_funcionarientitat_pk_i on rfh_funcionarilloc (funcionarillocid);
 create index rfh_funcionarilloc_llocid_fk_i on rfh_funcionarilloc (llocid);
 create index rfh_funlloc_funcionariid_fk_i on rfh_funcionarilloc (funcionariid);
 create index rfh_funlloc_usuariid_fk_i on rfh_funcionarilloc (usuariid);
-
 create index rfh_historic_pk_i on rfh_historic (historicid);
 create index rfh_historic_funcionariid_fk_i on rfh_historic (funcionariid);
 create index rfh_historic_usuariid_fk_i on rfh_historic (usuariid);
@@ -278,7 +278,7 @@ create index rfh_lloc_entitatid_fk_i on rfh_lloc (entitatid);
 create index rfh_lloc_unitatid_fk_i on rfh_lloc (unitatid);
 
     alter table rfh_lloc 
-       add constraint rfh_lloc_codillocexpansio_uk unique (codilloc, expansio);
+       add constraint rfh_lloc_codillocexpansio_uk unique (expansio, codilloc);
 create index rfh_llocrol_pk_i on rfh_llocrol (llocrolid);
 create index rfh_llocrol_llocid_fk_i on rfh_llocrol (llocid);
 create index rfh_llocrol_rolid_fk_i on rfh_llocrol (rolid);
@@ -312,7 +312,7 @@ create index rfh_usuarient_usuariid_fk_i on rfh_usuarientitat (usuariid);
        references rfh_funcionari;
 
     alter table rfh_autoritzacio 
-       add constraint rfh_autoritza_funcionari_funcionariid_fk 
+       add constraint rfh_autoritza_funcionari_i_fk 
        foreign key (funcionariid) 
        references rfh_funcionari;
 

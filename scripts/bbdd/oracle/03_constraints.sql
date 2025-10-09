@@ -54,7 +54,7 @@
        references rfh_funcionari;
 
     alter table rfh_autoritzacio 
-       add constraint rfh_autoritza_funcionari_funcionariid_fk 
+       add constraint rfh_autoritza_funcionari_i_fk 
        foreign key (funcionariid) 
        references rfh_funcionari;
 
@@ -87,7 +87,7 @@
        add constraint rfh_funlloc_lloc_llocid_fk 
        foreign key (llocid) 
        references rfh_lloc;
-       
+
     alter table rfh_funcionarilloc 
        add constraint rfh_funlloc_usuari_usuid_fk 
        foreign key (usuariid) 
@@ -176,7 +176,7 @@
       add constraint rfh_funcionari_identific_uk unique (identificador);
 
     alter table rfh_lloc 
-       add constraint rfh_lloc_codillocexpansio_uk unique (codilloc, expansio);
+       add constraint rfh_lloc_codillocexpansio_uk unique (expansio, codilloc);
 
     alter table rfh_usuari 
        add constraint rfh_usuari_username_uk unique (username);

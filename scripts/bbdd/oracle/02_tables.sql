@@ -5,15 +5,17 @@
         arxiuexpedientid varchar2(255 char),
         autoritzacioid number(19,0),
         codisia varchar2(150 char),
-        datacreacio timestamp not null,
         dataactivitat timestamp not null,
+        datacreacio timestamp not null,
         estat number(10,0) not null,
         funcionariid number(19,0) not null,
+        idactuaciotramit varchar2(255 char),
         interessatidentificacio varchar2(50 char),
         interessatllinatge1 varchar2(255 char),
         interessatllinatge2 varchar2(255 char),
-        interessatnom varchar2(255 char) 
+        interessatnom varchar2(255 char),
         interessattipus number(10,0),
+        procediment varchar2(150 char),
         registre varchar2(50 char),
         representantidentificacio varchar2(50 char),
         representantllinatge1 varchar2(255 char),
@@ -22,10 +24,8 @@
         representanttipus number(10,0),
         tipus number(10,0) not null,
         tramit varchar2(150 char),
-        procediment varchar2(150 char),
         tramitversio number(10,0),
-        url varchar2(255 char),
-        idactuaciotramit varchar2(255 char)
+        url varchar2(255 char)
     );
 
     create table rfh_autoritzacio (
@@ -52,7 +52,7 @@
         missatge clob,
         signedfileinfo clob,
         status number(19,0) not null,
-        transactionid number(19, 0),
+        transactionid number(19,0),
         transactionwebid varchar2(255 char),
         usuariid number(19,0) not null
     );
@@ -128,11 +128,11 @@
        llocid number(19,0) not null,
         codilloc varchar2(50 char) not null,
         codillocpropi varchar2(50 char) not null,
-        expansio varchar2(50 char),
         databaixa timestamp,
         datacreacio timestamp not null,
         dataalta timestamp,
         entitatid number(19,0) not null,
+        expansio varchar2(50 char),
         nom varchar2(255 char) not null,
         observacions clob,
         personaloamr number(10,0) not null,

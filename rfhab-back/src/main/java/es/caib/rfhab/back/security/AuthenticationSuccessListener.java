@@ -180,7 +180,8 @@ public class AuthenticationSuccessListener implements ApplicationListener<Intera
 						log.info("UsuariEntitatJPAList => " + ue.getEntitatID() + " - codi: " + ue.getUnitatID()) ;
 					
 						unitat = unitatEjb.findByPrimaryKey(ue.getUnitatID());
-						log.info("unidad dir3 => " + unitat.getCodi());
+						// log.info("unidad dir3 => " + unitat.getCodi());
+						log.info("unidad dir3 => " + (unitat != null ? unitat.getCodi() : null));
 						
 						if (unitat != null) {
 							entitatCodi = unitat.getCodi();
@@ -189,6 +190,7 @@ public class AuthenticationSuccessListener implements ApplicationListener<Intera
 							log.info(">>>>>> Entitat predeterminada " + entitatIDActual);	
 							break;
 						}
+                        //TODO:llançar excepció si no l'hem trobada??
 					}
 						
 				}

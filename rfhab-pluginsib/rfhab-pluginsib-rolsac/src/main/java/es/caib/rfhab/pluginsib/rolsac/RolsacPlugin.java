@@ -19,15 +19,11 @@ import com.github.benmanes.caffeine.cache.AsyncLoadingCache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 
 import es.caib.rfhab.commons.utils.Configuracio;
-import es.caib.rfhab.pluginsib.rolsac.client.v1.api.ProcedimientosApi;
-import es.caib.rfhab.pluginsib.rolsac.client.v1.api.TramitesApi;
-import es.caib.rfhab.pluginsib.rolsac.client.v1.model.Plantillas;
-import es.caib.rfhab.pluginsib.rolsac.client.v1.model.Procedimientos;
-import es.caib.rfhab.pluginsib.rolsac.client.v1.model.RespuestaProcedimientos;
-import es.caib.rfhab.pluginsib.rolsac.client.v1.model.RespuestaTramites;
-import es.caib.rfhab.pluginsib.rolsac.client.v1.model.Tramites;
-import es.caib.rfhab.pluginsib.rolsac.client.v1.services.ApiClient;
-import es.caib.rfhab.pluginsib.rolsac.client.v1.services.auth.HttpBasicAuth;
+import es.caib.rfhab.pluginsib.rolsac.model.Plantillas;
+import es.caib.rfhab.pluginsib.rolsac.model.Procediments;
+import es.caib.rfhab.pluginsib.rolsac.model.respostes.RespuestaProcediments;
+import es.caib.rfhab.pluginsib.rolsac.model.respostes.RespuestaTramits;
+import es.caib.rfhab.pluginsib.rolsac.model.Tramits;
 
 /**
  * 
@@ -42,10 +38,6 @@ public class RolsacPlugin implements IRolsacPlugin {
 	private static final String FILTRE_PROCEDIMENTS = "{\"activo\":\"1\",\"telematico\":\"1\",\"disponibleFuncionarioHabilitado\":\"1\"}";
 
 	private static final String FILTRE_PAGINACIO = "{\"page\":\"1\",\"size\":\"500\"}";
-
-	private ProcedimientosApi procedimientosApiClient = null;
-
-	private TramitesApi tramitesApiClient = null;
 
 	private static final long TEMPS_CATXE_PROCEDIMENTS_I_TRAMITS = 1000 * 60 * 60 * 24; // 24 hores
 	final String ENDPOINT = Configuracio.getRolsacEndpoint();
@@ -92,8 +84,8 @@ public class RolsacPlugin implements IRolsacPlugin {
 
 		final HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
-		final ResponseEntity<RespuestaProcedimientos> responseProcedimientos = restTemplate
-				.postForEntity(ENDPOINT + entitat, request, RespuestaProcedimientos.class);
+		final ResponseEntity<RespuestaProcediments> responseProcedimientos = restTemplate
+				.postForEntity(ENDPOINT + entitat, request, RespuestaProcediments.class);
 
 		if (responseProcedimientos != null && responseProcedimientos.getBody() != null) {
 			if (!responseProcedimientos.getBody().getStatus().equals("200")
@@ -101,7 +93,7 @@ public class RolsacPlugin implements IRolsacPlugin {
 				return null;
 			} else {
 
-				final List<Procedimientos> respostaProcediments = responseProcedimientos.getBody().getResultado();
+				final List<Procediments> respostaProcediments = responseProcedimientos.getBody().getResultado();
 				if (respostaProcediments != null)
 					LOG.info("S'han trobat " + respostaProcediments.size() + " procediments");
 				else
@@ -110,7 +102,7 @@ public class RolsacPlugin implements IRolsacPlugin {
 				HashMap<String, String> resultats = new HashMap<String, String>();
 
 				if (respostaProcediments != null)
-					for (Procedimientos procediment : respostaProcediments) {
+					for (Procediments procediment : respostaProcediments) {
 						LOG.info(procediment.getCodigo() + " " + procediment.getNombre());
 						resultats.put(String.valueOf(procediment.getCodigo()),
 								procediment.getNombre().replace("'", "`"));
@@ -184,8 +176,8 @@ public class RolsacPlugin implements IRolsacPlugin {
 		LOG.info("Amb request: " + request);
 		LOG.info("Amb headers: " + headers);
 		LOG.info("Amb map: " + map);
-		final ResponseEntity<RespuestaProcedimientos> responseProcedimientos = restTemplate
-				.postForEntity(ENDPOINT + entitat, request, RespuestaProcedimientos.class);
+		final ResponseEntity<RespuestaProcediments> responseProcedimientos = restTemplate
+				.postForEntity(ENDPOINT + entitat, request, RespuestaProcediments.class);
 
 		if (responseProcedimientos != null && responseProcedimientos.getBody() != null) {
 			if (!responseProcedimientos.getBody().getStatus().equals("200")
@@ -193,7 +185,7 @@ public class RolsacPlugin implements IRolsacPlugin {
 				return null;
 			} else {
 
-				final List<Procedimientos> respostaProcediments = responseProcedimientos.getBody().getResultado();
+				final List<Procediments> respostaProcediments = responseProcedimientos.getBody().getResultado();
 				if (respostaProcediments != null)
 					LOG.info("S'han trobat " + respostaProcediments.size() + " procediments");
 				else
@@ -202,7 +194,7 @@ public class RolsacPlugin implements IRolsacPlugin {
 				HashMap<String, String[]> resultats = new HashMap<String, String[]>();
 
 				if (respostaProcediments != null)
-					for (Procedimientos procediment : respostaProcediments) {
+					for (Procediments procediment : respostaProcediments) {
 						LOG.info(procediment.getCodigo() + " - " + procediment.getCodigoSIA() + " - "
 								+ procediment.getNombre());
 						resultats.put(String.valueOf(procediment.getCodigo()),
@@ -302,8 +294,8 @@ public class RolsacPlugin implements IRolsacPlugin {
 		LOG.debug("Amb usuari: " + USUARI);
 		LOG.debug("Amb password: " + PASS);
 		LOG.info("Amb request: " + request);
-		final ResponseEntity<RespuestaTramites> responseTramites = restTemplate.postForEntity(ENDPOINT + entitat,
-				request, RespuestaTramites.class);
+		final ResponseEntity<RespuestaTramits> responseTramites = restTemplate.postForEntity(ENDPOINT + entitat,
+				request, RespuestaTramits.class);
 
 		if (responseTramites != null && responseTramites.getBody() != null) {
 			if (!responseTramites.getBody().getStatus().equals("200")
@@ -311,14 +303,14 @@ public class RolsacPlugin implements IRolsacPlugin {
 				return null;
 			} else {
 
-				final List<Tramites> respostaTramits = responseTramites.getBody().getResultado();
+				final List<Tramits> respostaTramits = responseTramites.getBody().getResultado();
 				LOG.info("S'han trobat " + respostaTramits.size() + " tramits");
 
 				HashMap<String, String[]> resultats = new HashMap<String, String[]>();
 
-				for (Tramites tramit : respostaTramits) {
+				for (Tramits tramit : respostaTramits) {
 					LOG.info(tramit.getCodigo() + " " + tramit.getNombre() + " "
-							+ tramit.getLinkProcedimiento().getCodigo() +
+							+ tramit.getLink_procedimiento().getCodigo() +
 							" " + llengua + " " + tramit.getVersio() + " " + tramit.getParametros() + " "
 							+ tramit.getIdTraTel());
 					Plantillas plantillaTramit = tramit.getPlantilla();
@@ -327,11 +319,9 @@ public class RolsacPlugin implements IRolsacPlugin {
 									(plantillaTramit != null && plantillaTramit.getNombre() != null)
 											? plantillaTramit.getNombre().replace("'", "`")
 											: tramit.getNombre().replace("'", "`"),
-									tramit.getLinkProcedimiento().getCodigo(),
+									tramit.getLink_procedimiento().getCodigo(),
 									llengua,
-									(tramit.getCodigo() != null)
-											? String.valueOf(tramit.getCodigo())
-											: String.valueOf(plantillaTramit.getCodigo()),
+									String.valueOf(tramit.getCodigo()),
 									(plantillaTramit != null && plantillaTramit.getVersion() != null)
 											? String.valueOf(plantillaTramit.getVersion())
 											: String.valueOf(tramit.getVersio()),
@@ -371,40 +361,5 @@ public class RolsacPlugin implements IRolsacPlugin {
 		}
 
 		return getTramitsPerLlengua(null, llengua);
-	}
-
-	private ProcedimientosApi getProcedimientosApi() throws Exception {
-
-		LOG.info("Obtenint Procediments API de Rolsac");
-
-		if (procedimientosApiClient == null) {
-			ApiClient apiClient = new ApiClient();
-			apiClient.setBasePath(ENDPOINT + "procedimientos");
-			HttpBasicAuth basicAuth = (HttpBasicAuth) apiClient.getAuthentication("basic");
-			basicAuth.setUsername(USUARI);
-			basicAuth.setPassword(PASS);
-
-			return new ProcedimientosApi(apiClient);
-		}
-
-		return procedimientosApiClient;
-
-	}
-
-	private TramitesApi getTramitesApi() throws Exception {
-
-		LOG.info("Obtenint Tramites API de Rolsac");
-
-		if (tramitesApiClient == null) {
-			ApiClient apiClient = new ApiClient();
-			apiClient.setBasePath(ENDPOINT + "tramites");
-			HttpBasicAuth basicAuth = (HttpBasicAuth) apiClient.getAuthentication("basic");
-			basicAuth.setUsername(USUARI);
-			basicAuth.setPassword(PASS);
-
-			return new TramitesApi(apiClient);
-		}
-
-		return tramitesApiClient;
 	}
 }

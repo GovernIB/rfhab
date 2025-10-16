@@ -32,7 +32,8 @@ public class OdsToDtoMapperTest {
     public static Collection<Object[]> data() {
         // Afegir més casos si tens més fitxers de test
         return Arrays.asList(new Object[][] {
-                { "src/main/resources/ods-mapping.properties", "testfiles/20251002_RFH_1fila.ods" },
+                { "src/test/resources/ods-mapping-nonormalitzats.properties", "testfiles/20251002_RFH_1fila.ods" },
+                { "src/main/resources/ods-mapping.properties", "testfiles/20251002_RFH_Normalitzat_1fila.ods" },
         });
     }
 
@@ -61,7 +62,7 @@ public class OdsToDtoMapperTest {
     }
 
     @Test
-    public void testReadOdsToDto() throws Exception {
+    public void testReadOdsToFuncionariOdsDTO() throws Exception {
         List<FuncionariOdsDTO> dtos = mapper.readOdsToDto(new File(odsFilePath), FuncionariOdsDTO.class);
         log.info("Fitxer llegit correctament!");
         assertNotNull("La llista de DTOs no hauria de ser null", dtos);
@@ -71,6 +72,29 @@ public class OdsToDtoMapperTest {
             // Comprova que almenys una propietat del DTO no sigui null ni buida
             boolean hasValue = false;
             for (java.lang.reflect.Field field : FuncionariOdsDTO.class.getDeclaredFields()) {
+                field.setAccessible(true);
+                Object value = field.get(dto);
+                if (value != null && !value.toString().trim().isEmpty()) {
+                    hasValue = true;
+                    break;
+                }
+            }
+            assertTrue("El DTO ha de tenir almenys una propietat amb valor", hasValue);
+        }
+    }
+
+    @Test
+    public void testReadOdsToFuncionariOdsNoNormalitzatDTO() throws Exception {
+        List<FuncionariOdsNoNormalitzatDTO> dtos = mapper.readOdsToDto(new File(odsFilePath),
+                FuncionariOdsNoNormalitzatDTO.class);
+        log.info("Fitxer llegit correctament!");
+        assertNotNull("La llista de DTOs no hauria de ser null", dtos);
+        assertFalse("La llista de DTOs no hauria d'estar buida", dtos.isEmpty());
+        for (FuncionariOdsNoNormalitzatDTO dto : dtos) {
+            log.info(dto);
+            // Comprova que almenys una propietat del DTO no sigui null ni buida
+            boolean hasValue = false;
+            for (java.lang.reflect.Field field : FuncionariOdsNoNormalitzatDTO.class.getDeclaredFields()) {
                 field.setAccessible(true);
                 Object value = field.get(dto);
                 if (value != null && !value.toString().trim().isEmpty()) {

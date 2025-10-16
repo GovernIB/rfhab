@@ -1,6 +1,6 @@
 package es.caib.rfhab.logic.utils.CarregaMassivaFuncionaris;
 
-public class FuncionariOdsDTO {
+public class FuncionariOdsNoNormalitzatDTO {
     public String numRfh;
     public String primerLlinatge;
     public String segonLlinatge;
@@ -8,10 +8,8 @@ public class FuncionariOdsDTO {
     public String nif;
     public String usuari;
     public String adrecaElectronica;
-    public String dir3UnitatSuperiorNormalitzat;
     public String dir3UnitatSuperior;
     public String nomUnitatSuperior;
-    public String dir3UnitatOrganicaNormalitzat;
     public String dir3UnitatOrganica;
     public String nomUnitatOrganica;
     public String codiLlocFeina;
@@ -28,7 +26,7 @@ public class FuncionariOdsDTO {
 
     @Override
     public String toString() {
-        return "FuncionariOdsDTO{" +
+        return "FuncionariOdsNoNormalitzatDTO{" +
                 "numRfh='" + numRfh + '\'' +
                 ", primerLlinatge='" + primerLlinatge + '\'' +
                 ", segonLlinatge='" + segonLlinatge + '\'' +
@@ -36,10 +34,8 @@ public class FuncionariOdsDTO {
                 ", nif='" + nif + '\'' +
                 ", usuari='" + usuari + '\'' +
                 ", adrecaElectronica='" + adrecaElectronica + '\'' +
-                ", dir3UnitatSuperiorNormalitzat='" + dir3UnitatSuperiorNormalitzat + '\'' +
                 ", dir3UnitatSuperior='" + dir3UnitatSuperior + '\'' +
                 ", nomUnitatSuperior='" + nomUnitatSuperior + '\'' +
-                ", dir3UnitatOrganicaNormalitzat='" + dir3UnitatOrganicaNormalitzat + '\'' +
                 ", dir3UnitatOrganica='" + dir3UnitatOrganica + '\'' +
                 ", nomUnitatOrganica='" + nomUnitatOrganica + '\'' +
                 ", codiLlocFeina='" + codiLlocFeina + '\'' +

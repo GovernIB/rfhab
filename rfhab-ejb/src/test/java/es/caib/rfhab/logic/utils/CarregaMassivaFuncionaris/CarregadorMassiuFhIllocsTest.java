@@ -33,7 +33,7 @@ public class CarregadorMassiuFhIllocsTest {
     @Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {
-                { "src/main/resources/ods-mapping.properties", "testfiles/20251002_RFH_1fila.ods" },
+                { "src/main/resources/ods-mapping.properties", "testfiles/20251002_RFH_Normalitzat_1fila.ods" },
         });
     }
 

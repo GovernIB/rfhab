@@ -261,6 +261,10 @@ public class Configuracio implements Constants {
         return getAppSystemProperties().getProperty(CARREGADORMASSIU_PROPERTY_BASE + "usuaricarregadorid");
     }
 
+    public static String getCarregadorMassiuEntitatId() {
+        return getAppSystemProperties().getProperty(CARREGADORMASSIU_PROPERTY_BASE + "entitatcarregadorid");
+    }
+
     public static String getCarregadorMassiuEndpoint(Properties properties) {
         return properties.getProperty(CARREGADORMASSIU_PROPERTY_BASE + "url");
     }
@@ -275,6 +279,10 @@ public class Configuracio implements Constants {
 
     public static String getCarregadorMassiuUsuariId(Properties properties) {
         return properties.getProperty(CARREGADORMASSIU_PROPERTY_BASE + "usuaricarregadorid");
+    }
+
+    public static String getCarregadorMassiuEntitatId(Properties properties) {
+        return properties.getProperty(CARREGADORMASSIU_PROPERTY_BASE + "entitatcarregadorid");
     }
 
     public static String getAppSystemProperty(String key) {

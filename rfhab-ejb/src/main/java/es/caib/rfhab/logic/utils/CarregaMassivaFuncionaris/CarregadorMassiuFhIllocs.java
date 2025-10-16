@@ -152,6 +152,7 @@ public class CarregadorMassiuFhIllocs {
     private final String user;
     private final String pass;
     private final String usuariId;
+    private final String entitatId;
     private final OdsToDtoMapper mapper;
 
     /**
@@ -168,7 +169,9 @@ public class CarregadorMassiuFhIllocs {
         this.user = Configuracio.getCarregadorMassiuUser();
         this.pass = Configuracio.getCarregadorMassiuPassword();
         this.usuariId = Configuracio.getCarregadorMassiuUsuariId();
-        if (this.apiUrl == null || this.user == null || this.pass == null || this.usuariId == null) {
+        this.entitatId = Configuracio.getCarregadorMassiuEntitatId();
+        if (this.apiUrl == null || this.user == null || this.pass == null || this.usuariId == null
+                || this.entitatId == null) {
             throw new I18NException(
                     "CarregadorMassiuFhIllocs configuration is incomplete. Please check the properties file.");
         }
@@ -192,7 +195,9 @@ public class CarregadorMassiuFhIllocs {
         this.user = Configuracio.getCarregadorMassiuUser(apiExternaProperties);
         this.pass = Configuracio.getCarregadorMassiuPassword(apiExternaProperties);
         this.usuariId = Configuracio.getCarregadorMassiuUsuariId(apiExternaProperties);
-        if (this.apiUrl == null || this.user == null || this.pass == null || this.usuariId == null) {
+        this.entitatId = Configuracio.getCarregadorMassiuEntitatId(apiExternaProperties);
+        if (this.apiUrl == null || this.user == null || this.pass == null || this.usuariId == null
+                || this.entitatId == null) {
             throw new I18NException(
                     "CarregadorMassiuFhIllocs configuration is incomplete. Please check the properties file.");
         }
@@ -240,7 +245,7 @@ public class CarregadorMassiuFhIllocs {
                 dto.nif,
                 dto.usuari,
                 dto.adrecaElectronica,
-                null, // TODO
+                Long.parseLong(this.entitatId),
                 dto.numCaiAlta,
                 observacions,
                 null);

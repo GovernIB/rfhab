@@ -9,7 +9,6 @@ import java.util.Properties;
 
 /**
  * 
- * @author GenApp
  * @author jagarcia
  * @author jpou
  * 
@@ -223,27 +222,27 @@ public class Configuracio implements Constants {
     }
 
     public static String getSistramitEndpoint() {
-        return getAppSystemProperties().getProperty(SISTRAMIT_PROPERTY_BASE + "url");
+        return getAppSystemProperties().getProperty(RFHAB_PROPERTY_BASE + "sistramit.url");
     }
 
     public static String getSistramitUser() {
-        return getAppSystemProperties().getProperty(SISTRAMIT_PROPERTY_BASE + "usuari");
+        return getAppSystemProperties().getProperty(RFHAB_PROPERTY_BASE + "sistramit.usuari");
     }
 
     public static String getSistramitPassword() {
-        return getAppSystemProperties().getProperty(SISTRAMIT_PROPERTY_BASE + "contrasenya");
+        return getAppSystemProperties().getProperty(RFHAB_PROPERTY_BASE + "sistramit.contrasenya");
     }
 
     public static String getSistramitEndpoint(Properties properties) {
-        return properties.getProperty(SISTRAMIT_PROPERTY_BASE + "url");
+        return properties.getProperty(RFHAB_PROPERTY_BASE + "sistramit.url");
     }
 
     public static String getSistramitUser(Properties properties) {
-        return properties.getProperty(SISTRAMIT_PROPERTY_BASE + "usuari");
+        return properties.getProperty(RFHAB_PROPERTY_BASE + "sistramit.usuari");
     }
 
     public static String getSistramitPassword(Properties properties) {
-        return properties.getProperty(SISTRAMIT_PROPERTY_BASE + "contrasenya");
+        return properties.getProperty(RFHAB_PROPERTY_BASE + "sistramit.contrasenya");
     }
 
     public static String getCarregadorMassiuEndpoint() {

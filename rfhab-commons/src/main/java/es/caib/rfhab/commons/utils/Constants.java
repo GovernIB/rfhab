@@ -8,7 +8,6 @@ package es.caib.rfhab.commons.utils;
 public interface Constants {
 
     public static final String RFHAB_PROPERTY_BASE = "es.caib.rfhab.";
-    public static final String SISTRAMIT_PROPERTY_BASE = "sistramit.";
     public static final String CARREGADORMASSIU_PROPERTY_BASE = "carregadormassiu.";
 
     public static final String MAIL_SERVICE = "java:/es.caib.rfhab.mail";

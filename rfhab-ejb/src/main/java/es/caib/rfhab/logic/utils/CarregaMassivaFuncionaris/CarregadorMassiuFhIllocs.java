@@ -151,6 +151,7 @@ public class CarregadorMassiuFhIllocs {
     private final String apiUrl;
     private final String user;
     private final String pass;
+    private final String usuariId;
     private final OdsToDtoMapper mapper;
 
     /**
@@ -166,7 +167,8 @@ public class CarregadorMassiuFhIllocs {
         this.apiUrl = Configuracio.getCarregadorMassiuEndpoint();
         this.user = Configuracio.getCarregadorMassiuUser();
         this.pass = Configuracio.getCarregadorMassiuPassword();
-        if (this.apiUrl == null || this.user == null || this.pass == null) {
+        this.usuariId = Configuracio.getCarregadorMassiuUsuariId();
+        if (this.apiUrl == null || this.user == null || this.pass == null || this.usuariId == null) {
             throw new I18NException(
                     "CarregadorMassiuFhIllocs configuration is incomplete. Please check the properties file.");
         }
@@ -189,7 +191,8 @@ public class CarregadorMassiuFhIllocs {
         this.apiUrl = Configuracio.getCarregadorMassiuEndpoint(apiExternaProperties);
         this.user = Configuracio.getCarregadorMassiuUser(apiExternaProperties);
         this.pass = Configuracio.getCarregadorMassiuPassword(apiExternaProperties);
-        if (this.apiUrl == null || this.user == null || this.pass == null) {
+        this.usuariId = Configuracio.getCarregadorMassiuUsuariId(apiExternaProperties);
+        if (this.apiUrl == null || this.user == null || this.pass == null || this.usuariId == null) {
             throw new I18NException(
                     "CarregadorMassiuFhIllocs configuration is incomplete. Please check the properties file.");
         }
@@ -213,7 +216,7 @@ public class CarregadorMassiuFhIllocs {
     }
 
     /**
-     * Processa un DTO i fa la crida a l'API REST externa (implementació pendent).
+     * Processa un DTO i fa la crida a l'API REST externa.
      * 
      * @param dto El DTO a processar
      * @throws Exception
@@ -228,7 +231,7 @@ public class CarregadorMassiuFhIllocs {
 
         NouFuncionariHabilitatDTO nouFh = new NouFuncionariHabilitatDTO(
                 "ca",
-                null, // TODO
+                Integer.parseInt(this.usuariId),
                 dto.nom,
                 dto.primerLlinatge,
                 dto.segonLlinatge,

@@ -48,7 +48,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.log4j.Logger;
-import org.fundaciobit.genapp.common.i18n.I18NCommonUtils;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.i18n.I18NFieldError;
 import org.fundaciobit.genapp.common.query.Where;
@@ -494,7 +493,7 @@ public class FuncionariRestService extends RestUtils {
 			@Parameter(description = "Usuari", required = true, schema = @Schema(implementation = String.class)) @QueryParam("username") @NotNull String username,
 			@Parameter(description = "Correu electrònic", required = true, schema = @Schema(implementation = String.class, pattern = CORREU_PATTERN)) @QueryParam("correu") @NotNull String correu,
 			@Parameter(description = "EntitatID", required = true, example = "1000") @QueryParam("entitatId") @NotNull Long entitatId,
-			@Parameter(description = "Número CAI", required = false) @QueryParam("numerocai") String numeroCai,
+			@Parameter(description = "Número CAI", required = false, schema = @Schema(defaultValue = "", implementation = String.class)) @QueryParam("numerocai") String numeroCai,
 			@Parameter(description = "Observacions", required = false) @QueryParam("observacions") String observacions,
 			@Parameter(description = "Data de baixa", required = false, example = "2025-08-31T06:15:00+00:00", schema = @Schema(implementation = String.class, pattern = DATE_PATTERN_ISO8601_DATE_AND_TIME)) @QueryParam("databaixa") String dataBaixaStr) {
 		try {
@@ -537,6 +536,11 @@ public class FuncionariRestService extends RestUtils {
 			if (numero == null || numero.isEmpty()) {
 				numero = funcionariEjb.getNouFuncionariNumero();
 				log.info("XYZ YYY numero = " + numero);
+			}
+
+			if (numeroCai == null) {
+				numeroCai = "";
+				log.info("XYZ YYY numeroCai = " + numeroCai);
 			}
 
 			Funcionari funcionariNou = new FuncionariJPA();
@@ -593,12 +597,12 @@ public class FuncionariRestService extends RestUtils {
 							"" }));
 			log.info(successMsg);
 
-			return I18NCommonUtils.tradueix(new Locale(language), "operacio.success");
+			return I18NLogicUtilsApiInterna.tradueix(new Locale(language), "operacio.success");
 		} catch (I18NException re) {
 			log.error(re.getMessage(), re);
 			throw new RestException(re.getMessage(), Status.BAD_REQUEST);
 		} catch (Throwable th) {
-			String msg = I18NCommonUtils.tradueix(new Locale(language), "funcionari.error.desconegut",
+			String msg = I18NLogicUtilsApiInterna.tradueix(new Locale(language), "funcionari.error.desconegut",
 					new String[] { th.getMessage() });
 			log.error(msg, th);
 			throw new RestException(msg, th, Status.INTERNAL_SERVER_ERROR);
@@ -682,12 +686,12 @@ public class FuncionariRestService extends RestUtils {
 							"" }));
 			log.info(successMsg);
 
-			return I18NCommonUtils.tradueix(new Locale(language), "operacio.success");
+			return I18NLogicUtilsApiInterna.tradueix(new Locale(language), "operacio.success");
 		} catch (I18NException re) {
 			log.error(re.getMessage(), re);
 			throw new RestException(re.getMessage(), Status.BAD_REQUEST);
 		} catch (Throwable th) {
-			String msg = I18NCommonUtils.tradueix(new Locale(language), "funcionari.error.desconegut",
+			String msg = I18NLogicUtilsApiInterna.tradueix(new Locale(language), "funcionari.error.desconegut",
 					new String[] { th.getMessage() });
 			log.error(msg, th);
 			throw new RestException(msg, th, Status.INTERNAL_SERVER_ERROR);
@@ -773,12 +777,12 @@ public class FuncionariRestService extends RestUtils {
 
 			log.info(successMsg);
 
-			return I18NCommonUtils.tradueix(new Locale(language), "operacio.success");
+			return I18NLogicUtilsApiInterna.tradueix(new Locale(language), "operacio.success");
 		} catch (I18NException re) {
 			log.error(re.getMessage(), re);
 			throw new RestException(re.getMessage(), Status.BAD_REQUEST);
 		} catch (Throwable th) {
-			String msg = I18NCommonUtils.tradueix(new Locale(language), "funcionari.error.desconegut",
+			String msg = I18NLogicUtilsApiInterna.tradueix(new Locale(language), "funcionari.error.desconegut",
 					new String[] { th.getMessage() });
 			log.error(msg, th);
 			throw new RestException(msg, th, Status.INTERNAL_SERVER_ERROR);

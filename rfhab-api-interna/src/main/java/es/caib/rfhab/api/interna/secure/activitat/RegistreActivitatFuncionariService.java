@@ -271,7 +271,7 @@ public class RegistreActivitatFuncionariService extends RestUtils {
 			log.error(re.getMessage(), re);
 			throw new RestException(re.getMessage(), Status.BAD_REQUEST);
 		} catch (Throwable th) {
-			String msg = "Error desconegut enregistrant activitat: " + th.getMessage();
+			String msg = "Error desconegut enregistrant activitat: " + th.getMessage();// TODO: #73 traduïr
 			log.error(msg, th);
 			throw new RestException(msg, th, Status.INTERNAL_SERVER_ERROR);
 		}

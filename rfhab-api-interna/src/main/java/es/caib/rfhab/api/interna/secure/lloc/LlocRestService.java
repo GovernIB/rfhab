@@ -1,5 +1,6 @@
 package es.caib.rfhab.api.interna.secure.lloc;
 
+import es.caib.rfhab.api.interna.utils.I18NLogicUtilsApiInterna;
 import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.commons.utils.PersonalOamrTipus;
 import es.caib.rfhab.commons.utils.PersonalOamrTipusValues;
@@ -36,7 +37,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.log4j.Logger;
-import org.fundaciobit.genapp.common.i18n.I18NCommonUtils;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.i18n.I18NFieldError;
 import org.fundaciobit.genapp.common.validation.BeanValidatorResult;
@@ -209,21 +209,21 @@ public class LlocRestService extends RestUtils {
 			// validam que l'usuari està associat a l'entitat
 			List<UsuariEntitat> ueTrobats = usuariEntitatLogicaEjb.findAllByUsuariIdWithEntitatId(usuariId, entitatId);
 			if (ueTrobats == null || ueTrobats.size() == 0) {
-				throw new I18NException(I18NCommonUtils.tradueix(new Locale(language),
+				throw new I18NException(I18NLogicUtilsApiInterna.tradueix(new Locale(language),
 						"error.usuarientitat.noexisteix",
 						new String[] { String.valueOf(usuariId), String.valueOf(entitatId) }));
 			}
 			// validam que te unitat
 			Entitat entitat = entitatLogicaEjb.findByPrimaryKey(entitatId);
 			if (entitat == null) {
-				throw new I18NException(I18NCommonUtils.tradueix(new Locale(language),
+				throw new I18NException(I18NLogicUtilsApiInterna.tradueix(new Locale(language),
 						"error.entitat.noexisteixdinsmare",
 						new String[] { String.valueOf(entitatId), String.valueOf(unitatId) }));
 			}
 			// validam que unitat penja de l'entitat
 			Unitat unitatEntitat = unitatLogicaEjb.findUnitatMare(unitatId, entitat.getUnitatID());
 			if (unitatEntitat == null) {
-				throw new I18NException(I18NCommonUtils.tradueix(new Locale(language),
+				throw new I18NException(I18NLogicUtilsApiInterna.tradueix(new Locale(language),
 						"error.unitat.noexisteixdinsmare",
 						new String[] { String.valueOf(unitatId), String.valueOf(entitatId) }));
 			}
@@ -253,7 +253,8 @@ public class LlocRestService extends RestUtils {
 					// errorsMsg.add(I18NUtils.tradueix(i18nFieldError.getTranslation().getCode(),
 					// argumentsTraduits));
 					errorsMsg.add(
-							I18NCommonUtils.tradueix(new Locale(language), i18nFieldError.getTranslation().getCode(),
+							I18NLogicUtilsApiInterna.tradueix(new Locale(language),
+									i18nFieldError.getTranslation().getCode(),
 									Arrays.stream(i18nFieldError.getTranslation().getArgs()).map(arg -> arg.getValue())
 											.toArray(size -> new String[size])));
 				}
@@ -288,19 +289,20 @@ public class LlocRestService extends RestUtils {
 				// }
 			}
 
-			String successMsg = String.valueOf(I18NCommonUtils.tradueix(new Locale(language), "success.creation",
-					new String[] { I18NCommonUtils.tradueix(new Locale(language), "lloc.lloc"),
-							I18NCommonUtils.tradueix(new Locale(language), "lloc.llocID"),
-							String.valueOf(llocCreat.getLlocID()),
-							"" }));
+			String successMsg = String
+					.valueOf(I18NLogicUtilsApiInterna.tradueix(new Locale(language), "success.creation",
+							new String[] { I18NLogicUtilsApiInterna.tradueix(new Locale(language), "lloc.lloc"),
+									I18NLogicUtilsApiInterna.tradueix(new Locale(language), "lloc.llocID"),
+									String.valueOf(llocCreat.getLlocID()),
+									"" }));
 			log.info(successMsg);
 
-			return I18NCommonUtils.tradueix(new Locale(language), "operacio.success");
+			return I18NLogicUtilsApiInterna.tradueix(new Locale(language), "operacio.success");
 		} catch (I18NException re) {
 			log.error(re.getMessage(), re);
 			throw new RestException(re.getMessage(), Status.BAD_REQUEST);
 		} catch (Throwable th) {
-			String msg = I18NCommonUtils.tradueix(new Locale(language), "lloc.error.desconegut",
+			String msg = I18NLogicUtilsApiInterna.tradueix(new Locale(language), "lloc.error.desconegut",
 					new String[] { th.getMessage() });
 			log.error(msg, th);
 			throw new RestException(msg, th, Status.INTERNAL_SERVER_ERROR);
@@ -372,7 +374,7 @@ public class LlocRestService extends RestUtils {
 			// cercam el lloc a donar d'alta
 			List<Lloc> llocsAdonarDalta = llocLogicaEjb.getLlocsByCodiIexpansio(codiLloc, expansio);
 			if (llocsAdonarDalta == null || llocsAdonarDalta.size() == 0) {
-				throw new I18NException(I18NCommonUtils.tradueix(new Locale(language),
+				throw new I18NException(I18NLogicUtilsApiInterna.tradueix(new Locale(language),
 						"error.lloc.noexisteixcodiiexpansio",
 						new String[] { codiLloc, expansio }));
 			}
@@ -381,18 +383,19 @@ public class LlocRestService extends RestUtils {
 			Lloc llocActualitzat = llocLogicaEjb.donarDeAltaAndHistory(llocAdonarDalta.getLlocID(), numeroCai,
 					usuariId);
 
-			String successMsg = String.valueOf(I18NCommonUtils.tradueix(new Locale(language), "success.modification",
-					new String[] { I18NCommonUtils.tradueix(new Locale(language), "lloc.lloc"),
-							I18NCommonUtils.tradueix(new Locale(language), "lloc.codiLloc"),
-							llocActualitzat.getCodiLloc() }));
+			String successMsg = String
+					.valueOf(I18NLogicUtilsApiInterna.tradueix(new Locale(language), "success.modification",
+							new String[] { I18NLogicUtilsApiInterna.tradueix(new Locale(language), "lloc.lloc"),
+									I18NLogicUtilsApiInterna.tradueix(new Locale(language), "lloc.codiLloc"),
+									llocActualitzat.getCodiLloc() }));
 			log.info(successMsg);
 
-			return I18NCommonUtils.tradueix(new Locale(language), "operacio.success");
+			return I18NLogicUtilsApiInterna.tradueix(new Locale(language), "operacio.success");
 		} catch (I18NException re) {
 			log.error(re.getMessage(), re);
 			throw new RestException(re.getMessage(), Status.BAD_REQUEST);
 		} catch (Throwable th) {
-			String msg = I18NCommonUtils.tradueix(new Locale(language), "lloc.error.desconegut",
+			String msg = I18NLogicUtilsApiInterna.tradueix(new Locale(language), "lloc.error.desconegut",
 					new String[] { th.getMessage() });
 			log.error(msg, th);
 			throw new RestException(msg, th, Status.INTERNAL_SERVER_ERROR);
@@ -464,7 +467,7 @@ public class LlocRestService extends RestUtils {
 			// cercam el lloc a donar d'alta
 			List<Lloc> llocsAdonarDeBaixa = llocLogicaEjb.getLlocsByCodiIexpansio(codiLloc, expansio);
 			if (llocsAdonarDeBaixa == null || llocsAdonarDeBaixa.size() == 0) {
-				throw new I18NException(I18NCommonUtils.tradueix(new Locale(language),
+				throw new I18NException(I18NLogicUtilsApiInterna.tradueix(new Locale(language),
 						"error.lloc.noexisteixcodiiexpansio",
 						new String[] { codiLloc, expansio }));
 			}
@@ -472,18 +475,19 @@ public class LlocRestService extends RestUtils {
 			// Cream funcionari i auditoria
 			llocLogicaEjb.donarDeBaixaLlocAndHistory(llocAdonarDeBaixa.getLlocID(), numeroCai, usuariId);
 
-			String successMsg = String.valueOf(I18NCommonUtils.tradueix(new Locale(language), "success.modification",
-					new String[] { I18NCommonUtils.tradueix(new Locale(language), "lloc.lloc"),
-							I18NCommonUtils.tradueix(new Locale(language), "lloc.codiLloc"),
-							codiLloc }));
+			String successMsg = String
+					.valueOf(I18NLogicUtilsApiInterna.tradueix(new Locale(language), "success.modification",
+							new String[] { I18NLogicUtilsApiInterna.tradueix(new Locale(language), "lloc.lloc"),
+									I18NLogicUtilsApiInterna.tradueix(new Locale(language), "lloc.codiLloc"),
+									codiLloc }));
 			log.info(successMsg);
 
-			return I18NCommonUtils.tradueix(new Locale(language), "operacio.success");
+			return I18NLogicUtilsApiInterna.tradueix(new Locale(language), "operacio.success");
 		} catch (I18NException re) {
 			log.error(re.getMessage(), re);
 			throw new RestException(re.getMessage(), Status.BAD_REQUEST);
 		} catch (Throwable th) {
-			String msg = I18NCommonUtils.tradueix(new Locale(language), "lloc.error.desconegut",
+			String msg = I18NLogicUtilsApiInterna.tradueix(new Locale(language), "lloc.error.desconegut",
 					new String[] { th.getMessage() });
 			log.error(msg, th);
 			throw new RestException(msg, th, Status.INTERNAL_SERVER_ERROR);

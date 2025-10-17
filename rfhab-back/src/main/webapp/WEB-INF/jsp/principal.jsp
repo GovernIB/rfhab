@@ -24,7 +24,7 @@
 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 <td valign="top">
 <a href="https://governdigital.fundaciobit.org" target="_blank">
-<img src="<c:url value="/img/fundaciobit.png"/>"  alt="Fundació Bit" title="Fundació Bit"/>
+<img src="<c:url value="/img/fundaciobit.png"/>"  alt="Fundaciï¿½ Bit" title="Fundaciï¿½ Bit"/>
 </a>
 </td>
 </tr>
@@ -34,6 +34,7 @@
  
 </div>
 
+<c:if test="${rfh:isDesenvolupament()}">
 <br/>
 Username: ${loginInfo.username}<br/>
 &#36;{rfh:hasRole(ROLE_ADMIN)}= ${rfh:hasRole('ROLE_ADMIN')}<br/>
@@ -54,6 +55,5 @@ lang = ${lang} <br/>
 	Error carregant Plugin UserInfo. Revisar logs per mes informacio.<br/>
 </c:if>
 
-<c:if test="${rfh:isDesenvolupament()}">
 Only in Development Mode
 </c:if>

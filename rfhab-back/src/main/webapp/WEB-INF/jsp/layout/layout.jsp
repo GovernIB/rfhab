@@ -45,7 +45,7 @@
 							key="rol.super" /></a></li>
 			</sec:authorize>
 
-			<sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_SUPER')">
+			<sec:authorize access="hasRole('ROLE_SUPER')">
 				<li class="nav-item"><a
 					class="nav-link ${(pipella eq 'webdb')?'active' : '' }"
 					href="<c:url value="/canviarPipella/webdb"/>"><fmt:message

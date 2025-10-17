@@ -35,7 +35,7 @@
         
         <sec:intercept-url pattern="/user/**" access="hasRole('ROLE_USER')"/>
         
-        <sec:intercept-url pattern="/webdb/**" access="hasAnyRole('ROLE_ADMIN', 'ROLE_SUPER')"/>
+        <sec:intercept-url pattern="/webdb/**" access="hasRole('ROLE_SUPER')"/>
         
     <sec:custom-filter position="PRE_AUTH_FILTER" ref="preauthFilter"/>
 		<sec:session-management session-fixation-protection="none"/>

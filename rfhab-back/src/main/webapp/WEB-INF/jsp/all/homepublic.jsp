@@ -35,6 +35,7 @@ This page is generated automatically. Please edit.
  
 </div>
 
+<c:if test="${rfh:isDesenvolupament()}">
 <br/>
 
 LOGIN ANONIM <br/>
@@ -42,6 +43,5 @@ Locale = <%=LocaleContextHolder.getLocale() %> <br/>
 lang = ${lang} <br/>
 <br/>
 
-<c:if test="${rfh:isDesenvolupament()}">
 Only in Development Mode
 </c:if>

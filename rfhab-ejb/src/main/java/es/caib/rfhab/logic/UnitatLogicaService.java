@@ -22,6 +22,8 @@ public interface UnitatLogicaService extends UnitatService {
 
     public UnitatJPA findByPrimaryKey(Long _ID_);
 
+    public Unitat findByCodiDir3(String codi, Integer versio) throws I18NException;
+
     public Unitat findUnitatMare(Long unitatId) throws I18NException;
 
     public Unitat findUnitatMare(Long unitatId, Long unitatIdTope) throws I18NException;

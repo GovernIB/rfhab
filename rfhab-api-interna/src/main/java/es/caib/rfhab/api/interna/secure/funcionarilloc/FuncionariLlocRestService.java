@@ -1,5 +1,6 @@
 package es.caib.rfhab.api.interna.secure.funcionarilloc;
 
+import es.caib.rfhab.api.interna.utils.I18NLogicUtilsApiInterna;
 import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.logic.FuncionariLlocLogicaService;
 import es.caib.rfhab.logic.FuncionariLogicaService;
@@ -29,7 +30,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.log4j.Logger;
-import org.fundaciobit.genapp.common.i18n.I18NCommonUtils;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.i18n.I18NFieldError;
 import org.fundaciobit.genapp.common.validation.BeanValidatorResult;
@@ -150,7 +150,6 @@ public class FuncionariLlocRestService extends RestUtils {
 			String usuariNif = usuariLogicaEjb.checkIsActiuIteNif(usuariId, language);
 			FuncionariJPA funcionariActuant = funcionariLogicaEjb.comprovarFuncionariActiuByNif(language, usuariNif,
 					true);
-			Long funcionariActuantId = funcionariActuant.getFuncionariID();
 
 			String funcionariActuantNom = (funcionariActuant.getNom() != null ? funcionariActuant.getNom() : "") + " "
 					+ (funcionariActuant.getLlinatge1() != null ? funcionariActuant.getLlinatge1() : "") + " "
@@ -160,7 +159,7 @@ public class FuncionariLlocRestService extends RestUtils {
 
 			Funcionari funcionariAassignar = funcionariLogicaEjb.findByNif(identificadorFh);
 			if (funcionariAassignar == null) {
-				throw new I18NException(I18NCommonUtils.tradueix(new Locale(language),
+				throw new I18NException(I18NLogicUtilsApiInterna.tradueix(new Locale(language),
 						"funcionari.error.noexisteixnif",
 						new String[] { identificadorFh }));
 			}
@@ -169,7 +168,7 @@ public class FuncionariLlocRestService extends RestUtils {
 			// cercam el lloc a donar d'alta
 			List<Lloc> llocsAassignar = llocLogicaEjb.getLlocsByCodiIexpansio(codiLloc, expansio);
 			if (llocsAassignar == null || llocsAassignar.size() == 0) {
-				throw new I18NException(I18NCommonUtils.tradueix(new Locale(language),
+				throw new I18NException(I18NLogicUtilsApiInterna.tradueix(new Locale(language),
 						"error.lloc.noexisteixcodiiexpansio",
 						new String[] { codiLloc, expansio }));
 			}
@@ -179,7 +178,7 @@ public class FuncionariLlocRestService extends RestUtils {
 			funcionariLloc.setDataCreacio(dataCreacio);
 			funcionariLloc.setFuncionariID(funcionariAassignar.getFuncionariID());
 			funcionariLloc.setLlocID(llocAassignar.getLlocID());
-			funcionariLloc.setUsuariID(funcionariActuantId);
+			funcionariLloc.setUsuariID(usuariId.longValue());
 
 			// validam entitat
 			FuncionariLloc fLlocCreat;
@@ -201,7 +200,8 @@ public class FuncionariLlocRestService extends RestUtils {
 					// errorsMsg.add(I18NUtils.tradueix(i18nFieldError.getTranslation().getCode(),
 					// argumentsTraduits));
 					errorsMsg.add(
-							I18NCommonUtils.tradueix(new Locale(language), i18nFieldError.getTranslation().getCode(),
+							I18NLogicUtilsApiInterna.tradueix(new Locale(language),
+									i18nFieldError.getTranslation().getCode(),
 									Arrays.stream(i18nFieldError.getTranslation().getArgs()).map(arg -> arg.getValue())
 											.toArray(size -> new String[size])));
 				}
@@ -214,19 +214,21 @@ public class FuncionariLlocRestService extends RestUtils {
 						usuariId.longValue());
 			}
 
-			String successMsg = String.valueOf(I18NCommonUtils.tradueix(new Locale(language), "success.creation",
-					new String[] { I18NCommonUtils.tradueix(new Locale(language), "funcionariLloc.funcionarilloc"),
-							I18NCommonUtils.tradueix(new Locale(language), "funcionariLloc.funcionarillocID"),
+			String successMsg = String.valueOf(I18NLogicUtilsApiInterna.tradueix(new Locale(language),
+					"success.creation",
+					new String[] {
+							I18NLogicUtilsApiInterna.tradueix(new Locale(language), "funcionariLloc.funcionarilloc"),
+							I18NLogicUtilsApiInterna.tradueix(new Locale(language), "funcionariLloc.funcionarillocID"),
 							String.valueOf(fLlocCreat.getFuncionarillocID()),
 							"" }));
 			log.info(successMsg);
 
-			return I18NCommonUtils.tradueix(new Locale(language), "operacio.success");
+			return I18NLogicUtilsApiInterna.tradueix(new Locale(language), "operacio.success");
 		} catch (I18NException re) {
 			log.error(re.getMessage(), re);
 			throw new RestException(re.getMessage(), Status.BAD_REQUEST);
 		} catch (Throwable th) {
-			String msg = I18NCommonUtils.tradueix(new Locale(language), "funcionarilloc.error.desconegut",
+			String msg = I18NLogicUtilsApiInterna.tradueix(new Locale(language), "funcionarilloc.error.desconegut",
 					new String[] { th.getMessage() });
 			log.error(msg, th);
 			throw new RestException(msg, th, Status.INTERNAL_SERVER_ERROR);
@@ -302,7 +304,7 @@ public class FuncionariLlocRestService extends RestUtils {
 
 			Funcionari funcionariAdesassignar = funcionariLogicaEjb.findByNif(identificadorFh);
 			if (funcionariAdesassignar == null) {
-				throw new I18NException(I18NCommonUtils.tradueix(new Locale(language),
+				throw new I18NException(I18NLogicUtilsApiInterna.tradueix(new Locale(language),
 						"funcionari.error.noexisteixnif",
 						new String[] { identificadorFh }));
 			}
@@ -313,7 +315,7 @@ public class FuncionariLlocRestService extends RestUtils {
 			if (codiLloc != null && !codiLloc.isEmpty()) {
 				List<Lloc> llocsAdesassignar = llocLogicaEjb.getLlocsByCodiIexpansio(codiLloc, expansio);
 				if (llocsAdesassignar == null || llocsAdesassignar.size() == 0) {
-					throw new I18NException(I18NCommonUtils.tradueix(new Locale(language),
+					throw new I18NException(I18NLogicUtilsApiInterna.tradueix(new Locale(language),
 							"error.lloc.noexisteixcodiiexpansio",
 							new String[] { codiLloc, expansio }));
 				}
@@ -325,18 +327,20 @@ public class FuncionariLlocRestService extends RestUtils {
 					llocAdesassignar != null ? llocAdesassignar.getLlocID() : null, numeroCai, usuariId.longValue(),
 					false, false);
 
-			String successMsg = String.valueOf(I18NCommonUtils.tradueix(new Locale(language), "success.modification",
-					new String[] { I18NCommonUtils.tradueix(new Locale(language), "funcionariLloc.funcionarilloc"),
-							I18NCommonUtils.tradueix(new Locale(language), "funcionari.funcionariID"),
+			String successMsg = String.valueOf(I18NLogicUtilsApiInterna.tradueix(new Locale(language),
+					"success.modification",
+					new String[] {
+							I18NLogicUtilsApiInterna.tradueix(new Locale(language), "funcionariLloc.funcionarilloc"),
+							I18NLogicUtilsApiInterna.tradueix(new Locale(language), "funcionari.funcionariID"),
 							String.valueOf(funcionariAdesassignar.getFuncionariID()), "" }));
 			log.info(successMsg);
 
-			return I18NCommonUtils.tradueix(new Locale(language), "operacio.success");
+			return I18NLogicUtilsApiInterna.tradueix(new Locale(language), "operacio.success");
 		} catch (I18NException re) {
 			log.error(re.getMessage(), re);
 			throw new RestException(re.getMessage(), Status.BAD_REQUEST);
 		} catch (Throwable th) {
-			String msg = I18NCommonUtils.tradueix(new Locale(language), "funcionarilloc.error.desconegut",
+			String msg = I18NLogicUtilsApiInterna.tradueix(new Locale(language), "funcionarilloc.error.desconegut",
 					new String[] { th.getMessage() });
 			log.error(msg, th);
 			throw new RestException(msg, th, Status.INTERNAL_SERVER_ERROR);
@@ -411,7 +415,7 @@ public class FuncionariLlocRestService extends RestUtils {
 			// cercam el lloc a desassignar
 			List<Lloc> llocsAdesassignar = llocLogicaEjb.getLlocsByCodiIexpansio(codiLloc, expansio);
 			if (llocsAdesassignar == null || llocsAdesassignar.size() == 0) {
-				throw new I18NException(I18NCommonUtils.tradueix(new Locale(language),
+				throw new I18NException(I18NLogicUtilsApiInterna.tradueix(new Locale(language),
 						"error.lloc.noexisteixcodiiexpansio",
 						new String[] { codiLloc, expansio }));
 			}
@@ -422,18 +426,20 @@ public class FuncionariLlocRestService extends RestUtils {
 					llocAdesassignar.getLlocID(), numeroCai, usuariId.longValue(),
 					false, false);
 
-			String successMsg = String.valueOf(I18NCommonUtils.tradueix(new Locale(language), "success.modification",
-					new String[] { I18NCommonUtils.tradueix(new Locale(language), "funcionariLloc.funcionarilloc"),
-							I18NCommonUtils.tradueix(new Locale(language), "lloc.llocID"),
+			String successMsg = String.valueOf(I18NLogicUtilsApiInterna.tradueix(new Locale(language),
+					"success.modification",
+					new String[] {
+							I18NLogicUtilsApiInterna.tradueix(new Locale(language), "funcionariLloc.funcionarilloc"),
+							I18NLogicUtilsApiInterna.tradueix(new Locale(language), "lloc.llocID"),
 							String.valueOf(llocAdesassignar.getLlocID()), "" }));
 			log.info(successMsg);
 
-			return I18NCommonUtils.tradueix(new Locale(language), "operacio.success");
+			return I18NLogicUtilsApiInterna.tradueix(new Locale(language), "operacio.success");
 		} catch (I18NException re) {
 			log.error(re.getMessage(), re);
 			throw new RestException(re.getMessage(), Status.BAD_REQUEST);
 		} catch (Throwable th) {
-			String msg = I18NCommonUtils.tradueix(new Locale(language), "funcionarilloc.error.desconegut",
+			String msg = I18NLogicUtilsApiInterna.tradueix(new Locale(language), "funcionarilloc.error.desconegut",
 					new String[] { th.getMessage() });
 			log.error(msg, th);
 			throw new RestException(msg, th, Status.INTERNAL_SERVER_ERROR);

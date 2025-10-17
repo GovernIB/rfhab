@@ -7,6 +7,7 @@ import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 
 import org.fundaciobit.genapp.common.i18n.I18NException;
+import org.fundaciobit.genapp.common.query.Where;
 
 import es.caib.rfhab.ejb.UnitatEJB;
 import es.caib.rfhab.model.entity.Unitat;
@@ -25,6 +26,15 @@ public class UnitatLogicaEJB extends UnitatEJB implements UnitatLogicaService {
     @PermitAll
     public UnitatJPA findByPrimaryKey(Long _ID_) {
         return (UnitatJPA) super.findByPrimaryKey(_ID_);
+    }
+
+    @Override
+    @PermitAll
+    public Unitat findByCodiDir3(String codi, Integer versio) throws I18NException {
+        Where codiDir3W = UnitatFields.CODI.equal(codi);
+        Where versioW = UnitatFields.VERSIO.equal(versio);
+        List<Unitat> resultats = select(Where.AND(codiDir3W, versioW));
+        return (resultats.size() > 0) ? resultats.get(0) : null;
     }
 
     @Override

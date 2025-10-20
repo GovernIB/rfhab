@@ -27,6 +27,45 @@ import es.caib.rfhab.model.entity.Unitat;
 
 @Stateless
 public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllocsLogicaService {
+    /**
+     * Helper per fer una cridada POST amb paràmetres com a queryparams i
+     * autenticació bàsica.
+     * El paràmetre json ha de ser un JSON objecte (no array), que es transforma a
+     * queryparams.
+     */
+    private String doPostWithQueryParams(String endpoint, String json) throws Exception {
+        // Converteix el JSON a map
+        java.util.Map<String, Object> params = objectMapper.readValue(json, java.util.HashMap.class);
+        StringBuilder urlBuilder = new StringBuilder(endpoint);
+        if (!params.isEmpty()) {
+            urlBuilder.append("?");
+            boolean first = true;
+            for (var entry : params.entrySet()) {
+                if (!first)
+                    urlBuilder.append("&");
+                urlBuilder.append(java.net.URLEncoder.encode(entry.getKey(), java.nio.charset.StandardCharsets.UTF_8));
+                urlBuilder.append("=");
+                urlBuilder.append(java.net.URLEncoder.encode(String.valueOf(entry.getValue()),
+                        java.nio.charset.StandardCharsets.UTF_8));
+                first = false;
+            }
+        }
+        String urlWithParams = urlBuilder.toString();
+        log.info("[REST] Endpoint (queryparams): " + urlWithParams);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(urlWithParams))
+                .header("Authorization", getBasicAuthHeader())
+                .POST(HttpRequest.BodyPublishers.noBody())
+                .build();
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        int statusCode = response.statusCode();
+        if (statusCode < 200 || statusCode >= 300) {
+            String errorMsg = "HTTP error: " + statusCode + " - " + response.body();
+            log.error(errorMsg);
+            throw new RuntimeException(errorMsg);
+        }
+        return response.body();
+    }
 
     protected final Logger log = Logger.getLogger(getClass());
 
@@ -198,7 +237,9 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         int statusCode = response.statusCode();
         if (statusCode < 200 || statusCode >= 300) {
-            throw new RuntimeException("HTTP error: " + statusCode + " - " + response.body());
+            String errorMsg = "HTTP error: " + statusCode + " - " + response.body();
+            log.error(errorMsg);
+            throw new RuntimeException(errorMsg);
         }
         return response.body();
     }
@@ -216,7 +257,7 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
     public String nouFuncionariHabilitat(NouFuncionariHabilitatDTO dto) throws Exception {
         String endpoint = apiUrl + "/secure/funcionari/nou";
         String json = objectMapper.writeValueAsString(dto);
-        return doPostJson(endpoint, json);
+        return doPostWithQueryParams(endpoint, json);
     }
 
     /**
@@ -227,7 +268,7 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
         String endpoint = apiUrl + "/secure/funcionari/donaralta";
         String json = buildJson("language", lang, "usuariid", usuariId, "identificador", identificadorFh, "numerocai",
                 numCai);
-        return doPostJson(endpoint, json);
+        return doPostWithQueryParams(endpoint, json);
     }
 
     /**
@@ -238,7 +279,7 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
         String endpoint = apiUrl + "/secure/funcionari/donarbaixa";
         String json = buildJson("language", lang, "usuariid", usuariId, "identificador", identificadorFh, "numerocai",
                 numCai);
-        return doPostJson(endpoint, json);
+        return doPostWithQueryParams(endpoint, json);
     }
 
     /**
@@ -249,7 +290,7 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
             throws Exception {
         String endpoint = apiUrl + "/secure/lloc/nou";
         String json = objectMapper.writeValueAsString(dto);
-        return doPostJson(endpoint, json);
+        return doPostWithQueryParams(endpoint, json);
     }
 
     /**
@@ -259,9 +300,9 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
     public String donarAltaLloc(String lang, String usuariId, String codiLloc, String expansio, String numCai)
             throws Exception {
         String endpoint = apiUrl + "/secure/lloc/donaralta";
-        String json = buildJson("language", lang, "usuariid", usuariId, "codiLloc", codiLloc, "expansio", expansio,
+        String json = buildJson("language", lang, "usuariid", usuariId, "codilloc", codiLloc, "expansio", expansio,
                 "numerocai", numCai);
-        return doPostJson(endpoint, json);
+        return doPostWithQueryParams(endpoint, json);
     }
 
     /**
@@ -271,9 +312,9 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
     public String donarBaixaLloc(String lang, String usuariId, String codiLloc, String expansio, String numCai)
             throws Exception {
         String endpoint = apiUrl + "/secure/lloc/donarbaixa";
-        String json = buildJson("language", lang, "usuariid", usuariId, "codiLloc", codiLloc, "expansio", expansio,
+        String json = buildJson("language", lang, "usuariid", usuariId, "codilloc", codiLloc, "expansio", expansio,
                 "numerocai", numCai);
-        return doPostJson(endpoint, json);
+        return doPostWithQueryParams(endpoint, json);
     }
 
     /**
@@ -286,7 +327,7 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
         String endpoint = apiUrl + "/secure/funcionarilloc/assignarfuncionari";
         String json = buildJson("identificadorfh", identificadorFh, "codilloc", codiLloc, "expansio", expansio,
                 "numerocai", numeroCai, "observacions", observacions);
-        return doPostJson(endpoint, json);
+        return doPostWithQueryParams(endpoint, json);
     }
 
     /**
@@ -296,9 +337,9 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
     public String treureFuncionari(String identificadorFh, String codiLloc, String expansio, String numeroCai,
             String observacions) throws Exception {
         String endpoint = apiUrl + "/secure/funcionarilloc/treurefuncionari";
-        String json = buildJson("identificadorFh", identificadorFh, "codiLloc", codiLloc, "expansio", expansio,
-                "numeroCai", numeroCai, "observacions", observacions);
-        return doPostJson(endpoint, json);
+        String json = buildJson("identificadorfh", identificadorFh, "codilloc", codiLloc, "expansio", expansio,
+                "numerocai", numeroCai, "observacions", observacions);
+        return doPostWithQueryParams(endpoint, json);
     }
 
     /**
@@ -308,9 +349,9 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
     public String treureTotsFuncionari(String codiLloc, String expansio, String numeroCai, String observacions)
             throws Exception {
         String endpoint = apiUrl + "/secure/funcionarilloc/treuretotsfuncionari";
-        String json = buildJson("codiLloc", codiLloc, "expansio", expansio, "numeroCai", numeroCai, "observacions",
+        String json = buildJson("codilloc", codiLloc, "expansio", expansio, "numerocai", numeroCai, "observacions",
                 observacions);
-        return doPostJson(endpoint, json);
+        return doPostWithQueryParams(endpoint, json);
     }
 
     /**

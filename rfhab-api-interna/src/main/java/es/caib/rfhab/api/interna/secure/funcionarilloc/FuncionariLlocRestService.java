@@ -127,7 +127,7 @@ public class FuncionariLlocRestService extends RestUtils {
 			@Parameter(description = "Expansió del lloc", required = false) @QueryParam("expansio") String expansio,
 			@Parameter(description = "Identificador del funcionari a assignar", required = true) @QueryParam("identificadorfh") @NotNull String identificadorFh,
 			@Parameter(description = "Observacions", required = false) @QueryParam("observacions") String observacions,
-			@Parameter(description = "Número CAI", required = false) @QueryParam("numerocai") String numeroCai) {
+			@Parameter(description = "Número CAI", required = false, schema = @Schema(defaultValue = "", implementation = String.class)) @QueryParam("numerocai") String numeroCai) {
 		try {
 			StringBuilder sb = new StringBuilder();
 			sb.append("Llengua: " + language + "\n");
@@ -138,6 +138,11 @@ public class FuncionariLlocRestService extends RestUtils {
 			sb.append("Observacions: " + observacions + "\n");
 			sb.append("NumeroCai: " + numeroCai + "\n");
 			log.info(sb.toString());
+
+			if (numeroCai == null) {
+				numeroCai = "";
+				log.info("XYZ YYY numeroCai = " + numeroCai);
+			}
 
 			Timestamp dataCreacio = new Timestamp(System.currentTimeMillis());
 
@@ -269,7 +274,7 @@ public class FuncionariLlocRestService extends RestUtils {
 			@Parameter(description = "Expansió del lloc", required = false) @QueryParam("expansio") String expansio,
 			@Parameter(description = "Identificador del funcionari a desassignar", required = true) @QueryParam("identificadorfh") @NotNull String identificadorFh,
 			@Parameter(description = "Observacions", required = false) @QueryParam("observacions") String observacions,
-			@Parameter(description = "Número CAI", required = false) @QueryParam("numerocai") String numeroCai) {
+			@Parameter(description = "Número CAI", required = false, schema = @Schema(defaultValue = "", implementation = String.class)) @QueryParam("numerocai") String numeroCai) {
 		try {
 			StringBuilder sb = new StringBuilder();
 			sb.append("Llengua: " + language + "\n");
@@ -280,6 +285,11 @@ public class FuncionariLlocRestService extends RestUtils {
 			sb.append("Observacions: " + observacions + "\n");
 			sb.append("NumeroCai: " + numeroCai + "\n");
 			log.info(sb.toString());
+
+			if (numeroCai == null) {
+				numeroCai = "";
+				log.info("XYZ YYY numeroCai = " + numeroCai);
+			}
 
 			// validar codi de funcionari
 			String usuariNif = usuariLogicaEjb.checkIsActiuIteNif(usuariId, language);
@@ -375,7 +385,7 @@ public class FuncionariLlocRestService extends RestUtils {
 			@Parameter(description = "Codi del lloc", required = true) @QueryParam("codilloc") @NotNull String codiLloc,
 			@Parameter(description = "Expansió del lloc", required = false) @QueryParam("expansio") String expansio,
 			@Parameter(description = "Observacions", required = false) @QueryParam("observacions") String observacions,
-			@Parameter(description = "Número CAI", required = false) @QueryParam("numerocai") String numeroCai) {
+			@Parameter(description = "Número CAI", required = false, schema = @Schema(defaultValue = "", implementation = String.class)) @QueryParam("numerocai") String numeroCai) {
 		try {
 			StringBuilder sb = new StringBuilder();
 			sb.append("Llengua: " + language + "\n");
@@ -385,6 +395,11 @@ public class FuncionariLlocRestService extends RestUtils {
 			sb.append("Observacions: " + observacions + "\n");
 			sb.append("NumeroCai: " + numeroCai + "\n");
 			log.info(sb.toString());
+
+			if (numeroCai == null) {
+				numeroCai = "";
+				log.info("XYZ YYY numeroCai = " + numeroCai);
+			}
 
 			// validar codi de funcionari
 			String usuariNif = usuariLogicaEjb.checkIsActiuIteNif(usuariId, language);

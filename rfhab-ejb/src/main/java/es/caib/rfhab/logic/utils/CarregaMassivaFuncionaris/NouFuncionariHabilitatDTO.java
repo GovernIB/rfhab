@@ -1,12 +1,19 @@
 package es.caib.rfhab.logic.utils.CarregaMassivaFuncionaris;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import es.caib.rfhab.commons.utils.IdentificacioTipus;
 
 @JsonInclude(JsonInclude.Include.NON_NULL) // Inclou només camps no nuls al JSON
 public class NouFuncionariHabilitatDTO implements java.io.Serializable {
+
+    @JsonIgnore
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
     /**
      * Idioma en que s'han de retornar les dades (Només suportat 'ca' o 'es').
      * Exemple: "ca", "es". Opcional, per defecte "ca".
@@ -113,21 +120,13 @@ public class NouFuncionariHabilitatDTO implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return "NouFuncionariHabilitatDTO{" +
-                "language='" + language + '\'' +
-                ", usuariId=" + usuariId +
-                ", nom='" + nom + '\'' +
-                ", llinatge1='" + llinatge1 + '\'' +
-                ", llinatge2='" + llinatge2 + '\'' +
-                ", numero='" + numero + '\'' +
-                ", tipusIdentificador=" + tipusIdentificador +
-                ", identificador='" + identificador + '\'' +
-                ", username='" + username + '\'' +
-                ", correu='" + correu + '\'' +
-                ", entitatId=" + entitatId +
-                ", numeroCai='" + numeroCai + '\'' +
-                ", observacions='" + observacions + '\'' +
-                ", dataBaixaStr='" + dataBaixaStr + '\'' +
-                '}';
+
+        try {
+            return objectMapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
     }
 }

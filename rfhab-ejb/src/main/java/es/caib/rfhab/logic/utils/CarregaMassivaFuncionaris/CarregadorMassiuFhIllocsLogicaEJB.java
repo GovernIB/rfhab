@@ -48,6 +48,28 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
     private final OdsToDtoMapper mapper;
 
     /**
+     * Constructor sense paràmetres. Inicialitza odsFilePath i mapper a null.
+     * 
+     * @throws I18NException
+     */
+    public CarregadorMassiuFhIllocsLogicaEJB() throws I18NException {
+        super();
+
+        this.odsFilePath = null;
+        this.apiUrl = Configuracio.getCarregadorMassiuEndpoint();
+        this.user = Configuracio.getCarregadorMassiuUser();
+        this.pass = Configuracio.getCarregadorMassiuPassword();
+        this.usuariId = Configuracio.getCarregadorMassiuUsuariId();
+        this.entitatId = Configuracio.getCarregadorMassiuEntitatId();
+        if (this.apiUrl == null || this.user == null || this.pass == null || this.usuariId == null
+                || this.entitatId == null) {
+            throw new I18NException(
+                    "CarregadorMassiuFhIllocs configuration is incomplete. Please check the properties file.");
+        }
+        this.mapper = null;
+    }
+
+    /**
      * Constructor amb la ruta del fitxer ODS i la URL de l'API externa.
      * 
      * @param odsFilePath     Ruta del fitxer ODS
@@ -131,6 +153,27 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
     }
 
     /**
+     * Assigna valors a odsFilePath i mapper.
+     * 
+     * @param odsFilePath     Ruta del fitxer ODS
+     * @param mappingFilePath Ruta del fitxer de mapping .properties
+     * @throws Exception Si hi ha problemes de lectura
+     */
+    public void configureOdsPaths(String odsFilePath, String mappingFilePath) throws Exception {
+        if (odsFilePath == null || mappingFilePath == null) {
+            throw new IllegalArgumentException("odsFilePath i mappingFilePath no poden ser null");
+        }
+        // Reflection hack: odsFilePath and mapper are final, but for this patch, assume
+        // we can set them (or remove final if needed)
+        java.lang.reflect.Field odsField = CarregadorMassiuFhIllocsLogicaEJB.class.getDeclaredField("odsFilePath");
+        odsField.setAccessible(true);
+        odsField.set(this, odsFilePath);
+        java.lang.reflect.Field mapperField = CarregadorMassiuFhIllocsLogicaEJB.class.getDeclaredField("mapper");
+        mapperField.setAccessible(true);
+        mapperField.set(this, new OdsToDtoMapper(new File(mappingFilePath)));
+    }
+
+    /**
      * Helper per crear un JSON a partir de parells clau-valor.
      */
     private String buildJson(Object... kvPairs) throws Exception {
@@ -145,6 +188,7 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
      * Helper per fer una crida POST amb JSON i autenticació bàsica.
      */
     private String doPostJson(String endpoint, String json) throws Exception {
+        log.info("[REST] Endpoint: " + endpoint);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(endpoint))
                 .header("Content-Type", "application/json")
@@ -170,7 +214,7 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
      */
     @Override
     public String nouFuncionariHabilitat(NouFuncionariHabilitatDTO dto) throws Exception {
-        String endpoint = apiUrl + "/secure/funcionari/noufuncionarihabilitat";
+        String endpoint = apiUrl + "/secure/funcionari/nou";
         String json = objectMapper.writeValueAsString(dto);
         return doPostJson(endpoint, json);
     }
@@ -278,6 +322,10 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
      */
     @Override
     public void carregaFh() throws Exception {
+        if (odsFilePath == null || mapper == null) {
+            throw new IllegalStateException(
+                    "odsFilePath o mapper no inicialitzats. Cal cridar configureOdsPaths abans d'utilitzar carregaFh().");
+        }
         List<FuncionariOdsDTO> dtos = mapper.readOdsToDto(new File(odsFilePath), FuncionariOdsDTO.class);
         for (FuncionariOdsDTO dto : dtos) {
             // Aquí s'aplicarà la lògica de processament i crida a l'API REST externa
@@ -373,6 +421,10 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
 
     @Override
     public String getOdsFilePath() {
+        if (odsFilePath == null) {
+            throw new IllegalStateException(
+                    "odsFilePath no inicialitzat. Cal cridar configureOdsPaths abans d'utilitzar getOdsFilePath().");
+        }
         return odsFilePath;
     }
 

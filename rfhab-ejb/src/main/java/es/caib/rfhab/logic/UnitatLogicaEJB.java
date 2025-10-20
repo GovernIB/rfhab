@@ -32,6 +32,9 @@ public class UnitatLogicaEJB extends UnitatEJB implements UnitatLogicaService {
     @PermitAll
     public Unitat findByCodiDir3(String codi, Integer versio) throws I18NException {
         Where codiDir3W = UnitatFields.CODI.equal(codi);
+        if (versio == null) {
+            versio = 1;
+        }
         Where versioW = UnitatFields.VERSIO.equal(versio);
         List<Unitat> resultats = select(Where.AND(codiDir3W, versioW));
         return (resultats.size() > 0) ? resultats.get(0) : null;

@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.ejb.EJB;
+import javax.ejb.Stateless;
 
+import org.apache.log4j.Logger;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 
 import java.net.URI;
@@ -17,11 +19,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import es.caib.rfhab.commons.utils.Configuracio;
 import es.caib.rfhab.commons.utils.IdentificacioTipus;
 import es.caib.rfhab.commons.utils.PersonalOamrTipus;
+import es.caib.rfhab.logic.FuncionariLogicaEJB;
 import es.caib.rfhab.logic.FuncionariLogicaService;
+import es.caib.rfhab.logic.UnitatLogicaEJB;
 import es.caib.rfhab.logic.UnitatLogicaService;
 import es.caib.rfhab.model.entity.Unitat;
 
-public class CarregadorMassiuFhIllocs {
+@Stateless
+public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllocsLogicaService {
+
+    protected final Logger log = Logger.getLogger(getClass());
 
     @EJB(mappedName = FuncionariLogicaService.JNDI_NAME)
     protected FuncionariLogicaService funcionariLogicaEjb;
@@ -29,134 +36,8 @@ public class CarregadorMassiuFhIllocs {
     @EJB(mappedName = UnitatLogicaService.JNDI_NAME)
     protected UnitatLogicaService unitatLogicaEjb;
 
-    /**
-     * Helper per crear un JSON a partir de parells clau-valor.
-     */
-    private String buildJson(Object... kvPairs) throws Exception {
-        var params = new java.util.HashMap<String, Object>();
-        for (int i = 0; i + 1 < kvPairs.length; i += 2) {
-            params.put(String.valueOf(kvPairs[i]), kvPairs[i + 1]);
-        }
-        return objectMapper.writeValueAsString(params);
-    }
-
-    /**
-     * Helper per fer una crida POST amb JSON i autenticació bàsica.
-     */
-    private String doPostJson(String endpoint, String json) throws Exception {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(endpoint))
-                .header("Content-Type", "application/json")
-                .header("Authorization", getBasicAuthHeader())
-                .POST(HttpRequest.BodyPublishers.ofString(json))
-                .build();
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        return response.body();
-    }
-
-    private String getBasicAuthHeader() {
-        String auth = user + ":" + pass;
-        return "Basic "
-                + java.util.Base64.getEncoder().encodeToString(auth.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-    }
-
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper();
-
-    /**
-     * Dona d'alta un nou funcionari habilitat via API REST.
-     */
-    public String nouFuncionariHabilitat(NouFuncionariHabilitatDTO dto) throws Exception {
-        String endpoint = apiUrl + "/secure/funcionari/noufuncionarihabilitat";
-        String json = objectMapper.writeValueAsString(dto);
-        return doPostJson(endpoint, json);
-    }
-
-    /**
-     * Dona d'alta un funcionari via API REST.
-     */
-    public String donarAltaFh(String lang, String usuariId, String identificadorFh, String numCai) throws Exception {
-        String endpoint = apiUrl + "/secure/funcionari/donaralta";
-        String json = buildJson("language", lang, "usuariid", usuariId, "identificador", identificadorFh, "numcai",
-                numCai);
-        return doPostJson(endpoint, json);
-    }
-
-    /**
-     * Dona de baixa un funcionari via API REST.
-     */
-    public String donarBaixaFh(String lang, String usuariId, String identificadorFh, String numCai) throws Exception {
-        String endpoint = apiUrl + "/secure/funcionari/donarbaixa";
-        String json = buildJson("language", lang, "usuariid", usuariId, "identificador", identificadorFh, "numcai",
-                numCai);
-        return doPostJson(endpoint, json);
-    }
-
-    /**
-     * Dona d'alta un nou lloc via API REST.
-     */
-    public String nouLloc(NouLlocDTO dto)
-            throws Exception {
-        String endpoint = apiUrl + "/secure/lloc/nou";
-        String json = objectMapper.writeValueAsString(dto);
-        return doPostJson(endpoint, json);
-    }
-
-    /**
-     * Dona d'alta un lloc via API REST.
-     */
-    public String donarAltaLloc(String lang, String usuariId, String codiLloc, String expansio, String numCai)
-            throws Exception {
-        String endpoint = apiUrl + "/secure/lloc/donaralta";
-        String json = buildJson("language", lang, "usuariid", usuariId, "codiLloc", codiLloc, "expansio", expansio,
-                "numcai", numCai);
-        return doPostJson(endpoint, json);
-    }
-
-    /**
-     * Dona de baixa un lloc via API REST.
-     */
-    public String donarBaixaLloc(String lang, String usuariId, String codiLloc, String expansio, String numCai)
-            throws Exception {
-        String endpoint = apiUrl + "/secure/lloc/donarbaixa";
-        String json = buildJson("language", lang, "usuariid", usuariId, "codiLloc", codiLloc, "expansio", expansio,
-                "numcai", numCai);
-        return doPostJson(endpoint, json);
-    }
-
-    /**
-     * Assigna un funcionari a un lloc via API REST.
-     */
-    public String assignarFuncionari(String lang, String usuariId, String identificadorFh, String codiLloc,
-            String expansio, String numeroCai,
-            String observacions) throws Exception {
-        String endpoint = apiUrl + "/secure/funcionarilloc/assignarfuncionari";
-        String json = buildJson("identificadorfh", identificadorFh, "codilloc", codiLloc, "expansio", expansio,
-                "numerocai", numeroCai, "observacions", observacions);
-        return doPostJson(endpoint, json);
-    }
-
-    /**
-     * Treu un funcionari d'un lloc via API REST.
-     */
-    public String treureFuncionari(String identificadorFh, String codiLloc, String expansio, String numeroCai,
-            String observacions) throws Exception {
-        String endpoint = apiUrl + "/secure/funcionarilloc/treurefuncionari";
-        String json = buildJson("identificadorFh", identificadorFh, "codiLloc", codiLloc, "expansio", expansio,
-                "numeroCai", numeroCai, "observacions", observacions);
-        return doPostJson(endpoint, json);
-    }
-
-    /**
-     * Treu tots els funcionaris d'un lloc via API REST.
-     */
-    public String treureTotsFuncionari(String codiLloc, String expansio, String numeroCai, String observacions)
-            throws Exception {
-        String endpoint = apiUrl + "/secure/funcionarilloc/treuretotsfuncionari";
-        String json = buildJson("codiLloc", codiLloc, "expansio", expansio, "numeroCai", numeroCai, "observacions",
-                observacions);
-        return doPostJson(endpoint, json);
-    }
 
     private final String odsFilePath;
     private final String apiUrl;
@@ -173,8 +54,10 @@ public class CarregadorMassiuFhIllocs {
      * @param mappingFilePath Ruta del fitxer de mapping .properties
      * @throws Exception Si hi ha problemes de lectura
      */
-    public CarregadorMassiuFhIllocs(String odsFilePath, String mappingFilePath)
+    public CarregadorMassiuFhIllocsLogicaEJB(String odsFilePath, String mappingFilePath)
             throws Exception {
+        super();
+
         this.odsFilePath = odsFilePath;
         this.apiUrl = Configuracio.getCarregadorMassiuEndpoint();
         this.user = Configuracio.getCarregadorMassiuUser();
@@ -199,8 +82,11 @@ public class CarregadorMassiuFhIllocs {
      *                             REST externa i les credencials
      * @throws Exception Si hi ha problemes de lectura
      */
-    public CarregadorMassiuFhIllocs(String odsFilePath, String mappingFilePath, Properties apiExternaProperties)
+    public CarregadorMassiuFhIllocsLogicaEJB(String odsFilePath, String mappingFilePath,
+            Properties apiExternaProperties)
             throws Exception {
+        super();
+
         this.odsFilePath = odsFilePath;
         this.apiUrl = Configuracio.getCarregadorMassiuEndpoint(apiExternaProperties);
         this.user = Configuracio.getCarregadorMassiuUser(apiExternaProperties);
@@ -217,16 +103,185 @@ public class CarregadorMassiuFhIllocs {
     }
 
     /**
+     * Constructor amb la ruta del fitxer ODS i la URL de l'API externa.
+     * 
+     * @param odsFilePath          Ruta del fitxer ODS
+     * @param mappingFilePath      Ruta del fitxer de mapping .properties
+     * @param apiExternaProperties Fitxer de propietats que conté la URL de l'API
+     *                             REST externa i les credencials
+     * @throws Exception Si hi ha problemes de lectura
+     */
+    public static CarregadorMassiuFhIllocsLogicaService CrearCarregadorMassiuFhIllocsLogicaEJBambEjbsPerTests(
+            String odsFilePath, String mappingFilePath,
+            Properties apiExternaProperties)
+            throws Exception {
+
+        FuncionariLogicaService funcionariLogicaEjb;
+        UnitatLogicaService unitatLogicaEjb;
+        CarregadorMassiuFhIllocsLogicaEJB carregador = null;
+
+        funcionariLogicaEjb = new FuncionariLogicaEJB();
+        unitatLogicaEjb = new UnitatLogicaEJB();
+        carregador = new CarregadorMassiuFhIllocsLogicaEJB(odsFilePath, mappingFilePath, apiExternaProperties);
+
+        carregador.funcionariLogicaEjb = funcionariLogicaEjb;
+        carregador.unitatLogicaEjb = unitatLogicaEjb;
+
+        return carregador;
+    }
+
+    /**
+     * Helper per crear un JSON a partir de parells clau-valor.
+     */
+    private String buildJson(Object... kvPairs) throws Exception {
+        var params = new java.util.HashMap<String, Object>();
+        for (int i = 0; i + 1 < kvPairs.length; i += 2) {
+            params.put(String.valueOf(kvPairs[i]), kvPairs[i + 1]);
+        }
+        return objectMapper.writeValueAsString(params);
+    }
+
+    /**
+     * Helper per fer una crida POST amb JSON i autenticació bàsica.
+     */
+    private String doPostJson(String endpoint, String json) throws Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(endpoint))
+                .header("Content-Type", "application/json")
+                .header("Authorization", getBasicAuthHeader())
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        int statusCode = response.statusCode();
+        if (statusCode < 200 || statusCode >= 300) {
+            throw new RuntimeException("HTTP error: " + statusCode + " - " + response.body());
+        }
+        return response.body();
+    }
+
+    private String getBasicAuthHeader() {
+        String auth = user + ":" + pass;
+        return "Basic "
+                + java.util.Base64.getEncoder().encodeToString(auth.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+    }
+
+    /**
+     * Dona d'alta un nou funcionari habilitat via API REST.
+     */
+    @Override
+    public String nouFuncionariHabilitat(NouFuncionariHabilitatDTO dto) throws Exception {
+        String endpoint = apiUrl + "/secure/funcionari/noufuncionarihabilitat";
+        String json = objectMapper.writeValueAsString(dto);
+        return doPostJson(endpoint, json);
+    }
+
+    /**
+     * Dona d'alta un funcionari via API REST.
+     */
+    @Override
+    public String donarAltaFh(String lang, String usuariId, String identificadorFh, String numCai) throws Exception {
+        String endpoint = apiUrl + "/secure/funcionari/donaralta";
+        String json = buildJson("language", lang, "usuariid", usuariId, "identificador", identificadorFh, "numerocai",
+                numCai);
+        return doPostJson(endpoint, json);
+    }
+
+    /**
+     * Dona de baixa un funcionari via API REST.
+     */
+    @Override
+    public String donarBaixaFh(String lang, String usuariId, String identificadorFh, String numCai) throws Exception {
+        String endpoint = apiUrl + "/secure/funcionari/donarbaixa";
+        String json = buildJson("language", lang, "usuariid", usuariId, "identificador", identificadorFh, "numerocai",
+                numCai);
+        return doPostJson(endpoint, json);
+    }
+
+    /**
+     * Dona d'alta un nou lloc via API REST.
+     */
+    @Override
+    public String nouLloc(NouLlocDTO dto)
+            throws Exception {
+        String endpoint = apiUrl + "/secure/lloc/nou";
+        String json = objectMapper.writeValueAsString(dto);
+        return doPostJson(endpoint, json);
+    }
+
+    /**
+     * Dona d'alta un lloc via API REST.
+     */
+    @Override
+    public String donarAltaLloc(String lang, String usuariId, String codiLloc, String expansio, String numCai)
+            throws Exception {
+        String endpoint = apiUrl + "/secure/lloc/donaralta";
+        String json = buildJson("language", lang, "usuariid", usuariId, "codiLloc", codiLloc, "expansio", expansio,
+                "numerocai", numCai);
+        return doPostJson(endpoint, json);
+    }
+
+    /**
+     * Dona de baixa un lloc via API REST.
+     */
+    @Override
+    public String donarBaixaLloc(String lang, String usuariId, String codiLloc, String expansio, String numCai)
+            throws Exception {
+        String endpoint = apiUrl + "/secure/lloc/donarbaixa";
+        String json = buildJson("language", lang, "usuariid", usuariId, "codiLloc", codiLloc, "expansio", expansio,
+                "numerocai", numCai);
+        return doPostJson(endpoint, json);
+    }
+
+    /**
+     * Assigna un funcionari a un lloc via API REST.
+     */
+    @Override
+    public String assignarFuncionari(String lang, String usuariId, String identificadorFh, String codiLloc,
+            String expansio, String numeroCai,
+            String observacions) throws Exception {
+        String endpoint = apiUrl + "/secure/funcionarilloc/assignarfuncionari";
+        String json = buildJson("identificadorfh", identificadorFh, "codilloc", codiLloc, "expansio", expansio,
+                "numerocai", numeroCai, "observacions", observacions);
+        return doPostJson(endpoint, json);
+    }
+
+    /**
+     * Treu un funcionari d'un lloc via API REST.
+     */
+    @Override
+    public String treureFuncionari(String identificadorFh, String codiLloc, String expansio, String numeroCai,
+            String observacions) throws Exception {
+        String endpoint = apiUrl + "/secure/funcionarilloc/treurefuncionari";
+        String json = buildJson("identificadorFh", identificadorFh, "codiLloc", codiLloc, "expansio", expansio,
+                "numeroCai", numeroCai, "observacions", observacions);
+        return doPostJson(endpoint, json);
+    }
+
+    /**
+     * Treu tots els funcionaris d'un lloc via API REST.
+     */
+    @Override
+    public String treureTotsFuncionari(String codiLloc, String expansio, String numeroCai, String observacions)
+            throws Exception {
+        String endpoint = apiUrl + "/secure/funcionarilloc/treuretotsfuncionari";
+        String json = buildJson("codiLloc", codiLloc, "expansio", expansio, "numeroCai", numeroCai, "observacions",
+                observacions);
+        return doPostJson(endpoint, json);
+    }
+
+    /**
      * Llegeix el fitxer ODS i processa cada línia com a FuncionariOdsDTO, aplicant
      * la lògica de càrrega.
      * La lògica de crida a l'API REST s'ha d'implementar més endavant.
      * 
      * @throws Exception Si hi ha problemes de lectura o processament
      */
+    @Override
     public void carregaFh() throws Exception {
         List<FuncionariOdsDTO> dtos = mapper.readOdsToDto(new File(odsFilePath), FuncionariOdsDTO.class);
         for (FuncionariOdsDTO dto : dtos) {
             // Aquí s'aplicarà la lògica de processament i crida a l'API REST externa
+            log.info("Processant DTO: " + dto.toString());
             processaFuncionarisLlocsIassignacions(dto);
         }
     }
@@ -263,9 +318,13 @@ public class CarregadorMassiuFhIllocs {
                 dto.numCaiAlta,
                 observacions,
                 null);
-        // TODO:aquest hauria de fallar per ses majuscules a nes noms des parametres.
-        nouFuncionariHabilitat(nouFh);
-        donarAltaFh(lang, usuariId, dto.nif, dto.numCaiAlta);
+        log.info("Creant FH: " + nouFh.toString());
+        String respostaCreacióFh = nouFuncionariHabilitat(nouFh);
+        log.info("Resposta creació FH: " + respostaCreacióFh);
+
+        log.info("Donant alta FH: " + dto.nif);
+        String respostaDonarAltaFh = donarAltaFh(lang, usuariId, dto.nif, dto.numCaiAlta);
+        log.info("Resposta donar alta FH: " + respostaDonarAltaFh);
 
         // creació de llocs
         PersonalOamrTipus personalOamr = PersonalOamrTipus.SI;
@@ -274,8 +333,11 @@ public class CarregadorMassiuFhIllocs {
         } catch (IllegalArgumentException iaex) {
         }
         String[] unitatLlocCodiDir3 = dto.dir3UnitatOrganica.split("v");
-        Unitat unitatLloc = unitatLogicaEjb.findByCodiDir3(unitatLlocCodiDir3[0].trim(),
-                unitatLlocCodiDir3.length > 1 ? (Integer.parseInt(unitatLlocCodiDir3[0].trim())) : null);
+        String codiUnitatDir3 = unitatLlocCodiDir3[0].trim();
+        Integer versioUnitatDir3 = unitatLlocCodiDir3.length > 1 ? (Integer.parseInt(codiUnitatDir3)) : null;
+        log.info("Cercant unitat amb codiDir3: " + codiUnitatDir3 + " i versio: " + versioUnitatDir3);
+        Unitat unitatLloc = unitatLogicaEjb.findByCodiDir3(codiUnitatDir3, versioUnitatDir3);
+        log.info("Unitat trobada: " + (unitatLloc != null ? unitatLloc.getUnitatID() : null));
         if (unitatLloc == null) {
             String errorMsg = "No s'ha trobat la unitat amb codiDir " + dto.dir3UnitatOrganica;
             throw new I18NException(errorMsg);
@@ -283,23 +345,38 @@ public class CarregadorMassiuFhIllocs {
         NouLlocDTO nouLloc = new NouLlocDTO(lang, Integer.parseInt(usuariId), dto.codiLlocFeina, dto.expansio,
                 dto.nomLlocFeina, personalOamr, Long.parseLong(entitatId), unitatLloc.getUnitatID(), dto.numCaiAlta,
                 dto.habilitacio.split(","), dto.observacionsAlta, null, null);
-        nouLloc(nouLloc);
-        donarAltaLloc(lang, usuariId, dto.codiLlocFeina, dto.expansio, dto.numCaiAlta);
+        log.info("Creant lloc: " + nouLloc.toString());
+        String respostaNouLloc = nouLloc(nouLloc);
+        log.info("Resposta creació lloc: " + respostaNouLloc);
+
+        log.info("Donant alta lloc: " + dto.codiLlocFeina + " - " + dto.expansio);
+        String respostaDonarAltaLloc = donarAltaLloc(lang, usuariId, dto.codiLlocFeina, dto.expansio, dto.numCaiAlta);
+        log.info("Resposta donar alta lloc: " + respostaDonarAltaLloc);
 
         // assignació de FH a lloc
-        assignarFuncionari(lang, usuariId, dto.nif, dto.codiLlocFeina, dto.expansio, dto.numCaiAlta, observacions);
+        log.info("Assignant funcionari " + dto.nif + " a lloc " + dto.codiLlocFeina + " - " + dto.expansio);
+        String respostaAssignarFuncionari = assignarFuncionari(lang, usuariId, dto.nif, dto.codiLlocFeina, dto.expansio,
+                dto.numCaiAlta, observacions);
+        log.info("Resposta assignació funcionari a lloc: " + respostaAssignarFuncionari);
 
         // TODO: no puc assignar una data baixa específica...
         if (dataBaixaFh != null && !dataBaixaFh.isEmpty()) {
-            donarBaixaFh(lang, usuariId, dto.nif, dto.numCaiAlta);
-            donarBaixaLloc(lang, usuariId, dto.codiLlocFeina, dto.expansio, dto.numCaiAlta);
+            log.info("Donant baixa lloc: " + dto.codiLlocFeina + " - " + dto.expansio);
+            String respostaDonarBaixaFh = donarBaixaFh(lang, usuariId, dto.nif, dto.numCaiAlta);
+            log.info("Resposta donar baixa FH: " + respostaDonarBaixaFh);
+            log.info("Donant baixa lloc: " + dto.codiLlocFeina + " - " + dto.expansio);
+            String respostaDonarBaixaLloc = donarBaixaLloc(lang, usuariId, dto.codiLlocFeina, dto.expansio,
+                    dto.numCaiAlta);
+            log.info("Resposta donar baixa lloc: " + respostaDonarBaixaLloc);
         }
     }
 
+    @Override
     public String getOdsFilePath() {
         return odsFilePath;
     }
 
+    @Override
     public String getApiUrl() {
         return apiUrl;
     }

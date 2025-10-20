@@ -1,8 +1,12 @@
 package es.caib.rfhab.logic.utils.CarregaMassivaFuncionaris;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import es.caib.rfhab.commons.utils.IdentificacioTipus;
 
-public class NouFuncionariHabilitatDTO {
+@JsonInclude(JsonInclude.Include.NON_NULL) // Inclou només camps no nuls al JSON
+public class NouFuncionariHabilitatDTO implements java.io.Serializable {
     /**
      * Idioma en que s'han de retornar les dades (Només suportat 'ca' o 'es').
      * Exemple: "ca", "es". Opcional, per defecte "ca".
@@ -14,6 +18,7 @@ public class NouFuncionariHabilitatDTO {
      * Obligatori.
      * Exemple: 9999
      */
+    @JsonProperty("usuariid")
     public Integer usuariId;
 
     /**
@@ -68,6 +73,7 @@ public class NouFuncionariHabilitatDTO {
     /**
      * Número CAI. Opcional.
      */
+    @JsonProperty("numerocai")
     public String numeroCai;
 
     /**
@@ -78,14 +84,18 @@ public class NouFuncionariHabilitatDTO {
     /**
      * Data de baixa. Opcional. Format ISO8601: "2025-08-31T06:15:00+00:00"
      */
+    @JsonProperty("databaixa")
     public String dataBaixaStr;
 
     public NouFuncionariHabilitatDTO() {
+        super();
     }
 
     public NouFuncionariHabilitatDTO(String language, Integer usuariId, String nom, String llinatge1, String llinatge2,
             String numero, IdentificacioTipus tipusIdentificador, String identificador, String username, String correu,
             Long entitatId, String numeroCai, String observacions, String dataBaixaStr) {
+        super();
+
         this.language = language;
         this.usuariId = usuariId;
         this.nom = nom;
@@ -99,5 +109,25 @@ public class NouFuncionariHabilitatDTO {
         this.entitatId = entitatId;
         this.numeroCai = numeroCai;
         this.dataBaixaStr = dataBaixaStr;
+    }
+
+    @Override
+    public String toString() {
+        return "NouFuncionariHabilitatDTO{" +
+                "language='" + language + '\'' +
+                ", usuariId=" + usuariId +
+                ", nom='" + nom + '\'' +
+                ", llinatge1='" + llinatge1 + '\'' +
+                ", llinatge2='" + llinatge2 + '\'' +
+                ", numero='" + numero + '\'' +
+                ", tipusIdentificador=" + tipusIdentificador +
+                ", identificador='" + identificador + '\'' +
+                ", username='" + username + '\'' +
+                ", correu='" + correu + '\'' +
+                ", entitatId=" + entitatId +
+                ", numeroCai='" + numeroCai + '\'' +
+                ", observacions='" + observacions + '\'' +
+                ", dataBaixaStr='" + dataBaixaStr + '\'' +
+                '}';
     }
 }

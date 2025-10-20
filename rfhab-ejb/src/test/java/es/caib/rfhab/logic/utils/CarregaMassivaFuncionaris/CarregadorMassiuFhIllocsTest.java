@@ -3,10 +3,8 @@ package es.caib.rfhab.logic.utils.CarregaMassivaFuncionaris;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.util.Collection;
-import java.util.List;
 import java.util.Properties;
 import java.util.Arrays;
 
@@ -28,7 +26,7 @@ public class CarregadorMassiuFhIllocsTest {
     @Parameter(1)
     public String odsFilePath;
 
-    private CarregadorMassiuFhIllocs carregador;
+    private static CarregadorMassiuFhIllocsLogicaService carregador = null;
 
     @Parameters
     public static Collection<Object[]> data() {
@@ -41,7 +39,8 @@ public class CarregadorMassiuFhIllocsTest {
     public void setUp() throws Exception {
         Properties configCarregadorMassiu = new Properties();
         configCarregadorMassiu.load(new FileInputStream("carregadormassiu.properties"));
-        carregador = new CarregadorMassiuFhIllocs(odsFilePath, mappingFilePath, configCarregadorMassiu);
+        carregador = CarregadorMassiuFhIllocsLogicaEJB.CrearCarregadorMassiuFhIllocsLogicaEJBambEjbsPerTests(
+                odsFilePath, mappingFilePath, configCarregadorMassiu);
     }
 
     @Test

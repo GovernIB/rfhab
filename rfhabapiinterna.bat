@@ -1,0 +1,1 @@
+compile.bat -pl rfhab-api-interna,rfhab-ear -Denforcer.skip=false 

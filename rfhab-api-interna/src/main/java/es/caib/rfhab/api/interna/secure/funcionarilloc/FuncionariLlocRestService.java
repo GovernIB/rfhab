@@ -12,6 +12,8 @@ import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.FuncionariLlocJPA;
 import es.caib.rfhab.persistence.validator.FuncionariLlocValidator;
+
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +34,7 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.log4j.Logger;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.i18n.I18NFieldError;
+import org.fundaciobit.genapp.common.i18n.I18NValidationException;
 import org.fundaciobit.genapp.common.validation.BeanValidatorResult;
 import org.fundaciobit.pluginsib.utils.rest.RestException;
 import org.fundaciobit.pluginsib.utils.rest.RestExceptionInfo;
@@ -126,6 +129,8 @@ public class FuncionariLlocRestService extends RestUtils {
 			@Parameter(description = "Codi del lloc", required = true) @QueryParam("codilloc") @NotNull String codiLloc,
 			@Parameter(description = "Expansió del lloc", required = false) @QueryParam("expansio") String expansio,
 			@Parameter(description = "Identificador del funcionari a assignar", required = true) @QueryParam("identificadorfh") @NotNull String identificadorFh,
+			@Parameter(description = "Data d'inici'", required = false, example = "2025-08-31T06:15:00+00:00", schema = @Schema(implementation = String.class, pattern = DATE_PATTERN_ISO8601_DATE_AND_TIME)) @QueryParam("datainici") String dataIniciStr,
+			@Parameter(description = "Data de fi", required = false, example = "2025-08-31T06:15:00+00:00", schema = @Schema(implementation = String.class, pattern = DATE_PATTERN_ISO8601_DATE_AND_TIME)) @QueryParam("datafi") String dataFiStr,
 			@Parameter(description = "Observacions", required = false) @QueryParam("observacions") String observacions,
 			@Parameter(description = "Número CAI", required = false, schema = @Schema(defaultValue = "", implementation = String.class)) @QueryParam("numerocai") String numeroCai) {
 		try {
@@ -135,6 +140,8 @@ public class FuncionariLlocRestService extends RestUtils {
 			sb.append("CodiLloc: " + codiLloc + "\n");
 			sb.append("Expansió: " + expansio + "\n");
 			sb.append("Identificador FH: " + identificadorFh + "\n");
+			sb.append("DataInici: " + dataIniciStr + "\n");
+			sb.append("DataFi: " + dataFiStr + "\n");
 			sb.append("Observacions: " + observacions + "\n");
 			sb.append("NumeroCai: " + numeroCai + "\n");
 			log.info(sb.toString());
@@ -144,6 +151,14 @@ public class FuncionariLlocRestService extends RestUtils {
 				log.info("XYZ YYY numeroCai = " + numeroCai);
 			}
 
+			Date dataInici = null;
+			if (dataIniciStr != null && !dataIniciStr.isEmpty()) {
+				dataInici = new Date(parseDateTimeISO8601ToDate(dataIniciStr, "data", language).getTime());
+			}
+			Date dataFi = null;
+			if (dataFiStr != null && !dataFiStr.isEmpty()) {
+				dataFi = new Date(parseDateTimeISO8601ToDate(dataFiStr, "data", language).getTime());
+			}
 			Timestamp dataCreacio = new Timestamp(System.currentTimeMillis());
 
 			// validar codi de funcionari
@@ -179,6 +194,8 @@ public class FuncionariLlocRestService extends RestUtils {
 			funcionariLloc.setFuncionariID(funcionariAassignar.getFuncionariID());
 			funcionariLloc.setLlocID(llocAassignar.getLlocID());
 			funcionariLloc.setUsuariID(usuariId.longValue());
+			funcionariLloc.setDataInici(dataInici);
+			funcionariLloc.setDataFi(dataFi);
 
 			// validam entitat
 			FuncionariLloc fLlocCreat;
@@ -217,7 +234,7 @@ public class FuncionariLlocRestService extends RestUtils {
 			String successMsg = String.valueOf(I18NLogicUtilsApiInterna.tradueix(new Locale(language),
 					"success.creation",
 					new String[] {
-							I18NLogicUtilsApiInterna.tradueix(new Locale(language), "funcionariLloc.funcionarilloc"),
+							I18NLogicUtilsApiInterna.tradueix(new Locale(language), "funcionariLloc.funcionariLloc"),
 							I18NLogicUtilsApiInterna.tradueix(new Locale(language), "funcionariLloc.funcionarillocID"),
 							String.valueOf(fLlocCreat.getFuncionarillocID()),
 							"" }));
@@ -330,7 +347,7 @@ public class FuncionariLlocRestService extends RestUtils {
 			String successMsg = String.valueOf(I18NLogicUtilsApiInterna.tradueix(new Locale(language),
 					"success.modification",
 					new String[] {
-							I18NLogicUtilsApiInterna.tradueix(new Locale(language), "funcionariLloc.funcionarilloc"),
+							I18NLogicUtilsApiInterna.tradueix(new Locale(language), "funcionariLloc.funcionariLloc"),
 							I18NLogicUtilsApiInterna.tradueix(new Locale(language), "funcionari.funcionariID"),
 							String.valueOf(funcionariAdesassignar.getFuncionariID()), "" }));
 			log.info(successMsg);
@@ -429,7 +446,7 @@ public class FuncionariLlocRestService extends RestUtils {
 			String successMsg = String.valueOf(I18NLogicUtilsApiInterna.tradueix(new Locale(language),
 					"success.modification",
 					new String[] {
-							I18NLogicUtilsApiInterna.tradueix(new Locale(language), "funcionariLloc.funcionarilloc"),
+							I18NLogicUtilsApiInterna.tradueix(new Locale(language), "funcionariLloc.funcionariLloc"),
 							I18NLogicUtilsApiInterna.tradueix(new Locale(language), "lloc.llocID"),
 							String.valueOf(llocAdesassignar.getLlocID()), "" }));
 			log.info(successMsg);

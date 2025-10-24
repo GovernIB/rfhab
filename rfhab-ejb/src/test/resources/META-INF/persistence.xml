@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+             http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
+             version="2.2">
+    <persistence-unit name="rfhabPULocal" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+		<class>es.caib.rfhab.persistence.ActivitatJPA</class>
+		<class>es.caib.rfhab.persistence.AutoritzacioJPA</class>
+		<class>es.caib.rfhab.persistence.EntitatJPA</class>
+		<class>es.caib.rfhab.persistence.FitxerJPA</class>
+		<class>es.caib.rfhab.persistence.FuncionariJPA</class>
+		<class>es.caib.rfhab.persistence.FuncionariLlocJPA</class>
+		<class>es.caib.rfhab.persistence.HistoricJPA</class>
+		<class>es.caib.rfhab.persistence.HistoricLlocJPA</class>
+		<class>es.caib.rfhab.persistence.IdiomaJPA</class>
+		<class>es.caib.rfhab.persistence.LlocJPA</class>
+		<class>es.caib.rfhab.persistence.LlocRolJPA</class>
+		<class>es.caib.rfhab.persistence.PluginJPA</class>
+		<class>es.caib.rfhab.persistence.RolJPA</class>
+		<class>es.caib.rfhab.persistence.ScanWebJPA</class>
+		<class>es.caib.rfhab.persistence.TraduccioJPA</class>
+		<class>es.caib.rfhab.persistence.TraduccioMapJPA</class>
+		<class>es.caib.rfhab.persistence.UnitatJPA</class>
+		<class>es.caib.rfhab.persistence.UsuariJPA</class>
+		<class>es.caib.rfhab.persistence.UsuariEntitatJPA</class>
+
+        <!-- Desactivar cache -->
+        <shared-cache-mode>NONE</shared-cache-mode>
+        <!-- Desactivar validació -->
+        <validation-mode>NONE</validation-mode>
+
+        <properties>
+         
+        </properties>
+    </persistence-unit>
+</persistence>

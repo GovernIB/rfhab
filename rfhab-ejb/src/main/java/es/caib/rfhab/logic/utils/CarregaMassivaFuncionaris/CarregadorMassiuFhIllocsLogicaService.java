@@ -1,5 +1,7 @@
 package es.caib.rfhab.logic.utils.CarregaMassivaFuncionaris;
 
+import java.util.List;
+
 import javax.ejb.Local;
 
 @Local
@@ -44,19 +46,21 @@ public interface CarregadorMassiuFhIllocsLogicaService {
          * Assigna un funcionari a un lloc via API REST.
          */
         public String assignarFuncionari(String lang, String usuariId, String identificadorFh, String codiLloc,
-                        String expansio, String numeroCai,
-                        String observacions) throws Exception;
+                        String expansio, String dataIniciStr, String dataFiStr, String numeroCai, String observacions)
+                        throws Exception;
 
         /**
          * Treu un funcionari d'un lloc via API REST.
          */
-        public String treureFuncionari(String identificadorFh, String codiLloc, String expansio, String numeroCai,
+        public String treureFuncionari(String lang, String usuariId, String identificadorFh, String codiLloc,
+                        String expansio, String numeroCai,
                         String observacions) throws Exception;
 
         /**
          * Treu tots els funcionaris d'un lloc via API REST.
          */
-        public String treureTotsFuncionari(String codiLloc, String expansio, String numeroCai, String observacions)
+        public String treureTotsFuncionari(String lang, String usuariId, String codiLloc, String expansio,
+                        String numeroCai, String observacions)
                         throws Exception;
 
         /**
@@ -66,7 +70,7 @@ public interface CarregadorMassiuFhIllocsLogicaService {
          * 
          * @throws Exception Si hi ha problemes de lectura o processament
          */
-        public void carregaFh() throws Exception;
+        public List<String> carregaFh() throws Exception;
 
         public String getOdsFilePath();
 

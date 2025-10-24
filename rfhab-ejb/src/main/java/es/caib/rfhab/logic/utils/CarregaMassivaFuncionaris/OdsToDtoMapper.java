@@ -35,6 +35,22 @@ public class OdsToDtoMapper implements IOdsToDtoMapper {
      */
     @Override
     public <T> List<T> readOdsToDto(File odsFile, Class<T> dtoClass) throws Exception {
+        return readOdsToDto(odsFile, dtoClass, false, false);
+    }
+
+    /**
+     * Llegeix el fitxer ODS i genera instàncies de la classe DTO passada per
+     * paràmetre,
+     * assignant els valors segons el mapping .properties.
+     * 
+     * @param odsFile  Fitxer ODS a llegir
+     * @param dtoClass Classe DTO a instanciar
+     * @param <T>      Tipus de DTO
+     * @return Llista d'instàncies DTO
+     */
+    @Override
+    public <T> List<T> readOdsToDto(File odsFile, Class<T> dtoClass, boolean trimQuotes, boolean trimBlanks)
+            throws Exception {
         OdfSpreadsheetDocument doc = OdfSpreadsheetDocument.loadDocument(odsFile);
         OdfTable table = doc.getTableList().get(0);
         List<T> result = new ArrayList<>();
@@ -100,7 +116,20 @@ public class OdsToDtoMapper implements IOdsToDtoMapper {
                     try {
                         java.lang.reflect.Field field = dtoClass.getDeclaredField(dtoProp);
                         field.setAccessible(true);
-                        field.set(dto, value);
+                        String finalValue = null;
+                        if (value != null && !value.isEmpty()) {
+                            finalValue = value;
+                            if (trimBlanks) {
+                                finalValue = finalValue.trim();
+                            }
+                            if (trimQuotes) {
+                                finalValue = finalValue.replaceAll("^\"'|\"'$", "");
+                            }
+                            if (trimQuotes && trimBlanks) {
+                                finalValue = finalValue.trim();
+                            }
+                        }
+                        field.set(dto, finalValue);
                     } catch (NoSuchFieldException e) {
                         // Si la propietat no existeix al DTO, ignora
                     }

@@ -22,13 +22,30 @@ public class OdsToDtoMapperNoLibreOffice implements IOdsToDtoMapper {
      */
     @Override
     public <T> List<T> readOdsToDto(File odsFile, Class<T> dtoClass) throws Exception {
+        return readOdsToDto(odsFile, dtoClass, false, false);
+    }
+
+    /**
+     * Llegeix el fitxer ODS i genera instàncies de la classe DTO passada per
+     * paràmetre,
+     * assignant els valors segons el mapping .properties.
+     * 
+     * @param odsFile  Fitxer ODS a llegir
+     * @param dtoClass Classe DTO a instanciar
+     * @param <T>      Tipus de DTO
+     * @return Llista d'instàncies DTO
+     */
+    @Override
+    public <T> List<T> readOdsToDto(File odsFile, Class<T> dtoClass, boolean trimQuotes, boolean trimBlanks)
+            throws Exception {
         OdfSpreadsheetDocument doc = OdfSpreadsheetDocument.loadDocument(odsFile);
         OdfTable table = doc.getTableList().get(0);
         List<T> result = new ArrayList<>();
         List<String> headers = new ArrayList<>();
 
         List<OdfTableRow> rows = table.getRowList();
-        if (rows.isEmpty()) return result;
+        if (rows.isEmpty())
+            return result;
 
         // Llegeix la capçalera
         OdfTableRow headerRow = rows.get(0);
@@ -60,7 +77,8 @@ public class OdsToDtoMapperNoLibreOffice implements IOdsToDtoMapper {
                     }
                 }
             }
-            if (isEmpty) break;
+            if (isEmpty)
+                break;
             result.add(dto);
         }
         return result;
@@ -83,7 +101,8 @@ public class OdsToDtoMapperNoLibreOffice implements IOdsToDtoMapper {
         List<String> headers = new ArrayList<>();
 
         List<OdfTableRow> rows = table.getRowList();
-        if (rows.isEmpty()) return result;
+        if (rows.isEmpty())
+            return result;
 
         // Llegeix la capçalera
         OdfTableRow headerRow = rows.get(0);
@@ -109,7 +128,8 @@ public class OdsToDtoMapperNoLibreOffice implements IOdsToDtoMapper {
                     dto.put(dtoProp, value);
                 }
             }
-            if (isEmpty) break;
+            if (isEmpty)
+                break;
             result.add(dto);
         }
         return result;

@@ -2,6 +2,7 @@ package es.caib.rfhab.logic.utils.CarregaMassivaFuncionaris;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -96,12 +97,13 @@ public class NouFuncionariHabilitatDTO implements java.io.Serializable {
 
     public NouFuncionariHabilitatDTO() {
         super();
+        objectMapper.setSerializationInclusion(Include.NON_NULL);
     }
 
     public NouFuncionariHabilitatDTO(String language, Integer usuariId, String nom, String llinatge1, String llinatge2,
             String numero, IdentificacioTipus tipusIdentificador, String identificador, String username, String correu,
             Long entitatId, String numeroCai, String observacions, String dataBaixaStr) {
-        super();
+        this();
 
         this.language = language;
         this.usuariId = usuariId;

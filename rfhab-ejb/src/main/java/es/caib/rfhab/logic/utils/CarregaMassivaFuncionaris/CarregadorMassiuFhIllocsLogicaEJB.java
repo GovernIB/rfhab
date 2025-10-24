@@ -1,12 +1,12 @@
 package es.caib.rfhab.logic.utils.CarregaMassivaFuncionaris;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-
 import org.apache.log4j.Logger;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 
@@ -21,8 +21,14 @@ import es.caib.rfhab.commons.utils.IdentificacioTipus;
 import es.caib.rfhab.commons.utils.PersonalOamrTipus;
 import es.caib.rfhab.logic.FuncionariLogicaEJB;
 import es.caib.rfhab.logic.FuncionariLogicaService;
+import es.caib.rfhab.logic.RolLogicaEJB;
+import es.caib.rfhab.logic.RolLogicaService;
 import es.caib.rfhab.logic.UnitatLogicaEJB;
 import es.caib.rfhab.logic.UnitatLogicaService;
+import es.caib.rfhab.model.dao.IFuncionariManager;
+import es.caib.rfhab.model.dao.IRolManager;
+import es.caib.rfhab.model.dao.IUnitatManager;
+import es.caib.rfhab.model.entity.Rol;
 import es.caib.rfhab.model.entity.Unitat;
 
 @Stateless
@@ -74,6 +80,45 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
 
     @EJB(mappedName = UnitatLogicaService.JNDI_NAME)
     protected UnitatLogicaService unitatLogicaEjb;
+
+    @EJB(mappedName = RolLogicaService.JNDI_NAME)
+    protected RolLogicaService rolLogicaEjb;
+
+    private IFuncionariManager funcionariManAux = null;
+    private IFuncionariManager funcionariMan = null;
+
+    public IFuncionariManager getFuncionariMan() {
+        if (funcionariMan == null) {
+            funcionariMan = (funcionariLogicaEjb.getEntityManager() != null
+                    ? (IFuncionariManager) funcionariLogicaEjb.getEntityManager()
+                    : funcionariManAux);
+        }
+        return funcionariMan;
+    }
+
+    private IUnitatManager unitatManAux = null;
+    private static IUnitatManager unitatMan = null;
+
+    public IUnitatManager getUnitatMan() {
+        if (unitatMan == null) {
+            unitatMan = (unitatLogicaEjb.getEntityManager() != null
+                    ? (IUnitatManager) unitatLogicaEjb.getEntityManager()
+                    : unitatManAux);
+        }
+        return unitatMan;
+    }
+
+    private IRolManager rolManAux = null;
+    private static IRolManager rolMan = null;
+
+    public IRolManager getRolMan() {
+        if (rolMan == null) {
+            rolMan = (rolLogicaEjb.getEntityManager() != null
+                    ? (IRolManager) rolLogicaEjb.getEntityManager()
+                    : rolManAux);
+        }
+        return rolMan;
+    }
 
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -174,19 +219,17 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
      */
     public static CarregadorMassiuFhIllocsLogicaService CrearCarregadorMassiuFhIllocsLogicaEJBambEjbsPerTests(
             String odsFilePath, String mappingFilePath,
-            Properties apiExternaProperties)
+            Properties apiExternaProperties, IFuncionariManager funcionariMan, IUnitatManager unitatMan)
             throws Exception {
 
-        FuncionariLogicaService funcionariLogicaEjb;
-        UnitatLogicaService unitatLogicaEjb;
         CarregadorMassiuFhIllocsLogicaEJB carregador = null;
 
-        funcionariLogicaEjb = new FuncionariLogicaEJB();
-        unitatLogicaEjb = new UnitatLogicaEJB();
         carregador = new CarregadorMassiuFhIllocsLogicaEJB(odsFilePath, mappingFilePath, apiExternaProperties);
 
-        carregador.funcionariLogicaEjb = funcionariLogicaEjb;
-        carregador.unitatLogicaEjb = unitatLogicaEjb;
+        carregador.funcionariLogicaEjb = new FuncionariLogicaEJB();
+        carregador.unitatLogicaEjb = new UnitatLogicaEJB();
+        carregador.funcionariManAux = funcionariMan;
+        carregador.unitatManAux = unitatMan;
 
         return carregador;
     }
@@ -215,12 +258,22 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
     /**
      * Helper per crear un JSON a partir de parells clau-valor.
      */
-    private String buildJson(Object... kvPairs) throws Exception {
+    private String buildJson(Boolean ignoreNulls, Object... kvPairs) throws Exception {
         var params = new java.util.HashMap<String, Object>();
         for (int i = 0; i + 1 < kvPairs.length; i += 2) {
-            params.put(String.valueOf(kvPairs[i]), kvPairs[i + 1]);
+            Object value = kvPairs[i + 1];
+            if (value != null || (ignoreNulls != null && !ignoreNulls)) {
+                params.put(String.valueOf(kvPairs[i]), value);
+            }
         }
         return objectMapper.writeValueAsString(params);
+    }
+
+    /**
+     * Helper per crear un JSON a partir de parells clau-valor.
+     */
+    private String buildJson(Object... kvPairs) throws Exception {
+        return buildJson(true, kvPairs);
     }
 
     /**
@@ -322,11 +375,12 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
      */
     @Override
     public String assignarFuncionari(String lang, String usuariId, String identificadorFh, String codiLloc,
-            String expansio, String numeroCai,
-            String observacions) throws Exception {
+            String expansio, String dataIniciStr, String dataFiStr, String numeroCai, String observacions)
+            throws Exception {
         String endpoint = apiUrl + "/secure/funcionarilloc/assignarfuncionari";
-        String json = buildJson("identificadorfh", identificadorFh, "codilloc", codiLloc, "expansio", expansio,
-                "numerocai", numeroCai, "observacions", observacions);
+        String json = buildJson("language", lang, "usuariid", usuariId, "identificadorfh", identificadorFh, "codilloc",
+                codiLloc, "expansio", expansio, "datainici", dataIniciStr, "datafi", dataFiStr, "numerocai", numeroCai,
+                "observacions", observacions);
         return doPostWithQueryParams(endpoint, json);
     }
 
@@ -334,10 +388,12 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
      * Treu un funcionari d'un lloc via API REST.
      */
     @Override
-    public String treureFuncionari(String identificadorFh, String codiLloc, String expansio, String numeroCai,
+    public String treureFuncionari(String lang, String usuariId, String identificadorFh, String codiLloc,
+            String expansio, String numeroCai,
             String observacions) throws Exception {
         String endpoint = apiUrl + "/secure/funcionarilloc/treurefuncionari";
-        String json = buildJson("identificadorfh", identificadorFh, "codilloc", codiLloc, "expansio", expansio,
+        String json = buildJson("language", lang, "usuariid", usuariId, "identificadorfh", identificadorFh, "codilloc",
+                codiLloc, "expansio", expansio,
                 "numerocai", numeroCai, "observacions", observacions);
         return doPostWithQueryParams(endpoint, json);
     }
@@ -346,10 +402,12 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
      * Treu tots els funcionaris d'un lloc via API REST.
      */
     @Override
-    public String treureTotsFuncionari(String codiLloc, String expansio, String numeroCai, String observacions)
+    public String treureTotsFuncionari(String lang, String usuariId, String codiLloc, String expansio, String numeroCai,
+            String observacions)
             throws Exception {
         String endpoint = apiUrl + "/secure/funcionarilloc/treuretotsfuncionari";
-        String json = buildJson("codilloc", codiLloc, "expansio", expansio, "numerocai", numeroCai, "observacions",
+        String json = buildJson("language", lang, "usuariid", usuariId, "codilloc", codiLloc, "expansio", expansio,
+                "numerocai", numeroCai, "observacions",
                 observacions);
         return doPostWithQueryParams(endpoint, json);
     }
@@ -362,17 +420,25 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
      * @throws Exception Si hi ha problemes de lectura o processament
      */
     @Override
-    public void carregaFh() throws Exception {
+    public List<String> carregaFh() throws Exception {
+        List<String> errors = new ArrayList<>();
         if (odsFilePath == null || mapper == null) {
             throw new IllegalStateException(
                     "odsFilePath o mapper no inicialitzats. Cal cridar configureOdsPaths abans d'utilitzar carregaFh().");
         }
-        List<FuncionariOdsDTO> dtos = mapper.readOdsToDto(new File(odsFilePath), FuncionariOdsDTO.class);
+        List<FuncionariOdsDTO> dtos = mapper.readOdsToDto(new File(odsFilePath), FuncionariOdsDTO.class, true, true);
         for (FuncionariOdsDTO dto : dtos) {
             // Aquí s'aplicarà la lògica de processament i crida a l'API REST externa
             log.info("Processant DTO: " + dto.toString());
-            processaFuncionarisLlocsIassignacions(dto);
+            try {
+                processaFuncionarisLlocsIassignacions(dto);
+            } catch (I18NException | RuntimeException ex) {
+                log.error(ex);
+                errors.add(ex.getMessage());
+            }
         }
+
+        return errors;
     }
 
     /**
@@ -398,7 +464,7 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
                 dto.nom,
                 dto.primerLlinatge,
                 dto.segonLlinatge,
-                funcionariLogicaEjb.getNumeroFhFromNumeric(Integer.parseInt(dto.numRfh)),
+                FuncionariLogicaEJB.getNumeroFhFromNumeric(this.getFuncionariMan(), Integer.parseInt(dto.numRfh)),
                 IdentificacioTipus.DNI,
                 dto.nif,
                 dto.usuari,
@@ -416,24 +482,42 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
         log.info("Resposta donar alta FH: " + respostaDonarAltaFh);
 
         // creació de llocs
+        // TODO: SI JA EXISTEIX EL LLOC, L'HEM D'INTENTAR CREAR??
         PersonalOamrTipus personalOamr = PersonalOamrTipus.SI;
         try {
             personalOamr = PersonalOamrTipus.fromString(dto.oamr);
         } catch (IllegalArgumentException iaex) {
         }
-        String[] unitatLlocCodiDir3 = dto.dir3UnitatOrganica.split("v");
+        String[] unitatLlocCodiDir3 = dto.dir3UnitatOrganica.split("[vV](?=\\d+$)");
         String codiUnitatDir3 = unitatLlocCodiDir3[0].trim();
         Integer versioUnitatDir3 = unitatLlocCodiDir3.length > 1 ? (Integer.parseInt(codiUnitatDir3)) : null;
+        if (versioUnitatDir3 == null) {
+            versioUnitatDir3 = 1;
+        }
         log.info("Cercant unitat amb codiDir3: " + codiUnitatDir3 + " i versio: " + versioUnitatDir3);
-        Unitat unitatLloc = unitatLogicaEjb.findByCodiDir3(codiUnitatDir3, versioUnitatDir3);
+        // TODO: Per ara no volem la versió...
+        // Unitat unitatLloc = UnitatLogicaEJB.findByCodiDir3(getUnitatMan(),
+        // codiUnitatDir3, versioUnitatDir3);
+        Unitat unitatLloc = UnitatLogicaEJB.findByCodiDir3(getUnitatMan(), codiUnitatDir3);
         log.info("Unitat trobada: " + (unitatLloc != null ? unitatLloc.getUnitatID() : null));
         if (unitatLloc == null) {
             String errorMsg = "No s'ha trobat la unitat amb codiDir " + dto.dir3UnitatOrganica;
             throw new I18NException(errorMsg);
         }
+        List<Long> habilitacions = new ArrayList<>();
+        for (String codiHabilitacio : dto.habilitacio.split(",")) {
+            log.info("Cercant habilitacion amb codi: " + codiHabilitacio);
+            Rol habilitacioTrobada = RolLogicaEJB.findByCodi(getRolMan(), codiHabilitacio.trim());
+            log.info("Habilitacio trobada: " + (habilitacioTrobada != null ? habilitacioTrobada.getRolID() : null));
+            if (habilitacioTrobada == null) {
+                String errorMsg = "No s'ha trobat l'habilitació amb CODI " + codiHabilitacio;
+                throw new I18NException(errorMsg);
+            }
+            habilitacions.add(habilitacioTrobada.getRolID());
+        }
         NouLlocDTO nouLloc = new NouLlocDTO(lang, Integer.parseInt(usuariId), dto.codiLlocFeina, dto.expansio,
                 dto.nomLlocFeina, personalOamr, Long.parseLong(entitatId), unitatLloc.getUnitatID(), dto.numCaiAlta,
-                dto.habilitacio.split(","), dto.observacionsAlta, null, null);
+                habilitacions.toArray(new String[0]), dto.observacionsAlta, null, null);
         log.info("Creant lloc: " + nouLloc.toString());
         String respostaNouLloc = nouLloc(nouLloc);
         log.info("Resposta creació lloc: " + respostaNouLloc);
@@ -445,7 +529,7 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
         // assignació de FH a lloc
         log.info("Assignant funcionari " + dto.nif + " a lloc " + dto.codiLlocFeina + " - " + dto.expansio);
         String respostaAssignarFuncionari = assignarFuncionari(lang, usuariId, dto.nif, dto.codiLlocFeina, dto.expansio,
-                dto.numCaiAlta, observacions);
+                dataAltaFh, dataBaixaFh, dto.numCaiAlta, observacions);
         log.info("Resposta assignació funcionari a lloc: " + respostaAssignarFuncionari);
 
         // TODO: no puc assignar una data baixa específica...

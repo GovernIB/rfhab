@@ -1,12 +1,19 @@
 package es.caib.rfhab.logic.utils.CarregaMassivaFuncionaris;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import es.caib.rfhab.commons.utils.PersonalOamrTipus;
 
 @JsonInclude(JsonInclude.Include.NON_NULL) // Inclou només camps no nuls al JSON
 public class NouLlocDTO implements java.io.Serializable {
+    @JsonIgnore
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
     /**
      * Idioma en que s'han de retornar les dades (Només suportat 'ca' o 'es').
      * Exemple: "ca", "es". Opcional, per defecte "ca".
@@ -90,6 +97,7 @@ public class NouLlocDTO implements java.io.Serializable {
 
     public NouLlocDTO() {
         super();
+        objectMapper.setSerializationInclusion(Include.NON_NULL);
     }
 
     public NouLlocDTO(
@@ -106,7 +114,7 @@ public class NouLlocDTO implements java.io.Serializable {
             String observacions,
             String dataAltaStr,
             String dataBaixaStr) {
-        super();
+        this();
 
         this.language = language;
         this.usuariId = usuariId;
@@ -122,4 +130,17 @@ public class NouLlocDTO implements java.io.Serializable {
         this.dataAltaStr = dataAltaStr;
         this.dataBaixaStr = dataBaixaStr;
     }
+
+    @Override
+    public String toString() {
+
+        try {
+            return objectMapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

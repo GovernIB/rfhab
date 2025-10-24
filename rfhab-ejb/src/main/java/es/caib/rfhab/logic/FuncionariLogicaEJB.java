@@ -21,6 +21,7 @@ import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.ejb.FuncionariEJB;
 import es.caib.rfhab.ejb.RolService;
 import es.caib.rfhab.logic.utils.HistoricFuncionariDAO;
+import es.caib.rfhab.model.dao.IFuncionariManager;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.FuncionariLloc;
 import es.caib.rfhab.model.entity.Historic;
@@ -490,6 +491,10 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 	@Override
 	@PermitAll
 	public String getNumeroFhFromNumeric(int nouNumber) {
+		return FuncionariLogicaEJB.getNumeroFhFromNumeric(this, nouNumber);
+	}
+
+	public static String getNumeroFhFromNumeric(IFuncionariManager fm, int nouNumber) {
 		// Format numèric amb el mateix nombre de dígits que l'original
 		String updatedNumericPart = String
 				.format("%0" + Constants.FUNCIONARI_NUMERO_PLACEHOLDER_NUMERICPART.length() + "d", nouNumber);

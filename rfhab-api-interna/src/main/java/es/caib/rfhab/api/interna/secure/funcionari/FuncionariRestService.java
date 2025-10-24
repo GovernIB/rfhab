@@ -91,7 +91,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 @SecurityScheme(type = SecuritySchemeType.HTTP, name = FuncionariRestService.SECURITY_NAME, scheme = "basic")
 public class FuncionariRestService extends RestUtils {
 
-	private static final String CORREU_PATTERN = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
+	private static final String CORREU_PATTERN = "[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-ñçÇ]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-ñçÇ]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?";
 
 	protected Logger log = Logger.getLogger(FuncionariRestService.class);
 

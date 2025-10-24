@@ -10,6 +10,7 @@ import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.query.Where;
 
 import es.caib.rfhab.ejb.UnitatEJB;
+import es.caib.rfhab.model.dao.IUnitatManager;
 import es.caib.rfhab.model.entity.Unitat;
 import es.caib.rfhab.model.fields.UnitatFields;
 import es.caib.rfhab.persistence.UnitatJPA;
@@ -28,16 +29,29 @@ public class UnitatLogicaEJB extends UnitatEJB implements UnitatLogicaService {
         return (UnitatJPA) super.findByPrimaryKey(_ID_);
     }
 
+    public static Unitat findByCodiDir3(IUnitatManager um, String codi) throws I18NException {
+        Where codiDir3W = UnitatFields.CODI.equal(codi);
+        List<Unitat> resultats = um.select(codiDir3W);
+        return (resultats != null && resultats.size() > 0) ? resultats.get(0) : null;
+    }
+
+    public static Unitat findByCodiDir3(IUnitatManager um, String codi, int versio) throws I18NException {
+        Where codiDir3W = UnitatFields.CODI.equal(codi);
+        Where versioW = UnitatFields.VERSIO.equal(versio);
+        List<Unitat> resultats = um.select(Where.AND(codiDir3W, versioW));
+        return (resultats != null && resultats.size() > 0) ? resultats.get(0) : null;
+    }
+
     @Override
     @PermitAll
-    public Unitat findByCodiDir3(String codi, Integer versio) throws I18NException {
-        Where codiDir3W = UnitatFields.CODI.equal(codi);
-        if (versio == null) {
-            versio = 1;
-        }
-        Where versioW = UnitatFields.VERSIO.equal(versio);
-        List<Unitat> resultats = select(Where.AND(codiDir3W, versioW));
-        return (resultats.size() > 0) ? resultats.get(0) : null;
+    public Unitat findByCodiDir3(String codi) throws I18NException {
+        return UnitatLogicaEJB.findByCodiDir3(this, codi);
+    }
+
+    @Override
+    @PermitAll
+    public Unitat findByCodiDir3(String codi, int versio) throws I18NException {
+        return UnitatLogicaEJB.findByCodiDir3(this, codi, versio);
     }
 
     @Override

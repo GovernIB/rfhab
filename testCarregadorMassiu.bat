@@ -1,0 +1,1 @@
+mvn test -Dtest=CarregadorMassiuFhIllocsTest -pl rfhab-ejb -DfailIfNoTests

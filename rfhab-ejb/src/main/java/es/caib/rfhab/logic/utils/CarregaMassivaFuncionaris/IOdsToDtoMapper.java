@@ -16,5 +16,8 @@ public interface IOdsToDtoMapper {
      */
     public <T> List<T> readOdsToDto(File odsFile, Class<T> dtoClass) throws Exception;
 
+    public <T> List<T> readOdsToDto(File odsFile, Class<T> dtoClass, boolean trimQuotes, boolean trimBlanks)
+            throws Exception;
+
     public List<Map<String, String>> readOds(File odsFile) throws Exception;
 }

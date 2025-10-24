@@ -1,6 +1,5 @@
 package es.caib.rfhab.logic;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -22,7 +21,9 @@ public interface UnitatLogicaService extends UnitatService {
 
     public UnitatJPA findByPrimaryKey(Long _ID_);
 
-    public Unitat findByCodiDir3(String codi, Integer versio) throws I18NException;
+    public Unitat findByCodiDir3(String codi) throws I18NException;
+
+    public Unitat findByCodiDir3(String codi, int versio) throws I18NException;
 
     public Unitat findUnitatMare(Long unitatId) throws I18NException;
 

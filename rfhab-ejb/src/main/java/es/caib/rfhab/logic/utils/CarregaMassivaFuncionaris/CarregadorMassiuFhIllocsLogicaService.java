@@ -1,6 +1,7 @@
 package es.caib.rfhab.logic.utils.CarregaMassivaFuncionaris;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.ejb.Local;
 
@@ -70,7 +71,7 @@ public interface CarregadorMassiuFhIllocsLogicaService {
          * 
          * @throws Exception Si hi ha problemes de lectura o processament
          */
-        public List<String> carregaFh() throws Exception;
+        public List<String> carregaFh(Consumer<FuncionariOdsDTO> dtoMapper) throws Exception;
 
         public String getOdsFilePath();
 

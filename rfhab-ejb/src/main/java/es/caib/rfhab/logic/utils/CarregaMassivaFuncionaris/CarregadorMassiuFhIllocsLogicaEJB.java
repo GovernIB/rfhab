@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -219,7 +221,8 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
      */
     public static CarregadorMassiuFhIllocsLogicaService CrearCarregadorMassiuFhIllocsLogicaEJBambEjbsPerTests(
             String odsFilePath, String mappingFilePath,
-            Properties apiExternaProperties, IFuncionariManager funcionariMan, IUnitatManager unitatMan)
+            Properties apiExternaProperties, IFuncionariManager funcionariMan, IUnitatManager unitatMan,
+            IRolManager rolMan)
             throws Exception {
 
         CarregadorMassiuFhIllocsLogicaEJB carregador = null;
@@ -228,8 +231,10 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
 
         carregador.funcionariLogicaEjb = new FuncionariLogicaEJB();
         carregador.unitatLogicaEjb = new UnitatLogicaEJB();
+        carregador.rolLogicaEjb = new RolLogicaEJB();
         carregador.funcionariManAux = funcionariMan;
         carregador.unitatManAux = unitatMan;
+        carregador.rolManAux = rolMan;
 
         return carregador;
     }
@@ -420,7 +425,7 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
      * @throws Exception Si hi ha problemes de lectura o processament
      */
     @Override
-    public List<String> carregaFh() throws Exception {
+    public List<String> carregaFh(Consumer<FuncionariOdsDTO> dtoMapper) throws Exception {
         List<String> errors = new ArrayList<>();
         if (odsFilePath == null || mapper == null) {
             throw new IllegalStateException(
@@ -431,9 +436,10 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
             // Aquí s'aplicarà la lògica de processament i crida a l'API REST externa
             log.info("Processant DTO: " + dto.toString());
             try {
+                dtoMapper.accept(dto);
                 processaFuncionarisLlocsIassignacions(dto);
             } catch (I18NException | RuntimeException ex) {
-                log.error(ex);
+                ex.printStackTrace();
                 errors.add(ex.getMessage());
             }
         }
@@ -490,7 +496,8 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
         }
         String[] unitatLlocCodiDir3 = dto.dir3UnitatOrganica.split("[vV](?=\\d+$)");
         String codiUnitatDir3 = unitatLlocCodiDir3[0].trim();
-        Integer versioUnitatDir3 = unitatLlocCodiDir3.length > 1 ? (Integer.parseInt(codiUnitatDir3)) : null;
+        Integer versioUnitatDir3 = unitatLlocCodiDir3.length > 1 ? (Integer.parseInt(unitatLlocCodiDir3[1].trim()))
+                : null;
         if (versioUnitatDir3 == null) {
             versioUnitatDir3 = 1;
         }
@@ -505,7 +512,8 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
             throw new I18NException(errorMsg);
         }
         List<Long> habilitacions = new ArrayList<>();
-        for (String codiHabilitacio : dto.habilitacio.split(",")) {
+        String[] habilitacionsFromInput = dto.habilitacio.split(",");
+        for (String codiHabilitacio : habilitacionsFromInput) {
             log.info("Cercant habilitacion amb codi: " + codiHabilitacio);
             Rol habilitacioTrobada = RolLogicaEJB.findByCodi(getRolMan(), codiHabilitacio.trim());
             log.info("Habilitacio trobada: " + (habilitacioTrobada != null ? habilitacioTrobada.getRolID() : null));
@@ -513,11 +521,16 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
                 String errorMsg = "No s'ha trobat l'habilitació amb CODI " + codiHabilitacio;
                 throw new I18NException(errorMsg);
             }
-            habilitacions.add(habilitacioTrobada.getRolID());
+            Long rolID = Long.valueOf(habilitacioTrobada.getRolID());
+            if (!habilitacions.contains(rolID)) {
+                habilitacions.add(rolID);
+            }
         }
         NouLlocDTO nouLloc = new NouLlocDTO(lang, Integer.parseInt(usuariId), dto.codiLlocFeina, dto.expansio,
                 dto.nomLlocFeina, personalOamr, Long.parseLong(entitatId), unitatLloc.getUnitatID(), dto.numCaiAlta,
-                habilitacions.toArray(new String[0]), dto.observacionsAlta, null, null);
+                habilitacions.stream().map(Object::toString)
+                        .collect(Collectors.toUnmodifiableList()).toArray(new String[0]),
+                dto.observacionsAlta, null, null);
         log.info("Creant lloc: " + nouLloc.toString());
         String respostaNouLloc = nouLloc(nouLloc);
         log.info("Resposta creació lloc: " + respostaNouLloc);

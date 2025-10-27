@@ -132,6 +132,14 @@
             <version>2.1.4</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <artifactId>pluginsib-utils-rest</artifactId>
+            <groupId>org.fundaciobit.pluginsib.utils</groupId>
+            <version>${pluginsib.utils.rest.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

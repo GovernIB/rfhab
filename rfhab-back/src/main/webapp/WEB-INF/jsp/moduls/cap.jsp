@@ -236,11 +236,14 @@
 								<a class="dropdown-item" href="<c:url value="/admin/habilitacio/list"/>">
 									<i class="fas fa-key"></i> <fmt:message key="menu.admin.rols" />
 								</a>
+								<a class="dropdown-item" href="<c:url value="/admin/activitat/list"/>">
+									<i class="fas fa-clipboard-list"></i> <fmt:message key="menu.admin.registreactivitat" />
+								</a>
 
 							</c:if>
 						</sec:authorize>
 
-						<%-- MENU ADMINISTRADOR ENTITATS --%>
+						<%-- MENU SUPERADMINSTRADOR --%>
 						<sec:authorize access="hasRole('ROLE_SUPER')">
 							<c:if test="${fn:contains(url, '/superadmin/')}">
 								<a class="dropdown-item"

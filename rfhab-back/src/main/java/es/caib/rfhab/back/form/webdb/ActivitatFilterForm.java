@@ -454,7 +454,7 @@ public class ActivitatFilterForm extends RFHabBaseFilterForm implements Activita
 
   @Override
   public List<Field<?>> getDefaultFilterByFields() {
-    return new java.util.ArrayList<Field<?>>(Arrays.asList(new Field<?>[] { ACTIVITATID ,TIPUS ,REGISTRE ,TRAMIT ,CODISIA ,AUTORITZACIOID }));
+    return new java.util.ArrayList<Field<?>>(Arrays.asList(new Field<?>[] { ACTIVITATID ,FUNCIONARIID ,TIPUS ,REGISTRE ,TRAMIT ,CODISIA ,AUTORITZACIOID ,INTERESSATTIPUS ,DATAACTIVITAT ,PROCEDIMENT }));
   }
 
   @Override

@@ -200,6 +200,15 @@
         <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/funcionariList.jsp" />
     </definition>
     
+    <definition name="activitatFormAdmin" extends="admin">
+        <put-attribute name="titol" value="activitat.activitat" />
+        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/activitatForm.jsp" />
+    </definition>
+    
+    <definition name="activitatListAdmin" extends="admin">
+        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/activitatList.jsp" />
+    </definition>
+    
     <definition name="funcionariLlocFormAdmin" extends="admin">
         <put-attribute name="titol" value="funcionariLloc.funcionariLloc" />
         <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/funcionariLlocForm.jsp" />

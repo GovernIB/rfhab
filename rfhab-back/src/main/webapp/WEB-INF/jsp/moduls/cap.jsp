@@ -208,6 +208,17 @@
 					<div class="dropdown-menu dropdown-menu-right"
 						aria-labelledby="dropdownMenu1">
 
+						<%-- MENU FUNCIONARI/ÀRIA --%>
+						<sec:authorize access="hasRole('ROLE_USER')">
+							<c:if test="${fn:contains(url, '/usuari/')}">
+
+								<a class="dropdown-item" href="<c:url value="/usuari/home"/>">
+									<i class="fas fa-user-friends"></i> <fmt:message key="menu.user.assistent" />
+								</a>
+
+							</c:if>
+						</sec:authorize>
+
 						<%-- MENU ADMINISTRADOR ENTITATS --%>
 						<sec:authorize access="hasRole('ROLE_ADMIN')">
 							<c:if test="${fn:contains(url, '/admin/')}">

@@ -3,6 +3,7 @@ package es.caib.rfhab.logic.utils.CarregaMassivaFuncionaris;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -41,7 +42,20 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
      * El paràmetre json ha de ser un JSON objecte (no array), que es transforma a
      * queryparams.
      */
-    private String doPostWithQueryParams(String endpoint, String json) throws Exception {
+    private String doPostWithQueryParams(String endpoint, String json)
+            throws Exception {
+
+        return doPostWithQueryParams(endpoint, json, true);
+    }
+
+    /**
+     * Helper per fer una cridada POST amb paràmetres com a queryparams i
+     * autenticació bàsica.
+     * El paràmetre json ha de ser un JSON objecte (no array), que es transforma a
+     * queryparams.
+     */
+    private String doPostWithQueryParams(String endpoint, String json, boolean listParamsAsRepeatedParams)
+            throws Exception {
         // Converteix el JSON a map
         java.util.Map<String, Object> params = objectMapper.readValue(json, java.util.HashMap.class);
         StringBuilder urlBuilder = new StringBuilder(endpoint);
@@ -49,13 +63,14 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
             urlBuilder.append("?");
             boolean first = true;
             for (var entry : params.entrySet()) {
-                if (!first)
-                    urlBuilder.append("&");
-                urlBuilder.append(java.net.URLEncoder.encode(entry.getKey(), java.nio.charset.StandardCharsets.UTF_8));
-                urlBuilder.append("=");
-                urlBuilder.append(java.net.URLEncoder.encode(String.valueOf(entry.getValue()),
-                        java.nio.charset.StandardCharsets.UTF_8));
-                first = false;
+                // Ex.: '.../habilitacions?usuari=string&entitat=string&entitat=string'
+                if (listParamsAsRepeatedParams && entry.getValue() instanceof List<?>) {
+                    for (Object entryValue : (List<Object>) entry.getValue()) {
+                        first = appendToUrlBuilder(urlBuilder, first, entry.getKey(), entryValue);
+                    }
+                } else {
+                    first = appendToUrlBuilder(urlBuilder, first, entry.getKey(), entry.getValue());
+                }
             }
         }
         String urlWithParams = urlBuilder.toString();
@@ -73,6 +88,17 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
             throw new RuntimeException(errorMsg);
         }
         return response.body();
+    }
+
+    private boolean appendToUrlBuilder(StringBuilder urlBuilder, boolean first, String entryKey, Object entryValue) {
+        if (!first)
+            urlBuilder.append("&");
+        urlBuilder.append(java.net.URLEncoder.encode(entryKey, java.nio.charset.StandardCharsets.UTF_8));
+        urlBuilder.append("=");
+        urlBuilder.append(java.net.URLEncoder.encode(String.valueOf(entryValue),
+                java.nio.charset.StandardCharsets.UTF_8));
+        first = false;
+        return first;
     }
 
     protected final Logger log = Logger.getLogger(getClass());

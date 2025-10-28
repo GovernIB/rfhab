@@ -110,6 +110,10 @@ public class CarregadorMassiuFhIllocsTest {
     }
 
     Date tryParseDate(String dateString) {
+        if (dateString == null) {
+            return null;
+        }
+
         for (SimpleDateFormat formatString : datesFormatsFromOds) {
             try {
                 return formatString.parse(dateString);
@@ -121,7 +125,7 @@ public class CarregadorMassiuFhIllocsTest {
     }
 
     private void mapDtoDates(FuncionariOdsDTO fod) {
-        fod.dataAlta = RestUtils.convertDateToOnlyDateISO8601(tryParseDate(fod.dataAlta));
-        fod.dataBaixa = RestUtils.convertDateToOnlyDateISO8601(tryParseDate(fod.dataBaixa));
+        fod.dataAlta = RestUtils.convertDateToDateTimeISO8601(tryParseDate(fod.dataAlta));
+        fod.dataBaixa = RestUtils.convertDateToDateTimeISO8601(tryParseDate(fod.dataBaixa));
     }
 }

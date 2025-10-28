@@ -155,7 +155,7 @@ public class LlocRestService extends RestUtils {
 			@Parameter(description = "Entitat a la qual pertany el lloc. Ha de ser una de les entitats associades a l'usuari", required = true, example = "1000") @QueryParam("entitatid") @NotNull Long entitatId,
 			@Parameter(description = "Unitat orgànica a la qual pertany el lloc. Ha de pertànyer a l'entitat sel·leccionada", required = true, example = "2") @QueryParam("unitatid") @NotNull Long unitatId,
 			@Parameter(description = "Habilitacions associades al lloc (IDs)", required = false, example = "", array = @ArraySchema(schema = @Schema(type = "int"))) @QueryParam("habilitacions") String[] habilitacions,
-			@Parameter(description = "Número CAI", required = false) @QueryParam("numerocai") String numeroCai,
+			@Parameter(description = "Número CAI", required = false, schema = @Schema(defaultValue = "", implementation = String.class)) @QueryParam("numerocai") String numeroCai,
 			@Parameter(description = "Data de alta", required = false, example = "2025-08-31T06:15:00+00:00", schema = @Schema(implementation = String.class, pattern = DATE_PATTERN_ISO8601_DATE_AND_TIME)) @QueryParam("dataalta") String dataAltaStr,
 			@Parameter(description = "Data de baixa", required = false, example = "2025-08-31T06:15:00+00:00", schema = @Schema(implementation = String.class, pattern = DATE_PATTERN_ISO8601_DATE_AND_TIME)) @QueryParam("databaixa") String dataBaixaStr) {
 		try {
@@ -169,7 +169,7 @@ public class LlocRestService extends RestUtils {
 			sb.append("Observacions: " + observacions + "\n");
 			sb.append("EntitatId: " + entitatId + "\n");
 			sb.append("UnitatId: " + unitatId + "\n");
-			sb.append("habilitacions: " + habilitacions + "\n");
+			sb.append("habilitacions: " + String.join(",", habilitacions) + "\n");
 			sb.append("NumeroCai: " + numeroCai + "\n");
 			sb.append("DataAlta: " + dataAltaStr + "\n");
 			sb.append("DataBaixa: " + dataBaixaStr + "\n");
@@ -197,6 +197,11 @@ public class LlocRestService extends RestUtils {
 					+ (funcionariActuant.getLlinatge2() != null ? funcionariActuant.getLlinatge2() : "");
 
 			log.info("XYZ YYY funcionariActuantNom = " + funcionariActuantNom);
+
+			if (numeroCai == null) {
+				numeroCai = "";
+				log.info("XYZ YYY numeroCai = " + numeroCai);
+			}
 
 			Lloc llocNou = new LlocJPA();
 			llocNou.setCodiLloc(codiLloc);

@@ -126,7 +126,7 @@ public class FuncionariValidator<I extends Funcionari>
     if (__vr.getFieldErrorCount(CORREU) == 0) {
       String val = __target__.getCorreu();
       if (val != null && val.trim().length() != 0) {
-        java.util.regex.Pattern p = java.util.regex.Pattern.compile("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?");
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile("[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-ñçÇ]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-ñçÇ]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?");
         if (!p.matcher(val).matches()) {
           __vr.rejectValue(CORREU, "genapp.validation.malformed",
              new org.fundaciobit.genapp.common.i18n.I18NArgumentString(val), new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(CORREU)));

@@ -92,9 +92,12 @@ public class OdsToDtoMapper implements IOdsToDtoMapper {
                 continue;
             org.odftoolkit.odfdom.dom.element.table.TableTableRowElement rowElement = (org.odftoolkit.odfdom.dom.element.table.TableTableRowElement) node;
             org.w3c.dom.NodeList cellNodes = rowElement.getChildNodes();
+            System.out.println("Nombre de cel·les del row " + i + ": " + cellNodes.getLength());
+            System.out.println(rowElement);
             boolean isEmpty = true;
             T dto = dtoClass.getDeclaredConstructor().newInstance();
             int cellIndex = 0;
+            Integer numberColumnsRepeatedCount = 0;
             for (int c = 0; c < headers.size(); c++) {
                 // Busca la cel·la corresponent
                 String colName = headers.get(c);
@@ -104,8 +107,28 @@ public class OdsToDtoMapper implements IOdsToDtoMapper {
                 // Troba la cel·la corresponent (ignora nodes que no siguin cel·les)
                 while (cellIndex < cellNodes.getLength()) {
                     org.w3c.dom.Node cellNode = cellNodes.item(cellIndex++);
+                    System.out.println("Valor de la cel·la " + c + " " + normColName);
+                    System.out.println(cellNode);
                     if (cellNode instanceof org.odftoolkit.odfdom.dom.element.table.TableTableCellElement) {
                         value = cellNode.getTextContent();
+                        System.out.println(value);
+                        // quan hi ha un node amb l'atribut table:number-columns-repeated="2" (sigui
+                        // quin sigui el nombre), els següents nodes no hi son, per lo que hauriem de
+                        // quedar-mos iterant.
+                        org.w3c.dom.Node numberColumnsRepeatedAttr = cellNode.getAttributes()
+                                .getNamedItem("table:number-columns-repeated");
+                        if (numberColumnsRepeatedAttr != null) {
+                            String numberColumnsRepeatedStr = cellNode.getAttributes()
+                                    .getNamedItem("table:number-columns-repeated").getNodeValue();
+                            System.out.println("numberColumnsRepeatedStr " + numberColumnsRepeatedStr);
+                            Integer numberColumnsRepeated = Integer.parseInt(numberColumnsRepeatedStr);
+                            numberColumnsRepeatedCount++;
+                            if (numberColumnsRepeatedCount < numberColumnsRepeated) {
+                                cellIndex--;
+                            } else {
+                                numberColumnsRepeatedCount = 0;
+                            }
+                        }
                         break;
                     }
                 }

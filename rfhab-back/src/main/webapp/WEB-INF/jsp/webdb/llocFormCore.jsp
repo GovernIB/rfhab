@@ -6,7 +6,7 @@
         <tr id="lloc_codiLloc_rowid">
           <td id="lloc_codiLloc_columnlabelid">
             <label>
-              <fmt:message key="${(empty __theForm.labels[LlocFields.CODILLOC])?'lloc.codiLloc':__theForm.labels[LlocFields.CODILLOC]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[LlocFields.CODILLOC])?'lloc.codiLloc':__theForm.labels[LlocFields.CODILLOC]}" />
              </label>
               <c:if test="${not empty __theForm.help[LlocFields.CODILLOC]}">
               <i class="fas fa-info-circle" title="${__theForm.help[LlocFields.CODILLOC]}" ></i>

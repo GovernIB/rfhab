@@ -126,7 +126,7 @@
 
     create table rfh_lloc (
        llocid number(19,0) not null,
-        codilloc varchar2(50 char) not null,
+        codilloc varchar2(50 char),
         codillocpropi varchar2(50 char) not null,
         databaixa timestamp,
         datacreacio timestamp not null,

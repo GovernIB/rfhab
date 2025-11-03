@@ -2634,7 +2634,7 @@
           "sqlType": 12,
           "size": 50,
           "digits": 0,
-          "isNotNullable": true,
+          "isNotNullable": false,
           "labels": {
             "ca": "Codi",
             "es": "Código Plaza"
@@ -2679,6 +2679,7 @@
           "foreignKeys": []
         },
         {
+          "unique": "rfh_lloc_codillocpropi_uk",
           "isAutoIncrement": false,
           "sqlName": "codillocpropi",
           "sqlType": 12,

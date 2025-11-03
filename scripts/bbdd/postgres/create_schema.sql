@@ -343,7 +343,7 @@ CREATE SEQUENCE public.rfh_lloc_seq
 
 CREATE TABLE public.rfh_lloc (
     llocid bigint DEFAULT nextval('public.rfh_lloc_seq'::regclass) NOT NULL,
-    codilloc character varying(50) NOT NULL,
+    codilloc character varying(50),
     databaixa timestamp without time zone,
     datacreacio timestamp without time zone NOT NULL,
     entitatid bigint NOT NULL,
@@ -674,6 +674,14 @@ ALTER TABLE ONLY public.rfh_idioma
 
 ALTER TABLE ONLY public.rfh_lloc
     ADD CONSTRAINT rfh_lloc_codillocexpansio_uk UNIQUE (expansio, codilloc);
+
+
+--
+-- Name: rfh_lloc rfh_lloc_codillocpropi_uk; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rfh_lloc
+    ADD CONSTRAINT rfh_lloc_codillocpropi_uk UNIQUE (codillocpropi);
 
 
 --

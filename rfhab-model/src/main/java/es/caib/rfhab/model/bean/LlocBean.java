@@ -56,9 +56,8 @@ public class LlocBean implements Lloc {
     this.observacions=observacions;
 }
   /** Constructor dels valors Not Null */
-  public LlocBean(long llocID , java.lang.String codiLloc , java.lang.String codiLlocPropi , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataCreacio) {
+  public LlocBean(long llocID , java.lang.String codiLlocPropi , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataCreacio) {
     this.llocID=llocID;
-    this.codiLloc=codiLloc;
     this.codiLlocPropi=codiLlocPropi;
     this.nom=nom;
     this.entitatID=entitatID;

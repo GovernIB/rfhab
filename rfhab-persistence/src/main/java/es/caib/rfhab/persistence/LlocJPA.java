@@ -37,13 +37,13 @@ public class LlocJPA implements Lloc {
     @Column(name="llocid",nullable = false,length = 19)
     long llocID;
 
-    @Column(name="codilloc",nullable = false,length = 50)
+    @Column(name="codilloc",length = 50)
     java.lang.String codiLloc;
 
     @Column(name="expansio",length = 50)
     java.lang.String expansio;
 
-    @Column(name="codillocpropi",nullable = false,length = 50)
+    @Column(name="codillocpropi",nullable = false,unique = true,length = 50)
     java.lang.String codiLlocPropi;
 
     @Column(name="nom",nullable = false,length = 255)
@@ -108,9 +108,8 @@ public class LlocJPA implements Lloc {
     this.observacions=observacions;
 }
   /** Constructor dels valors Not Null */
-  public LlocJPA(long llocID , java.lang.String codiLloc , java.lang.String codiLlocPropi , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataCreacio) {
+  public LlocJPA(long llocID , java.lang.String codiLlocPropi , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataCreacio) {
     this.llocID=llocID;
-    this.codiLloc=codiLloc;
     this.codiLlocPropi=codiLlocPropi;
     this.nom=nom;
     this.entitatID=entitatID;

@@ -502,10 +502,11 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 	@Override
 	@PermitAll
 	public String getNouLlocCodiPropi(String codiLloc, String expansio) throws I18NException {
-		List<Lloc> llocsAmbMateixCodi = select(LlocFields.CODILLOC.equal(codiLloc));
-		if (llocsAmbMateixCodi != null && llocsAmbMateixCodi.size() > 0) {
-			return llocsAmbMateixCodi.get(0).getCodiLlocPropi();
-		}
+		// DESACTIVAM AQUESTA FUNCIONALITAT. ARA EL CODILLOCPROPI ÉS UNIQUE I NO ES POT REPETIR MAI, PERQUÈ HI POT HAVER LLOCS DE FEINA AMB CODILLOC I EXPANSIO NULLS, I AQUEST CAMP SERIA L'ÚNICA FORMA DE DIFERENCIAR-LOS
+		// List<Lloc> llocsAmbMateixCodi = select(LlocFields.CODILLOC.equal(codiLloc));
+		// if (llocsAmbMateixCodi != null && llocsAmbMateixCodi.size() > 0) {
+		// 	return llocsAmbMateixCodi.get(0).getCodiLlocPropi();
+		// }
 		return generaNouLlocCodiPropi();
 	}
 

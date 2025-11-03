@@ -145,7 +145,7 @@ public class LlocRestService extends RestUtils {
 					@ExampleObject(name = "Català", value = "ca"),
 					@ExampleObject(name = "Castellano", value = "es") }, schema = @Schema(defaultValue = "ca", implementation = String.class)) @QueryParam("language") String language,
 			@Parameter(description = "Identificador de l'usuari que està realitzant el registre d'un nou FH", required = true, example = "9999", schema = @Schema(type = "int")) @NotNull @QueryParam("usuariid") Integer usuariId,
-			@Parameter(description = "Codi del lloc", required = true) @QueryParam("codilloc") @NotNull String codiLloc,
+			@Parameter(description = "Codi del lloc", required = false) @QueryParam("codilloc") String codiLloc,
 			@Parameter(description = "Expansió del lloc", required = false) @QueryParam("expansio") String expansio,
 			@Parameter(description = "Nom del lloc", required = true) @QueryParam("nom") @NotNull String nom,
 			@Parameter(description = "Personal OAMR:<br />&emsp;<i>"

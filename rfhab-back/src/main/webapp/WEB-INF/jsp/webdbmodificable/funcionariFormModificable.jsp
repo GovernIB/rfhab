@@ -1,3 +1,8 @@
+<un:useConstants
+  var="UserController"
+  className="es.caib.rfhab.back.controller.user.UserController"
+/>
+
 <div class="col-12">
 	<ul class="nav nav-tabs" id="myTab" role="tablist"
 		style="margin-bottom: 20px;">
@@ -105,10 +110,19 @@
 									<td><fmt:formatDate pattern="${gen:getDateTimePattern()}"
 											value="${activitat.dataCreacio}" /></td>
 									<td>${activitat.estat}</td>
-									<td><a
-										href="<c:url value="/user/activitat/view/${activitat.activitatID}"/>"
-										class="btn btn-primary btn-sm" target="_blank"><i
-											class="far fa-eye" title="Veure detall"></i></a></td>
+									<td>
+										<a href="<c:url value="/user/activitat/view/${activitat.activitatID}"/>"
+											class="btn btn-primary btn-sm" target="_blank">
+												<i class="far fa-eye" title="Veure detall"></i>
+										</a>
+										<c:if test="${activitat.arxiuDocumentID != null && !activitat.arxiuDocumentID.isEmpty()}">
+											<a href="<c:url value="${UserController.CONTEXTWEB}modelconsentiment/${activitat.arxiuDocumentID}"/>"
+												class="btn btn-success btn-sm" target="_blank">
+													<i class="fa fa-file-download" 
+														title="<fmt:message key="activitat.descarrega.modelconsentiment" />"></i>
+											</a>
+										</c:if>
+									</td>
 								</tr>
 							</c:forEach>
 						</tbody>

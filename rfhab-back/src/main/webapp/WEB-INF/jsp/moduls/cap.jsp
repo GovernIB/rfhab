@@ -210,7 +210,7 @@
 
 						<%-- MENU FUNCIONARI/ÀRIA --%>
 						<sec:authorize access="hasRole('ROLE_USER')">
-							<c:if test="${fn:contains(url, '/usuari/')}">
+							<c:if test="${fn:contains(url, '/usuari/') && !fn:contains(url, '/superadmin/')}">
 
 								<a class="dropdown-item" href="<c:url value="/usuari/home"/>">
 									<i class="fas fa-user-friends"></i> <fmt:message key="menu.user.assistent" />

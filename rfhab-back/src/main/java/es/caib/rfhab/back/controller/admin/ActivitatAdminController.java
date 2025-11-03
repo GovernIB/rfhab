@@ -184,9 +184,11 @@ public class ActivitatAdminController extends ActivitatController {
 
 			if (arxiuDocumentId != null && !arxiuDocumentId.isEmpty()) {
 				// Botó per descarregar model de consentiment
+				String url = request.getContextPath() + UserController.CONTEXTWEB + "modelconsentiment/"
+						+ arxiuDocumentId;
 				filterForm.addAdditionalButtonByPK(activitatId,
 						new AdditionalButton("fa fa-file-download", "activitat.descarrega.modelconsentiment",
-								UserController.CONTEXTWEB + "modelconsentiment/" + arxiuDocumentId,
+								"javascript:window.open('" + url + "', '_blank').focus();",
 								AdditionalButtonStyle.SECONDARY));
 			}
 		}

@@ -27,6 +27,11 @@
                   <c:set var="containEmptyValue"  value="true" />
                 </c:if>
             </c:forEach>
+          <script>
+              $(document).ready(function() {
+                  $('#activitat_funcionariID').select2();
+              });
+          </script>
           </form:select>
           </c:if>
            </td>
@@ -585,9 +590,22 @@
               </c:if>
             </td>
           <td id="activitat_estat_columnvalueid">
-            <form:errors path="activitat.estat" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.ESTAT)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.ESTAT)? ' uneditable-input' : ''}"  style=""  path="activitat.estat"   />
-
+          <form:errors path="activitat.estat" cssClass="errorField alert alert-danger" />
+          <c:if test="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.ESTAT)}" >
+          <form:hidden path="activitat.estat"/>
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.activitat.estat,__theForm.listOfValuesForEstat)}"  />
+          </c:if>
+          <c:if test="${!gen:contains(__theForm.readOnlyFields ,ActivitatFields.ESTAT)}" >
+          <c:set var="containEmptyValue"  value="false" />
+          <form:select id="activitat_estat"  onchange="if(typeof onChangeEstat == 'function') {  onChangeEstat(this); };"  cssClass="form-control col-md-9-optional" path="activitat.estat">
+            <c:forEach items="${__theForm.listOfValuesForEstat}" var="tmp">
+                <form:option value="${tmp.key}">${tmp.value}</form:option>
+                <c:if test="${empty tmp.key}">
+                  <c:set var="containEmptyValue"  value="true" />
+                </c:if>
+            </c:forEach>
+          </form:select>
+          </c:if>
            </td>
         </tr>
         </c:if>

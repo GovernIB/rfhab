@@ -197,6 +197,7 @@
 <script src="<c:url value="/js/formmodificable-element-utils/select-input-utils.js"/>"></script>
 <script src="<c:url value="/js/element-utils/select-utils.js"/>"></script>
 <script src="<c:url value="/js/element-utils/table-utils.js"/>"></script>
+<script src="<c:url value="/js/activitatsList/select-filters.js"/>"></script>
 <script src="<c:url value="/js/lloclist/select-filters.js"/>"></script>
 <script src="<c:url value="/js/response-utils.js"/>"></script>
 

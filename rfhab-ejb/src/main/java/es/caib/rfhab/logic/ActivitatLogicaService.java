@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.Local;
 
 import org.fundaciobit.genapp.common.i18n.I18NException;
+import org.fundaciobit.genapp.common.query.Where;
 
 import es.caib.pluginsib.arxiu.api.ArxiuException;
 import es.caib.rfhab.commons.utils.IdentificacioTipus;
@@ -50,4 +51,10 @@ public interface ActivitatLogicaService extends ActivitatService {
 			String llinatge2Representant, IdentificacioTipus tipusIdentificacioRepresentant,
 			String identificacioRepresentant, String arxiuExpedientId, String arxiuDocumentId, Timestamp dataActivitat,
 			Long funcionariId) throws I18NException;
+
+	public Where getActivitatsByFuncionariNomCompletWhere(String funcionariNom)
+			throws I18NException, NoSuchFieldException;
+
+	public Where getActivitatsByFuncionariNifWhere(String funcionariNif)
+			throws I18NException, NoSuchFieldException;
 }

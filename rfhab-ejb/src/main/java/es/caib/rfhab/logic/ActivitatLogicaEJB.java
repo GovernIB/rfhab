@@ -11,12 +11,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.TypedQuery;
+import javax.servlet.http.HttpServletRequest;
+
 import org.fundaciobit.genapp.common.filesystem.FileSystemManager;
 import org.fundaciobit.genapp.common.i18n.I18NCommonUtils;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.i18n.I18NFieldError;
+import org.fundaciobit.genapp.common.query.SubQuery;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.validation.BeanValidatorResult;
 import es.caib.pluginsib.arxiu.api.ArxiuException;
@@ -33,12 +38,19 @@ import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.commons.utils.FileNameCleaner;
 import es.caib.rfhab.commons.utils.IdentificacioTipus;
 import es.caib.rfhab.commons.utils.RegistreActivitatTipus;
+import es.caib.rfhab.commons.utils.StringUtils;
 import es.caib.rfhab.ejb.ActivitatEJB;
 import es.caib.rfhab.model.entity.Activitat;
 import es.caib.rfhab.model.entity.Fitxer;
+import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.fields.ActivitatFields;
+import es.caib.rfhab.model.fields.ActivitatQueryPath;
+import es.caib.rfhab.model.fields.FuncionariFields;
+import es.caib.rfhab.model.fields.FuncionariQueryPath;
+import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.persistence.ActivitatJPA;
 import es.caib.rfhab.persistence.FitxerJPA;
+import es.caib.rfhab.persistence.LlocJPA;
 import es.caib.rfhab.persistence.validator.ActivitatValidator;
 import es.caib.rfhab.pluginsib.arxiu.ArxiuPlugin;
 import es.caib.rfhab.pluginsib.arxiu.model.DocumentInfo;
@@ -445,4 +457,32 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 		log.info(successMsg);
 		return newAct;
 	}
+
+	@Override
+	public Where getActivitatsByFuncionariNomCompletWhere(String funcionariNom)
+			throws I18NException, NoSuchFieldException {
+		Where activitatFuncionarisWhere = null;
+		if (!"".equals(funcionariNom)) {
+			List<Long> funcionarisId = funcionariLogicaEjb.getFuncionarisIdsByNomComplet(funcionariNom);
+			if (funcionarisId != null) {
+				activitatFuncionarisWhere = ActivitatFields.FUNCIONARIID.in(funcionarisId);
+			}
+		} else {
+			log.warn("Mostrant tots funcionaris");
+		}
+		return activitatFuncionarisWhere;
+	}
+
+	@Override
+	public Where getActivitatsByFuncionariNifWhere(String funcionariNif) throws I18NException, NoSuchFieldException {
+		Where activitatFuncionarisWhere = null;
+		if (!"".equals(funcionariNif)) {
+			ActivitatQueryPath activitatQueryPath = new ActivitatQueryPath();
+			activitatFuncionarisWhere = activitatQueryPath.FUNCIONARI().IDENTIFICADOR().like("%" + funcionariNif + "%");
+		} else {
+			log.warn("Mostrant tots funcionaris");
+		}
+		return activitatFuncionarisWhere;
+	}
+
 }

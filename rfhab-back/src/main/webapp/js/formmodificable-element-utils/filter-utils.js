@@ -22,6 +22,30 @@ function addNewSelectFilterToContainer(
   return selectElement;
 }
 
+function addNewTextInputFilterToContainer(
+  parentContainer,
+  placeholder,
+  label,
+  newInputId,
+  newInputName
+) {
+  //estils per quan son selects o desde i fins
+  parentContainer.classList.remove("input-group");
+  parentContainer.classList.add("input-prepend");
+
+  //afegim etiqueta amb el títol
+  const labelElement = document.createElement("span");
+  labelElement.classList.add("add-on");
+  labelElement.innerHTML = label;
+  parentContainer.appendChild(labelElement);
+
+  //afegim nou select
+  const textInputElement = createTextInput(newInputId, newInputName, placeholder);
+  parentContainer.appendChild(textInputElement);
+
+  return textInputElement;
+}
+
 function addNewSelectFilterToForm(
   formFilterContainer,
   options,
@@ -89,6 +113,80 @@ function replaceFilterForSelectFilter(
   }
 }
 
+function replaceFilterForTextInputFilter(
+  inputElement,
+  newInputId,
+  newInputName,
+  label,
+  placeholder,
+  wasSelect = false,
+  newInputIdFins = null,
+  newInputNameFins = null,
+) {
+  let parentContainer = inputElement.parentElement;
+  // si el input es un select, el parentContainer es el div que conté el select
+  if (wasSelect && parentContainer.parentElement) {
+    parentContainer = parentContainer.parentElement;
+  }
+
+  // eliminam els fills per afegir un text input com a nou filtre
+  while (parentContainer.firstChild) {
+    parentContainer.removeChild(parentContainer.firstChild);
+  }
+
+  //afegim nou text input
+  const textInputElement = addNewTextInputFilterToContainer(
+    parentContainer,
+    placeholder,
+    label,
+    newInputId,
+    newInputName
+  );
+
+  //si era desde i fins, afegim un segon text input, ocult i que sempre tengui el mateix valor que el primer
+  if (newInputNameFins) {
+    const textInputElementFins = createTextInput(
+      newInputIdFins,
+      newInputNameFins,
+      placeholder
+    );
+    textInputElement.addEventListener("change", () => {
+      textInputElementFins.value = textInputElement.value;
+    });
+    textInputElementFins.style.display = "none";
+    parentContainer.appendChild(textInputElementFins);
+  }
+}
+
+function replaceFilterForTextInputFilterWithOtherName(
+  inputElement,
+  newInputId,
+  newInputName,
+  label,
+  placeholder,
+  wasSelect = false,
+) {
+  let parentContainer = inputElement.parentElement;
+  // si el input es un select, el parentContainer es el div que conté el select
+  if (wasSelect && parentContainer.parentElement) {
+    parentContainer = parentContainer.parentElement;
+  }
+
+  // eliminam els fills per afegir un text input com a nou filtre
+  while (parentContainer.firstChild) {
+    parentContainer.removeChild(parentContainer.firstChild);
+  }
+
+  //afegim nou text input
+  const textInputElement = addNewTextInputFilterToContainer(
+    parentContainer,
+    placeholder,
+    label,
+    newInputId,
+    newInputName
+  );
+}
+
 function createSelect(id, name, options) {
   const selectElement = document.createElement("select");
   selectElement.classList.add("input-medium");
@@ -102,4 +200,16 @@ function createSelect(id, name, options) {
     selectElement.appendChild(optionElement);
   });
   return selectElement;
+}
+
+function createTextInput(id, name, placeholder) {
+  const inputElement = document.createElement("input");
+  inputElement.classList.add("search-query");
+  inputElement.classList.add("input-medium");
+  inputElement.id = id;
+  inputElement.name = name;
+  inputElement.placeholder = placeholder;
+  inputElement.type = "text";
+
+  return inputElement;
 }

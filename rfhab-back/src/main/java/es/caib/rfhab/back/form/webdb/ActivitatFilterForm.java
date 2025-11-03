@@ -329,25 +329,14 @@ public class ActivitatFilterForm extends RFHabBaseFilterForm implements Activita
   }
 
 
-  private java.lang.Integer estatDesde;
+  private java.util.List<java.lang.Integer> estatSelect;
 
-  public java.lang.Integer getEstatDesde() {
-    return this.estatDesde;
+  public java.util.List<java.lang.Integer> getEstatSelect() {
+    return this.estatSelect;
   }
 
-  public void setEstatDesde(java.lang.Integer estatDesde) {
-    this.estatDesde = estatDesde;
-  }
-
-
-  private java.lang.Integer estatFins;
-
-  public java.lang.Integer getEstatFins() {
-    return this.estatFins;
-  }
-
-  public void setEstatFins(java.lang.Integer estatFins) {
-    this.estatFins = estatFins;
+  public void setEstatSelect(java.util.List<java.lang.Integer> estatSelect) {
+    this.estatSelect = estatSelect;
   }
 
 
@@ -439,8 +428,7 @@ public class ActivitatFilterForm extends RFHabBaseFilterForm implements Activita
     this.tramitVersioFins = __toClone.tramitVersioFins;
     this.arxiuDocumentID = __toClone.arxiuDocumentID;
     this.arxiuExpedientID = __toClone.arxiuExpedientID;
-    this.estatDesde = __toClone.estatDesde;
-    this.estatFins = __toClone.estatFins;
+    this.estatSelect = __toClone.estatSelect;
     this.url = __toClone.url;
     this.dataActivitatDesde = __toClone.dataActivitatDesde;
     this.dataActivitatFins = __toClone.dataActivitatFins;
@@ -448,13 +436,14 @@ public class ActivitatFilterForm extends RFHabBaseFilterForm implements Activita
     this.procediment = __toClone.procediment;
     this.mapOfFuncionariForFuncionariID = __toClone.mapOfFuncionariForFuncionariID;
     this.mapOfValuesForTipus = __toClone.mapOfValuesForTipus;
+    this.mapOfValuesForEstat = __toClone.mapOfValuesForEstat;
   }
   
   /* ========= UTILS ========== */
 
   @Override
   public List<Field<?>> getDefaultFilterByFields() {
-    return new java.util.ArrayList<Field<?>>(Arrays.asList(new Field<?>[] { ACTIVITATID ,FUNCIONARIID ,TIPUS ,REGISTRE ,TRAMIT ,CODISIA ,AUTORITZACIOID ,INTERESSATTIPUS ,DATAACTIVITAT ,PROCEDIMENT }));
+    return new java.util.ArrayList<Field<?>>(Arrays.asList(new Field<?>[] { FUNCIONARIID ,TIPUS ,INTERESSATIDENTIFICACIO ,DATAACTIVITAT ,PROCEDIMENT }));
   }
 
   @Override
@@ -502,6 +491,18 @@ public class ActivitatFilterForm extends RFHabBaseFilterForm implements Activita
 
   public void setMapOfValuesForTipus(Map<String, String> mapOfValuesForTipus) {
     this.mapOfValuesForTipus = mapOfValuesForTipus;
+  }
+
+
+
+  private Map<String, String> mapOfValuesForEstat;
+
+  public Map<String, String> getMapOfValuesForEstat() {
+    return this.mapOfValuesForEstat;
+  }
+
+  public void setMapOfValuesForEstat(Map<String, String> mapOfValuesForEstat) {
+    this.mapOfValuesForEstat = mapOfValuesForEstat;
   }
 
 

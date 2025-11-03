@@ -215,6 +215,16 @@ public class ActivitatController
       };
     }
 
+    // Field estat
+    {
+      _listSKV = getReferenceListForEstat(request, mav, filterForm, list, groupByItemsMap, null);
+      _tmp = Utils.listToMap(_listSKV);
+      filterForm.setMapOfValuesForEstat(_tmp);
+      if (filterForm.getGroupByFields().contains(ESTAT)) {
+        fillValuesToGroupByItems(_tmp, groupByItemsMap, ESTAT, false);
+      };
+    }
+
 
     return groupByItemsMap;
   }
@@ -232,6 +242,7 @@ public class ActivitatController
     __mapping = new java.util.HashMap<Field<?>, java.util.Map<String, String>>();
     __mapping.put(FUNCIONARIID, filterForm.getMapOfFuncionariForFuncionariID());
     __mapping.put(TIPUS, filterForm.getMapOfValuesForTipus());
+    __mapping.put(ESTAT, filterForm.getMapOfValuesForEstat());
     exportData(request, response, dataExporterID, filterForm,
           list, allFields, __mapping, PRIMARYKEY_FIELDS);
   }
@@ -296,6 +307,15 @@ public class ActivitatController
           java.util.Collections.sort(_listSKV, STRINGKEYVALUE_COMPARATOR);
       }
       activitatForm.setListOfValuesForTipus(_listSKV);
+    }
+    // Comprovam si ja esta definida la llista
+    if (activitatForm.getListOfValuesForEstat() == null) {
+      List<StringKeyValue> _listSKV = getReferenceListForEstat(request, mav, activitatForm, null);
+
+      if(_listSKV != null && !_listSKV.isEmpty()) { 
+          java.util.Collections.sort(_listSKV, STRINGKEYVALUE_COMPARATOR);
+      }
+      activitatForm.setListOfValuesForEstat(_listSKV);
     }
     
   }
@@ -671,9 +691,42 @@ public java.lang.Long stringToPK(String value) {
   public List<StringKeyValue> getReferenceListForTipus(HttpServletRequest request,
        ModelAndView mav, Where where)  throws I18NException {
     List<StringKeyValue> __tmp = new java.util.ArrayList<StringKeyValue>();
+    __tmp.add(new StringKeyValue("1" , "1"));
+    __tmp.add(new StringKeyValue("2" , "2"));
+    __tmp.add(new StringKeyValue("3" , "3"));
+    return __tmp;
+  }
+
+
+  public List<StringKeyValue> getReferenceListForEstat(HttpServletRequest request,
+       ModelAndView mav, ActivitatForm activitatForm, Where where)  throws I18NException {
+    if (activitatForm.isHiddenField(ESTAT)) {
+      return EMPTY_STRINGKEYVALUE_LIST;
+    }
+    return getReferenceListForEstat(request, mav, where);
+  }
+
+
+  public List<StringKeyValue> getReferenceListForEstat(HttpServletRequest request,
+       ModelAndView mav, ActivitatFilterForm activitatFilterForm,
+       List<Activitat> list, Map<Field<?>, GroupByItem> _groupByItemsMap, Where where)  throws I18NException {
+    if (activitatFilterForm.isHiddenField(ESTAT)
+       && !activitatFilterForm.isGroupByField(ESTAT)
+       && !activitatFilterForm.isFilterByField(ESTAT)) {
+      return EMPTY_STRINGKEYVALUE_LIST;
+    }
+    Where _w = null;
+    return getReferenceListForEstat(request, mav, Where.AND(where,_w));
+  }
+
+
+  public List<StringKeyValue> getReferenceListForEstat(HttpServletRequest request,
+       ModelAndView mav, Where where)  throws I18NException {
+    List<StringKeyValue> __tmp = new java.util.ArrayList<StringKeyValue>();
     __tmp.add(new StringKeyValue("0" , "0"));
     __tmp.add(new StringKeyValue("1" , "1"));
     __tmp.add(new StringKeyValue("2" , "2"));
+    __tmp.add(new StringKeyValue("3" , "3"));
     return __tmp;
   }
 

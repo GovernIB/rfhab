@@ -21,6 +21,7 @@ public class ActivitatForm extends RFHabBaseForm {
       this.activitat = __toClone.activitat;
     this.listOfFuncionariForFuncionariID = __toClone.listOfFuncionariForFuncionariID;
     this.listOfValuesForTipus = __toClone.listOfValuesForTipus;
+    this.listOfValuesForEstat = __toClone.listOfValuesForEstat;
   }
   
   public ActivitatForm(ActivitatJPA activitat, boolean nou) {
@@ -56,6 +57,18 @@ public class ActivitatForm extends RFHabBaseForm {
 
   public void setListOfValuesForTipus(List<StringKeyValue> listOfValuesForTipus) {
     this.listOfValuesForTipus = listOfValuesForTipus;
+  }
+
+
+
+  private List<StringKeyValue> listOfValuesForEstat;
+
+  public List<StringKeyValue> getListOfValuesForEstat() {
+    return this.listOfValuesForEstat;
+  }
+
+  public void setListOfValuesForEstat(List<StringKeyValue> listOfValuesForEstat) {
+    this.listOfValuesForEstat = listOfValuesForEstat;
   }
 
 

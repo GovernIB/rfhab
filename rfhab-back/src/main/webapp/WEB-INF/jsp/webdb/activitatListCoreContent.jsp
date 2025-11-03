@@ -135,7 +135,10 @@
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.ESTAT)}">
           <td>
-          ${activitat.estat}
+          <c:set var="tmp">${activitat.estat}</c:set>
+          <c:if test="${not empty tmp}">
+          ${__theFilterForm.mapOfValuesForEstat[tmp]}
+          </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.URL)}">

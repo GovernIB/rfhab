@@ -26,10 +26,10 @@
     const dataBaixaHeader = document
       .getElementById("data-baixa-header-traduit-id")
       .textContent.trim();
-    const columnaCodiFeina = getColumnIndexByHeaderText(
+    const columnaDataBaixa = getColumnIndexByHeaderText(
       "table.table-genapp-list",
       dataBaixaHeader
     );
-    highlightRowIfTdHasContent("tr[id^='funcionari_rowid']", columnaCodiFeina);
+    highlightRowIfTdHasContent("tr[id^='funcionari_rowid']", columnaDataBaixa);
   });
 </script>

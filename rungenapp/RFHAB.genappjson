@@ -50,7 +50,7 @@
           "showInReferenceList": false,
           "transientField": false,
           "defaultValue": "nextval(\u0027rfh_activitat_seq\u0027::regclass)",
-          "filter": true,
+          "filter": false,
           "orderBy": 0,
           "groupBy": false,
           "webFieldInfo": {
@@ -67,8 +67,8 @@
           "digits": 0,
           "isNotNullable": true,
           "labels": {
-            "ca": "Funcionari",
-            "es": "Funcionario"
+            "ca": "Funcionari/ària",
+            "es": "Funcionario/a"
           },
           "javaName": "funcionariID",
           "javaType": "long",
@@ -76,6 +76,7 @@
           "showInWebList": true,
           "showInReferenceList": false,
           "transientField": false,
+          "maxAllowedValue": "search",
           "filter": true,
           "orderBy": 0,
           "groupBy": false,
@@ -114,7 +115,7 @@
           "showInWebList": true,
           "showInReferenceList": false,
           "transientField": false,
-          "minAllowedValue": "0,1,2",
+          "minAllowedValue": "1,2,3",
           "filter": true,
           "orderBy": 0,
           "groupBy": false,
@@ -140,7 +141,7 @@
           "showInWebList": true,
           "showInReferenceList": true,
           "transientField": false,
-          "filter": true,
+          "filter": false,
           "orderBy": 0,
           "groupBy": false,
           "webFieldInfo": {
@@ -165,7 +166,7 @@
           "showInWebList": true,
           "showInReferenceList": true,
           "transientField": false,
-          "filter": true,
+          "filter": false,
           "orderBy": 0,
           "groupBy": false,
           "webFieldInfo": {
@@ -190,7 +191,7 @@
           "showInWebList": true,
           "showInReferenceList": false,
           "transientField": false,
-          "filter": true,
+          "filter": false,
           "orderBy": 0,
           "groupBy": false,
           "webFieldInfo": {
@@ -215,7 +216,7 @@
           "showInWebList": true,
           "showInReferenceList": false,
           "transientField": false,
-          "filter": true,
+          "filter": false,
           "orderBy": 0,
           "groupBy": false,
           "webFieldInfo": {
@@ -340,7 +341,7 @@
           "showInWebList": true,
           "showInReferenceList": false,
           "transientField": false,
-          "filter": true,
+          "filter": false,
           "orderBy": 0,
           "groupBy": false,
           "webFieldInfo": {
@@ -365,7 +366,7 @@
           "showInWebList": true,
           "showInReferenceList": false,
           "transientField": false,
-          "filter": false,
+          "filter": true,
           "orderBy": 0,
           "groupBy": false,
           "webFieldInfo": {
@@ -590,11 +591,12 @@
           "showInWebList": true,
           "showInReferenceList": false,
           "transientField": false,
+          "minAllowedValue": "0,1,2,3",
           "filter": false,
           "orderBy": 0,
           "groupBy": false,
           "webFieldInfo": {
-            "webtype": 14
+            "webtype": 16
           },
           "foreignKeys": []
         },

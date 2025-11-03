@@ -1,9 +1,10 @@
 package es.caib.rfhab.logic;
 
+import java.util.List;
+
 import javax.ejb.Local;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 
-import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.ejb.FuncionariService;
 import es.caib.rfhab.logic.utils.HistoricFuncionariDAO;
 import es.caib.rfhab.model.entity.Funcionari;
@@ -53,4 +54,6 @@ public interface FuncionariLogicaService extends FuncionariService {
 	public String getNouFuncionariNumero() throws I18NException;
 
 	public String getNumeroFhFromNumeric(int nouNumber);
+
+	public List<Long> getFuncionarisIdsByNomComplet(String nomComplet) throws NoSuchFieldException;
 }

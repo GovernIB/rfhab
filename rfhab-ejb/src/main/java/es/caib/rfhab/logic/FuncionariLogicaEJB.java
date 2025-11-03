@@ -29,9 +29,11 @@ import es.caib.rfhab.model.entity.HistoricLloc;
 import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.FuncionariLlocFields;
+import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.HistoricJPA;
 import es.caib.rfhab.persistence.HistoricLlocJPA;
+import es.caib.rfhab.persistence.LlocJPA;
 
 /**
  * 
@@ -501,6 +503,34 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 		// Reconstrueix la cadena amb el prefix i el nou valor numèric
 		String nouFuncionariNumero = Constants.FUNCIONARI_NUMERO_PLACEHOLDER_PREFIX + updatedNumericPart;
 		return nouFuncionariNumero;
+	}
+
+	@Override
+	@PermitAll
+	public List<Long> getFuncionarisIdsByNomComplet(String nomComplet) throws NoSuchFieldException {
+
+		StringBuilder queryString = new StringBuilder(
+				"select rf." + FuncionariFields.FUNCIONARIID.javaName + " from " + FuncionariJPA.class.getName()
+						+ " rf where UPPER(CONCAT(rf." + FuncionariFields.NOM.javaName + ", ' ', rf."
+						+ FuncionariFields.LLINATGE1.javaName + ", ' ', rf." + FuncionariFields.LLINATGE2.javaName
+						+ ")) like '%" + nomComplet.toUpperCase() + "%'");
+		// Class<?> funcionariIdClass =
+		// FuncionariFields.FUNCIONARIID.getClass().getField("javaName").getType();//
+		// TODO:comentar
+		// a
+		// anadal que
+		// getJavaClass
+		// no
+		// funciona
+		// perquè
+		// javaClass és
+		// javaName
+		Class<?> funcionariIdClass = Long.class;
+		TypedQuery<?> query = getEntityManager().createQuery(queryString.toString(),
+				funcionariIdClass);
+		List<Long> resultats = (List<Long>) query.getResultList();
+
+		return resultats;
 	}
 
 }

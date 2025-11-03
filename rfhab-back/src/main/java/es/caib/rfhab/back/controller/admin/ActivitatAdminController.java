@@ -173,6 +173,27 @@ public class ActivitatAdminController extends ActivitatController {
 	}
 
 	@Override
+	public void postList(HttpServletRequest request, ModelAndView mav, ActivitatFilterForm filterForm,
+			List<Activitat> list) throws I18NException {
+		filterForm.setVisibleFilterBy(true);
+		filterForm.getAdditionalButtonsByPK().clear();
+
+		for (Activitat activitat : list) {
+			final Long activitatId = activitat.getActivitatID();
+			final String arxiuDocumentId = activitat.getArxiuDocumentID();
+
+			if (arxiuDocumentId != null && !arxiuDocumentId.isEmpty()) {
+				// Botó per descarregar model de consentiment
+				filterForm.addAdditionalButtonByPK(activitatId,
+						new AdditionalButton("fa fa-file-download", "activitat.descarrega.modelconsentiment",
+								UserController.CONTEXTWEB + "modelconsentiment/" + arxiuDocumentId,
+								AdditionalButtonStyle.SECONDARY));
+			}
+		}
+
+	}
+
+	@Override
 	public List<StringKeyValue> getReferenceListForTipus(HttpServletRequest request,
 			ModelAndView mav, ActivitatForm activitatForm, Where where) throws I18NException {
 		if (activitatForm.isHiddenField(ActivitatFields.TIPUS)) {

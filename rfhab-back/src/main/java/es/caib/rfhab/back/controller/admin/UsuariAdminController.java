@@ -15,9 +15,11 @@ import es.caib.rfhab.back.security.LoginInfo;
 import es.caib.rfhab.persistence.UsuariJPA;
 
 @Controller
-@RequestMapping(value = "/admin/usuari")
+@RequestMapping(value = UsuariAdminController.CONTEXTWEB)
 @SessionAttributes(types = { UsuariForm.class })
 public class UsuariAdminController extends UsuariController {
+
+	public static final String CONTEXTWEB = "/admin/usuari";
 
 	@Override
 	public String getTileForm() {
@@ -37,12 +39,12 @@ public class UsuariAdminController extends UsuariController {
 			usuariForm.addHiddenField(DARRERAENTITAT);
 			usuariForm.addReadOnlyField(DATACREACIO);
 			usuariForm.addReadOnlyField(ACTIU);
-			
+
 			if (_jpa.getDataBaixa() != null)
 				usuariForm.addReadOnlyField(DATABAIXA);
 			else
 				usuariForm.addHiddenField(DATABAIXA);
-			
+
 			usuariForm.setDeleteButtonVisible(false);
 
 			usuariForm.setAttachedAdditionalJspCode(false);

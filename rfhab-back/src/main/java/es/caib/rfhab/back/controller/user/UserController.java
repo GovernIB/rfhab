@@ -165,6 +165,20 @@ public class UserController extends UsuariController {
 		return identificadors;
 	}
 
+	@RequestMapping(value = "/modelconsentiment/{identificadorDocument}", method = RequestMethod.GET)
+	public String modelConsentiment(
+			@PathVariable(value = "identificadorDocument", required = true) String identificadorDocument,
+			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		log.info("ENTRANT A modelConsentiment");
+		log.info("modelConsentiment -- identificadorDocument = " + identificadorDocument);
+		
+		String urlDoc = documentImprimible(identificadorDocument, session, request, response);
+		log.info("modelConsentiment -- urlDoc = " + urlDoc);
+		
+		// FileDownloadController.fullDownload(identificadorDocument, "nominventat", "", response);
+		return "redirect:" + urlDoc;
+	}
+
 	@RequestMapping(value = "/documentimprimible", method = RequestMethod.GET)
 	@ResponseBody
 	public String documentImprimible(

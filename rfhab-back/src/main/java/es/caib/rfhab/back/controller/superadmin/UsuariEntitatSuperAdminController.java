@@ -22,6 +22,9 @@ import es.caib.rfhab.model.fields.UsuariEntitatFields;
 @SessionAttributes(types = { UsuariEntitatForm.class, UsuariEntitatFilterForm.class })
 public class UsuariEntitatSuperAdminController extends UsuariEntitatController {
 
+	private static final String USUARI_ID_NAME_ATTRIBUTE = "usuariId";
+	private static final String ENTITAT_ID_NAME_ATTRIBUTE = "entitatId";
+
 	@Override
 	public String getTileForm() {
 		return "usuariEntitatFormSuperAdmin";
@@ -37,19 +40,23 @@ public class UsuariEntitatSuperAdminController extends UsuariEntitatController {
 			ModelAndView mav) throws I18NException {
 		UsuariEntitatForm usuariEntitatForm = super.getUsuariEntitatForm(_jpa, __isView, request, mav);
 
-		log.info("usuariEntitat:new => " + request.getSession().getAttribute("entitatId"));
+		Object entitatIdAttribute = request.getSession().getAttribute(ENTITAT_ID_NAME_ATTRIBUTE);
+		log.info("usuariEntitat:new => " + entitatIdAttribute);
 
 		if (usuariEntitatForm.isNou()) {
 			UsuariEntitatJPA usuariEntitatItem = new UsuariEntitatJPA();
 			
-			if (request.getSession().getAttribute("entitatId") != null) {
-				usuariEntitatItem.setEntitatID((long) request.getSession().getAttribute("entitatId"));
+			if (entitatIdAttribute != null) {
+				usuariEntitatItem.setEntitatID((long) entitatIdAttribute);
 				usuariEntitatForm.addReadOnlyField(UsuariEntitatFields.ENTITATID);
+				request.getSession().removeAttribute(ENTITAT_ID_NAME_ATTRIBUTE);
 			}
 			
-			if (request.getSession().getAttribute("usuariId") != null) {
-				usuariEntitatItem.setUsuariID((long) request.getSession().getAttribute("usuariId"));
+			Object usuariIdAttribute = request.getSession().getAttribute(USUARI_ID_NAME_ATTRIBUTE);
+			if (usuariIdAttribute != null) {
+				usuariEntitatItem.setUsuariID((long) usuariIdAttribute);
 				usuariEntitatForm.addReadOnlyField(UsuariEntitatFields.USUARIID);
+				request.getSession().removeAttribute(USUARI_ID_NAME_ATTRIBUTE);
 			}
 			
 			usuariEntitatItem.setActiu(true);
@@ -61,19 +68,19 @@ public class UsuariEntitatSuperAdminController extends UsuariEntitatController {
 	}
 
 	@RequestMapping(value = "/assignar/{entitatId}", method = RequestMethod.GET)
-	public String assignarUsuari(HttpServletRequest request, @PathVariable("entitatId") Long entitatId) {
+	public String assignarUsuari(HttpServletRequest request, @PathVariable(ENTITAT_ID_NAME_ATTRIBUTE) Long entitatId) {
 
 		log.info("Assignar nou usuari a entitatId " + entitatId);
-		request.getSession().setAttribute("entitatId", entitatId);
+		request.getSession().setAttribute(ENTITAT_ID_NAME_ATTRIBUTE, entitatId);
 
 		return "redirect:/superadmin/usuariEntitat/new";
 	}
 	
 	@RequestMapping(value = "/assignarUsuari/{usuariId}", method = RequestMethod.GET)
-	public String assignarEntitat(HttpServletRequest request, @PathVariable("usuariId") Long usuariId) {
+	public String assignarEntitat(HttpServletRequest request, @PathVariable(USUARI_ID_NAME_ATTRIBUTE) Long usuariId) {
 		
 		log.info("Assignar entitat a usuariID " + usuariId);
-		request.getSession().setAttribute("usuariId", usuariId);
+		request.getSession().setAttribute(USUARI_ID_NAME_ATTRIBUTE, usuariId);
 		
 		return "redirect:/superadmin/usuariEntitat/new";
 		

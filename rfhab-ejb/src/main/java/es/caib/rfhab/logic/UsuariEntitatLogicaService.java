@@ -31,4 +31,6 @@ public interface UsuariEntitatLogicaService extends UsuariEntitatService {
 	public List<UsuariEntitat> findAllByUsuariIdWithEntitatId(@NotNull long usuariID, @NotNull long entitatID)
 			throws I18NException;
 
+	public boolean isActiuUsuariEntitat(@NotNull long usuariID, @NotNull long entitatID) throws I18NException;
+
 }

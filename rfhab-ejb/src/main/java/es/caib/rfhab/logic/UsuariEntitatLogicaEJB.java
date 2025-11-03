@@ -71,4 +71,13 @@ public class UsuariEntitatLogicaEJB extends UsuariEntitatEJB implements UsuariEn
 		Where entitatW = UsuariEntitatFields.ENTITATID.equal(entitatID);
 		return select(Where.AND(usuariW, entitatW));
 	}
+
+	@Override
+	@PermitAll
+	public boolean isActiuUsuariEntitat(@NotNull long usuariID, @NotNull long entitatID) throws I18NException {
+		List<UsuariEntitat> usuarisEntitatsTrobades = findAllByUsuariIdWithEntitatId(usuariID, entitatID);
+		return (usuarisEntitatsTrobades != null && usuarisEntitatsTrobades.size() > 0)
+				? usuarisEntitatsTrobades.get(0).isActiu()
+				: false;
+	}
 }

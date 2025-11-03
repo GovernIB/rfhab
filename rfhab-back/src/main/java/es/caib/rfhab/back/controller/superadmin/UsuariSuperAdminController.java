@@ -139,7 +139,18 @@ public class UsuariSuperAdminController extends UsuariController {
 				String botoEsborrar = "<a style='margin-left:5px;' href='" + urlborrar + "' title='" + botoEsborrarTitle
 						+ "' alt='" + botoEsborrarTitle
 						+ "'><i class='fas fa-times' style='color:white;'></i></a>";
-				entitatHtml += "<span class='badge badge-secondary'>" + entitat.getNom() + botoEsborrar + "</span>";
+				// mostram el badge vermell si l'entitat està deshabilitada i groc si
+				// l'assignació ho està
+				boolean assignacioAentitatActiva = usuariEntitatEJB.isActiuUsuariEntitat(usuariID,
+						entitat.getEntitatID());
+				String badgeTipus = entitat.isActiu() ? "badge-secondary"
+						: (assignacioAentitatActiva ? "badge-danger"
+								: "badge-warning");
+				String badgeTitle = entitat.isActiu() ? "Activa"
+						: (assignacioAentitatActiva ? "Entitat inactiva"
+								: "Assignació a entitat inactiva");
+				entitatHtml += "<span class='badge " + badgeTipus + "' title='" + badgeTitle + "''>" + entitat.getNom()
+						+ botoEsborrar + "</span>";
 			}
 
 			mapEntitat.put(usuariID, entitatHtml);

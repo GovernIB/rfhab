@@ -197,6 +197,7 @@ public class LlocAdminController extends LlocController {
 			throws I18NException {
 		LoginInfo loginInfo = LoginInfo.getInstance();
 		String lang = LocaleContextHolder.getLocale().getLanguage();
+		cleanSessionObjectsForMav(request);
 
 		mav.addObject("isView", __isView);
 
@@ -481,7 +482,7 @@ public class LlocAdminController extends LlocController {
 		LlocJPA lloc = llocForm.getLloc();
 		lloc.setEntitatID(Long.parseLong(request.getParameter("lloc.entitatID")));
 
-		if(llocForm.isNou()){
+		if (llocForm.isNou()) {
 			// CODI LLOC PROPI DE RFHAB
 			String nouLlocCodiPropi = llocLogicaEjb.getNouLlocCodiPropi(lloc.getCodiLloc(), lloc.getExpansio());
 			lloc.setCodiLlocPropi(nouLlocCodiPropi);
@@ -679,6 +680,13 @@ public class LlocAdminController extends LlocController {
 		getNecessaryObjectsForMav(llocForm, request, mav);
 	}
 
+	private void cleanSessionObjectsForMav(HttpServletRequest request) {
+		request.getSession().removeAttribute("habilitacionsTotes");
+		request.getSession().removeAttribute("rols");
+		request.getSession().removeAttribute("unitatsPenjantDeLentitat");
+		request.getSession().removeAttribute("entitatsPenjantDeLentitat");
+	}
+
 	private void getNecessaryObjectsForMav(LlocForm llocForm, HttpServletRequest request, ModelAndView mav)
 			throws I18NException {
 		List<Rol> habilitacionsTotes = habilitacionsEjb.select();
@@ -769,11 +777,14 @@ public class LlocAdminController extends LlocController {
 
 	@Override
 	public String getRedirectWhenCreated(HttpServletRequest request, LlocForm llocForm) {
+		cleanSessionObjectsForMav(request);
 		return UrlUtils.getRefererRedirect(request, super.getRedirectWhenCreated(request, llocForm));
 	}
 
 	@Override
 	public String getRedirectWhenModified(HttpServletRequest request, LlocForm llocForm, Throwable __e) {
+		cleanSessionObjectsForMav(request);
+		
 		if (llocForm == null || llocForm.getLloc() == null) {
 			log.info("LlocForm o LlocJPA no disponibles per redirigir després de la modificació.");
 			return UrlUtils.getRefererRedirect(request, super.getRedirectWhenModified(request, llocForm, __e));
@@ -789,6 +800,7 @@ public class LlocAdminController extends LlocController {
 
 	@Override
 	public String getRedirectWhenDelete(HttpServletRequest request, java.lang.Long llocID, Throwable __e) {
+		cleanSessionObjectsForMav(request);
 		if (llocID != null) {
 			LlocJPA lloc = llocLogicaEjb.findByPrimaryKey(llocID);
 			if (lloc == null) {
@@ -806,6 +818,7 @@ public class LlocAdminController extends LlocController {
 
 	@Override
 	public String getRedirectWhenCancel(HttpServletRequest request, java.lang.Long llocID) {
+		cleanSessionObjectsForMav(request);
 		return UrlUtils.getRefererRedirect(request, super.getRedirectWhenCancel(request, llocID));
 	}
 }

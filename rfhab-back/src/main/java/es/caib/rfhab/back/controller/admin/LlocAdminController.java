@@ -353,12 +353,10 @@ public class LlocAdminController extends LlocController {
 			llocForm.addReadOnlyField(LlocFields.CODILLOC);
 			llocForm.addReadOnlyField(LlocFields.EXPANSIO);
 		}
+		mav.addObject("LLOC_CODILLOC_PLACEHOLDER", Constants.LLOC_CODILLOC_PLACEHOLDER);
 		mav.addObject("LLOC_CODILLOCPROPI_PLACEHOLDER", Constants.LLOC_CODILLOCPROPI_PLACEHOLDER);
 
 		mav.addObject("lloc", lloc);
-
-		List<Rol> habilitacionsTotes = habilitacionsEjb.select();
-		mav.addObject("habilitacionsTotes", habilitacionsTotes);
 
 		llocForm.addAdditionalButton(new AdditionalButton(" fas fa-long-arrow-alt-left", "tornar",
 				getContextWeb() + "/tornar", AdditionalButtonStyle.SECONDARY));
@@ -667,6 +665,59 @@ public class LlocAdminController extends LlocController {
 	}
 
 	@Override
+	public void postValidate(HttpServletRequest request, LlocForm llocForm, BindingResult result) throws I18NException {
+		getNecessaryObjectsForMav(llocForm, request, null);
+	}
+
+	@Override
+	public void fillReferencesForForm(LlocForm llocForm,
+			HttpServletRequest request, ModelAndView mav) throws I18NException {
+		super.fillReferencesForForm(llocForm, request, mav);
+
+		getNecessaryObjectsForMav(llocForm, request, mav);
+	}
+
+	private void getNecessaryObjectsForMav(LlocForm llocForm, HttpServletRequest request, ModelAndView mav)
+			throws I18NException {
+		List<Rol> habilitacionsTotes = habilitacionsEjb.select();
+		if (mav == null) {
+			request.getSession().setAttribute("habilitacionsTotes", habilitacionsTotes);
+		} else {
+			mav.addObject("habilitacionsTotes", habilitacionsTotes);
+		}
+
+		if (!llocForm.isNou()) {
+			List<Rol> llistaRols = llocLogicaEjb.getRolsByLlocID(llocForm.getLloc().getLlocID());
+			if (mav == null) {
+				request.getSession().setAttribute("rols", llistaRols);
+			} else {
+				mav.addObject("rols", llistaRols);
+			}
+		}
+
+		if (llocForm.getListOfUnitatForUnitatID() != null) {
+			List<StringKeyValue> unitatsPenjantDeLentitat = llocForm.getListOfUnitatForUnitatID();
+			List<Unitat> referenciades = new ArrayList<Unitat>();
+			for (StringKeyValue u : unitatsPenjantDeLentitat) {
+				referenciades.add(unitatEjb.findByPrimaryKey(Long.parseLong(u.key)));
+			}
+			if (mav == null) {
+				request.getSession().setAttribute("unitatsPenjantDeLentitat", referenciades);
+			} else {
+				mav.addObject("unitatsPenjantDeLentitat", referenciades);
+			}
+
+			List<Entitat> entitats = entitatLogicaEjb.select(EntitatFields.UNITATID
+					.in(unitatsPenjantDeLentitat.stream().map(u -> Long.parseLong(u.key)).toArray(Long[]::new)));
+			if (mav == null) {
+				request.getSession().setAttribute("entitatsPenjantDeLentitat", entitats);
+			} else {
+				mav.addObject("entitatsPenjantDeLentitat", entitats);
+			}
+		}
+	}
+
+	@Override
 	public List<StringKeyValue> getReferenceListForUnitatID(HttpServletRequest request,
 			ModelAndView mav, LlocForm llocForm, Where where) throws I18NException {
 		if (llocForm.isHiddenField(UNITATID)) {
@@ -704,11 +755,11 @@ public class LlocAdminController extends LlocController {
 			unitatsResult.add(new StringKeyValue(String.valueOf(u.getUnitatID()),
 					u.getCodi() + " " + (lang == "es" ? u.getDenominacio() : u.getCooficial())));
 		}
-		mav.addObject("unitats", referenciades);
+		mav.addObject("unitatsPenjantDeLentitat", referenciades);
 		if (setEntitatsToTheModel) {
 			List<Entitat> entitats = entitatLogicaEjb.select(EntitatFields.UNITATID
 					.in(unitatsResult.stream().map(u -> Long.parseLong(u.key)).toArray(Long[]::new)));
-			mav.addObject("entitats", entitats);
+			mav.addObject("entitatsPenjantDeLentitat", entitats);
 		}
 
 		return unitatsResult;

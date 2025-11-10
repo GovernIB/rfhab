@@ -267,7 +267,7 @@
 	}
 
 	let unitats = [];
-	<c:forEach items="${unitats}" var="item">
+	<c:forEach items="${unitatsPenjantDeLentitat}" var="item">
 		unitats.push({
 			"unitatID": +"${item.unitatID}",
 			"codi": "${item.codi}",
@@ -278,7 +278,7 @@
 		});
 	</c:forEach>
 	let entitats = [];
-	<c:forEach items="${entitats}" var="item">
+	<c:forEach items="${entitatsPenjantDeLentitat}" var="item">
 		entitats.push({
 			"entitatID": +"${item.entitatID}",
 			"unitatID": "${item.unitatID}",
@@ -328,7 +328,7 @@
 					function(event) {
 						const codiLlocInput = document.getElementById("lloc.codiLloc");
 						if(codiLlocInput){
-							codiLlocInput.placeholder = "PFH_XXXXXXX";
+							codiLlocInput.placeholder = '${LLOC_CODILLOC_PLACEHOLDER}';
 						}
 						document.getElementById("lloc.codiLlocPropi").placeholder = '${LLOC_CODILLOCPROPI_PLACEHOLDER}';
 

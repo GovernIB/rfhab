@@ -47,6 +47,8 @@ public interface Constants {
             .replaceAll("_", SQL_LIKE_ESCAPE_PATTERN + "_")
             .replaceAll("\\\\d", "_");
 
+    public static final String LLOC_CODILLOC_PLACEHOLDER = "PFH_XXXXXXX";
+
     public static final String LLOC_CODILLOCPROPI_PLACEHOLDER_PREFIX = "LF";
     public static final String LLOC_CODILLOCPROPI_PLACEHOLDER_NUMERICPART = "XXXXXX";
     public static final String LLOC_CODILLOCPROPI_PLACEHOLDER = LLOC_CODILLOCPROPI_PLACEHOLDER_PREFIX

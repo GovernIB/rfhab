@@ -212,6 +212,9 @@ public class LlocAdminController extends LlocController {
 		if (llocForm.isNou()) {
 			mav.addObject("isNew", llocForm.isNou());
 
+			mav.addObject("LLOC_CODILLOC_PLACEHOLDER", Constants.LLOC_CODILLOC_PLACEHOLDER);
+			mav.addObject("LLOC_CODILLOCPROPI_PLACEHOLDER", Constants.LLOC_CODILLOCPROPI_PLACEHOLDER);
+
 			lloc.setDataCreacio(new Timestamp(System.currentTimeMillis()));
 			lloc.setEntitatID(loginInfo.getEntitatIDActual());
 
@@ -354,8 +357,6 @@ public class LlocAdminController extends LlocController {
 			llocForm.addReadOnlyField(LlocFields.CODILLOC);
 			llocForm.addReadOnlyField(LlocFields.EXPANSIO);
 		}
-		mav.addObject("LLOC_CODILLOC_PLACEHOLDER", Constants.LLOC_CODILLOC_PLACEHOLDER);
-		mav.addObject("LLOC_CODILLOCPROPI_PLACEHOLDER", Constants.LLOC_CODILLOCPROPI_PLACEHOLDER);
 
 		mav.addObject("lloc", lloc);
 
@@ -784,7 +785,7 @@ public class LlocAdminController extends LlocController {
 	@Override
 	public String getRedirectWhenModified(HttpServletRequest request, LlocForm llocForm, Throwable __e) {
 		cleanSessionObjectsForMav(request);
-		
+
 		if (llocForm == null || llocForm.getLloc() == null) {
 			log.info("LlocForm o LlocJPA no disponibles per redirigir després de la modificació.");
 			return UrlUtils.getRefererRedirect(request, super.getRedirectWhenModified(request, llocForm, __e));

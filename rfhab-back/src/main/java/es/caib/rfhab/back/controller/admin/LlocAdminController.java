@@ -481,9 +481,11 @@ public class LlocAdminController extends LlocController {
 		LlocJPA lloc = llocForm.getLloc();
 		lloc.setEntitatID(Long.parseLong(request.getParameter("lloc.entitatID")));
 
-		// CODI LLOC PROPI DE RFHAB
-		String nouLlocCodiPropi = llocLogicaEjb.getNouLlocCodiPropi(lloc.getCodiLloc(), lloc.getExpansio());
-		lloc.setCodiLlocPropi(nouLlocCodiPropi);
+		if(llocForm.isNou()){
+			// CODI LLOC PROPI DE RFHAB
+			String nouLlocCodiPropi = llocLogicaEjb.getNouLlocCodiPropi(lloc.getCodiLloc(), lloc.getExpansio());
+			lloc.setCodiLlocPropi(nouLlocCodiPropi);
+		}
 
 		if (String.valueOf(lloc.getPersonalOamr()).equals(TIPUS_PERSONAL_OAMR)) {
 			result.rejectValue(LlocFields.PERSONALOAMR.codeLabel, "error.required",

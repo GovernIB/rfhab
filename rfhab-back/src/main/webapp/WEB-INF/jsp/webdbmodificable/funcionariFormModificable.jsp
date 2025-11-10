@@ -103,13 +103,13 @@
 						<tbody>
 							<c:forEach var="activitat" items="${activitatItems}">
 								<tr id="activitat_rowid_${activitat.activitatID}">
-									<td>${activitat.tipus}</td>
+									<td>${gen:findValue(activitat.tipus, listOfValuesForTipus)}</td>
 									<td>${activitat.registre}</td>
 									<td>${activitat.tramit}</td>
 									<td>${activitat.codiSia}</td>
 									<td><fmt:formatDate pattern="${gen:getDateTimePattern()}"
 											value="${activitat.dataCreacio}" /></td>
-									<td>${activitat.estat}</td>
+									<td>${gen:findValue(activitat.estat, listOfValuesForEstat)}</td>
 									<td>
 										<a href="<c:url value="/user/activitat/view/${activitat.activitatID}"/>"
 											class="btn btn-primary btn-sm" target="_blank">

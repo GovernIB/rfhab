@@ -1,6 +1,7 @@
 package es.caib.rfhab.back.controller.admin;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +34,9 @@ import es.caib.rfhab.back.form.webdb.FuncionariFilterForm;
 import es.caib.rfhab.back.form.webdb.FuncionariForm;
 import es.caib.rfhab.back.security.LoginInfo;
 import es.caib.rfhab.back.utils.UrlUtils;
+import es.caib.rfhab.commons.utils.ActivitatEstat;
 import es.caib.rfhab.commons.utils.Constants;
+import es.caib.rfhab.commons.utils.RegistreActivitatTipus;
 import es.caib.rfhab.commons.utils.StringUtils;
 import es.caib.rfhab.logic.ActivitatLogicaService;
 import es.caib.rfhab.logic.AutoritzacioLogicaService;
@@ -125,6 +128,10 @@ public class FuncionariAdminController extends FuncionariController {
 			// Pipella Activitat - Obtenir les activitats que té assignades el funcionari
 			List<Activitat> activitatsFuncionari = activitatEJB.getActivitatsByFuncionariID(funcionariId);
 			mav.addObject("activitatItems", activitatsFuncionari);
+			List<StringKeyValue> tipusActivitats = getTipusActivitats();
+			mav.addObject("listOfValuesForTipus", tipusActivitats);
+			List<StringKeyValue> estatActivitats = getEstatsActivitats();
+			mav.addObject("listOfValuesForEstat", estatActivitats);
 
 			// Pipella Lloc assignat - Obtenir tots els llocs relacionats amb el funcionari
 			// (actuals, sense data fi)
@@ -466,6 +473,28 @@ public class FuncionariAdminController extends FuncionariController {
 		__tmp.add(new StringKeyValue("3", I18NUtils.tradueix("tipusidentificacio.3")));
 		__tmp.add(new StringKeyValue("4", I18NUtils.tradueix("tipusidentificacio.4")));
 		return __tmp;
+	}
+
+	public List<StringKeyValue> getTipusActivitats() throws I18NException {
+		List<StringKeyValue> tipusActivitatsResult = new ArrayList<StringKeyValue>();
+
+		for (RegistreActivitatTipus rat : RegistreActivitatTipus.values()) {
+			tipusActivitatsResult.add(new StringKeyValue(String.valueOf(rat.getValue()),
+					rat.getDescripcio()));
+		}
+
+		return tipusActivitatsResult;
+	}
+
+	public List<StringKeyValue> getEstatsActivitats() throws I18NException {
+		List<StringKeyValue> estatsActivitatsResult = new ArrayList<StringKeyValue>();
+
+		for (ActivitatEstat ae : ActivitatEstat.values()) {
+			estatsActivitatsResult.add(new StringKeyValue(String.valueOf(ae.getValue()),
+					ae.name()));
+		}
+
+		return estatsActivitatsResult;
 	}
 
 	@Override

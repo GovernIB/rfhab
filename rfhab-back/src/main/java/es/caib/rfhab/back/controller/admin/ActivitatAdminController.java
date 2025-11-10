@@ -231,7 +231,6 @@ public class ActivitatAdminController extends ActivitatController {
 		for (RegistreActivitatTipus rat : RegistreActivitatTipus.values()) {
 			tipusActivitatsResult.add(new StringKeyValue(String.valueOf(rat.getValue()),
 					rat.getDescripcio()));
-
 		}
 
 		return tipusActivitatsResult;
@@ -243,7 +242,6 @@ public class ActivitatAdminController extends ActivitatController {
 		for (ActivitatEstat ae : ActivitatEstat.values()) {
 			estatsActivitatsResult.add(new StringKeyValue(String.valueOf(ae.getValue()),
 					ae.name()));
-
 		}
 
 		return estatsActivitatsResult;

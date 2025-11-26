@@ -533,6 +533,7 @@ button[disabled][type="submit"] {
 									<input type="hidden" id="tramitVersio"  name="tramitVersio" value="1" />
 									<input type="hidden" id="tramitParametres"  name="tramitParametres" value="1" />
 									<input type="hidden" id="idTraTel" name="idTraTel" value="1" />
+									<input type="hidden" id="unitatAdministrativa" name="unitatAdministrativa" value="1" />
 								</label>
 							</div>
 						</div>
@@ -1333,7 +1334,8 @@ button[disabled][type="submit"] {
 								tramitId: data[tramit][3],
 								tramitVersio: data[tramit][4],
 								tramitParametres: data[tramit][5],
-								idTraTel: data[tramit][6]
+								idTraTel: data[tramit][6],
+								unitatAdministrativa: data[tramit][7]
 							});
 						}
 					}
@@ -1382,6 +1384,7 @@ button[disabled][type="submit"] {
 					$('#tramitVersio').val(1);
 					$('#tramitParametres').val(1);
 					$('#idTraTel').val(1);
+					$('#unitatAdministrativa').val(1);
 					return;
 				}
 				const tramitSeleccionat = tramitsProcediment.find(tramit => tramit.data === pas2_tramit_value);
@@ -1391,11 +1394,13 @@ button[disabled][type="submit"] {
 	        		', tramitId: ' + tramitSeleccionat.tramitId +
 	        		', tramitVersio: ' + tramitSeleccionat.tramitVersio +
 	        		', tramitParametres: ' + tramitSeleccionat.tramitParametres +
-	        		', idTraTel: ' + tramitSeleccionat.idTraTel);
+	        		', idTraTel: ' + tramitSeleccionat.idTraTel +
+	        		', unitatAdministrativa: ' + tramitSeleccionat.unitatAdministrativa);
 				$('#tramitId').val(tramitSeleccionat.tramitId);
 				$('#tramitVersio').val(tramitSeleccionat.tramitVersio);
 				$('#tramitParametres').val(tramitSeleccionat.tramitParametres);
 				$('#idTraTel').val(tramitSeleccionat.idTraTel);
+				$('#unitatAdministrativa').val(tramitSeleccionat.unitatAdministrativa);
 			}
 	}
 </script>
@@ -2078,6 +2083,7 @@ button[disabled][type="submit"] {
 			tramitVersio: $form.find('#tramitVersio').val() || '',
 			tramitParametres: $form.find('#tramitParametres').val() || '',
 			idTraTel: $form.find('#idTraTel').val() || '',
+			unitatAdministrativa: $form.find('#unitatAdministrativa').val() || '',
 			//registre activitat ticket FH
 			arxiuExpedientId: $form.find('#arxiuExpedientId').val() || '',
 			arxiuDocumentId: $form.find('#arxiuDocumentId').val() || '',

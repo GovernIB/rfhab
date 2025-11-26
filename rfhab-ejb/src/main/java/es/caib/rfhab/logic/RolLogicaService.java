@@ -5,6 +5,7 @@ import org.fundaciobit.genapp.common.i18n.I18NException;
 
 import es.caib.rfhab.ejb.RolService;
 import es.caib.rfhab.model.entity.Rol;
+import es.caib.rfhab.persistence.FuncionariJPA;
 
 /**
  * 
@@ -17,5 +18,7 @@ public interface RolLogicaService extends RolService {
     public static final String JNDI_NAME = "java:app/rfhab-ejb/RolLogicaEJB!es.caib.rfhab.logic.RolLogicaService";
 
     public Rol findByCodi(String codi) throws I18NException;
+
+    public Rol findByCodiIfuncionari(String codi, FuncionariJPA funcionari) throws I18NException;
 
 }

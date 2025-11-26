@@ -62,6 +62,29 @@ public class UnitatLogicaEJB extends UnitatEJB implements UnitatLogicaService {
 
     @Override
     @PermitAll
+    public Unitat findUnitatMare(String codiDir3unitat, Long unitatIdTope) throws I18NException {
+        Unitat unitatTrobada = findByCodiDir3(codiDir3unitat);
+        if (unitatTrobada == null) {
+            log.warn("No s'ha trobat unitat amb codi Dir3 " + codiDir3unitat);
+            return null;
+        }
+        return findUnitatMare(unitatTrobada.getUnitatID(), unitatIdTope);
+    }
+
+    @Override
+    @PermitAll
+    public Unitat findUnitatMare(String codiDir3unitat, Integer versioCodiDir3unitat, Long unitatIdTope)
+            throws I18NException {
+        Unitat unitatTrobada = findByCodiDir3(codiDir3unitat, versioCodiDir3unitat == null ? 1 : versioCodiDir3unitat);
+        if (unitatTrobada == null) {
+            log.warn("No s'ha trobat unitat amb codi Dir3 " + codiDir3unitat + " v" + versioCodiDir3unitat);
+            return null;
+        }
+        return findUnitatMare(unitatTrobada.getUnitatID(), unitatIdTope);
+    }
+
+    @Override
+    @PermitAll
     public Unitat findUnitatMare(Long unitatId, Long unitatIdTope) throws I18NException {
         // Cerca la unitat inicial amb el unitatId especificat
         Unitat unitatMare = findByPrimaryKey(unitatId);

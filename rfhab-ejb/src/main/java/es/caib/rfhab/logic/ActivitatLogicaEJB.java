@@ -10,18 +10,15 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.TypedQuery;
-import javax.servlet.http.HttpServletRequest;
-
 import org.fundaciobit.genapp.common.filesystem.FileSystemManager;
 import org.fundaciobit.genapp.common.i18n.I18NCommonUtils;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.i18n.I18NFieldError;
-import org.fundaciobit.genapp.common.query.SubQuery;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.validation.BeanValidatorResult;
 import es.caib.pluginsib.arxiu.api.ArxiuException;
@@ -38,22 +35,21 @@ import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.commons.utils.FileNameCleaner;
 import es.caib.rfhab.commons.utils.IdentificacioTipus;
 import es.caib.rfhab.commons.utils.RegistreActivitatTipus;
-import es.caib.rfhab.commons.utils.StringUtils;
+import es.caib.rfhab.commons.utils.RegistreActivitatTipusRols;
 import es.caib.rfhab.ejb.ActivitatEJB;
 import es.caib.rfhab.model.entity.Activitat;
 import es.caib.rfhab.model.entity.Fitxer;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.fields.ActivitatFields;
 import es.caib.rfhab.model.fields.ActivitatQueryPath;
-import es.caib.rfhab.model.fields.FuncionariFields;
-import es.caib.rfhab.model.fields.FuncionariQueryPath;
-import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.persistence.ActivitatJPA;
 import es.caib.rfhab.persistence.FitxerJPA;
-import es.caib.rfhab.persistence.LlocJPA;
+import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.validator.ActivitatValidator;
 import es.caib.rfhab.pluginsib.arxiu.ArxiuPlugin;
 import es.caib.rfhab.pluginsib.arxiu.model.DocumentInfo;
+import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
+import es.caib.rfhab.pluginsib.rolsac.model.Tramits;
 
 /**
  * 
@@ -71,6 +67,7 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 	protected FuncionariLogicaService funcionariLogicaEjb;
 
 	ArxiuPlugin pluginArxiu = new ArxiuPlugin();
+	protected RolsacPlugin rolsacPlugin = null;
 
 	@Override
 	public List<Activitat> getActivitatsByFuncionariID(Long funcionariId) throws I18NException {
@@ -353,26 +350,54 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 	@Override
 	public Activitat registraNovaActivitat(String language, ActivitatValidator<Activitat> validator,
 			RegistreActivitatTipus tipus, String csvCopiaAutentica, String registre,
-			String idActuacioTramitFh, String tramit, String tramitVersio, String procediment, String nomInteressat,
-			String llinatge1Interessat, String llinatge2Interessat, IdentificacioTipus tipusIdentificacioInteressat,
-			String identificacioInteressat, String nomRepresentant, String llinatge1Representant,
-			String llinatge2Representant, IdentificacioTipus tipusIdentificacioRepresentant,
-			String identificacioRepresentant, String arxiuExpedientId, String arxiuDocumentId, Timestamp dataActivitat,
-			Long funcionariId) throws I18NException {
+			String idActuacioTramitFh, String tramit, String tramitVersio, String procediment,
+			String unitatAdministrativaTramit, String nomInteressat, String llinatge1Interessat,
+			String llinatge2Interessat,
+			IdentificacioTipus tipusIdentificacioInteressat, String identificacioInteressat, String nomRepresentant,
+			String llinatge1Representant, String llinatge2Representant,
+			IdentificacioTipus tipusIdentificacioRepresentant, String identificacioRepresentant,
+			String arxiuExpedientId, String arxiuDocumentId, Timestamp dataActivitat, Funcionari funcionariActuant,
+			Long entitatId) throws I18NException {
 		ActivitatJPA act = new ActivitatJPA();
 		Activitat actTramitRelacionada = null;
-		act.setFuncionariID(funcionariId);
+		act.setFuncionariID(funcionariActuant.getFuncionariID());
 		act.setDataCreacio(new Timestamp(System.currentTimeMillis()));
 		act.setDataActivitat(dataActivitat);
 		act.setTipus(tipus.getValue());
 		act.setEstat(ActivitatEstat.ACABAT.getValue());
 
 		// Validar tipus d'activitat
+		List<String> codiHabilitacionsNecessaries = RegistreActivitatTipusRols.getRols(tipus);
 		switch (tipus) {
 			case COPIA:
+				List<String> codiHabilitacionsAlternatives = Arrays
+						.asList(RegistreActivitatTipusRols.IDENTIFICACIO_I_SIGNATURA);// IDENTIFICACIO_I_SIGNATURA també
+																						// pot fer còpia autèntica
+				if (!funcionariLogicaEjb.isFuncionariHabilitat((FuncionariJPA) funcionariActuant,
+						codiHabilitacionsNecessaries, entitatId)
+						&& !funcionariLogicaEjb.isFuncionariHabilitat((FuncionariJPA) funcionariActuant,
+								codiHabilitacionsAlternatives, entitatId)) {
+					String errorFuncionariNoHabilitat = I18NCommonUtils.tradueix(new Locale(language),
+							"error.funcionari.nohabilitat",
+							new String[] { funcionariActuant.getIdentificador(),
+									Stream.concat(codiHabilitacionsNecessaries.stream(),
+											codiHabilitacionsAlternatives.stream()).collect(Collectors.toList())
+											.toString() });
+					log.error(errorFuncionariNoHabilitat);
+					throw new I18NException(errorFuncionariNoHabilitat);
+				}
+
 				act.setUrl(csvCopiaAutentica);
 				break;
 			case COMPAREIX:
+				if (unitatAdministrativaTramit == null || unitatAdministrativaTramit.isEmpty()) {
+					unitatAdministrativaTramit = getUnitatAdministrativaFromTramit(language, tramit);
+					log.info("XYZ YYY unitatAdministrativa = " + unitatAdministrativaTramit);
+				}
+
+				funcionariLogicaEjb.checkIsFuncionariAutoritzat(language, (FuncionariJPA) funcionariActuant,
+						codiHabilitacionsNecessaries, unitatAdministrativaTramit, entitatId);
+
 				act.setIdActuacioTramit(idActuacioTramitFh);
 				setActivitatTipusCompareix(tramit, tramitVersio, procediment, arxiuExpedientId, arxiuDocumentId,
 						nomInteressat, llinatge1Interessat,
@@ -396,6 +421,23 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 					throw new I18NException(errorNoExisteixActCompareix);
 				}
 				actTramitRelacionada = activitatsTramitIniciades.get(0);
+
+				if (actTramitRelacionada.getFuncionariID() != funcionariActuant.getFuncionariID()) {
+					String errorFuncionariTramitDiferent = I18NCommonUtils.tradueix(new Locale(language),
+							"activitat.error.funcionaritramitdiferent",
+							new String[] { idActuacioTramitFh, String.valueOf(actTramitRelacionada.getFuncionariID()),
+									String.valueOf(funcionariActuant.getFuncionariID()) });
+					log.error(errorFuncionariTramitDiferent);
+					throw new I18NException(errorFuncionariTramitDiferent);
+				}
+
+				unitatAdministrativaTramit = getUnitatAdministrativaFromTramit(language,
+						actTramitRelacionada.getTramit());
+				log.info("XYZ YYY unitatAdministrativa = " + unitatAdministrativaTramit);
+
+				funcionariLogicaEjb.checkIsFuncionariAutoritzat(language, (FuncionariJPA) funcionariActuant,
+						codiHabilitacionsNecessaries, unitatAdministrativaTramit, entitatId);
+
 				setActivitatTipusCompareix(actTramitRelacionada.getTramit(),
 						actTramitRelacionada.getTramitVersio() != null
 								? actTramitRelacionada.getTramitVersio().toString()
@@ -456,6 +498,30 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 						"" }));
 		log.info(successMsg);
 		return newAct;
+	}
+
+	private String getUnitatAdministrativaFromTramit(String language, String tramit)
+			throws I18NException {
+		if (rolsacPlugin == null) {
+			rolsacPlugin = new RolsacPlugin();
+		}
+		Tramits tramitTrobat = null;
+		try {
+			tramitTrobat = rolsacPlugin.obtenirTramitPerId(tramit, language);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (tramitTrobat == null) {
+			String errorTramitNoTrobat = I18NCommonUtils.tradueix(new Locale(language),
+					"activitat.error.notramit",
+					new String[] { tramit });
+			log.error(errorTramitNoTrobat);
+			throw new I18NException(errorTramitNoTrobat);
+		}
+		log.info("XYZ YYY tramitTrobat = " + tramitTrobat.getCodigo());
+
+		return tramitTrobat.getLink_organCompetent().getCodigo();
 	}
 
 	@Override

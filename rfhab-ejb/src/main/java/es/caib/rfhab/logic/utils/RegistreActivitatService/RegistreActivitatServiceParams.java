@@ -19,6 +19,7 @@ public class RegistreActivitatServiceParams {
 
     public static final String TRAMIT = "tramit";
     public static final String TRAMITVERSIO = "tramitversio";
+    public static final String UNITATADMINISTRATIVA = "unitatAdministrativa";
     public static final String PROCEDIMENT = "procediment";
     public static final String NOMINTERESSAT = "nominteressat";
     public static final String LLINATGE1INTERESSAT = "llinatge1interessat";

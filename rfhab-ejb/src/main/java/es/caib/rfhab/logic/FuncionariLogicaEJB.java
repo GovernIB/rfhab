@@ -3,8 +3,10 @@ package es.caib.rfhab.logic;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
@@ -12,12 +14,15 @@ import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 import org.fundaciobit.genapp.common.i18n.I18NCommonUtils;
 import org.fundaciobit.genapp.common.i18n.I18NException;
+import org.fundaciobit.genapp.common.query.SubQuery;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.utils.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import es.caib.rfhab.commons.utils.ActivitatEstat;
 import es.caib.rfhab.commons.utils.Constants;
+import es.caib.rfhab.commons.utils.PersonalOamrTipus;
 import es.caib.rfhab.ejb.FuncionariEJB;
 import es.caib.rfhab.ejb.RolService;
 import es.caib.rfhab.logic.utils.HistoricFuncionariDAO;
@@ -27,13 +32,18 @@ import es.caib.rfhab.model.entity.FuncionariLloc;
 import es.caib.rfhab.model.entity.Historic;
 import es.caib.rfhab.model.entity.HistoricLloc;
 import es.caib.rfhab.model.entity.Lloc;
+import es.caib.rfhab.model.entity.Rol;
+import es.caib.rfhab.model.entity.Unitat;
 import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.FuncionariLlocFields;
+import es.caib.rfhab.model.fields.FuncionariLlocQueryPath;
 import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.HistoricJPA;
 import es.caib.rfhab.persistence.HistoricLlocJPA;
 import es.caib.rfhab.persistence.LlocJPA;
+import es.caib.rfhab.persistence.RolJPA;
+import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
 
 /**
  * 
@@ -54,10 +64,15 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 	protected HistoricLlocLogicaService historicLlocLogicaEjb;
 
 	@EJB(mappedName = LlocLogicaService.JNDI_NAME)
-	protected LlocLogicaService llocEjb;
+	protected LlocLogicaService llocLogicaEjb;
 
-	@EJB(mappedName = RolService.JNDI_NAME)
-	protected RolService rolEjb;
+	@EJB(mappedName = RolLogicaService.JNDI_NAME)
+	protected RolLogicaService rolLogicaEjb;
+
+	@EJB(mappedName = UnitatLogicaService.JNDI_NAME)
+	protected UnitatLogicaService unitatLogicaEjb;
+
+	private RolsacPlugin rolsacPlugin = new RolsacPlugin();
 
 	@Override
 	@PermitAll
@@ -81,44 +96,138 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 
 	}
 
+	// mira si el funcionari està habilitat i si cumpleix amb els requisits d'OAMR i
+	// codiSia
 	@Override
 	@PermitAll
-	public boolean isFuncionariAutoritzat(Long funcionariId, String codiSia, Long entitatId) throws I18NException {
+	public void checkIsFuncionariAutoritzat(String language, FuncionariJPA funcionari, List<String> codiHabilitacions,
+			String unitatAdministrativaTramit, Long entitatId) throws I18NException {
 
-		try {
-
-			StringBuilder query = new StringBuilder();
-
-			// TODO ENTITAT => funcionari pot estar al sistema sense plaça? Si es així,
-			// perqué no quedi orfe, l'associam a la darrera entitat?
-
-			return true;
-
-		} catch (Exception e) {
-			log.error(e.getMessage());
+		if (!isFuncionariHabilitat(funcionari, codiHabilitacions, entitatId)) {
+			String errorFuncionariNoHabilitat = I18NCommonUtils.tradueix(new Locale(language),
+					"error.funcionari.nohabilitat",
+					new String[] { funcionari.getIdentificador(), codiHabilitacions.toString() });
+			log.error(errorFuncionariNoHabilitat);
+			throw new I18NException(errorFuncionariNoHabilitat);
 		}
 
-		return false;
+		if (!isOamr(funcionari)) {
+			// s'ha de mirar si el tràmit es de la mateixa unitat que el lloc de feina
+			// o d'una que sigui filla d'aquesta (TODO: demanar si mare també valdria)
+			List<Lloc> llocs = llocLogicaEjb.getLlocByFuncionariID(funcionari.getFuncionariID(), true);
+			if (llocs == null || llocs.isEmpty()) {
+				String errorFuncionariNoAssignatAlloc = I18NCommonUtils.tradueix(new Locale(language),
+						"funcionari.error.noassignatlloc",
+						new String[] { funcionari.getIdentificador() });
+				log.error(errorFuncionariNoAssignatAlloc);
+				throw new I18NException(errorFuncionariNoAssignatAlloc);
+			}
+			Lloc llocDelFuncionari = llocs.get(0);
+			long unitatId = llocDelFuncionari.getUnitatID();
+			String codiDir3unitatTramit = null;
+			try {
+				codiDir3unitatTramit = rolsacPlugin.getCodiDir3UnitatAdministrativa(unitatAdministrativaTramit);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if (codiDir3unitatTramit == null) {
+				String errorUnitatNoObtenirCodiDir3 = I18NCommonUtils.tradueix(new Locale(language),
+						"error.unitat.obtenircodidir3",
+						new String[] { unitatAdministrativaTramit });
+				log.error(errorUnitatNoObtenirCodiDir3);
+				throw new I18NException(errorUnitatNoObtenirCodiDir3);
+			}
+			Unitat unitatEntitat = unitatLogicaEjb.findUnitatMare(codiDir3unitatTramit, unitatId);
+			if (unitatEntitat == null) {
+				String errorUnitatNoExisteixDinsMare = I18NCommonUtils.tradueix(new Locale(language),
+						"error.unitat.noexisteixdinsmare",
+						new String[] { codiDir3unitatTramit,
+								String.valueOf(unitatId) });
+				log.error(errorUnitatNoExisteixDinsMare);
+				throw new I18NException(errorUnitatNoExisteixDinsMare);
+			}
+
+		}
+		// TODO ENTITAT => funcionari pot estar al sistema sense plaça? Si es així,
+		// perqué no quedi orfe, l'associam a la darrera entitat?
+	}
+
+	// mira si el funcionari te assignades les habilitacions
+	// TODO: encara no empram l'entitat
+	@Override
+	@PermitAll
+	public void checkIsFuncionariHabilitat(String language, Funcionari funcionari, List<String> codiHabilitacions,
+			Long entitatId) throws I18NException {
+
+		// TODO ENTITATID
+
+		if (!isFuncionariHabilitat((FuncionariJPA) funcionari,
+				codiHabilitacions,
+				entitatId)) {
+			String errorFuncionariNoHabilitat = I18NCommonUtils.tradueix(new Locale(language),
+					"error.funcionari.nohabilitat",
+					new String[] { funcionari.getIdentificador(),
+							codiHabilitacions.toString() });
+			log.error(errorFuncionariNoHabilitat);
+			throw new I18NException(errorFuncionariNoHabilitat);
+		}
+	}
+
+	// mira si el funcionari te assignades les habilitacions
+	// TODO: encara no empram l'entitat
+	@Override
+	@PermitAll
+	public boolean isFuncionariHabilitat(FuncionariJPA funcionari, List<String> codiHabilitacions, Long entitatId)
+			throws I18NException {
+
+		// TODO ENTITATID
+
+		for (String rol : codiHabilitacions) {
+			Rol habilitacioTrobada = rolLogicaEjb.findByCodiIfuncionari(rol, funcionari);
+			if (habilitacioTrobada == null) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	@Override
 	@PermitAll
-	public boolean isFuncionariHabilitat(Long funcionariId, String codiRol, Long entitatId) throws I18NException {
+	public boolean isOamr(FuncionariJPA funcionari)
+			throws I18NException {
 
-		// TODO ENTITATID
+		List<Funcionari> resultats = select(Where.AND(isPersonalOamrWhere(PersonalOamrTipus.SI),
+				FuncionariFields.FUNCIONARIID.equal(funcionari.getFuncionariID())));
 
-		// TODO REVISAR
+		return resultats != null && !resultats.isEmpty();
+	}
 
-		/*
-		 * List<RolJPA> rolsFuncionari = getRolsByFuncionariID(funcionariId);
-		 * for (RolJPA rol : rolsFuncionari) {
-		 * if (rol.getCodi().toUpperCase().equals(codiRol.toUpperCase())) {
-		 * return true;
-		 * }
-		 * }
-		 */
-
-		return false;
+	@Override
+	@PermitAll
+	public Where isPersonalOamrWhere(final PersonalOamrTipus personalOamr) throws I18NException {
+		Where personalOamrWhere = null;
+		if (personalOamr != null) {
+			FuncionariLlocQueryPath funcionarilLocQueryPath = new FuncionariLlocQueryPath();
+			Where whereLloc = funcionarilLocQueryPath.LLOC().PERSONALOAMR().equal(personalOamr.getValue());
+			// executeQuery seria fer un select i el resultat el ficariem dins l'IN. En
+			// canvi, SubQuery prepara la sentencia select i és el que fica dins l'in. Seria
+			// IN Operator vs IN (SELECT). És a dir, SubQuery seria una SubQuery normal i
+			// corrent de SQL, molt més eficient en aquest cas.
+			SubQuery<FuncionariLloc, Long> subQuery;
+			subQuery = funcionariLlocLogicaEjb.getSubQuery(FuncionariLlocFields.FUNCIONARIID, whereLloc);
+			// List<Long> fFuncIds =
+			// funcionariLlocLogicaEjb.executeQuery(FuncionariLlocFields.FUNCIONARIID,
+			// whereLloc);
+			personalOamrWhere = FuncionariFields.FUNCIONARIID.in(subQuery);
+		} else {
+			log.warn("Mostrant tots personalOamr");
+		}
+		return personalOamrWhere;
 	}
 
 	@Override
@@ -173,22 +282,6 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 								String.valueOf(funcionari.getFuncionariID()), "<oldFuncionari null>" });
 			}
 
-			/*
-			 * TODO REVISAR
-			 * 
-			 * try {
-			 * List<Rol> oldRols = getRolsByFuncionariIDv2(funcionari.getFuncionariID());
-			 * if (oldRols != null && !oldRols.isEmpty())
-			 * newFuncionari.setRols(oldRols);
-			 * else
-			 * log.error("No s'han pogut recuperar els rols del funcionari");
-			 * 
-			 * } catch (Exception e) {
-			 * log.error("Error al recuperar els rols del funcionari");
-			 * log.error(e.getMessage());
-			 * }
-			 */
-
 			HistoricFuncionariDAO historicOld = new HistoricFuncionariDAO(oldFuncionari);
 			newFuncionari = update(funcionari);
 			log.info("Funcionari actualitzat: " + newFuncionari.getFuncionariID());
@@ -225,13 +318,13 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 
 			// Lloc de feina: el donam de baixa
 			if (donarDeBaixaLloc) {
-				Lloc lloc = llocEjb.findByPrimaryKey(llocId);
+				Lloc lloc = llocLogicaEjb.findByPrimaryKey(llocId);
 				if (lloc == null) {
 					throw new I18NException("error.modification", "<lloc null>");
 				}
 				String codiLloc = lloc.getCodiLloc();
 				lloc.setDataBaixa(new Timestamp(System.currentTimeMillis()));
-				llocEjb.update(lloc);
+				llocLogicaEjb.update(lloc);
 				log.info("Lloc de feina actualitzat: " + llocId);
 
 				// afegim històric del Lloc de feina
@@ -289,7 +382,7 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 			historicLloc.setNumeroCai(numeroCai);
 			historicLloc.setUsuariID(usuariId);
 
-			Lloc lloc = llocEjb.findByPrimaryKey(llocID);
+			Lloc lloc = llocLogicaEjb.findByPrimaryKey(llocID);
 			String llocCodi = "<null>";
 			if (lloc != null) {
 				llocCodi = lloc.getCodiLloc();
@@ -442,7 +535,7 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 		List<Lloc> llocsOcupatsPerFuncionari = new ArrayList<Lloc>();
 		List<Lloc> llocsNoActiusOcupatsPerFuncionari = new ArrayList<Lloc>();
 		for (FuncionariLloc fl : funcionarisLlocs) {
-			Lloc lloc = llocEjb.findByPrimaryKey(fl.getLlocID());
+			Lloc lloc = llocLogicaEjb.findByPrimaryKey(fl.getLlocID());
 			if (lloc != null) {
 				llocsOcupatsPerFuncionari.add(lloc);
 				Timestamp llocDataAlta = lloc.getDataalta();

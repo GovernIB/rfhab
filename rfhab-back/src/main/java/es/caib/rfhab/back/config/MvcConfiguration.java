@@ -5,7 +5,7 @@ import java.util.Locale;
 import javax.ejb.EJB;
 
 import es.caib.rfhab.back.controller.user.UserController;
-import es.caib.rfhab.back.security.UsuariIsFuncionariActiuInterceptor;
+import es.caib.rfhab.back.security.UsuariIsFuncionariActiuHabilitatInterceptor;
 import es.caib.rfhab.commons.utils.Configuracio;
 import es.caib.rfhab.logic.FuncionariLogicaService;
 import es.caib.rfhab.logic.UsuariLogicaService;
@@ -63,7 +63,7 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(localeChangeInterceptor());
-		registry.addInterceptor(new UsuariIsFuncionariActiuInterceptor(funcionariLogicaEjb, usuariLogicaEjb))
+		registry.addInterceptor(new UsuariIsFuncionariActiuHabilitatInterceptor(funcionariLogicaEjb, usuariLogicaEjb))
 				.addPathPatterns(UserController.CONTEXTWEB + "**"); // Protegeix tot el controlador UserController
 
 	}

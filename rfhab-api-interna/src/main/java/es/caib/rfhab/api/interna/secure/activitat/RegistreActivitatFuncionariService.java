@@ -1,5 +1,6 @@
 package es.caib.rfhab.api.interna.secure.activitat;
 
+import es.caib.rfhab.api.interna.utils.I18NLogicUtilsApiInterna;
 import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.commons.utils.IdentificacioTipus;
 import es.caib.rfhab.commons.utils.IdentificacioTipusValues;
@@ -13,8 +14,9 @@ import es.caib.rfhab.logic.utils.RegistreActivitatService.RegistreActivitatValid
 import es.caib.rfhab.model.entity.Activitat;
 import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.validator.ActivitatValidator;
-
 import java.sql.Timestamp;
+import java.util.Locale;
+
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.validation.constraints.NotNull;
@@ -190,6 +192,7 @@ public class RegistreActivitatFuncionariService extends RestUtils {
 			// COMPAREIX (ocults)
 			@Parameter(description = "Codi del tràmit associat a l\'activitat. Obligatori pel tipus d'activitat 3", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam(RegistreActivitatServiceParams.TRAMIT) String tramit,
 			@Parameter(description = "Versió del tràmit associat a l\'activitat. Obligatori pel tipus d'activitat 3", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam(RegistreActivitatServiceParams.TRAMITVERSIO) String tramitVersio,
+			@Parameter(description = "Unitat administrativa del tràmit associat a l\'activitat. Opcional, s'emplea al tipus d'activitat 3", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam(RegistreActivitatServiceParams.UNITATADMINISTRATIVA) String unitatAdministrativa,
 			@Parameter(description = "Codi del procediment associat a l\'activitat. Obligatori pel tipus d'activitat 3", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam(RegistreActivitatServiceParams.PROCEDIMENT) String procediment,
 			@Parameter(description = "Nom de l\'interessat/da del tràmit. Obligatori pel tipus d'activitat 3", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam(RegistreActivitatServiceParams.NOMINTERESSAT) String nomInteressat,
 			@Parameter(description = "Primer Llinatge de l\'interessat/da del tràmit. Obligatori pel tipus d'activitat 3", required = false, example = "", schema = @Schema(type = "string"), hidden = true) @QueryParam(RegistreActivitatServiceParams.LLINATGE1INTERESSAT) String llinatge1Interessat,
@@ -228,6 +231,7 @@ public class RegistreActivitatFuncionariService extends RestUtils {
 			sb.append("Identificació activitat tràmit: " + idActuacioTramitFh + "\n");
 			sb.append("Tràmit: " + tramit + "\n");
 			sb.append("Versió Tràmit: " + tramitVersio + "\n");
+			sb.append("Unitat Administrativa tràmit: " + unitatAdministrativa + "\n");
 			sb.append("Procediment: " + procediment + "\n");
 			sb.append("Nom Interessat: " + nomInteressat + "\n");
 			sb.append("Llinatge1 Interessat: " + llinatge1Interessat + "\n");
@@ -251,7 +255,6 @@ public class RegistreActivitatFuncionariService extends RestUtils {
 
 			// validar codi de funcionari
 			FuncionariJPA funcionari = funcionariLogicaEjb.comprovarFuncionariActiuByNif(language, funcionariNif, true);
-			Long funcionariId = funcionari.getFuncionariID();
 
 			String funcionariNom = (funcionari.getNom() != null ? funcionari.getNom() : "") + " "
 					+ (funcionari.getLlinatge1() != null ? funcionari.getLlinatge1() : "") + " "
@@ -260,18 +263,18 @@ public class RegistreActivitatFuncionariService extends RestUtils {
 			log.info("XYZ YYY funcionariNom = " + funcionariNom);
 
 			Activitat newAct = activitatEjb.registraNovaActivitat(language, validator, tipus, csvCopiaAutentica,
-					registre,
-					idActuacioTramitFh, tramit, tramitVersio, procediment,
+					registre, idActuacioTramitFh, tramit, tramitVersio, procediment, unitatAdministrativa,
 					nomInteressat, llinatge1Interessat, llinatge2Interessat, tipusIdentificacioInteressat,
 					identificacioInteressat, nomRepresentant, llinatge1Representant, llinatge2Representant,
 					tipusIdentificacioRepresentant, identificacioRepresentant, arxiuExpedientId, arxiuDocumentId,
-					dataActivitat, funcionariId);
-			return "Operació realitzada correctament";// TODO: #73 traduïr
+					dataActivitat, funcionari, funcionari.getEntitatID());
+			return I18NLogicUtilsApiInterna.tradueix(new Locale(language), "operacio.success");
 		} catch (I18NException re) {
 			log.error(re.getMessage(), re);
 			throw new RestException(re.getMessage(), Status.BAD_REQUEST);
 		} catch (Throwable th) {
-			String msg = "Error desconegut enregistrant activitat: " + th.getMessage();// TODO: #73 traduïr
+			String msg = I18NLogicUtilsApiInterna.tradueix(new Locale(language), "activitat.error.desconegut",
+					new String[] { th.getMessage() });
 			log.error(msg, th);
 			throw new RestException(msg, th, Status.INTERNAL_SERVER_ERROR);
 		}

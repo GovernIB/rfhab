@@ -36,6 +36,7 @@ import es.caib.rfhab.back.security.LoginInfo;
 import es.caib.rfhab.back.utils.UrlUtils;
 import es.caib.rfhab.commons.utils.ActivitatEstat;
 import es.caib.rfhab.commons.utils.Constants;
+import es.caib.rfhab.commons.utils.PersonalOamrTipus;
 import es.caib.rfhab.commons.utils.RegistreActivitatTipus;
 import es.caib.rfhab.commons.utils.StringUtils;
 import es.caib.rfhab.logic.ActivitatLogicaService;
@@ -313,29 +314,13 @@ public class FuncionariAdminController extends FuncionariController {
 
 	private Where getPersonalOamrWhere(HttpServletRequest request) throws I18NException {
 		// filtrar per personalOamr
-		final String personalOamr = (StringUtils.isNotEmpty(request.getParameter("lloc.personalOamr")))
+		String personalOamr = (StringUtils.isNotEmpty(request.getParameter("lloc.personalOamr")))
 				? request.getParameter("lloc.personalOamr")
 				: "";
-
 		log.info("personalOamr ==> " + personalOamr);
-		Where personalOamrWhere = null;
-		if (!"".equals(personalOamr)) {
-			FuncionariLlocQueryPath funcionarilLocQueryPath = new FuncionariLlocQueryPath();
-			Where whereLloc = funcionarilLocQueryPath.LLOC().PERSONALOAMR().equal(Integer.valueOf(personalOamr));
-			// executeQuery seria fer un select i el resultat el ficariem dins l'IN. En
-			// canvi, SubQuery prepara la sentencia select i és el que fica dins l'in. Seria
-			// IN Operator vs IN (SELECT). És a dir, SubQuery seria una SubQuery normal i
-			// corrent de SQL, molt més eficient en aquest cas.
-			SubQuery<FuncionariLloc, Long> subQuery;
-			subQuery = funcionariLlocLogicaEJB.getSubQuery(FuncionariLlocFields.FUNCIONARIID, whereLloc);
-			// List<Long> fFuncIds =
-			// funcionariLlocLogicaEJB.executeQuery(FuncionariLlocFields.FUNCIONARIID,
-			// whereLloc);
-			personalOamrWhere = FuncionariFields.FUNCIONARIID.in(subQuery);
-		} else {
-			log.warn("Mostrant tots personalOamr");
-		}
-		return personalOamrWhere;
+
+		return funcionariEJB.isPersonalOamrWhere(
+				(personalOamr == null || personalOamr.isEmpty()) ? null : PersonalOamrTipus.fromString(personalOamr));
 	}
 
 	private Where getAdditionalConditionAssignats(HttpServletRequest request) throws I18NException {
@@ -439,7 +424,6 @@ public class FuncionariAdminController extends FuncionariController {
 			if (filterForm.getGroupByFields().contains(LlocFields.PERSONALOAMR)) {
 				fillValuesToGroupByItems(_tmpPersonalOamr, groupByItemsMap, LlocFields.PERSONALOAMR, false);
 			}
-			;
 		}
 
 		return groupByItemsMap;
@@ -457,8 +441,8 @@ public class FuncionariAdminController extends FuncionariController {
 		}
 
 		List<StringKeyValue> __tmp = new java.util.ArrayList<StringKeyValue>();
-		__tmp.add(new StringKeyValue(TIPUS_IDENTIFICACIO_SELECCIONA, "No"));
-		__tmp.add(new StringKeyValue("1", "Sí"));
+		__tmp.add(new StringKeyValue(PersonalOamrTipus.NO.getValue().toString(), PersonalOamrTipus.NO.getDescripcio()));
+		__tmp.add(new StringKeyValue(PersonalOamrTipus.SI.getValue().toString(), PersonalOamrTipus.SI.getDescripcio()));
 		return __tmp;
 	}
 

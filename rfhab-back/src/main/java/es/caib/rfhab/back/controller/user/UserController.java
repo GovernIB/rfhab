@@ -236,6 +236,7 @@ public class UserController extends UsuariController {
 			@RequestParam(value = "tramitVersio", required = true) String tramitVersio,
 			@RequestParam(value = "tramitParametres", required = false) String tramitParametres,
 			@RequestParam(value = "idTraTel", required = true) String idTraTel,
+			@RequestParam(value = "unitatAdministrativa", required = true) String unitatAdministrativa,
 			@RequestParam(value = "arxiuExpedientId", required = true) String arxiuExpedientId,
 			@RequestParam(value = "arxiuDocumentId", required = true) String arxiuDocumentId,
 			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -262,6 +263,7 @@ public class UserController extends UsuariController {
 		log.info("XYZ YYY tramitVersio = " + tramitVersio);
 		log.info("XYZ YYY tramitParametres = " + tramitParametres);
 		log.info("XYZ YYY idTraTel = " + idTraTel);
+		log.info("XYZ YYY unitatAdministrativa = " + unitatAdministrativa);
 		log.info("XYZ YYY arxiuExpedientId = " + arxiuExpedientId);
 		log.info("XYZ YYY arxiuDocumentId = " + arxiuDocumentId);
 
@@ -305,6 +307,9 @@ public class UserController extends UsuariController {
 			if (idTraTel == null || "".equals(idTraTel)) {
 				campsBuits.add("idTraTel");
 			}
+			if (unitatAdministrativa == null || "".equals(unitatAdministrativa)) {
+				campsBuits.add("unitatAdministrativa");
+			}
 			if (campsBuits.size() > 0) {
 				String missatge = "Error al recuperar el ticket d'accés, els següents camps estan buits i són necessaris: ";
 				for (String camp : campsBuits) {
@@ -318,7 +323,7 @@ public class UserController extends UsuariController {
 					interessatTramit,
 					representantTramit,
 					tramitCodi, languageUI, tramitParametres, false, idTraTel, tramitVersio,
-					dataActivitat, procediment, arxiuExpedientId, arxiuDocumentId);
+					unitatAdministrativa, dataActivitat, procediment, arxiuExpedientId, arxiuDocumentId);
 		} catch (Exception e) {
 			log.error("Error retrieving ticket access. Message: " + e.getMessage());
 			log.error("Error retrieving ticket access. LocalizedMessage: " + e.getLocalizedMessage());

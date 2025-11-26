@@ -4,7 +4,9 @@ import java.util.List;
 
 import javax.ejb.Local;
 import org.fundaciobit.genapp.common.i18n.I18NException;
+import org.fundaciobit.genapp.common.query.Where;
 
+import es.caib.rfhab.commons.utils.PersonalOamrTipus;
 import es.caib.rfhab.ejb.FuncionariService;
 import es.caib.rfhab.logic.utils.HistoricFuncionariDAO;
 import es.caib.rfhab.model.entity.Funcionari;
@@ -22,10 +24,6 @@ public interface FuncionariLogicaService extends FuncionariService {
 	public static final String JNDI_NAME = "java:app/rfhab-ejb/FuncionariLogicaEJB!es.caib.rfhab.logic.FuncionariLogicaService";
 
 	public long getFuncionariID(String numero, String usuari, Long entitatId) throws I18NException;
-
-	public boolean isFuncionariAutoritzat(Long funcionariId, String codiSia, Long entitatId) throws I18NException;
-
-	public boolean isFuncionariHabilitat(Long funcionariId, String codiRol, Long entitatId) throws I18NException;
 
 	public FuncionariJPA createAndHistory(Funcionari funcionari, String cai, Long usuariId) throws I18NException;
 
@@ -56,4 +54,17 @@ public interface FuncionariLogicaService extends FuncionariService {
 	public String getNumeroFhFromNumeric(int nouNumber);
 
 	public List<Long> getFuncionarisIdsByNomComplet(String nomComplet) throws NoSuchFieldException;
+
+	public Where isPersonalOamrWhere(final PersonalOamrTipus personalOamr) throws I18NException;
+
+	public boolean isOamr(FuncionariJPA funcionari) throws I18NException;
+
+	public boolean isFuncionariHabilitat(FuncionariJPA funcionari, List<String> codiHabilitacions, Long entitatId)
+			throws I18NException;
+
+	public void checkIsFuncionariHabilitat(String language, Funcionari funcionari, List<String> codiHabilitacions,
+			Long entitatId) throws I18NException;
+
+	public void checkIsFuncionariAutoritzat(String language, FuncionariJPA funcionari, List<String> codiHabilitacions,
+			String unitatAdministrativaTramit, Long entitatId) throws I18NException;
 }

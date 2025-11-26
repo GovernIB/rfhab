@@ -27,6 +27,11 @@ public interface UnitatLogicaService extends UnitatService {
 
     public Unitat findUnitatMare(Long unitatId) throws I18NException;
 
+    public Unitat findUnitatMare(String codiDir3unitat, Long unitatIdTope) throws I18NException;
+
+    public Unitat findUnitatMare(String codiDir3unitat, Integer versioCodiDir3unitat, Long unitatIdTope)
+            throws I18NException;
+
     public Unitat findUnitatMare(Long unitatId, Long unitatIdTope) throws I18NException;
 
     public List<Unitat> findAllReferencingUnitats(List<Unitat> unitats, String codiInicial);

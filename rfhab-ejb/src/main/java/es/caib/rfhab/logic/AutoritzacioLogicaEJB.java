@@ -17,7 +17,7 @@ import es.caib.rfhab.model.fields.AutoritzacioFields;
  */
 
 @Stateless
-public class AutoritzacioLogicaEJB extends AutoritzacioEJB implements AutoritzacioLogicaService{
+public class AutoritzacioLogicaEJB extends AutoritzacioEJB implements AutoritzacioLogicaService {
 
 	@Override
 	public List<Autoritzacio> getAutoritzacionsByFuncionariID(Long funcionariId) throws I18NException {
@@ -28,6 +28,5 @@ public class AutoritzacioLogicaEJB extends AutoritzacioEJB implements Autoritzac
 	public List<Autoritzacio> getAutoritzacionsByLlocID(Long llocId) throws I18NException {
 		return this.select(AutoritzacioFields.LLOCID.equal(llocId));
 	}
-	
-	
+
 }

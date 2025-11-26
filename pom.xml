@@ -560,6 +560,7 @@
                                             <include name="**/src/main/resources/*.properties"/>
                                             <exclude name="**/src/main/resources/ValidationMessages.properties"/>
                                             <exclude name="**/src/main/resources/ValidationMessages_es.properties"/>
+                                            <exclude name="**/src/main/resources/genapp_ca.properties"/>
                                         </fileset>
                                         <apply executable="cmd" failonerror="true">
                                             <fileset refid="properties.files"/>

@@ -573,7 +573,7 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
 
         // TODO: no puc assignar una data baixa específica...
         if (dataBaixaFh != null && !dataBaixaFh.isEmpty()) {
-            log.info("Donant baixa lloc: " + dto.codiLlocFeina + " - " + dto.expansio);
+            log.info("Donant baixa FH: " + dto.nif + " - CAI: " + dto.numCaiAlta);
             String respostaDonarBaixaFh = donarBaixaFh(lang, usuariId, dto.nif, dto.numCaiAlta);
             log.info("Resposta donar baixa FH: " + respostaDonarBaixaFh);
             log.info("Donant baixa lloc: " + dto.codiLlocFeina + " - " + dto.expansio);

@@ -113,8 +113,12 @@ public class UserController extends UsuariController {
 
 		LoginInfo loginInfo = LoginInfo.getInstance();
 		String language = loginInfo.getLanguage();
+		Usuari usuari = loginInfo.getUsuariPersona();
+		String username = usuari.getUsername();
+		String funcionariDir3 = getCodiDIR3(request, username);// codiDIR3 del lloc de feina del funcionari
+
 		rolsacPlugin = new RolsacPlugin();
-		HashMap<String, String[]> llistaProcediments = rolsacPlugin.obtenirProcedimentsAll(language);
+		HashMap<String, String[]> llistaProcediments = rolsacPlugin.obtenirProcedimentsByDir3(funcionariDir3, language);
 
 		// HashMap<String, String> llistaTramits =
 		// rolsacPlugin.obtenirTramits("1533169");
@@ -171,11 +175,12 @@ public class UserController extends UsuariController {
 			HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		log.info("ENTRANT A modelConsentiment");
 		log.info("modelConsentiment -- identificadorDocument = " + identificadorDocument);
-		
+
 		String urlDoc = documentImprimible(identificadorDocument, session, request, response);
 		log.info("modelConsentiment -- urlDoc = " + urlDoc);
-		
-		// FileDownloadController.fullDownload(identificadorDocument, "nominventat", "", response);
+
+		// FileDownloadController.fullDownload(identificadorDocument, "nominventat", "",
+		// response);
 		return "redirect:" + urlDoc;
 	}
 

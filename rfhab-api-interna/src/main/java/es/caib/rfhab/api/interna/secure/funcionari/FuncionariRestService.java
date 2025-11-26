@@ -251,6 +251,9 @@ public class FuncionariRestService extends RestUtils {
 			@ApiResponse(responseCode = "500", description = "Error no controlat", content = {
 					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = RestExceptionInfo.class)) }), })
 	public String isFuncionariAutoritzat(
+			@Parameter(name = "language", description = "Idioma en que s'han de retornar les dades(Només suportat 'ca' o 'es')", in = ParameterIn.QUERY, required = false, examples = {
+					@ExampleObject(name = "Català", value = "ca"),
+					@ExampleObject(name = "Castellano", value = "es") }, schema = @Schema(defaultValue = "ca", implementation = String.class)) @QueryParam("language") String language,
 
 			@Parameter(description = "Usuari del funcionari habilitat", required = true, example = "u12345", array = @ArraySchema(schema = @Schema(type = "string"))) @QueryParam("usuari") String usuari,
 			@Parameter(description = "Codi SIA", required = true, example = "132313", array = @ArraySchema(schema = @Schema(type = "string"))) @QueryParam("codisia") String codiSia,
@@ -331,7 +334,8 @@ public class FuncionariRestService extends RestUtils {
 					}
 
 					Boolean autoritzat = false;
-					HashMap<String, String> procediments = rolsacPlugin.obtenirProcedimentsByDir3(codiDir3.get(0));
+					HashMap<String, String[]> procediments = rolsacPlugin.obtenirProcedimentsByDir3(codiDir3.get(0),
+							language);
 					for (String item : procediments.keySet()) {
 						log.info("Procediment " + item);
 						if (codiSia.equalsIgnoreCase(item)) {

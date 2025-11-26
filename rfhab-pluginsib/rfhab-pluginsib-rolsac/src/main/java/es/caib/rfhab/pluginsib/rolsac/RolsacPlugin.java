@@ -40,6 +40,9 @@ public class RolsacPlugin implements IRolsacPlugin {
 	protected final Logger LOG = Logger.getLogger(this.getClass());
 
 	private static final String FILTRE_PROCEDIMENTS = "{\"activo\":\"1\",\"telematico\":\"1\",\"disponibleFuncionarioHabilitado\":\"1\"}";
+	private static final String DI3_VALUE_FROM_FILTER = "#########";
+	private static final String FILTRE_PROCEDIMENTS_BY_DI3 = "{\"activo\":\"1\",\"telematico\":\"1\",\"disponibleFuncionarioHabilitado\":\"1\", \"codigoUADir3\":\""
+			+ DI3_VALUE_FROM_FILTER + "\", \"buscarEnDescendientesUA\":\"1\"}";
 
 	private static final String FILTRE_PAGINACIO = "{\"page\":\"1\",\"size\":\"500\"}";
 
@@ -51,11 +54,13 @@ public class RolsacPlugin implements IRolsacPlugin {
 	AsyncLoadingCache<String, HashMap<String, String[]>> procedimentsAllCatxe = Caffeine.newBuilder()
 			// .maximumSize(100)// TODO???
 			.expireAfterWrite(TEMPS_CATXE_PROCEDIMENTS_I_TRAMITS, TimeUnit.MILLISECONDS)
-			.buildAsync(k -> getProcedimentsPerLlenguaFromService(k));
+			.buildAsync(k -> getProcedimentsPerLlenguaFromService(k));// TODO: millorar per a que empri
+																		// getProcedimentsPerLlenguaFromService(String
+																		// llengua, List<String> codisDir3)
 	AsyncLoadingCache<String, HashMap<String, String[]>> tramitsFhAllCatxe = Caffeine.newBuilder()
 			// .maximumSize(100)// TODO???
 			.expireAfterWrite(TEMPS_CATXE_PROCEDIMENTS_I_TRAMITS, TimeUnit.MILLISECONDS)
-			.buildAsync(k -> getTramitsPerLlengua(k));
+			.buildAsync(k -> getTramitsPerLlenguaFromService(k));
 	AsyncLoadingCache<String, String> codiDir3UnitatsAdministrativesCatxe = Caffeine.newBuilder()
 			// .maximumSize(100)// TODO???
 			.expireAfterWrite(TEMPS_CATXE_PROCEDIMENTS_I_TRAMITS, TimeUnit.MILLISECONDS)
@@ -75,7 +80,66 @@ public class RolsacPlugin implements IRolsacPlugin {
 		super();
 	}
 
-	public HashMap<String, String> obtenirProcedimentsByDir3(String codiDir3) throws Exception {
+	public HashMap<String, String[]> obtenirProcedimentsByDir3(String codiDir3, String llengua) throws Exception {
+		HashMap<String, String[]> procedimentsPerLlengua = null;
+		HashMap<String, String[]> procedimentsTrobats = new HashMap<String, String[]>();
+		java.util.concurrent.CompletableFuture<HashMap<String, String[]>> future = procedimentsAllCatxe
+				.getIfPresent(llengua);
+		if (future != null) {
+			procedimentsPerLlengua = future.thenApply(resultats -> {
+				if (resultats == null) {
+					LOG.info("No s'han trobat procediments per a la llengua: " + llengua);
+					return new HashMap<String, String[]>();
+				} else {
+					LOG.info("S'han trobat " + resultats.size() + " procediments per a la llengua: " + llengua);
+					return resultats;
+				}
+			}).get();
+		} else {
+			procedimentsPerLlengua = new HashMap<String, String[]>();
+		}
+
+		for (Map.Entry<String, String[]> entry : procedimentsPerLlengua.entrySet()) {
+			String[] values = entry.getValue();
+			if (values != null && values.length > 1 && codiDir3.equals(values[3])) {
+				procedimentsTrobats.put(entry.getKey(), values);
+			}
+		}
+		if (procedimentsTrobats.isEmpty()) {
+			HashMap<String, String[]> resultats = getProcedimentsPerLlenguaFromService(llengua,
+					java.util.Arrays.asList(codiDir3));
+			if (resultats != null) {
+				procedimentsTrobats.putAll(resultats);
+				LOG.info("S'han trobat " + resultats.size() + " procediments per a la unitat amb codi DIR3: "
+						+ codiDir3);
+				// Actualitzem el catxe amb els resultats trobats
+				procedimentsPerLlengua.putAll(resultats);
+				procedimentsAllCatxe.put(llengua,
+						java.util.concurrent.CompletableFuture.completedFuture(procedimentsPerLlengua));
+			}
+		}
+		return procedimentsTrobats;
+	}
+
+	public HashMap<String, String[]> reobtenirProcedimentsAll(String llengua) throws Exception {
+		HashMap<String, String[]> procedimentsPerLlengua = getProcedimentsPerLlenguaFromService(llengua);
+		procedimentsAllCatxe.put(llengua,
+				java.util.concurrent.CompletableFuture.completedFuture(procedimentsPerLlengua));
+
+		if (procedimentsPerLlengua == null) {
+			LOG.info("No s'han trobat procediments per a la llengua: " + llengua);
+			return new HashMap<String, String[]>();
+		} else {
+			LOG.info("S'han trobat " + procedimentsPerLlengua.size() + " procediments per a la llengua: " + llengua);
+			return procedimentsPerLlengua;
+		}
+	}
+
+	private HashMap<String, String[]> getProcedimentsPerLlenguaFromService(String llengua, List<String> codisDir3)
+			throws Exception {
+		if (llengua == null || llengua.isEmpty()) {
+			llengua = "ca";
+		}
 
 		final String entitat = "procedimientos";
 
@@ -84,55 +148,58 @@ public class RolsacPlugin implements IRolsacPlugin {
 		final HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED);
 
-		final MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
-		map.add("idioma", "es");
-		map.add("filtro", FILTRE_PROCEDIMENTS);
-		map.add("filtroOrdenacion", FILTRE_PAGINACIO);
-		map.add("codigoua", codiDir3);
+		HashMap<String, String[]> resultats = null;
+		for (String codiDir3 : codisDir3) {
+			final MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
+			// map.add("idioma", "es");
+			// map.add("filtro", FILTRE_PROCEDIMENTS);
+			// map.add("filtroOrdenacion", FILTRE_PAGINACIO);
+			map.add("lang", llengua);
+			final String filtreProcediments = FILTRE_PROCEDIMENTS_BY_DI3.replace(DI3_VALUE_FROM_FILTER, codiDir3);
+			map.add("filtro", filtreProcediments);
+			map.add("filtroPaginacion", FILTRE_PAGINACIO);
 
-		final HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+			final HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
-		final ResponseEntity<RespuestaProcediments> responseProcedimientos = restTemplate
-				.postForEntity(ENDPOINT + entitat, request, RespuestaProcediments.class);
+			LOG.info("Cridant a Rolsac: " + ENDPOINT + entitat);
+			LOG.info("Amb filtre: " + filtreProcediments);
+			LOG.info("Amb paginacio: " + FILTRE_PAGINACIO);
+			LOG.info("Amb usuari: " + USUARI);
+			LOG.info("Amb password: " + PASS);
+			LOG.info("Amb request: " + request);
+			LOG.info("Amb headers: " + headers);
+			LOG.info("Amb map: " + map);
+			final ResponseEntity<RespuestaProcediments> responseProcedimientos = restTemplate
+					.postForEntity(ENDPOINT + entitat, request, RespuestaProcediments.class);
 
-		if (responseProcedimientos != null && responseProcedimientos.getBody() != null) {
-			if (!responseProcedimientos.getBody().getStatus().equals("200")
-					|| (responseProcedimientos.getBody().getNumeroElementos().equals("0"))) {
-				return null;
-			} else {
+			if (responseProcedimientos != null && responseProcedimientos.getBody() != null) {
+				if (!responseProcedimientos.getBody().getStatus().equals("200")
+						|| (responseProcedimientos.getBody().getNumeroElementos().equals("0"))) {
+					return null;
+				} else {
 
-				final List<Procediments> respostaProcediments = responseProcedimientos.getBody().getResultado();
-				if (respostaProcediments != null)
-					LOG.info("S'han trobat " + respostaProcediments.size() + " procediments");
-				else
-					LOG.info("No s'han trobat procediments");
+					final List<Procediments> respostaProcediments = responseProcedimientos.getBody().getResultado();
+					if (respostaProcediments != null)
+						LOG.info("S'han trobat " + respostaProcediments.size() + " procediments");
+					else
+						LOG.info("No s'han trobat procediments");
 
-				HashMap<String, String> resultats = new HashMap<String, String>();
-
-				if (respostaProcediments != null)
-					for (Procediments procediment : respostaProcediments) {
-						LOG.info(procediment.getCodigo() + " " + procediment.getNombre());
-						resultats.put(String.valueOf(procediment.getCodigo()),
-								procediment.getNombre().replace("'", "`"));
+					if (resultats == null) {
+						resultats = new HashMap<String, String[]>();
 					}
 
-				return resultats;
+					if (respostaProcediments != null)
+						for (Procediments procediment : respostaProcediments) {
+							LOG.info(procediment.getCodigo() + " - " + procediment.getCodigoSIA() + " - "
+									+ procediment.getNombre());
+							resultats.put(String.valueOf(procediment.getCodigo()),
+									new String[] { procediment.getNombre().replace("'", "`"),
+											llengua, procediment.getCodigoSIA(), codiDir3 });
+						}
+				}
 			}
 		}
-		return null;
-
-	}
-
-	public HashMap<String, String[]> obtenirProcedimentsAll(String llengua) throws Exception {
-		return procedimentsAllCatxe.get(llengua).thenApply(resultats -> {
-			if (resultats == null) {
-				LOG.info("No s'han trobat procediments per a la llengua: " + llengua);
-				return new HashMap<String, String[]>();
-			} else {
-				LOG.info("S'han trobat " + resultats.size() + " procediments per a la llengua: " + llengua);
-				return resultats;
-			}
-		}).get();
+		return resultats;
 	}
 
 	private HashMap<String, String[]> getProcedimentsPerLlenguaFromService(String llengua) throws Exception {
@@ -207,7 +274,7 @@ public class RolsacPlugin implements IRolsacPlugin {
 								+ procediment.getNombre());
 						resultats.put(String.valueOf(procediment.getCodigo()),
 								new String[] { procediment.getNombre().replace("'", "`"),
-										llengua, procediment.getCodigoSIA() });
+										llengua, procediment.getCodigoSIA(), null });
 					}
 
 				return resultats;
@@ -242,7 +309,7 @@ public class RolsacPlugin implements IRolsacPlugin {
 			}
 		}
 		if (tramitsTrobats.isEmpty()) {
-			HashMap<String, String[]> resultats = getTramitsPerLlengua(procedimentId, llengua);
+			HashMap<String, String[]> resultats = getTramitsPerLlenguaFromService(procedimentId, llengua);
 			if (resultats != null) {
 				tramitsTrobats.putAll(resultats);
 				LOG.info("S'han trobat " + resultats.size() + " tràmits per al procediment: " + procedimentId);
@@ -301,7 +368,7 @@ public class RolsacPlugin implements IRolsacPlugin {
 		return null;
 	}
 
-	private HashMap<String, String[]> getTramitsPerLlengua(String procedimentId, String llengua)
+	private HashMap<String, String[]> getTramitsPerLlenguaFromService(String procedimentId, String llengua)
 			throws Exception {
 		if (llengua == null || llengua.isEmpty()) {
 			llengua = "ca";
@@ -413,13 +480,13 @@ public class RolsacPlugin implements IRolsacPlugin {
 		}).get();
 	}
 
-	private HashMap<String, String[]> getTramitsPerLlengua(String llengua)
+	private HashMap<String, String[]> getTramitsPerLlenguaFromService(String llengua)
 			throws Exception {
 		if (llengua == null || llengua.isEmpty()) {
 			llengua = "ca";
 		}
 
-		return getTramitsPerLlengua(null, llengua);
+		return getTramitsPerLlenguaFromService(null, llengua);
 	}
 
 	public String getCodiDir3UnitatAdministrativa(String codi) throws InterruptedException, ExecutionException {

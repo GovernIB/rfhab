@@ -51,7 +51,7 @@ import es.caib.rfhab.back.utils.Tab;
  * 
  * @author GenApp
  */
-@MenuOption(labelCode="historicLloc.historicLloc.plural", order=70, group=Tab.MENU_WEBDB)
+@MenuOption(labelCode="historicLloc.historicLloc.plural", order=80, group=Tab.MENU_WEBDB)
 @Controller
 @RequestMapping(value = "/webdb/historicLloc")
 @SessionAttributes(types = { HistoricLlocForm.class, HistoricLlocFilterForm.class })

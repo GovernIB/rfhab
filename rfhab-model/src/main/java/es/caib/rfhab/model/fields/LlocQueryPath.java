@@ -115,10 +115,10 @@ public class LlocQueryPath extends org.fundaciobit.genapp.common.query.QueryPath
 
  // TODO Solució dins el mètode testOneByOneDirect de la classe TestJPA 
 
-  public LlocRolQueryPath LLOCROLS() {
-    return new LlocRolQueryPath(new QueryPath() {
+  public LlocHabilitacioQueryPath LLOCHABILITACIOS() {
+    return new LlocHabilitacioQueryPath(new QueryPath() {
       public String getQueryPath() {
-          return LlocQueryPath.this.getQueryPath() + "llocRols" + ".";
+          return LlocQueryPath.this.getQueryPath() + "llocHabilitacios" + ".";
       }
     });
   }

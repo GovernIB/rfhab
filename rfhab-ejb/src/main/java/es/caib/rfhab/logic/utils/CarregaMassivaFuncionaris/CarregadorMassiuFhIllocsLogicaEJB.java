@@ -24,14 +24,14 @@ import es.caib.rfhab.commons.utils.IdentificacioTipus;
 import es.caib.rfhab.commons.utils.PersonalOamrTipus;
 import es.caib.rfhab.logic.FuncionariLogicaEJB;
 import es.caib.rfhab.logic.FuncionariLogicaService;
-import es.caib.rfhab.logic.RolLogicaEJB;
-import es.caib.rfhab.logic.RolLogicaService;
+import es.caib.rfhab.logic.HabilitacioLogicaEJB;
+import es.caib.rfhab.logic.HabilitacioLogicaService;
 import es.caib.rfhab.logic.UnitatLogicaEJB;
 import es.caib.rfhab.logic.UnitatLogicaService;
 import es.caib.rfhab.model.dao.IFuncionariManager;
-import es.caib.rfhab.model.dao.IRolManager;
+import es.caib.rfhab.model.dao.IHabilitacioManager;
 import es.caib.rfhab.model.dao.IUnitatManager;
-import es.caib.rfhab.model.entity.Rol;
+import es.caib.rfhab.model.entity.Habilitacio;
 import es.caib.rfhab.model.entity.Unitat;
 
 @Stateless
@@ -109,8 +109,8 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
     @EJB(mappedName = UnitatLogicaService.JNDI_NAME)
     protected UnitatLogicaService unitatLogicaEjb;
 
-    @EJB(mappedName = RolLogicaService.JNDI_NAME)
-    protected RolLogicaService rolLogicaEjb;
+    @EJB(mappedName = HabilitacioLogicaService.JNDI_NAME)
+    protected HabilitacioLogicaService habilitacioLogicaEjb;
 
     private IFuncionariManager funcionariManAux = null;
     private IFuncionariManager funcionariMan = null;
@@ -136,16 +136,16 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
         return unitatMan;
     }
 
-    private IRolManager rolManAux = null;
-    private static IRolManager rolMan = null;
+    private IHabilitacioManager habilitacioManAux = null;
+    private static IHabilitacioManager habilitacioMan = null;
 
-    public IRolManager getRolMan() {
-        if (rolMan == null) {
-            rolMan = (rolLogicaEjb.getEntityManager() != null
-                    ? (IRolManager) rolLogicaEjb.getEntityManager()
-                    : rolManAux);
+    public IHabilitacioManager getHabilitacioMan() {
+        if (habilitacioMan == null) {
+            habilitacioMan = (habilitacioLogicaEjb.getEntityManager() != null
+                    ? (IHabilitacioManager) habilitacioLogicaEjb.getEntityManager()
+                    : habilitacioManAux);
         }
-        return rolMan;
+        return habilitacioMan;
     }
 
     private final HttpClient httpClient = HttpClient.newHttpClient();
@@ -248,7 +248,7 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
     public static CarregadorMassiuFhIllocsLogicaService CrearCarregadorMassiuFhIllocsLogicaEJBambEjbsPerTests(
             String odsFilePath, String mappingFilePath,
             Properties apiExternaProperties, IFuncionariManager funcionariMan, IUnitatManager unitatMan,
-            IRolManager rolMan)
+            IHabilitacioManager habilitacioMan)
             throws Exception {
 
         CarregadorMassiuFhIllocsLogicaEJB carregador = null;
@@ -257,10 +257,10 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
 
         carregador.funcionariLogicaEjb = new FuncionariLogicaEJB();
         carregador.unitatLogicaEjb = new UnitatLogicaEJB();
-        carregador.rolLogicaEjb = new RolLogicaEJB();
+        carregador.habilitacioLogicaEjb = new HabilitacioLogicaEJB();
         carregador.funcionariManAux = funcionariMan;
         carregador.unitatManAux = unitatMan;
-        carregador.rolManAux = rolMan;
+        carregador.habilitacioManAux = habilitacioMan;
 
         return carregador;
     }
@@ -540,16 +540,16 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
         List<Long> habilitacions = new ArrayList<>();
         String[] habilitacionsFromInput = dto.habilitacio.split(",");
         for (String codiHabilitacio : habilitacionsFromInput) {
-            log.info("Cercant habilitacion amb codi: " + codiHabilitacio);
-            Rol habilitacioTrobada = RolLogicaEJB.findByCodi(getRolMan(), codiHabilitacio.trim());
-            log.info("Habilitacio trobada: " + (habilitacioTrobada != null ? habilitacioTrobada.getRolID() : null));
+            log.info("Cercant habilitació amb codi: " + codiHabilitacio);
+            Habilitacio habilitacioTrobada = HabilitacioLogicaEJB.findByCodi(getHabilitacioMan(), codiHabilitacio.trim());
+            log.info("Habilitació trobada: " + (habilitacioTrobada != null ? habilitacioTrobada.getHabilitacioID() : null));
             if (habilitacioTrobada == null) {
                 String errorMsg = "No s'ha trobat l'habilitació amb CODI " + codiHabilitacio;
                 throw new I18NException(errorMsg);
             }
-            Long rolID = Long.valueOf(habilitacioTrobada.getRolID());
-            if (!habilitacions.contains(rolID)) {
-                habilitacions.add(rolID);
+            Long habilitacioID = Long.valueOf(habilitacioTrobada.getHabilitacioID());
+            if (!habilitacions.contains(habilitacioID)) {
+                habilitacions.add(habilitacioID);
             }
         }
         NouLlocDTO nouLloc = new NouLlocDTO(lang, Integer.parseInt(usuariId), dto.codiLlocFeina, dto.expansio,

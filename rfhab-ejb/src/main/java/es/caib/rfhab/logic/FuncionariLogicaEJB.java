@@ -24,7 +24,7 @@ import es.caib.rfhab.commons.utils.ActivitatEstat;
 import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.commons.utils.PersonalOamrTipus;
 import es.caib.rfhab.ejb.FuncionariEJB;
-import es.caib.rfhab.ejb.RolService;
+import es.caib.rfhab.ejb.HabilitacioService;
 import es.caib.rfhab.logic.utils.HistoricFuncionariDAO;
 import es.caib.rfhab.model.dao.IFuncionariManager;
 import es.caib.rfhab.model.entity.Funcionari;
@@ -32,7 +32,7 @@ import es.caib.rfhab.model.entity.FuncionariLloc;
 import es.caib.rfhab.model.entity.Historic;
 import es.caib.rfhab.model.entity.HistoricLloc;
 import es.caib.rfhab.model.entity.Lloc;
-import es.caib.rfhab.model.entity.Rol;
+import es.caib.rfhab.model.entity.Habilitacio;
 import es.caib.rfhab.model.entity.Unitat;
 import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.FuncionariLlocFields;
@@ -42,7 +42,7 @@ import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.HistoricJPA;
 import es.caib.rfhab.persistence.HistoricLlocJPA;
 import es.caib.rfhab.persistence.LlocJPA;
-import es.caib.rfhab.persistence.RolJPA;
+import es.caib.rfhab.persistence.HabilitacioJPA;
 import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
 
 /**
@@ -66,8 +66,8 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 	@EJB(mappedName = LlocLogicaService.JNDI_NAME)
 	protected LlocLogicaService llocLogicaEjb;
 
-	@EJB(mappedName = RolLogicaService.JNDI_NAME)
-	protected RolLogicaService rolLogicaEjb;
+	@EJB(mappedName = HabilitacioLogicaService.JNDI_NAME)
+	protected HabilitacioLogicaService habilitacioLogicaEjb;
 
 	@EJB(mappedName = UnitatLogicaService.JNDI_NAME)
 	protected UnitatLogicaService unitatLogicaEjb;
@@ -186,8 +186,8 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 
 		// TODO ENTITATID
 
-		for (String rol : codiHabilitacions) {
-			Rol habilitacioTrobada = rolLogicaEjb.findByCodiIfuncionari(rol, funcionari);
+		for (String habilitacio : codiHabilitacions) {
+			Habilitacio habilitacioTrobada = habilitacioLogicaEjb.findByCodiIfuncionari(habilitacio, funcionari);
 			if (habilitacioTrobada == null) {
 				return false;
 			}

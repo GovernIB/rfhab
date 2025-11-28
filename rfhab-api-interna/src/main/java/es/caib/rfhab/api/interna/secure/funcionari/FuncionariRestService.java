@@ -8,20 +8,20 @@ import es.caib.rfhab.commons.utils.StringUtils;
 import es.caib.rfhab.ejb.ActivitatService;
 import es.caib.rfhab.ejb.EntitatService;
 import es.caib.rfhab.ejb.FuncionariLlocService;
-import es.caib.rfhab.ejb.LlocRolService;
+import es.caib.rfhab.ejb.LlocHabilitacioService;
 import es.caib.rfhab.ejb.LlocService;
-import es.caib.rfhab.ejb.RolService;
 import es.caib.rfhab.ejb.UnitatService;
 import es.caib.rfhab.logic.FuncionariLogicaService;
+import es.caib.rfhab.logic.HabilitacioLogicaService;
 import es.caib.rfhab.logic.UsuariLogicaService;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.Lloc;
-import es.caib.rfhab.model.entity.Rol;
+import es.caib.rfhab.model.entity.Habilitacio;
 import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.FuncionariLlocFields;
 import es.caib.rfhab.model.fields.LlocFields;
-import es.caib.rfhab.model.fields.LlocRolFields;
-import es.caib.rfhab.model.fields.RolFields;
+import es.caib.rfhab.model.fields.LlocHabilitacioFields;
+import es.caib.rfhab.model.fields.HabilitacioFields;
 import es.caib.rfhab.model.fields.UnitatFields;
 import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.validator.FuncionariValidator;
@@ -110,11 +110,11 @@ public class FuncionariRestService extends RestUtils {
 	@EJB(mappedName = LlocService.JNDI_NAME)
 	protected LlocService llocEjb;
 
-	@EJB(mappedName = LlocRolService.JNDI_NAME)
-	protected LlocRolService llocRolEjb;
+	@EJB(mappedName = LlocHabilitacioService.JNDI_NAME)
+	protected LlocHabilitacioService llocHabilitacioEjb;
 
-	@EJB(mappedName = RolService.JNDI_NAME)
-	protected RolService rolEjb;
+	@EJB(mappedName = HabilitacioLogicaService.JNDI_NAME)
+	protected HabilitacioLogicaService habilitacioLogicaEjb;
 
 	@EJB(mappedName = EntitatService.JNDI_NAME)
 	protected EntitatService entitatEjb;
@@ -139,7 +139,7 @@ public class FuncionariRestService extends RestUtils {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Operation(tags = {
-			FuncionariRestService.TAG_NAME }, operationId = "ObtenirRolsFuncionari", summary = "Obtenir els rols associats a un funcionari")
+			FuncionariRestService.TAG_NAME }, operationId = "ObtenirHabilitacionsFuncionari", summary = "Obtenir les habilitacions associades a un/a funcionari/ària")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Operació realitzada correctament", content = {
 					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = String.class)) }),
@@ -151,10 +151,10 @@ public class FuncionariRestService extends RestUtils {
 					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = String.class)) }),
 			@ApiResponse(responseCode = "500", description = "Error no controlat", content = {
 					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = RestExceptionInfo.class)) }), })
-	public String obtenirRolsFuncionari(
+	public String obtenirHabilitacionsFuncionari(
 
 			@Parameter(description = "Usuari del funcionari", required = true, example = "", array = @ArraySchema(schema = @Schema(type = "string"))) @QueryParam("usuari") String usuari,
-			@Parameter(description = "Habilitació", required = true, example = "COPIA", array = @ArraySchema(schema = @Schema(type = "string"))) @QueryParam("rol") String rol,
+			@Parameter(description = "Habilitació", required = true, example = "COPIA", array = @ArraySchema(schema = @Schema(type = "string"))) @QueryParam("habilitacio") String habilitacio,
 			@Parameter(description = "Codi de la entitat", required = true, example = "", array = @ArraySchema(schema = @Schema(type = "string"))) @QueryParam("entitat") String entitat) {
 
 		try {
@@ -201,18 +201,20 @@ public class FuncionariRestService extends RestUtils {
 				log.info("Lloc ocupat: " + String.valueOf(lloc));
 			});
 
-			// Retornam la llista de Rols assignats al Lloc actiu assignat al funcionari
-			List<Long> rolsLloc = llocRolEjb.executeQuery(LlocRolFields.ROLID, LlocRolFields.LLOCID.in(llocsOcupats));
+			// Retornam la llista de Habilitacions assignats al Lloc actiu assignat al
+			// funcionari
+			List<Long> habilitacionsLloc = llocHabilitacioEjb.executeQuery(LlocHabilitacioFields.HABILITACIOID,
+					LlocHabilitacioFields.LLOCID.in(llocsOcupats));
 
-			rolsLloc.forEach(rolLlocItem -> {
-				log.info("RolLlocItem: " + rolLlocItem);
+			habilitacionsLloc.forEach(habilitacioLlocItem -> {
+				log.info("HabilitacioLlocItem: " + habilitacioLlocItem);
 			});
 
-			List<Rol> rols = rolEjb.select(RolFields.ROLID.in(rolsLloc));
+			List<Habilitacio> habilitacions = habilitacioLogicaEjb.select(HabilitacioFields.HABILITACIOID.in(habilitacionsLloc));
 
 			Boolean habilitat = false;
-			for (Rol rolItem : rols) {
-				if (rol.equalsIgnoreCase(rolItem.getCodi())) {
+			for (Habilitacio habilitacioItem : habilitacions) {
+				if (habilitacio.equalsIgnoreCase(habilitacioItem.getCodi())) {
 					habilitat = true;
 					break;
 				}
@@ -225,7 +227,7 @@ public class FuncionariRestService extends RestUtils {
 			return mapper.writeValueAsString("NO");
 
 		} catch (Exception e) {
-			log.error("Error consultant els rols d'un funcionari: " + e.getMessage());
+			log.error("Error consultant les habilitacions d'un funcionari: " + e.getMessage());
 			return "Error";
 		}
 
@@ -428,18 +430,20 @@ public class FuncionariRestService extends RestUtils {
 				log.info("Lloc ocupat: " + String.valueOf(lloc));
 			});
 
-			// Retornam la llista de Rols assignats al Lloc actiu assignat al funcionari
-			List<Long> rolsLloc = llocRolEjb.executeQuery(LlocRolFields.ROLID, LlocRolFields.LLOCID.in(llocsOcupats));
+			// Retornam la llista de Habilitacions assignats al Lloc actiu assignat al
+			// funcionari
+			List<Long> habilitacionsLloc = llocHabilitacioEjb.executeQuery(LlocHabilitacioFields.HABILITACIOID,
+					LlocHabilitacioFields.LLOCID.in(llocsOcupats));
 
-			rolsLloc.forEach(rolLlocItem -> {
-				log.info("RolLlocItem: " + rolLlocItem);
+			habilitacionsLloc.forEach(habilitacioLlocItem -> {
+				log.info("HabilitacioLlocItem: " + habilitacioLlocItem);
 			});
 
-			List<Rol> rols = rolEjb.select(RolFields.ROLID.in(rolsLloc));
+			List<Habilitacio> habilitacions = habilitacioLogicaEjb.select(HabilitacioFields.HABILITACIOID.in(habilitacionsLloc));
 
 			String resposta = "[";
-			for (Rol rolItem : rols) {
-				resposta += rolItem.getCodi() + ",";
+			for (Habilitacio habilitacioItem : habilitacions) {
+				resposta += habilitacioItem.getCodi() + ",";
 			}
 			resposta = "]";
 

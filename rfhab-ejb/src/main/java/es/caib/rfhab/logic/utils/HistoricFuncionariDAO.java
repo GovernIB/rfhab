@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import es.caib.rfhab.model.entity.Funcionari;
-import es.caib.rfhab.model.entity.Rol;
+import es.caib.rfhab.model.entity.Habilitacio;
 
 /**
  * 
@@ -28,7 +28,7 @@ public class HistoricFuncionariDAO implements java.io.Serializable {
 	private String observacions = null;
 
 	@JsonIgnore
-	private List<Rol> rols;
+	private List<Habilitacio> habilitacions;
 
 	// Getters i setters
 	public String getNumero() {
@@ -103,12 +103,12 @@ public class HistoricFuncionariDAO implements java.io.Serializable {
 		this.observacions = observacions;
 	}
 
-	public List<Rol> getRols() {
-		return rols;
+	public List<Habilitacio> getHabilitacions() {
+		return habilitacions;
 	}
 
-	public void setRols(List<Rol> rols) {
-		this.rols = rols;
+	public void setHabilitacions(List<Habilitacio> habilitacions) {
+		this.habilitacions = habilitacions;
 	}
 
 	// Constructors
@@ -128,8 +128,8 @@ public class HistoricFuncionariDAO implements java.io.Serializable {
 		this.observacions = funcionari.getObservacions();
 	}
 
-	public HistoricFuncionariDAO(Funcionari funcionari, List<Rol> rols) {
+	public HistoricFuncionariDAO(Funcionari funcionari, List<Habilitacio> habilitacions) {
 		this(funcionari);
-		this.rols = rols;
+		this.habilitacions = habilitacions;
 	}
 }

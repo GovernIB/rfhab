@@ -12,7 +12,7 @@ import es.caib.rfhab.logic.utils.FuncionariLlocDAO;
 import es.caib.rfhab.logic.utils.FuncionariLlocLlocDAO;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.Lloc;
-import es.caib.rfhab.model.entity.Rol;
+import es.caib.rfhab.model.entity.Habilitacio;
 import es.caib.rfhab.persistence.LlocJPA;
 
 /**
@@ -26,7 +26,7 @@ public interface LlocLogicaService extends LlocService {
 
 	public static final String JNDI_NAME = "java:app/rfhab-ejb/LlocLogicaEJB!es.caib.rfhab.logic.LlocLogicaService";
 
-	public LlocJPA createAndHistory(Lloc lloc, String cai, Long usuariId, String[] rolsSeleccionats)
+	public LlocJPA createAndHistory(Lloc lloc, String cai, Long usuariId, String[] habilitacionsSeleccionades)
 			throws I18NException;
 
 	public Lloc updateAndHistory(Lloc lloc, String cai, Long usuariId, String[] habilitacionsSeleccionades)
@@ -51,7 +51,7 @@ public interface LlocLogicaService extends LlocService {
 
 	public List<FuncionariLlocDAO> getFuncionarisLlocByLlocID(Long llocId, boolean current) throws I18NException;
 
-	public List<Rol> getRolsByLlocID(Long llocId) throws I18NException;
+	public List<Habilitacio> getHabilitacionsByLlocID(Long llocId) throws I18NException;
 
 	public Funcionari donarDeBaixaLlocAndHistory(long llocId, final String numeroCai, long usuariId)
 			throws I18NException;

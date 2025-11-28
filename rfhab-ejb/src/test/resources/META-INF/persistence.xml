@@ -17,9 +17,9 @@
 		<class>es.caib.rfhab.persistence.HistoricLlocJPA</class>
 		<class>es.caib.rfhab.persistence.IdiomaJPA</class>
 		<class>es.caib.rfhab.persistence.LlocJPA</class>
-		<class>es.caib.rfhab.persistence.LlocRolJPA</class>
+		<class>es.caib.rfhab.persistence.LlocHabilitacioJPA</class>
 		<class>es.caib.rfhab.persistence.PluginJPA</class>
-		<class>es.caib.rfhab.persistence.RolJPA</class>
+		<class>es.caib.rfhab.persistence.HabilitacioJPA</class>
 		<class>es.caib.rfhab.persistence.ScanWebJPA</class>
 		<class>es.caib.rfhab.persistence.TraduccioJPA</class>
 		<class>es.caib.rfhab.persistence.TraduccioMapJPA</class>

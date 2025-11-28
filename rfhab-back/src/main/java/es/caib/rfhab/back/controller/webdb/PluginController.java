@@ -51,7 +51,7 @@ import es.caib.rfhab.back.utils.Tab;
  * 
  * @author GenApp
  */
-@MenuOption(labelCode="plugin.plugin.plural", order=110, group=Tab.MENU_WEBDB)
+@MenuOption(labelCode="plugin.plugin.plural", order=120, group=Tab.MENU_WEBDB)
 @Controller
 @RequestMapping(value = "/webdb/plugin")
 @SessionAttributes(types = { PluginForm.class, PluginFilterForm.class })

@@ -270,16 +270,16 @@ public class LlocJPA implements Lloc {
     }
 
 
-// EXP  Field:llocid | Table: rfh_llocrol | Type: 0  
+// EXP  Field:llocid | Table: rfh_llochabilitacio | Type: 0  
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "lloc")
-    private Set<LlocRolJPA> llocRols = new HashSet<LlocRolJPA>(0);
-    public  Set<LlocRolJPA> getLlocRols() {
-    return this.llocRols;
+    private Set<LlocHabilitacioJPA> llocHabilitacios = new HashSet<LlocHabilitacioJPA>(0);
+    public  Set<LlocHabilitacioJPA> getLlocHabilitacios() {
+    return this.llocHabilitacios;
   }
 
-    public void setLlocRols(Set<LlocRolJPA> llocRols) {
-      this.llocRols = llocRols;
+    public void setLlocHabilitacios(Set<LlocHabilitacioJPA> llocHabilitacios) {
+      this.llocHabilitacios = llocHabilitacios;
     }
 
 
@@ -365,13 +365,13 @@ public class LlocJPA implements Lloc {
        && ( !org.fundaciobit.genapp.common.utils.Utils.isEmpty(__jpa.autoritzacios) || org.hibernate.Hibernate.isInitialized(__jpa.getAutoritzacios())) ) {
       __tmp.setAutoritzacios(AutoritzacioJPA.copyJPA(__jpa.getAutoritzacios(), __alreadyCopied,"LlocJPA"));
     }
-    if(!"LlocRolJPA".equals(origenJPA) 
-       && ( !org.fundaciobit.genapp.common.utils.Utils.isEmpty(__jpa.llocRols) || org.hibernate.Hibernate.isInitialized(__jpa.getLlocRols())) ) {
-      __tmp.setLlocRols(LlocRolJPA.copyJPA(__jpa.getLlocRols(), __alreadyCopied,"LlocJPA"));
-    }
     if(!"HistoricLlocJPA".equals(origenJPA) 
        && ( !org.fundaciobit.genapp.common.utils.Utils.isEmpty(__jpa.historicLlocs) || org.hibernate.Hibernate.isInitialized(__jpa.getHistoricLlocs())) ) {
       __tmp.setHistoricLlocs(HistoricLlocJPA.copyJPA(__jpa.getHistoricLlocs(), __alreadyCopied,"LlocJPA"));
+    }
+    if(!"LlocHabilitacioJPA".equals(origenJPA) 
+       && ( !org.fundaciobit.genapp.common.utils.Utils.isEmpty(__jpa.llocHabilitacios) || org.hibernate.Hibernate.isInitialized(__jpa.getLlocHabilitacios())) ) {
+      __tmp.setLlocHabilitacios(LlocHabilitacioJPA.copyJPA(__jpa.getLlocHabilitacios(), __alreadyCopied,"LlocJPA"));
     }
     // Copia de beans complexes (IMP)
     if(!"UnitatJPA".equals(origenJPA) && 

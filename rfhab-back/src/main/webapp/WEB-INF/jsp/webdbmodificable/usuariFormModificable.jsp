@@ -21,7 +21,7 @@
 						<td><c:forEach items="${usuarisEntitats}" var="usuariEntitat">
 								<c:if test="${usuariEntitat.entitatID == entitat.entitatID}">
 									<a class="btn btn-danger" href="#myModal" role="button"
-										onclick="openModal('<c:url value="${contexte}/${usuariEntitat.usuariEntitatID}/delete"/>','show');"
+										onclick="openModal('<c:url value="${contexte}/entitat/delete?usuariID=${usuariEntitat.usuariID}&entitatID=${usuariEntitat.entitat.entitatID}"/>','show');"
 										title="<fmt:message key="genapp.delete"/>"> <i
 										class="fas fa-trash icon-white"></i>
 									</a>

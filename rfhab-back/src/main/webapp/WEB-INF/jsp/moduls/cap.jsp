@@ -234,7 +234,7 @@
 										key="menu.admin.funcionaris" />
 								</a>
 								<a class="dropdown-item" href="<c:url value="/admin/habilitacio/list"/>">
-									<i class="fas fa-key"></i> <fmt:message key="menu.admin.rols" />
+									<i class="fas fa-key"></i> <fmt:message key="menu.admin.habilitacions" />
 								</a>
 								<a class="dropdown-item" href="<c:url value="/admin/activitat/list"/>">
 									<i class="fas fa-clipboard-list"></i> <fmt:message key="menu.admin.registreactivitat" />

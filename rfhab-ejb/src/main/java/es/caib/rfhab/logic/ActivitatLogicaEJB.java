@@ -35,7 +35,7 @@ import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.commons.utils.FileNameCleaner;
 import es.caib.rfhab.commons.utils.IdentificacioTipus;
 import es.caib.rfhab.commons.utils.RegistreActivitatTipus;
-import es.caib.rfhab.commons.utils.RegistreActivitatTipusRols;
+import es.caib.rfhab.commons.utils.RegistreActivitatTipusHabilitacions;
 import es.caib.rfhab.ejb.ActivitatEJB;
 import es.caib.rfhab.model.entity.Activitat;
 import es.caib.rfhab.model.entity.Fitxer;
@@ -367,11 +367,11 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 		act.setEstat(ActivitatEstat.ACABAT.getValue());
 
 		// Validar tipus d'activitat
-		List<String> codiHabilitacionsNecessaries = RegistreActivitatTipusRols.getRols(tipus);
+		List<String> codiHabilitacionsNecessaries = RegistreActivitatTipusHabilitacions.getHabilitacions(tipus);
 		switch (tipus) {
 			case COPIA:
 				List<String> codiHabilitacionsAlternatives = Arrays
-						.asList(RegistreActivitatTipusRols.IDENTIFICACIO_I_SIGNATURA);// IDENTIFICACIO_I_SIGNATURA també
+						.asList(RegistreActivitatTipusHabilitacions.IDENTIFICACIO_I_SIGNATURA);// IDENTIFICACIO_I_SIGNATURA també
 																						// pot fer còpia autèntica
 				if (!funcionariLogicaEjb.isFuncionariHabilitat((FuncionariJPA) funcionariActuant,
 						codiHabilitacionsNecessaries, entitatId)

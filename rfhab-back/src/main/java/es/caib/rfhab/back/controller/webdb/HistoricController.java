@@ -51,7 +51,7 @@ import es.caib.rfhab.back.utils.Tab;
  * 
  * @author GenApp
  */
-@MenuOption(labelCode="historic.historic.plural", order=60, group=Tab.MENU_WEBDB)
+@MenuOption(labelCode="historic.historic.plural", order=70, group=Tab.MENU_WEBDB)
 @Controller
 @RequestMapping(value = "/webdb/historic")
 @SessionAttributes(types = { HistoricForm.class, HistoricFilterForm.class })

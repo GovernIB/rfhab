@@ -2012,6 +2012,178 @@
       ]
     },
     {
+      "name": "rfh_habilitacio",
+      "nameJava": "Habilitacio",
+      "shortName": "Habilitaci",
+      "labels": {
+        "ca": "Habilitació",
+        "es": "Habilitación"
+      },
+      "labelsPlural": {
+        "ca": "Habilitacions",
+        "es": "Habilitaciones"
+      },
+      "generate": true,
+      "fileMappingEntity": false,
+      "languageMappingEntity": false,
+      "translationEntity": false,
+      "translationMapEntity": false,
+      "fields": [
+        {
+          "PK": "rfh_habilitacio_pk",
+          "index": "rfh_habilitacio_pk_i",
+          "isAutoIncrement": true,
+          "sqlName": "habilitacioid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "ID",
+            "es": "ID"
+          },
+          "javaName": "habilitacioID",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "defaultValue": "nextval(\u0027rfh_habilitacio_seq\u0027::regclass)",
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 0,
+            "label": [
+              "nom"
+            ]
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_llochab_hab_habilitacid_fk",
+              "table": "rfh_llochabilitacio",
+              "field": "habilitacioid",
+              "type": 0
+            }
+          ]
+        },
+        {
+          "index": "rfh_habilitacio_nomid_fk_i",
+          "isAutoIncrement": false,
+          "sqlName": "nomid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Nom",
+            "es": "Nombre"
+          },
+          "javaName": "nomID",
+          "javaType": "java.lang.Long",
+          "traduible": true,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_habilitaciotraduccio_nom_fk",
+              "table": "rfh_traduccio",
+              "field": "traduccioid",
+              "type": 1
+            }
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_habil_traduccio_nomid_fk",
+              "table": "rfh_traduccio",
+              "field": "traduccioid",
+              "type": 1
+            }
+          ]
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "codi",
+          "sqlType": 12,
+          "size": 50,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Codi",
+            "es": "Código"
+          },
+          "javaName": "codi",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "datacreacio",
+          "sqlType": 93,
+          "size": 29,
+          "digits": 6,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Data Creació",
+            "es": "Fecha creación"
+          },
+          "javaName": "dataCreacio",
+          "javaType": "java.sql.Timestamp",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 7
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "entitatid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Entitat",
+            "es": "Entidad"
+          },
+          "javaName": "entitatID",
+          "javaType": "java.lang.Long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 14
+          },
+          "foreignKeys": []
+        }
+      ]
+    },
+    {
       "name": "rfh_historic",
       "nameJava": "Historic",
       "shortName": "historic",
@@ -2623,8 +2795,8 @@
               "type": 0
             },
             {
-              "name": "rfh_llocrol_lloc_llocid_fk",
-              "table": "rfh_llocrol",
+              "name": "rfh_llochabil_lloc_llocid_fk",
+              "table": "rfh_llochabilitacio",
               "field": "llocid",
               "type": 0
             }
@@ -2949,16 +3121,16 @@
       ]
     },
     {
-      "name": "rfh_llocrol",
-      "nameJava": "LlocRol",
-      "shortName": "llocrol",
+      "name": "rfh_llochabilitacio",
+      "nameJava": "LlocHabilitacio",
+      "shortName": "llochabil",
       "labels": {
-        "ca": "Assignació Lloc Rol",
-        "es": "Asignación Lugar Rol"
+        "ca": "Assignació Lloc Habilitació",
+        "es": "Asignación Puesto Habilitación"
       },
       "labelsPlural": {
-        "ca": "Assignacions Llocs Rols",
-        "es": "Asignaciones Lugares Roles"
+        "ca": "Assignacions Llocs Habilitacions",
+        "es": "Asignaciones Puestos Habilitaciones"
       },
       "generate": true,
       "fileMappingEntity": false,
@@ -2967,10 +3139,10 @@
       "translationMapEntity": false,
       "fields": [
         {
-          "PK": "rfh_llocrol_pk",
-          "index": "rfh_llocrol_pk_i",
+          "PK": "rfh_llochabilitacio_pk",
+          "index": "rfh_llochabilitacio_pk_i",
           "isAutoIncrement": true,
-          "sqlName": "llocrolid",
+          "sqlName": "llochabilitacioid",
           "sqlType": -5,
           "size": 19,
           "digits": 0,
@@ -2979,13 +3151,13 @@
             "ca": "ID",
             "es": "ID"
           },
-          "javaName": "llocRolID",
+          "javaName": "llocHabilitacioID",
           "javaType": "long",
           "traduible": false,
           "showInWebList": true,
           "showInReferenceList": false,
           "transientField": false,
-          "defaultValue": "nextval(\u0027rfh_llocrol_seq\u0027::regclass)",
+          "defaultValue": "nextval(\u0027rfh_llochabilitacio_seq\u0027::regclass)",
           "filter": false,
           "orderBy": 0,
           "groupBy": false,
@@ -3020,7 +3192,7 @@
           "foreignKeys": []
         },
         {
-          "index": "rfh_llocrol_llocid_fk_i",
+          "index": "rfh_llochabil_llocid_fk_i",
           "isAutoIncrement": false,
           "sqlName": "llocid",
           "sqlType": -5,
@@ -3043,7 +3215,7 @@
           "webFieldInfo": {
             "webtype": 3,
             "foreignKey": {
-              "name": "rfh_llocrol_lloc_llocid_fk",
+              "name": "rfh_llochabilitacio_lloc_llocid_fk",
               "table": "rfh_lloc",
               "field": "llocid",
               "type": 1
@@ -3051,7 +3223,7 @@
           },
           "foreignKeys": [
             {
-              "name": "rfh_llocrol_lloc_llocid_fk",
+              "name": "rfh_llochabil_lloc_llocid_fk",
               "table": "rfh_lloc",
               "field": "llocid",
               "type": 1
@@ -3059,18 +3231,18 @@
           ]
         },
         {
-          "index": "rfh_llocrol_rolid_fk_i",
+          "index": "rfh_llochab_habilitacioid_fk_i",
           "isAutoIncrement": false,
-          "sqlName": "rolid",
+          "sqlName": "habilitacioid",
           "sqlType": -5,
           "size": 19,
           "digits": 0,
           "isNotNullable": true,
           "labels": {
-            "ca": "Rol",
-            "es": "Rol"
+            "ca": "Habilitació",
+            "es": "Habilitación"
           },
-          "javaName": "rolID",
+          "javaName": "habilitacioId",
           "javaType": "long",
           "traduible": false,
           "showInWebList": true,
@@ -3082,17 +3254,17 @@
           "webFieldInfo": {
             "webtype": 3,
             "foreignKey": {
-              "name": "rfh_llocrol_rol_rolid_fk",
-              "table": "rfh_rol",
-              "field": "rolid",
+              "name": "rfh_llochabilitacio_habilitacio_habilitacioid_fk",
+              "table": "rfh_habilitacio",
+              "field": "habilitacioid",
               "type": 1
             }
           },
           "foreignKeys": [
             {
-              "name": "rfh_llocrol_rol_rolid_fk",
-              "table": "rfh_rol",
-              "field": "rolid",
+              "name": "rfh_llochab_hab_habilitacid_fk",
+              "table": "rfh_habilitacio",
+              "field": "habilitacioid",
               "type": 1
             }
           ]
@@ -3360,178 +3532,6 @@
           "groupBy": false,
           "webFieldInfo": {
             "webtype": 16
-          },
-          "foreignKeys": []
-        }
-      ]
-    },
-    {
-      "name": "rfh_rol",
-      "nameJava": "Rol",
-      "shortName": "Rol",
-      "labels": {
-        "ca": "Habilitació",
-        "es": "Habilitación"
-      },
-      "labelsPlural": {
-        "ca": "Habilitacions",
-        "es": "Habilitaciones"
-      },
-      "generate": true,
-      "fileMappingEntity": false,
-      "languageMappingEntity": false,
-      "translationEntity": false,
-      "translationMapEntity": false,
-      "fields": [
-        {
-          "PK": "rfh_rol_pk",
-          "index": "rfh_rol_pk_i",
-          "isAutoIncrement": true,
-          "sqlName": "rolid",
-          "sqlType": -5,
-          "size": 19,
-          "digits": 0,
-          "isNotNullable": true,
-          "labels": {
-            "ca": "ID",
-            "es": "ID"
-          },
-          "javaName": "rolID",
-          "javaType": "long",
-          "traduible": false,
-          "showInWebList": true,
-          "showInReferenceList": false,
-          "transientField": false,
-          "defaultValue": "nextval(\u0027rfh_rol_seq\u0027::regclass)",
-          "filter": false,
-          "orderBy": 0,
-          "groupBy": false,
-          "webFieldInfo": {
-            "webtype": 0,
-            "label": [
-              "nom"
-            ]
-          },
-          "foreignKeys": [
-            {
-              "name": "rfh_llocrol_rol_rolid_fk",
-              "table": "rfh_llocrol",
-              "field": "rolid",
-              "type": 0
-            }
-          ]
-        },
-        {
-          "index": "rfh_rol_nomid_fk_i",
-          "isAutoIncrement": false,
-          "sqlName": "nomid",
-          "sqlType": -5,
-          "size": 19,
-          "digits": 0,
-          "isNotNullable": true,
-          "labels": {
-            "ca": "Nom",
-            "es": "Nombre"
-          },
-          "javaName": "nomID",
-          "javaType": "java.lang.Long",
-          "traduible": true,
-          "showInWebList": true,
-          "showInReferenceList": false,
-          "transientField": false,
-          "filter": false,
-          "orderBy": 0,
-          "groupBy": false,
-          "webFieldInfo": {
-            "webtype": 3,
-            "foreignKey": {
-              "name": "rfh_roltraduccio_nom_fk",
-              "table": "rfh_traduccio",
-              "field": "traduccioid",
-              "type": 1
-            }
-          },
-          "foreignKeys": [
-            {
-              "name": "rfh_rol_traduccio_nomid_fk",
-              "table": "rfh_traduccio",
-              "field": "traduccioid",
-              "type": 1
-            }
-          ]
-        },
-        {
-          "isAutoIncrement": false,
-          "sqlName": "codi",
-          "sqlType": 12,
-          "size": 50,
-          "digits": 0,
-          "isNotNullable": true,
-          "labels": {
-            "ca": "Codi",
-            "es": "Código"
-          },
-          "javaName": "codi",
-          "javaType": "java.lang.String",
-          "traduible": false,
-          "showInWebList": true,
-          "showInReferenceList": true,
-          "transientField": false,
-          "filter": false,
-          "orderBy": 0,
-          "groupBy": false,
-          "webFieldInfo": {
-            "webtype": 1
-          },
-          "foreignKeys": []
-        },
-        {
-          "isAutoIncrement": false,
-          "sqlName": "datacreacio",
-          "sqlType": 93,
-          "size": 29,
-          "digits": 6,
-          "isNotNullable": false,
-          "labels": {
-            "ca": "Data Creació",
-            "es": "Fecha creación"
-          },
-          "javaName": "dataCreacio",
-          "javaType": "java.sql.Timestamp",
-          "traduible": false,
-          "showInWebList": true,
-          "showInReferenceList": false,
-          "transientField": false,
-          "filter": false,
-          "orderBy": 0,
-          "groupBy": false,
-          "webFieldInfo": {
-            "webtype": 7
-          },
-          "foreignKeys": []
-        },
-        {
-          "isAutoIncrement": false,
-          "sqlName": "entitatid",
-          "sqlType": -5,
-          "size": 19,
-          "digits": 0,
-          "isNotNullable": true,
-          "labels": {
-            "ca": "Entitat",
-            "es": "Entidad"
-          },
-          "javaName": "entitatID",
-          "javaType": "java.lang.Long",
-          "traduible": false,
-          "showInWebList": true,
-          "showInReferenceList": false,
-          "transientField": false,
-          "filter": false,
-          "orderBy": 0,
-          "groupBy": false,
-          "webFieldInfo": {
-            "webtype": 14
           },
           "foreignKeys": []
         }
@@ -3944,8 +3944,8 @@
           },
           "foreignKeys": [
             {
-              "name": "rfh_rol_traduccio_nomid_fk",
-              "table": "rfh_rol",
+              "name": "rfh_habil_traduccio_nomid_fk",
+              "table": "rfh_habilitacio",
               "field": "nomid",
               "type": 0
             },

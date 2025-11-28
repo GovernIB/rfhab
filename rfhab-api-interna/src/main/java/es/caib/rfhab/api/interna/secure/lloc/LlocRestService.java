@@ -5,7 +5,7 @@ import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.commons.utils.PersonalOamrTipus;
 import es.caib.rfhab.commons.utils.PersonalOamrTipusValues;
 import es.caib.rfhab.ejb.ActivitatService;
-import es.caib.rfhab.ejb.LlocRolService;
+import es.caib.rfhab.ejb.LlocHabilitacioService;
 import es.caib.rfhab.logic.EntitatLogicaService;
 import es.caib.rfhab.logic.FuncionariLogicaService;
 import es.caib.rfhab.logic.LlocLogicaService;
@@ -90,8 +90,8 @@ public class LlocRestService extends RestUtils {
 	@EJB(mappedName = LlocLogicaService.JNDI_NAME)
 	protected LlocLogicaService llocLogicaEjb;
 
-	@EJB(mappedName = LlocRolService.JNDI_NAME)
-	protected LlocRolService llocRolEjb;
+	@EJB(mappedName = LlocHabilitacioService.JNDI_NAME)
+	protected LlocHabilitacioService llocHabilitacioEjb;
 
 	@EJB(mappedName = EntitatLogicaService.JNDI_NAME)
 	protected EntitatLogicaService entitatLogicaEjb;

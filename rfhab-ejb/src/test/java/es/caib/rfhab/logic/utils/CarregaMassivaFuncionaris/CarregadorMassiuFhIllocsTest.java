@@ -30,7 +30,7 @@ import org.fundaciobit.pluginsib.utils.rest.RestUtils;
 import es.caib.rfhab.logic.EntitatManagerUtil;
 import es.caib.rfhab.model.RFHabDaoManager;
 import es.caib.rfhab.model.dao.IFuncionariManager;
-import es.caib.rfhab.model.dao.IRolManager;
+import es.caib.rfhab.model.dao.IHabilitacioManager;
 import es.caib.rfhab.model.dao.IUnitatManager;
 
 @RunWith(Parameterized.class)
@@ -41,7 +41,7 @@ public class CarregadorMassiuFhIllocsTest {
     private static EntityManager _em = null;
     protected static IFuncionariManager funcionariMan = null;
     protected static IUnitatManager unitatMan = null;
-    protected static IRolManager rolMan = null;
+    protected static IHabilitacioManager habilitacioMan = null;
     private static Properties configCarregadorMassiu = null;
     private static CarregadorMassiuFhIllocsLogicaService carregador = null;
     private static List<SimpleDateFormat> datesFormatsFromOds = null;
@@ -68,7 +68,7 @@ public class CarregadorMassiuFhIllocsTest {
         _em = EntitatManagerUtil.initDB();
         unitatMan = RFHabDaoManager.getDaoManagers().getUnitatManager();
         funcionariMan = RFHabDaoManager.getDaoManagers().getFuncionariManager();
-        rolMan = RFHabDaoManager.getDaoManagers().getRolManager();
+        habilitacioMan = RFHabDaoManager.getDaoManagers().getHabilitacioManager();
 
         configCarregadorMassiu = new Properties();
         configCarregadorMassiu.load(new FileInputStream("carregadormassiu.properties"));
@@ -77,7 +77,7 @@ public class CarregadorMassiuFhIllocsTest {
     @Before
     public void setUp() throws Exception {
         carregador = CarregadorMassiuFhIllocsLogicaEJB.CrearCarregadorMassiuFhIllocsLogicaEJBambEjbsPerTests(
-                odsFilePath, mappingFilePath, configCarregadorMassiu, funcionariMan, unitatMan, rolMan);
+                odsFilePath, mappingFilePath, configCarregadorMassiu, funcionariMan, unitatMan, habilitacioMan);
         datesFormatsFromOds = new ArrayList<>();
         datesFormats.forEach(df -> datesFormatsFromOds.add(new SimpleDateFormat(df)));
     }

@@ -28,9 +28,9 @@
 				aria-selected="true"><fmt:message key="lloc.funcionari.pipella"/></a>
 		</li>
 		<li class="nav-item">
-			<a class="nav-link" id="rols-tab"
-				data-toggle="tab" href="#rols" role="tab" aria-controls="rols"
-				aria-selected="false"><fmt:message key="rol.rol.plural"/></a>
+			<a class="nav-link" id="habilitacions-tab"
+				data-toggle="tab" href="#habilitacions" role="tab" aria-controls="habilitacions"
+				aria-selected="false"><fmt:message key="habilitacio.habilitacio.plural"/></a>
 		</li>
 		<li class="nav-item">
 			<a class="nav-link" id="historic-tab"
@@ -68,7 +68,7 @@
 						</thead>
 						<tbody>
 							<c:forEach var="funcionariItem" items="${funcionaris}">
-								<tr id="rol_rowid_${funcionariItem.funcionariID}">
+								<tr id="habilitacio_rowid_${funcionariItem.funcionariID}">
 									<td>${funcionariItem.numero}</td>
 									<td>${funcionariItem.nom}&nbsp;${funcionariItem.llinatge1}&nbsp;${funcionariItem.llinatge2}</td>
 									<td><fmt:formatDate pattern="dd/MM/yyyy" value="${funcionariItem.dataInici}" /></td>
@@ -82,30 +82,30 @@
 			</c:if>
 		</div>
 
-		<div class="tab-pane fade" id="rols" role="tabpanel"
-			aria-labelledby="rols-tab">
+		<div class="tab-pane fade" id="habilitacions" role="tabpanel"
+			aria-labelledby="habilitacions-tab">
 
-			<c:if test="${rols.isEmpty()}">
-				<div class="alert alert-warning" role="alert"><fmt:message key="lloc.admin.rols.sense"/></div>
+			<c:if test="${habilitacions.isEmpty()}">
+				<div class="alert alert-warning" role="alert"><fmt:message key="lloc.admin.habilitacions.sense"/></div>
 			</c:if>
-			<c:if test="${not rols.isEmpty()}">
+			<c:if test="${not habilitacions.isEmpty()}">
 				<div class="row" style="margin-left: 0px;">
 					<table
 						class="table table-sm table-bordered table-striped table-genapp table-genapp-list"
 						style="width: auto;">
 						<thead>
 							<tr>
-								<th><fmt:message key="rol.codi"/></th>
-								<th><fmt:message key="rol.nomID"/></th>
+								<th><fmt:message key="habilitacio.codi"/></th>
+								<th><fmt:message key="habilitacio.nomID"/></th>
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="rol" items="${rols}">
-								<tr id="rol_rowid_${rol.rolID}">
-									<td>${rol.codi}</td>
+							<c:forEach var="habilitacio" items="${habilitacions}">
+								<tr id="habilitacio_rowid_${habilitacio.habilitacioID}">
+									<td>${habilitacio.codi}</td>
 									<td>
-										<c:set var="tmp">${rol.nomID}</c:set>
-										<c:if test="${not empty tmp}">${rol.nom.traduccions[lang].valor}</c:if>
+										<c:set var="tmp">${habilitacio.nomID}</c:set>
+										<c:if test="${not empty tmp}">${habilitacio.nom.traduccions[lang].valor}</c:if>
 									</td>
 								</tr>
 							</c:forEach>
@@ -190,7 +190,7 @@
 						</thead>
 						<tbody>
 							<c:forEach var="funcionariItem" items="${funcionarisHistoric}">
-								<tr id="rol_rowid_${funcionariItem.funcionariID}">
+								<tr id="habilitacio_rowid_${funcionariItem.funcionariID}">
 									<td>${funcionariItem.numero}</td>
 									<td>${funcionariItem.identificador}</td>
 									<td>${funcionariItem.nom}&nbsp;${funcionariItem.llinatge1}&nbsp;${funcionariItem.llinatge2}</td>
@@ -356,16 +356,16 @@
 							//afegeix input habilitacions
 							const optionsHabilitacions = [
 								<c:forEach items="${habilitacionsTotes}" var="habilitacio">
-									{ value: '${habilitacio.rolID}', text: '${habilitacio.codi}' },
+									{ value: '${habilitacio.habilitacioID}', text: '${habilitacio.codi}' },
 								</c:forEach>
 							];
 							const habilitacionsSeleccionades = [
-							<c:forEach var="rol" items="${rols}">
-								'${rol.rolID}',
+							<c:forEach var="habilitacio" items="${habilitacions}">
+								'${habilitacio.habilitacioID}',
 							</c:forEach>
 							];
 							const llocHabilitacionsSelectId = "lloc_habilitacions_seleccionades_id";
-							const nouHabilitacionsTr = createTrInputFormSelect("lloc_habilitacions_rowid", "lloc_habilitacions_columnlabelid", '<fmt:message key="rol.rol.plural"/>', "lloc_habilitacions_columnvalueid", "habilitacionsSeleccionadesId", llocHabilitacionsSelectId, "llocHabilitacionsSeleccionades", optionsHabilitacions, habilitacionsSeleccionades, onSelectedHabilitacioLloc, true);
+							const nouHabilitacionsTr = createTrInputFormSelect("lloc_habilitacions_rowid", "lloc_habilitacions_columnlabelid", '<fmt:message key="habilitacio.habilitacio.plural"/>', "lloc_habilitacions_columnvalueid", "habilitacionsSeleccionadesId", llocHabilitacionsSelectId, "llocHabilitacionsSeleccionades", optionsHabilitacions, habilitacionsSeleccionades, onSelectedHabilitacioLloc, true);
 							const dataDaltaTr = tbody.querySelector("#lloc_dataalta_rowid");
 							tbody.insertBefore(nouHabilitacionsTr, dataDaltaTr);
 							$('#' + llocHabilitacionsSelectId).select2(

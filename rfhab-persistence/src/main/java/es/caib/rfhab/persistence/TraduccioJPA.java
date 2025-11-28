@@ -73,16 +73,16 @@ public class TraduccioJPA implements Traduccio {
         return __result;
     }
 
-// EXP  Field:nomid | Table: rfh_rol | Type: 0  
+// EXP  Field:nomid | Table: rfh_habilitacio | Type: 0  
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "nomID")
-    private Set<RolJPA> rols = new HashSet<RolJPA>(0);
-    public  Set<RolJPA> getRols() {
-    return this.rols;
+    private Set<HabilitacioJPA> habilitacios = new HashSet<HabilitacioJPA>(0);
+    public  Set<HabilitacioJPA> getHabilitacios() {
+    return this.habilitacios;
   }
 
-    public void setRols(Set<RolJPA> rols) {
-      this.rols = rols;
+    public void setHabilitacios(Set<HabilitacioJPA> habilitacios) {
+      this.habilitacios = habilitacios;
     }
 
 
@@ -151,9 +151,9 @@ public class TraduccioJPA implements Traduccio {
     __tmp = toJPA(__jpa);
     __alreadyCopied.put(__jpa, __tmp);
     // Copia de beans complexes (EXP)
-    if(!"RolJPA".equals(origenJPA) 
-       && ( !org.fundaciobit.genapp.common.utils.Utils.isEmpty(__jpa.rols) || org.hibernate.Hibernate.isInitialized(__jpa.getRols())) ) {
-      __tmp.setRols(RolJPA.copyJPA(__jpa.getRols(), __alreadyCopied,"TraduccioJPA"));
+    if(!"HabilitacioJPA".equals(origenJPA) 
+       && ( !org.fundaciobit.genapp.common.utils.Utils.isEmpty(__jpa.habilitacios) || org.hibernate.Hibernate.isInitialized(__jpa.getHabilitacios())) ) {
+      __tmp.setHabilitacios(HabilitacioJPA.copyJPA(__jpa.getHabilitacios(), __alreadyCopied,"TraduccioJPA"));
     }
     // Copia de beans complexes (IMP)
     // Aquesta linia s'afeix de forma manual

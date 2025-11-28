@@ -245,22 +245,22 @@
         <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/operacioList.jsp" />
     </definition>
     
-    <definition name="rolFormAdmin" extends="admin">
-        <put-attribute name="titol" value="rol.rol" />
-        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/rolForm.jsp" />
+    <definition name="habilitacioFormAdmin" extends="admin">
+        <put-attribute name="titol" value="habilitacio.habilitacio" />
+        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/habilitacioForm.jsp" />
     </definition>
     
-    <definition name="rolListAdmin" extends="admin">
-        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/rolList.jsp" />
+    <definition name="habilitacioListAdmin" extends="admin">
+        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/habilitacioList.jsp" />
     </definition>
     
-    <definition name="llocRolFormAdmin" extends="admin">
-        <put-attribute name="titol" value="llocRol.llocRol" />
-        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/llocRolForm.jsp" />
+    <definition name="llocHabilitacioFormAdmin" extends="admin">
+        <put-attribute name="titol" value="llocHabilitacio.llocHabilitacio" />
+        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/llocHabilitacioForm.jsp" />
     </definition>
     
-    <definition name="llocRolListAdmin" extends="admin">
-        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/llocRolList.jsp" />
+    <definition name="llocHabilitacioListAdmin" extends="admin">
+        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/llocHabilitacioList.jsp" />
     </definition>
     
     <definition name="option1Admin" extends="admin">
@@ -375,6 +375,16 @@
     </definition>
 
 
+    <definition name="habilitacioFormWebDB" extends="webdb">
+        <put-attribute name="titol" value="habilitacio.habilitacio" />
+        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/habilitacioForm.jsp" />
+    </definition>
+    
+    <definition name="habilitacioListWebDB" extends="webdb">
+        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/habilitacioList.jsp" />
+    </definition>
+
+
     <definition name="historicFormWebDB" extends="webdb">
         <put-attribute name="titol" value="historic.historic" />
         <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/historicForm.jsp" />
@@ -415,13 +425,13 @@
     </definition>
 
 
-    <definition name="llocRolFormWebDB" extends="webdb">
-        <put-attribute name="titol" value="llocRol.llocRol" />
-        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/llocRolForm.jsp" />
+    <definition name="llocHabilitacioFormWebDB" extends="webdb">
+        <put-attribute name="titol" value="llocHabilitacio.llocHabilitacio" />
+        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/llocHabilitacioForm.jsp" />
     </definition>
     
-    <definition name="llocRolListWebDB" extends="webdb">
-        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/llocRolList.jsp" />
+    <definition name="llocHabilitacioListWebDB" extends="webdb">
+        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/llocHabilitacioList.jsp" />
     </definition>
 
 
@@ -432,16 +442,6 @@
     
     <definition name="pluginListWebDB" extends="webdb">
         <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/pluginList.jsp" />
-    </definition>
-
-
-    <definition name="rolFormWebDB" extends="webdb">
-        <put-attribute name="titol" value="rol.rol" />
-        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/rolForm.jsp" />
-    </definition>
-    
-    <definition name="rolListWebDB" extends="webdb">
-        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/rolList.jsp" />
     </definition>
 
 

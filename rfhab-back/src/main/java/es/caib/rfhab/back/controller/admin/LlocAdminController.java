@@ -43,12 +43,12 @@ import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.commons.utils.PersonalOamrTipus;
 import es.caib.rfhab.commons.utils.StringUtils;
 import es.caib.rfhab.ejb.EntitatService;
-import es.caib.rfhab.ejb.RolService;
+import es.caib.rfhab.ejb.HabilitacioService;
 import es.caib.rfhab.logic.EntitatLogicaService;
 import es.caib.rfhab.logic.FuncionariLlocLogicaService;
 import es.caib.rfhab.logic.HistoricLlocLogicaService;
 import es.caib.rfhab.logic.LlocLogicaService;
-import es.caib.rfhab.logic.LlocRolLogicaService;
+import es.caib.rfhab.logic.LlocHabilitacioLogicaService;
 import es.caib.rfhab.logic.UnitatLogicaService;
 import es.caib.rfhab.logic.utils.DbDaoDictionaries;
 import es.caib.rfhab.logic.utils.FuncionariLlocDAO;
@@ -57,13 +57,13 @@ import es.caib.rfhab.model.entity.Entitat;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.HistoricLloc;
 import es.caib.rfhab.model.entity.Lloc;
-import es.caib.rfhab.model.entity.Rol;
+import es.caib.rfhab.model.entity.Habilitacio;
 import es.caib.rfhab.model.entity.Unitat;
 import es.caib.rfhab.model.fields.EntitatFields;
 import es.caib.rfhab.model.fields.FuncionariLlocFields;
 import es.caib.rfhab.model.fields.LlocFields;
-import es.caib.rfhab.model.fields.LlocRolFields;
-import es.caib.rfhab.model.fields.RolFields;
+import es.caib.rfhab.model.fields.LlocHabilitacioFields;
+import es.caib.rfhab.model.fields.HabilitacioFields;
 import es.caib.rfhab.model.fields.UnitatFields;
 import es.caib.rfhab.persistence.LlocJPA;
 import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
@@ -92,8 +92,8 @@ public class LlocAdminController extends LlocController {
 	@EJB(mappedName = FuncionariLlocLogicaService.JNDI_NAME)
 	protected FuncionariLlocLogicaService funcionariLlocLogicaEjb;
 
-	@EJB(mappedName = LlocRolLogicaService.JNDI_NAME)
-	protected LlocRolLogicaService llocRolLogicaEjb;
+	@EJB(mappedName = LlocHabilitacioLogicaService.JNDI_NAME)
+	protected LlocHabilitacioLogicaService llocHabilitacioLogicaEjb;
 
 	@EJB(mappedName = UnitatLogicaService.JNDI_NAME)
 	protected UnitatLogicaService unitatEjb;
@@ -101,8 +101,8 @@ public class LlocAdminController extends LlocController {
 	@EJB(mappedName = EntitatLogicaService.JNDI_NAME)
 	protected EntitatLogicaService entitatLogicaEjb;
 
-	@EJB(mappedName = RolService.JNDI_NAME)
-	protected RolService habilitacionsEjb;
+	@EJB(mappedName = HabilitacioService.JNDI_NAME)
+	protected HabilitacioService habilitacionsEjb;
 
 	protected RolsacPlugin rolsacPlugin = null;
 
@@ -166,9 +166,9 @@ public class LlocAdminController extends LlocController {
 
 			{
 				AdditionalField<Long, String> adfield2 = new AdditionalField<Long, String>();
-				adfield2.setCodeName(RolFields._TABLE_TRANSLATION);
+				adfield2.setCodeName(HabilitacioFields._TABLE_TRANSLATION);
 				adfield2.setPosition(3);
-				// adfield2.setOrderBy(RolFields.CODI);
+				// adfield2.setOrderBy(HabilitacioFields.CODI);
 				adfield2.setEscapeXml(false);
 				adfield2.setValueMap(new HashMap<Long, String>());
 				llocFilterForm.addAdditionalField(adfield2);
@@ -257,12 +257,12 @@ public class LlocAdminController extends LlocController {
 			mav.addObject("funcionaris", funcionaris);
 			mav.addObject("funcionarisHistoric", funcionarisHistoric);
 
-			// Pipella Rols - Obtenir tots els rols relacionats amb el lloc
-			List<Rol> llistaRols = llocLogicaEjb.getRolsByLlocID(llocID);
-			llistaRols.forEach(rol -> {
-				log.info("Rol: " + rol.getCodi());
+			// Pipella Habilitacions - Obtenir tots els habilitacions relacionats amb el lloc
+			List<Habilitacio> llistaHabilitacions = llocLogicaEjb.getHabilitacionsByLlocID(llocID);
+			llistaHabilitacions.forEach(habilitacio -> {
+				log.info("Habilitació: " + habilitacio.getCodi());
 			});
-			mav.addObject("rols", llistaRols);
+			mav.addObject("habilitacions", llistaHabilitacions);
 
 			// Pipella Històric - Obtenir tots els canvis realitzats al lloc de feina (ja
 			// només ho mostram al mode consulta)
@@ -390,11 +390,11 @@ public class LlocAdminController extends LlocController {
 
 		Map<Long, String> mapUnitatSuperior = (Map<Long, String>) filterForm.getAdditionalField(1).getValueMap();
 		Map<Long, String> mapFuncionari = (Map<Long, String>) filterForm.getAdditionalField(2).getValueMap();
-		Map<Long, String> mapRols = (Map<Long, String>) filterForm.getAdditionalField(3).getValueMap();
+		Map<Long, String> mapHabilitacions = (Map<Long, String>) filterForm.getAdditionalField(3).getValueMap();
 
 		mapUnitatSuperior.clear();
 		mapFuncionari.clear();
-		mapRols.clear();
+		mapHabilitacions.clear();
 
 		LoginInfo loginInfo = LoginInfo.getInstance();
 		String lang = LocaleContextHolder.getLocale().getLanguage();
@@ -428,17 +428,17 @@ public class LlocAdminController extends LlocController {
 						"lloc.treurefuncionari", "/admin/funcionarilloc/treure/{0}", AdditionalButtonStyle.INFO));
 			}
 
-			// Comprobam els rols assignats a un lloc de feina
-			Boolean llocHasRol = (llocRolLogicaEjb.count(LlocRolFields.LLOCID.equal(llocID)) > 0);
+			// Comprobam els habilitacions assignats a un lloc de feina
+			Boolean llocHasHabilitacio = (llocHabilitacioLogicaEjb.count(LlocHabilitacioFields.LLOCID.equal(llocID)) > 0);
 
-			if (llocHasRol) {
-				List<Rol> rolsLloc = llocLogicaEjb.getRolsByLlocID(llocID);
-				String rolsLlocStr = "";
-				for (Rol rol : rolsLloc) {
-					// Long llocRolID = llocRolLogicaEjb.getLlocRolIDByLlocAndRol(llocID,
-					// rol.getRolID());
+			if (llocHasHabilitacio) {
+				List<Habilitacio> habilitacionsLloc = llocLogicaEjb.getHabilitacionsByLlocID(llocID);
+				String habilitacionsLlocStr = "";
+				for (Habilitacio habilitacio : habilitacionsLloc) {
+					// Long llocHabilitacioID = llocHabilitacioLogicaEjb.getLlocHabilitacioIDByLlocAndHabilitacio(llocID,
+					// habilitacio.getHabilitacioID());
 					// String urlEsborrar = request.getContextPath() +
-					// LlocRolAdminController.CONTEXTWEB + "/" + llocRolID
+					// LlocHabilitacioAdminController.CONTEXTWEB + "/" + llocHabilitacioID
 					// + "/delete";
 					// String botoEsborrarTitle =
 					// I18NUtils.tradueix("lloc.habilitacio.botoEsborrar");
@@ -447,11 +447,11 @@ public class LlocAdminController extends LlocController {
 					// + botoEsborrarTitle
 					// + "' alt='" + botoEsborrarTitle
 					// + "'><i class='fas fa-times' style='color:white;'></i></a>";
-					// rolsLlocStr += "<span class='badge badge-secondary'>" + rol.getCodi() +
+					// habilitacionsLlocStr += "<span class='badge badge-secondary'>" + habilitacio.getCodi() +
 					// botoEsborrar + "</span>";
-					rolsLlocStr += "<span class='badge badge-secondary'>" + rol.getCodi() + "</span>";
+					habilitacionsLlocStr += "<span class='badge badge-secondary'>" + habilitacio.getCodi() + "</span>";
 				}
-				mapRols.put(llocID, rolsLlocStr);
+				mapHabilitacions.put(llocID, habilitacionsLlocStr);
 			}
 
 			// Unitat Superior
@@ -468,11 +468,11 @@ public class LlocAdminController extends LlocController {
 
 			}
 
-			// Afegir el botó d'assignar rols
+			// Afegir el botó d'assignar habilitacions
 			// if (!donatdeBaixa) {
 			// filterForm.addAdditionalButtonByPK(llocID,
-			// new AdditionalButton("far fa-check-square", "rol.assignarrol",
-			// LlocRolAdminController.CONTEXTWEB + "/assignar/" + llocID,
+			// new AdditionalButton("far fa-check-square", "habilitacio.assignarhabilitacio",
+			// LlocHabilitacioAdminController.CONTEXTWEB + "/assignar/" + llocID,
 			// AdditionalButtonStyle.INFO));
 			// }
 		}
@@ -683,14 +683,14 @@ public class LlocAdminController extends LlocController {
 
 	private void cleanSessionObjectsForMav(HttpServletRequest request) {
 		request.getSession().removeAttribute("habilitacionsTotes");
-		request.getSession().removeAttribute("rols");
+		request.getSession().removeAttribute("habilitacions");
 		request.getSession().removeAttribute("unitatsPenjantDeLentitat");
 		request.getSession().removeAttribute("entitatsPenjantDeLentitat");
 	}
 
 	private void getNecessaryObjectsForMav(LlocForm llocForm, HttpServletRequest request, ModelAndView mav)
 			throws I18NException {
-		List<Rol> habilitacionsTotes = habilitacionsEjb.select();
+		List<Habilitacio> habilitacionsTotes = habilitacionsEjb.select();
 		if (mav == null) {
 			request.getSession().setAttribute("habilitacionsTotes", habilitacionsTotes);
 		} else {
@@ -698,11 +698,11 @@ public class LlocAdminController extends LlocController {
 		}
 
 		if (!llocForm.isNou()) {
-			List<Rol> llistaRols = llocLogicaEjb.getRolsByLlocID(llocForm.getLloc().getLlocID());
+			List<Habilitacio> llistaHabilitacions = llocLogicaEjb.getHabilitacionsByLlocID(llocForm.getLloc().getLlocID());
 			if (mav == null) {
-				request.getSession().setAttribute("rols", llistaRols);
+				request.getSession().setAttribute("habilitacions", llistaHabilitacions);
 			} else {
-				mav.addObject("rols", llistaRols);
+				mav.addObject("habilitacions", llistaHabilitacions);
 			}
 		}
 

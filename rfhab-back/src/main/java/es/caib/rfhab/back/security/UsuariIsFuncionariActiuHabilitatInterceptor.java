@@ -9,7 +9,7 @@ import org.fundaciobit.genapp.common.web.HtmlUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import es.caib.rfhab.commons.utils.RegistreActivitatTipus;
-import es.caib.rfhab.commons.utils.RegistreActivitatTipusRols;
+import es.caib.rfhab.commons.utils.RegistreActivitatTipusHabilitacions;
 import es.caib.rfhab.logic.FuncionariLogicaService;
 import es.caib.rfhab.logic.UsuariLogicaService;
 import es.caib.rfhab.persistence.FuncionariJPA;
@@ -39,8 +39,8 @@ public class UsuariIsFuncionariActiuHabilitatInterceptor implements HandlerInter
             funcionari = funcionariLogicaEjb.comprovarFuncionariActiuByNif(language, usuariNif, true);
 
             // Comprovam que està habilitat per a iniciar tràmits
-            List<String> codiHabilitacionsNecessaries = RegistreActivitatTipusRols
-                    .getRols(RegistreActivitatTipus.COMPAREIX);
+            List<String> codiHabilitacionsNecessaries = RegistreActivitatTipusHabilitacions
+                    .getHabilitacions(RegistreActivitatTipus.COMPAREIX);
             funcionariLogicaEjb.checkIsFuncionariHabilitat(language, funcionari, codiHabilitacionsNecessaries,
                     funcionari.getEntitatID());
         } catch (I18NException ex) {

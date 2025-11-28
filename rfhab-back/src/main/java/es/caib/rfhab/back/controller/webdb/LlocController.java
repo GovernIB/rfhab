@@ -51,7 +51,7 @@ import es.caib.rfhab.back.utils.Tab;
  * 
  * @author GenApp
  */
-@MenuOption(labelCode="lloc.lloc.plural", order=90, group=Tab.MENU_WEBDB)
+@MenuOption(labelCode="lloc.lloc.plural", order=100, group=Tab.MENU_WEBDB)
 @Controller
 @RequestMapping(value = "/webdb/lloc")
 @SessionAttributes(types = { LlocForm.class, LlocFilterForm.class })

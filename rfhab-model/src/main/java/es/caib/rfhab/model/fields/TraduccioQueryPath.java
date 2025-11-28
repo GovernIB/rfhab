@@ -29,10 +29,10 @@ public class TraduccioQueryPath extends org.fundaciobit.genapp.common.query.Quer
 
  // TODO Solució dins el mètode testOneByOneDirect de la classe TestJPA 
 
-  public RolQueryPath ROLS() {
-    return new RolQueryPath(new QueryPath() {
+  public HabilitacioQueryPath HABILITACIOS() {
+    return new HabilitacioQueryPath(new QueryPath() {
       public String getQueryPath() {
-          return TraduccioQueryPath.this.getQueryPath() + "rols" + ".";
+          return TraduccioQueryPath.this.getQueryPath() + "habilitacios" + ".";
       }
     });
   }

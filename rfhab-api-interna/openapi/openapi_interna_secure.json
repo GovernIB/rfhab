@@ -384,8 +384,8 @@
     "/secure/funcionari/habilitat" : {
       "get" : {
         "tags" : [ "FuncionariRestService" ],
-        "summary" : "Obtenir els rols associats a un funcionari",
-        "operationId" : "ObtenirRolsFuncionari",
+        "summary" : "Obtenir les habilitacions associades a un/a funcionari/ària",
+        "operationId" : "ObtenirHabilitacionsFuncionari",
         "parameters" : [ {
           "name" : "usuari",
           "in" : "query",
@@ -398,7 +398,7 @@
             }
           }
         }, {
-          "name" : "rol",
+          "name" : "habilitacio",
           "in" : "query",
           "description" : "Habilitació",
           "required" : true,

@@ -19,8 +19,6 @@ import org.fundaciobit.genapp.common.query.Where;
 
 import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.ejb.LlocEJB;
-import es.caib.rfhab.ejb.LlocRolService;
-import es.caib.rfhab.ejb.RolService;
 import es.caib.rfhab.logic.utils.FuncionariLlocDAO;
 import es.caib.rfhab.logic.utils.FuncionariLlocLlocDAO;
 import es.caib.rfhab.logic.utils.HistoricLlocDAO;
@@ -28,15 +26,16 @@ import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.FuncionariLloc;
 import es.caib.rfhab.model.entity.HistoricLloc;
 import es.caib.rfhab.model.entity.Lloc;
-import es.caib.rfhab.model.entity.LlocRol;
-import es.caib.rfhab.model.entity.Rol;
+import es.caib.rfhab.model.entity.LlocHabilitacio;
+import es.caib.rfhab.model.entity.Habilitacio;
 import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.FuncionariLlocFields;
 import es.caib.rfhab.model.fields.LlocFields;
-import es.caib.rfhab.model.fields.LlocRolFields;
+import es.caib.rfhab.model.fields.LlocHabilitacioFields;
 import es.caib.rfhab.persistence.HistoricLlocJPA;
 import es.caib.rfhab.persistence.LlocJPA;
-import es.caib.rfhab.persistence.RolJPA;
+import es.caib.rfhab.persistence.TraduccioJPA;
+import es.caib.rfhab.persistence.HabilitacioJPA;
 
 /**
  * 
@@ -56,11 +55,11 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 	@EJB(mappedName = FuncionariLogicaService.JNDI_NAME)
 	FuncionariLogicaService funcionariLogicaEjb;
 
-	@EJB(mappedName = LlocRolService.JNDI_NAME)
-	LlocRolService llocRolEjb;
+	@EJB(mappedName = LlocHabilitacioLogicaService.JNDI_NAME)
+	LlocHabilitacioLogicaService llocHabilitacioLogicaEjb;
 
-	@EJB(mappedName = RolService.JNDI_NAME)
-	RolService rolEjb;
+	@EJB(mappedName = HabilitacioLogicaService.JNDI_NAME)
+	HabilitacioLogicaService habilitacioLogicaEjb;
 
 	@Override
 	@PermitAll
@@ -71,65 +70,90 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 			if (lloc == null) {
 				throw new I18NException("error.modification", "<lloc null>");
 			}
-			Lloc oldLloc = findByPrimaryKey(lloc.getLlocID());
+			long llocID = lloc.getLlocID();
+			Lloc oldLloc = findByPrimaryKey(llocID);
 			if (oldLloc == null) {
 				throw new I18NException("error.modification", new String[] { "lloc", LlocFields.LLOCID.sqlName,
-						String.valueOf(lloc.getLlocID()), "<oldLloc null>" });
+						String.valueOf(llocID), "<oldLloc null>" });
 			}
 
 			HistoricLlocDAO historicOld = new HistoricLlocDAO(oldLloc);
 			newLloc = update(lloc);
-			log.info("Lloc actualitzat: " + newLloc.getLlocID());
+			long newLlocId = newLloc.getLlocID();
+			String codiLlocNewLloc = newLloc.getCodiLloc();
+			log.info("Lloc actualitzat: " + newLlocId);
 
-			// actualitzam rolsllocs segons rolsSeleccionats
+			// actualitzam habilitacionsLlocss segons habilitacionsSeleccionades
 			List<String> habilitacionsToInsert = new ArrayList<String>();
 			if (habilitacionsSeleccionades != null) {
 				habilitacionsToInsert = Arrays.stream(habilitacionsSeleccionades).collect(Collectors.toList());
 			}
-			Where llocRolsByLlocId = LlocRolFields.LLOCID.equal(newLloc.getLlocID());
-			List<LlocRol> llocsRolsOld = llocRolEjb.select(llocRolsByLlocId);
+			Where llocHabilitacionsByLlocId = LlocHabilitacioFields.LLOCID.equal(newLlocId);
+			List<LlocHabilitacio> llocsHabilitacionsOld = llocHabilitacioLogicaEjb.select(llocHabilitacionsByLlocId);
 			// delete i actualitzar llistat d'inserts
-			if (llocsRolsOld != null) {
-				for (LlocRol llocRolOld : llocsRolsOld) {
-					String rolIdStr = String.valueOf(llocRolOld.getRolID());
-					if (habilitacionsToInsert.contains(rolIdStr)) {
+			if (llocsHabilitacionsOld != null) {
+				for (LlocHabilitacio llocHabilitacioOld : llocsHabilitacionsOld) {
+					Long habilitacioId = llocHabilitacioOld.getHabilitacioId();
+					String habilitacioIdStr = String.valueOf(habilitacioId);
+					if (habilitacionsToInsert.contains(habilitacioIdStr)) {
 						// ja existeix, no l'hem d'inserir
-						habilitacionsToInsert.remove(rolIdStr);
+						habilitacionsToInsert.remove(habilitacioIdStr);
 					} else {
-						// no existeix, l'hem de borrar
-						llocRolEjb.delete(llocRolOld);
-						TypedQuery<Long> q = llocRolEjb.getEntityManager().createQuery(
-								"Select count(lr.llocID) from LlocRolJPA as lr where lr.llocID = :llocId",
+						// no existeix en el llistat de noves, l'hem d'esborrar
+						llocHabilitacioLogicaEjb.delete(llocHabilitacioOld);
+						TypedQuery<Long> q = llocHabilitacioLogicaEjb.getEntityManager().createQuery(
+								"Select count(lr.llocID) from LlocHabilitacioJPA as lr where lr.llocID = :llocId",
 								Long.class);
-						q.setParameter("llocId", newLloc.getLlocID());
+						q.setParameter("llocId", newLlocId);
 						Long count = q.getSingleResult();
-						log.info("Desassignació del rol " + llocRolOld.getRolID() + " al lloc de feina "
-								+ newLloc.getCodiLloc() + ". Ara té " + count + " rols assignats.");
+						log.info("Desassignació feta de l'habilitació " + habilitacioIdStr
+								+ " al lloc de feina "
+								+ codiLlocNewLloc + ". Ara té " + count + " habilitacions assignades.");
+
+						HabilitacioJPA habilitacio = habilitacioLogicaEjb.findByPrimaryKey(habilitacioId);
+						TraduccioJPA nomHabilitacio = habilitacio.getNom();
+						log.info("Creant històric de desassignació d'habilitació");
+						createHistoricLlocHabilitacio(cai, usuariId, newLlocId, habilitacioId,
+								codiLlocNewLloc, nomHabilitacio, false);
+						log.info(
+								"Creat històric de desassignació d'habilitació " + nomHabilitacio + " al lloc de feina "
+										+ codiLlocNewLloc);
 					}
 				}
 			}
 			// insert
-			for (String rolIdStr : habilitacionsToInsert) {
+			for (String habilitacioIdStr : habilitacionsToInsert) {
 				try {
-					if (rolIdStr == null || rolIdStr.isEmpty()) {
+					if (habilitacioIdStr == null || habilitacioIdStr.isEmpty()) {
 						continue;
 					}
-					Long rolId = Long.parseLong(rolIdStr);
-					// comprovam que el rol existeix
-					RolJPA rol = rolEjb.findByPrimaryKey(rolId);
-					if (rol != null) {
-						LlocRol llocRol = new es.caib.rfhab.persistence.LlocRolJPA();
-						llocRol.setLlocID(newLloc.getLlocID());
-						llocRol.setRolID(rolId);
-						llocRol.setDataCreacio(new Timestamp(System.currentTimeMillis()));
-						llocRolEjb.create(llocRol);
-						log.info("Assignació del rol " + rol.getNom() + " al lloc de feina " + newLloc.getCodiLloc());
+					Long habilitacioId = Long.parseLong(habilitacioIdStr);
+					// comprovam que el habilitacio existeix
+					HabilitacioJPA habilitacio = habilitacioLogicaEjb.findByPrimaryKey(habilitacioId);
+					if (habilitacio != null) {
+						LlocHabilitacio llocHabilitacio = new es.caib.rfhab.persistence.LlocHabilitacioJPA();
+						llocHabilitacio.setLlocID(newLlocId);
+						llocHabilitacio.setHabilitacioId((long) habilitacioId);
+						llocHabilitacio.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+						llocHabilitacioLogicaEjb.create(llocHabilitacio);
+						TraduccioJPA nomHabilitacio = habilitacio.getNom();
+						log.info("Assignació creada de l'habilitació " + nomHabilitacio + " al lloc de feina "
+								+ codiLlocNewLloc);
+
+						log.info("Creant històric d'assignació d'habilitació");
+						createHistoricLlocHabilitacio(cai, usuariId, newLlocId, habilitacioId,
+								codiLlocNewLloc, nomHabilitacio, true);
+						log.info(
+								"Creat històric d'assignació d'habilitació " + nomHabilitacio + " al lloc de feina "
+										+ codiLlocNewLloc);
 					} else {
-						log.warn("No s'ha trobat el Rol amb ID " + rolId + ". No s'assigna al Lloc amb ID "
-								+ lloc.getLlocID());
+						log.warn("No s'ha trobat l'Habilitacio amb ID " + habilitacioId
+								+ ". No s'assigna al Lloc amb ID "
+								+ llocID);
 					}
 				} catch (NumberFormatException nfe) {
-					log.error("Error assignant rol al lloc de feina. El valor del rol no és numèric: " + rolIdStr);
+					log.error("Error assignant habilitació al lloc de feina. El valor de l'habilitació no és numèric: "
+							+ habilitacioIdStr);
 				}
 			}
 
@@ -146,13 +170,14 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 			return newLloc;
 		} catch (Exception e) {
 			log.error(e);
-			throw new I18NException("error.modification", String.valueOf(lloc.getLlocID()));
+			long llocID3 = lloc.getLlocID();
+			throw new I18NException("error.modification", String.valueOf(llocID3));
 		}
 	}
 
 	@Override
 	@PermitAll
-	public LlocJPA createAndHistory(Lloc lloc, String cai, Long usuariId, String[] rolsSeleccionats)
+	public LlocJPA createAndHistory(Lloc lloc, String cai, Long usuariId, String[] habilitacionsSeleccionades)
 			throws I18NException {
 		LlocJPA llocJpa = null;
 
@@ -164,39 +189,50 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 			log.info("Creant lloc: " + lloc.getCodiLlocPropi() + " --> " + lloc.getCodiLloc() + " - "
 					+ lloc.getExpansio());
 			llocJpa = (LlocJPA) create(lloc);
-			log.info("Lloc creat: " + lloc.getLlocID());
-			// cream rolsllocs segons rolsSeleccionats
-			if (rolsSeleccionats != null) {
-				for (String rolIdStr : rolsSeleccionats) {
+			long llocCreatID = llocJpa.getLlocID();
+			log.info("Lloc creat: " + llocCreatID);
+			// cream habilitacionsLlocss segons habilitacionsSeleccionades
+			if (habilitacionsSeleccionades != null) {
+				for (String habilitacioIdStr : habilitacionsSeleccionades) {
 					try {
-						if (rolIdStr == null || rolIdStr.isEmpty()) {
+						if (habilitacioIdStr == null || habilitacioIdStr.isEmpty()) {
 							continue;
 						}
-						Long rolId = Long.parseLong(rolIdStr);
-						// comprovam que el rol existeix
-						RolJPA rol = rolEjb.findByPrimaryKey(rolId);
-						if (rol != null) {
-							LlocRol llocRol = new es.caib.rfhab.persistence.LlocRolJPA();
-							llocRol.setLlocID(llocJpa.getLlocID());
-							llocRol.setRolID(rolId);
-							llocRol.setDataCreacio(new Timestamp(System.currentTimeMillis()));
-							llocRolEjb.create(llocRol);
-							log.info("Assignació del rol " + rol.getNom() + " al lloc de feina "
-									+ llocJpa.getCodiLloc());
+						Long habilitacioId = Long.parseLong(habilitacioIdStr);
+						// comprovam que el habilitacio existeix
+						HabilitacioJPA habilitacio = habilitacioLogicaEjb.findByPrimaryKey(habilitacioId);
+						if (habilitacio != null) {
+							LlocHabilitacio llocHabilitacio = new es.caib.rfhab.persistence.LlocHabilitacioJPA();
+							llocHabilitacio.setLlocID(llocCreatID);
+							llocHabilitacio.setHabilitacioId((long) habilitacioId);
+							llocHabilitacio.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+							llocHabilitacioLogicaEjb.create(llocHabilitacio);
+							String codiLlocLlocCreat = llocJpa.getCodiLloc();
+							TraduccioJPA nomHabilitacio = habilitacio.getNom();
+							log.info("Assignació creada de l'habilitació " + nomHabilitacio + " al lloc de feina "
+									+ codiLlocLlocCreat);
+
+							log.info("Creant històric d'assignació d'habilitació");
+							createHistoricLlocHabilitacio(cai, usuariId, llocCreatID, habilitacioId,
+									codiLlocLlocCreat, nomHabilitacio, true);
+							log.info(
+									"Creat històric d'assignació d'habilitació " + nomHabilitacio + " al lloc de feina "
+											+ codiLlocLlocCreat);
 						} else {
-							log.warn("No s'ha trobat el Rol amb ID " + rolId + ". No s'assigna al Lloc amb ID "
-									+ lloc.getLlocID());
+							log.warn("No s'ha trobat l'Habilitacio amb ID " + habilitacioId
+									+ ". No s'assigna al Lloc amb ID " + llocCreatID);
 						}
 					} catch (NumberFormatException nfe) {
-						log.error("Error assignant rol al lloc de feina. El valor del rol no és numèric: "
-								+ rolIdStr);
+						log.error(
+								"Error assignant habilitació al lloc de feina. El valor de l'habilitació no és numèric: "
+										+ habilitacioIdStr);
 					}
 				}
 			}
 
 			HistoricLlocJPA historicLloc = null;
 			historicLloc = new HistoricLlocJPA();
-			historicLloc.setLlocID(lloc.getLlocID());
+			historicLloc.setLlocID(llocCreatID);
 			historicLloc.setNumeroCai(cai);
 			historicLloc.setDataCreacio(new Timestamp(System.currentTimeMillis()));
 			historicLloc.setUsuariID(usuariId);
@@ -211,6 +247,29 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 			log.error(e.getMessage());
 			throw new I18NException("error.creation", String.valueOf(lloc.getLlocID()));
 		}
+	}
+
+	private void createHistoricLlocHabilitacio(String cai, Long usuariId, long llocCreatID,
+			Long habilitacioId, String codiLlocLlocCreat, TraduccioJPA nomHabilitacio, boolean isInsert)
+			throws I18NException {
+		HistoricLlocJPA historicLlocHabilitacioNova = new HistoricLlocJPA();
+		historicLlocHabilitacioNova.setLlocID(llocCreatID);
+		historicLlocHabilitacioNova.setNumeroCai(cai);
+		historicLlocHabilitacioNova.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+		historicLlocHabilitacioNova.setUsuariID(usuariId);
+		String historicLlocHAbilitacioNovaObservacions = null;
+		if (isInsert) {
+			historicLlocHAbilitacioNovaObservacions = "Nova assignació d'habilitació " + nomHabilitacio + " (id="
+					+ habilitacioId + ") a lloc " + codiLlocLlocCreat + " (id " + llocCreatID + ")";
+		} else {
+			historicLlocHAbilitacioNovaObservacions = "Nova desassignació d'habilitació " + nomHabilitacio + " (id="
+					+ habilitacioId + ") a lloc " + codiLlocLlocCreat + " (id " + llocCreatID + ")";
+		}
+		if (cai != null && !cai.isEmpty()) {
+			historicLlocHAbilitacioNovaObservacions += " --> CAI: " + cai;
+		}
+		historicLlocLogicaEjb.create(historicLlocHabilitacioNova,
+				historicLlocHAbilitacioNovaObservacions);
 	}
 
 	@Override
@@ -421,27 +480,27 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 
 	@Override
 	@PermitAll
-	public List<Rol> getRolsByLlocID(Long llocId) throws I18NException {
+	public List<Habilitacio> getHabilitacionsByLlocID(Long llocId) throws I18NException {
 
 		if (llocId != null) {
 
-			Where w = LlocRolFields.LLOCID.equal(llocId);
+			Where w = LlocHabilitacioFields.LLOCID.equal(llocId);
 
-			List<LlocRol> llocsRols = llocRolEjb.select(w);
+			List<LlocHabilitacio> llocsHabilitacions = llocHabilitacioLogicaEjb.select(w);
 
-			if (llocsRols.size() > 0) {
-				List<Rol> llistaRols = new ArrayList<Rol>(llocsRols.size());
-				for (LlocRol lr : llocsRols) {
-					Rol rol = rolEjb.findByPrimaryKey(lr.getRolID());
-					if (rol != null) {
-						llistaRols.add(rol);
+			if (llocsHabilitacions.size() > 0) {
+				List<Habilitacio> llistaHabilitacions = new ArrayList<Habilitacio>(llocsHabilitacions.size());
+				for (LlocHabilitacio lr : llocsHabilitacions) {
+					Habilitacio habilitacio = habilitacioLogicaEjb.findByPrimaryKey(lr.getHabilitacioId());
+					if (habilitacio != null) {
+						llistaHabilitacions.add(habilitacio);
 					}
 				}
-				return llistaRols;
+				return llistaHabilitacions;
 			}
 
 		}
-		return new ArrayList<Rol>();
+		return new ArrayList<Habilitacio>();
 
 	}
 
@@ -502,10 +561,12 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 	@Override
 	@PermitAll
 	public String getNouLlocCodiPropi(String codiLloc, String expansio) throws I18NException {
-		// DESACTIVAM AQUESTA FUNCIONALITAT. ARA EL CODILLOCPROPI ÉS UNIQUE I NO ES POT REPETIR MAI, PERQUÈ HI POT HAVER LLOCS DE FEINA AMB CODILLOC I EXPANSIO NULLS, I AQUEST CAMP SERIA L'ÚNICA FORMA DE DIFERENCIAR-LOS
+		// DESACTIVAM AQUESTA FUNCIONALITAT. ARA EL CODILLOCPROPI ÉS UNIQUE I NO ES POT
+		// REPETIR MAI, PERQUÈ HI POT HAVER LLOCS DE FEINA AMB CODILLOC I EXPANSIO
+		// NULLS, I AQUEST CAMP SERIA L'ÚNICA FORMA DE DIFERENCIAR-LOS
 		// List<Lloc> llocsAmbMateixCodi = select(LlocFields.CODILLOC.equal(codiLloc));
 		// if (llocsAmbMateixCodi != null && llocsAmbMateixCodi.size() > 0) {
-		// 	return llocsAmbMateixCodi.get(0).getCodiLlocPropi();
+		// return llocsAmbMateixCodi.get(0).getCodiLlocPropi();
 		// }
 		return generaNouLlocCodiPropi();
 	}

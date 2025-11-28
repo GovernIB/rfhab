@@ -114,7 +114,7 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 						TraduccioJPA nomHabilitacio = habilitacio.getNom();
 						log.info("Creant històric de desassignació d'habilitació");
 						createHistoricLlocHabilitacio(cai, usuariId, newLlocId, habilitacioId,
-								codiLlocNewLloc, nomHabilitacio, false);
+								codiLlocNewLloc, nomHabilitacio, false, "ca");
 						log.info(
 								"Creat històric de desassignació d'habilitació " + nomHabilitacio + " al lloc de feina "
 										+ codiLlocNewLloc);
@@ -142,7 +142,7 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 
 						log.info("Creant històric d'assignació d'habilitació");
 						createHistoricLlocHabilitacio(cai, usuariId, newLlocId, habilitacioId,
-								codiLlocNewLloc, nomHabilitacio, true);
+								codiLlocNewLloc, nomHabilitacio, true, "ca");
 						log.info(
 								"Creat històric d'assignació d'habilitació " + nomHabilitacio + " al lloc de feina "
 										+ codiLlocNewLloc);
@@ -214,7 +214,7 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 
 							log.info("Creant històric d'assignació d'habilitació");
 							createHistoricLlocHabilitacio(cai, usuariId, llocCreatID, habilitacioId,
-									codiLlocLlocCreat, nomHabilitacio, true);
+									codiLlocLlocCreat, nomHabilitacio, true, "ca");
 							log.info(
 									"Creat històric d'assignació d'habilitació " + nomHabilitacio + " al lloc de feina "
 											+ codiLlocLlocCreat);
@@ -250,7 +250,7 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 	}
 
 	private void createHistoricLlocHabilitacio(String cai, Long usuariId, long llocCreatID,
-			Long habilitacioId, String codiLlocLlocCreat, TraduccioJPA nomHabilitacio, boolean isInsert)
+			Long habilitacioId, String codiLlocLlocCreat, TraduccioJPA nomHabilitacio, boolean isInsert, String lang)
 			throws I18NException {
 		HistoricLlocJPA historicLlocHabilitacioNova = new HistoricLlocJPA();
 		historicLlocHabilitacioNova.setLlocID(llocCreatID);
@@ -259,10 +259,12 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 		historicLlocHabilitacioNova.setUsuariID(usuariId);
 		String historicLlocHAbilitacioNovaObservacions = null;
 		if (isInsert) {
-			historicLlocHAbilitacioNovaObservacions = "Nova assignació d'habilitació " + nomHabilitacio + " (id="
+			historicLlocHAbilitacioNovaObservacions = "Nova assignació d'habilitació "
+					+ nomHabilitacio.getTraduccio(lang) + " (id="
 					+ habilitacioId + ") a lloc " + codiLlocLlocCreat + " (id " + llocCreatID + ")";
 		} else {
-			historicLlocHAbilitacioNovaObservacions = "Nova desassignació d'habilitació " + nomHabilitacio + " (id="
+			historicLlocHAbilitacioNovaObservacions = "Nova desassignació d'habilitació "
+					+ nomHabilitacio.getTraduccio(lang) + " (id="
 					+ habilitacioId + ") a lloc " + codiLlocLlocCreat + " (id " + llocCreatID + ")";
 		}
 		if (cai != null && !cai.isEmpty()) {

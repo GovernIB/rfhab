@@ -246,8 +246,21 @@ public class LlocAdminController extends LlocController {
 
 		llocForm.setDeleteButtonVisible(false);
 
+		String jsOpenModalGuardar = "javascript:createDivModal('"
+				+ I18NUtils.tradueix("lloc.modificar.guardar.titol") + "', '"
+				+ I18NUtils.tradueix("lloc.modificar.guardar.missatge")
+				+ "', '', 'llocForm', 'lloc-save-modal-id', 'fa-save');\r\n" +
+				"        $('#lloc-save-modal-id').modal('show');\r\n";
+		AdditionalButton guardarButton = new AdditionalButton("",
+				"genapp.save",
+				jsOpenModalGuardar,
+				AdditionalButtonStyle.PRIMARY);
+		llocForm.setSaveButtonVisible(false);
+
 		final boolean donatdeBaixa = lloc.getDataBaixa() != null || lloc.getDataalta() == null;
 		if (llocForm.isNou()) {
+			llocForm.addAdditionalButton(guardarButton);
+
 			mav.addObject("isNew", llocForm.isNou());
 
 			mav.addObject("LLOC_CODILLOC_PLACEHOLDER", Constants.LLOC_CODILLOC_PLACEHOLDER);
@@ -307,20 +320,10 @@ public class LlocAdminController extends LlocController {
 			// només ho mostram al mode consulta)
 			mav.addObject("historic", new ArrayList<HistoricLloc>());
 
-			String jsOpenModalGuardar = "javascript:createDivModal('"
-					+ I18NUtils.tradueix("lloc.modificar.guardar.titol") + "', '"
-					+ I18NUtils.tradueix("lloc.modificar.guardar.missatge")
-					+ "', '', 'llocForm', 'lloc-save-modal-id', 'fa-save');\r\n" +
-					"        $('#lloc-save-modal-id').modal('show');\r\n";
-			AdditionalButton guardarButton = new AdditionalButton("",
-					"genapp.save",
-					jsOpenModalGuardar,
-					AdditionalButtonStyle.PRIMARY);
 			// no el volem veure al mode de consulta
 			if (!__isView) {
 				llocForm.addAdditionalButton(guardarButton);
 			}
-			llocForm.setSaveButtonVisible(false);
 
 			// botons donar de baixa/alta (no els volem veure al mode consulta)
 			if (!__isView) {

@@ -2,6 +2,24 @@
 <%@ include file="/WEB-INF/jsp/moduls/includes.jsp"%>
 <un:useConstants var="LlocFields" className="es.caib.rfhab.model.fields.LlocFields"/>
   
+        <c:if test="${!gen:contains(__theForm.hiddenFields,LlocFields.CODILLOCPROPI)}">
+        <tr id="lloc_codiLlocPropi_rowid">
+          <td id="lloc_codiLlocPropi_columnlabelid">
+            <label>
+              <fmt:message key="${(empty __theForm.labels[LlocFields.CODILLOCPROPI])?'lloc.codiLlocPropi':__theForm.labels[LlocFields.CODILLOCPROPI]}" /> &nbsp;(*)
+             </label>
+              <c:if test="${not empty __theForm.help[LlocFields.CODILLOCPROPI]}">
+              <i class="fas fa-info-circle" title="${__theForm.help[LlocFields.CODILLOCPROPI]}" ></i>
+              </c:if>
+            </td>
+          <td id="lloc_codiLlocPropi_columnvalueid">
+            <form:errors path="lloc.codiLlocPropi" cssClass="errorField alert alert-danger" />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocFields.CODILLOCPROPI)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,LlocFields.CODILLOCPROPI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="lloc.codiLlocPropi"   />
+
+           </td>
+        </tr>
+        </c:if>
+        
         <c:if test="${!gen:contains(__theForm.hiddenFields,LlocFields.CODILLOC)}">
         <tr id="lloc_codiLloc_rowid">
           <td id="lloc_codiLloc_columnlabelid">
@@ -33,24 +51,6 @@
           <td id="lloc_expansio_columnvalueid">
             <form:errors path="lloc.expansio" cssClass="errorField alert alert-danger" />
             <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocFields.EXPANSIO)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,LlocFields.EXPANSIO)? ' uneditable-input' : ''}"  style="" maxlength="50" path="lloc.expansio"   />
-
-           </td>
-        </tr>
-        </c:if>
-        
-        <c:if test="${!gen:contains(__theForm.hiddenFields,LlocFields.CODILLOCPROPI)}">
-        <tr id="lloc_codiLlocPropi_rowid">
-          <td id="lloc_codiLlocPropi_columnlabelid">
-            <label>
-              <fmt:message key="${(empty __theForm.labels[LlocFields.CODILLOCPROPI])?'lloc.codiLlocPropi':__theForm.labels[LlocFields.CODILLOCPROPI]}" /> &nbsp;(*)
-             </label>
-              <c:if test="${not empty __theForm.help[LlocFields.CODILLOCPROPI]}">
-              <i class="fas fa-info-circle" title="${__theForm.help[LlocFields.CODILLOCPROPI]}" ></i>
-              </c:if>
-            </td>
-          <td id="lloc_codiLlocPropi_columnvalueid">
-            <form:errors path="lloc.codiLlocPropi" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocFields.CODILLOCPROPI)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,LlocFields.CODILLOCPROPI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="lloc.codiLlocPropi"   />
 
            </td>
         </tr>
@@ -141,6 +141,42 @@
         </tr>
         </c:if>
         
+        <c:if test="${!gen:contains(__theForm.hiddenFields,LlocFields.DATAALTA)}">
+        <tr id="lloc_dataalta_rowid">
+          <td id="lloc_dataalta_columnlabelid">
+            <label>
+              <fmt:message key="${(empty __theForm.labels[LlocFields.DATAALTA])?'lloc.dataalta':__theForm.labels[LlocFields.DATAALTA]}" />
+             </label>
+              <c:if test="${not empty __theForm.help[LlocFields.DATAALTA]}">
+              <i class="fas fa-info-circle" title="${__theForm.help[LlocFields.DATAALTA]}" ></i>
+              </c:if>
+            </td>
+          <td id="lloc_dataalta_columnvalueid">
+    <form:errors path="lloc.dataalta" cssClass="errorField alert alert-danger" />
+            <div class="form-group"  style="margin-bottom: 0px;" >
+                <div class="input-group date" id="lloc_dataalta" data-target-input="nearest">
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocFields.DATAALTA)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#lloc_dataalta" path="lloc.dataalta" />
+                    <c:if test="${!gen:contains(__theForm.readOnlyFields ,LlocFields.DATAALTA)}" >
+                    <div class="input-group-append"  data-target="#lloc_dataalta"  data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                    </c:if>
+                </div>
+            </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#lloc_dataalta').datetimepicker({
+                    format: '${gen:getJSDatePattern()}',
+                    locale: '${lang}',
+                    icons: {
+                       time: 'far fa-clock'
+                    }
+                });
+            });
+        </script>           </td>
+        </tr>
+        </c:if>
+        
         <c:if test="${!gen:contains(__theForm.hiddenFields,LlocFields.PERSONALOAMR)}">
         <tr id="lloc_personalOamr_rowid">
           <td id="lloc_personalOamr_columnlabelid">
@@ -169,42 +205,6 @@
           </form:select>
           </c:if>
            </td>
-        </tr>
-        </c:if>
-        
-        <c:if test="${!gen:contains(__theForm.hiddenFields,LlocFields.DATAALTA)}">
-        <tr id="lloc_dataalta_rowid">
-          <td id="lloc_dataalta_columnlabelid">
-            <label>
-              <fmt:message key="${(empty __theForm.labels[LlocFields.DATAALTA])?'lloc.dataalta':__theForm.labels[LlocFields.DATAALTA]}" />
-             </label>
-              <c:if test="${not empty __theForm.help[LlocFields.DATAALTA]}">
-              <i class="fas fa-info-circle" title="${__theForm.help[LlocFields.DATAALTA]}" ></i>
-              </c:if>
-            </td>
-          <td id="lloc_dataalta_columnvalueid">
-    <form:errors path="lloc.dataalta" cssClass="errorField alert alert-danger" />
-            <div class="form-group"  style="margin-bottom: 0px;" >
-                <div class="input-group date" id="lloc_dataalta" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocFields.DATAALTA)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#lloc_dataalta" path="lloc.dataalta" />
-                    <c:if test="${!gen:contains(__theForm.readOnlyFields ,LlocFields.DATAALTA)}" >
-                    <div class="input-group-append"  data-target="#lloc_dataalta"  data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
-                    </c:if>
-                </div>
-            </div>
-        <script type="text/javascript">
-            $(function () {
-                $('#lloc_dataalta').datetimepicker({
-                    format: '${gen:getJSDateTimePattern()}',
-                    locale: '${lang}',
-                    icons: {
-                       time: 'far fa-clock'
-                    }
-                });
-            });
-        </script>           </td>
         </tr>
         </c:if>
         

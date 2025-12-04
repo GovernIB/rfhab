@@ -43,6 +43,17 @@ public class LlocFilterForm extends RFHabBaseFilterForm implements LlocFields {
   }
 
 
+  private java.lang.String codiLlocPropi;
+
+  public java.lang.String getCodiLlocPropi() {
+    return this.codiLlocPropi;
+  }
+
+  public void setCodiLlocPropi(java.lang.String codiLlocPropi) {
+    this.codiLlocPropi = codiLlocPropi;
+  }
+
+
   private java.lang.String codiLloc;
 
   public java.lang.String getCodiLloc() {
@@ -62,17 +73,6 @@ public class LlocFilterForm extends RFHabBaseFilterForm implements LlocFields {
 
   public void setExpansio(java.lang.String expansio) {
     this.expansio = expansio;
-  }
-
-
-  private java.lang.String codiLlocPropi;
-
-  public java.lang.String getCodiLlocPropi() {
-    return this.codiLlocPropi;
-  }
-
-  public void setCodiLlocPropi(java.lang.String codiLlocPropi) {
-    this.codiLlocPropi = codiLlocPropi;
   }
 
 
@@ -131,17 +131,6 @@ public class LlocFilterForm extends RFHabBaseFilterForm implements LlocFields {
   }
 
 
-  private java.util.List<java.lang.Integer> personalOamrSelect;
-
-  public java.util.List<java.lang.Integer> getPersonalOamrSelect() {
-    return this.personalOamrSelect;
-  }
-
-  public void setPersonalOamrSelect(java.util.List<java.lang.Integer> personalOamrSelect) {
-    this.personalOamrSelect = personalOamrSelect;
-  }
-
-
   private java.sql.Timestamp dataaltaDesde;
 
   public java.sql.Timestamp getDataaltaDesde() {
@@ -161,6 +150,17 @@ public class LlocFilterForm extends RFHabBaseFilterForm implements LlocFields {
 
   public void setDataaltaFins(java.sql.Timestamp dataaltaFins) {
     this.dataaltaFins = dataaltaFins;
+  }
+
+
+  private java.util.List<java.lang.Integer> personalOamrSelect;
+
+  public java.util.List<java.lang.Integer> getPersonalOamrSelect() {
+    return this.personalOamrSelect;
+  }
+
+  public void setPersonalOamrSelect(java.util.List<java.lang.Integer> personalOamrSelect) {
+    this.personalOamrSelect = personalOamrSelect;
   }
 
 
@@ -226,17 +226,17 @@ public class LlocFilterForm extends RFHabBaseFilterForm implements LlocFields {
     super(__toClone);
     this.llocIDDesde = __toClone.llocIDDesde;
     this.llocIDFins = __toClone.llocIDFins;
+    this.codiLlocPropi = __toClone.codiLlocPropi;
     this.codiLloc = __toClone.codiLloc;
     this.expansio = __toClone.expansio;
-    this.codiLlocPropi = __toClone.codiLlocPropi;
     this.nom = __toClone.nom;
     this.entitatIDDesde = __toClone.entitatIDDesde;
     this.entitatIDFins = __toClone.entitatIDFins;
     this.unitatIDDesde = __toClone.unitatIDDesde;
     this.unitatIDFins = __toClone.unitatIDFins;
-    this.personalOamrSelect = __toClone.personalOamrSelect;
     this.dataaltaDesde = __toClone.dataaltaDesde;
     this.dataaltaFins = __toClone.dataaltaFins;
+    this.personalOamrSelect = __toClone.personalOamrSelect;
     this.dataCreacioDesde = __toClone.dataCreacioDesde;
     this.dataCreacioFins = __toClone.dataCreacioFins;
     this.dataBaixaDesde = __toClone.dataBaixaDesde;

@@ -206,7 +206,7 @@ public class LlocAdminController extends LlocController {
 			actiusSelectvalue = "1";
 
 			llocFilterForm.setOrderBy(HistoricLlocFields.DATACREACIO.javaName);
-			llocFilterForm.setOrderAsc(true);
+			llocFilterForm.setOrderAsc(false);
 		}
 		request.getSession().setAttribute(Constants.ATTR_FILTRE_ACTIUS_VALOR_PER_DEFECTE, actiusSelectvalue);
 
@@ -460,9 +460,14 @@ public class LlocAdminController extends LlocController {
 			} else {
 				Funcionari f = llistaFuncionarisActius.get(llocID);
 				if (f != null && f.getNom() != null) {
-					String nom = f.getNom() + " " + f.getLlinatge1() + " " + f.getLlinatge2() + " (" + f.getUsuari()
-							+ ")";
-					mapFuncionari.put(llocID, nom);
+					String llinatge2 = f.getLlinatge2();
+					String llinatge1 = f.getLlinatge1();
+					String nom = f.getNom();
+					String nomComplet = (nom != null ? nom : "") + " "
+							+ (llinatge1 != null ? llinatge1 : "") + " "
+							+ (llinatge2 != null ? llinatge2 : "")
+							+ " (" + f.getUsuari() + ")";
+					mapFuncionari.put(llocID, nomComplet);
 				} else {
 					mapFuncionari.put(llocID, "");
 				}

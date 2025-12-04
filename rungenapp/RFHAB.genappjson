@@ -2803,6 +2803,33 @@
           ]
         },
         {
+          "unique": "rfh_lloc_codillocpropi_uk",
+          "isAutoIncrement": false,
+          "sqlName": "codillocpropi",
+          "sqlType": 12,
+          "size": 50,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Codi LF",
+            "es": "Código LF"
+          },
+          "javaName": "codiLlocPropi",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "minAllowedValue": "^LF\\d{6}$",
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
           "isAutoIncrement": false,
           "sqlName": "codilloc",
           "sqlType": 12,
@@ -2810,8 +2837,8 @@
           "digits": 0,
           "isNotNullable": false,
           "labels": {
-            "ca": "Codi",
-            "es": "Código Plaza"
+            "ca": "Codi FP",
+            "es": "Código FP"
           },
           "javaName": "codiLloc",
           "javaType": "java.lang.String",
@@ -2845,33 +2872,6 @@
           "showInReferenceList": false,
           "transientField": false,
           "filter": false,
-          "orderBy": 0,
-          "groupBy": false,
-          "webFieldInfo": {
-            "webtype": 1
-          },
-          "foreignKeys": []
-        },
-        {
-          "unique": "rfh_lloc_codillocpropi_uk",
-          "isAutoIncrement": false,
-          "sqlName": "codillocpropi",
-          "sqlType": 12,
-          "size": 50,
-          "digits": 0,
-          "isNotNullable": true,
-          "labels": {
-            "ca": "Codi propi",
-            "es": "Código Propio Plaza"
-          },
-          "javaName": "codiLlocPropi",
-          "javaType": "java.lang.String",
-          "traduible": false,
-          "showInWebList": true,
-          "showInReferenceList": false,
-          "transientField": false,
-          "minAllowedValue": "^LF\\d{6}$",
-          "filter": true,
           "orderBy": 0,
           "groupBy": false,
           "webFieldInfo": {
@@ -2985,6 +2985,31 @@
         },
         {
           "isAutoIncrement": false,
+          "sqlName": "dataalta",
+          "sqlType": 93,
+          "size": 29,
+          "digits": 6,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Data d\u0027alta",
+            "es": "Fecha de alta"
+          },
+          "javaName": "dataalta",
+          "javaType": "java.sql.Timestamp",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 5
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
           "sqlName": "personaloamr",
           "sqlType": 4,
           "size": 10,
@@ -3006,31 +3031,6 @@
           "groupBy": false,
           "webFieldInfo": {
             "webtype": 16
-          },
-          "foreignKeys": []
-        },
-        {
-          "isAutoIncrement": false,
-          "sqlName": "dataalta",
-          "sqlType": 93,
-          "size": 29,
-          "digits": 6,
-          "isNotNullable": false,
-          "labels": {
-            "ca": "Data d\u0027alta",
-            "es": "Fecha de alta"
-          },
-          "javaName": "dataalta",
-          "javaType": "java.sql.Timestamp",
-          "traduible": false,
-          "showInWebList": true,
-          "showInReferenceList": false,
-          "transientField": false,
-          "filter": false,
-          "orderBy": 0,
-          "groupBy": false,
-          "webFieldInfo": {
-            "webtype": 7
           },
           "foreignKeys": []
         },

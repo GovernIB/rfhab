@@ -29,6 +29,11 @@
           ${lloc.llocID}
           </td>
         </c:if>
+        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.CODILLOCPROPI)}">
+          <td>
+          ${lloc.codiLlocPropi}
+          </td>
+        </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.CODILLOC)}">
           <td>
           ${lloc.codiLloc}
@@ -37,11 +42,6 @@
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.EXPANSIO)}">
           <td>
           ${lloc.expansio}
-          </td>
-        </c:if>
-        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.CODILLOCPROPI)}">
-          <td>
-          ${lloc.codiLlocPropi}
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.NOM)}">
@@ -65,6 +65,9 @@
           </c:if>
           </td>
         </c:if>
+        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.DATAALTA)}">
+          <td> <fmt:formatDate pattern="${gen:getDatePattern()}" value="${lloc.dataalta}" /></td>
+        </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.PERSONALOAMR)}">
           <td>
           <c:set var="tmp">${lloc.personalOamr}</c:set>
@@ -72,9 +75,6 @@
           ${__theFilterForm.mapOfValuesForPersonalOamr[tmp]}
           </c:if>
           </td>
-        </c:if>
-        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.DATAALTA)}">
-          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${lloc.dataalta}" /></td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.DATACREACIO)}">
           <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${lloc.dataCreacio}" /></td>

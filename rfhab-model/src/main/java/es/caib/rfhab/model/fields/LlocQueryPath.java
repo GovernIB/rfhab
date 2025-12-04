@@ -15,16 +15,16 @@ public class LlocQueryPath extends org.fundaciobit.genapp.common.query.QueryPath
     return new LongField(getQueryPath(), LlocFields.LLOCID);
   }
 
+  public StringField CODILLOCPROPI() {
+    return new StringField(getQueryPath(), LlocFields.CODILLOCPROPI);
+  }
+
   public StringField CODILLOC() {
     return new StringField(getQueryPath(), LlocFields.CODILLOC);
   }
 
   public StringField EXPANSIO() {
     return new StringField(getQueryPath(), LlocFields.EXPANSIO);
-  }
-
-  public StringField CODILLOCPROPI() {
-    return new StringField(getQueryPath(), LlocFields.CODILLOCPROPI);
   }
 
   public StringField NOM() {
@@ -39,12 +39,12 @@ public class LlocQueryPath extends org.fundaciobit.genapp.common.query.QueryPath
     return new LongField(getQueryPath(), LlocFields.UNITATID);
   }
 
-  public IntegerField PERSONALOAMR() {
-    return new IntegerField(getQueryPath(), LlocFields.PERSONALOAMR);
-  }
-
   public TimestampField DATAALTA() {
     return new TimestampField(getQueryPath(), LlocFields.DATAALTA);
+  }
+
+  public IntegerField PERSONALOAMR() {
+    return new IntegerField(getQueryPath(), LlocFields.PERSONALOAMR);
   }
 
   public TimestampField DATACREACIO() {

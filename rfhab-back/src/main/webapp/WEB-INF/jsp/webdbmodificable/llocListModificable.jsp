@@ -1,3 +1,8 @@
+<%@ page import="es.caib.rfhab.commons.utils.Constants" %>
+<%
+  String filtre_actius_vperdefecte = (String)session.getAttribute(Constants.ATTR_FILTRE_ACTIUS_VALOR_PER_DEFECTE); 
+%>
+
 <style type="text/css">
   .search-query {
     width: auto !important;
@@ -27,6 +32,11 @@
 
     replaceOamrFilter();
     replaceUnitatsFilter(unitatsOptions);
-    addActiusSelectFilter();
+    const actiusSelectFilter = addActiusSelectFilter();
+    const filtreActiusValorPerDefecte = '<%=filtre_actius_vperdefecte%>';
+    console.log("filtreActiusValorPerDefecte: " + filtreActiusValorPerDefecte);
+    if(filtreActiusValorPerDefecte && filtreActiusValorPerDefecte != "null"){
+      actiusSelectFilter.value = filtreActiusValorPerDefecte;
+    }
   });
 </script>

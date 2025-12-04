@@ -150,6 +150,11 @@ public class LlocAdminController extends LlocController {
 
 		LlocFilterForm llocFilterForm = super.getLlocFilterForm(pagina, mav, request);
 
+		String actiusSelectvalue = (StringUtils.isNotEmpty(request.getParameter("actiusSegonsDatabaixaName")))
+				? request.getParameter("actiusSegonsDatabaixaName")
+				: "";
+		request.getSession().removeAttribute(Constants.ATTR_FILTRE_ACTIUS_VALOR_PER_DEFECTE);
+
 		if (llocFilterForm.isNou()) {
 			llocFilterForm.addHiddenField(LlocFields.LLOCID);
 			llocFilterForm.addHiddenField(LlocFields.DATACREACIO);
@@ -179,7 +184,7 @@ public class LlocAdminController extends LlocController {
 
 			{
 				AdditionalField<Long, String> adfield2 = new AdditionalField<Long, String>();
-				adfield2.setCodeName(HabilitacioFields._TABLE_TRANSLATION);
+				adfield2.setCodeName("habilitacio.habilitacio.plural");
 				adfield2.setPosition(3);
 				// adfield2.setOrderBy(HabilitacioFields.CODI);
 				adfield2.setEscapeXml(false);
@@ -198,9 +203,13 @@ public class LlocAdminController extends LlocController {
 				// llocFilterForm.addhiddenField(adfieldDarreraModificacio);
 			}
 
+			actiusSelectvalue = "1";
+
 			llocFilterForm.setOrderBy(HistoricLlocFields.DATACREACIO.javaName);
 			llocFilterForm.setOrderAsc(true);
 		}
+		request.getSession().setAttribute(Constants.ATTR_FILTRE_ACTIUS_VALOR_PER_DEFECTE, actiusSelectvalue);
+
 		List<StringKeyValue> _unitatsTemp = getUnitatsByEntitatArrel(mav, loginInfo.getEntitatIDActual(),
 				false);
 		Map<String, String> unitatsFiltreCerca = Utils.listToMap(_unitatsTemp);
@@ -216,6 +225,8 @@ public class LlocAdminController extends LlocController {
 
 		llocFilterForm.setAttachedAdditionalJspCode(true);
 
+		// final String filtreActiusValorPerDefecte = (String) request.getSession()
+		// .getAttribute(Constants.ATTR_FILTRE_ACTIUS_VALOR_PER_DEFECTE);
 		return llocFilterForm;
 	}
 
@@ -696,10 +707,17 @@ public class LlocAdminController extends LlocController {
 
 	public Where getAdditionalConditionDonatsDeBaixa(HttpServletRequest request) throws I18NException {
 		// filtrar per donats de baixa (actius)
-		final String actiusSelectvalue = (StringUtils.isNotEmpty(request.getParameter("actiusSegonsDatabaixaName")))
+		String actiusSelectvalue = (StringUtils.isNotEmpty(request.getParameter("actiusSegonsDatabaixaName")))
 				? request.getParameter("actiusSegonsDatabaixaName")
 				: "";
 		log.info("actiusSelectvalue ==> " + actiusSelectvalue);
+		final String filtreActiusValorPerDefecte = (String) request.getSession()
+				.getAttribute(Constants.ATTR_FILTRE_ACTIUS_VALOR_PER_DEFECTE);
+
+		if (filtreActiusValorPerDefecte != null && !filtreActiusValorPerDefecte.isEmpty()) {
+			actiusSelectvalue = filtreActiusValorPerDefecte;
+			log.info("actiusSelectvalue ==> " + actiusSelectvalue);
+		}
 
 		if ("0".equals(actiusSelectvalue)) {
 			return LlocFields.DATABAIXA.isNotNull();
@@ -742,7 +760,8 @@ public class LlocAdminController extends LlocController {
 		}
 
 		if (!llocForm.isNou()) {
-			List<Habilitacio> llistaHabilitacions = llocLogicaEjb.getHabilitacionsByLlocID(llocForm.getLloc().getLlocID());
+			List<Habilitacio> llistaHabilitacions = llocLogicaEjb
+					.getHabilitacionsByLlocID(llocForm.getLloc().getLlocID());
 			if (mav == null) {
 				request.getSession().setAttribute("habilitacions", llistaHabilitacions);
 			} else {

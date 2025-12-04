@@ -124,6 +124,8 @@ function addActiusSelectFilter(filterCookieName) {
         "; path=/; Secure; SameSite=Strict";
     });
   }
+
+  return actiusSelect;
 }
 
 function addAssignatsLlocSelectFilter(filterCookieName) {

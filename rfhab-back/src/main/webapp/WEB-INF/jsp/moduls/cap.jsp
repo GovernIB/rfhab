@@ -80,7 +80,6 @@
 					</div></li>
 
 				<%--  PIPELLES SEGONS EL ROL DE L'USUARI --%>
-
 				<c:if test="${rfh:hasRole('ROLE_ADMIN')}">
 					<li id="rolInfoContainer" class="menuCapItem dropdown"
 						onclick="location='<c:url value="/canviarPipella/admin"/>'">
@@ -98,7 +97,7 @@
 							<sec:authorize access="hasRole('ROLE_ADMIN')">
 								<c:if test="${pipella ne 'admin'}">
 									<a class="dropdown-item"
-										href="<c:url value="/canviarPipella/admin"/>"><fmt:message
+										href="<c:url value="/canviarPipella/admin" />"><fmt:message
 											key="rol.admin" /></a>
 								</c:if>
 							</sec:authorize>

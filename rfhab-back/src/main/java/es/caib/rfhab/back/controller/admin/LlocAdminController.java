@@ -14,8 +14,16 @@ import org.apache.log4j.Logger;
 import org.fundaciobit.genapp.common.StringKeyValue;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.i18n.I18NValidationException;
+import org.fundaciobit.genapp.common.query.ITableManager;
+import org.fundaciobit.genapp.common.query.OrderBy;
+import org.fundaciobit.genapp.common.query.OrderType;
 import org.fundaciobit.genapp.common.query.Select;
+import org.fundaciobit.genapp.common.query.SelectGroupBy;
+import org.fundaciobit.genapp.common.query.SelectMax;
+import org.fundaciobit.genapp.common.query.SubQuery;
 import org.fundaciobit.genapp.common.query.Where;
+import org.fundaciobit.genapp.common.query.selectcolumn.Select2Columns;
+import org.fundaciobit.genapp.common.query.selectcolumn.Select2Values;
 import org.fundaciobit.genapp.common.query.selectcolumn.Select7Values;
 import org.fundaciobit.genapp.common.utils.Utils;
 import org.fundaciobit.genapp.common.web.HtmlUtils;
@@ -32,6 +40,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import es.caib.rfhab.back.controller.webdb.LlocController;
@@ -44,6 +54,7 @@ import es.caib.rfhab.commons.utils.PersonalOamrTipus;
 import es.caib.rfhab.commons.utils.StringUtils;
 import es.caib.rfhab.ejb.EntitatService;
 import es.caib.rfhab.ejb.HabilitacioService;
+import es.caib.rfhab.ejb.LlocService;
 import es.caib.rfhab.logic.EntitatLogicaService;
 import es.caib.rfhab.logic.FuncionariLlocLogicaService;
 import es.caib.rfhab.logic.HistoricLlocLogicaService;
@@ -55,15 +66,17 @@ import es.caib.rfhab.logic.utils.FuncionariLlocDAO;
 import es.caib.rfhab.logic.utils.HistoricCanvisLlocDAO;
 import es.caib.rfhab.model.entity.Entitat;
 import es.caib.rfhab.model.entity.Funcionari;
+import es.caib.rfhab.model.entity.FuncionariLloc;
 import es.caib.rfhab.model.entity.HistoricLloc;
 import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.entity.Habilitacio;
 import es.caib.rfhab.model.entity.Unitat;
 import es.caib.rfhab.model.fields.EntitatFields;
+import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.FuncionariLlocFields;
+import es.caib.rfhab.model.fields.HistoricLlocFields;
 import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.model.fields.LlocHabilitacioFields;
-import es.caib.rfhab.model.fields.HabilitacioFields;
 import es.caib.rfhab.model.fields.UnitatFields;
 import es.caib.rfhab.persistence.LlocJPA;
 import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
@@ -173,6 +186,20 @@ public class LlocAdminController extends LlocController {
 				adfield2.setValueMap(new HashMap<Long, String>());
 				llocFilterForm.addAdditionalField(adfield2);
 			}
+			{
+				AdditionalField<Long, String> adfieldDarreraModificacio = new AdditionalField<Long, String>();
+				adfieldDarreraModificacio.setCodeName("darreramodificacio");
+				adfieldDarreraModificacio.setPosition(4);
+				adfieldDarreraModificacio.setEscapeXml(false);
+				adfieldDarreraModificacio.setValueMap(new HashMap<Long, String>());
+				// adfieldDarreraModificacio.setValueField(CODILLOC);
+				adfieldDarreraModificacio.setOrderBy(HistoricLlocFields.DATACREACIO);
+				llocFilterForm.addAdditionalField(adfieldDarreraModificacio);
+				// llocFilterForm.addhiddenField(adfieldDarreraModificacio);
+			}
+
+			llocFilterForm.setOrderBy(HistoricLlocFields.DATACREACIO.javaName);
+			llocFilterForm.setOrderAsc(true);
 		}
 		List<StringKeyValue> _unitatsTemp = getUnitatsByEntitatArrel(mav, loginInfo.getEntitatIDActual(),
 				false);
@@ -257,7 +284,8 @@ public class LlocAdminController extends LlocController {
 			mav.addObject("funcionaris", funcionaris);
 			mav.addObject("funcionarisHistoric", funcionarisHistoric);
 
-			// Pipella Habilitacions - Obtenir tots els habilitacions relacionats amb el lloc
+			// Pipella Habilitacions - Obtenir tots els habilitacions relacionats amb el
+			// lloc
 			List<Habilitacio> llistaHabilitacions = llocLogicaEjb.getHabilitacionsByLlocID(llocID);
 			llistaHabilitacions.forEach(habilitacio -> {
 				log.info("Habilitació: " + habilitacio.getCodi());
@@ -391,16 +419,21 @@ public class LlocAdminController extends LlocController {
 		Map<Long, String> mapUnitatSuperior = (Map<Long, String>) filterForm.getAdditionalField(1).getValueMap();
 		Map<Long, String> mapFuncionari = (Map<Long, String>) filterForm.getAdditionalField(2).getValueMap();
 		Map<Long, String> mapHabilitacions = (Map<Long, String>) filterForm.getAdditionalField(3).getValueMap();
+		Map<Long, String> mapDarreraModificacio = (Map<Long, String>) filterForm.getAdditionalField(4).getValueMap();
 
 		mapUnitatSuperior.clear();
 		mapFuncionari.clear();
 		mapHabilitacions.clear();
+		mapDarreraModificacio.clear();
 
 		LoginInfo loginInfo = LoginInfo.getInstance();
 		String lang = LocaleContextHolder.getLocale().getLanguage();
 		HashMap<Long, Funcionari> llistaFuncionarisActius = llocLogicaEjb.getCurrentFuncionarisByLloc(null,
 				loginInfo.getEntitatIDActual());
 
+		Map<Long, Timestamp> mapDarreraModificacioTemp = (Map<Long, Timestamp>) request.getSession()
+				.getAttribute("mapDarreraModificacio");
+		request.getSession().removeAttribute("mapDarreraModificacio");
 		for (Lloc lloc : list) {
 
 			final Long llocID = lloc.getLlocID();
@@ -429,13 +462,15 @@ public class LlocAdminController extends LlocController {
 			}
 
 			// Comprobam els habilitacions assignats a un lloc de feina
-			Boolean llocHasHabilitacio = (llocHabilitacioLogicaEjb.count(LlocHabilitacioFields.LLOCID.equal(llocID)) > 0);
+			Boolean llocHasHabilitacio = (llocHabilitacioLogicaEjb
+					.count(LlocHabilitacioFields.LLOCID.equal(llocID)) > 0);
 
 			if (llocHasHabilitacio) {
 				List<Habilitacio> habilitacionsLloc = llocLogicaEjb.getHabilitacionsByLlocID(llocID);
 				String habilitacionsLlocStr = "";
 				for (Habilitacio habilitacio : habilitacionsLloc) {
-					// Long llocHabilitacioID = llocHabilitacioLogicaEjb.getLlocHabilitacioIDByLlocAndHabilitacio(llocID,
+					// Long llocHabilitacioID =
+					// llocHabilitacioLogicaEjb.getLlocHabilitacioIDByLlocAndHabilitacio(llocID,
 					// habilitacio.getHabilitacioID());
 					// String urlEsborrar = request.getContextPath() +
 					// LlocHabilitacioAdminController.CONTEXTWEB + "/" + llocHabilitacioID
@@ -447,7 +482,8 @@ public class LlocAdminController extends LlocController {
 					// + botoEsborrarTitle
 					// + "' alt='" + botoEsborrarTitle
 					// + "'><i class='fas fa-times' style='color:white;'></i></a>";
-					// habilitacionsLlocStr += "<span class='badge badge-secondary'>" + habilitacio.getCodi() +
+					// habilitacionsLlocStr += "<span class='badge badge-secondary'>" +
+					// habilitacio.getCodi() +
 					// botoEsborrar + "</span>";
 					habilitacionsLlocStr += "<span class='badge badge-secondary'>" + habilitacio.getCodi() + "</span>";
 				}
@@ -468,10 +504,18 @@ public class LlocAdminController extends LlocController {
 
 			}
 
+			// Darrera modificació
+			if (mapDarreraModificacioTemp != null) {
+				Timestamp darreraModificacioLloc = mapDarreraModificacioTemp.get(llocID);
+				mapDarreraModificacio.put(llocID,
+						darreraModificacioLloc != null ? darreraModificacioLloc.toString() : null);
+			}
+
 			// Afegir el botó d'assignar habilitacions
 			// if (!donatdeBaixa) {
 			// filterForm.addAdditionalButtonByPK(llocID,
-			// new AdditionalButton("far fa-check-square", "habilitacio.assignarhabilitacio",
+			// new AdditionalButton("far fa-check-square",
+			// "habilitacio.assignarhabilitacio",
 			// LlocHabilitacioAdminController.CONTEXTWEB + "/assignar/" + llocID,
 			// AdditionalButtonStyle.INFO));
 			// }
@@ -821,5 +865,81 @@ public class LlocAdminController extends LlocController {
 	public String getRedirectWhenCancel(HttpServletRequest request, java.lang.Long llocID) {
 		cleanSessionObjectsForMav(request);
 		return UrlUtils.getRefererRedirect(request, super.getRedirectWhenCancel(request, llocID));
+	}
+
+	@Override
+	public List<Lloc> executeSelect(ITableManager<Lloc, Long> ejb, Where where, OrderBy[] orderBy, Integer itemsPerPage,
+			int inici) throws I18NException {
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+				.getRequest();
+		LlocFilterForm llocFilterForm;
+		llocFilterForm = (LlocFilterForm) request.getSession().getAttribute(getSessionAttributeFilterForm());
+		String orderByCurrent = llocFilterForm.getOrderBy();
+		log.info(orderByCurrent);
+		OrderType ordenaPerData = null;
+		if (orderBy != null) {
+			for (OrderBy oBy : orderBy) {
+				log.info("##OrderBy## --> " + oBy.javaName);
+				if (oBy.javaName.equals("dataCreacio")) {
+					ordenaPerData = oBy.orderType;
+					break;
+				}
+			}
+		}
+
+		OrderBy orderBy2 = null;
+
+		Where whereAux = null;
+		if (ordenaPerData != null) {
+			orderBy2 = new OrderBy("max(datacreacio)", ordenaPerData);
+		}
+
+		Select2Columns<Long, Timestamp> s;
+		s = new Select2Columns<>(new SelectGroupBy<>(HistoricLlocFields.LLOCID),
+				new SelectMax<>(HistoricLlocFields.DATACREACIO));
+		List<Select2Values<Long, Timestamp>> resultat = historicLlocEjb.executeQuery(s, whereAux, orderBy2);
+		// TODO:aquest resultat hauria de dur també els nulls, però això només per
+		// legacy
+
+		if (ordenaPerData != null) {
+			final Integer PAGINA = llocFilterForm.getPage();
+			final Integer NUM_ELEMENTS = llocFilterForm.getItemsPerPage();
+			Integer firstResult = (PAGINA - 1) * NUM_ELEMENTS;
+			Integer maxResults = NUM_ELEMENTS;
+			List<Lloc> result = new ArrayList();
+			Map<Long, Timestamp> mapDarreraModificacio = new HashMap<>();
+			for (int i = firstResult; i < (firstResult + NUM_ELEMENTS); i++) {
+				Select2Values<Long, Timestamp> select2Values = resultat.get(i);
+				System.out.println(select2Values.getValue1() + " " + select2Values.getValue2());
+				Long llocId = select2Values.getValue1();
+				Timestamp dataDarreraModificacio = select2Values.getValue2();
+				result.add(ejb.findByPrimaryKey(llocId));
+				mapDarreraModificacio.put(llocId, dataDarreraModificacio);
+			}
+
+			request.getSession().setAttribute("mapDarreraModificacio", mapDarreraModificacio);
+
+			return result;
+		} else {
+			List<Lloc> result = super.executeSelect(ejb, where, orderBy, itemsPerPage, inici);
+
+			Map<Long, Timestamp> mapDarreraModificacio = new HashMap<>();
+			for (Lloc lloc : result) {
+				Long llocId = lloc.getLlocID();
+				Select2Values<Long, Timestamp> select2Values = resultat.stream()
+						.filter(item -> item.getValue1().equals(llocId)).findFirst().orElse(null);
+				Timestamp dataDarreraModificacio = null;
+				if (select2Values != null) {
+					System.out.println(select2Values.getValue1() + " " + select2Values.getValue2());
+					dataDarreraModificacio = select2Values.getValue2();
+				}
+				mapDarreraModificacio.put(llocId, dataDarreraModificacio);
+			}
+
+			request.getSession().setAttribute("mapDarreraModificacio", mapDarreraModificacio);
+
+			return result;
+		}
+
 	}
 }

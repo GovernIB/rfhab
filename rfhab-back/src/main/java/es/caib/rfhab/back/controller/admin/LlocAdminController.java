@@ -339,7 +339,7 @@ public class LlocAdminController extends LlocController {
 					String actionButtonOnClickCallback = "goTo(encodeURI(\\'" + urlGoTo
 							+ "\\' + \\'?numerocai=\\' + document.getElementById(\\'numerocai\\').value))";
 					String jsOpenModalDonarBaixa = "javascript:createDivModal(traduccions.type['titol.lloc.donarbaixa.continuar'], '"
-							+ I18NUtils.tradueix("lloc.donarbaixa.missatgecontinuar", lloc.getCodiLloc()) + "', '"
+							+ I18NUtils.tradueix("lloc.donarbaixa.missatgecontinuar", lloc.getCodiLlocPropi()) + "', '"
 							+ urlGoTo + "', '', 'lloc-donarbaixa-id', 'fa-laptop-code', '', '"
 							+ actionButtonOnClickCallback + "', '" + I18NUtils.tradueix("acceptar") + "');\r\n" + //
 							"        $('#lloc-donarbaixa-id').modal('show');\r\n";
@@ -414,10 +414,10 @@ public class LlocAdminController extends LlocController {
 		llocForm.addReadOnlyField(LlocFields.ENTITATID);
 		llocForm.addReadOnlyField(LlocFields.CODILLOCPROPI);
 		llocForm.addHiddenField(LlocFields.DATACREACIO);
-		// només el volem veure al mode consulta
-		if (!__isView) {
-			llocForm.addHiddenField(LlocFields.DATABAIXA);
-		}
+		// // només el volem veure al mode consulta
+		// if (!__isView) {
+		// 	llocForm.addHiddenField(LlocFields.DATABAIXA);
+		// }
 
 		llocForm.setCancelButtonVisible(false);
 		llocForm.setAttachedAdditionalJspCode(true);

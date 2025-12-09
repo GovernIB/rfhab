@@ -3067,7 +3067,7 @@
           "digits": 6,
           "isNotNullable": false,
           "labels": {
-            "ca": "Data baixa",
+            "ca": "Data de baixa",
             "es": "Fecha baja"
           },
           "javaName": "dataBaixa",

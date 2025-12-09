@@ -277,6 +277,9 @@ public class LlocAdminController extends LlocController {
 			}
 			log.info("Unitat ID seleccionada: " + lloc.getUnitatID());
 
+			lloc.setPersonalOamr(PersonalOamrTipus.NO.getValue());
+			log.info("Personal OAMR seleccionat per defecte: " + PersonalOamrTipus.NO.getDescripcio());
+
 			// botó donar d'alta lloc
 			String jsOpenModalDonarAlta = "javascript:createDivModal(traduccions.type['titol.lloc.donaralta.continuar'], '"
 					+ I18NUtils.tradueix("lloc.donaralta.missatgecontinuar") + "', '"

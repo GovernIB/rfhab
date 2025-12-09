@@ -378,9 +378,15 @@
 								}
 							);
 
-							//mostra observacions com a soft wrap
+							//mostra observacions com a soft wrap i l'oculta
 							const taObservacions = document.getElementById('lloc.observacions');
-							taObservacions.wrap='soft';
+							if(taObservacions){
+								taObservacions.wrap='soft';
+							}
+							const divDropdownObservacions = document.getElementById('dropdownMenuButton_observacions');
+							if(divDropdownObservacions){
+								divDropdownObservacions.parentElement.hidden = true;
+							}
 						}
 
 						//oculta entitatid i mostra unitat superior

@@ -279,10 +279,11 @@ public class LlocAdminController extends LlocController {
 
 			// botó donar d'alta lloc
 			String jsOpenModalDonarAlta = "javascript:createDivModal(traduccions.type['titol.lloc.donaralta.continuar'], '"
-					+ I18NUtils.tradueix("lloc.donaralta.missatgecontinuar", lloc.getCodiLloc()) + "', '"
+					+ I18NUtils.tradueix("lloc.donaralta.missatgecontinuar") + "', '"
 					+ "', 'llocForm', 'lloc-donaralta-id', 'fa-laptop-medical', '"
 					+ request.getContextPath() + getContextWeb() + "/newialta/"
 					+ "');\r\n" + //
+					+ "', null, '" + I18NUtils.tradueix("acceptar") + "');\r\n" + //
 					"        $('#lloc-donaralta-id').modal('show');\r\n";
 			AdditionalButton donarDeAltaButton = new AdditionalButton("fas fa-laptop-medical",
 					"lloc.donaralta",
@@ -336,7 +337,7 @@ public class LlocAdminController extends LlocController {
 					String jsOpenModalDonarBaixa = "javascript:createDivModal(traduccions.type['titol.lloc.donarbaixa.continuar'], '"
 							+ I18NUtils.tradueix("lloc.donarbaixa.missatgecontinuar", lloc.getCodiLloc()) + "', '"
 							+ urlGoTo + "', '', 'lloc-donarbaixa-id', 'fa-laptop-code', '', '"
-							+ actionButtonOnClickCallback + "');\r\n" + //
+							+ actionButtonOnClickCallback + "', '" + I18NUtils.tradueix("acceptar") + "');\r\n" + //
 							"        $('#lloc-donarbaixa-id').modal('show');\r\n";
 					AdditionalButton donarDeBaixaButton = new AdditionalButton("fas fa-laptop-code",
 							"lloc.donarbaixa",
@@ -349,9 +350,10 @@ public class LlocAdminController extends LlocController {
 
 					// botó donar d'alta lloc
 					String jsOpenModalDonarAlta = "javascript:createDivModal(traduccions.type['titol.lloc.donaralta.continuar'], '"
-							+ I18NUtils.tradueix("lloc.donaralta.missatgecontinuar", lloc.getCodiLloc()) + "', '"
+							+ I18NUtils.tradueix("lloc.donaralta.missatgecontinuar") + "', '"
 							+ "', 'llocForm', 'lloc-donaralta-id', 'fa-laptop-medical', '"
-							+ request.getContextPath() + getContextWeb() + "/donaralta/" + "');\r\n" + //
+							+ request.getContextPath() + getContextWeb() + "/donaralta/" + "', null, '"
+							+ I18NUtils.tradueix("acceptar") + "');\r\n" + //
 							"        $('#lloc-donaralta-id').modal('show');\r\n";
 					AdditionalButton donarDeAltaButton = new AdditionalButton("fas fa-laptop-medical",
 							"lloc.donaralta",
@@ -850,7 +852,18 @@ public class LlocAdminController extends LlocController {
 	@Override
 	public String getRedirectWhenCreated(HttpServletRequest request, LlocForm llocForm) {
 		cleanSessionObjectsForMav(request);
-		return UrlUtils.getRefererRedirect(request, super.getRedirectWhenCreated(request, llocForm));
+
+		if (llocForm == null || llocForm.getLloc() == null) {
+			log.info("LlocForm o LlocJPA no disponibles per redirigir després de la creació.");
+			return UrlUtils.getRefererRedirect(request, super.getRedirectWhenCreated(request, llocForm));
+		}
+		LlocJPA lloc = llocForm.getLloc();
+
+		String msg = I18NUtils.tradueix("model.guardar.success",
+				new String[] { I18NUtils.tradueix(getEntityNameCode()), lloc.getCodiLlocPropi() });
+		HtmlUtils.deleteMessages(request);
+		HtmlUtils.saveMessageSuccess(request, msg);
+		return "redirect:" + getContextWeb() + "/" + lloc.getLlocID() + "/edit/";
 	}
 
 	@Override

@@ -140,7 +140,7 @@
         }
     }
 
-    function createDivModal(tituloDialog, msgDialog, url, formName, modalId='myModal', titolIcona='fa-trash', urlFormAction='', actionButtonOnClick=null) {
+    function createDivModal(tituloDialog, msgDialog, url, formName, modalId='myModal', titolIcona='fa-trash', urlFormAction='', actionButtonOnClick=null, textBotoContinuar='') {
         $('body')
                 .append('<div id="' + modalId + '" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'
                         + '<div class="modal-dialog" role="document">'
@@ -165,7 +165,7 @@
                                 + '\''
                                 + url
                                 + '\')')) + '">'
-                        + traduccions.type['boto.continuar'] + '</button>' + '</div>' + '</div>' + '</div>' + '</div>');
+                        + (textBotoContinuar ? textBotoContinuar : traduccions.type['boto.continuar']) + '</button>' + '</div>' + '</div>' + '</div>' + '</div>');
     }
 
     var traduccions = {

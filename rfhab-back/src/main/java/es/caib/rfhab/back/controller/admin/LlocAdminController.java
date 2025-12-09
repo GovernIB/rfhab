@@ -638,7 +638,7 @@ public class LlocAdminController extends LlocController {
 
 	@RequestMapping(value = "/donaralta", method = RequestMethod.POST)
 	public String donarDeAlta(@ModelAttribute LlocForm llocForm, HttpServletRequest request,
-			HttpServletResponse response) throws I18NException {
+			HttpServletResponse response, boolean mostrarMissatgeCreacio) throws I18NException {
 		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numerocai")))
 				? request.getParameter("numerocai")
 				: "";
@@ -648,7 +648,10 @@ public class LlocAdminController extends LlocController {
 
 		// createMessageSuccess(request, "success.modification", llocID);//
 		// funcionari.donaralta.exit
-		return getRedirectWhenModified(request, new LlocForm(new LlocJPA(llocActualitzat), false), null);
+		// TODO: revisar si podem posar mostrarMissatgeCreacio així com a opcional (cas
+		// d'ús donar d'alta des de modificació)
+		return getRedirectWhenModified(request, new LlocForm(new LlocJPA(llocActualitzat), false), null,
+				mostrarMissatgeCreacio);
 	}
 
 	/**
@@ -680,7 +683,11 @@ public class LlocAdminController extends LlocController {
 				lloc = create(request, lloc);
 				createMessageSuccess(request, "success.creation", lloc.getLlocID());
 				llocForm.setLloc(lloc);
-				return donarDeAlta(llocForm, request, response);
+
+				String redirectStr = donarDeAlta(llocForm, request, response, true);
+				getMsgCreated(request, lloc);
+
+				return redirectStr;
 			}
 		} catch (Throwable __e) {
 			if (__e instanceof I18NValidationException) {
@@ -882,11 +889,28 @@ public class LlocAdminController extends LlocController {
 		}
 		LlocJPA lloc = llocForm.getLloc();
 
-		String msg = I18NUtils.tradueix("model.guardar.success",
+		getMsgCreated(request, lloc);
+		return "redirect:" + getContextWeb() + "/" + lloc.getLlocID() + "/edit/";
+	}
+
+	private void getMsgCreated(HttpServletRequest request, LlocJPA lloc) {
+		String msg = I18NUtils.tradueix("lloc.crear.success",
 				new String[] { I18NUtils.tradueix(getEntityNameCode()), lloc.getCodiLlocPropi() });
 		HtmlUtils.deleteMessages(request);
 		HtmlUtils.saveMessageSuccess(request, msg);
-		return "redirect:" + getContextWeb() + "/" + lloc.getLlocID() + "/edit/";
+	}
+
+	public String getRedirectWhenModified(HttpServletRequest request, LlocForm llocForm, Throwable __e,
+			boolean noModificarMissatges) {
+		String redirectStr = getRedirectWhenModified(request, llocForm, __e);
+		if (!noModificarMissatges) {
+			LlocJPA lloc = llocForm.getLloc();
+			String msg = I18NUtils.tradueix("lloc.donaralta.success",
+					new String[] { I18NUtils.tradueix(getEntityNameCode()), lloc.getCodiLlocPropi() });
+			HtmlUtils.deleteMessages(request);
+			HtmlUtils.saveMessageSuccess(request, msg);
+		}
+		return redirectStr;
 	}
 
 	@Override
@@ -900,7 +924,7 @@ public class LlocAdminController extends LlocController {
 		LlocJPA lloc = llocForm.getLloc();
 		String msg = I18NUtils.tradueix("model.modificar.success",
 				new String[] { I18NUtils.tradueix(getEntityNameCode()),
-						I18NUtils.tradueix("lloc.codiLloc").toLowerCase(), lloc.getCodiLloc() });
+						I18NUtils.tradueix("lloc.codiLlocPropi").toLowerCase(), lloc.getCodiLlocPropi() });
 		HtmlUtils.deleteMessages(request);
 		HtmlUtils.saveMessageSuccess(request, msg);
 		return "redirect:" + getContextWeb() + "/" + lloc.getLlocID() + "/edit/";
@@ -916,7 +940,7 @@ public class LlocAdminController extends LlocController {
 				log.error(__msg);
 			} else {
 				String msg = I18NUtils.tradueix("lloc.donarbaixa.exit",
-						new String[] { I18NUtils.tradueix(getEntityNameCode()), lloc.getCodiLloc() });
+						new String[] { I18NUtils.tradueix(getEntityNameCode()), lloc.getCodiLlocPropi() });
 				HtmlUtils.deleteMessages(request);
 				HtmlUtils.saveMessageSuccess(request, msg);
 			}

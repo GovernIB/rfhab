@@ -285,7 +285,6 @@ public class LlocAdminController extends LlocController {
 					+ I18NUtils.tradueix("lloc.donaralta.missatgecontinuar") + "', '"
 					+ "', 'llocForm', 'lloc-donaralta-id', 'fa-laptop-medical', '"
 					+ request.getContextPath() + getContextWeb() + "/newialta/"
-					+ "');\r\n" + //
 					+ "', null, '" + I18NUtils.tradueix("acceptar") + "');\r\n" + //
 					"        $('#lloc-donaralta-id').modal('show');\r\n";
 			AdditionalButton donarDeAltaButton = new AdditionalButton("fas fa-laptop-medical",

@@ -90,6 +90,8 @@ import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
 @SessionAttributes(types = { LlocForm.class, LlocFilterForm.class })
 public class LlocAdminController extends LlocController {
 
+	private static final String CODILLOC_FAKE_BUIT = "#####55555#####";
+
 	public static final String CONTEXTWEB = "/admin/lloc";
 
 	protected final Logger log = Logger.getLogger(getClass());
@@ -552,8 +554,17 @@ public class LlocAdminController extends LlocController {
 
 		if (llocForm.isNou()) {
 			// CODI LLOC PROPI DE RFHAB
-			String nouLlocCodiPropi = llocLogicaEjb.getNouLlocCodiPropi(lloc.getCodiLloc(), lloc.getExpansio());
+			String codiLloc = lloc.getCodiLloc();
+			String expansioLloc = lloc.getExpansio();
+
+			String nouLlocCodiPropi = llocLogicaEjb.getNouLlocCodiPropi(codiLloc, expansioLloc);
 			lloc.setCodiLlocPropi(nouLlocCodiPropi);
+
+			// per passar la validació de genapp necessitam això (encara que la base de
+			// dades ho permeti)
+			if ((codiLloc == null || codiLloc.isEmpty()) && (expansioLloc == null || expansioLloc.isEmpty())) {
+				lloc.setCodiLloc(CODILLOC_FAKE_BUIT);
+			}
 		}
 
 		if (String.valueOf(lloc.getPersonalOamr()).equals(TIPUS_PERSONAL_OAMR)) {
@@ -744,6 +755,16 @@ public class LlocAdminController extends LlocController {
 
 	@Override
 	public void postValidate(HttpServletRequest request, LlocForm llocForm, BindingResult result) throws I18NException {
+		// per passar la validació de genapp necessitam això (encara que la base de
+		// dades ho permeti)
+		LlocJPA lloc = llocForm.getLloc();
+		if (lloc != null) {
+			String codiLloc = lloc.getCodiLloc();
+			if (codiLloc.equals(CODILLOC_FAKE_BUIT)) {
+				lloc.setCodiLloc(null);
+			}
+		}
+
 		getNecessaryObjectsForMav(llocForm, request, null);
 	}
 

@@ -985,6 +985,7 @@ public class LlocAdminController extends LlocController {
 		Select2Columns<Long, Timestamp> s;
 		s = new Select2Columns<>(new SelectGroupBy<>(HistoricLlocFields.LLOCID),
 				new SelectMax<>(HistoricLlocFields.DATACREACIO));
+
 		List<Select2Values<Long, Timestamp>> resultat = historicLlocEjb.executeQuery(s, whereAux, orderBy2);
 		// TODO:aquest resultat hauria de dur també els nulls, però això només per
 		// legacy
@@ -998,7 +999,7 @@ public class LlocAdminController extends LlocController {
 			Map<Long, Timestamp> mapDarreraModificacio = new HashMap<>();
 			for (int i = firstResult; i < (firstResult + NUM_ELEMENTS); i++) {
 				Select2Values<Long, Timestamp> select2Values = resultat.get(i);
-				System.out.println(select2Values.getValue1() + " " + select2Values.getValue2());
+				log.info(select2Values.getValue1() + " " + select2Values.getValue2());
 				Long llocId = select2Values.getValue1();
 				Timestamp dataDarreraModificacio = select2Values.getValue2();
 				result.add(ejb.findByPrimaryKey(llocId));
@@ -1014,11 +1015,12 @@ public class LlocAdminController extends LlocController {
 			Map<Long, Timestamp> mapDarreraModificacio = new HashMap<>();
 			for (Lloc lloc : result) {
 				Long llocId = lloc.getLlocID();
-				Select2Values<Long, Timestamp> select2Values = resultat.stream()
+				Stream<Select2Values<Long, Timestamp>> resultStream = resultat.stream();
+				Select2Values<Long, Timestamp> select2Values = resultStream
 						.filter(item -> item.getValue1().equals(llocId)).findFirst().orElse(null);
 				Timestamp dataDarreraModificacio = null;
 				if (select2Values != null) {
-					System.out.println(select2Values.getValue1() + " " + select2Values.getValue2());
+					log.info(select2Values.getValue1() + " " + select2Values.getValue2());
 					dataDarreraModificacio = select2Values.getValue2();
 				}
 				mapDarreraModificacio.put(llocId, dataDarreraModificacio);

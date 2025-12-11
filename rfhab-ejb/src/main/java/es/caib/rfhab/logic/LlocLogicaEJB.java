@@ -28,8 +28,11 @@ import es.caib.rfhab.model.entity.HistoricLloc;
 import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.entity.LlocHabilitacio;
 import es.caib.rfhab.model.entity.Habilitacio;
+import es.caib.rfhab.model.entity.Historic;
 import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.FuncionariLlocFields;
+import es.caib.rfhab.model.fields.HistoricFields;
+import es.caib.rfhab.model.fields.HistoricLlocFields;
 import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.model.fields.LlocHabilitacioFields;
 import es.caib.rfhab.persistence.HistoricLlocJPA;
@@ -45,6 +48,9 @@ import es.caib.rfhab.persistence.HabilitacioJPA;
  */
 @Stateless
 public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
+
+	@EJB(mappedName = HistoricLogicaService.JNDI_NAME)
+	HistoricLogicaService historicLogicaEjb;
 
 	@EJB(mappedName = HistoricLlocLogicaService.JNDI_NAME)
 	HistoricLlocLogicaService historicLlocLogicaEjb;
@@ -471,7 +477,38 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 				for (FuncionariLloc fl : funcionarisLlocs) {
 					Funcionari funcionari = funcionariLogicaEjb.findByPrimaryKey(fl.getFuncionariID());
 					if (funcionari != null) {
-						llistaFuncionaris.add(new FuncionariLlocDAO(funcionari, fl));
+						// volem el numero CAI
+						// treim els historics tant de funcionaris com de llocs, i els que coincidexin
+						// les observacions seran assignacions/desassignacions --> idò mirarem el que
+						// tengui data més alta (serà una assignació perque estam recorrent els
+						// funcionaris assignats)
+						List<Historic> historicsFuncionari = historicLogicaEjb
+								.select(HistoricFields.FUNCIONARIID.equal(funcionari.getFuncionariID()));
+						List<HistoricLloc> historicsLloc = historicLlocLogicaEjb
+								.select(HistoricLlocFields.LLOCID.equal(fl.getLlocID()));
+
+						String numeroCai = null;
+						Timestamp dataMaxima = null;
+
+						// Cercar coincidències entre històrics de funcionari i lloc pel número CAI
+						for (Historic hf : historicsFuncionari) {
+							if (hf.getNumeroCai() != null) {
+								for (HistoricLloc hl : historicsLloc) {
+									if (hf.getNumeroCai().equals(hl.getNumeroCai())
+											&& hf.getObservacions().equals(hl.getObservacions())) {
+										// Coincideix el CAI, agafam la data més alta
+										Timestamp dataHistoric = hl.getDataCreacio();
+										if (dataHistoric != null
+												&& (dataMaxima == null || dataHistoric.after(dataMaxima))) {
+											dataMaxima = dataHistoric;
+											numeroCai = hf.getNumeroCai();
+										}
+									}
+								}
+							}
+						}
+
+						llistaFuncionaris.add(new FuncionariLlocDAO(funcionari, fl, numeroCai));
 					}
 				}
 				return llistaFuncionaris;

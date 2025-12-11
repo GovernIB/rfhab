@@ -19,6 +19,7 @@ public class FuncionariLlocDAO implements java.io.Serializable {
 	private String llinatge2 = null;
 	private java.sql.Date dataInici = null;
 	private java.sql.Date dataFi = null;
+	private String numeroCai = null;
 
 	// Getters i setters
 	public Long getFuncionariID() {
@@ -93,12 +94,20 @@ public class FuncionariLlocDAO implements java.io.Serializable {
 		this.dataFi = dataFi;
 	}
 
+	public String getNumeroCai() {
+		return numeroCai;
+	}
+
+	public void setNumeroCai(String numeroCai) {
+		this.numeroCai = numeroCai;
+	}
+
 	// Constructors
 	public FuncionariLlocDAO() {
 		super();
 	}
 
-	public FuncionariLlocDAO(Funcionari funcionari, FuncionariLloc funcionariLloc) {
+	public FuncionariLlocDAO(Funcionari funcionari, FuncionariLloc funcionariLloc, String numeroCai) {
 		super();
 		if (funcionari != null) {
 			this.funcionariID = funcionari.getFuncionariID();
@@ -111,5 +120,6 @@ public class FuncionariLlocDAO implements java.io.Serializable {
 			this.dataInici = funcionariLloc.getDataInici();
 			this.dataFi = funcionariLloc.getDataFi();
 		}
+		this.numeroCai = numeroCai;
 	}
 }

@@ -316,7 +316,7 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 				if (lloc == null) {
 					throw new I18NException("error.modification", "<lloc null>");
 				}
-				String codiLloc = lloc.getCodiLloc();
+				String codiLloc = lloc.getCodiLlocPropi();
 				lloc.setDataBaixa(new Timestamp(System.currentTimeMillis()));
 				llocLogicaEjb.update(lloc);
 				log.info("Lloc de feina actualitzat: " + llocId);
@@ -385,7 +385,7 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 			Lloc lloc = llocLogicaEjb.findByPrimaryKey(llocID);
 			String llocCodi = "<null>";
 			if (lloc != null) {
-				llocCodi = lloc.getCodiLloc();
+				llocCodi = lloc.getCodiLlocPropi();
 			}
 			String historicLlocObservacions = "Nova desassignació del funcionari " + funcionariIdentificador
 					+ " (id "

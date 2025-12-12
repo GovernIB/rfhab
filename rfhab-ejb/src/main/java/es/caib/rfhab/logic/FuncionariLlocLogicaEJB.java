@@ -150,7 +150,7 @@ public class FuncionariLlocLogicaEJB extends FuncionariLlocEJB implements Funcio
 											funcionariIdentificador))));
 		}
 
-		String llocCodi = lloc.getCodiLloc();
+		String llocCodi = lloc.getCodiLlocPropi();
 		if (lloc.getDataBaixa() != null || lloc.getDataalta() == null) {
 			throw new I18NValidationException(new I18NFieldError(FuncionariLlocFields.LLOCID,
 					new I18NTranslation("funcionarilloc.error.lloc.baixa", llocCodi)));

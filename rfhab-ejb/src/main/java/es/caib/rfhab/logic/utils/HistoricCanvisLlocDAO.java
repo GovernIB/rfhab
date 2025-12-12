@@ -16,6 +16,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 @JsonInclude(JsonInclude.Include.NON_NULL) // Inclou només camps no nuls al JSON
 public class HistoricCanvisLlocDAO {
 
+	private Long historicLlocId = null;
 	private String usuariId = null;
 	private String observacions = null;
 	private String numeroCai = null;
@@ -24,6 +25,14 @@ public class HistoricCanvisLlocDAO {
 	private HistoricLlocDAO vell = null;
 
 	// Getters i setters
+	public Long getHistoricLlocId() {
+		return historicLlocId;
+	}
+
+	public void setHistoricLlocId(Long historicLlocId) {
+		this.historicLlocId = historicLlocId;
+	}
+
 	public String getUsuariId() {
 		return usuariId;
 	}
@@ -77,8 +86,9 @@ public class HistoricCanvisLlocDAO {
 		super();
 	}
 
-	public HistoricCanvisLlocDAO(String usuariId, String observacions, String numeroCai, Timestamp dataCreacio)
+	public HistoricCanvisLlocDAO(Long historicLlocId, String usuariId, String observacions, String numeroCai, Timestamp dataCreacio)
 			throws I18NException {
+		this.historicLlocId = historicLlocId;
 		this.usuariId = usuariId;
 		this.numeroCai = numeroCai;
 		this.dataCreacio = dataCreacio;

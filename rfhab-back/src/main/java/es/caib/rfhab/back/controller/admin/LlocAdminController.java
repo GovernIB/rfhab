@@ -486,9 +486,21 @@ public class LlocAdminController extends LlocController {
 					mapFuncionari.put(llocID, "");
 				}
 
-				// Botó per desassignar funcionari
-				filterForm.addAdditionalButtonByPK(llocID, new AdditionalButton("fa fa-user-times",
-						"lloc.treurefuncionari", "/admin/funcionarilloc/treure/{0}", AdditionalButtonStyle.INFO));
+				// Botó per a desassignar funcionari
+				String jsOpenModalTreureFuncionari = "javascript:createDivModal('"
+						+ I18NUtils.tradueix("lloc.treurefuncionari.titol") + "', '"
+						+ I18NUtils.tradueix("lloc.treurefuncionari.missatgecontinuar",
+								new String[] { (f != null ? f.getNumero() : "NULL"), lloc.getCodiLlocPropi() })
+						+ "', '"
+						+ request.getContextPath() + FuncionariLlocAdminController.CONTEXTWEB + "/treure/" + llocID
+						+ "', null, 'lloc-treurefuncionari-id', 'fa-user-times', '"
+						+ "', null, '" + I18NUtils.tradueix("acceptar") + "');\r\n" + //
+						"        $('#lloc-treurefuncionari-id').modal('show');\r\n";
+				AdditionalButton treureFuncionariButton = new AdditionalButton("fa fa-user-times",
+						"lloc.treurefuncionari",
+						jsOpenModalTreureFuncionari,
+						AdditionalButtonStyle.INFO);
+				filterForm.addAdditionalButtonByPK(llocID, treureFuncionariButton);
 			}
 
 			// Comprobam els habilitacions assignats a un lloc de feina

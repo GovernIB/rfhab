@@ -12,8 +12,10 @@ import org.fundaciobit.genapp.common.StringKeyValue;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.i18n.I18NValidationException;
 import org.fundaciobit.genapp.common.query.Where;
+import org.fundaciobit.genapp.common.web.HtmlUtils;
 import org.fundaciobit.genapp.common.web.form.AdditionalButton;
 import org.fundaciobit.genapp.common.web.form.AdditionalButtonStyle;
+import org.fundaciobit.genapp.common.web.i18n.I18NUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,9 +35,11 @@ import es.caib.rfhab.logic.FuncionariLogicaService;
 import es.caib.rfhab.logic.HistoricLlocLogicaService;
 import es.caib.rfhab.logic.HistoricLogicaService;
 import es.caib.rfhab.logic.LlocLogicaService;
+import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.FuncionariLlocFields;
 import es.caib.rfhab.persistence.FuncionariLlocJPA;
+import es.caib.rfhab.persistence.LlocJPA;
 
 /**
  * @author jagarcia
@@ -183,13 +187,25 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 				? request.getParameter("numerocai")
 				: "";
 
-		funcionariEjb.dessassignarFuncionariAndHistory(null, llocId, numeroCai,
-				LoginInfo.getInstance().getUsuariPersona().getUsuariID(), false, false);
+		LlocJPA llocDelQualDesassignar = llocEjb.findByPrimaryKey(llocId);
+		if (llocDelQualDesassignar == null) {
+			String __msg = createMessageError(request, "error.notfound", llocId);
+			log.error(__msg);
+		} else {
+			Funcionari funcionariDesassignat = funcionariEjb.dessassignarFuncionariAndHistory(null, llocId, numeroCai,
+					LoginInfo.getInstance().getUsuariPersona().getUsuariID(), false, false);
+			if (funcionariDesassignat == null) {
+				String msg = I18NUtils.tradueix("funcionarilloc.treure.error",
+						new String[] { llocDelQualDesassignar.getCodiLlocPropi() });
+				HtmlUtils.saveMessageWarning(request, msg);
+			} else {
+				String msg = I18NUtils.tradueix("funcionarilloc.treure.success",
+						new String[] { funcionariDesassignat.getNumero(), llocDelQualDesassignar.getCodiLlocPropi() });
+				HtmlUtils.saveMessageSuccess(request, msg);
+			}
+		}
 
-		createMessageSuccess(request, "success.modification", llocId);// funcionari.donaralta.exit
-		FuncionariLlocJPA funcionariLlocFake = new FuncionariLlocJPA();
-		funcionariLlocFake.setLlocID(llocId);
-		return getRedirectWhenCreated(request, new FuncionariLlocForm(funcionariLlocFake, false));
+		return "redirect:" + LlocAdminController.CONTEXTWEB + "/list/";
 	}
 
 	@Override

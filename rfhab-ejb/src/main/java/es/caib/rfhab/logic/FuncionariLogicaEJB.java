@@ -3,7 +3,6 @@ package es.caib.rfhab.logic;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
@@ -20,11 +19,9 @@ import org.fundaciobit.genapp.common.utils.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import es.caib.rfhab.commons.utils.ActivitatEstat;
 import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.commons.utils.PersonalOamrTipus;
 import es.caib.rfhab.ejb.FuncionariEJB;
-import es.caib.rfhab.ejb.HabilitacioService;
 import es.caib.rfhab.logic.utils.HistoricFuncionariDAO;
 import es.caib.rfhab.model.dao.IFuncionariManager;
 import es.caib.rfhab.model.entity.Funcionari;
@@ -37,12 +34,9 @@ import es.caib.rfhab.model.entity.Unitat;
 import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.FuncionariLlocFields;
 import es.caib.rfhab.model.fields.FuncionariLlocQueryPath;
-import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.HistoricJPA;
 import es.caib.rfhab.persistence.HistoricLlocJPA;
-import es.caib.rfhab.persistence.LlocJPA;
-import es.caib.rfhab.persistence.HabilitacioJPA;
 import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
 
 /**
@@ -336,6 +330,12 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 				String observacions = "Lloc de feina " + codiLloc + " donat de baixa";
 				HistoricLloc historicCreat = historicLlocLogicaEjb.create(historicLloc, observacions);
 				log.info("Històric de Lloc creat: " + historicCreat.getHistoricllocID());
+			}
+
+			int nFuncionarisLlocs = funcionarisLlocsDonatsDeBaixa.size();
+			if (nFuncionarisLlocs > 0) {
+				newFuncionari = findByPrimaryKey(
+						funcionarisLlocsDonatsDeBaixa.get(nFuncionarisLlocs - 1).getFuncionariID());
 			}
 		} else {
 			long funcionariId = funcionari.getFuncionariID();

@@ -379,8 +379,10 @@ public class LlocAdminController extends LlocController {
 									+ " " + x.getValue4() + " " + x.getValue5() + " " + x.getValue6());
 							try {
 								historicCanvis.add(
-										new HistoricCanvisLlocDAO(
-												x.getValue3() + " " + x.getValue4() + " " + x.getValue5(),
+										new HistoricCanvisLlocDAO(x.getValue1(),
+												(x.getValue3() == null ? "" : x.getValue3()) + " "
+														+ (x.getValue4() == null ? "" : x.getValue4()) + " "
+														+ (x.getValue5() == null ? "" : x.getValue5()),
 												x.getValue7(), x.getValue2(), x.getValue6()));
 							} catch (I18NException e) {
 								log.error("Error al crear HistoricCanvisLlocDAO amb id " + x.getValue1(), e);
@@ -388,8 +390,10 @@ public class LlocAdminController extends LlocController {
 										"Error al crear HistoricCanvisLlocDAO amb data " + x.getValue6());
 								try {
 									historicCanvis.add(
-											new HistoricCanvisLlocDAO(
-													x.getValue3() + " " + x.getValue4() + " " + x.getValue5(),
+											new HistoricCanvisLlocDAO(x.getValue1(),
+													(x.getValue3() == null ? "" : x.getValue3()) + " "
+															+ (x.getValue4() == null ? "" : x.getValue4()) + " "
+															+ (x.getValue5() == null ? "" : x.getValue5()),
 													"", x.getValue2(), x.getValue6()));
 								} catch (I18NException e1) {
 									log.error("Error desconegut al crear HistoricCanvisLlocDAO amb id " + x.getValue1(),

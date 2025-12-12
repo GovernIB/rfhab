@@ -154,7 +154,12 @@
 											<c:set var="vell" value="${h.vell}" />
 											<c:set var="nou" value="${h.nou}" />
 											<!-- <c:set var="diferenciesDictionary" value="${diferenciesDictionary}" /> -->
-											<%@include file="diferenciesTable.jsp" %>
+											<!-- <%@include file="diferenciesTable.jsp" %> -->
+											<span><fmt:message key="lloc.historic.canvisdepropietats"/></span>
+											<a href="<c:url value="/admin/historiclloc/view/${h.historicLlocId}"/>" class="btn btn-secondary">
+												<i class="far fa-eye" title="<fmt:message key="lloc.historic.veuredetall"/>">
+												</i>
+											</a>
 										</c:if>
 									</td>
 								</tr>
@@ -187,6 +192,7 @@
 								<th><fmt:message key="funcionari.nom"/></th>
 								<th><fmt:message key="funcionariLloc.dataInici"/></th>
 								<th><fmt:message key="funcionariLloc.dataFi"/></th>
+								<!-- <th><fmt:message key="historic.numeroCai"/></th> -->
 								<!-- <th>&nbsp;</th> -->
 							</tr>
 						</thead>
@@ -198,6 +204,7 @@
 									<td>${funcionariItem.nom}&nbsp;${funcionariItem.llinatge1}&nbsp;${funcionariItem.llinatge2}</td>
 									<td><fmt:formatDate pattern="dd/MM/yyyy" value="${funcionariItem.dataInici}" /></td>
 									<td><fmt:formatDate pattern="dd/MM/yyyy" value="${funcionariItem.dataFi}" /></td>
+									<!-- <td>${funcionariItem.numeroCai}</td> -->
 									<!-- <td><a class="btn btn-primary btn-sm" href="<c:url value="/admin/funcionari/view/${funcionariItem.funcionariID}"/>"><fmt:message key="detall"/></a></td> -->
 								</tr>
 							</c:forEach>

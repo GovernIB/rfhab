@@ -86,7 +86,7 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 			HistoricLlocDAO historicOld = new HistoricLlocDAO(oldLloc);
 			newLloc = update(lloc);
 			long newLlocId = newLloc.getLlocID();
-			String codiLlocNewLloc = newLloc.getCodiLloc();
+			String codiLlocNewLloc = newLloc.getCodiLlocPropi();
 			log.info("Lloc actualitzat: " + newLlocId);
 
 			// actualitzam habilitacionsLlocss segons habilitacionsSeleccionades
@@ -213,7 +213,7 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 							llocHabilitacio.setHabilitacioId((long) habilitacioId);
 							llocHabilitacio.setDataCreacio(new Timestamp(System.currentTimeMillis()));
 							llocHabilitacioLogicaEjb.create(llocHabilitacio);
-							String codiLlocLlocCreat = llocJpa.getCodiLloc();
+							String codiLlocLlocCreat = llocJpa.getCodiLlocPropi();
 							TraduccioJPA nomHabilitacio = habilitacio.getNom();
 							log.info("Assignació creada de l'habilitació " + nomHabilitacio + " al lloc de feina "
 									+ codiLlocLlocCreat);
@@ -477,31 +477,34 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 				for (FuncionariLloc fl : funcionarisLlocs) {
 					Funcionari funcionari = funcionariLogicaEjb.findByPrimaryKey(fl.getFuncionariID());
 					if (funcionari != null) {
-						// volem el numero CAI
-						// treim els historics tant de funcionaris com de llocs, i els que coincidexin
-						// les observacions seran assignacions/desassignacions --> idò mirarem el que
-						// tengui data més alta (serà una assignació perque estam recorrent els
-						// funcionaris assignats)
-						List<Historic> historicsFuncionari = historicLogicaEjb
-								.select(HistoricFields.FUNCIONARIID.equal(funcionari.getFuncionariID()));
-						List<HistoricLloc> historicsLloc = historicLlocLogicaEjb
-								.select(HistoricLlocFields.LLOCID.equal(fl.getLlocID()));
-
 						String numeroCai = null;
-						Timestamp dataMaxima = null;
 
-						// Cercar coincidències entre històrics de funcionari i lloc pel número CAI
-						for (Historic hf : historicsFuncionari) {
-							if (hf.getNumeroCai() != null) {
-								for (HistoricLloc hl : historicsLloc) {
-									if (hf.getNumeroCai().equals(hl.getNumeroCai())
-											&& hf.getObservacions().equals(hl.getObservacions())) {
-										// Coincideix el CAI, agafam la data més alta
-										Timestamp dataHistoric = hl.getDataCreacio();
-										if (dataHistoric != null
-												&& (dataMaxima == null || dataHistoric.after(dataMaxima))) {
-											dataMaxima = dataHistoric;
-											numeroCai = hf.getNumeroCai();
+						if (current) {
+							// volem el numero CAI
+							// treim els historics tant de funcionaris com de llocs, i els que coincidexin
+							// les observacions seran assignacions/desassignacions --> idò mirarem el que
+							// tengui data més alta (serà una assignació perque estam recorrent els
+							// funcionaris assignats)
+							List<Historic> historicsFuncionari = historicLogicaEjb
+									.select(HistoricFields.FUNCIONARIID.equal(funcionari.getFuncionariID()));
+							List<HistoricLloc> historicsLloc = historicLlocLogicaEjb
+									.select(HistoricLlocFields.LLOCID.equal(fl.getLlocID()));
+
+							Timestamp dataMaxima = null;
+
+							// Cercar coincidències entre històrics de funcionari i lloc pel número CAI
+							for (Historic hf : historicsFuncionari) {
+								if (hf.getNumeroCai() != null) {
+									for (HistoricLloc hl : historicsLloc) {
+										if (hf.getNumeroCai().equals(hl.getNumeroCai())
+												&& hf.getObservacions().equals(hl.getObservacions())) {
+											// Coincideix el CAI, agafam la data més alta
+											Timestamp dataHistoric = hl.getDataCreacio();
+											if (dataHistoric != null
+													&& (dataMaxima == null || dataHistoric.after(dataMaxima))) {
+												dataMaxima = dataHistoric;
+												numeroCai = hf.getNumeroCai();
+											}
 										}
 									}
 								}
@@ -564,7 +567,7 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 		historic.setLlocID(llocID);
 		historic.setNumeroCai(numeroCai);
 		historic.setUsuariID(usuariId);
-		historicLlocLogicaEjb.create(historic, "Lloc de feina " + lloc.getCodiLloc() + " donat d'alta"
+		historicLlocLogicaEjb.create(historic, "Lloc de feina " + lloc.getCodiLlocPropi() + " donat d'alta"
 				+ (lloc.getDataalta() != null ? " de nou" : ""));
 
 		// el donam de baixa

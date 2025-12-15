@@ -1396,12 +1396,12 @@
       "nameJava": "Funcionari",
       "shortName": "funcionari",
       "labels": {
-        "ca": "Funcionari Habilitat",
-        "es": "Funcionario Habilitado"
+        "ca": "personal habilitat",
+        "es": "Personal Habilitado"
       },
       "labelsPlural": {
-        "ca": "Funcionaris Habilitats",
-        "es": "Funcionarios Habilitados"
+        "ca": "personal habilitat",
+        "es": "Personal Habilitado"
       },
       "generate": true,
       "fileMappingEntity": false,
@@ -1473,8 +1473,8 @@
           "digits": 0,
           "isNotNullable": true,
           "labels": {
-            "ca": "Codi",
-            "es": "Código"
+            "ca": "Codi FH",
+            "es": "Código FH"
           },
           "javaName": "numero",
           "javaType": "java.lang.String",
@@ -1523,7 +1523,7 @@
           "digits": 0,
           "isNotNullable": true,
           "labels": {
-            "ca": "Llinatge 1",
+            "ca": "1r llinatge",
             "es": "Apellido 1"
           },
           "javaName": "llinatge1",
@@ -1548,7 +1548,7 @@
           "digits": 0,
           "isNotNullable": false,
           "labels": {
-            "ca": "Llinatge 2",
+            "ca": "2n llinatge",
             "es": "Apellido 2"
           },
           "javaName": "llinatge2",
@@ -1573,8 +1573,8 @@
           "digits": 0,
           "isNotNullable": true,
           "labels": {
-            "ca": "Tipus identificació",
-            "es": "Tipo identificación"
+            "ca": "Tipus d\u0027identificació",
+            "es": "Tipo de identificación"
           },
           "javaName": "tipusIdentificador",
           "javaType": "int",
@@ -1625,8 +1625,8 @@
           "digits": 0,
           "isNotNullable": true,
           "labels": {
-            "ca": "Usuari",
-            "es": "Usuario"
+            "ca": "Usuari/ària",
+            "es": "Usuario/a"
           },
           "javaName": "usuari",
           "javaType": "java.lang.String",
@@ -1650,8 +1650,8 @@
           "digits": 0,
           "isNotNullable": true,
           "labels": {
-            "ca": "Correu",
-            "es": "Correo"
+            "ca": "A/e",
+            "es": "A/e"
           },
           "javaName": "correu",
           "javaType": "java.lang.String",

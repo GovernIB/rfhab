@@ -3,6 +3,7 @@
   className="es.caib.rfhab.back.controller.user.UserController"
 />
 
+<c:if test="${__theForm.view}">
 <div class="col-12">
 	<ul class="nav nav-tabs" id="myTab" role="tablist"
 		style="margin-bottom: 20px;">
@@ -229,6 +230,7 @@
 		</div>	
 	</div>
 </div>
+</c:if>
 
 <script type="text/javascript">
 	document
@@ -256,6 +258,7 @@
 							const taulaFuncionariForm = document
 									.getElementById("funcionari_tableid");
 							const cosFuncionariForm = taulaFuncionariForm.getElementsByTagName("tbody")[0];
+							nouTrNumeroCai.hidden = true;
 							cosFuncionariForm.appendChild(nouTrNumeroCai);
 						}
 					});		

@@ -18,6 +18,7 @@ import org.fundaciobit.genapp.common.query.SubQuery;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.query.selectcolumn.Select6Values;
 import org.fundaciobit.genapp.common.utils.Utils;
+import org.fundaciobit.genapp.common.web.HtmlUtils;
 import org.fundaciobit.genapp.common.web.form.AdditionalButton;
 import org.fundaciobit.genapp.common.web.form.AdditionalButtonStyle;
 import org.fundaciobit.genapp.common.web.form.AdditionalField;
@@ -111,8 +112,22 @@ public class FuncionariAdminController extends FuncionariController {
 
 		funcionariForm.setDeleteButtonVisible(false);
 
+		String jsOpenModalGuardar = "javascript:createDivModal('"
+				+ I18NUtils.tradueix("funcionari.modificar.guardar.titol") + "', '"
+				+ I18NUtils.tradueix("funcionari.modificar.guardar.missatge")
+				+ "', '', 'funcionariForm', 'funcionari-save-modal-id', 'fa-save');\r\n" +
+				"        $('#funcionari-save-modal-id').modal('show');\r\n";
+		AdditionalButton guardarButton = new AdditionalButton("",
+				"genapp.save",
+				jsOpenModalGuardar,
+				AdditionalButtonStyle.PRIMARY);
+		funcionariForm.setSaveButtonVisible(false);
+
 		if (funcionariForm.isNou()) {
+			funcionariForm.addAdditionalButton(guardarButton);
+
 			funcionari.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+			funcionari.setDataBaixa(new Timestamp(System.currentTimeMillis()));
 
 			LoginInfo loginInfo = LoginInfo.getInstance();
 			Long entitatIDActual = loginInfo.getEntitatIDActual();
@@ -177,14 +192,24 @@ public class FuncionariAdminController extends FuncionariController {
 						AdditionalButtonStyle.SUCCESS);
 				funcionariForm.addAdditionalButton(donarDeAltaButton);
 			}
+
+			// no el volem veure al mode de consulta
+			if (!__isView) {
+				funcionariForm.addAdditionalButton(guardarButton);
+			}
 		}
 		mav.addObject("FUNCIONARI_NUMERO_PLACEHOLDER", Constants.FUNCIONARI_NUMERO_PLACEHOLDER);
 
-		funcionariForm.addReadOnlyField(DATACREACIO);
-		funcionariForm.addHiddenField(DATABAIXA);
+		funcionariForm.addReadOnlyField(FuncionariFields.DATACREACIO);
+		funcionariForm.addHiddenField(FuncionariFields.DATACREACIO);
+
+		funcionariForm.addReadOnlyField(FuncionariFields.DATABAIXA);
+		funcionariForm.addHiddenField(FuncionariFields.DATABAIXA);
+
 		funcionariForm.addReadOnlyField(FuncionariFields.NUMERO);
-		// funcionariForm.addHiddenField(ENTITATID);
+
 		funcionariForm.addReadOnlyField(FuncionariFields.ENTITATID);
+		funcionariForm.addHiddenField(FuncionariFields.ENTITATID);
 
 		mav.addObject("funcionari", funcionari);
 
@@ -534,9 +559,19 @@ public class FuncionariAdminController extends FuncionariController {
 		}
 	}
 
+	private void getMsgCreated(HttpServletRequest request, FuncionariJPA funcionari) {
+		String msg = I18NUtils.tradueix("funcionari.crear.success",
+				new String[] { funcionari.getNumero() });
+		HtmlUtils.deleteMessages(request);
+		HtmlUtils.saveMessageSuccess(request, msg);
+	}
+
 	@Override
 	public String getRedirectWhenCreated(HttpServletRequest request, FuncionariForm funcionariForm) {
-		return UrlUtils.getRefererRedirect(request, super.getRedirectWhenCreated(request, funcionariForm));
+		FuncionariJPA funcionari = funcionariForm.getFuncionari();
+
+		getMsgCreated(request, funcionari);
+		return "redirect:" + getContextWeb() + "/new/";
 	}
 
 	@Override

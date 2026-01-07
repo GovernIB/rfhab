@@ -133,10 +133,10 @@
 						style="width: auto;">
 						<thead>
 							<tr>
-								<th><fmt:message key="historicLloc.dataCreacio" /></th>
-								<th><fmt:message key="historicLloc.numeroCai"/></th>
-								<th><fmt:message key="historicLloc.usuariID"/></th>
-								<th><fmt:message key="historiclloc.modificacions" /></th>
+								<th><fmt:message key="funcionari.historic.pipella.data" /></th>
+								<th><fmt:message key="funcionari.historic.pipella.cai"/></th>
+								<th><fmt:message key="funcionari.historic.pipella.usuari"/></th>
+								<th><fmt:message key="funcionari.historic.pipella.modificacio"/></th>
 							</tr>
 						</thead>
 						<tbody>

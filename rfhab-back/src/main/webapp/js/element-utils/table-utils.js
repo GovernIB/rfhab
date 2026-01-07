@@ -27,3 +27,26 @@ function getColumnIndexByHeaderText(tableQuerySelector, headerText) {
   }
   return -1; // No trobat
 }
+
+function hideEntireColumn(tableQuerySelector, thContentSearchBy){
+  var table = document.getElementById(tableQuerySelector);
+    if (!table) return;
+
+    var columnIndex = getColumnIndexByHeaderText(tableQuerySelector, thContentSearchBy);
+    if (columnIndex === -1) return;
+
+    // Amaga el <th>
+    var ths = table.querySelectorAll("thead tr th");
+    if (ths[columnIndex]) {
+      ths[columnIndex].style.display = "none";
+    }
+
+    // Amaga totes les <td> de la columna
+    var rows = table.querySelectorAll("tbody tr");
+    rows.forEach(function(row) {
+      var tds = row.getElementsByTagName("td");
+      if (tds[columnIndex]) {
+        tds[columnIndex].style.display = "none";
+      }
+    });
+}

@@ -282,7 +282,6 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 
 	@Override
 	@PermitAll
-	@SuppressWarnings("unchecked")
 	public HashMap<Long, LlocJPA> getAllLlocsOcupats(Long entitatId) throws I18NException {
 
 		HashMap<Long, LlocJPA> llocsOcupats = new HashMap<Long, LlocJPA>();
@@ -290,11 +289,20 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 		try {
 
 			StringBuilder customQuery = new StringBuilder(
-					"Select fl.funcionariID, l.llocID, l.nom, l.unitatID, l.codiLloc, "
-							+ "l.personalOamr, l.dataAlta, l.dataCreacio, l.dataBaixa, l.observacions, l.codillocpropi, l.expansio FROM FuncionariLlocJPA as fl "
-							+ " inner join LlocJPA as l on l.llocID = fl.llocID "
-							+ " where (fl.dataInici < :avui or fl.dataInici is null) "
-							+ " and (fl.dataFi > :avui or fl.dataFi is null) " + " and l.entitatID = :entitatId");
+					"Select fl." + FuncionariLlocFields.FUNCIONARIID.javaName + ", l." + LlocFields.LLOCID.javaName
+							+ ", l." + LlocFields.NOM.javaName + ", l." + LlocFields.UNITATID.javaName + ", l."
+							+ LlocFields.CODILLOC.javaName + ", "
+							+ "l." + LlocFields.PERSONALOAMR.javaName + ", l." + LlocFields.DATAALTA.javaName + ", l."
+							+ LlocFields.DATACREACIO.javaName + ", l." + LlocFields.DATABAIXA.javaName + ", l."
+							+ LlocFields.OBSERVACIONS.javaName + ", l." + LlocFields.CODILLOCPROPI.javaName + ", l."
+							+ LlocFields.EXPANSIO.javaName + " FROM FuncionariLlocJPA as fl "
+							+ " inner join LlocJPA as l on l." + LlocFields.LLOCID.javaName + " = fl."
+							+ FuncionariLlocFields.LLOCID.javaName + " "
+							+ " where (fl." + FuncionariLlocFields.DATAINICI.javaName + " <= :avui or fl."
+							+ FuncionariLlocFields.DATAINICI.javaName + " is null) "
+							+ " and (fl." + FuncionariLlocFields.DATAFI.javaName + " > :avui or fl."
+							+ FuncionariLlocFields.DATAFI.javaName + " is null) " + " and l."
+							+ LlocFields.ENTITATID.javaName + " = :entitatId");
 
 			Query q = getEntityManager().createQuery(customQuery.toString());
 			q.setParameter("avui", new Date(System.currentTimeMillis()));
@@ -365,27 +373,17 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 	public List<Lloc> getLlocByFuncionariID(Long funcionariId, boolean current) throws I18NException {
 
 		if (funcionariId != null) {
-
-			Where w = FuncionariLlocFields.FUNCIONARIID.equal(funcionariId);
-
-			if (current) {
-				w = funcionariLlocLogicaEjb.getWhereFuncionariIsCurrent(w);
-			}
-			List<FuncionariLloc> funcionarisLlocs = funcionariLlocLogicaEjb.select(w);
-			if (funcionarisLlocs.size() > 0) {
-				List<Lloc> llocsOcupatsPerFuncionari = new ArrayList<Lloc>();
-				for (FuncionariLloc fl : funcionarisLlocs) {
-					Lloc lloc = findByPrimaryKey(fl.getLlocID());
-					if (lloc != null) {
-						llocsOcupatsPerFuncionari.add(lloc);
-					}
-				}
-				return llocsOcupatsPerFuncionari;
+			List<FuncionariLlocLlocDAO> fLlocs = getLlocHistoricByFuncionariID(funcionariId, current);
+			if (fLlocs != null) {
+				return fLlocs.stream()
+						.map(FuncionariLlocLlocDAO::getLloc)
+						.collect(Collectors.toList());
 			}
 		}
 		return null;
 	}
 
+	@Override
 	public List<FuncionariLlocLlocDAO> getLlocHistoricByFuncionariID(Long funcionariId, boolean current)
 			throws I18NException {
 		if (funcionariId != null) {
@@ -401,7 +399,8 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 				for (FuncionariLloc fl : funcionarisLlocs) {
 					Lloc lloc = findByPrimaryKey(fl.getLlocID());
 					if (lloc != null) {
-						llocsOcupatsPerFuncionari.add(new FuncionariLlocLlocDAO(lloc, fl));
+						String numeroCai = null;//TODO: #109
+						llocsOcupatsPerFuncionari.add(new FuncionariLlocLlocDAO(lloc, fl, numeroCai));
 					}
 				}
 				return llocsOcupatsPerFuncionari;

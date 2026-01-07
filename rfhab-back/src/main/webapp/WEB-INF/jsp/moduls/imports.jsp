@@ -175,10 +175,6 @@
             //MARILEN
             "boto.cancelar" : "<fmt:message key="genapp.cancel"/>",
             "boto.continuar" : "<fmt:message key="genapp.continue"/>",
-            "missatge.funcionari.donarbaixa.continuar" : "<fmt:message key="funcionari.donarbaixa.missatgecontinuar"/>",
-            "missatge.funcionari.donaralta.continuar" : "<fmt:message key="funcionari.donaralta.missatgecontinuar"/>",
-            "titol.funcionari.donarbaixa.continuar" : "<fmt:message key="funcionari.donarbaixa"/>",
-            "titol.funcionari.donaralta.continuar" : "<fmt:message key="funcionari.donaralta"/>",
             "titol.lloc.donarbaixa.continuar" : "<fmt:message key="lloc.donarbaixa"/>",
             "titol.lloc.donaralta.continuar" : "<fmt:message key="lloc.donaralta"/>"
         }

@@ -15,8 +15,8 @@
 			aria-controls="activitat" aria-selected="false"><fmt:message key="activitat.activitat" /></a></li>
 		<li class="nav-item"><a class="nav-link" id="historic-tab"
 			data-toggle="tab" href="#historic" role="tab"
-			aria-controls="historic" aria-selected="false"><fmt:message key="historic.historic" /></a></li>
-		<li class="nav-item" style="display: none;"><a class="nav-link" id="historicllocs-tab"
+			aria-controls="historic" aria-selected="false"><fmt:message key="funcionari.historic.pipella" /></a></li>
+		<li class="nav-item"><a class="nav-link" id="historicllocs-tab"
 			data-toggle="tab" href="#historicllocs" role="tab"
 			aria-controls="historicllocs" aria-selected="false"><fmt:message key="funcionari.historicllocs.pipella" /></a></li>
 	</ul>
@@ -31,32 +31,31 @@
 						style="width: auto;">
 						<thead>
 							<tr>
-								<th><fmt:message key="lloc.llocID" /></th>
+								<th><fmt:message key="lloc.codiLlocPropi" /></th>
 								<th><fmt:message key="lloc.codiLloc" /></th>
-								<th><fmt:message key="lloc.nom" /></th>
+								<th><fmt:message key="lloc.nomlf" /></th>
 								<th><fmt:message key="lloc.personalOamr" /></th>
-								<th><fmt:message key="lloc.dataBaixa" /></th>
+								<th><fmt:message key="lloc.dataassignaciolf" /></th>
 								<th>&nbsp;</th>
 							</tr>
 						</thead>
 						<tbody>
 							<c:forEach var="lloc" items="${llocItems}">
-								<tr id="lloc_rowid_${lloc.llocID}">
-									<td>${lloc.llocID}</td>
-									<td>${lloc.codiLloc}</td>
-									<td>${lloc.nom}</td>
+								<tr id="lloc_rowid_${lloc.lloc.llocID}">
+									<td>${lloc.lloc.codiLlocPropi}</td>
+									<td>${lloc.lloc.codiLloc}</td>
+									<td>${lloc.lloc.nom}</td>
 									<td align="center">
-										<c:if test="${lloc.personalOamr > 1}">
+										<c:if test="${lloc.lloc.personalOamr > 1}">
 											<i class="fa fa-check" aria-hidden="true"></i>
 										</c:if> 
-										<c:if test="${lloc.personalOamr < 2}">
+										<c:if test="${lloc.lloc.personalOamr < 2}">
 											<i class="fa fa-times" aria-hidden="true"></i>
 										</c:if>
 									</td>
-									<td><fmt:formatDate pattern="${gen:getDateTimePattern()}"
-											value="${lloc.dataBaixa}" /></td>
+									<td><fmt:formatDate value="${lloc.dataInici}" /></td>
 									<td><a class="btn btn-primary btn-sm"
-										href="<c:url value="/admin/lloc/view/${lloc.llocID}"/>"><i
+										href="<c:url value="/admin/lloc/view/${lloc.lloc.llocID}"/>"><i
 											class="far fa-eye" title="Veure detall"></i>&nbsp;<fmt:message key="detall" /></a></td>
 								</tr>
 							</c:forEach>
@@ -143,23 +142,35 @@
 						style="width: auto;">
 						<thead>
 							<tr>
-								<th><fmt:message key="historic.dataCreacio" /></th>
-								<th><fmt:message key="historic.numeroCai"/></th>
-								<th><fmt:message key="historic.usuariID"/></th>
-								<th>&nbsp;</th>
+								<th><fmt:message key="funcionari.historic.pipella.data" /></th>
+								<th><fmt:message key="funcionari.historic.pipella.cai"/></th>
+								<th><fmt:message key="funcionari.historic.pipella.usuari"/></th>
+								<th><fmt:message key="funcionari.historic.pipella.modificacio"/></th>
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="historic" items="${historicItems}">
-								<tr id="historic_rowid_${historic.value1}">
-									<td><fmt:formatDate pattern="${gen:getDateTimePattern()}"
-											value="${historic.value6}" /></td>
-									<td>${historic.value2}</td>
-									<td>${historic.value3}&nbsp;${historic.value4}&nbsp;${historic.value5}</td>
-									<td><a
-										href="<c:url value="/admin/historic/view/${historic.value1}"/>"
-										class="btn btn-primary btn-sm"><i class="far fa-eye"
-											title="Veure detall"></i></a></td>
+							<c:forEach var="h" items="${historicItems}">
+								<tr>
+									<td><fmt:formatDate pattern="dd/MM/yyyy HH:mm:ss" value="${h.dataCreacio}" /></td>
+									<td>${h.numeroCai}</td>
+									<td>${h.usuariId}</td>
+									<td>
+										<c:if test="${ h.vell == null || h.nou == null }">
+											${h.observacions}
+										</c:if>
+
+										<c:if test="${ h.vell != null && h.nou != null }">
+											<c:set var="vell" value="${h.vell}" />
+											<c:set var="nou" value="${h.nou}" />
+											<!-- <c:set var="diferenciesDictionary" value="${diferenciesDictionary}" /> -->
+											<!-- <%@include file="diferenciesTable.jsp" %> -->
+											<span><fmt:message key="funcionari.historic.canvisdepropietats"/></span>
+											<a href="<c:url value="/admin/historic/view/${h.historicId}"/>" class="btn btn-secondary">
+												<i class="far fa-eye" title="<fmt:message key="funcionari.historic.veuredetall"/>">
+												</i>
+											</a>
+										</c:if>
+									</td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -185,36 +196,27 @@
 						style="width: auto;">
 						<thead>
 							<tr>
-								<th><fmt:message key="lloc.llocID" /></th>
-								<th><fmt:message key="lloc.codiLloc" /></th>
-								<th><fmt:message key="lloc.nom" /></th>
-								<th><fmt:message key="lloc.personalOamr" /></th>
+								<th><fmt:message key="lloc.codiLlocPropi" /></th>
+								<th><fmt:message key="lloc.nomlf" /></th>
 								<th><fmt:message key="funcionariLloc.dataInici" /></th>
 								<th><fmt:message key="funcionariLloc.dataFi" /></th>
-								<th>&nbsp;</th>
+								<!-- <th><fmt:message key="funcionari.historic.pipella.cai" /></th> -->
+								<!-- <th>&nbsp;</th> -->
 							</tr>
 						</thead>
 						<tbody>
 							<c:forEach var="lloc" items="${llocsHistoric}">
-								<tr id="lloc_rowid_${lloc.llocID}">
-									<td>${lloc.llocID}</td>
-									<td>${lloc.codiLloc}</td>
-									<td>${lloc.nom}</td>
-									<td align="center">
-										<c:if test="${lloc.personalOamr > 1}">
-											<i class="fa fa-check" aria-hidden="true"></i>
-										</c:if> 
-										<c:if test="${lloc.personalOamr < 2}">
-											<i class="fa fa-times" aria-hidden="true"></i>
-										</c:if>
-									</td>
-									<td><fmt:formatDate pattern="${gen:getDateTimePattern()}"
-											value="${lloc.dataInici}" /></td>
-									<td><fmt:formatDate pattern="${gen:getDateTimePattern()}"
-											value="${lloc.dataFi}" /></td>
-									<td><a class="btn btn-primary btn-sm"
-										href="<c:url value="/admin/lloc/view/${lloc.llocID}"/>"><i
-											class="far fa-eye" title="Veure detall"></i>&nbsp;<fmt:message key="detall" /></a></td>
+								<tr id="lloc_rowid_${lloc.lloc.llocID}">
+									<td>${lloc.lloc.codiLlocPropi}</td>
+									<td>${lloc.lloc.nom}</td>
+									<td><fmt:formatDate pattern="dd/MM/yyyy" value="${lloc.dataInici}" /></td>
+									<td><fmt:formatDate pattern="dd/MM/yyyy" value="${lloc.dataFi}" /></td>
+									<!-- <td>${lloc.numeroCai}</td> -->
+									<!-- <td>
+										<a class="btn btn-primary btn-sm" href="<c:url value="/admin/lloc/view/${lloc.lloc.llocID}"/>">
+											<i class="far fa-eye" title="Veure detall"></i>&nbsp;<fmt:message key="detall" />
+										</a>
+									</td> -->
 								</tr>
 							</c:forEach>
 						</tbody>

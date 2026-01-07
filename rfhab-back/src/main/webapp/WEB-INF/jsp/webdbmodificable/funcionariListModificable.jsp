@@ -31,5 +31,6 @@
       dataBaixaHeader
     );
     highlightRowIfTdHasContent("tr[id^='funcionari_rowid']", columnaDataBaixa);
+    hideEntireColumn("table.table-genapp-list", "<fmt:message key="funcionari.dataBaixa" />");
   });
 </script>

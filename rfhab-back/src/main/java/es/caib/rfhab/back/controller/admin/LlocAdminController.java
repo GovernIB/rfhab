@@ -283,16 +283,7 @@ public class LlocAdminController extends LlocController {
 			log.info("Personal OAMR seleccionat per defecte: " + PersonalOamrTipus.NO.getDescripcio());
 
 			// botó donar d'alta lloc
-			String jsOpenModalDonarAlta = "javascript:createDivModal(traduccions.type['titol.lloc.donaralta.continuar'], '"
-					+ I18NUtils.tradueix("lloc.donaralta.missatgecontinuar") + "', '"
-					+ "', 'llocForm', 'lloc-donaralta-id', 'fa-laptop-medical', '"
-					+ request.getContextPath() + getContextWeb() + "/newialta/"
-					+ "', null, '" + I18NUtils.tradueix("acceptar") + "');\r\n" + //
-					"        $('#lloc-donaralta-id').modal('show');\r\n";
-			AdditionalButton donarDeAltaButton = new AdditionalButton("fas fa-laptop-medical",
-					"lloc.donaralta",
-					jsOpenModalDonarAlta,
-					AdditionalButtonStyle.SUCCESS);
+			AdditionalButton donarDeAltaButton = getDonarDeAltaButton(request, true);
 			llocForm.addAdditionalButton(donarDeAltaButton);
 			llocForm.addReadOnlyField(LlocFields.DATAALTA);
 		} else {
@@ -353,16 +344,7 @@ public class LlocAdminController extends LlocController {
 					llocForm.addReadOnlyField(LlocFields.DATAALTA);
 
 					// botó donar d'alta lloc
-					String jsOpenModalDonarAlta = "javascript:createDivModal(traduccions.type['titol.lloc.donaralta.continuar'], '"
-							+ I18NUtils.tradueix("lloc.donaralta.missatgecontinuar") + "', '"
-							+ "', 'llocForm', 'lloc-donaralta-id', 'fa-laptop-medical', '"
-							+ request.getContextPath() + getContextWeb() + "/donaralta/" + "', null, '"
-							+ I18NUtils.tradueix("acceptar") + "');\r\n" + //
-							"        $('#lloc-donaralta-id').modal('show');\r\n";
-					AdditionalButton donarDeAltaButton = new AdditionalButton("fas fa-laptop-medical",
-							"lloc.donaralta",
-							jsOpenModalDonarAlta,
-							AdditionalButtonStyle.SUCCESS);
+					AdditionalButton donarDeAltaButton = getDonarDeAltaButton(request, false);
 					llocForm.addAdditionalButton(donarDeAltaButton);
 				}
 			} else {
@@ -430,6 +412,20 @@ public class LlocAdminController extends LlocController {
 		request.getSession().setAttribute(Constants.REFERER_SESSION_ATTRIBUTE, request.getHeader("referer"));
 
 		return llocForm;
+	}
+
+	private AdditionalButton getDonarDeAltaButton(HttpServletRequest request, boolean isNewIalta) {
+		String jsOpenModalDonarAlta = "javascript:createDivModal(traduccions.type['titol.lloc.donaralta.continuar'], '"
+				+ I18NUtils.tradueix("lloc.donaralta.missatgecontinuar") + "', '"
+				+ "', 'llocForm', 'lloc-donaralta-id', 'fa-laptop-medical', '"
+				+ request.getContextPath() + getContextWeb() + (isNewIalta ? "/newialta/" : "/donaralta/")
+				+ "', null, '" + I18NUtils.tradueix("acceptar") + "');\r\n" + //
+				"        $('#lloc-donaralta-id').modal('show');\r\n";
+		AdditionalButton donarDeAltaButton = new AdditionalButton("fas fa-laptop-medical",
+				"lloc.donaralta",
+				jsOpenModalDonarAlta,
+				AdditionalButtonStyle.SUCCESS);
+		return donarDeAltaButton;
 	}
 
 	@Override
@@ -649,8 +645,7 @@ public class LlocAdminController extends LlocController {
 		llocLogicaEjb.donarDeBaixaLlocAndHistory(llocId, numeroCai,
 				LoginInfo.getInstance().getUsuariPersona().getUsuariID());
 
-		// createMessageSuccess(request, "success.modification", llocId);//
-		// funcionari.donaralta.exit
+		// createMessageSuccess(request, "success.modification", llocId);
 	}
 
 	@RequestMapping(value = "/donaralta", method = RequestMethod.POST)
@@ -663,10 +658,7 @@ public class LlocAdminController extends LlocController {
 		Lloc llocActualitzat = llocLogicaEjb.donarDeAltaAndHistory(llocForm.getLloc().getLlocID(), numeroCai,
 				LoginInfo.getInstance().getUsuariPersona().getUsuariID());
 
-		// createMessageSuccess(request, "success.modification", llocID);//
-		// funcionari.donaralta.exit
-		// TODO: revisar si podem posar mostrarMissatgeCreacio així com a opcional (cas
-		// d'ús donar d'alta des de modificació)
+		// createMessageSuccess(request, "success.modification", llocID);
 		return getRedirectWhenModified(request, new LlocForm(new LlocJPA(llocActualitzat), false), null,
 				mostrarMissatgeCreacio);
 	}

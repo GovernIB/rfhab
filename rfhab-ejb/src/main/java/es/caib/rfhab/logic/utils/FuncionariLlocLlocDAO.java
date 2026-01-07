@@ -10,44 +10,18 @@ import es.caib.rfhab.model.entity.Lloc;
  */
 public class FuncionariLlocLlocDAO implements java.io.Serializable {
 
-	private Long llocID = null;
-	private String codiLloc = null;
-	private String nom = null;
-	private Integer personalOamr = null;
+	private Lloc lloc = null;
 	private java.sql.Date dataInici = null;
 	private java.sql.Date dataFi = null;
+	private String numeroCai = null;
 
 	// Getters i setters
-	public Long getLlocID() {
-		return llocID;
+	public Lloc getLloc() {
+		return lloc;
 	}
 
-	public void setLlocID(Long llocID) {
-		this.llocID = llocID;
-	}
-
-	public String getCodiLloc() {
-		return codiLloc;
-	}
-
-	public void setCodiLloc(String codiLloc) {
-		this.codiLloc = codiLloc;
-	}
-
-	public String getNom() {
-		return nom;
-	}
-
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
-
-	public Integer getPersonalOamr() {
-		return personalOamr;
-	}
-
-	public void setPersonalOamr(Integer personalOamr) {
-		this.personalOamr = personalOamr;
+	public void setLlocID(Lloc lloc) {
+		this.lloc = lloc;
 	}
 
 	public java.sql.Date getDataInici() {
@@ -66,20 +40,26 @@ public class FuncionariLlocLlocDAO implements java.io.Serializable {
 		this.dataFi = dataFi;
 	}
 
+	public String getNumeroCai() {
+		return numeroCai;
+	}
+
+	public void setNumeroCai(String numeroCai) {
+		this.numeroCai = numeroCai;
+	}
+
 	// Constructors
 	public FuncionariLlocLlocDAO() {
 		super();
 	}
 
-	public FuncionariLlocLlocDAO(Lloc lloc, FuncionariLloc funcionariLloc) {
+	public FuncionariLlocLlocDAO(Lloc lloc, FuncionariLloc funcionariLloc, String numeroCai) {
 		super();
 		if (lloc != null) {
-			this.llocID = lloc.getLlocID();
-			this.codiLloc = lloc.getCodiLloc();
-			this.nom = lloc.getNom();
-			this.personalOamr = lloc.getPersonalOamr();
+			this.lloc = lloc;
 			this.dataInici = funcionariLloc.getDataInici();
 			this.dataFi = funcionariLloc.getDataFi();
 		}
+		this.numeroCai = numeroCai;
 	}
 }

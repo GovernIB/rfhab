@@ -16,17 +16,19 @@ import org.fundaciobit.genapp.common.query.Field;
 import org.fundaciobit.genapp.common.query.GroupByItem;
 import org.fundaciobit.genapp.common.query.SubQuery;
 import org.fundaciobit.genapp.common.query.Where;
-import org.fundaciobit.genapp.common.query.selectcolumn.Select6Values;
+import org.fundaciobit.genapp.common.query.selectcolumn.Select7Values;
 import org.fundaciobit.genapp.common.utils.Utils;
 import org.fundaciobit.genapp.common.web.HtmlUtils;
 import org.fundaciobit.genapp.common.web.form.AdditionalButton;
 import org.fundaciobit.genapp.common.web.form.AdditionalButtonStyle;
 import org.fundaciobit.genapp.common.web.form.AdditionalField;
 import org.fundaciobit.genapp.common.web.i18n.I18NUtils;
+import org.fundaciobit.genapp.common.web.validation.ValidationWebUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -47,28 +49,28 @@ import es.caib.rfhab.logic.FuncionariLogicaService;
 import es.caib.rfhab.logic.HistoricLogicaService;
 import es.caib.rfhab.logic.LlocLogicaService;
 import es.caib.rfhab.logic.UnitatLogicaService;
+import es.caib.rfhab.logic.utils.DbDaoDictionaries;
 import es.caib.rfhab.logic.utils.FuncionariLlocLlocDAO;
+import es.caib.rfhab.logic.utils.HistoricCanvisFuncionariDAO;
 import es.caib.rfhab.model.entity.Activitat;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.FuncionariLloc;
-import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.FuncionariLlocFields;
-import es.caib.rfhab.model.fields.FuncionariLlocQueryPath;
 import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.LlocJPA;
 
-/*
- * 
+/**
  * @author jagarcia
  * @author jpou
- * 
  */
 @Controller
-@RequestMapping(value = "/admin/funcionari")
+@RequestMapping(value = FuncionariAdminController.CONTEXTWEB)
 @SessionAttributes(types = { FuncionariForm.class, FuncionariFilterForm.class })
 public class FuncionariAdminController extends FuncionariController {
+
+	public static final String CONTEXTWEB = "/admin/funcionari";
 
 	private static final String TIPUS_IDENTIFICACIO_SELECCIONA = "0";
 
@@ -124,7 +126,11 @@ public class FuncionariAdminController extends FuncionariController {
 		funcionariForm.setSaveButtonVisible(false);
 
 		if (funcionariForm.isNou()) {
+			// botó de guardar
 			funcionariForm.addAdditionalButton(guardarButton);
+			// botó donar d'alta funcionari
+			AdditionalButton donarDeAltaButton = getDonarDeAltaButton(request, true);
+			funcionariForm.addAdditionalButton(donarDeAltaButton);
 
 			funcionari.setDataCreacio(new Timestamp(System.currentTimeMillis()));
 			funcionari.setDataBaixa(new Timestamp(System.currentTimeMillis()));
@@ -153,48 +159,79 @@ public class FuncionariAdminController extends FuncionariController {
 			// (actuals, sense data fi)
 			// Pipella Funcionari històrics - Obtenir tots els llocs relacionats amb el
 			// funcionari
-			List<Lloc> llocsFuncionari = llocEJB.getLlocByFuncionariID(funcionariId, true);
+			List<FuncionariLlocLlocDAO> llocsFuncionari = llocEJB.getLlocHistoricByFuncionariID(funcionariId, true);
 			List<FuncionariLlocLlocDAO> llocsFuncionariHistoric = llocEJB.getLlocHistoricByFuncionariID(funcionariId,
 					false);
 			mav.addObject("llocItems", llocsFuncionari);
-			mav.addObject("llocsHistoric", llocsFuncionariHistoric);
+			mav.addObject("llocsHistoric", llocsFuncionariHistoric);//aquí CAI NOOOO!!!!
 
 			// Pipella Històric - Obtenir tots els canvis realitzats al funcionari
-			List<Select6Values<Long, String, String, String, String, Timestamp>> historicItems = historicEjb
+			List<Select7Values<Long, String, String, String, String, Timestamp, String>> historicItems = historicEjb
 					.getHistoricByFuncionariId(funcionariId);
-			mav.addObject("historicItems", historicItems);
+			log.info("HistoricFuncionari.size: " + historicItems.size());
 
-			// botons donar de baixa/alta
-			if (funcionari.getDataBaixa() == null) {
-				// botó donar de baixa funcionari
-				String urlGoTo = request.getContextPath() + getContextWeb() + "/" + funcionariId + "/delete/";
-				String actionButtonOnClickCallback = "goTo(encodeURI(\\'" + urlGoTo
-						+ "\\' + \\'?numerocai=\\' + document.getElementById(\\'numerocai\\').value))";
-				String jsOpenModalDonarBaixa = "javascript:createDivModal(traduccions.type['titol.funcionari.donarbaixa.continuar'], traduccions.type['missatge.funcionari.donarbaixa.continuar'], '"
-						+ urlGoTo + "', '', 'func-donarbaixa-id', 'fa-user-times', '', '" + actionButtonOnClickCallback
-						+ "');\r\n" + //
-						"        $('#func-donarbaixa-id').modal('show');\r\n";
-				AdditionalButton donarDeBaixaButton = new AdditionalButton("fas fa-user-times",
-						"funcionari.donarbaixa",
-						jsOpenModalDonarBaixa,
-						AdditionalButtonStyle.DANGER);
-				funcionariForm.addAdditionalButton(donarDeBaixaButton);
-			} else {
-				// botó donar d'alta funcionari
-				String jsOpenModalDonarAlta = "javascript:createDivModal(traduccions.type['titol.funcionari.donaralta.continuar'], traduccions.type['missatge.funcionari.donaralta.continuar'], '"
-						+ "', 'funcionariForm', 'func-donaralta-id', 'fa-user-plus', '"
-						+ request.getContextPath() + getContextWeb() + "/donaralta/"
-						+ "');\r\n" + //
-						"        $('#func-donaralta-id').modal('show');\r\n";
-				AdditionalButton donarDeAltaButton = new AdditionalButton("fas fa-user-plus",
-						"funcionari.donaralta",
-						jsOpenModalDonarAlta,
-						AdditionalButtonStyle.SUCCESS);
-				funcionariForm.addAdditionalButton(donarDeAltaButton);
-			}
+			List<HistoricCanvisFuncionariDAO> historicCanvis = new ArrayList<>();
+			historicItems.forEach(
+					x -> {
+						log.info("HistoricFuncionari: " + x.getValue1() + " " + x.getValue2() + " " + x.getValue3()
+								+ " " + x.getValue4() + " " + x.getValue5() + " " + x.getValue6() + " "
+								+ x.getValue7());
+						try {
+							historicCanvis.add(
+									new HistoricCanvisFuncionariDAO(x.getValue1(),
+											(x.getValue3() == null ? "" : x.getValue3()) + " "
+													+ (x.getValue4() == null ? "" : x.getValue4()) + " "
+													+ (x.getValue5() == null ? "" : x.getValue5()),
+											x.getValue7(), x.getValue2(), x.getValue6()));
+						} catch (I18NException e) {
+							log.error("Error al crear HistoricCanvisFuncionariDAO amb id " + x.getValue1(), e);
+							HtmlUtils.saveMessageError(request,
+									"Error al crear HistoricCanvisFuncionariDAO amb data " + x.getValue6());
+							try {
+								historicCanvis.add(
+										new HistoricCanvisFuncionariDAO(x.getValue1(),
+												(x.getValue3() == null ? "" : x.getValue3()) + " "
+														+ (x.getValue4() == null ? "" : x.getValue4()) + " "
+														+ (x.getValue5() == null ? "" : x.getValue5()),
+												"", x.getValue2(), x.getValue6()));
+							} catch (I18NException e1) {
+								log.error(
+										"Error desconegut al crear HistoricCanvisFuncionariDAO amb id " + x.getValue1(),
+										e);
+							}
+						}
+					});
+
+			mav.addObject("diferenciesDictionary", DbDaoDictionaries.HistoricFuncionari);
+			mav.addObject("historicItems", historicCanvis);
 
 			// no el volem veure al mode de consulta
 			if (!__isView) {
+				// botons donar de baixa/alta
+				if (funcionari.getDataBaixa() == null) {
+					// botó donar de baixa funcionari
+					String urlGoTo = request.getContextPath() + getContextWeb() + "/" + funcionariId + "/delete/";
+					String actionButtonOnClickCallback = "goTo(encodeURI(\\'" + urlGoTo
+							+ "\\' + \\'?numerocai=\\' + document.getElementById(\\'numerocai\\').value))";
+					String jsOpenModalDonarBaixa = "javascript:createDivModal('"
+							+ I18NUtils.tradueix("funcionari.donarbaixa") + "', '"
+							+ I18NUtils.tradueix("funcionari.donarbaixa.missatgecontinuar") + "', '"
+							+ urlGoTo + "', '', 'func-donarbaixa-id', 'fa-user-times', '', '"
+							+ actionButtonOnClickCallback
+							+ "', '" + I18NUtils.tradueix("acceptar") + "');\r\n" + //
+							"        $('#func-donarbaixa-id').modal('show');\r\n";
+					AdditionalButton donarDeBaixaButton = new AdditionalButton("fas fa-user-times",
+							"funcionari.donarbaixa",
+							jsOpenModalDonarBaixa,
+							AdditionalButtonStyle.DANGER);
+					funcionariForm.addAdditionalButton(donarDeBaixaButton);
+				} else {
+					// botó donar d'alta funcionari
+					AdditionalButton donarDeAltaButton = getDonarDeAltaButton(request, false);
+					funcionariForm.addAdditionalButton(donarDeAltaButton);
+				}
+
+				// botó de guardar
 				funcionariForm.addAdditionalButton(guardarButton);
 			}
 		}
@@ -232,6 +269,21 @@ public class FuncionariAdminController extends FuncionariController {
 		return funcionariForm;
 	}
 
+	private AdditionalButton getDonarDeAltaButton(HttpServletRequest request, boolean isNewIalta) {
+		String jsOpenModalDonarAlta = "javascript:createDivModal('"
+				+ I18NUtils.tradueix("funcionari.donaralta")
+				+ "','" + I18NUtils.tradueix("funcionari.donaralta.missatgecontinuar") + "', '"
+				+ "', 'funcionariForm', 'func-donaralta-id', 'fa-user-plus', '"
+				+ request.getContextPath() + getContextWeb() + (isNewIalta ? "/newialta/" : "/donaralta/")
+				+ "', null, '" + I18NUtils.tradueix("acceptar") + "');\r\n" + //
+				"        $('#func-donaralta-id').modal('show');\r\n";
+		AdditionalButton donarDeAltaButton = new AdditionalButton("fas fa-user-plus",
+				"funcionari.donaralta",
+				jsOpenModalDonarAlta,
+				AdditionalButtonStyle.SUCCESS);
+		return donarDeAltaButton;
+	}
+
 	@Override
 	public FuncionariFilterForm getFuncionariFilterForm(Integer pagina, ModelAndView mav, HttpServletRequest request)
 			throws I18NException {
@@ -247,7 +299,9 @@ public class FuncionariAdminController extends FuncionariController {
 			funcionariFilterForm.addHiddenField(CORREU);
 			funcionariFilterForm.addHiddenField(ENTITATID);
 			funcionariFilterForm.addHiddenField(OBSERVACIONS);
-			// funcionariFilterForm.addHiddenField(DATABAIXA);
+			// funcionariFilterForm.addHiddenField(DATABAIXA);//la necessitam per marcar la
+			// fila en gris. L'ocultarem al funcionariListModificable. NO BORRAR AQUEST
+			// COMENTARI!!!
 
 			{
 				AdditionalField<Long, String> adfield = new AdditionalField<Long, String>();
@@ -290,7 +344,7 @@ public class FuncionariAdminController extends FuncionariController {
 		funcionariFilterForm.setDeleteButtonVisible(false);
 		funcionariFilterForm.setVisibleMultipleSelection(false);
 		funcionariFilterForm.setDeleteSelectedButtonVisible(false);
-		funcionariFilterForm.setViewButtonVisible(false);
+		funcionariFilterForm.setViewButtonVisible(true);
 		funcionariFilterForm.setAttachedAdditionalJspCode(true);
 
 		// funcionariFilterForm.setActionsRenderer(FuncionariFilterForm.ACTIONS_RENDERER_DROPDOWN_BUTTON);
@@ -400,8 +454,7 @@ public class FuncionariAdminController extends FuncionariController {
 		funcionariEJB.donarDeBaixaFuncionariAndHistory(funcionari, numeroCai,
 				LoginInfo.getInstance().getUsuariPersona().getUsuariID());
 
-		// createMessageSuccess(request, "success.modification", funcionariId);//
-		// funcionari.donaralta.exit
+		// createMessageSuccess(request, "success.modification", funcionariId);
 	}
 
 	@RequestMapping(value = "/donaralta")
@@ -412,11 +465,16 @@ public class FuncionariAdminController extends FuncionariController {
 				: "";
 
 		long funcionariId = funcionariForm.getFuncionari().getFuncionariID();
-		funcionariEJB.donarDeAltaAndHistory(funcionariId, numeroCai,
+		Funcionari funcionari = funcionariEJB.donarDeAltaAndHistory(funcionariId, numeroCai,
 				LoginInfo.getInstance().getUsuariPersona().getUsuariID());
 
-		createMessageSuccess(request, "success.modification", funcionariId);// funcionari.donaralta.exit
-		return getRedirectWhenModified(request, null, null);
+		String redirection = getRedirectWhenModified(request, null, null);
+		String msg = I18NUtils.tradueix("funcionari.donaralta.success",
+				new String[] { funcionari.getNumero() });
+		HtmlUtils.deleteMessages(request);
+		HtmlUtils.saveMessageSuccess(request, msg);
+
+		return redirection;
 	}
 
 	@Override
@@ -428,6 +486,52 @@ public class FuncionariAdminController extends FuncionariController {
 		FuncionariJPA newFuncionari = funcionariEJB.createAndHistory(funcionari, numeroCai, usuariId);
 
 		return newFuncionari;
+	}
+
+	/**
+	 * Guardar un nou Funcionari i seguidament el dona d'alta
+	 * redirigint-lo a la pantalla de modificació.
+	 */
+	@RequestMapping(value = "/newialta", method = RequestMethod.POST)
+	public String crearFuncionariIdonarDalta(@ModelAttribute FuncionariForm funcionariForm,
+			BindingResult result, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		log.info("crearFuncionariIdonarDalta() funcionariForm: " + funcionariForm);
+		if (!isActiveFormNew()) {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return null;
+		}
+
+		FuncionariJPA funcionari = funcionariForm.getFuncionari();
+
+		try {
+			preValidate(request, funcionariForm, result);
+			getWebValidator().validate(funcionariForm, result);
+			postValidate(request, funcionariForm, result);
+
+			if (result.hasErrors()) {
+				log.info("Errors al validar el formulari: " + result.getAllErrors());
+				result.reject("error.form");
+				return getTileForm();
+			} else {
+				funcionari = create(request, funcionari);
+				createMessageSuccess(request, "success.creation", funcionari.getFuncionariID());
+				funcionariForm.setFuncionari(funcionari);
+
+				String redirectStr = donarDeAlta(funcionariForm, request, response);
+				// getMsgCreated(request, funcionari);
+
+				return redirectStr;
+			}
+		} catch (Throwable __e) {
+			if (__e instanceof I18NValidationException) {
+				ValidationWebUtils.addFieldErrorsToBindingResult(result, (I18NValidationException) __e);
+				return getTileForm();
+			}
+			String msg = createMessageError(request, "error.creation", null, __e);
+			log.error(msg, __e);
+			return getTileForm();
+		}
 	}
 
 	@Override
@@ -530,31 +634,35 @@ public class FuncionariAdminController extends FuncionariController {
 	public void postList(HttpServletRequest request, ModelAndView mav, FuncionariFilterForm filterForm,
 			List<Funcionari> list) throws I18NException {
 
-		Map<Long, String> mapFuncionari = (Map<Long, String>) filterForm.getAdditionalField(1).getValueMap();
-		Map<Long, String> mapFuncionari2 = (Map<Long, String>) filterForm.getAdditionalField(2).getValueMap();
-		Map<Long, String> mapFuncionari3 = (Map<Long, String>) filterForm.getAdditionalField(3).getValueMap();
+		Map<Long, String> mapCodiLloc = (Map<Long, String>) filterForm.getAdditionalField(1).getValueMap();
+		Map<Long, String> mapUnitatOrganica = (Map<Long, String>) filterForm.getAdditionalField(2).getValueMap();
+		Map<Long, String> mapOamr = (Map<Long, String>) filterForm.getAdditionalField(3).getValueMap();
 
-		mapFuncionari.clear();
-		mapFuncionari2.clear();
-		mapFuncionari3.clear();
+		mapCodiLloc.clear();
+		mapUnitatOrganica.clear();
+		mapOamr.clear();
 
 		HashMap<Long, LlocJPA> placesOcupades = llocEJB
 				.getAllLlocsOcupats(LoginInfo.getInstance().getEntitatIDActual());
+		log.info("S'han trobat " + placesOcupades.size() + " places ocupades");
+
+		final String CREU_NO_ICONA = "<i class=\"fa fa-times\"></i>";
+		final String TICK_SI_ICONA = "<i class=\"fa fa-check\"></i>";
 
 		for (Funcionari funcionari : list) {
-
 			final Long funcionariID = funcionari.getFuncionariID();
 
 			LlocJPA lloc = placesOcupades.get(funcionariID);
 			if (lloc != null) {
-				mapFuncionari.put(funcionariID, lloc.getCodiLloc());
-				mapFuncionari2.put(funcionariID, unitatEJB.findByPrimaryKey(lloc.getUnitatID()).getCodi());
-				mapFuncionari3.put(funcionariID, ((lloc.getPersonalOamr() > 1) ? "<i class=\"fa fa-check\"></i>"
-						: "<i class=\"fa fa-times\"></i>"));
+				mapCodiLloc.put(funcionariID, lloc.getCodiLloc());
+				mapUnitatOrganica.put(funcionariID, unitatEJB.findByPrimaryKey(lloc.getUnitatID()).getCodi());
+				mapOamr.put(funcionariID,
+						((PersonalOamrTipus.fromValue(lloc.getPersonalOamr()) == PersonalOamrTipus.SI) ? TICK_SI_ICONA
+								: CREU_NO_ICONA));
 			} else {
-				mapFuncionari.put(funcionariID, "");
-				mapFuncionari2.put(funcionariID, "");
-				mapFuncionari3.put(funcionariID, "<i class=\"fa fa-times\"></i>");
+				mapCodiLloc.put(funcionariID, "");
+				mapUnitatOrganica.put(funcionariID, "");
+				mapOamr.put(funcionariID, CREU_NO_ICONA);
 			}
 		}
 	}
@@ -576,7 +684,16 @@ public class FuncionariAdminController extends FuncionariController {
 
 	@Override
 	public String getRedirectWhenModified(HttpServletRequest request, FuncionariForm funcionariForm, Throwable __e) {
-		return UrlUtils.getRefererRedirect(request, super.getRedirectWhenModified(request, funcionariForm, __e));
+		if (funcionariForm == null || funcionariForm.getFuncionari() == null) {
+			log.info("FuncionariForm o FuncionariJPA no disponibles per a redirigir després de la modificació.");
+			return UrlUtils.getRefererRedirect(request, super.getRedirectWhenModified(request, funcionariForm, __e));
+		}
+		FuncionariJPA funcionari = funcionariForm.getFuncionari();
+		String msg = I18NUtils.tradueix("funcionari.modificar.guardar.success",
+				new String[] { funcionari.getNumero() });
+		HtmlUtils.deleteMessages(request);
+		HtmlUtils.saveMessageSuccess(request, msg);
+		return "redirect:" + getContextWeb() + "/" + funcionari.getFuncionariID() + "/edit/";
 	}
 
 	@Override

@@ -308,7 +308,7 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 			// el desasignam del lloc de feina
 			funcionarisLlocsDonatsDeBaixa = funcionariLlocLogicaEjb
 					.donarDeBaixaFuncionariDeLlocByLloc(llocId);
-			log.info("Assignacions de Funcionaris al Lloc de Feina " + llocId + " actualitzades");
+			log.info("Assignacions de funcionaris/àries al lloc de feina " + llocId + " actualitzades");
 
 			// Lloc de feina: el donam de baixa
 			if (donarDeBaixaLloc) {

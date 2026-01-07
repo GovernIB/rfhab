@@ -999,8 +999,8 @@
           "digits": 0,
           "isNotNullable": false,
           "labels": {
-            "ca": "Funcionari",
-            "es": "Funcionario"
+            "ca": "Funcionari/ària",
+            "es": "Funcionario/a"
           },
           "javaName": "funcionariID",
           "javaType": "java.lang.Long",

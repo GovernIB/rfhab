@@ -191,7 +191,7 @@
 
 			<c:if test="${not llocsHistoric.isEmpty()}">
 				<div class="row" style="margin-left: 12px;">
-					<table
+					<table id="historicllocs-table"
 						class="table table-sm table-bordered table-striped table-genapp table-genapp-list"
 						style="width: auto;">
 						<thead>
@@ -221,6 +221,12 @@
 							</c:forEach>
 						</tbody>
 					</table>
+				</div>
+				<div class="row" style="margin-left: 12px;">
+					<button class="btn btn-info" type="button" id="exportcsv" title="<fmt:message key="descarregar" />"
+						onclick="downloadDataFromTable('#historicllocs-table', 'historic_llocs_${__theForm.funcionari.numero}.csv')">
+						<i class="fas fa-file-csv"></i>
+					</button>
 				</div>
 			</c:if>
 

@@ -282,55 +282,6 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 
 	@Override
 	@PermitAll
-	public HashMap<Long, LlocJPA> getAllLlocsOcupats(Long entitatId) throws I18NException {
-
-		HashMap<Long, LlocJPA> llocsOcupats = new HashMap<Long, LlocJPA>();
-
-		try {
-
-			StringBuilder customQuery = new StringBuilder(
-					"Select fl." + FuncionariLlocFields.FUNCIONARIID.javaName + ", l." + LlocFields.LLOCID.javaName
-							+ ", l." + LlocFields.NOM.javaName + ", l." + LlocFields.UNITATID.javaName + ", l."
-							+ LlocFields.CODILLOC.javaName + ", "
-							+ "l." + LlocFields.PERSONALOAMR.javaName + ", l." + LlocFields.DATAALTA.javaName + ", l."
-							+ LlocFields.DATACREACIO.javaName + ", l." + LlocFields.DATABAIXA.javaName + ", l."
-							+ LlocFields.OBSERVACIONS.javaName + ", l." + LlocFields.CODILLOCPROPI.javaName + ", l."
-							+ LlocFields.EXPANSIO.javaName + " FROM FuncionariLlocJPA as fl "
-							+ " inner join LlocJPA as l on l." + LlocFields.LLOCID.javaName + " = fl."
-							+ FuncionariLlocFields.LLOCID.javaName + " "
-							+ " where (fl." + FuncionariLlocFields.DATAINICI.javaName + " <= :avui or fl."
-							+ FuncionariLlocFields.DATAINICI.javaName + " is null) "
-							+ " and (fl." + FuncionariLlocFields.DATAFI.javaName + " > :avui or fl."
-							+ FuncionariLlocFields.DATAFI.javaName + " is null) " + " and l."
-							+ LlocFields.ENTITATID.javaName + " = :entitatId");
-
-			Query q = getEntityManager().createQuery(customQuery.toString());
-			q.setParameter("avui", new Date(System.currentTimeMillis()));
-			q.setParameter("entitatId", entitatId);
-
-			List<Object[]> result = q.getResultList();
-
-			for (Object[] obj : result) {
-
-				LlocJPA llocJPA = new LlocJPA((long) obj[1], (String) obj[11], (String) obj[4], (String) obj[10],
-						(String) obj[2],
-						(long) entitatId,
-						(long) obj[3], (Timestamp) obj[6], (int) obj[5], (Timestamp) obj[7], (Timestamp) obj[8],
-						(String) obj[9]);
-
-				llocsOcupats.put((Long) obj[0], llocJPA);
-			}
-
-		} catch (Exception e) {
-			log.error(e.getMessage());
-		}
-
-		return llocsOcupats;
-
-	}
-
-	@Override
-	@PermitAll
 	public HashMap<Long, Funcionari> getCurrentFuncionarisByLloc(Long llocId, Long entitatId) throws I18NException {
 
 		HashMap<Long, Funcionari> funcionaris = new HashMap<Long, Funcionari>();

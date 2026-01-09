@@ -32,8 +32,6 @@ public interface LlocLogicaService extends LlocService {
 	public Lloc updateAndHistory(Lloc lloc, String cai, Long usuariId, String[] habilitacionsSeleccionades)
 			throws I18NException;
 
-	public HashMap<Long, LlocJPA> getAllLlocsOcupats(Long entitatId) throws I18NException;
-
 	public HashMap<Long, Funcionari> getCurrentFuncionarisByLloc(Long llocId, Long entitatId) throws I18NException;
 
 	public List<FuncionariLlocLlocDAO> getLlocHistoricByFuncionariID(Long funcionariId, boolean current)

@@ -55,6 +55,7 @@ import es.caib.rfhab.logic.utils.HistoricCanvisFuncionariDAO;
 import es.caib.rfhab.model.entity.Activitat;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.FuncionariLloc;
+import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.FuncionariLlocFields;
 import es.caib.rfhab.model.fields.LlocFields;
@@ -163,7 +164,7 @@ public class FuncionariAdminController extends FuncionariController {
 			List<FuncionariLlocLlocDAO> llocsFuncionariHistoric = llocEJB.getLlocHistoricByFuncionariID(funcionariId,
 					false);
 			mav.addObject("llocItems", llocsFuncionari);
-			mav.addObject("llocsHistoric", llocsFuncionariHistoric);//aquí CAI NOOOO!!!!
+			mav.addObject("llocsHistoric", llocsFuncionariHistoric);// aquí CAI NOOOO!!!!
 
 			// Pipella Històric - Obtenir tots els canvis realitzats al funcionari
 			List<Select7Values<Long, String, String, String, String, Timestamp, String>> historicItems = historicEjb
@@ -340,6 +341,8 @@ public class FuncionariAdminController extends FuncionariController {
 			funcionariFilterForm.setOrderBy(FuncionariFields.LLINATGE1.sqlName);
 			funcionariFilterForm.setOrderAsc(true);
 		}
+
+		funcionariFilterForm.setVisibleExportList(true);
 
 		funcionariFilterForm.setDeleteButtonVisible(false);
 		funcionariFilterForm.setVisibleMultipleSelection(false);
@@ -642,18 +645,21 @@ public class FuncionariAdminController extends FuncionariController {
 		mapUnitatOrganica.clear();
 		mapOamr.clear();
 
-		HashMap<Long, LlocJPA> placesOcupades = llocEJB
-				.getAllLlocsOcupats(LoginInfo.getInstance().getEntitatIDActual());
-		log.info("S'han trobat " + placesOcupades.size() + " places ocupades");
-
 		final String CREU_NO_ICONA = "<i class=\"fa fa-times\"></i>";
 		final String TICK_SI_ICONA = "<i class=\"fa fa-check\"></i>";
+		final String BLANK_ICONA = "";// "<i class=\"fa fa-minus\"></i>";
 
 		for (Funcionari funcionari : list) {
 			final Long funcionariID = funcionari.getFuncionariID();
 
-			LlocJPA lloc = placesOcupades.get(funcionariID);
-			if (lloc != null) {
+			// LoginInfo.getInstance().getEntitatIDActual()
+			List<Lloc> llocs = llocEJB.getLlocByFuncionariID(funcionariID, true);
+			if (llocs != null && llocs.size() > 0) {
+				if (llocs.size() > 1) {
+					log.error("###postList### Només hi hauria d'haver un lloc actiu pel funcionari amb id "
+							+ funcionariID);
+				}
+				Lloc lloc = llocs.get(0);
 				mapCodiLloc.put(funcionariID, lloc.getCodiLloc());
 				mapUnitatOrganica.put(funcionariID, unitatEJB.findByPrimaryKey(lloc.getUnitatID()).getCodi());
 				mapOamr.put(funcionariID,
@@ -662,7 +668,7 @@ public class FuncionariAdminController extends FuncionariController {
 			} else {
 				mapCodiLloc.put(funcionariID, "");
 				mapUnitatOrganica.put(funcionariID, "");
-				mapOamr.put(funcionariID, CREU_NO_ICONA);
+				mapOamr.put(funcionariID, BLANK_ICONA);
 			}
 		}
 	}

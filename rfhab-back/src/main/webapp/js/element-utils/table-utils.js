@@ -14,13 +14,13 @@ function highlightRowIfTdHasContent(rowsQuerySelector, i) {
 
 function getColumnIndexByHeaderText(tableQuerySelector, headerText) {
   // Troba la taula amb tableQuerySelector
-  var table = document.querySelector(tableQuerySelector);
+  const table = document.querySelector(tableQuerySelector);
   if (!table) return -1;
 
   // Troba tots els <th> dins del primer <tr> del <thead>
-  var ths = table.querySelectorAll("thead tr th");
-  for (var i = 0; i < ths.length; i++) {
-    var span = ths[i].querySelector("span");
+  const ths = table.querySelectorAll("thead tr th");
+  for (let i = 0; i < ths.length; i++) {
+    const span = ths[i].querySelector("span");
     if (span && span.textContent.trim() === headerText) {
       return i;
     }
@@ -28,40 +28,43 @@ function getColumnIndexByHeaderText(tableQuerySelector, headerText) {
   return -1; // No trobat
 }
 
-function hideEntireColumn(tableQuerySelector, thContentSearchBy){
-  var table = document.getElementById(tableQuerySelector);
-    if (!table) return;
+function hideEntireColumn(tableQuerySelector, thContentSearchBy) {
+  const table = document.querySelector(tableQuerySelector);
+  if (!table) return;
 
-    var columnIndex = getColumnIndexByHeaderText(tableQuerySelector, thContentSearchBy);
-    if (columnIndex === -1) return;
+  const columnIndex = getColumnIndexByHeaderText(
+    tableQuerySelector,
+    thContentSearchBy
+  );
+  if (columnIndex === -1) return;
 
-    // Amaga el <th>
-    var ths = table.querySelectorAll("thead tr th");
-    if (ths[columnIndex]) {
-      ths[columnIndex].style.display = "none";
+  // Amaga el <th>
+  const ths = table.querySelectorAll("thead tr th");
+  if (ths[columnIndex]) {
+    ths[columnIndex].style.display = "none";
+  }
+
+  // Amaga totes les <td> de la columna
+  const rows = table.querySelectorAll("tbody tr");
+  rows.forEach(function (row) {
+    const tds = row.getElementsByTagName("td");
+    if (tds[columnIndex]) {
+      tds[columnIndex].style.display = "none";
     }
-
-    // Amaga totes les <td> de la columna
-    var rows = table.querySelectorAll("tbody tr");
-    rows.forEach(function(row) {
-      var tds = row.getElementsByTagName("td");
-      if (tds[columnIndex]) {
-        tds[columnIndex].style.display = "none";
-      }
-    });
+  });
 }
 
 /*
-* Convert data array to CSV string
-* @param arr {Array} - the actual data
-* @param columnCount {Number} - the amount to split the data into columns
-* @param initial {String} - initial string to append to CSV string
-* return {String} - ready CSV string
-*/
+ * Convert data array to CSV string
+ * @param arr {Array} - the actual data
+ * @param columnCount {Number} - the amount to split the data into columns
+ * @param initial {String} - initial string to append to CSV string
+ * return {String} - ready CSV string
+ */
 function prepCSVRow(arr, columnCount, initial) {
-  var row = ''; // this will hold data
-  var delimeter = ';'; // data slice separator, in excel it's `;`, in usual CSv it's `,`
-  var newLine = '\r\n'; // newline separator for CSV row
+  var row = ""; // this will hold data
+  var delimeter = ";"; // data slice separator, in excel it's `;`, in usual CSv it's `,`
+  var newLine = "\r\n"; // newline separator for CSV row
 
   /*
    * Convert [1,2,3,4] into [[1,2], [3,4]] while count is 2
@@ -72,7 +75,7 @@ function prepCSVRow(arr, columnCount, initial) {
   function splitArray(_arr, _count) {
     var splitted = [];
     var result = [];
-    _arr.forEach(function(item, idx) {
+    _arr.forEach(function (item, idx) {
       if ((idx + 1) % _count === 0) {
         splitted.push(item);
         result.push(splitted);
@@ -88,9 +91,9 @@ function prepCSVRow(arr, columnCount, initial) {
   // you just have to like follow the code
   // and you understand, it's pretty simple
   // it converts `['a', 'b', 'c']` to `a,b,c` string
-  plainArr.forEach(function(arrItem) {
-    arrItem.forEach(function(item, idx) {
-      row += item + ((idx + 1) === arrItem.length ? '' : delimeter);
+  plainArr.forEach(function (arrItem) {
+    arrItem.forEach(function (item, idx) {
+      row += item + (idx + 1 === arrItem.length ? "" : delimeter);
     });
     row += newLine;
   });
@@ -105,21 +108,21 @@ function downloadDataFromTable(dataTableSelector, filename) {
    * Get the table headers, this will be CSV headers
    * The count of headers will be CSV string separator
    */
-  $(dataTableSelector + ' th').each(function() {
+  $(dataTableSelector + " th").each(function () {
     titles.push($(this).text());
   });
 
   /*
    * Get the actual data, this will contain all the data, in 1 array
    */
-  $(dataTableSelector + ' td').each(function() {
+  $(dataTableSelector + " td").each(function () {
     data.push($(this).text());
   });
-  
+
   /*
    * Convert our data to CSV string
    */
-  var CSVString = prepCSVRow(titles, titles.length, '');
+  var CSVString = prepCSVRow(titles, titles.length, "");
   CSVString = prepCSVRow(data, titles.length, CSVString);
 
   /*

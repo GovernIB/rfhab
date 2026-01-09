@@ -220,6 +220,8 @@ public class LlocAdminController extends LlocController {
 		log.info("unitatsFiltreCerca: " + unitatsFiltreCerca.size());
 		log.info(unitatsFiltreCerca);
 
+		llocFilterForm.setVisibleExportList(true);
+
 		llocFilterForm.setViewButtonVisible(true);
 		llocFilterForm.setDeleteButtonVisible(false);
 		llocFilterForm.setDeleteSelectedButtonVisible(false);

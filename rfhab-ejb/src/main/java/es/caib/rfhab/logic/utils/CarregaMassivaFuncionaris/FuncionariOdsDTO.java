@@ -23,6 +23,7 @@ public class FuncionariOdsDTO {
     public String numCaiAlta;
     public String dataAlta;
     public String observacionsAlta;
+    public String dataDesassignacio;
     public String dataBaixa;
     public String observacionsBaixa;
 
@@ -51,6 +52,7 @@ public class FuncionariOdsDTO {
                 ", numCaiAlta='" + numCaiAlta + '\'' +
                 ", dataAlta='" + dataAlta + '\'' +
                 ", observacionsAlta='" + observacionsAlta + '\'' +
+                ", dataDesassignacio='" + dataDesassignacio + '\'' +
                 ", dataBaixa='" + dataBaixa + '\'' +
                 ", observacionsBaixa='" + observacionsBaixa + '\'' +
                 '}';

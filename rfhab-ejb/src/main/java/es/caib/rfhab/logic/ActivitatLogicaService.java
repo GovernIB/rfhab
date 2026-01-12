@@ -19,6 +19,7 @@ import es.caib.rfhab.model.entity.Activitat;
 import es.caib.rfhab.model.entity.Fitxer;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.persistence.validator.ActivitatValidator;
+import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
 
 /**
  * 
@@ -52,7 +53,7 @@ public interface ActivitatLogicaService extends ActivitatService {
 			String llinatge1Representant, String llinatge2Representant,
 			IdentificacioTipus tipusIdentificacioRepresentant, String identificacioRepresentant,
 			String arxiuExpedientId, String arxiuDocumentId, Timestamp dataActivitat, Funcionari funcionariActuant,
-			Long entitatId) throws I18NException;
+			Long entitatId, RolsacPlugin rolsacPlugin) throws I18NException;
 
 	public Where getActivitatsByFuncionariNomCompletWhere(String funcionariNom)
 			throws I18NException, NoSuchFieldException;

@@ -100,10 +100,10 @@ public class UserController extends UsuariController {
 	@EJB(mappedName = FuncionariLogicaService.JNDI_NAME)
 	protected FuncionariLogicaService funcionariLogicaEjb;
 
-	private RolsacPlugin rolsacPlugin;
-
 	@EJB(mappedName = FitxerPublicLogicaService.JNDI_NAME)
 	protected FitxerPublicLogicaService fitxerLogicaEjb;
+
+	private RolsacPlugin rolsacPlugin = new RolsacPlugin();
 
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public ModelAndView home(HttpSession session, HttpServletRequest request, HttpServletResponse response)
@@ -117,7 +117,6 @@ public class UserController extends UsuariController {
 		String username = usuari.getUsername();
 		String funcionariDir3 = getCodiDIR3(request, username);// codiDIR3 del lloc de feina del funcionari
 
-		rolsacPlugin = new RolsacPlugin();
 		HashMap<String, String[]> llistaProcediments = rolsacPlugin.obtenirProcedimentsByDir3(funcionariDir3, language);
 
 		// HashMap<String, String> llistaTramits =
@@ -328,7 +327,7 @@ public class UserController extends UsuariController {
 					interessatTramit,
 					representantTramit,
 					tramitCodi, languageUI, tramitParametres, false, idTraTel, tramitVersio,
-					unitatAdministrativa, dataActivitat, procediment, arxiuExpedientId, arxiuDocumentId);
+					unitatAdministrativa, dataActivitat, procediment, arxiuExpedientId, arxiuDocumentId, rolsacPlugin);
 		} catch (Exception e) {
 			log.error("Error retrieving ticket access. Message: " + e.getMessage());
 			log.error("Error retrieving ticket access. LocalizedMessage: " + e.getLocalizedMessage());

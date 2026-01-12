@@ -25,6 +25,7 @@ import es.caib.rfhab.model.fields.UsuariEntitatFields;
 import es.caib.rfhab.model.fields.UsuariFields;
 import es.caib.rfhab.persistence.UsuariJPA;
 import es.caib.rfhab.persistence.validator.ActivitatValidator;
+import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
 
 /**
  * 
@@ -169,7 +170,8 @@ public class UsuariLogicaEJB extends UsuariEJB implements UsuariLogicaService {
 	public String registraActivitatIobteTicketAccessFh(Funcionari funcionari, String codiDir3, RpersonaInfo interessat,
 			RpersonaInfo representant, String idTramiteCatalogo, String ticketLanguage, String ticketParametros,
 			boolean servicioCatalogo, String tramite, String tramitVersio, String unitatAdministrativa,
-			Timestamp dataActivitat, String procediment, String arxiuExpedientId, String arxiuDocumentId)
+			Timestamp dataActivitat, String procediment, String arxiuExpedientId, String arxiuDocumentId,
+			RolsacPlugin rolsacPlugin)
 			throws I18NException {
 		try {
 			String idActuacioTramitFh = java.util.UUID.randomUUID().toString();
@@ -184,7 +186,7 @@ public class UsuariLogicaEJB extends UsuariEJB implements UsuariLogicaService {
 					representant != null ? representant.getApellido2() : null,
 					representant != null ? IdentificacioTipus.DNI : null,
 					representant != null ? representant.getNif() : null, arxiuExpedientId, arxiuDocumentId,
-					dataActivitat, funcionari, funcionari.getEntitatID());
+					dataActivitat, funcionari, funcionari.getEntitatID(), rolsacPlugin);
 
 			return sistramitLogicaEjb.getTicketAccesoFh(funcionari, codiDir3, interessat, representant,
 					idTramiteCatalogo, ticketLanguage, ticketParametros, servicioCatalogo, tramite,

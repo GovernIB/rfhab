@@ -34,7 +34,7 @@ import es.caib.rfhab.pluginsib.rolsac.model.Tramits;
  * 
  */
 // TODO:convertir això a EJB o a Singleton per a poder emprar correctament la
-// catxé
+// catxé #113
 public class RolsacPlugin implements IRolsacPlugin {
 
 	protected final Logger LOG = Logger.getLogger(this.getClass());

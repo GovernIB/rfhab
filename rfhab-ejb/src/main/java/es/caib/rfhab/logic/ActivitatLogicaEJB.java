@@ -357,7 +357,7 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 			String llinatge1Representant, String llinatge2Representant,
 			IdentificacioTipus tipusIdentificacioRepresentant, String identificacioRepresentant,
 			String arxiuExpedientId, String arxiuDocumentId, Timestamp dataActivitat, Funcionari funcionariActuant,
-			Long entitatId) throws I18NException {
+			Long entitatId, RolsacPlugin rolsacPlugin) throws I18NException {
 		ActivitatJPA act = new ActivitatJPA();
 		Activitat actTramitRelacionada = null;
 		act.setFuncionariID(funcionariActuant.getFuncionariID());
@@ -396,7 +396,7 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 				}
 
 				funcionariLogicaEjb.checkIsFuncionariAutoritzat(language, (FuncionariJPA) funcionariActuant,
-						codiHabilitacionsNecessaries, unitatAdministrativaTramit, entitatId);
+						codiHabilitacionsNecessaries, unitatAdministrativaTramit, entitatId, rolsacPlugin);
 
 				act.setIdActuacioTramit(idActuacioTramitFh);
 				setActivitatTipusCompareix(tramit, tramitVersio, procediment, arxiuExpedientId, arxiuDocumentId,
@@ -436,7 +436,7 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 				log.info("XYZ YYY unitatAdministrativa = " + unitatAdministrativaTramit);
 
 				funcionariLogicaEjb.checkIsFuncionariAutoritzat(language, (FuncionariJPA) funcionariActuant,
-						codiHabilitacionsNecessaries, unitatAdministrativaTramit, entitatId);
+						codiHabilitacionsNecessaries, unitatAdministrativaTramit, entitatId, rolsacPlugin);
 
 				setActivitatTipusCompareix(actTramitRelacionada.getTramit(),
 						actTramitRelacionada.getTramitVersio() != null

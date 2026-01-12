@@ -3,7 +3,6 @@ package es.caib.rfhab.logic.utils.CarregaMassivaFuncionaris;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -482,6 +481,7 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
     private void processaFuncionarisLlocsIassignacions(FuncionariOdsDTO dto) throws Exception {
         String dataAltaFh = dto.dataAlta;
         String dataBaixaFh = dto.dataBaixa;
+        String dataDesassignacio = dto.dataDesassignacio;
         String observacionsAlta = "Observacions alta: " + dto.observacionsAlta + "\n";
         String observacionsBaixa = "Observacions baixa: " + dto.observacionsBaixa + "\n";
         String observacions = ((dataAltaFh != null && !dataAltaFh.isEmpty()) ? observacionsAlta : "")
@@ -519,6 +519,8 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
         try {
             personalOamr = PersonalOamrTipus.fromString(dto.oamr);
         } catch (IllegalArgumentException iaex) {
+            log.warn(
+                    "No s'ha pogut traduïr el camp OAMR de numRFH \"" + dto.numRfh + "\". --> OAMR rebut: " + dto.oamr);
         }
         String[] unitatLlocCodiDir3 = dto.dir3UnitatOrganica.split("[vV](?=\\d+$)");
         String codiUnitatDir3 = unitatLlocCodiDir3[0].trim();
@@ -541,8 +543,10 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
         String[] habilitacionsFromInput = dto.habilitacio.split(",");
         for (String codiHabilitacio : habilitacionsFromInput) {
             log.info("Cercant habilitació amb codi: " + codiHabilitacio);
-            Habilitacio habilitacioTrobada = HabilitacioLogicaEJB.findByCodi(getHabilitacioMan(), codiHabilitacio.trim());
-            log.info("Habilitació trobada: " + (habilitacioTrobada != null ? habilitacioTrobada.getHabilitacioID() : null));
+            Habilitacio habilitacioTrobada = HabilitacioLogicaEJB.findByCodi(getHabilitacioMan(),
+                    codiHabilitacio.trim());
+            log.info("Habilitació trobada: "
+                    + (habilitacioTrobada != null ? habilitacioTrobada.getHabilitacioID() : null));
             if (habilitacioTrobada == null) {
                 String errorMsg = "No s'ha trobat l'habilitació amb CODI " + codiHabilitacio;
                 throw new I18NException(errorMsg);
@@ -568,7 +572,7 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
         // assignació de FH a lloc
         log.info("Assignant funcionari " + dto.nif + " a lloc " + dto.codiLlocFeina + " - " + dto.expansio);
         String respostaAssignarFuncionari = assignarFuncionari(lang, usuariId, dto.nif, dto.codiLlocFeina, dto.expansio,
-                dataAltaFh, dataBaixaFh, dto.numCaiAlta, observacions);
+                dataAltaFh, dataDesassignacio, dto.numCaiAlta, observacions);
         log.info("Resposta assignació funcionari a lloc: " + respostaAssignarFuncionari);
 
         // TODO: no puc assignar una data baixa específica...

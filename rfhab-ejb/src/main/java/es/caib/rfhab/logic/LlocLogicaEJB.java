@@ -22,6 +22,7 @@ import es.caib.rfhab.ejb.LlocEJB;
 import es.caib.rfhab.logic.utils.FuncionariLlocDAO;
 import es.caib.rfhab.logic.utils.FuncionariLlocLlocDAO;
 import es.caib.rfhab.logic.utils.HistoricLlocDAO;
+import es.caib.rfhab.model.dao.ILlocManager;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.FuncionariLloc;
 import es.caib.rfhab.model.entity.HistoricLloc;
@@ -350,7 +351,7 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 				for (FuncionariLloc fl : funcionarisLlocs) {
 					Lloc lloc = findByPrimaryKey(fl.getLlocID());
 					if (lloc != null) {
-						String numeroCai = null;//TODO: #109
+						String numeroCai = null;// TODO: #109
 						llocsOcupatsPerFuncionari.add(new FuncionariLlocLlocDAO(lloc, fl, numeroCai));
 					}
 				}
@@ -360,12 +361,17 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 		return null;
 	}
 
+	public static List<Lloc> getLlocsByCodiIexpansio(ILlocManager lm, String codiLloc, String expansio)
+			throws I18NException {
+		Where wCodiLloc = LlocFields.CODILLOC.equal(codiLloc);
+		Where wExpansio = LlocFields.EXPANSIO.equal(expansio);
+		return lm.select(Where.AND(wCodiLloc, wExpansio));
+	}
+
 	@Override
 	@PermitAll
 	public List<Lloc> getLlocsByCodiIexpansio(String codiLloc, String expansio) throws I18NException {
-		Where wCodiLloc = LlocFields.CODILLOC.equal(codiLloc);
-		Where wExpansio = LlocFields.EXPANSIO.equal(expansio);
-		return select(Where.AND(wCodiLloc, wExpansio));
+		return LlocLogicaEJB.getLlocsByCodiIexpansio(this, codiLloc, expansio);
 	}
 
 	@Override

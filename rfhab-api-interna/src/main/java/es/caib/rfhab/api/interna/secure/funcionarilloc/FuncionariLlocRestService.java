@@ -244,6 +244,28 @@ public class FuncionariLlocRestService extends RestUtils {
 		} catch (I18NException re) {
 			log.error(re.getMessage(), re);
 			throw new RestException(re.getMessage(), Status.BAD_REQUEST);
+		} catch (I18NValidationException re) {
+			List<I18NFieldError> vrErrors = re.getFieldErrorList();
+			List<String> errorsMsg = new ArrayList<String>();
+			// errorsMsg.add(I18NUtils.tradueix("error.form"));
+			for (I18NFieldError i18nFieldError : vrErrors) {
+				// errorsMsg.add(I18NUtils.tradueix("error.creation",
+				// i18nFieldError.getTranslation().getCode(),
+				// I18NUtils.tradueixArguments(i18nFieldError.getTranslation().getArgs())));
+
+				// String[] argumentsTraduits =
+				// I18NUtils.tradueixArguments(i18nFieldError.getTranslation().getArgs());
+				// errorsMsg.add(I18NUtils.tradueix(i18nFieldError.getTranslation().getCode(),
+				// argumentsTraduits));
+				errorsMsg.add(
+						I18NLogicUtilsApiInterna.tradueix(new Locale(language),
+								i18nFieldError.getTranslation().getCode(),
+								Arrays.stream(i18nFieldError.getTranslation().getArgs()).map(arg -> arg.getValue())
+										.toArray(size -> new String[size])));
+			}
+			String msg = errorsMsg.toString();
+			log.error(msg);
+			throw new RestException(msg, Status.BAD_REQUEST);
 		} catch (Throwable th) {
 			String msg = I18NLogicUtilsApiInterna.tradueix(new Locale(language), "funcionarilloc.error.desconegut",
 					new String[] { th.getMessage() });

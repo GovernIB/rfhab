@@ -31,6 +31,7 @@ import es.caib.rfhab.logic.EntitatManagerUtil;
 import es.caib.rfhab.model.RFHabDaoManager;
 import es.caib.rfhab.model.dao.IFuncionariManager;
 import es.caib.rfhab.model.dao.IHabilitacioManager;
+import es.caib.rfhab.model.dao.ILlocManager;
 import es.caib.rfhab.model.dao.IUnitatManager;
 
 @RunWith(Parameterized.class)
@@ -42,6 +43,7 @@ public class CarregadorMassiuFhIllocsTest {
     protected static IFuncionariManager funcionariMan = null;
     protected static IUnitatManager unitatMan = null;
     protected static IHabilitacioManager habilitacioMan = null;
+    protected static ILlocManager llocMan = null;
     private static Properties configCarregadorMassiu = null;
     private static CarregadorMassiuFhIllocsLogicaService carregador = null;
     private static List<SimpleDateFormat> datesFormatsFromOds = null;
@@ -69,6 +71,7 @@ public class CarregadorMassiuFhIllocsTest {
         unitatMan = RFHabDaoManager.getDaoManagers().getUnitatManager();
         funcionariMan = RFHabDaoManager.getDaoManagers().getFuncionariManager();
         habilitacioMan = RFHabDaoManager.getDaoManagers().getHabilitacioManager();
+        llocMan = RFHabDaoManager.getDaoManagers().getLlocManager();
 
         configCarregadorMassiu = new Properties();
         configCarregadorMassiu.load(new FileInputStream("carregadormassiu.properties"));
@@ -77,7 +80,8 @@ public class CarregadorMassiuFhIllocsTest {
     @Before
     public void setUp() throws Exception {
         carregador = CarregadorMassiuFhIllocsLogicaEJB.CrearCarregadorMassiuFhIllocsLogicaEJBambEjbsPerTests(
-                odsFilePath, mappingFilePath, configCarregadorMassiu, funcionariMan, unitatMan, habilitacioMan);
+                odsFilePath, mappingFilePath, configCarregadorMassiu, funcionariMan, unitatMan, habilitacioMan,
+                llocMan);
         datesFormatsFromOds = new ArrayList<>();
         datesFormats.forEach(df -> datesFormatsFromOds.add(new SimpleDateFormat(df)));
     }
@@ -89,7 +93,7 @@ public class CarregadorMassiuFhIllocsTest {
         assertTrue(carregador.getApiUrl().startsWith("http"));
 
         // Només comprovem que no llença excepcions i processa DTOs
-        List<String> errorsCarregant = carregador.carregaFh(fod -> mapDtoDates(fod));
+        List<String> errorsCarregant = carregador.carregaFh(fod -> mapDtoDatesIhabilitacions(fod));
         // mostra el llistat d'errors
         log.info("S'han trobat " + errorsCarregant.size() + " Errors en carregar FH"
                 + (errorsCarregant.size() > 0 ? ": " + errorsCarregant : "."));
@@ -124,8 +128,20 @@ public class CarregadorMassiuFhIllocsTest {
         return null;
     }
 
+    private void mapDtoDatesIhabilitacions(FuncionariOdsDTO fod) {
+        mapDtoDates(fod);
+        mapDtoHabilitacions(fod);
+    }
+
     private void mapDtoDates(FuncionariOdsDTO fod) {
         fod.dataAlta = RestUtils.convertDateToDateTimeISO8601(tryParseDate(fod.dataAlta));
         fod.dataBaixa = RestUtils.convertDateToDateTimeISO8601(tryParseDate(fod.dataBaixa));
+        fod.dataDesassignacio = RestUtils.convertDateToDateTimeISO8601(tryParseDate(fod.dataDesassignacio));
+    }
+
+    private void mapDtoHabilitacions(FuncionariOdsDTO fod) {
+        if (fod.habilitacio != null) {
+            fod.habilitacio = fod.habilitacio.toUpperCase();
+        }
     }
 }

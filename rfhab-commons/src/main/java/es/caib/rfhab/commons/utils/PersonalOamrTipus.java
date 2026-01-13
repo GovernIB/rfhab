@@ -34,6 +34,16 @@ public enum PersonalOamrTipus {
     }
 
     @JsonCreator
+    public static PersonalOamrTipus fromName(String name) {
+        for (PersonalOamrTipus val : PersonalOamrTipus.values()) {
+            if (val.nom.equals(name)) {
+                return val;
+            }
+        }
+        throw new IllegalArgumentException(name);
+    }
+
+    @JsonCreator
     public static PersonalOamrTipus fromString(String key) {
         for (PersonalOamrTipus val : PersonalOamrTipus.values()) {
             if (val.valor.toString().equals(key)) {

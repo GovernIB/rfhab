@@ -480,7 +480,11 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 	@Override
 	@PermitAll
 	public FuncionariJPA findByNif(String nif) throws I18NException {
-		List<Funcionari> funcionaris = super.select(Where.OR(FuncionariFields.IDENTIFICADOR.equal(nif),
+		return FuncionariLogicaEJB.findByNif(this, nif);
+	}
+
+	public static FuncionariJPA findByNif(IFuncionariManager fm, String nif) throws I18NException {
+		List<Funcionari> funcionaris = fm.select(Where.OR(FuncionariFields.IDENTIFICADOR.equal(nif),
 				FuncionariFields.IDENTIFICADOR.equal(nif.toUpperCase()),
 				FuncionariFields.IDENTIFICADOR.equal(nif.toLowerCase())));
 		if (funcionaris == null || funcionaris.size() == 0) {

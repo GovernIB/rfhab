@@ -16,6 +16,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.sql.Timestamp;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import es.caib.rfhab.commons.utils.Configuracio;
@@ -25,12 +27,17 @@ import es.caib.rfhab.logic.FuncionariLogicaEJB;
 import es.caib.rfhab.logic.FuncionariLogicaService;
 import es.caib.rfhab.logic.HabilitacioLogicaEJB;
 import es.caib.rfhab.logic.HabilitacioLogicaService;
+import es.caib.rfhab.logic.LlocLogicaEJB;
+import es.caib.rfhab.logic.LlocLogicaService;
 import es.caib.rfhab.logic.UnitatLogicaEJB;
 import es.caib.rfhab.logic.UnitatLogicaService;
 import es.caib.rfhab.model.dao.IFuncionariManager;
 import es.caib.rfhab.model.dao.IHabilitacioManager;
+import es.caib.rfhab.model.dao.ILlocManager;
 import es.caib.rfhab.model.dao.IUnitatManager;
+import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.Habilitacio;
+import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.entity.Unitat;
 
 @Stateless
@@ -111,6 +118,9 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
     @EJB(mappedName = HabilitacioLogicaService.JNDI_NAME)
     protected HabilitacioLogicaService habilitacioLogicaEjb;
 
+    @EJB(mappedName = LlocLogicaService.JNDI_NAME)
+    protected LlocLogicaService llocLogicaEjb;
+
     private IFuncionariManager funcionariManAux = null;
     private IFuncionariManager funcionariMan = null;
 
@@ -145,6 +155,18 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
                     : habilitacioManAux);
         }
         return habilitacioMan;
+    }
+
+    private ILlocManager llocManAux = null;
+    private static ILlocManager llocMan = null;
+
+    public ILlocManager getLlocMan() {
+        if (llocMan == null) {
+            llocMan = (llocLogicaEjb.getEntityManager() != null
+                    ? (ILlocManager) llocLogicaEjb.getEntityManager()
+                    : llocManAux);
+        }
+        return llocMan;
     }
 
     private final HttpClient httpClient = HttpClient.newHttpClient();
@@ -247,7 +269,7 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
     public static CarregadorMassiuFhIllocsLogicaService CrearCarregadorMassiuFhIllocsLogicaEJBambEjbsPerTests(
             String odsFilePath, String mappingFilePath,
             Properties apiExternaProperties, IFuncionariManager funcionariMan, IUnitatManager unitatMan,
-            IHabilitacioManager habilitacioMan)
+            IHabilitacioManager habilitacioMan, ILlocManager llocMan)
             throws Exception {
 
         CarregadorMassiuFhIllocsLogicaEJB carregador = null;
@@ -257,9 +279,11 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
         carregador.funcionariLogicaEjb = new FuncionariLogicaEJB();
         carregador.unitatLogicaEjb = new UnitatLogicaEJB();
         carregador.habilitacioLogicaEjb = new HabilitacioLogicaEJB();
+        carregador.llocLogicaEjb = new LlocLogicaEJB();
         carregador.funcionariManAux = funcionariMan;
         carregador.unitatManAux = unitatMan;
         carregador.habilitacioManAux = habilitacioMan;
+        carregador.llocManAux = llocMan;
 
         return carregador;
     }
@@ -488,86 +512,120 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
                 + ((dataBaixaFh != null && !dataBaixaFh.isEmpty()) ? observacionsBaixa : "");
         String lang = "ca";
 
-        // creació de FH
-        // TODO: no se li pot posar una data alta passada
-        NouFuncionariHabilitatDTO nouFh = new NouFuncionariHabilitatDTO(
-                lang,
-                Integer.parseInt(this.usuariId),
-                dto.nom,
-                dto.primerLlinatge,
-                dto.segonLlinatge,
-                FuncionariLogicaEJB.getNumeroFhFromNumeric(this.getFuncionariMan(), Integer.parseInt(dto.numRfh)),
-                IdentificacioTipus.DNI,
-                dto.nif,
-                dto.usuari,
-                dto.adrecaElectronica,
-                Long.parseLong(this.entitatId),
-                dto.numCaiAlta,
-                observacions,
-                null);
-        log.info("Creant FH: " + nouFh.toString());
-        String respostaCreacióFh = nouFuncionariHabilitat(nouFh);
-        log.info("Resposta creació FH: " + respostaCreacióFh);
+        Timestamp ara = new Timestamp(System.currentTimeMillis());
 
-        log.info("Donant alta FH: " + dto.nif);
-        String respostaDonarAltaFh = donarAltaFh(lang, usuariId, dto.nif, dto.numCaiAlta);
-        log.info("Resposta donar alta FH: " + respostaDonarAltaFh);
+        // creació de FH
+        // (no se li pot posar una data alta passada, TODO???)
+        Funcionari funcionariExistent = FuncionariLogicaEJB.findByNif(this.getFuncionariMan(), dto.nif);
+        // Si ja existeix el funcionari, no l'intentam crear
+        if (funcionariExistent == null) {
+            NouFuncionariHabilitatDTO nouFh = new NouFuncionariHabilitatDTO(
+                    lang,
+                    Integer.parseInt(this.usuariId),
+                    dto.nom,
+                    dto.primerLlinatge,
+                    dto.segonLlinatge,
+                    FuncionariLogicaEJB.getNumeroFhFromNumeric(this.getFuncionariMan(), Integer.parseInt(dto.numRfh)),
+                    IdentificacioTipus.DNI,
+                    dto.nif,
+                    dto.usuari,
+                    dto.adrecaElectronica,
+                    Long.parseLong(this.entitatId),
+                    dto.numCaiAlta,
+                    observacions,
+                    null);
+            log.info("Creant FH: " + nouFh.toString());
+            String respostaCreacióFh = nouFuncionariHabilitat(nouFh);
+            log.info("Resposta creació FH: " + respostaCreacióFh);
+
+            log.info("Donant alta FH: " + dto.nif);
+            String respostaDonarAltaFh = donarAltaFh(lang, usuariId, dto.nif, dto.numCaiAlta);
+            log.info("Resposta donar alta FH: " + respostaDonarAltaFh);
+        } else if (funcionariExistent.getDataBaixa() != null && funcionariExistent.getDataBaixa().before(ara)) {
+            // Si ja existeix el funcionari, només l'intentarem donar d'alta en cas de que
+            // estigui donat de baixa
+            log.info("Donant alta FH: " + dto.nif);
+            String respostaDonarAltaFh = donarAltaFh(lang, usuariId, dto.nif, dto.numCaiAlta);
+            log.info("Resposta donar alta FH: " + respostaDonarAltaFh);
+        }
 
         // creació de llocs
-        // TODO: SI JA EXISTEIX EL LLOC, L'HEM D'INTENTAR CREAR??
-        PersonalOamrTipus personalOamr = PersonalOamrTipus.SI;
-        try {
-            personalOamr = PersonalOamrTipus.fromString(dto.oamr);
-        } catch (IllegalArgumentException iaex) {
-            log.warn(
-                    "No s'ha pogut traduïr el camp OAMR de numRFH \"" + dto.numRfh + "\". --> OAMR rebut: " + dto.oamr);
-        }
-        String[] unitatLlocCodiDir3 = dto.dir3UnitatOrganica.split("[vV](?=\\d+$)");
-        String codiUnitatDir3 = unitatLlocCodiDir3[0].trim();
-        Integer versioUnitatDir3 = unitatLlocCodiDir3.length > 1 ? (Integer.parseInt(unitatLlocCodiDir3[1].trim()))
-                : null;
-        if (versioUnitatDir3 == null) {
-            versioUnitatDir3 = 1;
-        }
-        log.info("Cercant unitat amb codiDir3: " + codiUnitatDir3 + " i versio: " + versioUnitatDir3);
-        // TODO: Per ara no volem la versió...
-        // Unitat unitatLloc = UnitatLogicaEJB.findByCodiDir3(getUnitatMan(),
-        // codiUnitatDir3, versioUnitatDir3);
-        Unitat unitatLloc = UnitatLogicaEJB.findByCodiDir3(getUnitatMan(), codiUnitatDir3);
-        log.info("Unitat trobada: " + (unitatLloc != null ? unitatLloc.getUnitatID() : null));
-        if (unitatLloc == null) {
-            String errorMsg = "No s'ha trobat la unitat amb codiDir " + dto.dir3UnitatOrganica;
-            throw new I18NException(errorMsg);
-        }
-        List<Long> habilitacions = new ArrayList<>();
-        String[] habilitacionsFromInput = dto.habilitacio.split(",");
-        for (String codiHabilitacio : habilitacionsFromInput) {
-            log.info("Cercant habilitació amb codi: " + codiHabilitacio);
-            Habilitacio habilitacioTrobada = HabilitacioLogicaEJB.findByCodi(getHabilitacioMan(),
-                    codiHabilitacio.trim());
-            log.info("Habilitació trobada: "
-                    + (habilitacioTrobada != null ? habilitacioTrobada.getHabilitacioID() : null));
-            if (habilitacioTrobada == null) {
-                String errorMsg = "No s'ha trobat l'habilitació amb CODI " + codiHabilitacio;
+        List<Lloc> llocsExistents = LlocLogicaEJB.getLlocsByCodiIexpansio(this.getLlocMan(), dto.codiLlocFeina,
+                dto.expansio);
+
+        // SI JA EXISTEIX EL LLOC, NO L'HEM D'INTENTAR CREAR
+        if (llocsExistents == null || llocsExistents.size() == 0) {
+            PersonalOamrTipus personalOamr = PersonalOamrTipus.SI;
+            try {
+                personalOamr = PersonalOamrTipus.fromName(dto.oamr);
+            } catch (IllegalArgumentException iaex) {
+                log.warn(
+                        "No s'ha pogut traduïr el camp OAMR de numRFH \"" + dto.numRfh + "\". --> OAMR rebut: "
+                                + dto.oamr);
+            }
+            if (dto.dir3UnitatOrganica == null) {
+                String errorMsg = "Assignant el funcionari amb nif " + dto.nif + " al lloc de feina "
+                        + dto.codiLlocFeina + " s'ha trobat buit el camp dir3UnitatOrganica";
                 throw new I18NException(errorMsg);
             }
-            Long habilitacioID = Long.valueOf(habilitacioTrobada.getHabilitacioID());
-            if (!habilitacions.contains(habilitacioID)) {
-                habilitacions.add(habilitacioID);
+
+            String[] unitatLlocCodiDir3 = dto.dir3UnitatOrganica.split("[vV](?=\\d+$)");
+            String codiUnitatDir3 = unitatLlocCodiDir3[0].trim();
+            Integer versioUnitatDir3 = unitatLlocCodiDir3.length > 1 ? (Integer.parseInt(unitatLlocCodiDir3[1].trim()))
+                    : null;
+            if (versioUnitatDir3 == null) {
+                versioUnitatDir3 = 1;
+            }
+            log.info("Cercant unitat amb codiDir3: " + codiUnitatDir3 + " i versio: " + versioUnitatDir3);
+            // TODO: Per ara no volem la versió...
+            // Unitat unitatLloc = UnitatLogicaEJB.findByCodiDir3(getUnitatMan(),
+            // codiUnitatDir3, versioUnitatDir3);
+            Unitat unitatLloc = UnitatLogicaEJB.findByCodiDir3(getUnitatMan(), codiUnitatDir3);
+            log.info("Unitat trobada: " + (unitatLloc != null ? unitatLloc.getUnitatID() : null));
+            if (unitatLloc == null) {
+                String errorMsg = "No s'ha trobat la unitat amb codiDir " + dto.dir3UnitatOrganica;
+                throw new I18NException(errorMsg);
+            }
+            List<Long> habilitacions = new ArrayList<>();
+            String[] habilitacionsFromInput = dto.habilitacio.split(",");
+            for (String codiHabilitacio : habilitacionsFromInput) {
+                log.info("Cercant habilitació amb codi: " + codiHabilitacio);
+                Habilitacio habilitacioTrobada = HabilitacioLogicaEJB.findByCodi(getHabilitacioMan(),
+                        codiHabilitacio.trim());
+                log.info("Habilitació trobada: "
+                        + (habilitacioTrobada != null ? habilitacioTrobada.getHabilitacioID() : null));
+                if (habilitacioTrobada == null) {
+                    String errorMsg = "No s'ha trobat l'habilitació amb CODI " + codiHabilitacio;
+                    throw new I18NException(errorMsg);
+                }
+                Long habilitacioID = Long.valueOf(habilitacioTrobada.getHabilitacioID());
+                if (!habilitacions.contains(habilitacioID)) {
+                    habilitacions.add(habilitacioID);
+                }
+            }
+            NouLlocDTO nouLloc = new NouLlocDTO(lang, Integer.parseInt(usuariId), dto.codiLlocFeina, dto.expansio,
+                    dto.nomLlocFeina, personalOamr, Long.parseLong(entitatId), unitatLloc.getUnitatID(), dto.numCaiAlta,
+                    habilitacions.stream().map(Object::toString)
+                            .collect(Collectors.toUnmodifiableList()).toArray(new String[0]),
+                    dto.observacionsAlta, null, null);
+            log.info("Creant lloc: " + nouLloc.toString());
+            String respostaNouLloc = nouLloc(nouLloc);
+            log.info("Resposta creació lloc: " + respostaNouLloc);
+
+            log.info("Donant alta lloc: " + dto.codiLlocFeina + " - " + dto.expansio);
+            String respostaDonarAltaLloc = donarAltaLloc(lang, usuariId, dto.codiLlocFeina, dto.expansio,
+                    dto.numCaiAlta);
+            log.info("Resposta donar alta lloc: " + respostaDonarAltaLloc);
+        } else {
+            // SI EL LLOC JA EXISTIA, NOMÉS EL DONAREM D'ALTA EN CAS D'ESTAR DONAT DE BAIXA
+            Lloc llocExistent = llocsExistents.get(0);
+            if (llocExistent.getDataBaixa() != null && llocExistent.getDataBaixa().before(ara)) {
+                log.info("Donant alta lloc: " + dto.codiLlocFeina + " - " + dto.expansio);
+                String respostaDonarAltaLloc = donarAltaLloc(lang, usuariId, dto.codiLlocFeina, dto.expansio,
+                        dto.numCaiAlta);
+                log.info("Resposta donar alta lloc: " + respostaDonarAltaLloc);
             }
         }
-        NouLlocDTO nouLloc = new NouLlocDTO(lang, Integer.parseInt(usuariId), dto.codiLlocFeina, dto.expansio,
-                dto.nomLlocFeina, personalOamr, Long.parseLong(entitatId), unitatLloc.getUnitatID(), dto.numCaiAlta,
-                habilitacions.stream().map(Object::toString)
-                        .collect(Collectors.toUnmodifiableList()).toArray(new String[0]),
-                dto.observacionsAlta, null, null);
-        log.info("Creant lloc: " + nouLloc.toString());
-        String respostaNouLloc = nouLloc(nouLloc);
-        log.info("Resposta creació lloc: " + respostaNouLloc);
-
-        log.info("Donant alta lloc: " + dto.codiLlocFeina + " - " + dto.expansio);
-        String respostaDonarAltaLloc = donarAltaLloc(lang, usuariId, dto.codiLlocFeina, dto.expansio, dto.numCaiAlta);
-        log.info("Resposta donar alta lloc: " + respostaDonarAltaLloc);
 
         // assignació de FH a lloc
         log.info("Assignant funcionari " + dto.nif + " a lloc " + dto.codiLlocFeina + " - " + dto.expansio);
@@ -575,7 +633,6 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
                 dataAltaFh, dataDesassignacio, dto.numCaiAlta, observacions);
         log.info("Resposta assignació funcionari a lloc: " + respostaAssignarFuncionari);
 
-        // TODO: no puc assignar una data baixa específica...
         if (dataBaixaFh != null && !dataBaixaFh.isEmpty()) {
             log.info("Donant baixa FH: " + dto.nif + " - CAI: " + dto.numCaiAlta);
             String respostaDonarBaixaFh = donarBaixaFh(lang, usuariId, dto.nif, dto.numCaiAlta);

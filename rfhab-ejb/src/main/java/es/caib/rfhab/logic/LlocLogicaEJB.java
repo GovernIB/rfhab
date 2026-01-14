@@ -1,6 +1,5 @@
 package es.caib.rfhab.logic;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +10,6 @@ import java.util.stream.Collectors;
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.fundaciobit.genapp.common.i18n.I18NException;
@@ -39,6 +37,7 @@ import es.caib.rfhab.model.fields.LlocHabilitacioFields;
 import es.caib.rfhab.persistence.HistoricLlocJPA;
 import es.caib.rfhab.persistence.LlocJPA;
 import es.caib.rfhab.persistence.TraduccioJPA;
+import es.caib.rfhab.persistence.TraduccioMapJPA;
 import es.caib.rfhab.persistence.HabilitacioJPA;
 
 /**
@@ -265,13 +264,14 @@ public class LlocLogicaEJB extends LlocEJB implements LlocLogicaService {
 		historicLlocHabilitacioNova.setDataCreacio(new Timestamp(System.currentTimeMillis()));
 		historicLlocHabilitacioNova.setUsuariID(usuariId);
 		String historicLlocHAbilitacioNovaObservacions = null;
+		TraduccioMapJPA habilitacioTraduccio = nomHabilitacio.getTraduccio(lang);
 		if (isInsert) {
 			historicLlocHAbilitacioNovaObservacions = "Nova assignació d'habilitació "
-					+ nomHabilitacio.getTraduccio(lang) + " (id="
+					+ (habilitacioTraduccio != null ? habilitacioTraduccio.getValor() : "") + " (id="
 					+ habilitacioId + ") a lloc " + codiLlocLlocCreat + " (id " + llocCreatID + ")";
 		} else {
 			historicLlocHAbilitacioNovaObservacions = "Nova desassignació d'habilitació "
-					+ nomHabilitacio.getTraduccio(lang) + " (id="
+					+ (habilitacioTraduccio != null ? habilitacioTraduccio.getValor() : "") + " (id="
 					+ habilitacioId + ") a lloc " + codiLlocLlocCreat + " (id " + llocCreatID + ")";
 		}
 		if (cai != null && !cai.isEmpty()) {

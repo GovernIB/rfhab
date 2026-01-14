@@ -241,29 +241,29 @@ public class FuncionariLlocRestService extends RestUtils {
 			log.info(successMsg);
 
 			return I18NLogicUtilsApiInterna.tradueix(new Locale(language), "operacio.success");
-		} catch (I18NException re) {
-			log.error(re.getMessage(), re);
-			throw new RestException(re.getMessage(), Status.BAD_REQUEST);
-		} catch (I18NValidationException re) {
-			List<I18NFieldError> vrErrors = re.getFieldErrorList();
-			List<String> errorsMsg = new ArrayList<String>();
-			// errorsMsg.add(I18NUtils.tradueix("error.form"));
-			for (I18NFieldError i18nFieldError : vrErrors) {
-				// errorsMsg.add(I18NUtils.tradueix("error.creation",
-				// i18nFieldError.getTranslation().getCode(),
-				// I18NUtils.tradueixArguments(i18nFieldError.getTranslation().getArgs())));
+		} catch (I18NException | I18NValidationException re) {
+			String msg = re.getLocalizedMessage();
+			if (re instanceof I18NValidationException) {
+				List<I18NFieldError> vrErrors = ((I18NValidationException) re).getFieldErrorList();
+				List<String> errorsMsg = new ArrayList<String>();
+				// errorsMsg.add(I18NUtils.tradueix("error.form"));
+				for (I18NFieldError i18nFieldError : vrErrors) {
+					// errorsMsg.add(I18NUtils.tradueix("error.creation",
+					// i18nFieldError.getTranslation().getCode(),
+					// I18NUtils.tradueixArguments(i18nFieldError.getTranslation().getArgs())));
 
-				// String[] argumentsTraduits =
-				// I18NUtils.tradueixArguments(i18nFieldError.getTranslation().getArgs());
-				// errorsMsg.add(I18NUtils.tradueix(i18nFieldError.getTranslation().getCode(),
-				// argumentsTraduits));
-				errorsMsg.add(
-						I18NLogicUtilsApiInterna.tradueix(new Locale(language),
-								i18nFieldError.getTranslation().getCode(),
-								Arrays.stream(i18nFieldError.getTranslation().getArgs()).map(arg -> arg.getValue())
-										.toArray(size -> new String[size])));
+					// String[] argumentsTraduits =
+					// I18NUtils.tradueixArguments(i18nFieldError.getTranslation().getArgs());
+					// errorsMsg.add(I18NUtils.tradueix(i18nFieldError.getTranslation().getCode(),
+					// argumentsTraduits));
+					errorsMsg.add(
+							I18NLogicUtilsApiInterna.tradueix(new Locale(language),
+									i18nFieldError.getTranslation().getCode(),
+									Arrays.stream(i18nFieldError.getTranslation().getArgs()).map(arg -> arg.getValue())
+											.toArray(size -> new String[size])));
+				}
+				msg = errorsMsg.toString();
 			}
-			String msg = errorsMsg.toString();
 			log.error(msg);
 			throw new RestException(msg, Status.BAD_REQUEST);
 		} catch (Throwable th) {

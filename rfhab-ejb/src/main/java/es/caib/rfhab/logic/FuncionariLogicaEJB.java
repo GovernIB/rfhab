@@ -470,7 +470,9 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 		historic.setFuncionariID(funcionariID);
 		historic.setNumeroCai(numeroCai);
 		historic.setUsuariID(usuarId);
-		historicLogicaEjb.create(historic, "Funcionari " + funcionari.getIdentificador() + " donat d'alta de nou");
+		historicLogicaEjb.create(historic,
+				"Persona amb identificador " + funcionari.getIdentificador() + " donada d'alta"
+						+ (funcionari.getDataBaixa() != null ? " de nou" : ""));
 
 		// el donam d'alta
 		funcionari.setDataBaixa(null);

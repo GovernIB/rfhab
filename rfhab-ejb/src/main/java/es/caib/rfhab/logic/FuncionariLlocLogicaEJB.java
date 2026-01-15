@@ -167,7 +167,10 @@ public class FuncionariLlocLogicaEJB extends FuncionariLlocEJB implements Funcio
 		if (isLlocAssignat(llocID)) {
 			throw new I18NValidationException(
 					java.util.Collections.singletonList(new I18NFieldError(FuncionariLlocFields.LLOCID,
-							new I18NTranslation("funcionarilloc.error.lloc.assignat", llocCodi))));
+							new I18NTranslation("funcionarilloc.error.lloc.assignat", llocCodi,
+									lloc.getCodiLloc() + ((lloc.getExpansio() != null && !lloc.getExpansio().isEmpty())
+											? ("-" + lloc.getExpansio())
+											: "")))));
 		}
 
 		// Cream assignació

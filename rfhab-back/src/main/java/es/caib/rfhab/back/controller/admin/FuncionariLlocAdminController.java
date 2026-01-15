@@ -11,12 +11,14 @@ import javax.servlet.http.HttpSession;
 import org.fundaciobit.genapp.common.StringKeyValue;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.i18n.I18NValidationException;
+import org.fundaciobit.genapp.common.query.Select;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.web.HtmlUtils;
 import org.fundaciobit.genapp.common.web.form.AdditionalButton;
 import org.fundaciobit.genapp.common.web.form.AdditionalButtonStyle;
 import org.fundaciobit.genapp.common.web.i18n.I18NUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,6 +40,7 @@ import es.caib.rfhab.logic.LlocLogicaService;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.FuncionariLlocFields;
+import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.persistence.FuncionariLlocJPA;
 import es.caib.rfhab.persistence.LlocJPA;
 
@@ -53,6 +56,8 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 	private static final String LLOC_ID_SESSION_ATTRIBUTE_NAME = "LlocId";
 
 	private static final String FUNCIONARI_ID_SESSION_ATTRIBUTE_NAME = "FuncionariId";
+
+	private static final String FUNCIONARI_VALOR_BUIT = "0";
 
 	public static final String CONTEXTWEB = "/admin/funcionarilloc";
 
@@ -81,10 +86,17 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 		return "funcionariLlocListAdmin";
 	}
 
+	private void setLlocRefListSelects() {
+		Select<?>[] selects;
+		selects = new Select<?>[] { LlocFields.CODILLOC.select, LlocFields.NOM.select };
+		llocRefList.setSelects(selects);
+	}
+
 	@Override
 	public FuncionariLlocFilterForm getFuncionariLlocFilterForm(Integer pagina, ModelAndView mav,
 			HttpServletRequest request) throws I18NException {
 
+		setLlocRefListSelects();
 		FuncionariLlocFilterForm funcionariLlocFilterForm = super.getFuncionariLlocFilterForm(pagina, mav, request);
 
 		if (funcionariLlocFilterForm.isNou()) {
@@ -105,10 +117,36 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 	public FuncionariLlocForm getFuncionariLlocForm(FuncionariLlocJPA _jpa, boolean __isView,
 			HttpServletRequest request, ModelAndView mav) throws I18NException {
 
+		setLlocRefListSelects();
+
 		FuncionariLlocForm funcionariLlocForm = super.getFuncionariLlocForm(_jpa, __isView, request, mav);
 
 		HttpSession currentSession = request.getSession();
+
+		String jsOpenModalGuardar = "javascript:createDivModal('"
+				+ I18NUtils.tradueix("funcionarilloc.modificar.guardar.titol") + "', '"
+				+ I18NUtils.tradueix("funcionarilloc.modificar.guardar.missatge",
+						new String[] { "##funcionari-numero##", "##lloc-codillocpropi##" })
+				+ "', '', 'funcionarillocForm', 'funcionarilloc-save-modal-id', 'fa-save', '', null, '"
+				+ I18NUtils.tradueix("acceptar") + "');\r\n" +
+				"        const funcionariName = document.getElementById('funcionariLloc_funcionariID').options[document.getElementById('funcionariLloc_funcionariID').selectedIndex].text;\r\n"
+				+
+				"        const llocFeinaName = document.getElementById('funcionariLloc_llocID').options[document.getElementById('funcionariLloc_llocID').selectedIndex].text;\r\n"
+				+
+				"        document.querySelector('#funcionarilloc-save-modal-id .modal-body p').innerText = document.querySelector('#funcionarilloc-save-modal-id .modal-body p').innerText.replace('##funcionari-numero##', funcionariName);\r\n"
+				+
+				"        document.querySelector('#funcionarilloc-save-modal-id .modal-body p').innerText = document.querySelector('#funcionarilloc-save-modal-id .modal-body p').innerText.replace('##lloc-codillocpropi##', llocFeinaName);\r\n"
+				+
+				"        $('#funcionarilloc-save-modal-id').modal('show');\r\n";
+		AdditionalButton guardarButton = new AdditionalButton("",
+				"genapp.save",
+				jsOpenModalGuardar,
+				AdditionalButtonStyle.PRIMARY);
+		funcionariLlocForm.setSaveButtonVisible(false);
+
 		if (funcionariLlocForm.isNou()) {
+			funcionariLlocForm.addAdditionalButton(guardarButton);
+
 			FuncionariLlocJPA funcionariLloc = funcionariLlocForm.getFuncionariLloc();
 			if (currentSession != null) {
 				Object llocIdAttribute = currentSession.getAttribute(LLOC_ID_SESSION_ATTRIBUTE_NAME);
@@ -133,16 +171,35 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 			funcionariLloc.setDataInici(new Date(System.currentTimeMillis()));
 			funcionariLlocForm.addHiddenField(FuncionariLlocFields.DATACREACIO);
 			funcionariLlocForm.addHiddenField(FuncionariLlocFields.DATAFI);
+		} else if (!__isView) {
+			// no el volem veure al mode de consulta
+			funcionariLlocForm.addAdditionalButton(guardarButton);
 		}
+
+		funcionariLlocForm.addAdditionalButton(new AdditionalButton(" fas fa-long-arrow-alt-left", "tornar",
+				getContextWeb() + "/tornar", AdditionalButtonStyle.SECONDARY));
 
 		funcionariLlocForm.addHiddenField(USUARIID);
 		funcionariLlocForm.addReadOnlyField(DATACREACIO);
 
 		funcionariLlocForm.setTitleCode("funcionarilloc.titol");
+		funcionariLlocForm.setCancelButtonVisible(false);
 		funcionariLlocForm.setAttachedAdditionalJspCode(true);
+
 		currentSession.setAttribute(Constants.REFERER_SESSION_ATTRIBUTE, request.getHeader("referer"));
 
 		return funcionariLlocForm;
+	}
+
+	@Override
+	public void preValidate(HttpServletRequest request, FuncionariLlocForm funcionariLlocForm, BindingResult result)
+			throws I18NException {
+		FuncionariLlocJPA funcionariLloc = funcionariLlocForm.getFuncionariLloc();
+		if (String.valueOf(funcionariLloc.getFuncionariID()).equals(FUNCIONARI_VALOR_BUIT)) {
+			result.rejectValue(FuncionariLlocFields.FUNCIONARIID.codeLabel, "error.required",
+					new Object[] { "Funcionari/ària" },
+					"El camp " + I18NUtils.tradueix(FuncionariLlocFields.FUNCIONARIID.codeLabel) + " és obligatori");
+		}
 	}
 
 	@Override
@@ -241,12 +298,15 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 			}
 		});
 
+		funcionarisList.add(new StringKeyValue(FUNCIONARI_VALOR_BUIT, I18NUtils.tradueix("trieuopcio")));
 		return funcionarisList;
 	}
 
 	@RequestMapping(value = "/tornar", method = RequestMethod.GET)
 	public String tornar(HttpServletRequest request) {
-		return UrlUtils.getRefererRedirect(request, "redirect:/admin/funcionari/list/1");
+		return "redirect:" + LlocAdminController.CONTEXTWEB + "/list/1";
+		// return UrlUtils.getRefererRedirect(request,
+		// "redirect:/admin/funcionari/list/1");
 	}
 
 	@Override

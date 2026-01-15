@@ -629,7 +629,7 @@ public class LlocAdminController extends LlocController {
 	public List<StringKeyValue> getReferenceListForPersonalOamr(HttpServletRequest request, ModelAndView mav,
 			Where where) throws I18NException {
 		List<StringKeyValue> __tmp = new java.util.ArrayList<StringKeyValue>();
-		__tmp.add(new StringKeyValue(TIPUS_PERSONAL_OAMR, I18NUtils.tradueix("personaloamr.0")));
+		__tmp.add(new StringKeyValue(TIPUS_PERSONAL_OAMR, I18NUtils.tradueix("trieuopcio")));
 		__tmp.add(new StringKeyValue(PersonalOamrTipus.NO.getValue().toString(), PersonalOamrTipus.NO.getDescripcio()));
 		__tmp.add(new StringKeyValue(PersonalOamrTipus.SI.getValue().toString(), PersonalOamrTipus.SI.getDescripcio()));
 		return __tmp;

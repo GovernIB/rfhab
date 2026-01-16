@@ -227,6 +227,9 @@ public class FuncionariAdminController extends FuncionariController {
 							AdditionalButtonStyle.DANGER);
 					funcionariForm.addAdditionalButton(donarDeBaixaButton);
 				} else {
+					// No es poden modificar les dades d’una persona que està Inactiva #110 (2a
+					// revisió)
+					funcionariForm.setAllFieldsReadOnly(FuncionariFields.ALL_FUNCIONARI_FIELDS);
 					// botó donar d'alta funcionari
 					AdditionalButton donarDeAltaButton = getDonarDeAltaButton(request, false);
 					funcionariForm.addAdditionalButton(donarDeAltaButton);

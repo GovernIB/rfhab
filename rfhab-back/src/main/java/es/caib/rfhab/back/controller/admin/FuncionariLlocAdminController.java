@@ -308,8 +308,12 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 		funcionarisList.removeIf(funcionari -> {
 			try {
 				boolean assignat = funcionariLlocEjb.isFuncionariAssignat(Long.parseLong(funcionari.getKey()));
+				FuncionariJPA funcionariJpa = (FuncionariJPA) funcionariEjb
+						.findByPrimaryKey((Long.parseLong(funcionari.getKey())));
+				boolean funcionariActiu = funcionariEjb.isFuncionariActiu(funcionariJpa);
 				log.info("funcionari " + funcionari.value + (assignat ? "" : " NO") + " assignat");
-				return assignat;
+				log.info("funcionari " + funcionari.value + (funcionariActiu ? "" : " NO") + " actiu");
+				return assignat || !funcionariActiu;
 			} catch (I18NException e) {
 				log.error("Error checking if funcionari is assigned", e);
 				return false;

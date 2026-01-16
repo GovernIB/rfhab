@@ -60,7 +60,6 @@ import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.FuncionariLlocFields;
 import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.persistence.FuncionariJPA;
-import es.caib.rfhab.persistence.LlocJPA;
 
 /**
  * @author jagarcia
@@ -76,7 +75,7 @@ public class FuncionariAdminController extends FuncionariController {
 	private static final String TIPUS_IDENTIFICACIO_SELECCIONA = "0";
 
 	@EJB(mappedName = FuncionariLogicaService.JNDI_NAME)
-	protected FuncionariLogicaService funcionariEJB;
+	protected FuncionariLogicaService funcionariLogicaEjb;
 
 	@EJB(mappedName = LlocLogicaService.JNDI_NAME)
 	protected LlocLogicaService llocEJB;
@@ -143,7 +142,7 @@ public class FuncionariAdminController extends FuncionariController {
 				funcionari.setEntitatID(entitatIDActual);
 			}
 
-			String nouFuncionariNumero = funcionariEJB.getNouFuncionariNumero();
+			String nouFuncionariNumero = funcionariLogicaEjb.getNouFuncionariNumero();
 			funcionari.setNumero(nouFuncionariNumero);
 		} else {
 			long funcionariId = funcionari.getFuncionariID();
@@ -404,7 +403,7 @@ public class FuncionariAdminController extends FuncionariController {
 				: "";
 		log.info("personalOamr ==> " + personalOamr);
 
-		return funcionariEJB.isPersonalOamrWhere(
+		return funcionariLogicaEjb.isPersonalOamrWhere(
 				(personalOamr == null || personalOamr.isEmpty()) ? null : PersonalOamrTipus.fromString(personalOamr));
 	}
 
@@ -457,7 +456,7 @@ public class FuncionariAdminController extends FuncionariController {
 				? request.getParameter("numerocai")
 				: "";
 
-		funcionariEJB.donarDeBaixaFuncionariAndHistory(funcionari, numeroCai,
+		funcionariLogicaEjb.donarDeBaixaFuncionariAndHistory(funcionari, numeroCai,
 				LoginInfo.getInstance().getUsuariPersona().getUsuariID());
 
 		// createMessageSuccess(request, "success.modification", funcionariId);
@@ -471,7 +470,7 @@ public class FuncionariAdminController extends FuncionariController {
 				: "";
 
 		long funcionariId = funcionariForm.getFuncionari().getFuncionariID();
-		Funcionari funcionari = funcionariEJB.donarDeAltaAndHistory(funcionariId, numeroCai,
+		Funcionari funcionari = funcionariLogicaEjb.donarDeAltaAndHistory(funcionariId, numeroCai,
 				LoginInfo.getInstance().getUsuariPersona().getUsuariID());
 
 		String redirection = getRedirectWhenModified(request, null, null);
@@ -489,7 +488,7 @@ public class FuncionariAdminController extends FuncionariController {
 		Long usuariId = LoginInfo.getInstance().getUsuariPersona().getUsuariID();
 		String numeroCai = request.getParameter("numerocai");
 		log.info("Creant Funcionari i Historic per a CAI: " + numeroCai + " i usuari: " + usuariId);
-		FuncionariJPA newFuncionari = funcionariEJB.createAndHistory(funcionari, numeroCai, usuariId);
+		FuncionariJPA newFuncionari = funcionariLogicaEjb.createAndHistory(funcionari, numeroCai, usuariId);
 
 		return newFuncionari;
 	}
@@ -633,7 +632,7 @@ public class FuncionariAdminController extends FuncionariController {
 
 		Long usuariId = LoginInfo.getInstance().getUsuariPersona().getUsuariID();
 		String numeroCai = (!Utils.isEmpty(request.getParameter("numerocai"))) ? request.getParameter("numerocai") : "";
-		return (FuncionariJPA) funcionariEJB.updateAndHistory((Funcionari) funcionari, numeroCai, usuariId);
+		return (FuncionariJPA) funcionariLogicaEjb.updateAndHistory((Funcionari) funcionari, numeroCai, usuariId);
 	}
 
 	@Override
@@ -683,6 +682,13 @@ public class FuncionariAdminController extends FuncionariController {
 		HtmlUtils.saveMessageSuccess(request, msg);
 	}
 
+	private void getMsgDeleted(HttpServletRequest request, FuncionariJPA funcionari) {
+		String msg = I18NUtils.tradueix("funcionari.donarbaixa.success",
+				new String[] { funcionari.getNumero() });
+		HtmlUtils.deleteMessages(request);
+		HtmlUtils.saveMessageSuccess(request, msg);
+	}
+
 	@Override
 	public String getRedirectWhenCreated(HttpServletRequest request, FuncionariForm funcionariForm) {
 		FuncionariJPA funcionari = funcionariForm.getFuncionari();
@@ -707,6 +713,12 @@ public class FuncionariAdminController extends FuncionariController {
 
 	@Override
 	public String getRedirectWhenDelete(HttpServletRequest request, java.lang.Long funcionariID, Throwable __e) {
+		if (funcionariID != null) {
+			FuncionariJPA funcionari = funcionariLogicaEjb.findByPrimaryKey(funcionariID);
+			if (funcionari != null) {
+				getMsgDeleted(request, funcionari);
+			}
+		}
 		return UrlUtils.getRefererRedirect(request, super.getRedirectWhenDelete(request, funcionariID, __e));
 	}
 

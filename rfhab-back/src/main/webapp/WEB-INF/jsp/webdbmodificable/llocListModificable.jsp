@@ -1,7 +1,6 @@
-<%@ page import="es.caib.rfhab.commons.utils.Constants" %>
-<%
-  String filtre_actius_vperdefecte = (String)session.getAttribute(Constants.ATTR_FILTRE_ACTIUS_VALOR_PER_DEFECTE); 
-%>
+<%@ page import="es.caib.rfhab.commons.utils.Constants" %> <% String
+filtre_actius_vperdefecte =
+(String)session.getAttribute(Constants.ATTR_FILTRE_ACTIUS_VALOR_PER_DEFECTE); %>
 
 <style type="text/css">
   .search-query {
@@ -38,5 +37,9 @@
     if(filtreActiusValorPerDefecte && filtreActiusValorPerDefecte != "null"){
       actiusSelectFilter.value = filtreActiusValorPerDefecte;
     }
+
+    const darreraModificacio = '<fmt:message key="darreramodificacio"/>';
+    // #105 Si es volen ordenar per darrera modificació, s'ha de mostrar aquesta columna, perquè si es seleccionés la ordenació a una altra columna, no es podria tornar a darrera modificació.
+    // hideEntireColumn("table.table-genapp-list", darreraModificacio);
   });
 </script>

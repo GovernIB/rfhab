@@ -176,27 +176,36 @@ public class LlocAdminController extends LlocController {
 			}
 
 			{
-				AdditionalField<Long, String> adfield = new AdditionalField<Long, String>();
-				adfield.setCodeName(FuncionariLlocFields.FUNCIONARIID.codeLabel);
-				adfield.setPosition(2);
-				adfield.setEscapeXml(false);
-				adfield.setValueMap(new HashMap<Long, String>());
-				llocFilterForm.addAdditionalField(adfield);
-			}
-
-			{
 				AdditionalField<Long, String> adfield2 = new AdditionalField<Long, String>();
-				adfield2.setCodeName("habilitacio.habilitacio.plural");
-				adfield2.setPosition(3);
-				// adfield2.setOrderBy(HabilitacioFields.CODI);
+				adfield2.setCodeName(LlocFields.CODILLOC.codeLabel);
+				adfield2.setPosition(2);
 				adfield2.setEscapeXml(false);
 				adfield2.setValueMap(new HashMap<Long, String>());
 				llocFilterForm.addAdditionalField(adfield2);
 			}
+
+			{
+				AdditionalField<Long, String> adfield3 = new AdditionalField<Long, String>();
+				adfield3.setCodeName(FuncionariLlocFields.FUNCIONARIID.codeLabel);
+				adfield3.setPosition(3);
+				adfield3.setEscapeXml(false);
+				adfield3.setValueMap(new HashMap<Long, String>());
+				llocFilterForm.addAdditionalField(adfield3);
+			}
+
+			{
+				AdditionalField<Long, String> adfield4 = new AdditionalField<Long, String>();
+				adfield4.setCodeName("habilitacio.habilitacio.plural");
+				adfield4.setPosition(4);
+				// adfield4.setOrderBy(HabilitacioFields.CODI);
+				adfield4.setEscapeXml(false);
+				adfield4.setValueMap(new HashMap<Long, String>());
+				llocFilterForm.addAdditionalField(adfield4);
+			}
 			{
 				AdditionalField<Long, String> adfieldDarreraModificacio = new AdditionalField<Long, String>();
 				adfieldDarreraModificacio.setCodeName("darreramodificacio");
-				adfieldDarreraModificacio.setPosition(4);
+				adfieldDarreraModificacio.setPosition(5);
 				adfieldDarreraModificacio.setEscapeXml(false);
 				adfieldDarreraModificacio.setValueMap(new HashMap<Long, String>());
 				// adfieldDarreraModificacio.setValueField(CODILLOC);
@@ -440,11 +449,13 @@ public class LlocAdminController extends LlocController {
 		filterForm.getAdditionalButtonsByPK().clear();
 
 		Map<Long, String> mapUnitatSuperior = (Map<Long, String>) filterForm.getAdditionalField(1).getValueMap();
-		Map<Long, String> mapFuncionari = (Map<Long, String>) filterForm.getAdditionalField(2).getValueMap();
-		Map<Long, String> mapHabilitacions = (Map<Long, String>) filterForm.getAdditionalField(3).getValueMap();
-		Map<Long, String> mapDarreraModificacio = (Map<Long, String>) filterForm.getAdditionalField(4).getValueMap();
+		Map<Long, String> mapCodiFp = (Map<Long, String>) filterForm.getAdditionalField(2).getValueMap();
+		Map<Long, String> mapFuncionari = (Map<Long, String>) filterForm.getAdditionalField(3).getValueMap();
+		Map<Long, String> mapHabilitacions = (Map<Long, String>) filterForm.getAdditionalField(4).getValueMap();
+		Map<Long, String> mapDarreraModificacio = (Map<Long, String>) filterForm.getAdditionalField(5).getValueMap();
 
 		mapUnitatSuperior.clear();
+		mapCodiFp.clear();
 		mapFuncionari.clear();
 		mapHabilitacions.clear();
 		mapDarreraModificacio.clear();
@@ -550,6 +561,12 @@ public class LlocAdminController extends LlocController {
 				mapDarreraModificacio.put(llocID,
 						darreraModificacioLloc != null ? darreraModificacioLloc.toString() : null);
 			}
+
+			// Codi LF (codi del lloc + expansió)
+			final String codiLloc = lloc.getCodiLloc();
+			final String expansio = lloc.getExpansio();
+			mapCodiFp.put(llocID, (codiLloc != null ? codiLloc : "")
+					+ (expansio != null && !expansio.isEmpty() ? ("-" + expansio) : ""));
 
 			// Afegir el botó d'assignar habilitacions
 			// if (!donatdeBaixa) {

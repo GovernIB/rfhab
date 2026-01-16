@@ -68,6 +68,12 @@
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.DATAALTA)}">
           <td> <fmt:formatDate pattern="${gen:getDatePattern()}" value="${lloc.dataalta}" /></td>
         </c:if>
+        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.DATACREACIO)}">
+          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${lloc.dataCreacio}" /></td>
+        </c:if>
+        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.DATABAIXA)}">
+          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${lloc.dataBaixa}" /></td>
+        </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.PERSONALOAMR)}">
           <td>
           <c:set var="tmp">${lloc.personalOamr}</c:set>
@@ -75,12 +81,6 @@
           ${__theFilterForm.mapOfValuesForPersonalOamr[tmp]}
           </c:if>
           </td>
-        </c:if>
-        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.DATACREACIO)}">
-          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${lloc.dataCreacio}" /></td>
-        </c:if>
-        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.DATABAIXA)}">
-          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${lloc.dataBaixa}" /></td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.OBSERVACIONS)}">
           <td>

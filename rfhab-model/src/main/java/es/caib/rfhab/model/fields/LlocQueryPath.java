@@ -43,16 +43,16 @@ public class LlocQueryPath extends org.fundaciobit.genapp.common.query.QueryPath
     return new TimestampField(getQueryPath(), LlocFields.DATAALTA);
   }
 
-  public IntegerField PERSONALOAMR() {
-    return new IntegerField(getQueryPath(), LlocFields.PERSONALOAMR);
-  }
-
   public TimestampField DATACREACIO() {
     return new TimestampField(getQueryPath(), LlocFields.DATACREACIO);
   }
 
   public TimestampField DATABAIXA() {
     return new TimestampField(getQueryPath(), LlocFields.DATABAIXA);
+  }
+
+  public IntegerField PERSONALOAMR() {
+    return new IntegerField(getQueryPath(), LlocFields.PERSONALOAMR);
   }
 
   public StringField OBSERVACIONS() {

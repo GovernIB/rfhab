@@ -153,17 +153,6 @@ public class LlocFilterForm extends RFHabBaseFilterForm implements LlocFields {
   }
 
 
-  private java.util.List<java.lang.Integer> personalOamrSelect;
-
-  public java.util.List<java.lang.Integer> getPersonalOamrSelect() {
-    return this.personalOamrSelect;
-  }
-
-  public void setPersonalOamrSelect(java.util.List<java.lang.Integer> personalOamrSelect) {
-    this.personalOamrSelect = personalOamrSelect;
-  }
-
-
   private java.sql.Timestamp dataCreacioDesde;
 
   public java.sql.Timestamp getDataCreacioDesde() {
@@ -208,6 +197,17 @@ public class LlocFilterForm extends RFHabBaseFilterForm implements LlocFields {
   }
 
 
+  private java.util.List<java.lang.Integer> personalOamrSelect;
+
+  public java.util.List<java.lang.Integer> getPersonalOamrSelect() {
+    return this.personalOamrSelect;
+  }
+
+  public void setPersonalOamrSelect(java.util.List<java.lang.Integer> personalOamrSelect) {
+    this.personalOamrSelect = personalOamrSelect;
+  }
+
+
   private java.lang.String observacions;
 
   public java.lang.String getObservacions() {
@@ -236,11 +236,11 @@ public class LlocFilterForm extends RFHabBaseFilterForm implements LlocFields {
     this.unitatIDFins = __toClone.unitatIDFins;
     this.dataaltaDesde = __toClone.dataaltaDesde;
     this.dataaltaFins = __toClone.dataaltaFins;
-    this.personalOamrSelect = __toClone.personalOamrSelect;
     this.dataCreacioDesde = __toClone.dataCreacioDesde;
     this.dataCreacioFins = __toClone.dataCreacioFins;
     this.dataBaixaDesde = __toClone.dataBaixaDesde;
     this.dataBaixaFins = __toClone.dataBaixaFins;
+    this.personalOamrSelect = __toClone.personalOamrSelect;
     this.observacions = __toClone.observacions;
     this.mapOfEntitatForEntitatID = __toClone.mapOfEntitatForEntitatID;
     this.mapOfUnitatForUnitatID = __toClone.mapOfUnitatForUnitatID;

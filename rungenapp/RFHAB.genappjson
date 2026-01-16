@@ -3010,32 +3010,6 @@
         },
         {
           "isAutoIncrement": false,
-          "sqlName": "personaloamr",
-          "sqlType": 4,
-          "size": 10,
-          "digits": 0,
-          "isNotNullable": true,
-          "labels": {
-            "ca": "OAMR",
-            "es": "OAMR"
-          },
-          "javaName": "personalOamr",
-          "javaType": "int",
-          "traduible": false,
-          "showInWebList": true,
-          "showInReferenceList": false,
-          "transientField": false,
-          "minAllowedValue": "0,1, 2",
-          "filter": true,
-          "orderBy": 0,
-          "groupBy": false,
-          "webFieldInfo": {
-            "webtype": 16
-          },
-          "foreignKeys": []
-        },
-        {
-          "isAutoIncrement": false,
           "sqlName": "datacreacio",
           "sqlType": 93,
           "size": 29,
@@ -3081,6 +3055,32 @@
           "groupBy": false,
           "webFieldInfo": {
             "webtype": 7
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "personaloamr",
+          "sqlType": 4,
+          "size": 10,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "OAMR",
+            "es": "OAMR"
+          },
+          "javaName": "personalOamr",
+          "javaType": "int",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "minAllowedValue": "0,1, 2",
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 16
           },
           "foreignKeys": []
         },

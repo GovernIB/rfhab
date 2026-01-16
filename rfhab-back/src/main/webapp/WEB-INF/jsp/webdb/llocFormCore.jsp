@@ -177,37 +177,6 @@
         </tr>
         </c:if>
         
-        <c:if test="${!gen:contains(__theForm.hiddenFields,LlocFields.PERSONALOAMR)}">
-        <tr id="lloc_personalOamr_rowid">
-          <td id="lloc_personalOamr_columnlabelid">
-            <label>
-              <fmt:message key="${(empty __theForm.labels[LlocFields.PERSONALOAMR])?'lloc.personalOamr':__theForm.labels[LlocFields.PERSONALOAMR]}" /> &nbsp;(*)
-             </label>
-              <c:if test="${not empty __theForm.help[LlocFields.PERSONALOAMR]}">
-              <i class="fas fa-info-circle" title="${__theForm.help[LlocFields.PERSONALOAMR]}" ></i>
-              </c:if>
-            </td>
-          <td id="lloc_personalOamr_columnvalueid">
-          <form:errors path="lloc.personalOamr" cssClass="errorField alert alert-danger" />
-          <c:if test="${gen:contains(__theForm.readOnlyFields ,LlocFields.PERSONALOAMR)}" >
-          <form:hidden path="lloc.personalOamr"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.lloc.personalOamr,__theForm.listOfValuesForPersonalOamr)}"  />
-          </c:if>
-          <c:if test="${!gen:contains(__theForm.readOnlyFields ,LlocFields.PERSONALOAMR)}" >
-          <c:set var="containEmptyValue"  value="false" />
-          <form:select id="lloc_personalOamr"  onchange="if(typeof onChangePersonalOamr == 'function') {  onChangePersonalOamr(this); };"  cssClass="form-control col-md-9-optional" path="lloc.personalOamr">
-            <c:forEach items="${__theForm.listOfValuesForPersonalOamr}" var="tmp">
-                <form:option value="${tmp.key}">${tmp.value}</form:option>
-                <c:if test="${empty tmp.key}">
-                  <c:set var="containEmptyValue"  value="true" />
-                </c:if>
-            </c:forEach>
-          </form:select>
-          </c:if>
-           </td>
-        </tr>
-        </c:if>
-        
         <c:if test="${!gen:contains(__theForm.hiddenFields,LlocFields.DATACREACIO)}">
         <tr id="lloc_dataCreacio_rowid">
           <td id="lloc_dataCreacio_columnlabelid">
@@ -277,6 +246,37 @@
                 });
             });
         </script>           </td>
+        </tr>
+        </c:if>
+        
+        <c:if test="${!gen:contains(__theForm.hiddenFields,LlocFields.PERSONALOAMR)}">
+        <tr id="lloc_personalOamr_rowid">
+          <td id="lloc_personalOamr_columnlabelid">
+            <label>
+              <fmt:message key="${(empty __theForm.labels[LlocFields.PERSONALOAMR])?'lloc.personalOamr':__theForm.labels[LlocFields.PERSONALOAMR]}" /> &nbsp;(*)
+             </label>
+              <c:if test="${not empty __theForm.help[LlocFields.PERSONALOAMR]}">
+              <i class="fas fa-info-circle" title="${__theForm.help[LlocFields.PERSONALOAMR]}" ></i>
+              </c:if>
+            </td>
+          <td id="lloc_personalOamr_columnvalueid">
+          <form:errors path="lloc.personalOamr" cssClass="errorField alert alert-danger" />
+          <c:if test="${gen:contains(__theForm.readOnlyFields ,LlocFields.PERSONALOAMR)}" >
+          <form:hidden path="lloc.personalOamr"/>
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.lloc.personalOamr,__theForm.listOfValuesForPersonalOamr)}"  />
+          </c:if>
+          <c:if test="${!gen:contains(__theForm.readOnlyFields ,LlocFields.PERSONALOAMR)}" >
+          <c:set var="containEmptyValue"  value="false" />
+          <form:select id="lloc_personalOamr"  onchange="if(typeof onChangePersonalOamr == 'function') {  onChangePersonalOamr(this); };"  cssClass="form-control col-md-9-optional" path="lloc.personalOamr">
+            <c:forEach items="${__theForm.listOfValuesForPersonalOamr}" var="tmp">
+                <form:option value="${tmp.key}">${tmp.value}</form:option>
+                <c:if test="${empty tmp.key}">
+                  <c:set var="containEmptyValue"  value="true" />
+                </c:if>
+            </c:forEach>
+          </form:select>
+          </c:if>
+           </td>
         </tr>
         </c:if>
         

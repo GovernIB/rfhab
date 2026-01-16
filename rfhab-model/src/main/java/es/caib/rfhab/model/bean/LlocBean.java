@@ -16,9 +16,9 @@ public class LlocBean implements Lloc {
 	long entitatID;
 	long unitatID;
 	java.sql.Timestamp dataalta;
-	int personalOamr;
 	java.sql.Timestamp dataCreacio;
 	java.sql.Timestamp dataBaixa;
+	int personalOamr;
 	java.lang.String observacions;
 
 
@@ -27,7 +27,7 @@ public class LlocBean implements Lloc {
   }
 
   /** Constructor amb tots els camps  */
-  public LlocBean(long llocID , java.lang.String codiLlocPropi , java.lang.String codiLloc , java.lang.String expansio , java.lang.String nom , long entitatID , long unitatID , java.sql.Timestamp dataalta , int personalOamr , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , java.lang.String observacions) {
+  public LlocBean(long llocID , java.lang.String codiLlocPropi , java.lang.String codiLloc , java.lang.String expansio , java.lang.String nom , long entitatID , long unitatID , java.sql.Timestamp dataalta , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , int personalOamr , java.lang.String observacions) {
     this.llocID=llocID;
     this.codiLlocPropi=codiLlocPropi;
     this.codiLloc=codiLloc;
@@ -36,13 +36,13 @@ public class LlocBean implements Lloc {
     this.entitatID=entitatID;
     this.unitatID=unitatID;
     this.dataalta=dataalta;
-    this.personalOamr=personalOamr;
     this.dataCreacio=dataCreacio;
     this.dataBaixa=dataBaixa;
+    this.personalOamr=personalOamr;
     this.observacions=observacions;
 }
   /** Constructor sense valors autoincrementals */
-  public LlocBean(java.lang.String codiLlocPropi , java.lang.String codiLloc , java.lang.String expansio , java.lang.String nom , long entitatID , long unitatID , java.sql.Timestamp dataalta , int personalOamr , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , java.lang.String observacions) {
+  public LlocBean(java.lang.String codiLlocPropi , java.lang.String codiLloc , java.lang.String expansio , java.lang.String nom , long entitatID , long unitatID , java.sql.Timestamp dataalta , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataBaixa , int personalOamr , java.lang.String observacions) {
     this.codiLlocPropi=codiLlocPropi;
     this.codiLloc=codiLloc;
     this.expansio=expansio;
@@ -50,20 +50,20 @@ public class LlocBean implements Lloc {
     this.entitatID=entitatID;
     this.unitatID=unitatID;
     this.dataalta=dataalta;
-    this.personalOamr=personalOamr;
     this.dataCreacio=dataCreacio;
     this.dataBaixa=dataBaixa;
+    this.personalOamr=personalOamr;
     this.observacions=observacions;
 }
   /** Constructor dels valors Not Null */
-  public LlocBean(long llocID , java.lang.String codiLlocPropi , java.lang.String nom , long entitatID , long unitatID , int personalOamr , java.sql.Timestamp dataCreacio) {
+  public LlocBean(long llocID , java.lang.String codiLlocPropi , java.lang.String nom , long entitatID , long unitatID , java.sql.Timestamp dataCreacio , int personalOamr) {
     this.llocID=llocID;
     this.codiLlocPropi=codiLlocPropi;
     this.nom=nom;
     this.entitatID=entitatID;
     this.unitatID=unitatID;
-    this.personalOamr=personalOamr;
     this.dataCreacio=dataCreacio;
+    this.personalOamr=personalOamr;
 }
   public LlocBean(Lloc __bean) {
     this.setLlocID(__bean.getLlocID());
@@ -74,9 +74,9 @@ public class LlocBean implements Lloc {
     this.setEntitatID(__bean.getEntitatID());
     this.setUnitatID(__bean.getUnitatID());
     this.setDataalta(__bean.getDataalta());
-    this.setPersonalOamr(__bean.getPersonalOamr());
     this.setDataCreacio(__bean.getDataCreacio());
     this.setDataBaixa(__bean.getDataBaixa());
+    this.setPersonalOamr(__bean.getPersonalOamr());
     this.setObservacions(__bean.getObservacions());
 	}
 
@@ -136,13 +136,6 @@ public class LlocBean implements Lloc {
 		this.dataalta = _dataalta_;
 	};
 
-	public int getPersonalOamr() {
-		return(personalOamr);
-	};
-	public void setPersonalOamr(int _personalOamr_) {
-		this.personalOamr = _personalOamr_;
-	};
-
 	public java.sql.Timestamp getDataCreacio() {
 		return(dataCreacio);
 	};
@@ -155,6 +148,13 @@ public class LlocBean implements Lloc {
 	};
 	public void setDataBaixa(java.sql.Timestamp _dataBaixa_) {
 		this.dataBaixa = _dataBaixa_;
+	};
+
+	public int getPersonalOamr() {
+		return(personalOamr);
+	};
+	public void setPersonalOamr(int _personalOamr_) {
+		this.personalOamr = _personalOamr_;
 	};
 
 	public java.lang.String getObservacions() {
@@ -179,9 +179,9 @@ public class LlocBean implements Lloc {
     __tmp.setEntitatID(__bean.getEntitatID());
     __tmp.setUnitatID(__bean.getUnitatID());
     __tmp.setDataalta(__bean.getDataalta());
-    __tmp.setPersonalOamr(__bean.getPersonalOamr());
     __tmp.setDataCreacio(__bean.getDataCreacio());
     __tmp.setDataBaixa(__bean.getDataBaixa());
+    __tmp.setPersonalOamr(__bean.getPersonalOamr());
     __tmp.setObservacions(__bean.getObservacions());
 		return __tmp;
 	}

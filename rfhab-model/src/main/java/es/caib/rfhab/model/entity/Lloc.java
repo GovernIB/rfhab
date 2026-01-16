@@ -26,14 +26,14 @@ public interface Lloc extends org.fundaciobit.genapp.common.IGenAppEntity {
 	public java.sql.Timestamp getDataalta();
 	public void setDataalta(java.sql.Timestamp _dataalta_);
 
-	public int getPersonalOamr();
-	public void setPersonalOamr(int _personalOamr_);
-
 	public java.sql.Timestamp getDataCreacio();
 	public void setDataCreacio(java.sql.Timestamp _dataCreacio_);
 
 	public java.sql.Timestamp getDataBaixa();
 	public void setDataBaixa(java.sql.Timestamp _dataBaixa_);
+
+	public int getPersonalOamr();
+	public void setPersonalOamr(int _personalOamr_);
 
 	public java.lang.String getObservacions();
 	public void setObservacions(java.lang.String _observacions_);

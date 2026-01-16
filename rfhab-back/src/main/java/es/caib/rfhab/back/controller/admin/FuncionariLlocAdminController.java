@@ -41,6 +41,7 @@ import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.FuncionariLlocFields;
 import es.caib.rfhab.model.fields.LlocFields;
+import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.FuncionariLlocJPA;
 import es.caib.rfhab.persistence.LlocJPA;
 
@@ -53,8 +54,10 @@ import es.caib.rfhab.persistence.LlocJPA;
 @SessionAttributes(types = { FuncionariLlocForm.class, FuncionariLlocFilterForm.class })
 public class FuncionariLlocAdminController extends FuncionariLlocController {
 
-	private static final String LLOC_ID_SESSION_ATTRIBUTE_NAME = "LlocId";
+	private static final String FUNCIONARI_NUMERO_TAG = "##funcionari-numero##";
+	private static final String LLOC_CODILLOCPROPI_TAG = "##lloc-codillocpropi##";
 
+	private static final String LLOC_ID_SESSION_ATTRIBUTE_NAME = "LlocId";
 	private static final String FUNCIONARI_ID_SESSION_ATTRIBUTE_NAME = "FuncionariId";
 
 	private static final String FUNCIONARI_VALOR_BUIT = "0";
@@ -123,19 +126,32 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 
 		HttpSession currentSession = request.getSession();
 
-		String jsOpenModalGuardar = "javascript:createDivModal('"
+		String jsOpenModalGuardar = "javascript:document.querySelectorAll('#funcionarilloc-save-modal-id').forEach(n => n.remove());\r\n"
+				+ "createDivModal('"
 				+ I18NUtils.tradueix("funcionarilloc.modificar.guardar.titol") + "', '"
 				+ I18NUtils.tradueix("funcionarilloc.modificar.guardar.missatge",
-						new String[] { "##funcionari-numero##", "##lloc-codillocpropi##" })
-				+ "', '', 'funcionarillocForm', 'funcionarilloc-save-modal-id', 'fa-save', '', null, '"
+						new String[] { FUNCIONARI_NUMERO_TAG, LLOC_CODILLOCPROPI_TAG })
+				+ "', '', 'funcionariLlocForm', 'funcionarilloc-save-modal-id', 'fa-save', '', null, '"
 				+ I18NUtils.tradueix("acceptar") + "');\r\n" +
-				"        const funcionariName = document.getElementById('funcionariLloc_funcionariID').options[document.getElementById('funcionariLloc_funcionariID').selectedIndex].text;\r\n"
+				"        let funcionariName = document.querySelector('#funcionariLloc\\\\.funcionariID + input')?.value;\r\n"
 				+
-				"        const llocFeinaName = document.getElementById('funcionariLloc_llocID').options[document.getElementById('funcionariLloc_llocID').selectedIndex].text;\r\n"
+				"        if(!funcionariName) funcionariName = document.getElementById('funcionariLloc_funcionariID')?.options[document.getElementById('funcionariLloc_funcionariID')?.selectedIndex ?? 0].text;\r\n"
 				+
-				"        document.querySelector('#funcionarilloc-save-modal-id .modal-body p').innerText = document.querySelector('#funcionarilloc-save-modal-id .modal-body p').innerText.replace('##funcionari-numero##', funcionariName);\r\n"
+				"        if(funcionariName == '" + I18NUtils.tradueix("trieuopcio") + "') funcionariName = '';\r\n"
 				+
-				"        document.querySelector('#funcionarilloc-save-modal-id .modal-body p').innerText = document.querySelector('#funcionarilloc-save-modal-id .modal-body p').innerText.replace('##lloc-codillocpropi##', llocFeinaName);\r\n"
+				"        let llocFeinaName = document.querySelector('#funcionariLloc\\\\.llocID + input')?.value;\r\n"
+				+
+				"        if(!llocFeinaName) llocFeinaName = document.getElementById('funcionariLloc_llocID')?.options[document.getElementById('funcionariLloc_llocID')?.selectedIndex ?? 0].text;\r\n"
+				+
+				"        const modalBodyMessageElement = document.querySelector('#funcionarilloc-save-modal-id .modal-body p');\r\n"
+				+
+				"        modalBodyMessageElement.innerText = modalBodyMessageElement.innerText.replace('"
+				+ FUNCIONARI_NUMERO_TAG + "', funcionariName);\r\n"
+				+
+				"        modalBodyMessageElement.innerText = modalBodyMessageElement.innerText.replace('"
+				+ LLOC_CODILLOCPROPI_TAG + "', llocFeinaName);\r\n"
+				+
+				"        console.log('executat jsOpenModalGuardar');\r\n"
 				+
 				"        $('#funcionarilloc-save-modal-id').modal('show');\r\n";
 		AdditionalButton guardarButton = new AdditionalButton("",
@@ -291,7 +307,9 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 
 		funcionarisList.removeIf(funcionari -> {
 			try {
-				return funcionariLlocEjb.isFuncionariAssignat(Long.parseLong(funcionari.getKey()));
+				boolean assignat = funcionariLlocEjb.isFuncionariAssignat(Long.parseLong(funcionari.getKey()));
+				log.info("funcionari " + funcionari.value + (assignat ? "" : " NO") + " assignat");
+				return assignat;
 			} catch (I18NException e) {
 				log.error("Error checking if funcionari is assigned", e);
 				return false;
@@ -339,10 +357,24 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 					request.getSession().removeAttribute(LLOC_ID_SESSION_ATTRIBUTE_NAME);
 				}
 
+				if (funcionariId != null && llocId != null) {
+					FuncionariJPA funcionari = funcionariEjb.findByPrimaryKey(funcionariId);
+					LlocJPA lloc = llocEjb.findByPrimaryKey(llocId);
+					getMsgCreated(request, funcionari, lloc);
+				}
 				return "redirect:" + FuncionariLlocAdminController.CONTEXTWEB + "/new";
 			}
 		}
 
 		return UrlUtils.getRefererRedirect(request, super.getRedirectWhenCreated(request, funcionariLlocForm), false);
+	}
+
+	private void getMsgCreated(HttpServletRequest request, FuncionariJPA funcionari, LlocJPA lloc) {
+		String funcionariNumero = funcionari.getNumero();
+		String codiLlocPropi = lloc.getCodiLlocPropi();
+		String msg = I18NUtils.tradueix("funcionarilloc.crear.success",
+				new String[] { funcionariNumero, codiLlocPropi });
+		HtmlUtils.deleteMessages(request);
+		HtmlUtils.saveMessageSuccess(request, msg);
 	}
 }

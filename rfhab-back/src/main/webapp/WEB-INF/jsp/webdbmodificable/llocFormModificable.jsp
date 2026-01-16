@@ -63,7 +63,7 @@
 								<th><fmt:message key="funcionari.nom"/></th>
 								<th><fmt:message key="funcionariLloc.dataInici"/></th>
 								<th><fmt:message key="funcionariLloc.dataFi"/></th>
-								<th><fmt:message key="historic.numeroCai"/></th>
+								<th><fmt:message key="funcionari.historic.pipella.cai"/></th>
 								<!-- <th>&nbsp;</th> -->
 							</tr>
 						</thead>

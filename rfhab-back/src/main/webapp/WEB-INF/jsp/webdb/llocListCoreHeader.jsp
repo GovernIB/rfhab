@@ -36,14 +36,14 @@
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.DATAALTA)}">
         <th>${rfh:getSortIcons(__theFilterForm,LlocFields.DATAALTA)}</th>
         </c:if>
-        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.PERSONALOAMR)}">
-        <th>${rfh:getSortIcons(__theFilterForm,LlocFields.PERSONALOAMR)}</th>
-        </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.DATACREACIO)}">
         <th>${rfh:getSortIcons(__theFilterForm,LlocFields.DATACREACIO)}</th>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.DATABAIXA)}">
         <th>${rfh:getSortIcons(__theFilterForm,LlocFields.DATABAIXA)}</th>
+        </c:if>
+        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.PERSONALOAMR)}">
+        <th>${rfh:getSortIcons(__theFilterForm,LlocFields.PERSONALOAMR)}</th>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.OBSERVACIONS)}">
         <th>${rfh:getSortIcons(__theFilterForm,LlocFields.OBSERVACIONS)}</th>

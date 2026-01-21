@@ -507,7 +507,9 @@ public class LlocAdminController extends LlocController {
 
 		Long usuariId = LoginInfo.getInstance().getUsuariPersona().getUsuariID();
 
-		String numeroCai = request.getParameter("numerocai");
+		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numerocai")))
+				? request.getParameter("numerocai")
+				: "";
 		log.info("Creant HistoricLloc per a CAI: " + numeroCai + " i usuari: " + usuariId);
 		LlocJPA newLloc = llocLogicaEjb.createAndHistory(lloc, numeroCai, usuariId, llocHabilitacionsSeleccionades);
 		log.info("Lloc creat amb auditoria: " + newLloc.getLlocID());
@@ -522,7 +524,9 @@ public class LlocAdminController extends LlocController {
 		String[] llocHabilitacionsSeleccionades = habilitacionsSeleccionadesId.split(",");
 		log.info("Actualitzant Lloc amb habilitacions seleccionades List: " + llocHabilitacionsSeleccionades.length);
 
-		String numeroCai = request.getParameter("numerocai");
+		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numerocai")))
+				? request.getParameter("numerocai")
+				: "";
 		Long usuariId = LoginInfo.getInstance().getUsuariPersona().getUsuariID();
 
 		log.info("Actualitzant HistoricLloc per a CAI: " + numeroCai + " i usuari: " + usuariId);

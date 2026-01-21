@@ -406,7 +406,9 @@ public class FuncionariAdminController extends FuncionariController {
 	public FuncionariJPA create(HttpServletRequest request, FuncionariJPA funcionari)
 			throws I18NException, I18NValidationException {
 		Long usuariId = LoginInfo.getInstance().getUsuariPersona().getUsuariID();
-		String numeroCai = request.getParameter("numerocai");
+		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numerocai")))
+				? request.getParameter("numerocai")
+				: "";
 		log.info("Creant Funcionari i Historic per a CAI: " + numeroCai + " i usuari: " + usuariId);
 		FuncionariJPA newFuncionari = funcionariEJB.createAndHistory(funcionari, numeroCai, usuariId);
 

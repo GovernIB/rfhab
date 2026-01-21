@@ -66,7 +66,7 @@
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.DATAALTA)}">
-          <td> <fmt:formatDate pattern="${gen:getDatePattern()}" value="${lloc.dataalta}" /></td>
+          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${lloc.dataalta}" /></td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.DATACREACIO)}">
           <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${lloc.dataCreacio}" /></td>

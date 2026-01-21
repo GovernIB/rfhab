@@ -166,7 +166,7 @@
         <script type="text/javascript">
             $(function () {
                 $('#lloc_dataalta').datetimepicker({
-                    format: '${gen:getJSDatePattern()}',
+                    format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {
                        time: 'far fa-clock'

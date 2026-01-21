@@ -3004,7 +3004,7 @@
           "orderBy": 0,
           "groupBy": false,
           "webFieldInfo": {
-            "webtype": 5
+            "webtype": 7
           },
           "foreignKeys": []
         },

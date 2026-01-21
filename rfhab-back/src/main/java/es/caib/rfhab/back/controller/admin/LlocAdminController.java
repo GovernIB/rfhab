@@ -30,11 +30,15 @@ import org.fundaciobit.genapp.common.web.HtmlUtils;
 import org.fundaciobit.genapp.common.web.form.AdditionalButton;
 import org.fundaciobit.genapp.common.web.form.AdditionalButtonStyle;
 import org.fundaciobit.genapp.common.web.form.AdditionalField;
+import org.fundaciobit.genapp.common.web.i18n.CustomDateI18NEditor;
 import org.fundaciobit.genapp.common.web.i18n.I18NUtils;
 import org.fundaciobit.genapp.common.web.validation.ValidationWebUtils;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -1014,6 +1018,7 @@ public class LlocAdminController extends LlocController {
 				new SelectMax<>(HistoricLlocFields.DATACREACIO));
 
 		List<Select2Values<Long, Timestamp>> resultat = historicLlocEjb.executeQuery(s, whereAux, orderBy2);
+		// TODO: #116
 		// TODO:aquest resultat hauria de dur també els nulls, però això només per
 		// legacy
 
@@ -1057,6 +1062,18 @@ public class LlocAdminController extends LlocController {
 
 			return result;
 		}
+	}
 
+	public void initBinderDateTiemComAdate(WebDataBinder binder) {
+		binder.registerCustomEditor(java.sql.Date.class, new CustomDateI18NEditor(I18NUtils.i18NDateFormat, true));
+		binder.registerCustomEditor(java.sql.Time.class, new CustomDateI18NEditor(I18NUtils.i18NTimeFormat, true));
+		binder.registerCustomEditor(java.sql.Timestamp.class, new CustomDateI18NEditor(I18NUtils.i18NDateFormat, true));
+		binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+	}
+
+	@Override
+	@InitBinder("llocFilterForm")
+	public void initBinderFilterForm(WebDataBinder binder) {
+		this.initBinderDateTiemComAdate(binder);
 	}
 }

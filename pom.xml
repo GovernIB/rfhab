@@ -525,7 +525,7 @@
             </modules>
         </profile>
         <!-- comprovació d'apòstrof dins els fitxers properties (solució amb Ant estàndard, que funciona amb Java 11+ i sense dependències externes) -->
-        <!-- ALERTA AMB AIXÒ!!! en aquest projecte hi és perquè no vull apòstrefs dins els .properties, però podria no valer ho haver-se de canviar per a un altre projecte -->
+        <!-- ALERTA AMB AIXÒ!!! en aquest projecte hi és perquè no vull apòstrofs dins els .properties, però podria no valer o haver-se de canviar per a un altre projecte -->
         <profile>
             <id>apostrophe-check-windows</id>
             <activation>
@@ -550,18 +550,21 @@
                                     <goal>run</goal>
                                 </goals>
                                 <configuration>
-                                    <target>
+                                    <target xmlns:unless="ant:unless" xmlns:if="ant:if">
                                         <property name="rfhab.root" value="rfhab-1.0"/>
                                         <condition property="is.rfhab.root">
                                             <contains string="${project.basedir}" substring="${rfhab.root}"/>
                                         </condition>
-                                        <fail unless="is.rfhab.root" message="Saltant comprovació d'apòstrof: només s'executa dins rfhab-1.0"/>
-                                        <fileset id="properties.files" dir="${project.basedir}">
+                                        <echo level="warning" unless:set="is.rfhab.root">========================================</echo>
+                                        <echo level="warning" unless:set="is.rfhab.root">AVÍS: Saltant comprovació d'apòstrof</echo>
+                                        <echo level="warning" unless:set="is.rfhab.root">Només s'executa dins rfhab-1.0</echo>
+                                        <echo level="warning" unless:set="is.rfhab.root">========================================</echo>
+                                        <fileset if:set="is.rfhab.root" id="properties.files" dir="${project.basedir}">
                                             <include name="**/src/main/resources/*.properties"/>
                                             <exclude name="**/src/main/resources/ValidationMessages.properties"/>
                                             <exclude name="**/src/main/resources/ValidationMessages_es.properties"/>
                                         </fileset>
-                                        <apply executable="cmd" failonerror="true">
+                                        <apply if:set="is.rfhab.root" executable="cmd" failonerror="true">
                                             <fileset refid="properties.files"/>
                                             <arg value="/c"/>
                                             <arg value="${project.basedir}\scripts\mvnvalidations\check_apostrophe.bat"/>
@@ -599,18 +602,21 @@
                                     <goal>run</goal>
                                 </goals>
                                 <configuration>
-                                    <target>
+                                    <target xmlns:unless="ant:unless" xmlns:if="ant:if">
                                         <property name="rfhab.root" value="rfhab-1.0"/>
                                         <condition property="is.rfhab.root">
                                             <contains string="${project.basedir}" substring="${rfhab.root}"/>
                                         </condition>
-                                        <fail unless="is.rfhab.root" message="Saltant comprovació d'apòstrof: només s'executa dins rfhab-1.0"/>
-                                        <fileset id="properties.files" dir="${project.basedir}">
+                                        <echo level="warning" unless:set="is.rfhab.root">========================================</echo>
+                                        <echo level="warning" unless:set="is.rfhab.root">AVÍS: Saltant comprovació d'apòstrof</echo>
+                                        <echo level="warning" unless:set="is.rfhab.root">Només s'executa dins rfhab-1.0</echo>
+                                        <echo level="warning" unless:set="is.rfhab.root">========================================</echo>
+                                        <fileset if:set="is.rfhab.root" id="properties.files" dir="${project.basedir}">
                                             <include name="**/src/main/resources/*.properties"/>
                                             <exclude name="**/src/main/resources/ValidationMessages.properties"/>
                                             <exclude name="**/src/main/resources/ValidationMessages_es.properties"/>
                                         </fileset>
-                                        <apply executable="${project.basedir}/scripts/mvnvalidations/check_apostrophe.sh" failonerror="true">
+                                        <apply if:set="is.rfhab.root" executable="${project.basedir}/scripts/mvnvalidations/check_apostrophe.sh" failonerror="true">
                                             <fileset refid="properties.files"/>
                                             <srcfile/>
                                         </apply>

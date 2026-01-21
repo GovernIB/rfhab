@@ -8,7 +8,7 @@ INSERT INTO rfh_unitat(unitatid, codi, versio, denominacio, cooficial, arrel, su
 --
 -- entitatid < 1000
 --
-INSERT INTO rfh_entitat(entitatid, nom, actiu, unitatid, databaixa) VALUES (1, 'Govern de les Illes Balears', 1, 1, NULL);
+INSERT INTO rfh_entitat(entitatid, nom, actiu, unitatid, databaixa) VALUES (1, 'Govern de les Illes Balears', true, 1, NULL);
 
 --
 -- usuariid < 1000
@@ -24,10 +24,10 @@ INSERT INTO rfh_entitat(entitatid, nom, actiu, unitatid, databaixa) VALUES (1, '
 --  - correu
 --  - username
 --
-INSERT INTO rfh_usuari(usuariid, nom, llinatge1, llinatge2, nif, correu, actiu, datacreacio, idiomaid, username, darreraentitat, databaixa) VALUES (1, 'NomUsuari', 'RFHAB', NULL, '99999999R', 'rfhab@fundaciobit.org', 1, TO_TIMESTAMP('2024-06-19 14:42:30', 'YYYY-MM-DD HH24:MI:SS'), 'ca', 'rfhab', 1, NULL);
+INSERT INTO rfh_usuari(usuariid, nom, llinatge1, llinatge2, nif, correu, actiu, datacreacio, idiomaid, username, darreraentitat, databaixa) VALUES (1, 'NomUsuari', 'RFHAB', NULL, '99999999R', 'rfhab@fundaciobit.org', true, TO_TIMESTAMP('2024-06-19 14:42:30', 'YYYY-MM-DD HH24:MI:SS'), 'ca', 'rfhab', 1, NULL);
 
 --
 -- usuarientitatid < 1000
 -- actiu: ha de ser 1 per a que l'usuari es consideri actiu
 --
-INSERT INTO rfh_usuarientitat(usuarientitatid, entitatid, usuariid, actiu) VALUES (1, 1, 1, 1);
+INSERT INTO rfh_usuarientitat(usuarientitatid, entitatid, usuariid, actiu) VALUES (1, 1, 1, true);

@@ -64,4 +64,6 @@ public interface Constants {
     // PLUGIN ARXIU
     public static final int ARXIU_PLUGIN_REINTENTS_CREAR_DOCUMENT = 5;
     public static final int ARXIU_PLUGIN_REINTENTS_TANCAR_EXPEDIENT = 5;
+
+    public static final String NUMEROCAI_BUIT = " ";
 }

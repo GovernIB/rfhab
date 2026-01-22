@@ -147,7 +147,7 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 
 		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numerocai")))
 				? request.getParameter("numerocai")
-				: "";
+				: Constants.NUMEROCAI_BUIT;
 		final String observacions = (StringUtils.isNotEmpty(request.getParameter("observacions")))
 				? request.getParameter("observacions")
 				: "";
@@ -181,7 +181,7 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 
 		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numerocai")))
 				? request.getParameter("numerocai")
-				: "";
+				: Constants.NUMEROCAI_BUIT;
 
 		funcionariEjb.dessassignarFuncionariAndHistory(null, llocId, numeroCai,
 				LoginInfo.getInstance().getUsuariPersona().getUsuariID(), false, false);

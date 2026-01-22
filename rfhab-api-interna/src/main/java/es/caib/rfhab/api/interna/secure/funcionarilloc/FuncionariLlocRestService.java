@@ -127,7 +127,7 @@ public class FuncionariLlocRestService extends RestUtils {
 			@Parameter(description = "Expansió del lloc", required = false) @QueryParam("expansio") String expansio,
 			@Parameter(description = "Identificador del funcionari a assignar", required = true) @QueryParam("identificadorfh") @NotNull String identificadorFh,
 			@Parameter(description = "Observacions", required = false) @QueryParam("observacions") String observacions,
-			@Parameter(description = "Número CAI", required = false, schema = @Schema(defaultValue = "", implementation = String.class)) @QueryParam("numerocai") String numeroCai) {
+			@Parameter(description = "Número CAI", required = false, schema = @Schema(defaultValue = Constants.NUMEROCAI_BUIT, implementation = String.class)) @QueryParam("numerocai") String numeroCai) {
 		try {
 			StringBuilder sb = new StringBuilder();
 			sb.append("Llengua: " + language + "\n");
@@ -140,7 +140,7 @@ public class FuncionariLlocRestService extends RestUtils {
 			log.info(sb.toString());
 
 			if (numeroCai == null) {
-				numeroCai = "";
+				numeroCai = Constants.NUMEROCAI_BUIT;
 				log.info("XYZ YYY numeroCai = " + numeroCai);
 			}
 
@@ -287,7 +287,7 @@ public class FuncionariLlocRestService extends RestUtils {
 			log.info(sb.toString());
 
 			if (numeroCai == null) {
-				numeroCai = "";
+				numeroCai = Constants.NUMEROCAI_BUIT;
 				log.info("XYZ YYY numeroCai = " + numeroCai);
 			}
 
@@ -385,7 +385,7 @@ public class FuncionariLlocRestService extends RestUtils {
 			@Parameter(description = "Codi del lloc", required = true) @QueryParam("codilloc") @NotNull String codiLloc,
 			@Parameter(description = "Expansió del lloc", required = false) @QueryParam("expansio") String expansio,
 			@Parameter(description = "Observacions", required = false) @QueryParam("observacions") String observacions,
-			@Parameter(description = "Número CAI", required = false, schema = @Schema(defaultValue = "", implementation = String.class)) @QueryParam("numerocai") String numeroCai) {
+			@Parameter(description = "Número CAI", required = false, schema = @Schema(defaultValue = Constants.NUMEROCAI_BUIT, implementation = String.class)) @QueryParam("numerocai") String numeroCai) {
 		try {
 			StringBuilder sb = new StringBuilder();
 			sb.append("Llengua: " + language + "\n");
@@ -397,7 +397,7 @@ public class FuncionariLlocRestService extends RestUtils {
 			log.info(sb.toString());
 
 			if (numeroCai == null) {
-				numeroCai = "";
+				numeroCai = Constants.NUMEROCAI_BUIT;
 				log.info("XYZ YYY numeroCai = " + numeroCai);
 			}
 

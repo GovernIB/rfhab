@@ -509,7 +509,7 @@ public class LlocAdminController extends LlocController {
 
 		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numerocai")))
 				? request.getParameter("numerocai")
-				: "";
+				: Constants.NUMEROCAI_BUIT;
 		log.info("Creant HistoricLloc per a CAI: " + numeroCai + " i usuari: " + usuariId);
 		LlocJPA newLloc = llocLogicaEjb.createAndHistory(lloc, numeroCai, usuariId, llocHabilitacionsSeleccionades);
 		log.info("Lloc creat amb auditoria: " + newLloc.getLlocID());
@@ -526,7 +526,7 @@ public class LlocAdminController extends LlocController {
 
 		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numerocai")))
 				? request.getParameter("numerocai")
-				: "";
+				: Constants.NUMEROCAI_BUIT;
 		Long usuariId = LoginInfo.getInstance().getUsuariPersona().getUsuariID();
 
 		log.info("Actualitzant HistoricLloc per a CAI: " + numeroCai + " i usuari: " + usuariId);
@@ -553,7 +553,7 @@ public class LlocAdminController extends LlocController {
 
 		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numerocai")))
 				? request.getParameter("numerocai")
-				: "";
+				: Constants.NUMEROCAI_BUIT;
 
 		llocLogicaEjb.donarDeBaixaLlocAndHistory(llocId, numeroCai,
 				LoginInfo.getInstance().getUsuariPersona().getUsuariID());
@@ -567,7 +567,7 @@ public class LlocAdminController extends LlocController {
 			HttpServletResponse response) throws I18NException {
 		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numerocai")))
 				? request.getParameter("numerocai")
-				: "";
+				: Constants.NUMEROCAI_BUIT;
 
 		Lloc llocActualitzat = llocLogicaEjb.donarDeAltaAndHistory(llocForm.getLloc().getLlocID(), numeroCai,
 				LoginInfo.getInstance().getUsuariPersona().getUsuariID());

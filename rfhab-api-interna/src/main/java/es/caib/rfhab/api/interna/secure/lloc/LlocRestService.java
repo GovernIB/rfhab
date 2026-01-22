@@ -155,7 +155,7 @@ public class LlocRestService extends RestUtils {
 			@Parameter(description = "Entitat a la qual pertany el lloc. Ha de ser una de les entitats associades a l'usuari", required = true, example = "1000") @QueryParam("entitatid") @NotNull Long entitatId,
 			@Parameter(description = "Unitat orgànica a la qual pertany el lloc. Ha de pertànyer a l'entitat sel·leccionada", required = true, example = "2") @QueryParam("unitatid") @NotNull Long unitatId,
 			@Parameter(description = "Habilitacions associades al lloc (IDs)", required = false, example = "", array = @ArraySchema(schema = @Schema(type = "int"))) @QueryParam("habilitacions") String[] habilitacions,
-			@Parameter(description = "Número CAI", required = false, schema = @Schema(defaultValue = "", implementation = String.class)) @QueryParam("numerocai") String numeroCai,
+			@Parameter(description = "Número CAI", required = false, schema = @Schema(defaultValue = Constants.NUMEROCAI_BUIT, implementation = String.class)) @QueryParam("numerocai") String numeroCai,
 			@Parameter(description = "Data de alta", required = false, example = "2025-08-31T06:15:00+00:00", schema = @Schema(implementation = String.class, pattern = DATE_PATTERN_ISO8601_DATE_AND_TIME)) @QueryParam("dataalta") String dataAltaStr,
 			@Parameter(description = "Data de baixa", required = false, example = "2025-08-31T06:15:00+00:00", schema = @Schema(implementation = String.class, pattern = DATE_PATTERN_ISO8601_DATE_AND_TIME)) @QueryParam("databaixa") String dataBaixaStr) {
 		try {
@@ -174,6 +174,11 @@ public class LlocRestService extends RestUtils {
 			sb.append("DataAlta: " + dataAltaStr + "\n");
 			sb.append("DataBaixa: " + dataBaixaStr + "\n");
 			log.info(sb.toString());
+
+			if (numeroCai == null) {
+				numeroCai = Constants.NUMEROCAI_BUIT;
+				log.info("nou valor numeroCai = " + numeroCai);
+			}
 
 			Timestamp dataBaixa = null;
 			if (dataBaixaStr != null && !dataBaixaStr.isEmpty()) {
@@ -351,7 +356,7 @@ public class LlocRestService extends RestUtils {
 			@Parameter(description = "Identificador de l'usuari que està realitzant el registre d'un nou FH", required = true, example = "9999", schema = @Schema(type = "int")) @NotNull @QueryParam("usuariid") Integer usuariId,
 			@Parameter(description = "Codi del lloc", required = true) @QueryParam("codilloc") @NotNull String codiLloc,
 			@Parameter(description = "Expansió del lloc", required = false) @QueryParam("expansio") String expansio,
-			@Parameter(description = "Número CAI", required = false, schema = @Schema(defaultValue = "", implementation = String.class)) @QueryParam("numerocai") String numeroCai) {
+			@Parameter(description = "Número CAI", required = false, schema = @Schema(defaultValue = Constants.NUMEROCAI_BUIT, implementation = String.class)) @QueryParam("numerocai") String numeroCai) {
 		try {
 			StringBuilder sb = new StringBuilder();
 			sb.append("Llengua: " + language + "\n");
@@ -362,8 +367,8 @@ public class LlocRestService extends RestUtils {
 			log.info(sb.toString());
 
 			if (numeroCai == null) {
-				numeroCai = "";
-				log.info("XYZ YYY numeroCai = " + numeroCai);
+				numeroCai = Constants.NUMEROCAI_BUIT;
+				log.info("nou valor numeroCai = " + numeroCai);
 			}
 
 			// validar codi de funcionari
@@ -444,7 +449,7 @@ public class LlocRestService extends RestUtils {
 			@Parameter(description = "Identificador de l'usuari que està realitzant el registre d'un nou FH", required = true, example = "9999", schema = @Schema(type = "int")) @NotNull @QueryParam("usuariid") Integer usuariId,
 			@Parameter(description = "Codi del lloc", required = true) @QueryParam("codilloc") @NotNull String codiLloc,
 			@Parameter(description = "Expansió del lloc", required = false) @QueryParam("expansio") String expansio,
-			@Parameter(description = "Número CAI", required = false, schema = @Schema(defaultValue = "", implementation = String.class)) @QueryParam("numerocai") String numeroCai) {
+			@Parameter(description = "Número CAI", required = false, schema = @Schema(defaultValue = Constants.NUMEROCAI_BUIT, implementation = String.class)) @QueryParam("numerocai") String numeroCai) {
 		try {
 			StringBuilder sb = new StringBuilder();
 			sb.append("Llengua: " + language + "\n");
@@ -455,8 +460,8 @@ public class LlocRestService extends RestUtils {
 			log.info(sb.toString());
 
 			if (numeroCai == null) {
-				numeroCai = "";
-				log.info("XYZ YYY numeroCai = " + numeroCai);
+				numeroCai = Constants.NUMEROCAI_BUIT;
+				log.info("nou valor numeroCai = " + numeroCai);
 			}
 
 			// validar codi de funcionari

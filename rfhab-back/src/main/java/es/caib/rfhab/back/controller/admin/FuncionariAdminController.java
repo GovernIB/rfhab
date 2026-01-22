@@ -454,7 +454,7 @@ public class FuncionariAdminController extends FuncionariController {
 
 		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numerocai")))
 				? request.getParameter("numerocai")
-				: "";
+				: Constants.NUMEROCAI_BUIT;
 
 		funcionariLogicaEjb.donarDeBaixaFuncionariAndHistory(funcionari, numeroCai,
 				LoginInfo.getInstance().getUsuariPersona().getUsuariID());
@@ -467,7 +467,7 @@ public class FuncionariAdminController extends FuncionariController {
 			HttpServletResponse response) throws I18NException {
 		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numerocai")))
 				? request.getParameter("numerocai")
-				: "";
+				: Constants.NUMEROCAI_BUIT;
 
 		long funcionariId = funcionariForm.getFuncionari().getFuncionariID();
 		Funcionari funcionari = funcionariLogicaEjb.donarDeAltaAndHistory(funcionariId, numeroCai,
@@ -488,7 +488,7 @@ public class FuncionariAdminController extends FuncionariController {
 		Long usuariId = LoginInfo.getInstance().getUsuariPersona().getUsuariID();
 		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numerocai")))
 				? request.getParameter("numerocai")
-				: "";
+				: Constants.NUMEROCAI_BUIT;
 		log.info("Creant Funcionari i Historic per a CAI: " + numeroCai + " i usuari: " + usuariId);
 		FuncionariJPA newFuncionari = funcionariLogicaEjb.createAndHistory(funcionari, numeroCai, usuariId);
 
@@ -633,7 +633,7 @@ public class FuncionariAdminController extends FuncionariController {
 			throws I18NException, I18NValidationException {
 
 		Long usuariId = LoginInfo.getInstance().getUsuariPersona().getUsuariID();
-		String numeroCai = (!Utils.isEmpty(request.getParameter("numerocai"))) ? request.getParameter("numerocai") : "";
+		String numeroCai = (!Utils.isEmpty(request.getParameter("numerocai"))) ? request.getParameter("numerocai") : Constants.NUMEROCAI_BUIT;
 		return (FuncionariJPA) funcionariLogicaEjb.updateAndHistory((Funcionari) funcionari, numeroCai, usuariId);
 	}
 

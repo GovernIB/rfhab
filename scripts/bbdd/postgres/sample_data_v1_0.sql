@@ -24,7 +24,7 @@ INSERT INTO rfh_entitat(entitatid, nom, actiu, unitatid, databaixa) VALUES (1, '
 --  - correu
 --  - username
 --
-INSERT INTO rfh_usuari(usuariid, nom, llinatge1, llinatge2, nif, correu, actiu, datacreacio, idiomaid, username, darreraentitat, databaixa) VALUES (1, 'NomUsuari', 'RFHAB', NULL, '99999999R', 'rfhab@fundaciobit.org', true, TO_TIMESTAMP('2024-06-19 14:42:30', 'YYYY-MM-DD HH24:MI:SS'), 'ca', 'rfhab', 1, NULL);
+INSERT INTO rfh_usuari(usuariid, nom, llinatge1, llinatge2, nif, correu, actiu, datacreacio, idiomaid, username, darreraentitat, databaixa) VALUES (1, 'NomUsuari', 'RFHAB', NULL, '99999999R', 'rfhab@fundaciobit.org', true, '2024-06-19 14:42:30', 'ca', 'rfhab', 1, NULL);
 
 --
 -- usuarientitatid < 1000

@@ -20,8 +20,12 @@ function getColumnIndexByHeaderText(tableQuerySelector, headerText) {
   // Troba tots els <th> dins del primer <tr> del <thead>
   const ths = table.querySelectorAll("thead tr th");
   for (let i = 0; i < ths.length; i++) {
-    const span = ths[i].querySelector("span");
-    if (span && span.textContent.trim() === headerText) {
+    // const span = ths[i].querySelector("span");
+    // if (span && span.textContent.trim() === headerText) {
+    //   return i;
+    // }
+    const text = ths[i].textContent;
+    if (text && text.trim() === headerText) {
       return i;
     }
   }
@@ -37,7 +41,7 @@ function hideEntireColumn(tableQuerySelector, thContentSearchBy) {
     thContentSearchBy
   );
   if (columnIndex === -1) return;
-
+  
   // Amaga el <th>
   const ths = table.querySelectorAll("thead tr th");
   if (ths[columnIndex]) {

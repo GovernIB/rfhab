@@ -32,5 +32,14 @@
     );
     highlightRowIfTdHasContent("tr[id^='funcionari_rowid']", columnaDataBaixa);
     hideEntireColumn("table.table-genapp-list", dataBaixaHeader);
+
+    const codiLlocHeader = '<fmt:message key="lloc.codiLloc"/>';
+    hideEntireColumn("table.table-genapp-list", codiLlocHeader);
+
+    const unitatOrganicaHeader = '<fmt:message key="lloc.unitatID"/>';
+    hideEntireColumn("table.table-genapp-list", unitatOrganicaHeader);
+
+    const personalOamrHeader = '<fmt:message key="lloc.personalOamr"/>';
+    hideEntireColumn("table.table-genapp-list", personalOamrHeader);
   });
 </script>

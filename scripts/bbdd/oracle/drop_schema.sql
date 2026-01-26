@@ -21,11 +21,11 @@
 
     drop table rfh_lloc cascade constraints;
 
-    drop table rfh_llocrol cascade constraints;
+    drop table rfh_llochabilitacio cascade constraints;
 
     drop table rfh_plugin cascade constraints;
 
-    drop table rfh_rol cascade constraints;
+    drop table rfh_habilitacio cascade constraints;
 
     drop table rfh_traduccio cascade constraints;
 
@@ -57,11 +57,11 @@
 
     drop sequence rfh_lloc_seq;
 
-    drop sequence rfh_llocrol_seq;
+    drop sequence rfh_llochabilitacio_seq;
 
     drop sequence rfh_plugin_seq;
 
-    drop sequence rfh_rol_seq;
+    drop sequence rfh_habilitacio_seq;
 
     drop sequence rfh_traduccio_seq;
 

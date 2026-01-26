@@ -22,11 +22,11 @@
 
     alter table rfh_lloc add constraint rfh_lloc_pk primary key (llocid);
 
-    alter table rfh_llocrol add constraint rfh_llocrol_pk primary key (llocrolid);
+    alter table rfh_llochabilitacio add constraint rfh_llochabilitacio_pk primary key (llochabilitacioid);
 
     alter table rfh_plugin add constraint rfh_plugin_pk primary key (pluginid);
 
-    alter table rfh_rol add constraint rfh_rol_pk primary key (rolid);
+    alter table rfh_habilitacio add constraint rfh_habilitacio_pk primary key (habilitacioid);
 
     alter table rfh_traduccio add constraint rfh_traduccio_pk primary key (traduccioid);
 
@@ -123,23 +123,23 @@
        foreign key (unitatid) 
        references rfh_unitat;
 
-    alter table rfh_llocrol 
-       add constraint rfh_llocrol_lloc_llocid_fk 
+    alter table rfh_llochabilitacio 
+       add constraint rfh_llochabil_lloc_llocid_fk 
        foreign key (llocid) 
        references rfh_lloc;
 
-    alter table rfh_llocrol 
-       add constraint rfh_llocrol_rol_rolid_fk 
-       foreign key (rolid) 
-       references rfh_rol;
+    alter table rfh_llochabilitacio 
+       add constraint rfh_llochab_hab_habilitacid_fk 
+       foreign key (habilitacioid) 
+       references rfh_habilitacio;
 
     alter table rfh_plugin 
        add constraint rfh_plugin_entitat_entitati_fk 
        foreign key (entitatid) 
        references rfh_entitat;
 
-    alter table rfh_rol 
-       add constraint rfh_rol_traduccio_nomid_fk 
+    alter table rfh_habilitacio 
+       add constraint rfh_habil_traduccio_nomid_fk 
        foreign key (nomid) 
        references rfh_traduccio;
 

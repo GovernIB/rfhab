@@ -359,10 +359,10 @@ CREATE TABLE public.rfh_lloc (
 
 --
 -- TOC entry 227 (class 1259 OID 16396)
--- Name: rfh_llocrol_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: rfh_llochabilitacio_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.rfh_llocrol_seq
+CREATE SEQUENCE public.rfh_llochabilitacio_seq
     START WITH 1000
     INCREMENT BY 1
     NO MINVALUE
@@ -372,14 +372,14 @@ CREATE SEQUENCE public.rfh_llocrol_seq
 
 --
 -- TOC entry 245 (class 1259 OID 16475)
--- Name: rfh_llocrol; Type: TABLE; Schema: public; Owner: -
+-- Name: rfh_llochabilitacio; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.rfh_llocrol (
-    llocrolid bigint DEFAULT nextval('public.rfh_llocrol_seq'::regclass) NOT NULL,
+CREATE TABLE public.rfh_llochabilitacio (
+    llochabilitacioid bigint DEFAULT nextval('public.rfh_llochabilitacio_seq'::regclass) NOT NULL,
     datacreacio timestamp without time zone NOT NULL,
     llocid bigint NOT NULL,
-    rolid bigint NOT NULL
+    habilitacioid bigint NOT NULL
 );
 
 
@@ -416,10 +416,10 @@ CREATE TABLE public.rfh_plugin (
 
 --
 -- TOC entry 229 (class 1259 OID 16398)
--- Name: rfh_rol_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: rfh_habilitacio_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.rfh_rol_seq
+CREATE SEQUENCE public.rfh_habilitacio_seq
     START WITH 1000
     INCREMENT BY 1
     NO MINVALUE
@@ -429,11 +429,11 @@ CREATE SEQUENCE public.rfh_rol_seq
 
 --
 -- TOC entry 247 (class 1259 OID 16487)
--- Name: rfh_rol; Type: TABLE; Schema: public; Owner: -
+-- Name: rfh_habilitacio; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.rfh_rol (
-    rolid bigint DEFAULT nextval('public.rfh_rol_seq'::regclass) NOT NULL,
+CREATE TABLE public.rfh_habilitacio (
+    habilitacioid bigint DEFAULT nextval('public.rfh_habilitacio_seq'::regclass) NOT NULL,
     codi character varying(50) NOT NULL,
     datacreacio timestamp without time zone,
     entitatid bigint NOT NULL,
@@ -695,11 +695,11 @@ ALTER TABLE ONLY public.rfh_lloc
 
 --
 -- TOC entry 4803 (class 2606 OID 16479)
--- Name: rfh_llocrol rfh_llocrol_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: rfh_llochabilitacio rfh_llochabilitacio_pk; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.rfh_llocrol
-    ADD CONSTRAINT rfh_llocrol_pk PRIMARY KEY (llocrolid);
+ALTER TABLE ONLY public.rfh_llochabilitacio
+    ADD CONSTRAINT rfh_llochabilitacio_pk PRIMARY KEY (llochabilitacioid);
 
 
 --
@@ -713,11 +713,11 @@ ALTER TABLE ONLY public.rfh_plugin
 
 --
 -- TOC entry 4812 (class 2606 OID 16491)
--- Name: rfh_rol rfh_rol_pk; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: rfh_habilitacio rfh_habilitacio_pk; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.rfh_rol
-    ADD CONSTRAINT rfh_rol_pk PRIMARY KEY (rolid);
+ALTER TABLE ONLY public.rfh_habilitacio
+    ADD CONSTRAINT rfh_habilitacio_pk PRIMARY KEY (habilitacioid);
 
 
 --
@@ -993,26 +993,26 @@ CREATE INDEX rfh_lloc_unitatid_fk_i ON public.rfh_lloc USING btree (unitatid);
 
 --
 -- TOC entry 4801 (class 1259 OID 16554)
--- Name: rfh_llocrol_llocid_fk_i; Type: INDEX; Schema: public; Owner: -
+-- Name: rfh_llochabil_llocid_fk_i; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX rfh_llocrol_llocid_fk_i ON public.rfh_llocrol USING btree (llocid);
+CREATE INDEX rfh_llochabil_llocid_fk_i ON public.rfh_llochabilitacio USING btree (llocid);
 
 
 --
 -- TOC entry 4804 (class 1259 OID 16553)
--- Name: rfh_llocrol_pk_i; Type: INDEX; Schema: public; Owner: -
+-- Name: rfh_llochabilitacio_pk_i; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX rfh_llocrol_pk_i ON public.rfh_llocrol USING btree (llocrolid);
+CREATE INDEX rfh_llochabilitacio_pk_i ON public.rfh_llochabilitacio USING btree (llochabilitacioid);
 
 
 --
 -- TOC entry 4805 (class 1259 OID 16555)
--- Name: rfh_llocrol_rolid_fk_i; Type: INDEX; Schema: public; Owner: -
+-- Name: rfh_llochabil_hab_habid_fk_i; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX rfh_llocrol_rolid_fk_i ON public.rfh_llocrol USING btree (rolid);
+CREATE INDEX rfh_llochabil_hab_habid_fk_i ON public.rfh_llochabilitacio USING btree (habilitacioid);
 
 
 --
@@ -1033,18 +1033,18 @@ CREATE INDEX rfh_plugin_pk_i ON public.rfh_plugin USING btree (pluginid);
 
 --
 -- TOC entry 4810 (class 1259 OID 16559)
--- Name: rfh_rol_nomid_fk_i; Type: INDEX; Schema: public; Owner: -
+-- Name: rfh_habilitacio_nomid_fk_i; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX rfh_rol_nomid_fk_i ON public.rfh_rol USING btree (nomid);
+CREATE INDEX rfh_habilitacio_nomid_fk_i ON public.rfh_habilitacio USING btree (nomid);
 
 
 --
 -- TOC entry 4813 (class 1259 OID 16558)
--- Name: rfh_rol_pk_i; Type: INDEX; Schema: public; Owner: -
+-- Name: rfh_habilitacio_pk_i; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX rfh_rol_pk_i ON public.rfh_rol USING btree (rolid);
+CREATE INDEX rfh_habilitacio_pk_i ON public.rfh_habilitacio USING btree (habilitacioid);
 
 
 --
@@ -1246,20 +1246,20 @@ ALTER TABLE ONLY public.rfh_lloc
 
 --
 -- TOC entry 4853 (class 2606 OID 16647)
--- Name: rfh_llocrol rfh_llocrol_lloc_llocid_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: rfh_llochabilitacio rfh_llochabil_lloc_llocid_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.rfh_llocrol
-    ADD CONSTRAINT rfh_llocrol_lloc_llocid_fk FOREIGN KEY (llocid) REFERENCES public.rfh_lloc(llocid);
+ALTER TABLE ONLY public.rfh_llochabilitacio
+    ADD CONSTRAINT rfh_llochabil_lloc_llocid_fk FOREIGN KEY (llocid) REFERENCES public.rfh_lloc(llocid);
 
 
 --
 -- TOC entry 4854 (class 2606 OID 16652)
--- Name: rfh_llocrol rfh_llocrol_rol_rolid_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: rfh_llochabilitacio rfh_llochabil_hab_habid_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.rfh_llocrol
-    ADD CONSTRAINT rfh_llocrol_rol_rolid_fk FOREIGN KEY (rolid) REFERENCES public.rfh_rol(rolid);
+ALTER TABLE ONLY public.rfh_llochabilitacio
+    ADD CONSTRAINT rfh_llochabil_hab_habid_fk FOREIGN KEY (habilitacioid) REFERENCES public.rfh_habilitacio(habilitacioid);
 
 
 --
@@ -1273,11 +1273,11 @@ ALTER TABLE ONLY public.rfh_plugin
 
 --
 -- TOC entry 4856 (class 2606 OID 16662)
--- Name: rfh_rol rfh_rol_traduccio_nomid_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: rfh_habilitacio rfh_habil_traduccio_nomid_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.rfh_rol
-    ADD CONSTRAINT rfh_rol_traduccio_nomid_fk FOREIGN KEY (nomid) REFERENCES public.rfh_traduccio(traduccioid);
+ALTER TABLE ONLY public.rfh_habilitacio
+    ADD CONSTRAINT rfh_habil_traduccio_nomid_fk FOREIGN KEY (nomid) REFERENCES public.rfh_traduccio(traduccioid);
 
 
 --

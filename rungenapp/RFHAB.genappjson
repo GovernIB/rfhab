@@ -2060,7 +2060,7 @@
           },
           "foreignKeys": [
             {
-              "name": "rfh_llochab_hab_habilitacid_fk",
+              "name": "rfh_llochabil_hab_habid_fk",
               "table": "rfh_llochabilitacio",
               "field": "habilitacioid",
               "type": 0
@@ -3231,7 +3231,7 @@
           ]
         },
         {
-          "index": "rfh_llochab_habilitacioid_fk_i",
+          "index": "rfh_llochabil_hab_habid_fk_i",
           "isAutoIncrement": false,
           "sqlName": "habilitacioid",
           "sqlType": -5,
@@ -3262,7 +3262,7 @@
           },
           "foreignKeys": [
             {
-              "name": "rfh_llochab_hab_habilitacid_fk",
+              "name": "rfh_llochabil_hab_habid_fk",
               "table": "rfh_habilitacio",
               "field": "habilitacioid",
               "type": 1

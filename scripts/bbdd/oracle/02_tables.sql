@@ -139,11 +139,11 @@
         unitatid number(19,0) not null
     );
 
-    create table rfh_llocrol (
-       llocrolid number(19,0) not null,
+    create table rfh_llochabilitacio (
+       llochabilitacioid number(19,0) not null,
         datacreacio timestamp not null,
         llocid number(19,0) not null,
-        rolid number(19,0) not null
+        habilitacioid number(19,0) not null
     );
 
     create table rfh_plugin (
@@ -158,8 +158,8 @@
         tipus varchar2(50 char) not null
     );
 
-    create table rfh_rol (
-       rolid number(19,0) not null,
+    create table rfh_habilitacio (
+       habilitacioid number(19,0) not null,
         codi varchar2(50 char) not null,
         datacreacio timestamp,
         entitatid number(19,0) not null,

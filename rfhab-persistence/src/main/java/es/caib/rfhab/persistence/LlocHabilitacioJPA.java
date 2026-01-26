@@ -19,7 +19,7 @@ import javax.persistence.Id;
 @Table(name = "rfh_llochabilitacio" , indexes = { 
         @Index(name="rfh_llochabilitacio_pk_i", columnList = "llochabilitacioid"),
         @Index(name="rfh_llochabil_llocid_fk_i", columnList = "llocid"),
-        @Index(name="rfh_llochab_habilitacioid_fk_i", columnList = "habilitacioid")})
+        @Index(name="rfh_llochabil_hab_habid_fk_i", columnList = "habilitacioid")})
 @SequenceGenerator(name="LLOCHABILITACIO_SEQ", sequenceName="rfh_llochabilitacio_seq", allocationSize=1, initialValue=1000)
 @javax.xml.bind.annotation.XmlRootElement
 public class LlocHabilitacioJPA implements LlocHabilitacio {
@@ -124,7 +124,7 @@ public class LlocHabilitacioJPA implements LlocHabilitacio {
 // IMP Field:habilitacioid | Table: rfh_habilitacio | Type: 1  
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "habilitacioid", referencedColumnName ="habilitacioID", nullable = false, insertable=false, updatable=false, foreignKey=@ForeignKey(name="rfh_llochab_hab_habilitacid_fk"))
+    @JoinColumn(name = "habilitacioid", referencedColumnName ="habilitacioID", nullable = false, insertable=false, updatable=false, foreignKey=@ForeignKey(name="rfh_llochabil_hab_habid_fk"))
     private HabilitacioJPA habilitacio;
 
     public HabilitacioJPA getHabilitacio() {

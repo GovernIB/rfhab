@@ -42,22 +42,25 @@
        drop constraint if exists rfh_histolloc_usuari_id_fk;
 
     alter table rfh_lloc 
+       drop constraint if exists rfh_lloc_codillocpropi_uk;
+
+    alter table rfh_lloc 
        drop constraint if exists rfh_lloc_entitat_entitatid_fk;
 
     alter table rfh_lloc 
        drop constraint if exists rfh_lloc_unitat_unitatid_fk;
 
-    alter table rfh_llocrol 
-       drop constraint if exists rfh_llocrol_lloc_llocid_fk;
+    alter table rfh_llochabilitacio 
+       drop constraint if exists rfh_llochabil_lloc_llocid_fk;
 
-    alter table rfh_llocrol 
-       drop constraint if exists rfh_llocrol_rol_rolid_fk;
+    alter table rfh_llochabilitacio 
+       drop constraint if exists rfh_llochabil_hab_habid_fk;
 
     alter table rfh_plugin 
        drop constraint if exists rfh_plugin_entitat_entitati_fk;
 
-    alter table rfh_rol 
-       drop constraint if exists rfh_rol_traduccio_nomid_fk;
+    alter table rfh_habilitacio 
+       drop constraint if exists rfh_habil_traduccio_nomid_fk;
 
     alter table rfh_traducciomap 
        drop constraint if exists rfh_traducmap_traduccio_fk;
@@ -96,11 +99,11 @@
 
     drop table if exists rfh_lloc cascade;
 
-    drop table if exists rfh_llocrol cascade;
+    drop table if exists rfh_llochabilitacio cascade;
 
     drop table if exists rfh_plugin cascade;
 
-    drop table if exists rfh_rol cascade;
+    drop table if exists rfh_habilitacio cascade;
 
     drop table if exists rfh_traduccio cascade;
 
@@ -132,11 +135,11 @@
 
     drop sequence if exists rfh_lloc_seq;
 
-    drop sequence if exists rfh_llocrol_seq;
+    drop sequence if exists rfh_llochabilitacio_seq;
 
     drop sequence if exists rfh_plugin_seq;
 
-    drop sequence if exists rfh_rol_seq;
+    drop sequence if exists rfh_habilitacio_seq;
 
     drop sequence if exists rfh_traduccio_seq;
 

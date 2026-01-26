@@ -20,4 +20,4 @@ ALTER TABLE public.rfh_llochabilitacio RENAME CONSTRAINT rfh_llocrol_lloc_llocid
 ALTER TABLE public.rfh_llochabilitacio RENAME CONSTRAINT rfh_llocrol_rol_rolid_fk TO rfh_llochab_hab_habilitacid_fk;
 ALTER INDEX public.rfh_llocrol_llocid_fk_i RENAME TO rfh_llochabil_llocid_fk_i;
 ALTER INDEX public.rfh_llocrol_pk_i RENAME TO rfh_llochabilitacio_pk_i;
-ALTER INDEX public.rfh_llocrol_rolid_fk_i RENAME TO rfh_llochab_habilitacioid_fk_i;
+ALTER INDEX public.rfh_llocrol_rolid_fk_i RENAME TO rfh_llochabil_hab_habid_fk_i;

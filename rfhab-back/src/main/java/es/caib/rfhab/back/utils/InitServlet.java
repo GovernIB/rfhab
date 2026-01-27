@@ -123,7 +123,6 @@ public class InitServlet extends HttpServlet {
         }
 
         // Inicialitzar els DataExporters
-        /* 
         try {
             Set<Class<? extends IExportDataPlugin>> plugins;
 
@@ -158,7 +157,6 @@ public class InitServlet extends HttpServlet {
         } catch (Throwable e) {
             log.error("Error inicialitzant els DataExporters: " + e.getMessage(), e);
         }
-        */
 
         // Mostrar Versió
         String ver = LogicUtils.getVersio();

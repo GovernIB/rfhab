@@ -293,6 +293,19 @@ public class FuncionariAdminController extends FuncionariController {
 
 		FuncionariFilterForm funcionariFilterForm = super.getFuncionariFilterForm(pagina, mav, request);
 
+		String oamrSelectvalue = (StringUtils.isNotEmpty(request.getParameter("lloc.personalOamr")))
+				? request.getParameter("lloc.personalOamr")
+				: "";
+		request.getSession().removeAttribute(Constants.ATTR_FILTRE_FOAMR_VALOR_PER_DEFECTE);
+		String actiusSelectvalue = (StringUtils.isNotEmpty(request.getParameter("actiusSegonsDatabaixaName")))
+				? request.getParameter("actiusSegonsDatabaixaName")
+				: "";
+		request.getSession().removeAttribute(Constants.ATTR_FILTRE_FACTIUS_VALOR_PER_DEFECTE);
+		String assignatsSelectvalue = (StringUtils.isNotEmpty(request.getParameter("assignatsAllocName")))
+				? request.getParameter("assignatsAllocName")
+				: "";
+		request.getSession().removeAttribute(Constants.ATTR_FILTRE_FASSIGNATS_VALOR_PER_DEFECTE);
+
 		if (funcionariFilterForm.isNou()) {
 
 			funcionariFilterForm.addHiddenField(FUNCIONARIID);
@@ -347,6 +360,9 @@ public class FuncionariAdminController extends FuncionariController {
 			// funcionariFilterForm.addLabel(FuncionariFields.USUARI, "nomlabel");
 			// funcionariFilterForm.setLabels();
 		}
+		request.getSession().setAttribute(Constants.ATTR_FILTRE_FOAMR_VALOR_PER_DEFECTE, oamrSelectvalue);
+		request.getSession().setAttribute(Constants.ATTR_FILTRE_FACTIUS_VALOR_PER_DEFECTE, actiusSelectvalue);
+		request.getSession().setAttribute(Constants.ATTR_FILTRE_FASSIGNATS_VALOR_PER_DEFECTE, assignatsSelectvalue);
 
 		funcionariFilterForm.setVisibleExportList(true);
 
@@ -365,6 +381,27 @@ public class FuncionariAdminController extends FuncionariController {
 
 	@Override
 	public Where getAdditionalCondition(HttpServletRequest request) throws I18NException {
+
+		final String filtreOamrValorPerDefecte = (String) request.getSession()
+				.getAttribute(Constants.ATTR_FILTRE_FOAMR_VALOR_PER_DEFECTE);
+		if (filtreOamrValorPerDefecte != null && !filtreOamrValorPerDefecte.isEmpty()) {
+			request.getSession().setAttribute("lloc.personalOamr", filtreOamrValorPerDefecte);
+			log.info("lloc.personalOamr ==> " + filtreOamrValorPerDefecte);
+		}
+
+		final String filtreActiusValorPerDefecte = (String) request.getSession()
+				.getAttribute(Constants.ATTR_FILTRE_FACTIUS_VALOR_PER_DEFECTE);
+		if (filtreActiusValorPerDefecte != null && !filtreActiusValorPerDefecte.isEmpty()) {
+			request.getSession().setAttribute("actiusSegonsDatabaixaName", filtreActiusValorPerDefecte);
+			log.info("actiusSegonsDatabaixaName ==> " + filtreActiusValorPerDefecte);
+		}
+
+		final String filtreAssignatsValorPerDefecte = (String) request.getSession()
+				.getAttribute(Constants.ATTR_FILTRE_FASSIGNATS_VALOR_PER_DEFECTE);
+		if (filtreAssignatsValorPerDefecte != null && !filtreAssignatsValorPerDefecte.isEmpty()) {
+			request.getSession().setAttribute("assignatsAllocName", filtreAssignatsValorPerDefecte);
+			log.info("assignatsAllocName ==> " + filtreAssignatsValorPerDefecte);
+		}
 
 		final Where defaultCondition = super.getAdditionalCondition(request);
 		final Where entitatIdActualWhere = getEntitatIdActualWhere();

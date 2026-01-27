@@ -217,4 +217,6 @@ function addOamrSelectFilter(filterCookieName) {
         "; path=/; Secure; SameSite=Strict";
     });
   }
+
+  return actiusSelect;
 }

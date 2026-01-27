@@ -67,6 +67,9 @@ public interface Constants {
         public static final String ATTR_FILTRE_OAMR_VALOR_PER_DEFECTE = "llocs_filtreOamrValorPerDefecte";
         public static final String ATTR_FILTRE_ACTIUS_VALOR_PER_DEFECTE = "llocs_filtreActiusValorPerDefecte";
         public static final String ATTR_FILTRE_UNITATSO_VALOR_PER_DEFECTE = "llocs_filtreUnitatsoValorPerDefecte";
+        public static final String ATTR_FILTRE_FOAMR_VALOR_PER_DEFECTE = "funcionaris_filtreOamrValorPerDefecte";
+        public static final String ATTR_FILTRE_FACTIUS_VALOR_PER_DEFECTE = "funcionaris_filtreActiusValorPerDefecte";
+        public static final String ATTR_FILTRE_FASSIGNATS_VALOR_PER_DEFECTE = "funcionaris_filtreAssignatsValorPerDefecte";
 
         // PLUGIN ARXIU
         public static final int ARXIU_PLUGIN_REINTENTS_CREAR_DOCUMENT = 5;

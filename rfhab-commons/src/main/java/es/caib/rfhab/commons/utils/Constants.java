@@ -64,7 +64,9 @@ public interface Constants {
 
         public static final String REFERER_SESSION_ATTRIBUTE = "referer";
 
+        public static final String ATTR_FILTRE_OAMR_VALOR_PER_DEFECTE = "llocs_filtreOamrValorPerDefecte";
         public static final String ATTR_FILTRE_ACTIUS_VALOR_PER_DEFECTE = "llocs_filtreActiusValorPerDefecte";
+        public static final String ATTR_FILTRE_UNITATSO_VALOR_PER_DEFECTE = "llocs_filtreUnitatsoValorPerDefecte";
 
         // PLUGIN ARXIU
         public static final int ARXIU_PLUGIN_REINTENTS_CREAR_DOCUMENT = 5;

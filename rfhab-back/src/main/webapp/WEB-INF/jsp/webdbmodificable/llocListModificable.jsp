@@ -1,6 +1,13 @@
-<%@ page import="es.caib.rfhab.commons.utils.Constants" %> <% String
+<%@ page import="es.caib.rfhab.commons.utils.Constants" %>
+<% String
+filtre_oamr_vperdefecte =
+(String)session.getAttribute(Constants.ATTR_FILTRE_OAMR_VALOR_PER_DEFECTE); %>
+<% String
 filtre_actius_vperdefecte =
 (String)session.getAttribute(Constants.ATTR_FILTRE_ACTIUS_VALOR_PER_DEFECTE); %>
+<% String
+filtre_unitatso_vperdefecte =
+(String)session.getAttribute(Constants.ATTR_FILTRE_UNITATSO_VALOR_PER_DEFECTE); %>
 
 <style type="text/css">
   .search-query {
@@ -29,13 +36,25 @@ filtre_actius_vperdefecte =
     document.getElementById("FilterButton").style.display = "none";
 
 
-    replaceOamrFilter();
-    replaceUnitatsFilter(unitatsOptions);
+    const oamrSelectFilter = replaceOamrFilter();
+    const filtreOamrValorPerDefecte = '<%=filtre_oamr_vperdefecte%>';
+    console.log("filtreOamrValorPerDefecte: " + filtreOamrValorPerDefecte);
+    if(filtreOamrValorPerDefecte && filtreOamrValorPerDefecte != "null" && oamrSelectFilter){
+      oamrSelectFilter.value = filtreOamrValorPerDefecte;
+    }
+
     const actiusSelectFilter = addActiusSelectFilter();
     const filtreActiusValorPerDefecte = '<%=filtre_actius_vperdefecte%>';
     console.log("filtreActiusValorPerDefecte: " + filtreActiusValorPerDefecte);
-    if(filtreActiusValorPerDefecte && filtreActiusValorPerDefecte != "null"){
+    if(filtreActiusValorPerDefecte && filtreActiusValorPerDefecte != "null" && actiusSelectFilter){
       actiusSelectFilter.value = filtreActiusValorPerDefecte;
+    }
+
+    const unitatsoSelectFilter = replaceUnitatsFilter(unitatsOptions);
+    const filtreUnitatsoValorPerDefecte = '<%=filtre_unitatso_vperdefecte%>';
+    console.log("filtreUnitatsoValorPerDefecte: " + filtreUnitatsoValorPerDefecte);
+    if(filtreUnitatsoValorPerDefecte && filtreUnitatsoValorPerDefecte != "null" && unitatsoSelectFilter){
+      unitatsoSelectFilter.value = filtreUnitatsoValorPerDefecte;
     }
 
     const darreraModificacio = '<fmt:message key="darreramodificacio"/>';

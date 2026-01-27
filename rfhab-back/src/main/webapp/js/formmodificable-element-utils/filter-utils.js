@@ -111,6 +111,8 @@ function replaceFilterForSelectFilter(
     selectElementFins.style.display = "none";
     parentContainer.appendChild(selectElementFins);
   }
+
+  return selectElement;
 }
 
 function replaceFilterForTextInputFilter(
@@ -121,7 +123,7 @@ function replaceFilterForTextInputFilter(
   placeholder,
   wasSelect = false,
   newInputIdFins = null,
-  newInputNameFins = null,
+  newInputNameFins = null
 ) {
   let parentContainer = inputElement.parentElement;
   // si el input es un select, el parentContainer es el div que conté el select
@@ -164,7 +166,7 @@ function replaceFilterForTextInputFilterWithOtherName(
   newInputName,
   label,
   placeholder,
-  wasSelect = false,
+  wasSelect = false
 ) {
   let parentContainer = inputElement.parentElement;
   // si el input es un select, el parentContainer es el div que conté el select

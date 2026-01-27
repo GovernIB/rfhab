@@ -6,7 +6,7 @@ function replaceUnitatsFilter(options) {
 
   let inputUnitats = document.getElementById(inputUnitatsName);
   if (inputUnitats) {
-    replaceFilterForSelectFilter(
+    return replaceFilterForSelectFilter(
       inputUnitats,
       inputUnitatsName,
       inputUnitatsName,
@@ -16,12 +16,13 @@ function replaceUnitatsFilter(options) {
       inputFinsUnitatsName,
       inputFinsUnitatsName
     );
-    return;
   }
+
+  return null;
 }
 
 function replaceOamrFilter() {
-  const inputPersonalOamrLabel = "Personal OAMR: ";
+  const inputPersonalOamrLabel = "OAMR: ";
   const options = [
     {
       value: "",
@@ -29,7 +30,7 @@ function replaceOamrFilter() {
     },
     {
       value: "2",
-      text: "Si",
+      text: "Sí",
     },
     {
       value: "1",
@@ -46,31 +47,29 @@ function replaceOamrFilter() {
     inputAdedFieldPersonalOamrName
   );
   if (inputPersonalOamr) {
-    replaceFilterForSelectFilter(
+    return replaceFilterForSelectFilter(
       inputPersonalOamr,
       inputAdedFieldPersonalOamrName,
       inputAdedFieldPersonalOamrName,
       inputPersonalOamrLabel,
       options
     );
-    return;
   }
 
   inputPersonalOamr = document.getElementById(inputPersonalOamrName);
   if (inputPersonalOamr) {
-    replaceFilterForSelectFilter(
+    return replaceFilterForSelectFilter(
       inputPersonalOamr,
       inputPersonalOamrName,
       inputPersonalOamrName,
       inputPersonalOamrLabel,
       options
     );
-    return;
   }
 
   inputPersonalOamr = document.getElementById(inputSelectPersonalOamrId);
   if (inputPersonalOamr) {
-    replaceFilterForSelectFilter(
+    return replaceFilterForSelectFilter(
       inputPersonalOamr,
       inputSelectPersonalOamrName,
       inputSelectPersonalOamrName,
@@ -78,8 +77,9 @@ function replaceOamrFilter() {
       options,
       true
     );
-    return;
   }
+
+  return null;
 }
 
 function addActiusSelectFilter(filterCookieName) {
@@ -170,6 +170,8 @@ function addAssignatsLlocSelectFilter(filterCookieName) {
         "; path=/; Secure; SameSite=Strict";
     });
   }
+
+  return actiusSelect;
 }
 
 function addOamrSelectFilter(filterCookieName) {

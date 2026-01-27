@@ -159,10 +159,18 @@ public class LlocAdminController extends LlocController {
 
 		LlocFilterForm llocFilterForm = super.getLlocFilterForm(pagina, mav, request);
 
+		String oamrSelectvalue = (StringUtils.isNotEmpty(request.getParameter("personalOamrSelect")))
+				? request.getParameter("personalOamrSelect")
+				: "";
+		request.getSession().removeAttribute(Constants.ATTR_FILTRE_OAMR_VALOR_PER_DEFECTE);
 		String actiusSelectvalue = (StringUtils.isNotEmpty(request.getParameter("actiusSegonsDatabaixaName")))
 				? request.getParameter("actiusSegonsDatabaixaName")
 				: "";
 		request.getSession().removeAttribute(Constants.ATTR_FILTRE_ACTIUS_VALOR_PER_DEFECTE);
+		String unitatsoSelectvalue = (StringUtils.isNotEmpty(request.getParameter("unitatIDDesde")))
+				? request.getParameter("unitatIDDesde")
+				: "";
+		request.getSession().removeAttribute(Constants.ATTR_FILTRE_UNITATSO_VALOR_PER_DEFECTE);
 
 		if (llocFilterForm.isNou()) {
 			llocFilterForm.addHiddenField(LlocFields.LLOCID);
@@ -226,7 +234,9 @@ public class LlocAdminController extends LlocController {
 			llocFilterForm.setOrderBy(HistoricLlocFields.DATACREACIO.javaName);
 			llocFilterForm.setOrderAsc(false);
 		}
+		request.getSession().setAttribute(Constants.ATTR_FILTRE_OAMR_VALOR_PER_DEFECTE, oamrSelectvalue);
 		request.getSession().setAttribute(Constants.ATTR_FILTRE_ACTIUS_VALOR_PER_DEFECTE, actiusSelectvalue);
+		request.getSession().setAttribute(Constants.ATTR_FILTRE_UNITATSO_VALOR_PER_DEFECTE, unitatsoSelectvalue);
 
 		List<StringKeyValue> _unitatsTemp = getUnitatsByEntitatArrel(mav, loginInfo.getEntitatIDActual(),
 				false);
@@ -749,6 +759,20 @@ public class LlocAdminController extends LlocController {
 	@Override
 	public Where getAdditionalCondition(HttpServletRequest request) throws I18NException {
 
+		final String filtreOamrValorPerDefecte = (String) request.getSession()
+				.getAttribute(Constants.ATTR_FILTRE_OAMR_VALOR_PER_DEFECTE);
+		if (filtreOamrValorPerDefecte != null && !filtreOamrValorPerDefecte.isEmpty()) {
+			request.getSession().setAttribute("personalOamrSelect", filtreOamrValorPerDefecte);
+			log.info("personalOamrSelect ==> " + filtreOamrValorPerDefecte);
+		}
+
+		final String filtreUnitatsoValorPerDefecte = (String) request.getSession()
+				.getAttribute(Constants.ATTR_FILTRE_UNITATSO_VALOR_PER_DEFECTE);
+		if (filtreUnitatsoValorPerDefecte != null && !filtreUnitatsoValorPerDefecte.isEmpty()) {
+			request.getSession().setAttribute("unitatIDDesde", filtreUnitatsoValorPerDefecte);
+			log.info("unitatIDDesde ==> " + filtreUnitatsoValorPerDefecte);
+		}
+
 		final Where defaultCondition = super.getAdditionalCondition(request);
 
 		Where entitatActualWhere = getEntitatActualWhere();
@@ -789,9 +813,9 @@ public class LlocAdminController extends LlocController {
 		}
 
 		if ("0".equals(actiusSelectvalue)) {
-			return LlocFields.DATABAIXA.isNotNull();
+			return Where.OR(LlocFields.DATABAIXA.isNotNull(), LlocFields.DATAALTA.isNull());
 		} else if ("1".equals(actiusSelectvalue)) {
-			return LlocFields.DATABAIXA.isNull();
+			return Where.AND(LlocFields.DATABAIXA.isNull(), LlocFields.DATAALTA.isNotNull());
 		} else {
 			log.warn("Mostrant tots DataBaixa");
 		}

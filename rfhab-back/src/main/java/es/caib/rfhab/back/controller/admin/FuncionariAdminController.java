@@ -499,7 +499,7 @@ public class FuncionariAdminController extends FuncionariController {
 		log.info("funcionarisInput nom ==> " + funcionarisInput);
 		Where funcionariFuncionarisNomWhere = null;
 		try {
-			return getFuncionarisByFuncionariNomCompletWhere(funcionarisInput);
+			funcionariFuncionarisNomWhere = getFuncionarisByFuncionariNomCompletWhere(funcionarisInput);
 		} catch (NoSuchFieldException e) {
 			e.printStackTrace();
 			log.warn("Mostrant tots funcionaris nom");

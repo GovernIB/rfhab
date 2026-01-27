@@ -21,7 +21,6 @@ import org.fundaciobit.genapp.common.query.OrderType;
 import org.fundaciobit.genapp.common.query.Select;
 import org.fundaciobit.genapp.common.query.SelectGroupBy;
 import org.fundaciobit.genapp.common.query.SelectMax;
-import org.fundaciobit.genapp.common.query.SubQuery;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.query.selectcolumn.Select2Columns;
 import org.fundaciobit.genapp.common.query.selectcolumn.Select2Values;
@@ -41,7 +40,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -57,9 +55,7 @@ import es.caib.rfhab.back.utils.UrlUtils;
 import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.commons.utils.PersonalOamrTipus;
 import es.caib.rfhab.commons.utils.StringUtils;
-import es.caib.rfhab.ejb.EntitatService;
 import es.caib.rfhab.ejb.HabilitacioService;
-import es.caib.rfhab.ejb.LlocService;
 import es.caib.rfhab.logic.EntitatLogicaService;
 import es.caib.rfhab.logic.FuncionariLlocLogicaService;
 import es.caib.rfhab.logic.HistoricLlocLogicaService;
@@ -71,19 +67,15 @@ import es.caib.rfhab.logic.utils.FuncionariLlocDAO;
 import es.caib.rfhab.logic.utils.HistoricCanvisLlocDAO;
 import es.caib.rfhab.model.entity.Entitat;
 import es.caib.rfhab.model.entity.Funcionari;
-import es.caib.rfhab.model.entity.FuncionariLloc;
 import es.caib.rfhab.model.entity.HistoricLloc;
 import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.entity.Habilitacio;
 import es.caib.rfhab.model.entity.Unitat;
 import es.caib.rfhab.model.fields.EntitatFields;
-import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.FuncionariLlocFields;
 import es.caib.rfhab.model.fields.HistoricLlocFields;
-import es.caib.rfhab.model.fields.HistoricLlocQueryPath;
 import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.model.fields.LlocHabilitacioFields;
-import es.caib.rfhab.model.fields.LlocQueryPath;
 import es.caib.rfhab.model.fields.UnitatFields;
 import es.caib.rfhab.persistence.LlocJPA;
 import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
@@ -1061,17 +1053,24 @@ public class LlocAdminController extends LlocController {
 			final Integer NUM_ELEMENTS = llocFilterForm.getItemsPerPage();
 			Integer firstResult = (PAGINA - 1) * NUM_ELEMENTS;
 			Integer maxResults = NUM_ELEMENTS;
+			Integer noApliquenPelsFiltres = 0;
 			List<Lloc> result = new ArrayList();
 			Map<Long, Timestamp> mapDarreraModificacio = new HashMap<>();
-			for (int i = firstResult; i < (firstResult + NUM_ELEMENTS) && i < resultat.size(); i++) {
+			//TODO: ineficient total, això se carrega tota sa paginació i es recorr sempre tots els resultats...
+			for (int i = 0; i < (firstResult + NUM_ELEMENTS + noApliquenPelsFiltres)
+					&& i < resultat.size(); i++) {
 				Select2Values<Long, Timestamp> select2Values = resultat.get(i);
 				log.info(select2Values.getValue1() + " " + select2Values.getValue2());
 				Long llocId = select2Values.getValue1();
 				Timestamp dataDarreraModificacio = select2Values.getValue2();
 				List<Lloc> llocsTrobats = ejb.select(Where.AND(LlocFields.LLOCID.equal(llocId), where));
 				if (llocsTrobats != null && llocsTrobats.size() > 0) {
-					result.add(llocsTrobats.get(0));
-					mapDarreraModificacio.put(llocId, dataDarreraModificacio);
+					if(i >= (firstResult + noApliquenPelsFiltres)){
+						result.add(llocsTrobats.get(0));
+						mapDarreraModificacio.put(llocId, dataDarreraModificacio);
+					}
+				} else {
+					noApliquenPelsFiltres++;
 				}
 			}
 

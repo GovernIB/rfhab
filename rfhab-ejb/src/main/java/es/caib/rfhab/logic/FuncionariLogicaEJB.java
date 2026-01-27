@@ -211,7 +211,7 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 			// IN Operator vs IN (SELECT). És a dir, SubQuery seria una SubQuery normal i
 			// corrent de SQL, molt més eficient en aquest cas.
 			SubQuery<FuncionariLloc, Long> subQuery;
-			subQuery = funcionariLlocLogicaEjb.getSubQuery(FuncionariLlocFields.FUNCIONARIID, whereLloc);
+			subQuery = funcionariLlocLogicaEjb.getSubQuery(FuncionariLlocFields.FUNCIONARIID, funcionariLlocLogicaEjb.getWhereFuncionariIsCurrent(whereLloc));
 			// List<Long> fFuncIds =
 			// funcionariLlocLogicaEjb.executeQuery(FuncionariLlocFields.FUNCIONARIID,
 			// whereLloc);

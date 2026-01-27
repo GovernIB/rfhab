@@ -237,7 +237,7 @@ public class FuncionariFilterForm extends RFHabBaseFilterForm implements Funcion
 
   @Override
   public List<Field<?>> getDefaultFilterByFields() {
-    return new java.util.ArrayList<Field<?>>(Arrays.asList(new Field<?>[] { NUMERO ,IDENTIFICADOR ,USUARI }));
+    return new java.util.ArrayList<Field<?>>(Arrays.asList(new Field<?>[] { NUMERO ,NOM ,IDENTIFICADOR ,USUARI }));
   }
 
   @Override

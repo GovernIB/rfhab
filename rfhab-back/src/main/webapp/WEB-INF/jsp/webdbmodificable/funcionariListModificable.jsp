@@ -41,5 +41,24 @@
 
     const personalOamrHeader = '<fmt:message key="lloc.personalOamr"/>';
     hideEntireColumn("table.table-genapp-list", personalOamrHeader);
+
+    const inputNomFuncionariPlaceholder = "<fmt:message key="genapp.form.searchby"><fmt:param><fmt:message key="funcionari.nom" /></fmt:param></fmt:message>";
+    const inputNomFuncionariLabel = '<fmt:message key="funcionari.nom"/>' + ": ";
+
+    const oldInputFuncionarisNomName = "nom";
+    const inputFuncionarisNomName = "funcionarisNom";
+
+    let inputNomFuncionaris = document.getElementById(oldInputFuncionarisNomName);
+    if (inputNomFuncionaris) {
+      replaceFilterForTextInputFilterWithOtherName(
+        inputNomFuncionaris,
+        inputFuncionarisNomName,
+        inputFuncionarisNomName,
+        inputNomFuncionariLabel,
+        inputNomFuncionariPlaceholder,
+        false
+      );
+      return;
+    }
   });
 </script>

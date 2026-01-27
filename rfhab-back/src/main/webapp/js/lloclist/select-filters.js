@@ -90,11 +90,11 @@ function addActiusSelectFilter(filterCookieName) {
     },
     {
       value: "1",
-      text: "Actius",
+      text: "Sí",
     },
     {
       value: "0",
-      text: "Inactius",
+      text: "No",
     },
   ];
   const label = "Actius: ";
@@ -136,11 +136,11 @@ function addAssignatsLlocSelectFilter(filterCookieName) {
     },
     {
       value: "1",
-      text: "Assignats",
+      text: "Sí",
     },
     {
       value: "0",
-      text: "No assignats",
+      text: "No",
     },
   ];
   const label = "Assignats a Lloc: ";
@@ -173,7 +173,7 @@ function addAssignatsLlocSelectFilter(filterCookieName) {
 }
 
 function addOamrSelectFilter(filterCookieName) {
-  const inputPersonalOamrLabel = "Personal OAMR: ";
+  const inputPersonalOamrLabel = "OAMR: ";
   const options = [
     {
       value: "",
@@ -181,7 +181,7 @@ function addOamrSelectFilter(filterCookieName) {
     },
     {
       value: "2",
-      text: "Si",
+      text: "Sí",
     },
     {
       value: "1",

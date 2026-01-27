@@ -80,8 +80,10 @@ import es.caib.rfhab.model.fields.EntitatFields;
 import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.FuncionariLlocFields;
 import es.caib.rfhab.model.fields.HistoricLlocFields;
+import es.caib.rfhab.model.fields.HistoricLlocQueryPath;
 import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.model.fields.LlocHabilitacioFields;
+import es.caib.rfhab.model.fields.LlocQueryPath;
 import es.caib.rfhab.model.fields.UnitatFields;
 import es.caib.rfhab.persistence.LlocJPA;
 import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
@@ -1012,6 +1014,7 @@ public class LlocAdminController extends LlocController {
 		}
 
 		OrderBy orderBy2 = null;
+		log.info("##Where## --> " + where.toSQL());
 
 		Where whereAux = null;
 		if (ordenaPerData != null) {
@@ -1023,9 +1026,11 @@ public class LlocAdminController extends LlocController {
 				new SelectMax<>(HistoricLlocFields.DATACREACIO));
 
 		List<Select2Values<Long, Timestamp>> resultat = historicLlocEjb.executeQuery(s, whereAux, orderBy2);
-		// TODO: #116
-		// TODO:aquest resultat hauria de dur també els nulls, però això només per
+		// TODO?:aquest resultat hauria de dur també els nulls, però això només per
 		// legacy
+		if (resultat == null) {
+			resultat = new ArrayList<Select2Values<Long, Timestamp>>();
+		}
 
 		if (ordenaPerData != null) {
 			final Integer PAGINA = llocFilterForm.getPage();
@@ -1034,13 +1039,16 @@ public class LlocAdminController extends LlocController {
 			Integer maxResults = NUM_ELEMENTS;
 			List<Lloc> result = new ArrayList();
 			Map<Long, Timestamp> mapDarreraModificacio = new HashMap<>();
-			for (int i = firstResult; i < (firstResult + NUM_ELEMENTS); i++) {
+			for (int i = firstResult; i < (firstResult + NUM_ELEMENTS) && i < resultat.size(); i++) {
 				Select2Values<Long, Timestamp> select2Values = resultat.get(i);
 				log.info(select2Values.getValue1() + " " + select2Values.getValue2());
 				Long llocId = select2Values.getValue1();
 				Timestamp dataDarreraModificacio = select2Values.getValue2();
-				result.add(ejb.findByPrimaryKey(llocId));
-				mapDarreraModificacio.put(llocId, dataDarreraModificacio);
+				List<Lloc> llocsTrobats = ejb.select(Where.AND(LlocFields.LLOCID.equal(llocId), where));
+				if (llocsTrobats != null && llocsTrobats.size() > 0) {
+					result.add(llocsTrobats.get(0));
+					mapDarreraModificacio.put(llocId, dataDarreraModificacio);
+				}
 			}
 
 			request.getSession().setAttribute("mapDarreraModificacio", mapDarreraModificacio);

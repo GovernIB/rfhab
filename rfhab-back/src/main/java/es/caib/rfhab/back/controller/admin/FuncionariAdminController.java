@@ -342,6 +342,10 @@ public class FuncionariAdminController extends FuncionariController {
 
 			funcionariFilterForm.setOrderBy(FuncionariFields.LLINATGE1.sqlName);
 			funcionariFilterForm.setOrderAsc(true);
+
+			// TODO: no canvia el nom del filtre, només el de la columna #111
+			// funcionariFilterForm.addLabel(FuncionariFields.USUARI, "nomlabel");
+			// funcionariFilterForm.setLabels();
 		}
 
 		funcionariFilterForm.setVisibleExportList(true);
@@ -366,16 +370,18 @@ public class FuncionariAdminController extends FuncionariController {
 		final Where entitatIdActualWhere = getEntitatIdActualWhere();
 		final Where personalOamrWhere = getPersonalOamrWhere(request);
 		final Where donatsDeBaixaWhere = getAdditionalConditionDonatsDeBaixa(request);
-		final Where AssignatsAllocDeFeinaWhere = getAdditionalConditionAssignats(request);
+		final Where assignatsAllocDeFeinaWhere = getAdditionalConditionAssignats(request);
+		final Where nomCompletWhere = getAdditionalConditionFuncionariNom(request);
 
 		log.debug("defaultCondition ==> " + (defaultCondition != null ? defaultCondition.toSQL() : "null"));
 		log.debug("donatsDeBaixaWhere ==> " + (donatsDeBaixaWhere != null ? donatsDeBaixaWhere.toSQL() : "null"));
 		log.debug("personalOamrWhere ==> " + (personalOamrWhere != null ? personalOamrWhere.toSQL() : "null"));
 		log.debug("entitatIdActualWhere ==> " + (entitatIdActualWhere != null ? entitatIdActualWhere.toSQL() : "null"));
 		log.debug("AssignatsAllocDeFeinaWhere ==> "
-				+ (AssignatsAllocDeFeinaWhere != null ? AssignatsAllocDeFeinaWhere.toSQL() : "null"));
+				+ (assignatsAllocDeFeinaWhere != null ? assignatsAllocDeFeinaWhere.toSQL() : "null"));
+		log.debug("nomCompletWhere ==> " + (nomCompletWhere != null ? nomCompletWhere.toSQL() : "null"));
 
-		return Where.AND(personalOamrWhere, donatsDeBaixaWhere, AssignatsAllocDeFeinaWhere,
+		return Where.AND(nomCompletWhere, personalOamrWhere, donatsDeBaixaWhere, assignatsAllocDeFeinaWhere,
 				(entitatIdActualWhere != null) ? Where.AND(defaultCondition, entitatIdActualWhere) : defaultCondition);
 	}
 
@@ -445,6 +451,37 @@ public class FuncionariAdminController extends FuncionariController {
 		}
 
 		return null;
+	}
+
+	public Where getAdditionalConditionFuncionariNom(HttpServletRequest request)
+			throws I18NException {
+		String filtreFuncionarisNom = request.getParameter("funcionarisNom");
+		final String funcionarisInput = (StringUtils.isNotEmpty(filtreFuncionarisNom))
+				? filtreFuncionarisNom.toUpperCase()
+				: "";
+		log.info("funcionarisInput nom ==> " + funcionarisInput);
+		Where funcionariFuncionarisNomWhere = null;
+		try {
+			return getFuncionarisByFuncionariNomCompletWhere(funcionarisInput);
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+			log.warn("Mostrant tots funcionaris nom");
+		}
+		return funcionariFuncionarisNomWhere;
+	}
+
+	public Where getFuncionarisByFuncionariNomCompletWhere(String funcionariNom)
+			throws I18NException, NoSuchFieldException {
+		Where funcionariFuncionarisNomWhere = null;
+		if (!"".equals(funcionariNom)) {
+			List<Long> funcionarisId = funcionariLogicaEjb.getFuncionarisIdsByNomComplet(funcionariNom);
+			if (funcionarisId != null) {
+				funcionariFuncionarisNomWhere = FuncionariFields.FUNCIONARIID.in(funcionarisId);
+			}
+		} else {
+			log.warn("Mostrant tots funcionaris nom");
+		}
+		return funcionariFuncionarisNomWhere;
 	}
 
 	@Override
@@ -633,7 +670,8 @@ public class FuncionariAdminController extends FuncionariController {
 			throws I18NException, I18NValidationException {
 
 		Long usuariId = LoginInfo.getInstance().getUsuariPersona().getUsuariID();
-		String numeroCai = (!Utils.isEmpty(request.getParameter("numerocai"))) ? request.getParameter("numerocai") : Constants.NUMEROCAI_BUIT;
+		String numeroCai = (!Utils.isEmpty(request.getParameter("numerocai"))) ? request.getParameter("numerocai")
+				: Constants.NUMEROCAI_BUIT;
 		return (FuncionariJPA) funcionariLogicaEjb.updateAndHistory((Funcionari) funcionari, numeroCai, usuariId);
 	}
 

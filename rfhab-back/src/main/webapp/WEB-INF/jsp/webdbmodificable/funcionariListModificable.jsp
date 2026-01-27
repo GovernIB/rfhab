@@ -37,14 +37,14 @@ filtre_fassignats_vperdefecte =
     }
 
     const actiusSelectFilter = addActiusSelectFilter();
-    const filtreActiusValorPerDefecte = '<%=filtre_actius_vperdefecte%>';
+    const filtreActiusValorPerDefecte = '<%=filtre_factius_vperdefecte%>';
     console.log("filtreActiusValorPerDefecte: " + filtreActiusValorPerDefecte);
     if(filtreActiusValorPerDefecte && filtreActiusValorPerDefecte != "null" && actiusSelectFilter){
       actiusSelectFilter.value = filtreActiusValorPerDefecte;
     }
 
     const assignatsSelectFilter = addAssignatsLlocSelectFilter();
-    const filtreAssignatsValorPerDefecte = '<%=filtre_unitatso_vperdefecte%>';
+    const filtreAssignatsValorPerDefecte = '<%=filtre_fassignats_vperdefecte%>';
     console.log("filtreUnitatsoValorPerDefecte: " + filtreAssignatsValorPerDefecte);
     if(filtreAssignatsValorPerDefecte && filtreAssignatsValorPerDefecte != "null" && assignatsSelectFilter){
       assignatsSelectFilter.value = filtreAssignatsValorPerDefecte;

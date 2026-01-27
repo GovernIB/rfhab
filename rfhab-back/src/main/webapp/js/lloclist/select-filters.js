@@ -1,5 +1,5 @@
 function replaceUnitatsFilter(options) {
-  const inputUnitatsLabel = "Unitat: ";
+  const inputUnitatsLabel = "Unitat orgànica: ";
 
   const inputUnitatsName = "unitatIDDesde";
   const inputFinsUnitatsName = "unitatIDFins";

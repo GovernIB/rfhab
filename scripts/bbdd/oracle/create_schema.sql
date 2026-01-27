@@ -8,9 +8,9 @@ create sequence rfh_funcionarilloc_seq start with 1000 increment by  1;
 create sequence rfh_historic_seq start with 1000 increment by  1;
 create sequence rfh_historiclloc_seq start with 1000 increment by  1;
 create sequence rfh_lloc_seq start with 1000 increment by  1;
-create sequence rfh_llocrol_seq start with 1000 increment by  1;
+create sequence rfh_llochabilitacio_seq start with 1000 increment by  1;
 create sequence rfh_plugin_seq start with 1000 increment by  1;
-create sequence rfh_rol_seq start with 1000 increment by  1;
+create sequence rfh_habilitacio_seq start with 1000 increment by  1;
 create sequence rfh_traduccio_seq start with 1000 increment by  1;
 create sequence rfh_unitat_seq start with 1000 increment by  1;
 create sequence rfh_usuari_seq start with 1000 increment by  1;
@@ -167,12 +167,12 @@ create sequence rfh_usuarientitat_seq start with 1000 increment by  1;
         primary key (llocid)
     );
 
-    create table rfh_llocrol (
-       llocrolid number(19,0) not null,
+    create table rfh_llochabilitacio (
+       llochabilitacioid number(19,0) not null,
         datacreacio timestamp not null,
         llocid number(19,0) not null,
-        rolid number(19,0) not null,
-        primary key (llocrolid)
+        habilitacioid number(19,0) not null,
+        primary key (llochabilitacioid)
     );
 
     create table rfh_plugin (
@@ -188,13 +188,13 @@ create sequence rfh_usuarientitat_seq start with 1000 increment by  1;
         primary key (pluginid)
     );
 
-    create table rfh_rol (
-       rolid number(19,0) not null,
+    create table rfh_habilitacio (
+       habilitacioid number(19,0) not null,
         codi varchar2(50 char) not null,
         datacreacio timestamp,
         entitatid number(19,0) not null,
         nomid number(19,0) not null,
-        primary key (rolid)
+        primary key (habilitacioid)
     );
 
     create table rfh_traduccio (
@@ -281,13 +281,13 @@ create index rfh_lloc_unitatid_fk_i on rfh_lloc (unitatid);
        add constraint rfh_lloc_codillocexpansio_uk unique (expansio, codilloc);
     alter table rfh_lloc 
        add constraint rfh_lloc_codillocpropi_uk unique (codillocpropi);
-create index rfh_llocrol_pk_i on rfh_llocrol (llocrolid);
-create index rfh_llocrol_llocid_fk_i on rfh_llocrol (llocid);
-create index rfh_llocrol_rolid_fk_i on rfh_llocrol (rolid);
+create index rfh_llochabilitacio_pk_i on rfh_llochabilitacio (llochabilitacioid);
+create index rfh_llochabil_llocid_fk_i on rfh_llochabilitacio (llocid);
+create index rfh_llochabil_hab_habid_fk_i on rfh_llochabilitacio (habilitacioid);
 create index rfh_plugin_pk_i on rfh_plugin (pluginid);
 create index rfh_plugin_entitatid_fk_i on rfh_plugin (entitatid);
-create index rfh_rol_pk_i on rfh_rol (rolid);
-create index rfh_rol_nomid_fk_i on rfh_rol (nomid);
+create index rfh_habilitacio_pk_i on rfh_habilitacio (habilitacioid);
+create index rfh_habilitacio_nomid_fk_i on rfh_habilitacio (nomid);
 create index rfh_traduccio_pk_i on rfh_traduccio (traduccioid);
 create index rfh_unitat_pk_i on rfh_unitat (unitatid);
 create index rfh_usuari_pk_i on rfh_usuari (usuariid);
@@ -383,23 +383,23 @@ create index rfh_usuarient_usuariid_fk_i on rfh_usuarientitat (usuariid);
        foreign key (unitatid) 
        references rfh_unitat;
 
-    alter table rfh_llocrol 
-       add constraint rfh_llocrol_lloc_llocid_fk 
+    alter table rfh_llochabilitacio 
+       add constraint rfh_llochabil_lloc_llocid_fk 
        foreign key (llocid) 
        references rfh_lloc;
 
-    alter table rfh_llocrol 
-       add constraint rfh_llocrol_rol_rolid_fk 
-       foreign key (rolid) 
-       references rfh_rol;
+    alter table rfh_llochabilitacio 
+       add constraint rfh_llochabil_hab_habid_fk 
+       foreign key (habilitacioid) 
+       references rfh_habilitacio;
 
     alter table rfh_plugin 
        add constraint rfh_plugin_entitat_entitati_fk 
        foreign key (entitatid) 
        references rfh_entitat;
 
-    alter table rfh_rol 
-       add constraint rfh_rol_traduccio_nomid_fk 
+    alter table rfh_habilitacio 
+       add constraint rfh_habil_traduccio_nomid_fk 
        foreign key (nomid) 
        references rfh_traduccio;
 

@@ -8,9 +8,9 @@
     grant select on rfh_historic_seq to www_rfhab;
     grant select on rfh_historiclloc_seq to www_rfhab;
     grant select on rfh_lloc_seq to www_rfhab;
-    grant select on rfh_llocrol_seq to www_rfhab;
+    grant select on rfh_llochabilitacio_seq to www_rfhab;
     grant select on rfh_plugin_seq to www_rfhab;
-    grant select on rfh_rol_seq to www_rfhab;
+    grant select on rfh_habilitacio_seq to www_rfhab;
     grant select on rfh_traduccio_seq to www_rfhab;
     grant select on rfh_unitat_seq to www_rfhab;
     grant select on rfh_usuari_seq to www_rfhab;
@@ -26,9 +26,9 @@
     grant select,insert,delete,update on rfh_historiclloc to www_rfhab;
     grant select,insert,delete,update on rfh_idioma to www_rfhab;
     grant select,insert,delete,update on rfh_lloc to www_rfhab;
-    grant select,insert,delete,update on rfh_llocrol to www_rfhab;
+    grant select,insert,delete,update on rfh_llochabilitacio to www_rfhab;
     grant select,insert,delete,update on rfh_plugin to www_rfhab;
-    grant select,insert,delete,update on rfh_rol to www_rfhab;
+    grant select,insert,delete,update on rfh_habilitacio to www_rfhab;
     grant select,insert,delete,update on rfh_traduccio to www_rfhab;
     grant select,insert,delete,update on rfh_traducciomap to www_rfhab;
     grant select,insert,delete,update on rfh_unitat to www_rfhab;

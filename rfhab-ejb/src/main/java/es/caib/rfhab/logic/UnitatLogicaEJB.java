@@ -45,13 +45,19 @@ public class UnitatLogicaEJB extends UnitatEJB implements UnitatLogicaService {
     @Override
     @PermitAll
     public Unitat findByCodiDir3(String codi) throws I18NException {
-        return UnitatLogicaEJB.findByCodiDir3(this, codi);
+        Where codiDir3W = UnitatFields.CODI.equal(codi);
+        List<Unitat> resultats = this.select(codiDir3W);
+        return (resultats != null && resultats.size() > 0) ? resultats.get(0) : null;
+        //return UnitatLogicaEJB.findByCodiDir3(this, codi);
     }
 
     @Override
     @PermitAll
     public Unitat findByCodiDir3(String codi, int versio) throws I18NException {
-        return UnitatLogicaEJB.findByCodiDir3(this, codi, versio);
+        Where codiDir3W = UnitatFields.CODI.equal(codi);
+        Where versioW = UnitatFields.VERSIO.equal(versio);
+        List<Unitat> resultats = this.select(Where.AND(codiDir3W, versioW));
+        return (resultats != null && resultats.size() > 0) ? resultats.get(0) : null;
     }
 
     @Override

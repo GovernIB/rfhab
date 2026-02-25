@@ -14,7 +14,7 @@
 	%>
  
 	<c:redirect
-		url="/usuari/nou/${loginInfo.usuariPersona.usuariid}/check" />
+		url="/usuari/nou/${loginInfo.usuariPersona.usuariID}/check" />
 	
 </c:if>
 

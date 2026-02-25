@@ -5,7 +5,7 @@
     }
 ,
     {
-        "url": "./openapi_interna_secure.json",
+        "url": "./rfhab_api_interna.json",
         "name": "Exemple Interna Seguretat"
     }
 ,

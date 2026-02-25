@@ -3,7 +3,7 @@
 --
 -- entitatid < 1000
 --
-INSERT INTO rfh_entitat(entitatid, nom, actiu, unitatid, databaixa) 
+INSERT INTO RFHAB.RFH_ENTITAT(entitatid, nom, actiu, unitatid, databaixa) 
 VALUES (1, 'Govern de les Illes Balears', 1, 1, NULL);
 
 --
@@ -20,26 +20,32 @@ VALUES (1, 'Govern de les Illes Balears', 1, 1, NULL);
 --  - correu
 --  - username
 --
-INSERT INTO rfh_usuari(usuariid, nom, llinatge1, llinatge2, nif, correu, actiu, datacreacio, idiomaid, username, darreraentitat, databaixa) 
+INSERT INTO RFHAB.RFH_USUARI(usuariid, nom, llinatge1, llinatge2, nif, correu, actiu, datacreacio, idiomaid, username, darreraentitat, databaixa) 
 VALUES (1, 'NomUsuari', 'RFHAB', NULL, '99999999R', 'rfhab@fundaciobit.org', 1, TO_TIMESTAMP('2024-06-19 14:42:30', 'YYYY-MM-DD HH24:MI:SS'), 'ca', 'rfhab', 1, NULL);
-
-
-
 
 --
 -- usuarientitatid < 1000
 -- actiu: ha de ser 1 per a que l'usuari es consideri actiu
 --
-INSERT INTO rfh_usuarientitat(usuarientitatid, entitatid, usuariid, actiu) VALUES (1, 1, 1, 1);
+INSERT INTO RFHAB.RFH_USUARIENTITAT(usuarientitatid, entitatid, usuariid, actiu) VALUES (1, 1, 1, 1);
 
 -- funcionari per a carrega massiva
-INSERT INTO rfh_funcionari(funcionariid, correu, databaixa, datacreacio, entitatid, identificador, llinatge1, llinatge2, nom, numero, observacions, tipusidentificador, usuari) VALUES (1, 'rfhab@fundaciobit.org', NULL, TO_TIMESTAMP('2026-01-28 09:15:30', 'YYYY-MM-DD HH24:MI:SS'), 1, '99999999R', 'RFHAB', NULL, 'NomUsuari', 'FH_0000001', NULL, 1, 'rfhab');
+INSERT INTO RFHAB.RFH_FUNCIONARI(funcionariid, correu, databaixa, datacreacio, entitatid, identificador, llinatge1, llinatge2, nom, numero, observacions, tipusidentificador, usuari) VALUES (1, 'rfhab@fundaciobit.org', NULL, TO_TIMESTAMP('2026-01-28 09:15:30', 'YYYY-MM-DD HH24:MI:SS'), 1, '99999999R', 'RFHAB', NULL, 'NomUsuari', 'FH_0000001', NULL, 1, 'rfhab');
 
 -- lloc de feina per a carrega massiva
-INSERT INTO rfh_lloc(llocid, codilloc, codillocpropi, databaixa, datacreacio, dataalta, entitatid, expansio, nom, observacions, personaloamr, unitatid) 
+INSERT INTO RFHAB.RFH_LLOC(llocid, codilloc, codillocpropi, databaixa, datacreacio, dataalta, entitatid, expansio, nom, observacions, personaloamr, unitatid) 
              VALUES (1, 'LF000001', 'PFH_000001', TO_TIMESTAMP('2030-12-31 23:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2026-02-03 23:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2026-02-03 23:00:00', 'YYYY-MM-DD HH24:MI:SS') 
              ,1,1,  'Placeholder carrega de dades massiva', 'Lloc de feina temporal per a la carrega inicial de dades', 0, 1);
 
 -- Assignacio de funcionari a lloc de feina per a carrega massiva
-INSERT INTO rfh_funcionarilloc(funcionarillocid, datacreacio, datafi, datainici, funcionariid, llocid, usuariid) 
+INSERT INTO RFHAB.RFH_FUNCIONARILLOC(funcionarillocid, datacreacio, datafi, datainici, funcionariid, llocid, usuariid) 
              VALUES (1, TO_TIMESTAMP('2026-02-03 23:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2030-12-31 23:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2026-02-03 23:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1, 1, 1);
+
+INSERT INTO RFHAB.RFH_TRADUCCIO (traduccioid) 
+             VALUES (1);   
+
+INSERT INTO RFHAB.RFH_TRADUCCIOMAP (traducciomapid, valor, idiomaid) 
+             VALUES (1, 'ca', 1);   
+
+INSERT INTO RFHAB.RFH_HABILITACIO(habilitacioid, codi, datacreacio, entitatid, nomid) 
+             VALUES (1, 'CEA', TO_TIMESTAMP('2026-02-03 23:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1, 1);     

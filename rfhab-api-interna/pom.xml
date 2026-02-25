@@ -157,7 +157,7 @@
                 </configuration>
 
                 <executions>
-                    <execution>
+                    <!--<execution>
                         <id>openapi_interna_1</id>
                         <phase>compile</phase>
                         <goals>
@@ -171,7 +171,7 @@
                                 <package>es.caib.rfhab.api.interna.all.exemplepublic</package>
                             </resourcePackages>
                         </configuration>
-                    </execution>
+                    </execution>-->
                     <execution>
                         <id>openapi_interna_2</id>
                         <phase>compile</phase>
@@ -180,17 +180,18 @@
                         </goals>
                         <configuration>
                             <contextId>Exemple Interna Seguretat</contextId>
-                            <outputFileName>openapi_interna_secure</outputFileName>
+                            <outputFileName>rfhab_api_interna</outputFileName>
                             <resourcePackages>
                                 <package>es.caib.rfhab.api.interna.config</package>
                                 <package>es.caib.rfhab.api.interna.secure.activitat</package>
                                 <package>es.caib.rfhab.api.interna.secure.funcionari</package>
                                 <package>es.caib.rfhab.api.interna.secure.lloc</package>
                                 <package>es.caib.rfhab.api.interna.secure.funcionarilloc</package>
+                                <package>es.caib.rfhab.api.interna.secure.carregadades</package>
                             </resourcePackages>
                         </configuration>
                     </execution>
-                    <execution>
+                    <!--<execution>
                         <id>openapi_interna_3</id>
                         <phase>compile</phase>
                         <goals>
@@ -204,7 +205,7 @@
                                 <package>es.caib.rfhab.api.interna.all.exemplereutilitzacio</package>
                             </resourcePackages>
                         </configuration>
-                    </execution>
+                    </execution>-->
                 </executions>
             </plugin>
 
@@ -248,7 +249,7 @@
                                 <java11>true</java11>
                             </configOptions>
                         </configuration>
-                    </execution>
+                    </execution> -->
                     <execution>
                         <id>openapi_interna_2</id>
                         <phase>prepare-package</phase>
@@ -257,29 +258,29 @@
                         </goals>
                         <configuration>
                             <inputSpec>
-                                ${project.basedir}/openapi/openapi_interna_secure.json</inputSpec>
+                                ${project.basedir}/openapi/rfhab_api_interna.json</inputSpec>
                             <generatorName>java</generatorName>
                             <skipValidateSpec>true</skipValidateSpec>
                             <configHelp>java</configHelp>
                             <library>resteasy</library>
                             <addCompileSourceRoot>false</addCompileSourceRoot>
-                            <output>${project.basedir}/../rfhab-api-interna-client-exemplesecure-v1</output>
-                            <apiPackage>${client.default.package}.exemplesecure.v1.api</apiPackage>
-                            <modelPackage>${client.default.package}.exemplesecure.v1.model</modelPackage>
-                            <invokerPackage>${client.default.package}.exemplesecure.v1.services</invokerPackage>
+                            <output>${project.basedir}/../rfhab-api-interna-client-v1</output>
+                            <apiPackage>${client.default.package}.rfhab.v1.api</apiPackage>
+                            <modelPackage>${client.default.package}.rfhab.v1.model</modelPackage>
+                            <invokerPackage>${client.default.package}.rfhab.v1.services</invokerPackage>
                             <generateModelTests>false</generateModelTests>
                             <configOptions>
                                 <groupId>es.caib.rfhab</groupId>
-                                <artifactId>rfhab-api-interna-client-exemplesecure-v1</artifactId>
+                                <artifactId>rfhab-api-interna-client-rfhab-v1</artifactId>
                                 <artifactVersion>1.0-SNAPSHOT</artifactVersion>
-                                <artifactDescription>RFHab - API Rest - Interna Client - Exemple Secure v1</artifactDescription>
+                                <artifactDescription>RFHab - API Rest - Interna Client - RFHAB v1</artifactDescription>
                                 <dateLibrary>java8</dateLibrary>
                                 <useTags>true</useTags>
                                 <hideGenerationTimestamp>true</hideGenerationTimestamp>
                                 <java11>true</java11>
                             </configOptions>
                         </configuration>
-                    </execution -->
+                    </execution> 
                     <!-- openapi3:  Dades Obertes no necessita Client JAVA -->
                     <!-- openapi3:  Rolsac -->
                     <!-- execution

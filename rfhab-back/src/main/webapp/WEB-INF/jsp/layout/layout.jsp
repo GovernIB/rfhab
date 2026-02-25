@@ -12,7 +12,7 @@
 	LoginInfo.getInstance().setNeedConfigUser(false);
 	%>
 
-	<c:redirect url="/usuari/nou/${loginInfo.usuariPersona.usuariid}/check" />
+	<c:redirect url="/usuari/nou/${loginInfo.usuariPersona.usuariID}/check" />
 </c:if>
 
 <%@ include file="/WEB-INF/jsp/moduls/imports.jsp"%>

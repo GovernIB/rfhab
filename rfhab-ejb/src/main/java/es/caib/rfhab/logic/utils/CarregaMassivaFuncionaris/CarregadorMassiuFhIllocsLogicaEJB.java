@@ -248,6 +248,12 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
         this.pass = Configuracio.getCarregadorMassiuPassword(apiExternaProperties);
         this.usuariId = Configuracio.getCarregadorMassiuUsuariId(apiExternaProperties);
         this.entitatId = Configuracio.getCarregadorMassiuEntitatId(apiExternaProperties);
+        
+        log.info("CarregadorMassiuFhIllocsLogicaEJB constructor - apiUrl: " + this.apiUrl);
+        log.info("CarregadorMassiuFhIllocsLogicaEJB constructor - user: " + this.user);
+        log.info("CarregadorMassiuFhIllocsLogicaEJB constructor - usuariId: " + this.usuariId);
+        log.info("CarregadorMassiuFhIllocsLogicaEJB constructor - entitatId: " + this.entitatId);
+        
         if (this.apiUrl == null || this.user == null || this.pass == null || this.usuariId == null
                 || this.entitatId == null) {
             throw new I18NException(
@@ -255,6 +261,54 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
         }
 
         this.mapper = new OdsToDtoMapper(new File(mappingFilePath));
+    }
+
+    /**
+     * Constructor amb EJBs injectats per utilitzar des de CarregaDadesService.
+     * 
+     * @param odsFilePath          Ruta del fitxer ODS
+     * @param mappingFilePath      Ruta del fitxer de mapping .properties
+     * @param apiExternaProperties Fitxer de propietats que conté la URL de l'API
+     * @param funcionariLogicaEjb  EJB de FuncionariLogicaService
+     * @param unitatLogicaEjb      EJB de UnitatLogicaService
+     * @param habilitacioLogicaEjb EJB de HabilitacioLogicaService
+     * @param llocLogicaEjb        EJB de LlocLogicaService
+     * @throws Exception Si hi ha problemes de lectura
+     */
+    public CarregadorMassiuFhIllocsLogicaEJB(String odsFilePath, String mappingFilePath,
+            Properties apiExternaProperties, 
+            FuncionariLogicaService funcionariLogicaEjb,
+            UnitatLogicaService unitatLogicaEjb,
+            HabilitacioLogicaService habilitacioLogicaEjb,
+            LlocLogicaService llocLogicaEjb)
+            throws Exception {
+        super();
+
+        this.odsFilePath = odsFilePath;
+        this.apiUrl = Configuracio.getCarregadorMassiuEndpoint(apiExternaProperties);
+        this.user = Configuracio.getCarregadorMassiuUser(apiExternaProperties);
+        this.pass = Configuracio.getCarregadorMassiuPassword(apiExternaProperties);
+        this.usuariId = Configuracio.getCarregadorMassiuUsuariId(apiExternaProperties);
+        this.entitatId = Configuracio.getCarregadorMassiuEntitatId(apiExternaProperties);
+        
+        log.info("CarregadorMassiuFhIllocsLogicaEJB constructor amb EJBs - apiUrl: " + this.apiUrl);
+        log.info("CarregadorMassiuFhIllocsLogicaEJB constructor amb EJBs - usuariId: " + this.usuariId);
+        
+        if (this.apiUrl == null || this.user == null || this.pass == null || this.usuariId == null
+                || this.entitatId == null) {
+            throw new I18NException(
+                    "CarregadorMassiuFhIllocs configuration is incomplete. Please check the properties file.");
+        }
+
+        this.mapper = new OdsToDtoMapper(new File(mappingFilePath));
+        
+        // Injectar els EJBs manualment
+        this.funcionariLogicaEjb = funcionariLogicaEjb;
+        this.unitatLogicaEjb = unitatLogicaEjb;
+        this.habilitacioLogicaEjb = habilitacioLogicaEjb;
+        this.llocLogicaEjb = llocLogicaEjb;
+        
+        log.info("EJBs injectats manualment al constructor");
     }
 
     /**
@@ -276,16 +330,56 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
 
         carregador = new CarregadorMassiuFhIllocsLogicaEJB(odsFilePath, mappingFilePath, apiExternaProperties);
 
+        // Inicialitzar EJBs
         carregador.funcionariLogicaEjb = new FuncionariLogicaEJB();
         carregador.unitatLogicaEjb = new UnitatLogicaEJB();
         carregador.habilitacioLogicaEjb = new HabilitacioLogicaEJB();
         carregador.llocLogicaEjb = new LlocLogicaEJB();
+        
+        // Injectar entity managers
+        javax.persistence.EntityManager em = funcionariMan.getEntityManager();
+        injectEntityManager(carregador.funcionariLogicaEjb, em);
+        injectEntityManager(carregador.unitatLogicaEjb, em);
+        injectEntityManager(carregador.habilitacioLogicaEjb, em);
+        injectEntityManager(carregador.llocLogicaEjb, em);
+        
         carregador.funcionariManAux = funcionariMan;
         carregador.unitatManAux = unitatMan;
         carregador.habilitacioManAux = habilitacioMan;
         carregador.llocManAux = llocMan;
 
         return carregador;
+    }
+    
+    /**
+     * Injecta l'EntityManager a un EJB via reflection per a tests
+     */
+    private static void injectEntityManager(Object ejb, javax.persistence.EntityManager em) throws Exception {
+        try {
+            // Cerca el camp __em (típic de GenApp)
+            java.lang.reflect.Field emField = findFieldInHierarchy(ejb.getClass(), "__em");
+            if (emField != null) {
+                emField.setAccessible(true);
+                emField.set(ejb, em);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("No s'ha pogut injectar l'EntityManager a " + ejb.getClass().getName(), e);
+        }
+    }
+    
+    /**
+     * Cerca un camp en la jerarquia de classes
+     */
+    private static java.lang.reflect.Field findFieldInHierarchy(Class<?> clazz, String fieldName) {
+        Class<?> current = clazz;
+        while (current != null) {
+            try {
+                return current.getDeclaredField(fieldName);
+            } catch (NoSuchFieldException e) {
+                current = current.getSuperclass();
+            }
+        }
+        return null;
     }
 
     /**
@@ -516,7 +610,7 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
 
         // creació de FH
         // (no se li pot posar una data alta passada, TODO???)
-        Funcionari funcionariExistent = FuncionariLogicaEJB.findByNif(this.getFuncionariMan(), dto.nif);
+        Funcionari funcionariExistent = funcionariLogicaEjb.findByNif(dto.nif);
         // Si ja existeix el funcionari, no l'intentam crear
         if (funcionariExistent == null) {
             NouFuncionariHabilitatDTO nouFh = new NouFuncionariHabilitatDTO(
@@ -525,7 +619,7 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
                     dto.nom,
                     dto.primerLlinatge,
                     dto.segonLlinatge,
-                    FuncionariLogicaEJB.getNumeroFhFromNumeric(this.getFuncionariMan(), Integer.parseInt(dto.numRfh)),
+                    funcionariLogicaEjb.getNumeroFhFromNumeric(Integer.parseInt(dto.numRfh)),
                     IdentificacioTipus.DNI,
                     dto.nif,
                     dto.usuari,
@@ -550,8 +644,7 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
         }
 
         // creació de llocs
-        List<Lloc> llocsExistents = LlocLogicaEJB.getLlocsByCodiIexpansio(this.getLlocMan(), dto.codiLlocFeina,
-                dto.expansio);
+        List<Lloc> llocsExistents = llocLogicaEjb.getLlocsByCodiIexpansio(dto.codiLlocFeina, dto.expansio);
 
         // SI JA EXISTEIX EL LLOC, NO L'HEM D'INTENTAR CREAR
         if (llocsExistents == null || llocsExistents.size() == 0) {
@@ -570,28 +663,34 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
             }
 
             String[] unitatLlocCodiDir3 = dto.dir3UnitatOrganica.split("[vV](?=\\d+$)");
-            String codiUnitatDir3 = unitatLlocCodiDir3[0].trim();
+            String codiUnitatDir3 = unitatLlocCodiDir3[0].trim().toUpperCase();
             Integer versioUnitatDir3 = unitatLlocCodiDir3.length > 1 ? (Integer.parseInt(unitatLlocCodiDir3[1].trim()))
                     : null;
             if (versioUnitatDir3 == null) {
                 versioUnitatDir3 = 1;
             }
-            log.info("Cercant unitat amb codiDir3: " + codiUnitatDir3 + " i versio: " + versioUnitatDir3);
+            log.info("=== DEBUG Cerca Unitat ===");
+            log.info("Codi original: [" + dto.dir3UnitatOrganica + "]");
+            log.info("Codi cercat: [" + codiUnitatDir3 + "] (length=" + codiUnitatDir3.length() + ")");
+            log.info("Versio: " + versioUnitatDir3);
             // TODO: Per ara no volem la versió...
-            // Unitat unitatLloc = UnitatLogicaEJB.findByCodiDir3(getUnitatMan(),
-            // codiUnitatDir3, versioUnitatDir3);
-            Unitat unitatLloc = UnitatLogicaEJB.findByCodiDir3(getUnitatMan(), codiUnitatDir3);
+            // Unitat unitatLloc = unitatLogicaEjb.findByCodiDir3(codiUnitatDir3, versioUnitatDir3);
+            Unitat unitatLloc = unitatLogicaEjb.findByCodiDir3(codiUnitatDir3);
             log.info("Unitat trobada: " + (unitatLloc != null ? unitatLloc.getUnitatID() : null));
             if (unitatLloc == null) {
-                String errorMsg = "No s'ha trobat la unitat amb codiDir " + dto.dir3UnitatOrganica;
+                String errorMsg = "No s'ha trobat la unitat amb codiDir3:\n" +
+                    "  Original: [" + dto.dir3UnitatOrganica + "]\n" +
+                    "  Cercat: [" + codiUnitatDir3 + "] (length=" + codiUnitatDir3.length() + ")\n" +
+                    "  Versió: " + versioUnitatDir3 + "\n" +
+                    "  COMPROVAR: Espais, majúscules/minúscules, i que el camp 'codiDir3' a la BD contingui aquest valor EXACTAMENT";
+
                 throw new I18NException(errorMsg);
             }
             List<Long> habilitacions = new ArrayList<>();
             String[] habilitacionsFromInput = dto.habilitacio.split(",");
             for (String codiHabilitacio : habilitacionsFromInput) {
                 log.info("Cercant habilitació amb codi: " + codiHabilitacio);
-                Habilitacio habilitacioTrobada = HabilitacioLogicaEJB.findByCodi(getHabilitacioMan(),
-                        codiHabilitacio.trim());
+                Habilitacio habilitacioTrobada = habilitacioLogicaEjb.findByCodi(codiHabilitacio.trim());
                 log.info("Habilitació trobada: "
                         + (habilitacioTrobada != null ? habilitacioTrobada.getHabilitacioID() : null));
                 if (habilitacioTrobada == null) {

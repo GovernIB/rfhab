@@ -274,7 +274,7 @@ public class AuthenticationSuccessListener implements ApplicationListener<Intera
                 }
 
                 persona = new UsuariJPA();
-                persona.setCorreu(info.getEmail() == null ? "" : info.getEmail());
+                persona.setCorreu(info.getEmail() == null || info.getEmail().trim().isEmpty() ? "noemail@" : info.getEmail());
 
                 persona.setNom(nom);
                 persona.setLlinatge1(llinatge1);

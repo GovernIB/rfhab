@@ -1,5 +1,44 @@
 -- Es suposa l'execució prèvia dels scripts 01 fins al 06 i de sample_sata_unitats_v1_0_1.
 
+
+INSERT INTO RFHAB.RFH_IDIOMA (idiomaid, nom, suportat, ordre)
+SELECT 'ca', 'Català', 1, 0
+FROM dual
+WHERE NOT EXISTS (
+    SELECT 1 
+    FROM RFHAB.RFH_IDIOMA 
+    WHERE idiomaid = 'ca'
+);
+
+INSERT INTO RFHAB.RFH_IDIOMA (idiomaid, nom, suportat, ordre)
+SELECT 'es', 'Castellano', 1, 1
+FROM dual
+WHERE NOT EXISTS (
+    SELECT 1 
+    FROM RFHAB.RFH_IDIOMA 
+    WHERE idiomaid = 'es'
+);
+
+
+INSERT INTO RFHAB.RFH_TRADUCCIO (traduccioid)
+SELECT 1
+FROM dual
+WHERE NOT EXISTS (
+    SELECT 1 
+    FROM RFHAB.RFH_TRADUCCIO 
+    WHERE traduccioid = 1
+);
+
+INSERT INTO RFHAB.RFH_TRADUCCIOMAP (traducciomapid, valor, idiomaid)
+SELECT 1, 'ca', 1
+FROM dual
+WHERE NOT EXISTS (
+    SELECT 1 
+    FROM RFHAB.RFH_TRADUCCIOMAP 
+    WHERE traducciomapid = 1
+);
+
+
 --
 -- entitatid < 1000
 --
@@ -34,18 +73,16 @@ INSERT INTO RFHAB.RFH_FUNCIONARI(funcionariid, correu, databaixa, datacreacio, e
 
 -- lloc de feina per a carrega massiva
 INSERT INTO RFHAB.RFH_LLOC(llocid, codilloc, codillocpropi, databaixa, datacreacio, dataalta, entitatid, expansio, nom, observacions, personaloamr, unitatid) 
-             VALUES (1, 'LF000001', 'PFH_000001', TO_TIMESTAMP('2030-12-31 23:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2026-02-03 23:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2026-02-03 23:00:00', 'YYYY-MM-DD HH24:MI:SS') 
+             VALUES (1,
+             'LF000001',
+             'PFH_000001',
+             null, TO_TIMESTAMP('2026-02-03 23:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2026-02-03 23:00:00', 'YYYY-MM-DD HH24:MI:SS') 
              ,1,1,  'Placeholder carrega de dades massiva', 'Lloc de feina temporal per a la carrega inicial de dades', 0, 1);
 
 -- Assignacio de funcionari a lloc de feina per a carrega massiva
 INSERT INTO RFHAB.RFH_FUNCIONARILLOC(funcionarillocid, datacreacio, datafi, datainici, funcionariid, llocid, usuariid) 
              VALUES (1, TO_TIMESTAMP('2026-02-03 23:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2030-12-31 23:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2026-02-03 23:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1, 1, 1);
 
-INSERT INTO RFHAB.RFH_TRADUCCIO (traduccioid) 
-             VALUES (1);   
-
-INSERT INTO RFHAB.RFH_TRADUCCIOMAP (traducciomapid, valor, idiomaid) 
-             VALUES (1, 'ca', 1);   
 
 INSERT INTO RFHAB.RFH_HABILITACIO(habilitacioid, codi, datacreacio, entitatid, nomid) 
              VALUES (1, 'CEA', TO_TIMESTAMP('2026-02-03 23:00:00', 'YYYY-MM-DD HH24:MI:SS'), 1, 1);     

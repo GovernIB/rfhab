@@ -204,7 +204,7 @@ public class LlocAdminController extends LlocController {
 				AdditionalField<Long, String> adfield4 = new AdditionalField<Long, String>();
 				adfield4.setCodeName("habilitacio.habilitacio.plural");
 				adfield4.setPosition(4);
-				// adfield4.setOrderBy(HabilitacioFields.CODI);
+				//adfield4.setOrderBy(HabilitacioFields.CODI);
 				adfield4.setEscapeXml(false);
 				adfield4.setValueMap(new HashMap<Long, String>());
 				llocFilterForm.addAdditionalField(adfield4);

@@ -1,0 +1,37 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Attach JBoss localhost:5005",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": 5005,
+      "projectName": "rfhab-back"
+    },
+    {
+      "type": "java",
+      "name": "Attach JBoss localhost:8787",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": 8787,
+      "projectName": "rfhab-back"
+    },
+    {
+      "type": "java",
+      "name": "Attach JBoss custom port",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": "${input:jbossDebugPort}",
+      "projectName": "rfhab-back"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "jbossDebugPort",
+      "type": "promptString",
+      "description": "Port de debug remot del JBoss",
+      "default": "5005"
+    }
+  ]
+}

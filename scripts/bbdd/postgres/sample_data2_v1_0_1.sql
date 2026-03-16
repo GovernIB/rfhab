@@ -1,5 +1,21 @@
 -- Es suposa l'execució prèvia dels scripts 01 fins al 06 i de sample_sata_unitats_v1_0_1.
 
+INSERT INTO rfh_traduccio (traduccioid)
+VALUES (1)
+ON CONFLICT (traduccioid) DO NOTHING;
+
+INSERT INTO rfh_traduccio (traduccioid)
+VALUES (2)
+ON CONFLICT (traduccioid) DO NOTHING;
+
+INSERT INTO rfh_traducciomap (traducciomapid, valor, idiomaid)
+VALUES (1, 'Còpia autèntica', 'ca')
+ON CONFLICT (traducciomapid) DO NOTHING;
+
+INSERT INTO rfh_traducciomap (traducciomapid, valor, idiomaid)
+VALUES (2, 'Copia auténtica', 'es')
+ON CONFLICT (traducciomapid) DO NOTHING;
+
 --
 -- entitatid < 1000
 --
@@ -29,3 +45,22 @@ INSERT INTO rfh_usuarientitat(usuarientitatid, entitatid, usuariid, actiu) VALUE
 
 -- funcionari per a carrega massiva
 INSERT INTO rfh_funcionari(funcionariid, correu, databaixa, datacreacio, entitatid, identificador, llinatge1, llinatge2, nom, numero, observacions, tipusidentificador, usuari) VALUES (1, 'rfhab@fundaciobit.org', NULL, '2026-01-28 09:15:30.001', 1, '99999999R', 'RFHAB', NULL, 'NomUsuari', 'FH_0000001', NULL, 1, 'rfhab');
+
+
+-- lloc de feina per a carrega massiva
+-- personaloamr = 1 --> NO Personal OAMR
+-- personaloamr = 2 --> SÍ Personal OAMR
+INSERT INTO RFH_LLOC(llocid, codilloc, codillocpropi, databaixa, datacreacio, dataalta, entitatid, expansio, nom, observacions, personaloamr, unitatid) 
+             VALUES (1,
+             'LF000001',
+             'PFH_000001',
+             null, '2026-02-03 23:00:00', '2026-02-03 23:00:00',
+             ,1,1,  'Placeholder carrega de dades massiva', 'Lloc de feina temporal per a la carrega inicial de dades', 1, 1);
+
+-- Assignacio de funcionari a lloc de feina per a carrega massiva
+INSERT INTO RFH_FUNCIONARILLOC(funcionarillocid, datacreacio, datafi, datainici, funcionariid, llocid, usuariid) 
+             VALUES (1, '2026-02-03 23:00:00', '2030-12-31 23:00:00', '2026-02-03 23:00:00', 1, 1, 1);
+
+
+INSERT INTO RFH_HABILITACIO(habilitacioid, codi, datacreacio, entitatid, nomid) 
+             VALUES (1, 'CEA', '2026-02-03 23:00:00', 1, 1);

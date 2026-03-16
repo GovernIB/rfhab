@@ -1,0 +1,485 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: otae@fundaciobit.org
+    name: Departament de Govern Digital a la Fundació Bit
+    url: https://governdigital.fundaciobit.org
+  description: Serveis REST de RFHab per ser accedits emprant autenticació
+  license:
+    name: European Union Public Licence (EUPL v1.2)
+    url: https://joinup.ec.europa.eu/sites/default/files/custom-page/attachment/eupl_v1.2_es.pdf
+  title: API REST INTERNA de RFHab
+  version: 1.0-SNAPSHOT
+externalDocs:
+  description: Java Client (GovernIB Github)
+  url: https://github.com/GovernIB/rfhab/tree/rfhab-1.0/rfhab-api-interna-client-exemplesecure-v1
+servers:
+- url: /rfhabapi/interna
+- url: http://localhost:8080/rfhabapi/interna
+- url: https://dev.caib.es/rfhabapi/interna
+- url: https://proves.caib.es/rfhabapi/interna
+- url: https://se.caib.es/rfhabapi/interna
+- url: https://www.caib.es/rfhabapi/interna
+tags:
+- description: Registrar l'activitat d'un/a funcionari/ària
+  name: RegistreActivitatFuncionariService
+- description: Carrega inicial de dades
+  name: CarregaDadesService
+- description: Registrar l'activitat d'un funcionari
+  name: FuncionariRestService
+- description: Controla les assignacions desl/de les funcionaris/es habilitats/des
+    a llocs de feina
+  name: FuncionariLlocRestService
+- description: Registrar i edita un lloc nou
+  name: LlocRestService
+paths:
+  /secure/activitat/registre:
+    post:
+      operationId: registreActivitat
+      parameters:
+      - description: Idioma en que s'han de retornar les dades(Només suportat 'ca'
+          o 'es')
+        examples:
+          Català:
+            description: Català
+            value: ca
+          Castellano:
+            description: Castellano
+            value: es
+        explode: true
+        in: query
+        name: language
+        required: false
+        schema:
+          default: ca
+          type: string
+        style: form
+      - description: NIF del/de la funcionari/ària que realitza la activitat
+        example: 44444444A
+        explode: true
+        in: query
+        name: funcionari
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: Tipus de l'activitat:<br />&emsp;<i>1 - Còpia autèntica<br />&emsp;2
+          - Final tràmit</i>
+        explode: true
+        in: query
+        name: tipus
+        required: true
+        schema:
+          description: 1 - Còpia autèntica<br />&emsp;2 - Final tràmit
+          enum:
+          - "1"
+          - "2"
+          type: string
+        style: form
+      - description: Data de registre de l'activitat
+        example: 2025-08-31T06:15:00+00:00
+        explode: true
+        in: query
+        name: data
+        required: true
+        schema:
+          pattern: "^(?:[1-9]\\d{3}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1\\d|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[1-9]\\\
+            d(?:0[48]|[2468][048]|[13579][26])|(?:[2468][048]|[13579][26])00)-02-29)T(?:[01]\\\
+            d|2[0-3]):[0-5]\\d:[0-5]\\d(?:Z|[+-][01]\\d:[0-5]\\d)$"
+          type: string
+        style: form
+      - description: "Identificador de còpia autèntica, podria ser un identificador\
+          \ intern de digitalib o bé el csv de la còpia autèntica. Obligatori pel\
+          \ tipus d'activitat 1"
+        example: klñjjskadfjklsdkl/asdlfjsd
+        explode: true
+        in: query
+        name: identificadorcopiaautentica
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Número de registre associat a l'activitat. Obligatori pel tipus
+          d'activitat 2
+        explode: true
+        in: query
+        name: registre
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Identificador associat a l'activitat de tràmit iniciada que es
+          preten marcar com a finalitzada. Obligatori pel tipus d'activitat 2
+        explode: true
+        in: query
+        name: idactuaciotramitfh
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Operació realitzada correctament.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestExceptionInfo'
+          description: Paràmetres incorrectes
+        "401":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: No Autenticat
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: No Autoritzat
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestExceptionInfo'
+          description: Error no controlat
+      security:
+      - BasicAuth: []
+      summary: Registra una activiat d'un funcionari
+      tags:
+      - RegistreActivitatFuncionariService
+      x-accepts:
+      - application/json
+  /secure/carregadades/carregainicial:
+    post:
+      operationId: CarregaInicialDades
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FitxersCarrega'
+        description: Fitxers
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Operació realitzada correctament
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestExceptionInfo'
+          description: Paràmetres incorrectes
+        "401":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: No Autenticat
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: No Autoritzat
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestExceptionInfo'
+          description: Error no controlat
+      security:
+      - BasicAuth: []
+      summary: Carrega inicial de dades
+      tags:
+      - CarregaDadesService
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /secure/funcionari/habilitacions:
+    get:
+      operationId: Habilitacions
+      parameters:
+      - description: Nom d'usuari del funcionari
+        example: u12345
+        explode: true
+        in: query
+        name: usuari
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Codi de la entitat
+        example: CAIB
+        explode: true
+        in: query
+        name: entitat
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Operació realitzada correctament
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestExceptionInfo'
+          description: Paràmetres incorrectes
+        "401":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: No Autenticat
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: No Autoritzat
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestExceptionInfo'
+          description: Error no controlat
+      security:
+      - BasicAuth: []
+      summary: Consulta les habilitacions d'un funcionari habilitat
+      tags:
+      - FuncionariRestService
+      x-accepts:
+      - application/json
+  /secure/funcionari/autoritzat:
+    get:
+      operationId: Comprobar Autorització
+      parameters:
+      - description: Idioma en que s'han de retornar les dades(Només suportat 'ca'
+          o 'es')
+        examples:
+          Català:
+            description: Català
+            value: ca
+          Castellano:
+            description: Castellano
+            value: es
+        explode: true
+        in: query
+        name: language
+        required: false
+        schema:
+          default: ca
+          type: string
+        style: form
+      - description: Usuari del funcionari habilitat
+        example: u12345
+        explode: true
+        in: query
+        name: usuari
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Codi SIA
+        example: 132313
+        explode: true
+        in: query
+        name: codisia
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Codi de la entitat
+        example: CAIB
+        explode: true
+        in: query
+        name: entitat
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Operació realitzada correctament
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestExceptionInfo'
+          description: Paràmetres incorrectes
+        "401":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: No Autenticat
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: No Autoritzat
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestExceptionInfo'
+          description: Error no controlat
+      security:
+      - BasicAuth: []
+      summary: Comprobar si un funcionari té permís per realitzar un trámit
+      tags:
+      - FuncionariRestService
+      x-accepts:
+      - application/json
+  /secure/funcionari/habilitat:
+    get:
+      operationId: ObtenirHabilitacionsFuncionari
+      parameters:
+      - description: Usuari del funcionari
+        explode: true
+        in: query
+        name: usuari
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Habilitació
+        example: COPIA
+        explode: true
+        in: query
+        name: habilitacio
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Codi de la entitat
+        explode: true
+        in: query
+        name: entitat
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: Operació realitzada correctament
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestExceptionInfo'
+          description: Paràmetres incorrectes
+        "401":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: No Autenticat
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: No Autoritzat
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestExceptionInfo'
+          description: Error no controlat
+      security:
+      - BasicAuth: []
+      summary: Obtenir les habilitacions associades a un/a funcionari/ària
+      tags:
+      - FuncionariRestService
+      x-accepts:
+      - application/json
+components:
+  schemas:
+    RestExceptionInfo:
+      description: Estructura de dades utilitzada per passar informació d'un error
+      example:
+        code: 0
+        causeStackTrace: causeStackTrace
+        causeException: causeException
+        errorMessage: errorMessage
+        stackTrace: stackTrace
+      properties:
+        code:
+          description: Codi de HTTP de l'error. Veure https://en.wikipedia.org/wiki/List_of_HTTP_status_codes.
+          format: int32
+          type: integer
+        errorMessage:
+          description: Missatge de l'error
+          type: string
+        stackTrace:
+          description: Stacktrace de l'excepció si n'hi hagués.
+          type: string
+        causeException:
+          description: Tipus de l'excepció origen (cause) si n'hi hagués.
+          type: string
+        causeStackTrace:
+          description: Stacktrace de l'excepció origen (cause) si n'hi hagués.
+          type: string
+      required:
+      - code
+      - errorMessage
+      type: object
+    FitxersCarrega:
+      example:
+        excel: excel
+        properties: properties
+      properties:
+        excel:
+          description: Excel.
+          format: byte
+          type: string
+        properties:
+          description: Excel.
+          format: byte
+          type: string
+      type: object
+  securitySchemes:
+    BasicAuth:
+      scheme: basic
+      type: http
+

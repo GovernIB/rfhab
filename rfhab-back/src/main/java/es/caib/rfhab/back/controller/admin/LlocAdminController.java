@@ -15,6 +15,8 @@ import org.apache.log4j.Logger;
 import org.fundaciobit.genapp.common.StringKeyValue;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.i18n.I18NValidationException;
+import org.fundaciobit.genapp.common.query.Field;
+import org.fundaciobit.genapp.common.query.GroupByItem;
 import org.fundaciobit.genapp.common.query.ITableManager;
 import org.fundaciobit.genapp.common.query.OrderBy;
 import org.fundaciobit.genapp.common.query.OrderType;
@@ -204,7 +206,7 @@ public class LlocAdminController extends LlocController {
 				AdditionalField<Long, String> adfield4 = new AdditionalField<Long, String>();
 				adfield4.setCodeName("habilitacio.habilitacio.plural");
 				adfield4.setPosition(4);
-				//adfield4.setOrderBy(HabilitacioFields.CODI);
+				// adfield4.setOrderBy(HabilitacioFields.CODI);
 				adfield4.setEscapeXml(false);
 				adfield4.setValueMap(new HashMap<Long, String>());
 				llocFilterForm.addAdditionalField(adfield4);
@@ -1049,15 +1051,15 @@ public class LlocAdminController extends LlocController {
 		}
 
 		if (ordenaPerData != null) {
-			final Integer PAGINA = llocFilterForm.getPage();
-			final Integer NUM_ELEMENTS = llocFilterForm.getItemsPerPage();
-			Integer firstResult = (PAGINA - 1) * NUM_ELEMENTS;
-			Integer maxResults = NUM_ELEMENTS;
+			log.info("sí ordenam per data");
+
 			Integer noApliquenPelsFiltres = 0;
 			List<Lloc> result = new ArrayList();
 			Map<Long, Timestamp> mapDarreraModificacio = new HashMap<>();
-			//TODO: ineficient total, això se carrega tota sa paginació i es recorr sempre tots els resultats...
-			for (int i = 0; i < (firstResult + NUM_ELEMENTS + noApliquenPelsFiltres)
+			List<Long> idsAfegits = new ArrayList();
+			// TODO: ineficient total, això se carrega tota sa paginació i es recorr sempre
+			// tots els resultats...
+			for (int i = 0; i < (inici + itemsPerPage + noApliquenPelsFiltres)
 					&& i < resultat.size(); i++) {
 				Select2Values<Long, Timestamp> select2Values = resultat.get(i);
 				log.info(select2Values.getValue1() + " " + select2Values.getValue2());
@@ -1065,8 +1067,9 @@ public class LlocAdminController extends LlocController {
 				Timestamp dataDarreraModificacio = select2Values.getValue2();
 				List<Lloc> llocsTrobats = ejb.select(Where.AND(LlocFields.LLOCID.equal(llocId), where));
 				if (llocsTrobats != null && llocsTrobats.size() > 0) {
-					if(i >= (firstResult + noApliquenPelsFiltres)){
+					if (i >= (inici + noApliquenPelsFiltres)) {
 						result.add(llocsTrobats.get(0));
+						idsAfegits.add(llocId);
 						mapDarreraModificacio.put(llocId, dataDarreraModificacio);
 					}
 				} else {
@@ -1074,11 +1077,44 @@ public class LlocAdminController extends LlocController {
 				}
 			}
 
+			int elementsRestants = itemsPerPage - result.size();
+			if (elementsRestants > 0) {
+				List<Lloc> llocsTrobats = super.executeSelect(ejb, Where.AND(where, LLOCID.notIn(idsAfegits)), null,
+						elementsRestants, inici + result.size());
+				log.info("ja tenim el resultat de la select sense ordenació per data");
+				// Comprovam si llocsTrobats és null, i si ho és, l'inicialitzam com a llista
+				// buida
+				if (llocsTrobats == null) {
+					llocsTrobats = new ArrayList<>();
+				}
+
+				for (Lloc lloc : llocsTrobats) {
+					Long llocId = lloc.getLlocID();
+					if (!mapDarreraModificacio.containsKey(llocId)) {
+						Stream<Select2Values<Long, Timestamp>> resultStream = resultat.stream();
+						Select2Values<Long, Timestamp> select2Values = resultStream
+								.filter(item -> item.getValue1().equals(llocId)).findFirst().orElse(null);
+						Timestamp dataDarreraModificacio = null;
+						if (select2Values != null) {
+							log.info(select2Values.getValue1() + " " + select2Values.getValue2());
+							dataDarreraModificacio = select2Values.getValue2();
+						}
+						mapDarreraModificacio.put(llocId, dataDarreraModificacio);
+
+						result.add(lloc);
+					}
+				}
+			}
+
+			log.info("acabam iteració de tots els elements");
+
 			request.getSession().setAttribute("mapDarreraModificacio", mapDarreraModificacio);
 
 			return result;
 		} else {
+			log.info("no ordenam per data");
 			List<Lloc> result = super.executeSelect(ejb, where, orderBy, itemsPerPage, inici);
+			log.info("ja tenim el resultat de la select sense ordenació per data");
 
 			Map<Long, Timestamp> mapDarreraModificacio = new HashMap<>();
 			for (Lloc lloc : result) {

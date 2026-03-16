@@ -77,7 +77,4 @@ rfhab-pluginsib/rfhab-pluginsib-arxiu/arxiuplugin.properties
 rfhab-ejb/sistramit.properties
 rfhab-ejb/carregadormassiu.properties
 doc/QuadernsDeCarrega/QuadernDeCarrega_actualitzacio_1.0.1/(CAT) Manual de Migració de Versions.odt
-doc/QuadernsDeCarrega/
-rfhab-api-interna/src/main/resources/carregadormassiu.properties
-carregadormassiu.properties
-rfhab-api-interna/testfiles/
+rfhab-api-interna/testfiles/carregadormassiu.properties

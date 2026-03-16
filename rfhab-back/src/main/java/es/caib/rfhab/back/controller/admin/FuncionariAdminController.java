@@ -513,6 +513,7 @@ public class FuncionariAdminController extends FuncionariController {
 		if (!"".equals(funcionariNom)) {
 			List<Long> funcionarisId = funcionariLogicaEjb.getFuncionarisIdsByNomComplet(funcionariNom);
 			if (funcionarisId != null) {
+				log.warn("XXXYYYZZZ S'HAN TROBAT " + funcionarisId.size() + "FUNCIONARIS AMB AQUEST NOM");
 				funcionariFuncionarisNomWhere = FuncionariFields.FUNCIONARIID.in(funcionarisId);
 			}
 		} else {
@@ -741,9 +742,15 @@ public class FuncionariAdminController extends FuncionariController {
 				Lloc lloc = llocs.get(0);
 				mapCodiLloc.put(funcionariID, lloc.getCodiLloc());
 				mapUnitatOrganica.put(funcionariID, unitatEJB.findByPrimaryKey(lloc.getUnitatID()).getCodi());
-				mapOamr.put(funcionariID,
-						((PersonalOamrTipus.fromValue(lloc.getPersonalOamr()) == PersonalOamrTipus.SI) ? TICK_SI_ICONA
-								: CREU_NO_ICONA));
+				String iconaPersonalOamr = BLANK_ICONA;
+				try {
+					iconaPersonalOamr = (PersonalOamrTipus.fromValue(lloc.getPersonalOamr()) == PersonalOamrTipus.SI)
+							? TICK_SI_ICONA
+							: CREU_NO_ICONA;
+				} catch (IllegalArgumentException ex) {
+					log.warn("Error recuperant el camp Personal OAMR per al funcionari " + funcionariID);
+				}
+				mapOamr.put(funcionariID, (iconaPersonalOamr));
 			} else {
 				mapCodiLloc.put(funcionariID, "");
 				mapUnitatOrganica.put(funcionariID, "");

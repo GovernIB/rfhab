@@ -29,12 +29,6 @@ public class UnitatLogicaEJB extends UnitatEJB implements UnitatLogicaService {
         return (UnitatJPA) super.findByPrimaryKey(_ID_);
     }
 
-    public static Unitat findByCodiDir3(IUnitatManager um, String codi) throws I18NException {
-        Where codiDir3W = UnitatFields.CODI.equal(codi);
-        List<Unitat> resultats = um.select(codiDir3W);
-        return (resultats != null && resultats.size() > 0) ? resultats.get(0) : null;
-    }
-
     public static Unitat findByCodiDir3(IUnitatManager um, String codi, int versio) throws I18NException {
         Where codiDir3W = UnitatFields.CODI.equal(codi);
         Where versioW = UnitatFields.VERSIO.equal(versio);

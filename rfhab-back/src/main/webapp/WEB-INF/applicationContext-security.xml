@@ -16,9 +16,7 @@
     
         <sec:csrf disabled="true"/>
         
-        <sec:logout success-handler-ref="rfhabLogoutSuccessHandler" delete-cookies="JSESSIONID"/>
-        
-        <sec:logout logout-success-url="/index.jsp" />
+		<sec:logout success-handler-ref="rfhabLogoutSuccessHandler" invalidate-session="true" delete-cookies="JSESSIONID"/>
 
   		<sec:intercept-url pattern="/js/**" access="permitAll"/>
 		<sec:intercept-url pattern="/doc/**" access="permitAll"/>

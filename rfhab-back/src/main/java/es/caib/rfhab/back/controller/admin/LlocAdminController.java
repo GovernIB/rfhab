@@ -824,7 +824,7 @@ public class LlocAdminController extends LlocController {
 		LlocJPA lloc = llocForm.getLloc();
 		if (lloc != null) {
 			String codiLloc = lloc.getCodiLloc();
-			if (codiLloc.equals(CODILLOC_FAKE_BUIT)) {
+			if (codiLloc != null && codiLloc.equals(CODILLOC_FAKE_BUIT)) {
 				lloc.setCodiLloc(null);
 			}
 		}

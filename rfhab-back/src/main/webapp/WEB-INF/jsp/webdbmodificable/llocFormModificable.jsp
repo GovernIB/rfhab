@@ -338,6 +338,24 @@
 						const codiLlocInput = document.getElementById("lloc.codiLloc");
 						if(codiLlocInput){
 							codiLlocInput.placeholder = '${LLOC_CODILLOC_PLACEHOLDER}';
+							
+							const expansioLlocInput = document.getElementById("lloc.expansio");
+							if (expansioLlocInput) {
+								const toggleExpansioReadonly = () => {
+									const teValor = codiLlocInput.value && codiLlocInput.value.trim() !== "";
+									//volem conservar el comportament original. Per fer-ho, mirarem el comportament de codiLlocInput
+									if(!codiLlocInput.readOnly){
+										expansioLlocInput.readOnly = !teValor;
+									}
+								};
+
+								// Estat inicial
+								toggleExpansioReadonly();
+
+								// Canvis mentre s'escriu o en perdre el focus
+								codiLlocInput.addEventListener("input", toggleExpansioReadonly);
+								codiLlocInput.addEventListener("change", toggleExpansioReadonly);
+							}
 						}
 						document.getElementById("lloc.codiLlocPropi").placeholder = '${LLOC_CODILLOCPROPI_PLACEHOLDER}';
 

@@ -346,6 +346,9 @@
 									//volem conservar el comportament original. Per fer-ho, mirarem el comportament de codiLlocInput
 									if(!codiLlocInput.readOnly){
 										expansioLlocInput.readOnly = !teValor;
+										if (!teValor) {
+											expansioLlocInput.value = null;
+										}
 									}
 								};
 

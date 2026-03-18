@@ -1,4 +1,4 @@
-package es.caib.rfhab.back.controller.admin;
+package es.caib.rfhab.back.controller.user;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,11 +16,11 @@ import es.caib.rfhab.model.fields.UsuariFields;
 import es.caib.rfhab.persistence.UsuariJPA;
 
 @Controller
-@RequestMapping(value = UsuariAdminController.CONTEXTWEB)
+@RequestMapping(value = UsuariUserController.CONTEXTWEB)
 @SessionAttributes(types = { UsuariForm.class })
-public class UsuariAdminController extends UsuariController {
+public class UsuariUserController extends UsuariController {
 
-	public static final String CONTEXTWEB = "/admin/usuari";
+	public static final String CONTEXTWEB = "/user/usuari";
 
 	@Override
 	public String getTileForm() {
@@ -43,6 +43,9 @@ public class UsuariAdminController extends UsuariController {
 			usuariForm.addReadOnlyField(UsuariFields.NIF);
 			usuariForm.addReadOnlyField(UsuariFields.USERNAME);
 			usuariForm.addReadOnlyField(UsuariFields.CORREU);
+			usuariForm.addReadOnlyField(UsuariFields.NOM);
+			usuariForm.addReadOnlyField(UsuariFields.LLINATGE1);
+			usuariForm.addReadOnlyField(UsuariFields.LLINATGE2);
 
 			if (_jpa.getDataBaixa() != null)
 				usuariForm.addReadOnlyField(UsuariFields.DATABAIXA);

@@ -157,7 +157,7 @@
 							</c:if>
 							<c:if test="${pipella ne 'super'}">
 								<a class="dropdown-item"
-									href="<c:url value="/${pipella}/usuari/${loginInfo.getUsuariPersona().getUsuariID()}/edit"></c:url>">
+									href="<c:url value="${not empty pipella ? '/' + pipella : ''}/usuari/${loginInfo.getUsuariPersona().getUsuariID()}/edit"></c:url>">
 									<fmt:message key="menu.usuari" />
 								</a>
 							</c:if>

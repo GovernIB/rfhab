@@ -50,6 +50,11 @@
             <module name="org.apache.log4j" export="TRUE"/>
             <module name="org.jboss.logging.commons.logging" export="TRUE"/>
             <module name="javax.ws.rs.api" export="TRUE"/>
+            <module name="com.github.ben-manes.caffeine" export="TRUE"/>
+            <module name="org.apache.commons.beanutils" export="TRUE"/>
+            <module name="org.apache.commons.collections" export="TRUE"/>
+            <module name="org.apache.velocity" export="TRUE"/>
+            <module name="org.apache.xerces" export="TRUE"/>
         </dependencies>
         <exclusions>
             <module name="org.jboss.resteasy.resteasy-json-binding-provider"/>

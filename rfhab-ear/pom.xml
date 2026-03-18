@@ -236,7 +236,17 @@
                         <!-- Requereix afegir mòdul 'org.apache.log4j' a jboss-deployment-structure.xml -->
 						**/log4j-*.jar,
                         <!-- Requereix afegir mòdul 'javax.ws.rs.api' a jboss-deployment-structure.xml -->
-						**/jsr311-api-1.1.1.jar
+						**/jsr311-api-1.1.1.jar,
+						<!-- Requereix afegir mòdul 'com.github.ben-manes.caffeine' a jboss-deployment-structure.xml -->
+						**/caffeine*redhat*.jar,
+						<!-- Requereix afegir mòdul 'org.apache.commons.beanutils' a jboss-deployment-structure.xml -->
+						**/commons-beanutils*redhat*.jar,
+						<!-- Requereix afegir mòdul 'org.apache.commons.collections' a jboss-deployment-structure.xml -->
+						**/commons-collections*redhat*.jar,
+						<!-- Requereix afegir mòdul 'org.apache.velocity' a jboss-deployment-structure.xml -->
+						**/velocity-engine-core*redhat*.jar,
+						<!-- Requereix afegir mòdul 'org.apache.xerces' a jboss-deployment-structure.xml -->
+						**/xercesImpl*redhat*.jar
 					</packagingExcludes>
                     
 					<includeLibInApplicationXml>false</includeLibInApplicationXml>

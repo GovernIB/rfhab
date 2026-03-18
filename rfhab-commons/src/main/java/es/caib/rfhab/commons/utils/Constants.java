@@ -36,15 +36,16 @@ public interface Constants {
 
         // MENU ADMIN
         public static final String FUNCIONARI_NUMERO_PLACEHOLDER_PREFIX = "FH_";
-        public static final String FUNCIONARI_NUMERO_REGEX_NUMERICPART = "\\d\\d\\d\\d\\d\\d\\d";// SI SE CANVIA AQUEST,
-                                                                                                 // CANVIAR ES D'BAIX
+        public static final String FUNCIONARI_NUMERO_REGEX_NUMERICPART = "\\d\\d\\d\\d\\d\\d\\d";// SI ES CANVIA AQUEST,
+                                                                                                 // CANVIAR EL D'BAIX
                                                                                                  // TAMBÉ
-        public static final String FUNCIONARI_NUMERO_PLACEHOLDER_NUMERICPART = "XXXXXXX";// SI SE CANVIA AQUEST, CANVIAR
-                                                                                         // ES D'ADALT TAMBE
+        public static final String FUNCIONARI_NUMERO_PLACEHOLDER_NUMERICPART = "XXXXXXX";// SI ES CANVIA AQUEST, CANVIAR
+                                                                                         // EL D'ADALT TAMBE
         public static final String REGEX_FUNCIONARI_NUMERO_PATTERN = FUNCIONARI_NUMERO_PLACEHOLDER_PREFIX
                         + FUNCIONARI_NUMERO_REGEX_NUMERICPART;
         public static final String FUNCIONARI_NUMERO_PLACEHOLDER = FUNCIONARI_NUMERO_PLACEHOLDER_PREFIX
                         + FUNCIONARI_NUMERO_PLACEHOLDER_NUMERICPART;
+        public static final String CORREU_PLACEHOLDER = "xxx@yyy.zz";
         public static final String SQL_LIKE_ESCAPE_PATTERN = "^";
         public static final String SQL_FUNCIONARI_NUMERO_PATTERN = REGEX_FUNCIONARI_NUMERO_PATTERN
                         .replaceAll("_", SQL_LIKE_ESCAPE_PATTERN + "_")

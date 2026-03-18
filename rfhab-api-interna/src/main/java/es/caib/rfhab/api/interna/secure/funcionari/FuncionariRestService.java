@@ -210,7 +210,8 @@ public class FuncionariRestService extends RestUtils {
 				log.info("HabilitacioLlocItem: " + habilitacioLlocItem);
 			});
 
-			List<Habilitacio> habilitacions = habilitacioLogicaEjb.select(HabilitacioFields.HABILITACIOID.in(habilitacionsLloc));
+			List<Habilitacio> habilitacions = habilitacioLogicaEjb
+					.select(HabilitacioFields.HABILITACIOID.in(habilitacionsLloc));
 
 			Boolean habilitat = false;
 			for (Habilitacio habilitacioItem : habilitacions) {
@@ -439,7 +440,8 @@ public class FuncionariRestService extends RestUtils {
 				log.info("HabilitacioLlocItem: " + habilitacioLlocItem);
 			});
 
-			List<Habilitacio> habilitacions = habilitacioLogicaEjb.select(HabilitacioFields.HABILITACIOID.in(habilitacionsLloc));
+			List<Habilitacio> habilitacions = habilitacioLogicaEjb
+					.select(HabilitacioFields.HABILITACIOID.in(habilitacionsLloc));
 
 			String resposta = "[";
 			for (Habilitacio habilitacioItem : habilitacions) {
@@ -499,7 +501,7 @@ public class FuncionariRestService extends RestUtils {
 					+ "</i>", required = true, example = "", schema = @Schema(type = "IdentificacioTipus", description = IdentificacioTipusValues.DESCRIPTION_ALL_VALUES)) @NotNull @QueryParam("tipusIdentificador") IdentificacioTipus tipusIdentificador,
 			@Parameter(description = "Identificador", required = true) @NotNull @QueryParam("identificador") String identificador,
 			@Parameter(description = "Usuari", required = true, schema = @Schema(implementation = String.class)) @QueryParam("username") @NotNull String username,
-			@Parameter(description = "Correu electrònic", required = true, schema = @Schema(implementation = String.class, pattern = CORREU_PATTERN)) @QueryParam("correu") @NotNull String correu,
+			@Parameter(description = "Correu electrònic", required = true, example = Constants.CORREU_PLACEHOLDER, schema = @Schema(implementation = String.class, pattern = CORREU_PATTERN)) @QueryParam("correu") @NotNull String correu,
 			@Parameter(description = "EntitatID", required = true, example = "1000") @QueryParam("entitatId") @NotNull Long entitatId,
 			@Parameter(description = "Número CAI", required = false, schema = @Schema(defaultValue = Constants.NUMEROCAI_BUIT, implementation = String.class)) @QueryParam("numerocai") String numeroCai,
 			@Parameter(description = "Observacions", required = false) @QueryParam("observacions") String observacions,

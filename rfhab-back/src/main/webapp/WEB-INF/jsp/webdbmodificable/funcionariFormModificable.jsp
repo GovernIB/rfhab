@@ -247,6 +247,16 @@
 					function(event) {
 
 						document.getElementById("funcionari.numero").placeholder = '${FUNCIONARI_NUMERO_PLACEHOLDER}';
+						document.getElementById("funcionari.correu").placeholder = '${CORREU_PLACEHOLDER}';
+
+						const correuLabel = document.getElementById("funcionari_correu_columnlabelid")?.querySelector("label");
+						const helpIcon = document.createElement("i");
+						helpIcon.className = "fas fa-question-circle";
+						helpIcon.title = "<fmt:message key="correu"/>";
+						helpIcon.style.marginLeft = "5px";
+						if(correuLabel){
+							correuLabel.appendChild(helpIcon);
+						}
 
 						if ("true" != "${isView}") {
 

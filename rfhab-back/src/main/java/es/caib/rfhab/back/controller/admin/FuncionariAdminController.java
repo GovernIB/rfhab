@@ -238,6 +238,7 @@ public class FuncionariAdminController extends FuncionariController {
 				funcionariForm.addAdditionalButton(guardarButton);
 			}
 		}
+		mav.addObject("CORREU_PLACEHOLDER", Constants.CORREU_PLACEHOLDER);
 		mav.addObject("FUNCIONARI_NUMERO_PLACEHOLDER", Constants.FUNCIONARI_NUMERO_PLACEHOLDER);
 
 		funcionariForm.addReadOnlyField(FuncionariFields.DATACREACIO);

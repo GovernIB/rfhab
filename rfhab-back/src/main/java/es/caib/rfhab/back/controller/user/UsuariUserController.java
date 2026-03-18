@@ -24,7 +24,7 @@ public class UsuariUserController extends UsuariController {
 
 	@Override
 	public String getTileForm() {
-		return "usuariFormUser";
+		return "usuariFormAdmin";
 	}
 
 	@Override

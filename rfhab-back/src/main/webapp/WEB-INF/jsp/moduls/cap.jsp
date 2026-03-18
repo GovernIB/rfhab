@@ -156,10 +156,18 @@
 								</a>
 							</c:if>
 							<c:if test="${pipella ne 'super'}">
-								<a class="dropdown-item"
-									href="<c:url value="${not empty pipella ? fn:concat('/', pipella) : ''}/usuari/${loginInfo.getUsuariPersona().getUsuariID()}/edit"></c:url>">
-									<fmt:message key="menu.usuari" />
-								</a>
+								<c:if test="${not empty pipella}">
+									<a class="dropdown-item"
+										href="<c:url value="/${pipella}/usuari/${loginInfo.getUsuariPersona().getUsuariID()}/edit"></c:url>">
+										<fmt:message key="menu.usuari" />
+									</a>
+								</c:if>
+								<c:if test="${empty pipella}">
+									<a class="dropdown-item"
+										href="<c:url value="/usuari/${loginInfo.getUsuariPersona().getUsuariID()}/edit"></c:url>">
+										<fmt:message key="menu.usuari" />
+									</a>
+								</c:if>
 							</c:if>
 
 							<hr style="margin: 6px 6px;" />

@@ -308,6 +308,9 @@ public class LlocAdminController extends LlocController {
 			AdditionalButton donarDeAltaButton = getDonarDeAltaButton(request, true);
 			llocForm.addAdditionalButton(donarDeAltaButton);
 			llocForm.addReadOnlyField(LlocFields.DATAALTA);
+
+			String nouLlocCodiPropi = llocLogicaEjb.getNouLlocCodiPropi(null, null);
+			lloc.setCodiLlocPropi(nouLlocCodiPropi);
 		} else {
 			// Pipella Funcionari assignat- Obtenir tots els funcionaris relacionats amb el
 			// lloc (actuals, sense data fi)
@@ -599,9 +602,6 @@ public class LlocAdminController extends LlocController {
 			// CODI LLOC PROPI DE RFHAB
 			String codiLloc = lloc.getCodiLloc();
 			String expansioLloc = lloc.getExpansio();
-
-			String nouLlocCodiPropi = llocLogicaEjb.getNouLlocCodiPropi(codiLloc, expansioLloc);
-			lloc.setCodiLlocPropi(nouLlocCodiPropi);
 
 			// per passar la validació de genapp necessitam això (encara que la base de
 			// dades ho permeti)

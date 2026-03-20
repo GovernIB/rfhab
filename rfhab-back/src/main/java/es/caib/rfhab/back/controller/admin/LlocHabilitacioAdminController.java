@@ -267,6 +267,5 @@ public class LlocHabilitacioAdminController extends LlocHabilitacioController {
 			mapHabilitacio.put(llocHabilitacioId, habilitacioDesc);
 
 		}
-
 	}
 }

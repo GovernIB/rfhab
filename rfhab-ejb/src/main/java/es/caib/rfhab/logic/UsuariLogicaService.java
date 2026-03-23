@@ -43,4 +43,5 @@ public interface UsuariLogicaService extends UsuariService {
 			RolsacPlugin rolsacPlugin)
 			throws I18NException;
 
+	public UsuariJPA findByPrimaryKey(Long _ID_);
 }

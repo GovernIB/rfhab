@@ -377,28 +377,29 @@ public class AuthenticationSuccessListener implements ApplicationListener<Intera
             }
 
             log.info("necesitaConfigurarUsuari = " + necesitaConfigurar);
-
         }
 
-        if (usuariPersona.getUsuariEntitats().size() < 1) {
-            I18NTranslation translation = new I18NTranslation("error.senseentitat", username);
-            log.info("error senseentitat => " + translation);
-            I18NTranslation translation2 = new I18NTranslation("error.nomesaccessuper", username);
-            log.info("error senseentitat => " + translation2);
-            // Si l'usuari no té el rol SUPER i no te associada cap entitat
-            if (!containsRoleSuper) {
-                throw new LoginException(translation.toString());
+        if(!necesitaConfigurar){
+            if (usuariPersona.getUsuariEntitats().size() < 1) {
+                I18NTranslation translation = new I18NTranslation("error.senseentitat", username);
+                log.error("error senseentitat => " + I18NUtils.tradueix(translation));
+                I18NTranslation translation2 = new I18NTranslation("error.nomesaccessuper", username);
+                log.error("error senseentitat => " + I18NUtils.tradueix(translation2));
+                // Si l'usuari no té el rol SUPER i no te associada cap entitat
+                if (!containsRoleSuper) {
+                    throw new LoginException(I18NUtils.tradueix(translation));
+                }
             }
-        }
-
-        if (entitatIDActual == null) {
-            I18NTranslation translation = new I18NTranslation("error.senseentitatactiva", username);
-            log.info("error senseentitatactiva => " + translation);
-            I18NTranslation translation2 = new I18NTranslation("error.nomesaccessuper", username);
-            log.info("error senseentitatactiva => " + translation2);
-            // Si l'usuari no té el rol SUPER i no te associada cap entitat activa
-            if (!containsRoleSuper) {
-                throw new LoginException(translation.toString());
+    
+            if (entitatIDActual == null) {
+                I18NTranslation translation = new I18NTranslation("error.senseentitatactiva", username);
+                log.error("error senseentitatactiva => " + I18NUtils.tradueix(translation));
+                I18NTranslation translation2 = new I18NTranslation("error.nomesaccessuper", username);
+                log.error("error senseentitatactiva => " + I18NUtils.tradueix(translation2));
+                // Si l'usuari no té el rol SUPER i no te associada cap entitat activa
+                if (!containsRoleSuper) {
+                    throw new LoginException(I18NUtils.tradueix(translation));
+                }
             }
         }
 
@@ -419,7 +420,6 @@ public class AuthenticationSuccessListener implements ApplicationListener<Intera
         SecurityContextHolder.getContext().setAuthentication(loginInfo.generateToken());
 
         log.info(" =================================================================");
-
     }
 
     public static IUserInformationPlugin getUserInformationPluginInstance() throws I18NException {

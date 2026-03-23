@@ -64,7 +64,11 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(localeChangeInterceptor());
 		registry.addInterceptor(new UsuariIsFuncionariActiuHabilitatInterceptor(funcionariLogicaEjb, usuariLogicaEjb))
-				.addPathPatterns(UserController.CONTEXTWEB + "**"); // Protegeix tot el controlador UserController
+				.addPathPatterns(UserController.CONTEXTWEB + "**")
+				.excludePathPatterns(
+						UserController.CONTEXTWEB + "nou/*/check",
+						UserController.CONTEXTWEB + "new",
+						UserController.CONTEXTWEB + "*/edit"); // Excepcions per als redirects inicials d'usuari
 
 	}
 

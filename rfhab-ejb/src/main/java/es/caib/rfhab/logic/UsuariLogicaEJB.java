@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
@@ -199,4 +200,9 @@ public class UsuariLogicaEJB extends UsuariEJB implements UsuariLogicaService {
 		}
 	}
 
+	@Override
+	@PermitAll
+	public UsuariJPA findByPrimaryKey(Long _ID_) {
+		return (UsuariJPA) super.findByPrimaryKey(_ID_);
+	}
 }

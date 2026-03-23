@@ -56,6 +56,7 @@ import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.Unitat;
 import es.caib.rfhab.model.entity.Usuari;
 import es.caib.rfhab.model.fields.IdiomaFields;
+import es.caib.rfhab.model.fields.UsuariFields;
 import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.UsuariJPA;
 import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
@@ -584,9 +585,9 @@ public class UserController extends UsuariController {
 		log.info("XYZ ZZZ usuariID = " + usuari.getUsuariID());
 		log.info("XYZ ZZZ usuariNIF = " + usuari.getNif());
 		if (usuari.getUsuariID() == 0 || usuari.getNif() == null) {
-			redirectString = "redirect:" + getContextWeb() + "/new";
+			redirectString = "redirect:" + getContextWeb() + "new";
 		} else {
-			redirectString = "redirect:" + getContextWeb() + "/" + usuariID + "/edit";
+			redirectString = "redirect:" + getContextWeb() + usuariID + "/edit";
 		}
 		return redirectString;
 	}
@@ -623,19 +624,40 @@ public class UserController extends UsuariController {
 
 		userForm.setCancelButtonVisible(false);
 		userForm.setDeleteButtonVisible(false);
-		if (userForm.getUsuari().getUsername() != null) {
-			userForm.addReadOnlyField(USERNAME);
+		UsuariJPA usuari = userForm.getUsuari();
+		LoginInfo loginInfo = LoginInfo.getInstance();
+
+		if (usuari == null || usuari.getUsuariID() != loginInfo.getUsuariPersona().getUsuariID()) {
+			throw new I18NException("No es pot veure ni editar un usuari que no sigui el propi");
 		}
 
-		String nif = userForm.getUsuari().getNif();
+		userForm.addHiddenField(UsuariFields.DARRERAENTITAT);
+		userForm.addReadOnlyField(UsuariFields.DATACREACIO);
+		userForm.addReadOnlyField(UsuariFields.ACTIU);
+		userForm.addReadOnlyField(UsuariFields.CORREU);
+		userForm.addReadOnlyField(UsuariFields.NOM);
+		userForm.addReadOnlyField(UsuariFields.LLINATGE1);
+		userForm.addReadOnlyField(UsuariFields.LLINATGE2);
+		if (_jpa.getDataBaixa() != null)
+			userForm.addReadOnlyField(UsuariFields.DATABAIXA);
+		else
+			userForm.addHiddenField(UsuariFields.DATABAIXA);
 
+		// camps indispensables per l'aplicació
+		if (usuari.getUsername() != null) {
+			userForm.addReadOnlyField(USERNAME);
+		}
+		// camps indispensables per l'aplicació
+		String nif = usuari.getNif();
 		if (nif != null && nif.trim().length() > 0) {
 			userForm.addReadOnlyField(NIF);
 		}
 
-		Usuari usuari = LoginInfo.getInstance().getUsuariPersona();
-		UsuariJPA usuariJPA = new UsuariJPA(usuari);
+		Usuari usuariLogin = loginInfo.getUsuariPersona();
+		UsuariJPA usuariJPA = new UsuariJPA(usuariLogin);
 		userForm.setUsuari(usuariJPA);
+
+		createMessageWarning(request, "usuari.nou.primeriuniccop", usuari.getUsuariID());
 
 		return userForm;
 	}
@@ -717,5 +739,10 @@ public class UserController extends UsuariController {
 
 	protected byte[] getResource(String path) throws Exception {
 		return FileUtils.toByteArray(getClass().getResourceAsStream(path));
+	}
+
+	@Override
+	public UsuariJPA findByPrimaryKey(HttpServletRequest request, java.lang.Long usuariID) throws I18NException {
+		return (UsuariJPA) usuariLogicaEjb.findByPrimaryKey(usuariID);
 	}
 }

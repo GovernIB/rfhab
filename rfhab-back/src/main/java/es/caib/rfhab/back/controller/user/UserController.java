@@ -721,7 +721,8 @@ public class UserController extends UsuariController {
 
 	@Override
 	public String getTileForm() {
-		return "userFormCommon";
+		// return "userFormCommon";
+		return "usuariFormAdmin";
 	}
 
 	protected static String getAbsoluteControllerBase(HttpServletRequest request,

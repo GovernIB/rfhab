@@ -38,6 +38,9 @@ buildNumber.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
 
+#### Gradle ####
+.gradle/
+
 # Eclipse m2e generated files
 # Eclipse Core
 .project
@@ -78,3 +81,4 @@ rfhab-ejb/sistramit.properties
 rfhab-ejb/carregadormassiu.properties
 doc/QuadernsDeCarrega/QuadernDeCarrega_actualitzacio_1.0.1/(CAT) Manual de Migració de Versions.odt
 rfhab-api-interna/testfiles/carregadormassiu.properties
+rfhab-api-interna-client-v1/carregadormassiu.properties

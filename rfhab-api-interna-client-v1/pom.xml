@@ -122,6 +122,7 @@
                     </systemPropertyVariables>
                     <argLine>-Xms512m -Xmx1500m</argLine>
                     <parallel>methods</parallel>
+                    <threadCountMethods>1</threadCountMethods>
                 </configuration>
             </plugin>
 
@@ -326,8 +327,8 @@
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.4.2</version>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit-version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

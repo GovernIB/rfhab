@@ -583,17 +583,11 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 			nouNumber = Integer.parseInt(numericPart);
 			nouNumber += 1;
 		}
-		String nouFuncionariNumero = getNumeroFhFromNumeric(nouNumber);
+		String nouFuncionariNumero = FuncionariLogicaEJB.getNumeroFhFromNumeric(nouNumber);
 		return nouFuncionariNumero;
 	}
 
-	@Override
-	@PermitAll
-	public String getNumeroFhFromNumeric(int nouNumber) {
-		return FuncionariLogicaEJB.getNumeroFhFromNumeric(this, nouNumber);
-	}
-
-	public static String getNumeroFhFromNumeric(IFuncionariManager fm, int nouNumber) {
+	public static String getNumeroFhFromNumeric(int nouNumber) {
 		// Format numèric amb el mateix nombre de dígits que l'original
 		String updatedNumericPart = String
 				.format("%0" + Constants.FUNCIONARI_NUMERO_PLACEHOLDER_NUMERICPART.length() + "d", nouNumber);
@@ -611,6 +605,7 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 						+ " rf where UPPER(CONCAT(rf." + FuncionariFields.NOM.javaName + ", ' ', rf."
 						+ FuncionariFields.LLINATGE1.javaName + ", ' ', rf." + FuncionariFields.LLINATGE2.javaName
 						+ ")) like '%" + nomComplet.toUpperCase() + "%'");
+		log.warn("XXXYYYZZZ getFuncionarisIdsByNomComplets queryString " + queryString);
 		// Class<?> funcionariIdClass =
 		// FuncionariFields.FUNCIONARIID.getClass().getField("javaName").getType();//
 		// TODO:comentar

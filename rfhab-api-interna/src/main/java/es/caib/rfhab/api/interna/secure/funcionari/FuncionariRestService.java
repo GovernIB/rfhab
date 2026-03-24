@@ -130,6 +130,27 @@ public class FuncionariRestService extends RestUtils {
 
 	protected static final String SECURITY_NAME = "BasicAuth";
 
+	public static class ConsultaFuncionariResponse {
+		private boolean existeix;
+		private boolean donatDeBaixa;
+
+		public boolean isExisteix() {
+			return existeix;
+		}
+
+		public void setExisteix(boolean existeix) {
+			this.existeix = existeix;
+		}
+
+		public boolean isDonatDeBaixa() {
+			return donatDeBaixa;
+		}
+
+		public void setDonatDeBaixa(boolean donatDeBaixa) {
+			this.donatDeBaixa = donatDeBaixa;
+		}
+	}
+
 	protected ObjectMapper mapper = new ObjectMapper();
 
 	@Path("/habilitat")
@@ -788,6 +809,42 @@ public class FuncionariRestService extends RestUtils {
 			log.info(successMsg);
 
 			return I18NLogicUtilsApiInterna.tradueix(new Locale(language), "operacio.success");
+		} catch (I18NException re) {
+			log.error(re.getMessage(), re);
+			throw new RestException(re.getMessage(), Status.BAD_REQUEST);
+		} catch (Throwable th) {
+			String msg = I18NLogicUtilsApiInterna.tradueix(new Locale(language), "funcionari.error.desconegut",
+					new String[] { th.getMessage() });
+			log.error(msg, th);
+			throw new RestException(msg, th, Status.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@Path("/consulta")
+	@POST
+	@Hidden
+	@RolesAllowed({ Constants.RFH_WS })
+	@SecurityRequirement(name = FuncionariRestService.SECURITY_NAME)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String consultaPerNif(
+			@Parameter(name = "language", description = "Idioma en que s'han de retornar les dades(Només suportat 'ca' o 'es')", in = ParameterIn.QUERY, required = false, examples = {
+					@ExampleObject(name = "Català", value = "ca"),
+					@ExampleObject(name = "Castellano", value = "es") }, schema = @Schema(defaultValue = "ca", implementation = String.class)) @QueryParam("language") String language,
+			@Parameter(description = "Identificador (NIF, NIE o passaport)", required = true) @NotNull @QueryParam("identificador") String identificador) {
+		try {
+			if (language == null || language.isEmpty()) {
+				language = "ca";
+			}
+			ConsultaFuncionariResponse response = new ConsultaFuncionariResponse();
+			Funcionari funcionari = funcionariEjb.findByNif(identificador);
+			response.setExisteix(funcionari != null);
+			if (funcionari != null) {
+				Timestamp ara = new Timestamp(System.currentTimeMillis());
+				response.setDonatDeBaixa(
+						funcionari.getDataBaixa() != null && funcionari.getDataBaixa().before(ara));
+			}
+			return mapper.writeValueAsString(response);
 		} catch (I18NException re) {
 			log.error(re.getMessage(), re);
 			throw new RestException(re.getMessage(), Status.BAD_REQUEST);

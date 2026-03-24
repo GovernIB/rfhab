@@ -44,6 +44,8 @@ import org.fundaciobit.pluginsib.utils.rest.RestException;
 import org.fundaciobit.pluginsib.utils.rest.RestExceptionInfo;
 import org.fundaciobit.pluginsib.utils.rest.RestUtils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -107,6 +109,29 @@ public class LlocRestService extends RestUtils {
 	protected static final String TAG_NAME = "LlocRestService";
 
 	protected static final String SECURITY_NAME = "BasicAuth";
+
+	protected ObjectMapper mapper = new ObjectMapper();
+
+	public static class ConsultaLlocResponse {
+		private boolean existeix;
+		private boolean donatDeBaixa;
+
+		public boolean isExisteix() {
+			return existeix;
+		}
+
+		public void setExisteix(boolean existeix) {
+			this.existeix = existeix;
+		}
+
+		public boolean isDonatDeBaixa() {
+			return donatDeBaixa;
+		}
+
+		public void setDonatDeBaixa(boolean donatDeBaixa) {
+			this.donatDeBaixa = donatDeBaixa;
+		}
+	}
 
 	/**
 	 * Registra un lloc nou a RFHab
@@ -493,6 +518,45 @@ public class LlocRestService extends RestUtils {
 			log.info(successMsg);
 
 			return I18NLogicUtilsApiInterna.tradueix(new Locale(language), "operacio.success");
+		} catch (I18NException re) {
+			log.error(re.getMessage(), re);
+			throw new RestException(re.getMessage(), Status.BAD_REQUEST);
+		} catch (Throwable th) {
+			String msg = I18NLogicUtilsApiInterna.tradueix(new Locale(language), "lloc.error.desconegut",
+					new String[] { th.getMessage() });
+			log.error(msg, th);
+			throw new RestException(msg, th, Status.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@Path("/consulta")
+	@POST
+	@Hidden
+	@RolesAllowed({ Constants.RFH_WS })
+	@SecurityRequirement(name = LlocRestService.SECURITY_NAME)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String consultaPerCodiIExpansio(
+			@Parameter(name = "language", description = "Idioma en que s'han de retornar les dades(Només suportat 'ca' o 'es')", in = ParameterIn.QUERY, required = false, examples = {
+					@ExampleObject(name = "Català", value = "ca"),
+					@ExampleObject(name = "Castellano", value = "es") }, schema = @Schema(defaultValue = "ca", implementation = String.class)) @QueryParam("language") String language,
+			@Parameter(description = "Codi del lloc", required = true) @QueryParam("codilloc") @NotNull String codiLloc,
+			@Parameter(description = "Expansió del lloc", required = false) @QueryParam("expansio") String expansio) {
+		try {
+			if (language == null || language.isEmpty()) {
+				language = "ca";
+			}
+			ConsultaLlocResponse response = new ConsultaLlocResponse();
+			List<Lloc> llocs = llocLogicaEjb.getLlocsByCodiIexpansio(codiLloc, expansio);
+			if (llocs != null && llocs.size() > 0) {
+				Lloc lloc = llocs.get(0);
+				response.setExisteix(true);
+				Timestamp ara = new Timestamp(System.currentTimeMillis());
+				response.setDonatDeBaixa(lloc.getDataBaixa() != null && lloc.getDataBaixa().before(ara));
+			} else {
+				response.setExisteix(false);
+			}
+			return mapper.writeValueAsString(response);
 		} catch (I18NException re) {
 			log.error(re.getMessage(), re);
 			throw new RestException(re.getMessage(), Status.BAD_REQUEST);

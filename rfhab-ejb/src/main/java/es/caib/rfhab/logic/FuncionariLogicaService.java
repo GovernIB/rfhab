@@ -52,8 +52,6 @@ public interface FuncionariLogicaService extends FuncionariService {
 
 	public String getNouFuncionariNumero() throws I18NException;
 
-	public String getNumeroFhFromNumeric(int nouNumber);
-
 	public List<Long> getFuncionarisIdsByNomComplet(String nomComplet) throws NoSuchFieldException;
 
 	public Where isPersonalOamrWhere(final PersonalOamrTipus personalOamr) throws I18NException;

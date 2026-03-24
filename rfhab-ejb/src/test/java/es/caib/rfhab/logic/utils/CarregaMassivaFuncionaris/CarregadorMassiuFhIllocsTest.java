@@ -11,8 +11,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
-import javax.persistence.EntityManager;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -27,23 +25,11 @@ import org.junit.runners.Parameterized.Parameters;
 
 import org.fundaciobit.pluginsib.utils.rest.RestUtils;
 
-import es.caib.rfhab.logic.EntitatManagerUtil;
-import es.caib.rfhab.model.RFHabDaoManager;
-import es.caib.rfhab.model.dao.IFuncionariManager;
-import es.caib.rfhab.model.dao.IHabilitacioManager;
-import es.caib.rfhab.model.dao.ILlocManager;
-import es.caib.rfhab.model.dao.IUnitatManager;
-
 @RunWith(Parameterized.class)
 public class CarregadorMassiuFhIllocsTest {
 
     protected final static Logger log = Logger.getLogger(CarregadorMassiuFhIllocsTest.class);
 
-    private static EntityManager _em = null;
-    protected static IFuncionariManager funcionariMan = null;
-    protected static IUnitatManager unitatMan = null;
-    protected static IHabilitacioManager habilitacioMan = null;
-    protected static ILlocManager llocMan = null;
     private static Properties configCarregadorMassiu = null;
     private static CarregadorMassiuFhIllocsLogicaService carregador = null;
     private static List<SimpleDateFormat> datesFormatsFromOds = null;
@@ -80,8 +66,7 @@ public class CarregadorMassiuFhIllocsTest {
     @Before
     public void setUp() throws Exception {
         carregador = CarregadorMassiuFhIllocsLogicaEJB.CrearCarregadorMassiuFhIllocsLogicaEJBambEjbsPerTests(
-                odsFilePath, mappingFilePath, configCarregadorMassiu, funcionariMan, unitatMan, habilitacioMan,
-                llocMan);
+                odsFilePath, mappingFilePath, configCarregadorMassiu);
         datesFormatsFromOds = new ArrayList<>();
         datesFormats.forEach(df -> datesFormatsFromOds.add(new SimpleDateFormat(df)));
     }

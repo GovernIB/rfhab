@@ -7,7 +7,6 @@ import java.util.Properties;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import org.apache.log4j.Logger;
 import org.fundaciobit.genapp.common.i18n.I18NException;
@@ -16,7 +15,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.sql.Timestamp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -24,24 +22,29 @@ import es.caib.rfhab.commons.utils.Configuracio;
 import es.caib.rfhab.commons.utils.IdentificacioTipus;
 import es.caib.rfhab.commons.utils.PersonalOamrTipus;
 import es.caib.rfhab.logic.FuncionariLogicaEJB;
-import es.caib.rfhab.logic.FuncionariLogicaService;
-import es.caib.rfhab.logic.HabilitacioLogicaEJB;
-import es.caib.rfhab.logic.HabilitacioLogicaService;
-import es.caib.rfhab.logic.LlocLogicaEJB;
-import es.caib.rfhab.logic.LlocLogicaService;
-import es.caib.rfhab.logic.UnitatLogicaEJB;
-import es.caib.rfhab.logic.UnitatLogicaService;
-import es.caib.rfhab.model.dao.IFuncionariManager;
-import es.caib.rfhab.model.dao.IHabilitacioManager;
-import es.caib.rfhab.model.dao.ILlocManager;
-import es.caib.rfhab.model.dao.IUnitatManager;
-import es.caib.rfhab.model.entity.Funcionari;
-import es.caib.rfhab.model.entity.Habilitacio;
-import es.caib.rfhab.model.entity.Lloc;
-import es.caib.rfhab.model.entity.Unitat;
 
 @Stateless
 public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllocsLogicaService {
+    private static class ConsultaFuncionariResponse {
+        public boolean existeix;
+        public boolean donatDeBaixa;
+    }
+
+    private static class ConsultaLlocResponse {
+        public boolean existeix;
+        public boolean donatDeBaixa;
+    }
+
+    private static class ConsultaUnitatResponse {
+        public boolean existeix;
+        public Long unitatId;
+    }
+
+    private static class ConsultaHabilitacioResponse {
+        public boolean existeix;
+        public Long habilitacioId;
+    }
+
     /**
      * Helper per fer una cridada POST amb paràmetres com a queryparams i
      * autenticació bàsica.
@@ -108,66 +111,6 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
     }
 
     protected final Logger log = Logger.getLogger(getClass());
-
-    @EJB(mappedName = FuncionariLogicaService.JNDI_NAME)
-    protected FuncionariLogicaService funcionariLogicaEjb;
-
-    @EJB(mappedName = UnitatLogicaService.JNDI_NAME)
-    protected UnitatLogicaService unitatLogicaEjb;
-
-    @EJB(mappedName = HabilitacioLogicaService.JNDI_NAME)
-    protected HabilitacioLogicaService habilitacioLogicaEjb;
-
-    @EJB(mappedName = LlocLogicaService.JNDI_NAME)
-    protected LlocLogicaService llocLogicaEjb;
-
-    private IFuncionariManager funcionariManAux = null;
-    private IFuncionariManager funcionariMan = null;
-
-    public IFuncionariManager getFuncionariMan() {
-        if (funcionariMan == null) {
-            funcionariMan = (funcionariLogicaEjb.getEntityManager() != null
-                    ? (IFuncionariManager) funcionariLogicaEjb.getEntityManager()
-                    : funcionariManAux);
-        }
-        return funcionariMan;
-    }
-
-    private IUnitatManager unitatManAux = null;
-    private static IUnitatManager unitatMan = null;
-
-    public IUnitatManager getUnitatMan() {
-        if (unitatMan == null) {
-            unitatMan = (unitatLogicaEjb.getEntityManager() != null
-                    ? (IUnitatManager) unitatLogicaEjb.getEntityManager()
-                    : unitatManAux);
-        }
-        return unitatMan;
-    }
-
-    private IHabilitacioManager habilitacioManAux = null;
-    private static IHabilitacioManager habilitacioMan = null;
-
-    public IHabilitacioManager getHabilitacioMan() {
-        if (habilitacioMan == null) {
-            habilitacioMan = (habilitacioLogicaEjb.getEntityManager() != null
-                    ? (IHabilitacioManager) habilitacioLogicaEjb.getEntityManager()
-                    : habilitacioManAux);
-        }
-        return habilitacioMan;
-    }
-
-    private ILlocManager llocManAux = null;
-    private static ILlocManager llocMan = null;
-
-    public ILlocManager getLlocMan() {
-        if (llocMan == null) {
-            llocMan = (llocLogicaEjb.getEntityManager() != null
-                    ? (ILlocManager) llocLogicaEjb.getEntityManager()
-                    : llocManAux);
-        }
-        return llocMan;
-    }
 
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -248,12 +191,12 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
         this.pass = Configuracio.getCarregadorMassiuPassword(apiExternaProperties);
         this.usuariId = Configuracio.getCarregadorMassiuUsuariId(apiExternaProperties);
         this.entitatId = Configuracio.getCarregadorMassiuEntitatId(apiExternaProperties);
-        
+
         log.info("CarregadorMassiuFhIllocsLogicaEJB constructor - apiUrl: " + this.apiUrl);
         log.info("CarregadorMassiuFhIllocsLogicaEJB constructor - user: " + this.user);
         log.info("CarregadorMassiuFhIllocsLogicaEJB constructor - usuariId: " + this.usuariId);
         log.info("CarregadorMassiuFhIllocsLogicaEJB constructor - entitatId: " + this.entitatId);
-        
+
         if (this.apiUrl == null || this.user == null || this.pass == null || this.usuariId == null
                 || this.entitatId == null) {
             throw new I18NException(
@@ -261,54 +204,6 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
         }
 
         this.mapper = new OdsToDtoMapper(new File(mappingFilePath));
-    }
-
-    /**
-     * Constructor amb EJBs injectats per utilitzar des de CarregaDadesService.
-     * 
-     * @param odsFilePath          Ruta del fitxer ODS
-     * @param mappingFilePath      Ruta del fitxer de mapping .properties
-     * @param apiExternaProperties Fitxer de propietats que conté la URL de l'API
-     * @param funcionariLogicaEjb  EJB de FuncionariLogicaService
-     * @param unitatLogicaEjb      EJB de UnitatLogicaService
-     * @param habilitacioLogicaEjb EJB de HabilitacioLogicaService
-     * @param llocLogicaEjb        EJB de LlocLogicaService
-     * @throws Exception Si hi ha problemes de lectura
-     */
-    public CarregadorMassiuFhIllocsLogicaEJB(String odsFilePath, String mappingFilePath,
-            Properties apiExternaProperties, 
-            FuncionariLogicaService funcionariLogicaEjb,
-            UnitatLogicaService unitatLogicaEjb,
-            HabilitacioLogicaService habilitacioLogicaEjb,
-            LlocLogicaService llocLogicaEjb)
-            throws Exception {
-        super();
-
-        this.odsFilePath = odsFilePath;
-        this.apiUrl = Configuracio.getCarregadorMassiuEndpoint(apiExternaProperties);
-        this.user = Configuracio.getCarregadorMassiuUser(apiExternaProperties);
-        this.pass = Configuracio.getCarregadorMassiuPassword(apiExternaProperties);
-        this.usuariId = Configuracio.getCarregadorMassiuUsuariId(apiExternaProperties);
-        this.entitatId = Configuracio.getCarregadorMassiuEntitatId(apiExternaProperties);
-        
-        log.info("CarregadorMassiuFhIllocsLogicaEJB constructor amb EJBs - apiUrl: " + this.apiUrl);
-        log.info("CarregadorMassiuFhIllocsLogicaEJB constructor amb EJBs - usuariId: " + this.usuariId);
-        
-        if (this.apiUrl == null || this.user == null || this.pass == null || this.usuariId == null
-                || this.entitatId == null) {
-            throw new I18NException(
-                    "CarregadorMassiuFhIllocs configuration is incomplete. Please check the properties file.");
-        }
-
-        this.mapper = new OdsToDtoMapper(new File(mappingFilePath));
-        
-        // Injectar els EJBs manualment
-        this.funcionariLogicaEjb = funcionariLogicaEjb;
-        this.unitatLogicaEjb = unitatLogicaEjb;
-        this.habilitacioLogicaEjb = habilitacioLogicaEjb;
-        this.llocLogicaEjb = llocLogicaEjb;
-        
-        log.info("EJBs injectats manualment al constructor");
     }
 
     /**
@@ -322,51 +217,16 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
      */
     public static CarregadorMassiuFhIllocsLogicaService CrearCarregadorMassiuFhIllocsLogicaEJBambEjbsPerTests(
             String odsFilePath, String mappingFilePath,
-            Properties apiExternaProperties, IFuncionariManager funcionariMan, IUnitatManager unitatMan,
-            IHabilitacioManager habilitacioMan, ILlocManager llocMan)
+            Properties apiExternaProperties)
             throws Exception {
 
         CarregadorMassiuFhIllocsLogicaEJB carregador = null;
 
         carregador = new CarregadorMassiuFhIllocsLogicaEJB(odsFilePath, mappingFilePath, apiExternaProperties);
 
-        // Inicialitzar EJBs
-        carregador.funcionariLogicaEjb = new FuncionariLogicaEJB();
-        carregador.unitatLogicaEjb = new UnitatLogicaEJB();
-        carregador.habilitacioLogicaEjb = new HabilitacioLogicaEJB();
-        carregador.llocLogicaEjb = new LlocLogicaEJB();
-        
-        // Injectar entity managers
-        javax.persistence.EntityManager em = funcionariMan.getEntityManager();
-        injectEntityManager(carregador.funcionariLogicaEjb, em);
-        injectEntityManager(carregador.unitatLogicaEjb, em);
-        injectEntityManager(carregador.habilitacioLogicaEjb, em);
-        injectEntityManager(carregador.llocLogicaEjb, em);
-        
-        carregador.funcionariManAux = funcionariMan;
-        carregador.unitatManAux = unitatMan;
-        carregador.habilitacioManAux = habilitacioMan;
-        carregador.llocManAux = llocMan;
-
         return carregador;
     }
-    
-    /**
-     * Injecta l'EntityManager a un EJB via reflection per a tests
-     */
-    private static void injectEntityManager(Object ejb, javax.persistence.EntityManager em) throws Exception {
-        try {
-            // Cerca el camp __em (típic de GenApp)
-            java.lang.reflect.Field emField = findFieldInHierarchy(ejb.getClass(), "__em");
-            if (emField != null) {
-                emField.setAccessible(true);
-                emField.set(ejb, em);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("No s'ha pogut injectar l'EntityManager a " + ejb.getClass().getName(), e);
-        }
-    }
-    
+
     /**
      * Cerca un camp en la jerarquia de classes
      */
@@ -443,6 +303,36 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
             throw new RuntimeException(errorMsg);
         }
         return response.body();
+    }
+
+    private ConsultaFuncionariResponse consultaFuncionariPerNif(String lang, String nif) throws Exception {
+        String endpoint = apiUrl + "/secure/funcionari/consulta";
+        String json = buildJson("language", lang, "identificador", nif);
+        String response = doPostWithQueryParams(endpoint, json);
+        return objectMapper.readValue(response, ConsultaFuncionariResponse.class);
+    }
+
+    private ConsultaLlocResponse consultaLlocPerCodiIExpansio(String lang, String codiLloc, String expansio)
+            throws Exception {
+        String endpoint = apiUrl + "/secure/lloc/consulta";
+        String json = buildJson("language", lang, "codilloc", codiLloc, "expansio", expansio);
+        String response = doPostWithQueryParams(endpoint, json);
+        return objectMapper.readValue(response, ConsultaLlocResponse.class);
+    }
+
+    private ConsultaUnitatResponse consultaUnitatPerCodiDir3(String lang, String codiDir3) throws Exception {
+        String endpoint = apiUrl + "/secure/unitat/consulta";
+        String json = buildJson("language", lang, "codidir3", codiDir3);
+        String response = doPostWithQueryParams(endpoint, json);
+        return objectMapper.readValue(response, ConsultaUnitatResponse.class);
+    }
+
+    private ConsultaHabilitacioResponse consultaHabilitacioPerCodi(String lang, String codiHabilitacio)
+            throws Exception {
+        String endpoint = apiUrl + "/secure/habilitacio/consulta";
+        String json = buildJson("language", lang, "codi", codiHabilitacio);
+        String response = doPostWithQueryParams(endpoint, json);
+        return objectMapper.readValue(response, ConsultaHabilitacioResponse.class);
     }
 
     private String getBasicAuthHeader() {
@@ -606,20 +496,18 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
                 + ((dataBaixaFh != null && !dataBaixaFh.isEmpty()) ? observacionsBaixa : "");
         String lang = "ca";
 
-        Timestamp ara = new Timestamp(System.currentTimeMillis());
-
         // creació de FH
         // (no se li pot posar una data alta passada, TODO???)
-        Funcionari funcionariExistent = funcionariLogicaEjb.findByNif(dto.nif);
+        ConsultaFuncionariResponse consultaFuncionari = consultaFuncionariPerNif(lang, dto.nif);
         // Si ja existeix el funcionari, no l'intentam crear
-        if (funcionariExistent == null) {
+        if (!consultaFuncionari.existeix) {
             NouFuncionariHabilitatDTO nouFh = new NouFuncionariHabilitatDTO(
                     lang,
                     Integer.parseInt(this.usuariId),
                     dto.nom,
                     dto.primerLlinatge,
                     dto.segonLlinatge,
-                    funcionariLogicaEjb.getNumeroFhFromNumeric(Integer.parseInt(dto.numRfh)),
+                    FuncionariLogicaEJB.getNumeroFhFromNumeric(Integer.parseInt(dto.numRfh)),
                     IdentificacioTipus.DNI,
                     dto.nif,
                     dto.usuari,
@@ -635,7 +523,7 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
             log.info("Donant alta FH: " + dto.nif);
             String respostaDonarAltaFh = donarAltaFh(lang, usuariId, dto.nif, dto.numCaiAlta);
             log.info("Resposta donar alta FH: " + respostaDonarAltaFh);
-        } else if (funcionariExistent.getDataBaixa() != null && funcionariExistent.getDataBaixa().before(ara)) {
+        } else if (consultaFuncionari.donatDeBaixa) {
             // Si ja existeix el funcionari, només l'intentarem donar d'alta en cas de que
             // estigui donat de baixa
             log.info("Donant alta FH: " + dto.nif);
@@ -644,10 +532,10 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
         }
 
         // creació de llocs
-        List<Lloc> llocsExistents = llocLogicaEjb.getLlocsByCodiIexpansio(dto.codiLlocFeina, dto.expansio);
+        ConsultaLlocResponse consultaLloc = consultaLlocPerCodiIExpansio(lang, dto.codiLlocFeina, dto.expansio);
 
         // SI JA EXISTEIX EL LLOC, NO L'HEM D'INTENTAR CREAR
-        if (llocsExistents == null || llocsExistents.size() == 0) {
+        if (!consultaLloc.existeix) {
             PersonalOamrTipus personalOamr = PersonalOamrTipus.SI;
             try {
                 personalOamr = PersonalOamrTipus.fromName(dto.oamr);
@@ -673,16 +561,14 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
             log.info("Codi original: [" + dto.dir3UnitatOrganica + "]");
             log.info("Codi cercat: [" + codiUnitatDir3 + "] (length=" + codiUnitatDir3.length() + ")");
             log.info("Versio: " + versioUnitatDir3);
-            // TODO: Per ara no volem la versió...
-            // Unitat unitatLloc = unitatLogicaEjb.findByCodiDir3(codiUnitatDir3, versioUnitatDir3);
-            Unitat unitatLloc = unitatLogicaEjb.findByCodiDir3(codiUnitatDir3);
-            log.info("Unitat trobada: " + (unitatLloc != null ? unitatLloc.getUnitatID() : null));
-            if (unitatLloc == null) {
+            ConsultaUnitatResponse consultaUnitat = consultaUnitatPerCodiDir3(lang, codiUnitatDir3);
+            log.info("Unitat trobada: " + (consultaUnitat != null ? consultaUnitat.unitatId : null));
+            if (consultaUnitat == null || !consultaUnitat.existeix || consultaUnitat.unitatId == null) {
                 String errorMsg = "No s'ha trobat la unitat amb codiDir3:\n" +
-                    "  Original: [" + dto.dir3UnitatOrganica + "]\n" +
-                    "  Cercat: [" + codiUnitatDir3 + "] (length=" + codiUnitatDir3.length() + ")\n" +
-                    "  Versió: " + versioUnitatDir3 + "\n" +
-                    "  COMPROVAR: Espais, majúscules/minúscules, i que el camp 'codiDir3' a la BD contingui aquest valor EXACTAMENT";
+                        "  Original: [" + dto.dir3UnitatOrganica + "]\n" +
+                        "  Cercat: [" + codiUnitatDir3 + "] (length=" + codiUnitatDir3.length() + ")\n" +
+                        "  Versió: " + versioUnitatDir3 + "\n" +
+                        "  COMPROVAR: Espais, majúscules/minúscules, i que el camp 'codiDir3' a la BD contingui aquest valor EXACTAMENT";
 
                 throw new I18NException(errorMsg);
             }
@@ -690,20 +576,23 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
             String[] habilitacionsFromInput = dto.habilitacio.split(",");
             for (String codiHabilitacio : habilitacionsFromInput) {
                 log.info("Cercant habilitació amb codi: " + codiHabilitacio);
-                Habilitacio habilitacioTrobada = habilitacioLogicaEjb.findByCodi(codiHabilitacio.trim());
+                ConsultaHabilitacioResponse consultaHabilitacio = consultaHabilitacioPerCodi(lang,
+                        codiHabilitacio.trim());
                 log.info("Habilitació trobada: "
-                        + (habilitacioTrobada != null ? habilitacioTrobada.getHabilitacioID() : null));
-                if (habilitacioTrobada == null) {
+                        + (consultaHabilitacio != null ? consultaHabilitacio.habilitacioId : null));
+                if (consultaHabilitacio == null || !consultaHabilitacio.existeix
+                        || consultaHabilitacio.habilitacioId == null) {
                     String errorMsg = "No s'ha trobat l'habilitació amb CODI " + codiHabilitacio;
                     throw new I18NException(errorMsg);
                 }
-                Long habilitacioID = Long.valueOf(habilitacioTrobada.getHabilitacioID());
+                Long habilitacioID = consultaHabilitacio.habilitacioId;
                 if (!habilitacions.contains(habilitacioID)) {
                     habilitacions.add(habilitacioID);
                 }
             }
             NouLlocDTO nouLloc = new NouLlocDTO(lang, Integer.parseInt(usuariId), dto.codiLlocFeina, dto.expansio,
-                    dto.nomLlocFeina, personalOamr, Long.parseLong(entitatId), unitatLloc.getUnitatID(), dto.numCaiAlta,
+                    dto.nomLlocFeina, personalOamr, Long.parseLong(entitatId), consultaUnitat.unitatId,
+                    dto.numCaiAlta,
                     habilitacions.stream().map(Object::toString)
                             .collect(Collectors.toUnmodifiableList()).toArray(new String[0]),
                     dto.observacionsAlta, null, null);
@@ -717,8 +606,7 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
             log.info("Resposta donar alta lloc: " + respostaDonarAltaLloc);
         } else {
             // SI EL LLOC JA EXISTIA, NOMÉS EL DONAREM D'ALTA EN CAS D'ESTAR DONAT DE BAIXA
-            Lloc llocExistent = llocsExistents.get(0);
-            if (llocExistent.getDataBaixa() != null && llocExistent.getDataBaixa().before(ara)) {
+            if (consultaLloc.donatDeBaixa) {
                 log.info("Donant alta lloc: " + dto.codiLlocFeina + " - " + dto.expansio);
                 String respostaDonarAltaLloc = donarAltaLloc(lang, usuariId, dto.codiLlocFeina, dto.expansio,
                         dto.numCaiAlta);

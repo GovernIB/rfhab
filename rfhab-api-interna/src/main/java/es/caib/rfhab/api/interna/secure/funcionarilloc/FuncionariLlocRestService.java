@@ -126,7 +126,9 @@ public class FuncionariLlocRestService extends RestUtils {
 					@ExampleObject(name = "Català", value = "ca"),
 					@ExampleObject(name = "Castellano", value = "es") }, schema = @Schema(defaultValue = "ca", implementation = String.class)) @QueryParam("language") String language,
 			@Parameter(description = "Identificador de l'usuari que està realitzant el registre d'un nou FH", required = true, example = "9999", schema = @Schema(type = "int")) @NotNull @QueryParam("usuariid") Integer usuariId,
-			@Parameter(description = "Codi del lloc", required = true) @QueryParam("codilloc") @NotNull String codiLloc,
+			@Parameter(description = "Codi del lloc", required = false) @QueryParam("codilloc") String codiLloc,
+			// TODO: tornar a posar// @Parameter(description = "Codi del lloc", required =
+			// true) @QueryParam("codilloc") @NotNull String codiLloc,
 			@Parameter(description = "Expansió del lloc", required = false) @QueryParam("expansio") String expansio,
 			@Parameter(description = "Identificador del funcionari a assignar", required = true) @QueryParam("identificadorfh") @NotNull String identificadorFh,
 			@Parameter(description = "Data d'inici'", required = false, example = "2025-08-31T06:15:00+00:00", schema = @Schema(implementation = String.class, pattern = DATE_PATTERN_ISO8601_DATE_AND_TIME)) @QueryParam("datainici") String dataIniciStr,

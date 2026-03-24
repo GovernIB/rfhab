@@ -390,9 +390,18 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
     @Override
     public String donarAltaLloc(String lang, String usuariId, String codiLloc, String expansio, String numCai)
             throws Exception {
+        return donarAltaLloc(lang, usuariId, codiLloc, expansio, null, numCai);
+    }
+
+    /**
+     * Dona d'alta un lloc via API REST, permetent identificació per codi propi.
+     */
+    public String donarAltaLloc(String lang, String usuariId, String codiLloc, String expansio, String codiLlocPropi,
+            String numCai)
+            throws Exception {
         String endpoint = apiUrl + "/secure/lloc/donaralta";
         String json = buildJson("language", lang, "usuariid", usuariId, "codilloc", codiLloc, "expansio", expansio,
-                "numerocai", numCai);
+                "codillocpropi", codiLlocPropi, "numerocai", numCai);
         return doPostWithQueryParams(endpoint, json);
     }
 
@@ -402,9 +411,18 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
     @Override
     public String donarBaixaLloc(String lang, String usuariId, String codiLloc, String expansio, String numCai)
             throws Exception {
+        return donarBaixaLloc(lang, usuariId, codiLloc, expansio, null, numCai);
+    }
+
+    /**
+     * Dona de baixa un lloc via API REST, permetent identificació per codi propi.
+     */
+    public String donarBaixaLloc(String lang, String usuariId, String codiLloc, String expansio, String codiLlocPropi,
+            String numCai)
+            throws Exception {
         String endpoint = apiUrl + "/secure/lloc/donarbaixa";
         String json = buildJson("language", lang, "usuariid", usuariId, "codilloc", codiLloc, "expansio", expansio,
-                "numerocai", numCai);
+                "codillocpropi", codiLlocPropi, "numerocai", numCai);
         return doPostWithQueryParams(endpoint, json);
     }
 
@@ -415,9 +433,22 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
     public String assignarFuncionari(String lang, String usuariId, String identificadorFh, String codiLloc,
             String expansio, String dataIniciStr, String dataFiStr, String numeroCai, String observacions)
             throws Exception {
+        return assignarFuncionari(lang, usuariId, identificadorFh, codiLloc, expansio, null, dataIniciStr, dataFiStr,
+                numeroCai, observacions);
+    }
+
+    /**
+     * Assigna un funcionari a un lloc via API REST, permetent identificació per
+     * codi propi.
+     */
+    public String assignarFuncionari(String lang, String usuariId, String identificadorFh, String codiLloc,
+            String expansio, String codiLlocPropi, String dataIniciStr, String dataFiStr, String numeroCai,
+            String observacions)
+            throws Exception {
         String endpoint = apiUrl + "/secure/funcionarilloc/assignarfuncionari";
         String json = buildJson("language", lang, "usuariid", usuariId, "identificadorfh", identificadorFh, "codilloc",
-                codiLloc, "expansio", expansio, "datainici", dataIniciStr, "datafi", dataFiStr, "numerocai", numeroCai,
+                codiLloc, "expansio", expansio, "codillocpropi", codiLlocPropi, "datainici", dataIniciStr, "datafi",
+                dataFiStr, "numerocai", numeroCai,
                 "observacions", observacions);
         return doPostWithQueryParams(endpoint, json);
     }
@@ -429,9 +460,16 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
     public String treureFuncionari(String lang, String usuariId, String identificadorFh, String codiLloc,
             String expansio, String numeroCai,
             String observacions) throws Exception {
+        return treureFuncionari(lang, usuariId, identificadorFh, codiLloc, expansio, null, numeroCai, observacions);
+    }
+
+    public String treureFuncionari(String lang, String usuariId, String identificadorFh, String codiLloc,
+            String expansio, String codiLlocPropi, String numeroCai,
+            String observacions) throws Exception {
         String endpoint = apiUrl + "/secure/funcionarilloc/treurefuncionari";
         String json = buildJson("language", lang, "usuariid", usuariId, "identificadorfh", identificadorFh, "codilloc",
                 codiLloc, "expansio", expansio,
+                "codillocpropi", codiLlocPropi,
                 "numerocai", numeroCai, "observacions", observacions);
         return doPostWithQueryParams(endpoint, json);
     }
@@ -443,8 +481,16 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
     public String treureTotsFuncionari(String lang, String usuariId, String codiLloc, String expansio, String numeroCai,
             String observacions)
             throws Exception {
+        return treureTotsFuncionari(lang, usuariId, codiLloc, expansio, null, numeroCai, observacions);
+    }
+
+    public String treureTotsFuncionari(String lang, String usuariId, String codiLloc, String expansio,
+            String codiLlocPropi, String numeroCai,
+            String observacions)
+            throws Exception {
         String endpoint = apiUrl + "/secure/funcionarilloc/treuretotsfuncionari";
         String json = buildJson("language", lang, "usuariid", usuariId, "codilloc", codiLloc, "expansio", expansio,
+                "codillocpropi", codiLlocPropi,
                 "numerocai", numeroCai, "observacions",
                 observacions);
         return doPostWithQueryParams(endpoint, json);
@@ -532,10 +578,15 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
         }
 
         // creació de llocs
-        ConsultaLlocResponse consultaLloc = consultaLlocPerCodiIExpansio(lang, dto.codiLlocFeina, dto.expansio);
+        ConsultaLlocResponse consultaLloc = null;
+        // IBSalut pot tenir codi lloc null
+        if (dto.codiLlocFeina != null && !dto.codiLlocFeina.isEmpty()) {
+            consultaLloc = consultaLlocPerCodiIExpansio(lang, dto.codiLlocFeina, dto.expansio);
+        }
 
+        String codiLlocPropi = "";
         // SI JA EXISTEIX EL LLOC, NO L'HEM D'INTENTAR CREAR
-        if (!consultaLloc.existeix) {
+        if (consultaLloc == null || !consultaLloc.existeix) {
             PersonalOamrTipus personalOamr = PersonalOamrTipus.SI;
             try {
                 personalOamr = PersonalOamrTipus.fromName(dto.oamr);
@@ -599,9 +650,11 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
             log.info("Creant lloc: " + nouLloc.toString());
             String respostaNouLloc = nouLloc(nouLloc);
             log.info("Resposta creació lloc: " + respostaNouLloc);
+            codiLlocPropi = respostaNouLloc;
 
             log.info("Donant alta lloc: " + dto.codiLlocFeina + " - " + dto.expansio);
             String respostaDonarAltaLloc = donarAltaLloc(lang, usuariId, dto.codiLlocFeina, dto.expansio,
+                    codiLlocPropi,
                     dto.numCaiAlta);
             log.info("Resposta donar alta lloc: " + respostaDonarAltaLloc);
         } else {
@@ -611,12 +664,20 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
                 String respostaDonarAltaLloc = donarAltaLloc(lang, usuariId, dto.codiLlocFeina, dto.expansio,
                         dto.numCaiAlta);
                 log.info("Resposta donar alta lloc: " + respostaDonarAltaLloc);
+                codiLlocPropi = respostaDonarAltaLloc;
             }
         }
 
         // assignació de FH a lloc
         log.info("Assignant funcionari " + dto.nif + " a lloc " + dto.codiLlocFeina + " - " + dto.expansio);
-        String respostaAssignarFuncionari = assignarFuncionari(lang, usuariId, dto.nif, dto.codiLlocFeina, dto.expansio,
+        String codiLlocPerAssignacio = (dto.codiLlocFeina != null && !dto.codiLlocFeina.trim().isEmpty())
+                ? dto.codiLlocFeina
+                : null;
+        String codiLlocPropiPerAssignacio = (codiLlocPropi != null && !codiLlocPropi.trim().isEmpty())
+                ? codiLlocPropi
+                : null;
+        String respostaAssignarFuncionari = assignarFuncionari(lang, usuariId, dto.nif, codiLlocPerAssignacio,
+                dto.expansio, codiLlocPropiPerAssignacio,
                 dataAltaFh, dataDesassignacio, dto.numCaiAlta, observacions);
         log.info("Resposta assignació funcionari a lloc: " + respostaAssignarFuncionari);
 
@@ -625,7 +686,14 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
             String respostaDonarBaixaFh = donarBaixaFh(lang, usuariId, dto.nif, dto.numCaiAlta);
             log.info("Resposta donar baixa FH: " + respostaDonarBaixaFh);
             log.info("Donant baixa lloc: " + dto.codiLlocFeina + " - " + dto.expansio);
-            String respostaDonarBaixaLloc = donarBaixaLloc(lang, usuariId, dto.codiLlocFeina, dto.expansio,
+            String codiLlocPerBaixa = (dto.codiLlocFeina != null && !dto.codiLlocFeina.trim().isEmpty())
+                    ? dto.codiLlocFeina
+                    : null;
+            String codiLlocPropiPerBaixa = (codiLlocPropi != null && !codiLlocPropi.trim().isEmpty())
+                    ? codiLlocPropi
+                    : null;
+            String respostaDonarBaixaLloc = donarBaixaLloc(lang, usuariId, codiLlocPerBaixa, dto.expansio,
+                    codiLlocPropiPerBaixa,
                     dto.numCaiAlta);
             log.info("Resposta donar baixa lloc: " + respostaDonarBaixaLloc);
         }

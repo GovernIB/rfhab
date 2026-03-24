@@ -53,12 +53,6 @@ public class CarregadorMassiuFhIllocsTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        _em = EntitatManagerUtil.initDB();
-        unitatMan = RFHabDaoManager.getDaoManagers().getUnitatManager();
-        funcionariMan = RFHabDaoManager.getDaoManagers().getFuncionariManager();
-        habilitacioMan = RFHabDaoManager.getDaoManagers().getHabilitacioManager();
-        llocMan = RFHabDaoManager.getDaoManagers().getLlocManager();
-
         configCarregadorMassiu = new Properties();
         configCarregadorMassiu.load(new FileInputStream("carregadormassiu.properties"));
     }

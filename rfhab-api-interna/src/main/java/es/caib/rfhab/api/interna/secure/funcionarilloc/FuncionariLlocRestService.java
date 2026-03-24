@@ -9,6 +9,7 @@ import es.caib.rfhab.logic.UsuariLogicaService;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.FuncionariLloc;
 import es.caib.rfhab.model.entity.Lloc;
+import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.FuncionariLlocJPA;
 import es.caib.rfhab.persistence.validator.FuncionariLlocValidator;
@@ -130,6 +131,7 @@ public class FuncionariLlocRestService extends RestUtils {
 			// TODO: tornar a posar// @Parameter(description = "Codi del lloc", required =
 			// true) @QueryParam("codilloc") @NotNull String codiLloc,
 			@Parameter(description = "Expansió del lloc", required = false) @QueryParam("expansio") String expansio,
+			@Parameter(description = "Codi propi del lloc (alternatiu a codi+expansió)", required = false) @QueryParam("codillocpropi") String codiLlocPropi,
 			@Parameter(description = "Identificador del funcionari a assignar", required = true) @QueryParam("identificadorfh") @NotNull String identificadorFh,
 			@Parameter(description = "Data d'inici'", required = false, example = "2025-08-31T06:15:00+00:00", schema = @Schema(implementation = String.class, pattern = DATE_PATTERN_ISO8601_DATE_AND_TIME)) @QueryParam("datainici") String dataIniciStr,
 			@Parameter(description = "Data de fi", required = false, example = "2025-08-31T06:15:00+00:00", schema = @Schema(implementation = String.class, pattern = DATE_PATTERN_ISO8601_DATE_AND_TIME)) @QueryParam("datafi") String dataFiStr,
@@ -141,6 +143,7 @@ public class FuncionariLlocRestService extends RestUtils {
 			sb.append("Usuari: " + usuariId + "\n");
 			sb.append("CodiLloc: " + codiLloc + "\n");
 			sb.append("Expansió: " + expansio + "\n");
+			sb.append("CodiLlocPropi: " + codiLlocPropi + "\n");
 			sb.append("Identificador FH: " + identificadorFh + "\n");
 			sb.append("DataInici: " + dataIniciStr + "\n");
 			sb.append("DataFi: " + dataFiStr + "\n");
@@ -182,12 +185,29 @@ public class FuncionariLlocRestService extends RestUtils {
 			}
 			log.info("XYZ YYY funcionariAassignar = " + funcionariAassignar.getNumero());
 
-			// cercam el lloc a donar d'alta
-			List<Lloc> llocsAassignar = llocLogicaEjb.getLlocsByCodiIexpansio(codiLloc, expansio);
+			String codiLlocNormalitzat = codiLloc != null ? codiLloc.trim() : null;
+			String codiLlocPropiNormalitzat = codiLlocPropi != null ? codiLlocPropi.trim() : null;
+			boolean teCodiLloc = codiLlocNormalitzat != null && !codiLlocNormalitzat.isEmpty();
+			boolean teCodiLlocPropi = codiLlocPropiNormalitzat != null && !codiLlocPropiNormalitzat.isEmpty();
+
+			if (!teCodiLloc && !teCodiLlocPropi) {
+				throw new I18NException("S'ha d'informar codilloc+expansio o codillocpropi");
+			}
+
+			// cercam el lloc a assignar
+			List<Lloc> llocsAassignar;
+			if (teCodiLlocPropi) {
+				llocsAassignar = llocLogicaEjb.select(LlocFields.CODILLOCPROPI.equal(codiLlocPropiNormalitzat));
+			} else {
+				llocsAassignar = llocLogicaEjb.getLlocsByCodiIexpansio(codiLlocNormalitzat, expansio);
+			}
 			if (llocsAassignar == null || llocsAassignar.size() == 0) {
+				if (teCodiLlocPropi) {
+					throw new I18NException("No s'ha trobat cap lloc amb codillocpropi " + codiLlocPropiNormalitzat);
+				}
 				throw new I18NException(I18NLogicUtilsApiInterna.tradueix(new Locale(language),
 						"error.lloc.noexisteixcodiiexpansio",
-						new String[] { codiLloc, expansio }));
+						new String[] { codiLlocNormalitzat, expansio }));
 			}
 			Lloc llocAassignar = llocsAassignar.get(0);
 
@@ -313,6 +333,7 @@ public class FuncionariLlocRestService extends RestUtils {
 			@Parameter(description = "Identificador de l'usuari que està realitzant el registre d'un nou FH", required = true, example = "9999", schema = @Schema(type = "int")) @NotNull @QueryParam("usuariid") Integer usuariId,
 			@Parameter(description = "Codi del lloc (si és buit, es desassignarà de tots els llocs de feina)", required = false) @QueryParam("codilloc") String codiLloc,
 			@Parameter(description = "Expansió del lloc", required = false) @QueryParam("expansio") String expansio,
+			@Parameter(description = "Codi propi del lloc (alternatiu a codi+expansió)", required = false) @QueryParam("codillocpropi") String codiLlocPropi,
 			@Parameter(description = "Identificador del funcionari a desassignar", required = true) @QueryParam("identificadorfh") @NotNull String identificadorFh,
 			@Parameter(description = "Observacions", required = false) @QueryParam("observacions") String observacions,
 			@Parameter(description = "Número CAI", required = false, schema = @Schema(defaultValue = "", implementation = String.class)) @QueryParam("numerocai") String numeroCai) {
@@ -322,6 +343,7 @@ public class FuncionariLlocRestService extends RestUtils {
 			sb.append("Usuari: " + usuariId + "\n");
 			sb.append("CodiLloc: " + codiLloc + "\n");
 			sb.append("Expansió: " + expansio + "\n");
+			sb.append("CodiLlocPropi: " + codiLlocPropi + "\n");
 			sb.append("Identificador FH: " + identificadorFh + "\n");
 			sb.append("Observacions: " + observacions + "\n");
 			sb.append("NumeroCai: " + numeroCai + "\n");
@@ -353,12 +375,24 @@ public class FuncionariLlocRestService extends RestUtils {
 
 			// cercam el lloc a desassignar
 			Lloc llocAdesassignar = null;
-			if (codiLloc != null && !codiLloc.isEmpty()) {
-				List<Lloc> llocsAdesassignar = llocLogicaEjb.getLlocsByCodiIexpansio(codiLloc, expansio);
+			String codiLlocNormalitzat = codiLloc != null ? codiLloc.trim() : null;
+			String codiLlocPropiNormalitzat = codiLlocPropi != null ? codiLlocPropi.trim() : null;
+			boolean teCodiLloc = codiLlocNormalitzat != null && !codiLlocNormalitzat.isEmpty();
+			boolean teCodiLlocPropi = codiLlocPropiNormalitzat != null && !codiLlocPropiNormalitzat.isEmpty();
+
+			if (teCodiLlocPropi) {
+				List<Lloc> llocsAdesassignar = llocLogicaEjb
+						.select(LlocFields.CODILLOCPROPI.equal(codiLlocPropiNormalitzat));
+				if (llocsAdesassignar == null || llocsAdesassignar.size() == 0) {
+					throw new I18NException("No s'ha trobat cap lloc amb codillocpropi " + codiLlocPropiNormalitzat);
+				}
+				llocAdesassignar = llocsAdesassignar.get(0);
+			} else if (teCodiLloc) {
+				List<Lloc> llocsAdesassignar = llocLogicaEjb.getLlocsByCodiIexpansio(codiLlocNormalitzat, expansio);
 				if (llocsAdesassignar == null || llocsAdesassignar.size() == 0) {
 					throw new I18NException(I18NLogicUtilsApiInterna.tradueix(new Locale(language),
 							"error.lloc.noexisteixcodiiexpansio",
-							new String[] { codiLloc, expansio }));
+							new String[] { codiLlocNormalitzat, expansio }));
 				}
 				llocAdesassignar = llocsAdesassignar.get(0);
 			}
@@ -423,8 +457,9 @@ public class FuncionariLlocRestService extends RestUtils {
 					@ExampleObject(name = "Català", value = "ca"),
 					@ExampleObject(name = "Castellano", value = "es") }, schema = @Schema(defaultValue = "ca", implementation = String.class)) @QueryParam("language") String language,
 			@Parameter(description = "Identificador de l'usuari que està realitzant el registre d'un nou FH", required = true, example = "9999", schema = @Schema(type = "int")) @NotNull @QueryParam("usuariid") Integer usuariId,
-			@Parameter(description = "Codi del lloc", required = true) @QueryParam("codilloc") @NotNull String codiLloc,
+			@Parameter(description = "Codi del lloc", required = false) @QueryParam("codilloc") String codiLloc,
 			@Parameter(description = "Expansió del lloc", required = false) @QueryParam("expansio") String expansio,
+			@Parameter(description = "Codi propi del lloc (alternatiu a codi+expansió)", required = false) @QueryParam("codillocpropi") String codiLlocPropi,
 			@Parameter(description = "Observacions", required = false) @QueryParam("observacions") String observacions,
 			@Parameter(description = "Número CAI", required = false, schema = @Schema(defaultValue = Constants.NUMEROCAI_BUIT, implementation = String.class)) @QueryParam("numerocai") String numeroCai) {
 		try {
@@ -433,6 +468,7 @@ public class FuncionariLlocRestService extends RestUtils {
 			sb.append("Usuari: " + usuariId + "\n");
 			sb.append("CodiLloc: " + codiLloc + "\n");
 			sb.append("Expansió: " + expansio + "\n");
+			sb.append("CodiLlocPropi: " + codiLlocPropi + "\n");
 			sb.append("Observacions: " + observacions + "\n");
 			sb.append("NumeroCai: " + numeroCai + "\n");
 			log.info(sb.toString());
@@ -453,12 +489,29 @@ public class FuncionariLlocRestService extends RestUtils {
 
 			log.info("XYZ YYY funcionariActuantNom = " + funcionariActuantNom);
 
+			String codiLlocNormalitzat = codiLloc != null ? codiLloc.trim() : null;
+			String codiLlocPropiNormalitzat = codiLlocPropi != null ? codiLlocPropi.trim() : null;
+			boolean teCodiLloc = codiLlocNormalitzat != null && !codiLlocNormalitzat.isEmpty();
+			boolean teCodiLlocPropi = codiLlocPropiNormalitzat != null && !codiLlocPropiNormalitzat.isEmpty();
+
+			if (!teCodiLloc && !teCodiLlocPropi) {
+				throw new I18NException("S'ha d'informar codilloc+expansio o codillocpropi");
+			}
+
 			// cercam el lloc a desassignar
-			List<Lloc> llocsAdesassignar = llocLogicaEjb.getLlocsByCodiIexpansio(codiLloc, expansio);
+			List<Lloc> llocsAdesassignar;
+			if (teCodiLlocPropi) {
+				llocsAdesassignar = llocLogicaEjb.select(LlocFields.CODILLOCPROPI.equal(codiLlocPropiNormalitzat));
+			} else {
+				llocsAdesassignar = llocLogicaEjb.getLlocsByCodiIexpansio(codiLlocNormalitzat, expansio);
+			}
 			if (llocsAdesassignar == null || llocsAdesassignar.size() == 0) {
+				if (teCodiLlocPropi) {
+					throw new I18NException("No s'ha trobat cap lloc amb codillocpropi " + codiLlocPropiNormalitzat);
+				}
 				throw new I18NException(I18NLogicUtilsApiInterna.tradueix(new Locale(language),
 						"error.lloc.noexisteixcodiiexpansio",
-						new String[] { codiLloc, expansio }));
+						new String[] { codiLlocNormalitzat, expansio }));
 			}
 			Lloc llocAdesassignar = llocsAdesassignar.get(0);
 

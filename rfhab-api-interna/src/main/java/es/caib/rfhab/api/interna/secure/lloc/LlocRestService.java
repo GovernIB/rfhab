@@ -16,6 +16,7 @@ import es.caib.rfhab.model.entity.Entitat;
 import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.entity.Unitat;
 import es.caib.rfhab.model.entity.UsuariEntitat;
+import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.LlocJPA;
 import es.caib.rfhab.persistence.validator.LlocValidator;
@@ -228,11 +229,6 @@ public class LlocRestService extends RestUtils {
 
 			log.info("XYZ YYY funcionariActuantNom = " + funcionariActuantNom);
 
-			if (numeroCai == null) {
-				numeroCai = "";
-				log.info("XYZ YYY numeroCai = " + numeroCai);
-			}
-
 			Lloc llocNou = new LlocJPA();
 			llocNou.setCodiLloc(codiLloc);
 			String nouLlocCodiPropi = llocLogicaEjb.getNouLlocCodiPropi(codiLloc, expansio);
@@ -332,7 +328,7 @@ public class LlocRestService extends RestUtils {
 									"" }));
 			log.info(successMsg);
 
-			return I18NLogicUtilsApiInterna.tradueix(new Locale(language), "operacio.success");
+			return llocCreat.getCodiLlocPropi();
 		} catch (I18NException re) {
 			log.error(re.getMessage(), re);
 			throw new RestException(re.getMessage(), Status.BAD_REQUEST);
@@ -379,8 +375,9 @@ public class LlocRestService extends RestUtils {
 					@ExampleObject(name = "Català", value = "ca"),
 					@ExampleObject(name = "Castellano", value = "es") }, schema = @Schema(defaultValue = "ca", implementation = String.class)) @QueryParam("language") String language,
 			@Parameter(description = "Identificador de l'usuari que està realitzant el registre d'un nou FH", required = true, example = "9999", schema = @Schema(type = "int")) @NotNull @QueryParam("usuariid") Integer usuariId,
-			@Parameter(description = "Codi del lloc", required = true) @QueryParam("codilloc") @NotNull String codiLloc,
+			@Parameter(description = "Codi del lloc", required = false) @QueryParam("codilloc") String codiLloc,
 			@Parameter(description = "Expansió del lloc", required = false) @QueryParam("expansio") String expansio,
+			@Parameter(description = "Codi propi del lloc (alternatiu a codi+expansió)", required = false) @QueryParam("codillocpropi") String codiLlocPropi,
 			@Parameter(description = "Número CAI", required = false, schema = @Schema(defaultValue = Constants.NUMEROCAI_BUIT, implementation = String.class)) @QueryParam("numerocai") String numeroCai) {
 		try {
 			StringBuilder sb = new StringBuilder();
@@ -388,6 +385,7 @@ public class LlocRestService extends RestUtils {
 			sb.append("Usuari: " + usuariId + "\n");
 			sb.append("CodiLloc: " + codiLloc + "\n");
 			sb.append("Expansió: " + expansio + "\n");
+			sb.append("CodiLlocPropi: " + codiLlocPropi + "\n");
 			sb.append("NumeroCai: " + numeroCai + "\n");
 			log.info(sb.toString());
 
@@ -406,12 +404,29 @@ public class LlocRestService extends RestUtils {
 
 			log.info("XYZ YYY funcionariActuantNom = " + funcionariActuantNom);
 
+			String codiLlocNormalitzat = codiLloc != null ? codiLloc.trim() : null;
+			String codiLlocPropiNormalitzat = codiLlocPropi != null ? codiLlocPropi.trim() : null;
+			boolean teCodiLloc = codiLlocNormalitzat != null && !codiLlocNormalitzat.isEmpty();
+			boolean teCodiLlocPropi = codiLlocPropiNormalitzat != null && !codiLlocPropiNormalitzat.isEmpty();
+
+			if (!teCodiLloc && !teCodiLlocPropi) {
+				throw new I18NException("S'ha d'informar codilloc+expansio o codillocpropi");
+			}
+
 			// cercam el lloc a donar d'alta
-			List<Lloc> llocsAdonarDalta = llocLogicaEjb.getLlocsByCodiIexpansio(codiLloc, expansio);
+			List<Lloc> llocsAdonarDalta;
+			if (teCodiLlocPropi) {
+				llocsAdonarDalta = llocLogicaEjb.select(LlocFields.CODILLOCPROPI.equal(codiLlocPropiNormalitzat));
+			} else {
+				llocsAdonarDalta = llocLogicaEjb.getLlocsByCodiIexpansio(codiLlocNormalitzat, expansio);
+			}
 			if (llocsAdonarDalta == null || llocsAdonarDalta.size() == 0) {
+				if (teCodiLlocPropi) {
+					throw new I18NException("No s'ha trobat cap lloc amb codillocpropi " + codiLlocPropiNormalitzat);
+				}
 				throw new I18NException(I18NLogicUtilsApiInterna.tradueix(new Locale(language),
 						"error.lloc.noexisteixcodiiexpansio",
-						new String[] { codiLloc, expansio }));
+						new String[] { codiLlocNormalitzat, expansio }));
 			}
 			Lloc llocAdonarDalta = llocsAdonarDalta.get(0);
 			// Cream funcionari i auditoria
@@ -425,7 +440,7 @@ public class LlocRestService extends RestUtils {
 									llocActualitzat.getCodiLloc() }));
 			log.info(successMsg);
 
-			return I18NLogicUtilsApiInterna.tradueix(new Locale(language), "operacio.success");
+			return llocActualitzat.getCodiLlocPropi();
 		} catch (I18NException re) {
 			log.error(re.getMessage(), re);
 			throw new RestException(re.getMessage(), Status.BAD_REQUEST);
@@ -472,8 +487,9 @@ public class LlocRestService extends RestUtils {
 					@ExampleObject(name = "Català", value = "ca"),
 					@ExampleObject(name = "Castellano", value = "es") }, schema = @Schema(defaultValue = "ca", implementation = String.class)) @QueryParam("language") String language,
 			@Parameter(description = "Identificador de l'usuari que està realitzant el registre d'un nou FH", required = true, example = "9999", schema = @Schema(type = "int")) @NotNull @QueryParam("usuariid") Integer usuariId,
-			@Parameter(description = "Codi del lloc", required = true) @QueryParam("codilloc") @NotNull String codiLloc,
+			@Parameter(description = "Codi del lloc", required = false) @QueryParam("codilloc") String codiLloc,
 			@Parameter(description = "Expansió del lloc", required = false) @QueryParam("expansio") String expansio,
+			@Parameter(description = "Codi propi del lloc (alternatiu a codi+expansió)", required = false) @QueryParam("codillocpropi") String codiLlocPropi,
 			@Parameter(description = "Número CAI", required = false, schema = @Schema(defaultValue = Constants.NUMEROCAI_BUIT, implementation = String.class)) @QueryParam("numerocai") String numeroCai) {
 		try {
 			StringBuilder sb = new StringBuilder();
@@ -481,6 +497,7 @@ public class LlocRestService extends RestUtils {
 			sb.append("Usuari: " + usuariId + "\n");
 			sb.append("CodiLloc: " + codiLloc + "\n");
 			sb.append("Expansió: " + expansio + "\n");
+			sb.append("CodiLlocPropi: " + codiLlocPropi + "\n");
 			sb.append("NumeroCai: " + numeroCai + "\n");
 			log.info(sb.toString());
 
@@ -499,12 +516,29 @@ public class LlocRestService extends RestUtils {
 
 			log.info("XYZ YYY funcionariActuantNom = " + funcionariActuantNom);
 
-			// cercam el lloc a donar d'alta
-			List<Lloc> llocsAdonarDeBaixa = llocLogicaEjb.getLlocsByCodiIexpansio(codiLloc, expansio);
+			String codiLlocNormalitzat = codiLloc != null ? codiLloc.trim() : null;
+			String codiLlocPropiNormalitzat = codiLlocPropi != null ? codiLlocPropi.trim() : null;
+			boolean teCodiLloc = codiLlocNormalitzat != null && !codiLlocNormalitzat.isEmpty();
+			boolean teCodiLlocPropi = codiLlocPropiNormalitzat != null && !codiLlocPropiNormalitzat.isEmpty();
+
+			if (!teCodiLloc && !teCodiLlocPropi) {
+				throw new I18NException("S'ha d'informar codilloc+expansio o codillocpropi");
+			}
+
+			// cercam el lloc a donar de baixa
+			List<Lloc> llocsAdonarDeBaixa;
+			if (teCodiLlocPropi) {
+				llocsAdonarDeBaixa = llocLogicaEjb.select(LlocFields.CODILLOCPROPI.equal(codiLlocPropiNormalitzat));
+			} else {
+				llocsAdonarDeBaixa = llocLogicaEjb.getLlocsByCodiIexpansio(codiLlocNormalitzat, expansio);
+			}
 			if (llocsAdonarDeBaixa == null || llocsAdonarDeBaixa.size() == 0) {
+				if (teCodiLlocPropi) {
+					throw new I18NException("No s'ha trobat cap lloc amb codillocpropi " + codiLlocPropiNormalitzat);
+				}
 				throw new I18NException(I18NLogicUtilsApiInterna.tradueix(new Locale(language),
 						"error.lloc.noexisteixcodiiexpansio",
-						new String[] { codiLloc, expansio }));
+						new String[] { codiLlocNormalitzat, expansio }));
 			}
 			Lloc llocAdonarDeBaixa = llocsAdonarDeBaixa.get(0);
 			// Cream funcionari i auditoria

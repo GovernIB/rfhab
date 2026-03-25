@@ -91,8 +91,6 @@ import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
 @SessionAttributes(types = { LlocForm.class, LlocFilterForm.class })
 public class LlocAdminController extends LlocController {
 
-	private static final String CODILLOC_FAKE_BUIT = "#####55555#####";
-
 	public static final String CONTEXTWEB = "/admin/lloc";
 
 	protected final Logger log = Logger.getLogger(getClass());
@@ -606,7 +604,7 @@ public class LlocAdminController extends LlocController {
 			// per passar la validació de genapp necessitam això (encara que la base de
 			// dades ho permeti)
 			if ((codiLloc == null || codiLloc.isEmpty()) && (expansioLloc == null || expansioLloc.isEmpty())) {
-				lloc.setCodiLloc(CODILLOC_FAKE_BUIT);
+				lloc.setCodiLloc(Constants.CODILLOC_FAKE_BUIT);
 			}
 		}
 
@@ -824,7 +822,7 @@ public class LlocAdminController extends LlocController {
 		LlocJPA lloc = llocForm.getLloc();
 		if (lloc != null) {
 			String codiLloc = lloc.getCodiLloc();
-			if (codiLloc != null && codiLloc.equals(CODILLOC_FAKE_BUIT)) {
+			if (codiLloc != null && codiLloc.equals(Constants.CODILLOC_FAKE_BUIT)) {
 				lloc.setCodiLloc(null);
 			}
 		}

@@ -265,6 +265,11 @@ public class LlocRestService extends RestUtils {
 			llocNou.setPersonalOamr(personalOamr.getValue());
 			llocNou.setUnitatID(unitatId);
 
+			// per passar la validació de genapp necessitam això (encara que la base de
+			// dades ho permeti)
+			if ((codiLloc == null || codiLloc.isEmpty()) && (expansio == null || expansio.isEmpty())) {
+				llocNou.setCodiLloc(Constants.CODILLOC_FAKE_BUIT);
+			}
 			// validam lloc
 			Lloc llocCreat;
 			BeanValidatorResult<Lloc> __vr = new BeanValidatorResult<Lloc>();
@@ -293,6 +298,13 @@ public class LlocRestService extends RestUtils {
 				log.error(msg);
 				throw new I18NException(msg);
 			} else {
+				// per passar la validació de genapp necessitam això (encara que la base de
+				// dades ho permeti)
+
+				if (codiLloc != null && codiLloc.equals(Constants.CODILLOC_FAKE_BUIT)) {
+					llocNou.setCodiLloc(null);
+				}
+
 				// Cream funcionari i auditoria
 				llocCreat = llocLogicaEjb.createAndHistory(llocNou, numeroCai, usuariId.longValue(), habilitacions);
 				// if (dataAlta != null) {

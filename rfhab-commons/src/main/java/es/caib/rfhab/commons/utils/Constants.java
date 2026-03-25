@@ -63,6 +63,8 @@ public interface Constants {
         public static final String REGEX_LLOC_CODILLOCPROPI_PATTERN = LLOC_CODILLOCPROPI_PLACEHOLDER
                         .replaceAll("X", "\\d");
 
+        public static final String CODILLOC_FAKE_BUIT = "#####55555#####";
+
         public static final String REFERER_SESSION_ATTRIBUTE = "referer";
 
         public static final String ATTR_FILTRE_OAMR_VALOR_PER_DEFECTE = "llocs_filtreOamrValorPerDefecte";

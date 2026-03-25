@@ -1,0 +1,1 @@
+mvn -f rfhab-api-interna-client-v1/pom.xml -B -ntp -Dtest=CarregaDadesServiceApiTest test

@@ -779,13 +779,14 @@ public class LlocAdminController extends LlocController {
 		LoginInfo loginInfo = LoginInfo.getInstance();
 
 		System.out.println("================================================");
-		System.out.println("ENTITAT ACTUAL: => " + loginInfo.getEntitatIDActual());
+		Long entitatIDActual = loginInfo.getEntitatIDActual();
+		System.out.println("ENTITAT ACTUAL: => " + entitatIDActual);
 		System.out.println("ENTITAT ID ACTUAL: => " + loginInfo.getEntitatID());
 		System.out.println("================================================");
 
 		Where entitatActualWhere = null;
-		if (loginInfo.getEntitatIDActual() != null && loginInfo.getEntitatIDActual() > 0) {
-			entitatActualWhere = LlocFields.ENTITATID.equal(loginInfo.getEntitatIDActual());
+		if (entitatIDActual != null && entitatIDActual > 0) {
+			entitatActualWhere = LlocFields.ENTITATID.equal(entitatIDActual);
 		}
 		return entitatActualWhere;
 	}

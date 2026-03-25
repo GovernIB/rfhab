@@ -236,6 +236,7 @@
 	function findUnitatSuperior(unitats, unitatId) {
 		// Cerca la unitat inicial amb el unitatId especificat
 		const unitatActual = unitats.find(unitat => unitat.unitatID === unitatId);
+		if(!unitatActual) return null;
 		return unitats.find(unitat => unitat.codi === unitatActual.superior) || null;
 	}
 

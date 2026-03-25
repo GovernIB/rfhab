@@ -267,7 +267,8 @@ public class LlocRestService extends RestUtils {
 
 			// per passar la validació de genapp necessitam això (encara que la base de
 			// dades ho permeti)
-			if ((codiLloc == null || codiLloc.isEmpty()) && (expansio == null || expansio.isEmpty())) {
+			if ((llocNou.getCodiLloc() == null || llocNou.getCodiLloc().isEmpty())
+					&& (llocNou.getExpansio() == null || llocNou.getExpansio().isEmpty())) {
 				llocNou.setCodiLloc(Constants.CODILLOC_FAKE_BUIT);
 			}
 			// validam lloc
@@ -300,8 +301,7 @@ public class LlocRestService extends RestUtils {
 			} else {
 				// per passar la validació de genapp necessitam això (encara que la base de
 				// dades ho permeti)
-
-				if (codiLloc != null && codiLloc.equals(Constants.CODILLOC_FAKE_BUIT)) {
+				if (llocNou.getCodiLloc() != null && llocNou.getCodiLloc().equals(Constants.CODILLOC_FAKE_BUIT)) {
 					llocNou.setCodiLloc(null);
 				}
 

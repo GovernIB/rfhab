@@ -58,6 +58,48 @@ function hideEntireColumn(tableQuerySelector, thContentSearchBy) {
   });
 }
 
+function moveColumnByHeaderText(
+  tableQuerySelector,
+  titolColumnaAmoure,
+  titolColumnaAmoureDevora,
+  position
+) {
+  const table = document.querySelector(tableQuerySelector);
+  if (!table) return;
+
+  const indexToMove = getColumnIndexByHeaderText(
+    tableQuerySelector,
+    titolColumnaAmoure
+  );
+  const indexReference = getColumnIndexByHeaderText(
+    tableQuerySelector,
+    titolColumnaAmoureDevora
+  );
+
+  if (indexToMove === -1 || indexReference === -1 || indexToMove === indexReference) {
+    return;
+  }
+
+  const normalizedPosition = String(position || "before").toLowerCase();
+  const moveAfter = normalizedPosition === "after" || normalizedPosition === "darrera";
+
+  // Mou la cel·la de cada fila (th/td) mantenint la mateixa estructura de columna.
+  const rows = table.querySelectorAll("tr");
+  rows.forEach(function (row) {
+    const cells = row.children;
+    const sourceCell = cells[indexToMove];
+    const referenceCell = cells[indexReference];
+    if (!sourceCell || !referenceCell) return;
+
+    if (moveAfter) {
+      row.insertBefore(sourceCell, referenceCell.nextSibling);
+      return;
+    }
+
+    row.insertBefore(sourceCell, referenceCell);
+  });
+}
+
 /*
  * Convert data array to CSV string
  * @param arr {Array} - the actual data

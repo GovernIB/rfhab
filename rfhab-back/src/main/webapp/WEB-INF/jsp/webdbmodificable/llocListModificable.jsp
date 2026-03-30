@@ -58,7 +58,13 @@ filtre_unitatso_vperdefecte =
     }
 
     const darreraModificacio = '<fmt:message key="darreramodificacio"/>';
+    const codiLf = '<fmt:message key="lloc.codiLlocPropi"/>';
+    const codiFp = '<fmt:message key="lloc.codiLloc"/>';
+    const unitatSuperior = '<fmt:message key="unitat.superior"/>';
+    const unitatOrganica = '<fmt:message key="unitat.unitat"/>';
     // #105 Si es volen ordenar per darrera modificació, s'ha de mostrar aquesta columna, perquè si es seleccionés la ordenació a una altra columna, no es podria tornar a darrera modificació.
     // hideEntireColumn("table.table-genapp-list", darreraModificacio);
+    moveColumnByHeaderText("table.table-genapp-list", codiFp, codiLf, "after");
+    moveColumnByHeaderText("table.table-genapp-list", unitatSuperior, unitatOrganica, "after");
   });
 </script>

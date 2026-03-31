@@ -36,7 +36,7 @@ filtre_fassignats_vperdefecte =
       oamrSelectFilter.value = filtreOamrValorPerDefecte;
     }
 
-    const actiusSelectFilter = addActiusSelectFilter();
+    const actiusSelectFilter = addActiusSelectFilter(null, '<fmt:message key="tots"/>', '<fmt:message key="lloc.filtres.habilitats"/>');
     const filtreActiusValorPerDefecte = '<%=filtre_factius_vperdefecte%>';
     console.log("filtreActiusValorPerDefecte: " + filtreActiusValorPerDefecte);
     if(filtreActiusValorPerDefecte && filtreActiusValorPerDefecte != "null" && actiusSelectFilter){

@@ -82,11 +82,11 @@ function replaceOamrFilter() {
   return null;
 }
 
-function addActiusSelectFilter(filterCookieName) {
+function addActiusSelectFilter(filterCookieName, totsTraduit, labelTraduit) {
   const options = [
     {
       value: "",
-      text: "Tots",
+      text: totsTraduit ?? "Tots",
     },
     {
       value: "1",
@@ -97,7 +97,7 @@ function addActiusSelectFilter(filterCookieName) {
       text: "No",
     },
   ];
-  const label = "Actius: ";
+  const label = (labelTraduit ?? "Habilitats") + ": ";
 
   let formFilterContainer = document.querySelector("#FilterDiv > .form-inline");
   const actiusSelect = addNewSelectFilterToForm(

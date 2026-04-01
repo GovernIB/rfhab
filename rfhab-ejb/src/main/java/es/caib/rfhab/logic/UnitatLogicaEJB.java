@@ -8,7 +8,6 @@ import javax.ejb.Stateless;
 
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.query.Where;
-
 import es.caib.rfhab.ejb.UnitatEJB;
 import es.caib.rfhab.model.dao.IUnitatManager;
 import es.caib.rfhab.model.entity.Unitat;
@@ -42,7 +41,7 @@ public class UnitatLogicaEJB extends UnitatEJB implements UnitatLogicaService {
         Where codiDir3W = UnitatFields.CODI.equal(codi);
         List<Unitat> resultats = this.select(codiDir3W);
         return (resultats != null && resultats.size() > 0) ? resultats.get(0) : null;
-        //return UnitatLogicaEJB.findByCodiDir3(this, codi);
+        // return UnitatLogicaEJB.findByCodiDir3(this, codi);
     }
 
     @Override

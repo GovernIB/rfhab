@@ -1,6 +1,5 @@
 package es.caib.rfhab.logic;
 
-import javax.annotation.security.PermitAll;
 import javax.ejb.Local;
 
 import org.fundaciobit.genapp.common.i18n.I18NException;
@@ -23,6 +22,8 @@ public interface EntitatLogicaService extends EntitatService {
 	public long findEntitatByDir3(String dir3) throws I18NException;
 
 	public EntitatJPA findByPrimaryKey(Long _ID_);
+
+	public EntitatJPA findByPrimaryKeyWithUnitat(Long _ID_);
 
 	public Entitat findByUnitatId(Long unitatId) throws I18NException;
 

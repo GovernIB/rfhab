@@ -128,6 +128,38 @@ function addActiusSelectFilter(filterCookieName, totsTraduit, labelTraduit) {
   return actiusSelect;
 }
 
+function addUnitatsSuperiorSelectFilter(filterCookieName, options, labelTraduit) {
+  const label = (labelTraduit ?? "Unitat superior") + ": ";
+
+  let formFilterContainer = document.querySelector("#FilterDiv > .form-inline");
+  const unitatsSuperiorSelect = addNewSelectFilterToForm(
+    formFilterContainer,
+    options,
+    label,
+    "unitat-superior-id",
+    "unitatSuperiorName"
+  );
+
+  if (unitatsSuperiorSelect && filterCookieName) {
+    //valor per defecte
+    document.cookie =
+      filterCookieName +
+      "=" +
+      encodeURIComponent(unitatsSuperiorSelect.value) +
+      "; path=/; Secure; SameSite=Strict";
+
+    unitatsSuperiorSelect.addEventListener("change", function () {
+      document.cookie =
+        filterCookieName +
+        "=" +
+        encodeURIComponent(unitatsSuperiorSelect.value) +
+        "; path=/; Secure; SameSite=Strict";
+    });
+  }
+
+  return unitatsSuperiorSelect;
+}
+
 function addAssignatsLlocSelectFilter(filterCookieName) {
   const options = [
     {

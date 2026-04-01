@@ -9,6 +9,7 @@ import javax.persistence.TypedQuery;
 import org.fundaciobit.genapp.common.KeyValue;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.query.SelectMultipleKeyValue;
+import org.hibernate.Hibernate;
 
 import es.caib.rfhab.ejb.EntitatEJB;
 import es.caib.rfhab.model.entity.Entitat;
@@ -45,6 +46,17 @@ public class EntitatLogicaEJB extends EntitatEJB implements EntitatLogicaService
 	@PermitAll
 	public EntitatJPA findByPrimaryKey(Long _ID_) {
 		return (EntitatJPA) super.findByPrimaryKey(_ID_);
+	}
+
+	@Override
+	@PermitAll
+	public EntitatJPA findByPrimaryKeyWithUnitat(Long _ID_) {
+		EntitatJPA result = (EntitatJPA) super.findByPrimaryKey(_ID_);
+
+		if (result != null) {
+			Hibernate.initialize(result.getUnitat());
+		}
+		return result;
 	}
 
 	@Override

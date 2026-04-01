@@ -1,6 +1,7 @@
 package es.caib.rfhab.back.controller.admin;
 
 import java.sql.Timestamp;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,8 +16,6 @@ import org.apache.log4j.Logger;
 import org.fundaciobit.genapp.common.StringKeyValue;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.i18n.I18NValidationException;
-import org.fundaciobit.genapp.common.query.Field;
-import org.fundaciobit.genapp.common.query.GroupByItem;
 import org.fundaciobit.genapp.common.query.ITableManager;
 import org.fundaciobit.genapp.common.query.OrderBy;
 import org.fundaciobit.genapp.common.query.OrderType;
@@ -79,8 +78,9 @@ import es.caib.rfhab.model.fields.HistoricLlocFields;
 import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.model.fields.LlocHabilitacioFields;
 import es.caib.rfhab.model.fields.UnitatFields;
+import es.caib.rfhab.persistence.EntitatJPA;
 import es.caib.rfhab.persistence.LlocJPA;
-import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
+import es.caib.rfhab.persistence.UnitatJPA;
 
 /**
  * @author jagarcia
@@ -117,8 +117,6 @@ public class LlocAdminController extends LlocController {
 
 	@EJB(mappedName = HabilitacioService.JNDI_NAME)
 	protected HabilitacioService habilitacionsEjb;
-
-	protected RolsacPlugin rolsacPlugin = null;
 
 	private void setUnitatRefListSelects(String language) {
 		Select<?>[] selects;
@@ -163,6 +161,10 @@ public class LlocAdminController extends LlocController {
 				? request.getParameter("unitatIDDesde")
 				: "";
 		request.getSession().removeAttribute(Constants.ATTR_FILTRE_UNITATSO_VALOR_PER_DEFECTE);
+		String unitatSuperiorSelectvalue = (StringUtils.isNotEmpty(request.getParameter("unitatSuperiorName")))
+				? request.getParameter("unitatSuperiorName")
+				: "";
+		request.getSession().removeAttribute(Constants.ATTR_FILTRE_UNITATSUPERIOR_VALOR_PER_DEFECTE);
 
 		if (llocFilterForm.isNou()) {
 			llocFilterForm.addHiddenField(LlocFields.LLOCID);
@@ -229,14 +231,33 @@ public class LlocAdminController extends LlocController {
 		request.getSession().setAttribute(Constants.ATTR_FILTRE_OAMR_VALOR_PER_DEFECTE, oamrSelectvalue);
 		request.getSession().setAttribute(Constants.ATTR_FILTRE_ACTIUS_VALOR_PER_DEFECTE, actiusSelectvalue);
 		request.getSession().setAttribute(Constants.ATTR_FILTRE_UNITATSO_VALOR_PER_DEFECTE, unitatsoSelectvalue);
+		request.getSession().setAttribute(Constants.ATTR_FILTRE_UNITATSUPERIOR_VALOR_PER_DEFECTE,
+				unitatSuperiorSelectvalue);
 
-		List<StringKeyValue> _unitatsTemp = getUnitatsByEntitatArrel(mav, loginInfo.getEntitatIDActual(),
+		Long entitatIDActual = loginInfo.getEntitatIDActual();
+		List<StringKeyValue> _unitatsTemp = getUnitatsByEntitatArrel(mav, entitatIDActual,
 				false);
 		Map<String, String> unitatsFiltreCerca = Utils.listToMap(_unitatsTemp);
 		unitatsFiltreCerca.put("", I18NUtils.tradueix("tots"));
-		mav.addObject("unitatsFiltreCerca", unitatsFiltreCerca);
-		log.info("unitatsFiltreCerca: " + unitatsFiltreCerca.size());
+		mav.addObject(Constants.NOM_ATTR_FILTRE_UNITATS, unitatsFiltreCerca);
+		log.info(Constants.NOM_ATTR_FILTRE_UNITATS + ": " + unitatsFiltreCerca.size());
 		log.info(unitatsFiltreCerca);
+
+		EntitatJPA entitatActual = this.entitatLogicaEjb.findByPrimaryKeyWithUnitat(entitatIDActual);
+		UnitatJPA unitatEntitatActual = entitatActual.getUnitat();
+		if (unitatEntitatActual.getSuperior() != null) {
+			Unitat unitatSuperiorAentitatActual = this.unitatEjb.findByCodiDir3(unitatEntitatActual.getSuperior());
+			// TODO: el dia que es sincrontizin com toquen les unitats amb Dir3 #92
+			// Unitat unitatSuperiorAentitatActual =
+			// this.unitatEjb.findByCodiDir3(unitatEntitatActual.getSuperior(),
+			// unitatEntitatActual.getSuperiorVersio());
+			AbstractMap.SimpleEntry<String, String> unitatSuperior = new AbstractMap.SimpleEntry<String, String>(
+					String.valueOf(unitatSuperiorAentitatActual.getUnitatID()),
+					unitatSuperiorAentitatActual.getCodi() + " "
+							+ (lang == "es" ? unitatSuperiorAentitatActual.getDenominacio()
+									: unitatSuperiorAentitatActual.getCooficial()));
+			mav.addObject(Constants.NOM_ATTR_FILTRE_UNITAT_SUPERIOR_ARREL, unitatSuperior);
+		}
 
 		llocFilterForm.setVisibleExportList(true);
 
@@ -769,9 +790,28 @@ public class LlocAdminController extends LlocController {
 
 		Where entitatActualWhere = getEntitatActualWhere();
 		Where donatsDeBaixa = getAdditionalConditionDonatsDeBaixa(request);
+		Where unitatSuperior = getAdditionalConditionUnitatSuperior(request);
 
-		return Where.AND(donatsDeBaixa,
-				(entitatActualWhere != null) ? Where.AND(defaultCondition, entitatActualWhere) : defaultCondition);
+		return Where.AND(defaultCondition, donatsDeBaixa, entitatActualWhere, unitatSuperior);
+	}
+
+	private Where getAdditionalConditionUnitatSuperior(HttpServletRequest request) {
+		// filtrar per unitat superior
+		String unitatSuperiorSelectvalue = (StringUtils.isNotEmpty(request.getParameter("unitatSuperiorName")))
+				? request.getParameter("unitatSuperiorName")
+				: "";
+		log.info("unitatSuperiorSelectvalue ==> " + unitatSuperiorSelectvalue);
+
+		Where unitatSuperiorWhere = null;
+		Long unitatSuperiorId = StringUtils.isNotEmpty(unitatSuperiorSelectvalue) ? Long.parseLong(unitatSuperiorSelectvalue) : null;
+		if (unitatSuperiorId != null && unitatSuperiorId > 0) {
+			unitatSuperiorWhere = null;//TODO
+			// select rufill.unitatid, rufill.codi, rufill.superior, rupare.unitatid, rupare.codi from rfh_unitat rufill inner join rfh_unitat rupare on rupare.codi = rufill.superior ;
+			// select * from rfh_lloc rl
+			// inner join (select rufill.unitatid unitatidfill, rupare.unitatid unitatidpare from rfh_unitat rufill inner join rfh_unitat rupare on rupare.codi = rufill.superior) ru on ru.unitatidfill = rl.unitatid 
+			// where ru.unitatidpare = 1455;
+		}
+		return unitatSuperiorWhere;
 	}
 
 	private Where getEntitatActualWhere() {

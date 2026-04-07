@@ -55,10 +55,14 @@ import es.caib.rfhab.back.utils.Tab;
 @Controller
 @RequestMapping(value = "/webdb/unitat")
 @SessionAttributes(types = { UnitatForm.class, UnitatFilterForm.class })
-@Tile(name="unitatFormWebDB", contentJsp="/WEB-INF/jsp/webdb/unitatForm.jsp", extendsTile=Tab.MENU_WEBDB,
-      type=TileType.WEBDB_FORM , attributes={ @TileAttribute(name="titol", value="unitat.unitat")})
-@Tile(name="unitatListWebDB", contentJsp="/WEB-INF/jsp/webdb/unitatList.jsp", extendsTile=Tab.MENU_WEBDB,
-       type=TileType.WEBDB_LIST, attributes={ @TileAttribute(name="titol", value="unitat.unitat") })
+@Tile(name="unitatFormWebDB", extendsTile=Tab.MENU_WEBDB,
+    // Els següents atributs no són necessaris si heredes aquesta classe
+    contentJsp="/WEB-INF/jsp/webdb/unitatForm.jsp", type=TileType.WEBDB_FORM,
+    attributes={ @TileAttribute(name="titol", value="unitat.unitat")})
+@Tile(name="unitatListWebDB", extendsTile=Tab.MENU_WEBDB,
+    // Els següents atributs no són necessaris si heredes aquesta classe 
+    contentJsp="/WEB-INF/jsp/webdb/unitatList.jsp", type=TileType.WEBDB_LIST,
+    attributes={ @TileAttribute(name="titol", value="unitat.unitat")})
 public class UnitatController
     extends es.caib.rfhab.back.controller.RFHabBaseController<Unitat, java.lang.Long> implements UnitatFields {
 

@@ -163,7 +163,7 @@ public class FuncionariAdminController extends FuncionariController {
 			List<FuncionariLlocLlocDAO> llocsFuncionariHistoric = llocEJB.getLlocHistoricByFuncionariID(funcionariId,
 					false);
 			mav.addObject("llocItems", llocsFuncionari);
-			mav.addObject("llocsHistoric", llocsFuncionariHistoric);// aquí CAI NOOOO!!!!
+			mav.addObject("llocsHistoric", llocsFuncionariHistoric);
 
 			// Pipella Històric - Obtenir tots els canvis realitzats al funcionari
 			List<Select7Values<Long, String, String, String, String, Timestamp, String>> historicItems = historicEjb
@@ -411,13 +411,13 @@ public class FuncionariAdminController extends FuncionariController {
 		final Where assignatsAllocDeFeinaWhere = getAdditionalConditionAssignats(request);
 		final Where nomCompletWhere = getAdditionalConditionFuncionariNom(request);
 
-		log.debug("defaultCondition ==> " + (defaultCondition != null ? defaultCondition.toSQL() : "null"));
-		log.debug("donatsDeBaixaWhere ==> " + (donatsDeBaixaWhere != null ? donatsDeBaixaWhere.toSQL() : "null"));
-		log.debug("personalOamrWhere ==> " + (personalOamrWhere != null ? personalOamrWhere.toSQL() : "null"));
-		log.debug("entitatIdActualWhere ==> " + (entitatIdActualWhere != null ? entitatIdActualWhere.toSQL() : "null"));
-		log.debug("AssignatsAllocDeFeinaWhere ==> "
+		log.info("defaultCondition ==> " + (defaultCondition != null ? defaultCondition.toSQL() : "null"));
+		log.info("donatsDeBaixaWhere ==> " + (donatsDeBaixaWhere != null ? donatsDeBaixaWhere.toSQL() : "null"));
+		log.info("personalOamrWhere ==> " + (personalOamrWhere != null ? personalOamrWhere.toSQL() : "null"));
+		log.info("entitatIdActualWhere ==> " + (entitatIdActualWhere != null ? entitatIdActualWhere.toSQL() : "null"));
+		log.info("AssignatsAllocDeFeinaWhere ==> "
 				+ (assignatsAllocDeFeinaWhere != null ? assignatsAllocDeFeinaWhere.toSQL() : "null"));
-		log.debug("nomCompletWhere ==> " + (nomCompletWhere != null ? nomCompletWhere.toSQL() : "null"));
+		log.info("nomCompletWhere ==> " + (nomCompletWhere != null ? nomCompletWhere.toSQL() : "null"));
 
 		return Where.AND(nomCompletWhere, personalOamrWhere, donatsDeBaixaWhere, assignatsAllocDeFeinaWhere,
 				(entitatIdActualWhere != null) ? Where.AND(defaultCondition, entitatIdActualWhere) : defaultCondition);

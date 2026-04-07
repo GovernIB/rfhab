@@ -55,10 +55,14 @@ import es.caib.rfhab.back.utils.Tab;
 @Controller
 @RequestMapping(value = "/webdb/funcionariLloc")
 @SessionAttributes(types = { FuncionariLlocForm.class, FuncionariLlocFilterForm.class })
-@Tile(name="funcionariLlocFormWebDB", contentJsp="/WEB-INF/jsp/webdb/funcionariLlocForm.jsp", extendsTile=Tab.MENU_WEBDB,
-      type=TileType.WEBDB_FORM , attributes={ @TileAttribute(name="titol", value="funcionariLloc.funcionariLloc")})
-@Tile(name="funcionariLlocListWebDB", contentJsp="/WEB-INF/jsp/webdb/funcionariLlocList.jsp", extendsTile=Tab.MENU_WEBDB,
-       type=TileType.WEBDB_LIST, attributes={ @TileAttribute(name="titol", value="funcionariLloc.funcionariLloc") })
+@Tile(name="funcionariLlocFormWebDB", extendsTile=Tab.MENU_WEBDB,
+    // Els següents atributs no són necessaris si heredes aquesta classe
+    contentJsp="/WEB-INF/jsp/webdb/funcionariLlocForm.jsp", type=TileType.WEBDB_FORM,
+    attributes={ @TileAttribute(name="titol", value="funcionariLloc.funcionariLloc")})
+@Tile(name="funcionariLlocListWebDB", extendsTile=Tab.MENU_WEBDB,
+    // Els següents atributs no són necessaris si heredes aquesta classe 
+    contentJsp="/WEB-INF/jsp/webdb/funcionariLlocList.jsp", type=TileType.WEBDB_LIST,
+    attributes={ @TileAttribute(name="titol", value="funcionariLloc.funcionariLloc")})
 public class FuncionariLlocController
     extends es.caib.rfhab.back.controller.RFHabBaseController<FuncionariLloc, java.lang.Long> implements FuncionariLlocFields {
 

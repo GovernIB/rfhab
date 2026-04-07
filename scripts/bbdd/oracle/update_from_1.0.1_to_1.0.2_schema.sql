@@ -1,0 +1,1 @@
+ALTER TABLE rfh_funcionarilloc ADD numerocai varchar(50) NULL;

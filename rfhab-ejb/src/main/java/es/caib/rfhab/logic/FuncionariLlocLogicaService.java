@@ -26,17 +26,17 @@ public interface FuncionariLlocLogicaService extends FuncionariLlocService {
 
 	public Where getWhereFuncionariIsCurrent(Where w);
 
-	public List<FuncionariLloc> donarDeBaixaFuncionariDeLloc(long funcionariId) throws I18NException;
+	public List<FuncionariLloc> donarDeBaixaFuncionariDeLloc(long funcionariId, String numeroCai) throws I18NException;
 
-	public List<FuncionariLloc> donarDeBaixaFuncionariDeLloc(long funcionariId, Long llocId) throws I18NException;
+	public List<FuncionariLloc> donarDeBaixaFuncionariDeLloc(long funcionariId, Long llocId, String numeroCai) throws I18NException;
 
-	public List<FuncionariLloc> donarDeBaixaFuncionariDeLlocByLloc(long llocId) throws I18NException;
+	public List<FuncionariLloc> donarDeBaixaFuncionariDeLlocByLloc(long llocId, String numeroCai) throws I18NException;
 
 	public boolean isFuncionariAssignat(long funcionariID) throws I18NException;
 
 	public boolean isLlocAssignat(long llocID) throws I18NException;
 
-	public FuncionariLlocJPA assignarFuncionari(FuncionariLloc funcionariLloc, String numeroCai, String observacions,
+	public FuncionariLlocJPA assignarFuncionari(FuncionariLloc funcionariLloc, String observacions,
 			long usuarId)
 			throws I18NException, I18NValidationException;
 

@@ -49,6 +49,14 @@ public class FuncionariLlocValidator<I extends FuncionariLloc>
         new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(DATACREACIO)));
 
     // Check size
+    if (__vr.getFieldErrorCount(NUMEROCAI) == 0) {
+      java.lang.String __numerocai = __target__.getNumeroCai();
+      if (__numerocai!= null && __numerocai.length() > 50) {
+        __vr.rejectValue(NUMEROCAI, "genapp.validation.sizeexceeds",
+            new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(NUMEROCAI)), new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(50)));
+      }
+    }
+
     if (__isNou__) { // Creació
       // ================ CREATION
       // Fitxers 

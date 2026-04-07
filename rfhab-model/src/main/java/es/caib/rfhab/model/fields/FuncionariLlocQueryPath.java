@@ -39,6 +39,10 @@ public class FuncionariLlocQueryPath extends org.fundaciobit.genapp.common.query
     return new LongField(getQueryPath(), FuncionariLlocFields.USUARIID);
   }
 
+  public StringField NUMEROCAI() {
+    return new StringField(getQueryPath(), FuncionariLlocFields.NUMEROCAI);
+  }
+
 
 
   @Override

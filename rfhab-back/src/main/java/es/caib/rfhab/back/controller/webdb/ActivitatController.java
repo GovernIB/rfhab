@@ -55,10 +55,14 @@ import es.caib.rfhab.back.utils.Tab;
 @Controller
 @RequestMapping(value = "/webdb/activitat")
 @SessionAttributes(types = { ActivitatForm.class, ActivitatFilterForm.class })
-@Tile(name="activitatFormWebDB", contentJsp="/WEB-INF/jsp/webdb/activitatForm.jsp", extendsTile=Tab.MENU_WEBDB,
-      type=TileType.WEBDB_FORM , attributes={ @TileAttribute(name="titol", value="activitat.activitat")})
-@Tile(name="activitatListWebDB", contentJsp="/WEB-INF/jsp/webdb/activitatList.jsp", extendsTile=Tab.MENU_WEBDB,
-       type=TileType.WEBDB_LIST, attributes={ @TileAttribute(name="titol", value="activitat.activitat") })
+@Tile(name="activitatFormWebDB", extendsTile=Tab.MENU_WEBDB,
+    // Els següents atributs no són necessaris si heredes aquesta classe
+    contentJsp="/WEB-INF/jsp/webdb/activitatForm.jsp", type=TileType.WEBDB_FORM,
+    attributes={ @TileAttribute(name="titol", value="activitat.activitat")})
+@Tile(name="activitatListWebDB", extendsTile=Tab.MENU_WEBDB,
+    // Els següents atributs no són necessaris si heredes aquesta classe 
+    contentJsp="/WEB-INF/jsp/webdb/activitatList.jsp", type=TileType.WEBDB_LIST,
+    attributes={ @TileAttribute(name="titol", value="activitat.activitat")})
 public class ActivitatController
     extends es.caib.rfhab.back.controller.RFHabBaseController<Activitat, java.lang.Long> implements ActivitatFields {
 

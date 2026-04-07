@@ -55,10 +55,14 @@ import es.caib.rfhab.back.utils.Tab;
 @Controller
 @RequestMapping(value = "/webdb/historicLloc")
 @SessionAttributes(types = { HistoricLlocForm.class, HistoricLlocFilterForm.class })
-@Tile(name="historicLlocFormWebDB", contentJsp="/WEB-INF/jsp/webdb/historicLlocForm.jsp", extendsTile=Tab.MENU_WEBDB,
-      type=TileType.WEBDB_FORM , attributes={ @TileAttribute(name="titol", value="historicLloc.historicLloc")})
-@Tile(name="historicLlocListWebDB", contentJsp="/WEB-INF/jsp/webdb/historicLlocList.jsp", extendsTile=Tab.MENU_WEBDB,
-       type=TileType.WEBDB_LIST, attributes={ @TileAttribute(name="titol", value="historicLloc.historicLloc") })
+@Tile(name="historicLlocFormWebDB", extendsTile=Tab.MENU_WEBDB,
+    // Els següents atributs no són necessaris si heredes aquesta classe
+    contentJsp="/WEB-INF/jsp/webdb/historicLlocForm.jsp", type=TileType.WEBDB_FORM,
+    attributes={ @TileAttribute(name="titol", value="historicLloc.historicLloc")})
+@Tile(name="historicLlocListWebDB", extendsTile=Tab.MENU_WEBDB,
+    // Els següents atributs no són necessaris si heredes aquesta classe 
+    contentJsp="/WEB-INF/jsp/webdb/historicLlocList.jsp", type=TileType.WEBDB_LIST,
+    attributes={ @TileAttribute(name="titol", value="historicLloc.historicLloc")})
 public class HistoricLlocController
     extends es.caib.rfhab.back.controller.RFHabBaseController<HistoricLloc, java.lang.Long> implements HistoricLlocFields {
 

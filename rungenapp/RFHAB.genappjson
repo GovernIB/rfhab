@@ -2008,6 +2008,31 @@
               "type": 1
             }
           ]
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "numerocai",
+          "sqlType": 12,
+          "size": 50,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Número CAI",
+            "es": "Número CAI"
+          },
+          "javaName": "numeroCai",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "filter": true,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
         }
       ]
     },

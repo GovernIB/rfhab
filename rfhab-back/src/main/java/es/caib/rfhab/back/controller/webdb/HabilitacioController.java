@@ -55,10 +55,14 @@ import es.caib.rfhab.back.utils.Tab;
 @Controller
 @RequestMapping(value = "/webdb/habilitacio")
 @SessionAttributes(types = { HabilitacioForm.class, HabilitacioFilterForm.class })
-@Tile(name="habilitacioFormWebDB", contentJsp="/WEB-INF/jsp/webdb/habilitacioForm.jsp", extendsTile=Tab.MENU_WEBDB,
-      type=TileType.WEBDB_FORM , attributes={ @TileAttribute(name="titol", value="habilitacio.habilitacio")})
-@Tile(name="habilitacioListWebDB", contentJsp="/WEB-INF/jsp/webdb/habilitacioList.jsp", extendsTile=Tab.MENU_WEBDB,
-       type=TileType.WEBDB_LIST, attributes={ @TileAttribute(name="titol", value="habilitacio.habilitacio") })
+@Tile(name="habilitacioFormWebDB", extendsTile=Tab.MENU_WEBDB,
+    // Els següents atributs no són necessaris si heredes aquesta classe
+    contentJsp="/WEB-INF/jsp/webdb/habilitacioForm.jsp", type=TileType.WEBDB_FORM,
+    attributes={ @TileAttribute(name="titol", value="habilitacio.habilitacio")})
+@Tile(name="habilitacioListWebDB", extendsTile=Tab.MENU_WEBDB,
+    // Els següents atributs no són necessaris si heredes aquesta classe 
+    contentJsp="/WEB-INF/jsp/webdb/habilitacioList.jsp", type=TileType.WEBDB_LIST,
+    attributes={ @TileAttribute(name="titol", value="habilitacio.habilitacio")})
 public class HabilitacioController
     extends es.caib.rfhab.back.controller.RFHabBaseController<Habilitacio, java.lang.Long> implements HabilitacioFields {
 

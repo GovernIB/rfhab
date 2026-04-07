@@ -23,6 +23,9 @@ public interface FuncionariLloc extends org.fundaciobit.genapp.common.IGenAppEnt
 	public java.lang.Long getUsuariID();
 	public void setUsuariID(java.lang.Long _usuariID_);
 
+	public java.lang.String getNumeroCai();
+	public void setNumeroCai(java.lang.String _numeroCai_);
+
 
 
   // ======================================

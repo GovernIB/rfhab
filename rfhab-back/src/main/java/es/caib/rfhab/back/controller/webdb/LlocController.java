@@ -55,10 +55,14 @@ import es.caib.rfhab.back.utils.Tab;
 @Controller
 @RequestMapping(value = "/webdb/lloc")
 @SessionAttributes(types = { LlocForm.class, LlocFilterForm.class })
-@Tile(name="llocFormWebDB", contentJsp="/WEB-INF/jsp/webdb/llocForm.jsp", extendsTile=Tab.MENU_WEBDB,
-      type=TileType.WEBDB_FORM , attributes={ @TileAttribute(name="titol", value="lloc.lloc")})
-@Tile(name="llocListWebDB", contentJsp="/WEB-INF/jsp/webdb/llocList.jsp", extendsTile=Tab.MENU_WEBDB,
-       type=TileType.WEBDB_LIST, attributes={ @TileAttribute(name="titol", value="lloc.lloc") })
+@Tile(name="llocFormWebDB", extendsTile=Tab.MENU_WEBDB,
+    // Els següents atributs no són necessaris si heredes aquesta classe
+    contentJsp="/WEB-INF/jsp/webdb/llocForm.jsp", type=TileType.WEBDB_FORM,
+    attributes={ @TileAttribute(name="titol", value="lloc.lloc")})
+@Tile(name="llocListWebDB", extendsTile=Tab.MENU_WEBDB,
+    // Els següents atributs no són necessaris si heredes aquesta classe 
+    contentJsp="/WEB-INF/jsp/webdb/llocList.jsp", type=TileType.WEBDB_LIST,
+    attributes={ @TileAttribute(name="titol", value="lloc.lloc")})
 public class LlocController
     extends es.caib.rfhab.back.controller.RFHabBaseController<Lloc, java.lang.Long> implements LlocFields {
 

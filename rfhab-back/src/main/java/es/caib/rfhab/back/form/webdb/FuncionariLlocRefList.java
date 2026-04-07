@@ -33,7 +33,7 @@ public class FuncionariLlocRefList extends RefListBase implements FuncionariLloc
     }
 
     public FuncionariLlocRefList() {
-        setSelects(new Select<?>[] { LLOCID.select });
+        setSelects(new Select<?>[] { LLOCID.select, NUMEROCAI.select });
     }
 
     public List<StringKeyValue> getReferenceList(Field<?> keyField, Where where, OrderBy ... orderBy) throws I18NException {

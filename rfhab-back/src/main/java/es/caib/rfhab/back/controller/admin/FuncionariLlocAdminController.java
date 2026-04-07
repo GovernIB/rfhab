@@ -222,15 +222,15 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 	public FuncionariLlocJPA create(HttpServletRequest request, FuncionariLlocJPA funcionariLloc)
 			throws I18NException, I18NValidationException {
 
-		final String numeroCai = (StringUtils.isNotEmpty(request.getParameter("numerocai")))
-				? request.getParameter("numerocai")
-				: Constants.NUMEROCAI_BUIT;
 		final String observacions = (StringUtils.isNotEmpty(request.getParameter("observacions")))
 				? request.getParameter("observacions")
 				: "";
 
+		if (funcionariLloc.getNumeroCai() == null) {
+			funcionariLloc.setNumeroCai(Constants.NUMEROCAI_BUIT);
+		}
 		FuncionariLlocJPA funcionariLlocJPA = null;
-		funcionariLlocJPA = funcionariLlocEjb.assignarFuncionari(funcionariLloc, numeroCai, observacions,
+		funcionariLlocJPA = funcionariLlocEjb.assignarFuncionari(funcionariLloc, observacions,
 				LoginInfo.getInstance().getUsuariPersona().getUsuariID());
 
 		return funcionariLlocJPA;

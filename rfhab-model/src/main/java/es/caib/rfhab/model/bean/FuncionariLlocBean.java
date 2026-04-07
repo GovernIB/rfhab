@@ -15,6 +15,7 @@ public class FuncionariLlocBean implements FuncionariLloc {
 	java.sql.Date dataFi;
 	java.sql.Timestamp dataCreacio;
 	java.lang.Long usuariID;
+	java.lang.String numeroCai;
 
 
   /** Constructor Buit */
@@ -22,7 +23,7 @@ public class FuncionariLlocBean implements FuncionariLloc {
   }
 
   /** Constructor amb tots els camps  */
-  public FuncionariLlocBean(long funcionarillocID , long llocID , long funcionariID , java.sql.Date dataInici , java.sql.Date dataFi , java.sql.Timestamp dataCreacio , java.lang.Long usuariID) {
+  public FuncionariLlocBean(long funcionarillocID , long llocID , long funcionariID , java.sql.Date dataInici , java.sql.Date dataFi , java.sql.Timestamp dataCreacio , java.lang.Long usuariID , java.lang.String numeroCai) {
     this.funcionarillocID=funcionarillocID;
     this.llocID=llocID;
     this.funcionariID=funcionariID;
@@ -30,15 +31,17 @@ public class FuncionariLlocBean implements FuncionariLloc {
     this.dataFi=dataFi;
     this.dataCreacio=dataCreacio;
     this.usuariID=usuariID;
+    this.numeroCai=numeroCai;
 }
   /** Constructor sense valors autoincrementals */
-  public FuncionariLlocBean(long llocID , long funcionariID , java.sql.Date dataInici , java.sql.Date dataFi , java.sql.Timestamp dataCreacio , java.lang.Long usuariID) {
+  public FuncionariLlocBean(long llocID , long funcionariID , java.sql.Date dataInici , java.sql.Date dataFi , java.sql.Timestamp dataCreacio , java.lang.Long usuariID , java.lang.String numeroCai) {
     this.llocID=llocID;
     this.funcionariID=funcionariID;
     this.dataInici=dataInici;
     this.dataFi=dataFi;
     this.dataCreacio=dataCreacio;
     this.usuariID=usuariID;
+    this.numeroCai=numeroCai;
 }
   /** Constructor dels valors Not Null */
   public FuncionariLlocBean(long funcionarillocID , long llocID , long funcionariID , java.sql.Timestamp dataCreacio) {
@@ -55,6 +58,7 @@ public class FuncionariLlocBean implements FuncionariLloc {
     this.setDataFi(__bean.getDataFi());
     this.setDataCreacio(__bean.getDataCreacio());
     this.setUsuariID(__bean.getUsuariID());
+    this.setNumeroCai(__bean.getNumeroCai());
 	}
 
 	public long getFuncionarillocID() {
@@ -106,6 +110,13 @@ public class FuncionariLlocBean implements FuncionariLloc {
 		this.usuariID = _usuariID_;
 	};
 
+	public java.lang.String getNumeroCai() {
+		return(numeroCai);
+	};
+	public void setNumeroCai(java.lang.String _numeroCai_) {
+		this.numeroCai = _numeroCai_;
+	};
+
 
 
   // ======================================
@@ -120,6 +131,7 @@ public class FuncionariLlocBean implements FuncionariLloc {
     __tmp.setDataFi(__bean.getDataFi());
     __tmp.setDataCreacio(__bean.getDataCreacio());
     __tmp.setUsuariID(__bean.getUsuariID());
+    __tmp.setNumeroCai(__bean.getNumeroCai());
 		return __tmp;
 	}
 

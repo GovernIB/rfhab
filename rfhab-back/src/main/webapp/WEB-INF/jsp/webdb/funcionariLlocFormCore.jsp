@@ -217,3 +217,21 @@
         </tr>
         </c:if>
         
+        <c:if test="${!gen:contains(__theForm.hiddenFields,FuncionariLlocFields.NUMEROCAI)}">
+        <tr id="funcionariLloc_numeroCai_rowid">
+          <td id="funcionariLloc_numeroCai_columnlabelid">
+            <label>
+              <fmt:message key="${(empty __theForm.labels[FuncionariLlocFields.NUMEROCAI])?'funcionariLloc.numeroCai':__theForm.labels[FuncionariLlocFields.NUMEROCAI]}" />
+             </label>
+              <c:if test="${not empty __theForm.help[FuncionariLlocFields.NUMEROCAI]}">
+              <i class="fas fa-info-circle" title="${__theForm.help[FuncionariLlocFields.NUMEROCAI]}" ></i>
+              </c:if>
+            </td>
+          <td id="funcionariLloc_numeroCai_columnvalueid">
+            <form:errors path="funcionariLloc.numeroCai" cssClass="errorField alert alert-danger" />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,FuncionariLlocFields.NUMEROCAI)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,FuncionariLlocFields.NUMEROCAI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="funcionariLloc.numeroCai"   />
+
+           </td>
+        </tr>
+        </c:if>
+        

@@ -55,10 +55,14 @@ import es.caib.rfhab.back.utils.Tab;
 @Controller
 @RequestMapping(value = "/webdb/funcionari")
 @SessionAttributes(types = { FuncionariForm.class, FuncionariFilterForm.class })
-@Tile(name="funcionariFormWebDB", contentJsp="/WEB-INF/jsp/webdb/funcionariForm.jsp", extendsTile=Tab.MENU_WEBDB,
-      type=TileType.WEBDB_FORM , attributes={ @TileAttribute(name="titol", value="funcionari.funcionari")})
-@Tile(name="funcionariListWebDB", contentJsp="/WEB-INF/jsp/webdb/funcionariList.jsp", extendsTile=Tab.MENU_WEBDB,
-       type=TileType.WEBDB_LIST, attributes={ @TileAttribute(name="titol", value="funcionari.funcionari") })
+@Tile(name="funcionariFormWebDB", extendsTile=Tab.MENU_WEBDB,
+    // Els següents atributs no són necessaris si heredes aquesta classe
+    contentJsp="/WEB-INF/jsp/webdb/funcionariForm.jsp", type=TileType.WEBDB_FORM,
+    attributes={ @TileAttribute(name="titol", value="funcionari.funcionari")})
+@Tile(name="funcionariListWebDB", extendsTile=Tab.MENU_WEBDB,
+    // Els següents atributs no són necessaris si heredes aquesta classe 
+    contentJsp="/WEB-INF/jsp/webdb/funcionariList.jsp", type=TileType.WEBDB_LIST,
+    attributes={ @TileAttribute(name="titol", value="funcionari.funcionari")})
 public class FuncionariController
     extends es.caib.rfhab.back.controller.RFHabBaseController<Funcionari, java.lang.Long> implements FuncionariFields {
 

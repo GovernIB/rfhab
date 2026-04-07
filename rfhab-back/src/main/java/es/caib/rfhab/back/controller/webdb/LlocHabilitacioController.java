@@ -55,10 +55,14 @@ import es.caib.rfhab.back.utils.Tab;
 @Controller
 @RequestMapping(value = "/webdb/llocHabilitacio")
 @SessionAttributes(types = { LlocHabilitacioForm.class, LlocHabilitacioFilterForm.class })
-@Tile(name="llocHabilitacioFormWebDB", contentJsp="/WEB-INF/jsp/webdb/llocHabilitacioForm.jsp", extendsTile=Tab.MENU_WEBDB,
-      type=TileType.WEBDB_FORM , attributes={ @TileAttribute(name="titol", value="llocHabilitacio.llocHabilitacio")})
-@Tile(name="llocHabilitacioListWebDB", contentJsp="/WEB-INF/jsp/webdb/llocHabilitacioList.jsp", extendsTile=Tab.MENU_WEBDB,
-       type=TileType.WEBDB_LIST, attributes={ @TileAttribute(name="titol", value="llocHabilitacio.llocHabilitacio") })
+@Tile(name="llocHabilitacioFormWebDB", extendsTile=Tab.MENU_WEBDB,
+    // Els següents atributs no són necessaris si heredes aquesta classe
+    contentJsp="/WEB-INF/jsp/webdb/llocHabilitacioForm.jsp", type=TileType.WEBDB_FORM,
+    attributes={ @TileAttribute(name="titol", value="llocHabilitacio.llocHabilitacio")})
+@Tile(name="llocHabilitacioListWebDB", extendsTile=Tab.MENU_WEBDB,
+    // Els següents atributs no són necessaris si heredes aquesta classe 
+    contentJsp="/WEB-INF/jsp/webdb/llocHabilitacioList.jsp", type=TileType.WEBDB_LIST,
+    attributes={ @TileAttribute(name="titol", value="llocHabilitacio.llocHabilitacio")})
 public class LlocHabilitacioController
     extends es.caib.rfhab.back.controller.RFHabBaseController<LlocHabilitacio, java.lang.Long> implements LlocHabilitacioFields {
 

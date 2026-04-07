@@ -218,6 +218,7 @@ public class FuncionariLlocRestService extends RestUtils {
 			funcionariLloc.setUsuariID(usuariId.longValue());
 			funcionariLloc.setDataInici(dataInici);
 			funcionariLloc.setDataFi(dataFi);
+			funcionariLloc.setNumeroCai(numeroCai);
 
 			// validam entitat
 			FuncionariLloc fLlocCreat;
@@ -249,7 +250,7 @@ public class FuncionariLlocRestService extends RestUtils {
 				throw new I18NException(msg);
 			} else {
 				// Cream funcionariLloc i auditoria
-				fLlocCreat = funcionariLlocLogicaEjb.assignarFuncionari(funcionariLloc, numeroCai, observacions,
+				fLlocCreat = funcionariLlocLogicaEjb.assignarFuncionari(funcionariLloc, observacions,
 						usuariId.longValue());
 			}
 

@@ -55,10 +55,14 @@ import es.caib.rfhab.back.utils.Tab;
 @Controller
 @RequestMapping(value = "/webdb/usuari")
 @SessionAttributes(types = { UsuariForm.class, UsuariFilterForm.class })
-@Tile(name="usuariFormWebDB", contentJsp="/WEB-INF/jsp/webdb/usuariForm.jsp", extendsTile=Tab.MENU_WEBDB,
-      type=TileType.WEBDB_FORM , attributes={ @TileAttribute(name="titol", value="usuari.usuari")})
-@Tile(name="usuariListWebDB", contentJsp="/WEB-INF/jsp/webdb/usuariList.jsp", extendsTile=Tab.MENU_WEBDB,
-       type=TileType.WEBDB_LIST, attributes={ @TileAttribute(name="titol", value="usuari.usuari") })
+@Tile(name="usuariFormWebDB", extendsTile=Tab.MENU_WEBDB,
+    // Els següents atributs no són necessaris si heredes aquesta classe
+    contentJsp="/WEB-INF/jsp/webdb/usuariForm.jsp", type=TileType.WEBDB_FORM,
+    attributes={ @TileAttribute(name="titol", value="usuari.usuari")})
+@Tile(name="usuariListWebDB", extendsTile=Tab.MENU_WEBDB,
+    // Els següents atributs no són necessaris si heredes aquesta classe 
+    contentJsp="/WEB-INF/jsp/webdb/usuariList.jsp", type=TileType.WEBDB_LIST,
+    attributes={ @TileAttribute(name="titol", value="usuari.usuari")})
 public class UsuariController
     extends es.caib.rfhab.back.controller.RFHabBaseController<Usuari, java.lang.Long> implements UsuariFields {
 

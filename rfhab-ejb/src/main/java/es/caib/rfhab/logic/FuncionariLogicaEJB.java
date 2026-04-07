@@ -305,7 +305,7 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 		if (funcionari == null) {
 			// el desasignam del lloc de feina
 			funcionarisLlocsDonatsDeBaixa = funcionariLlocLogicaEjb
-					.donarDeBaixaFuncionariDeLlocByLloc(llocId);
+					.donarDeBaixaFuncionariDeLlocByLloc(llocId, numeroCai);
 			log.info("Assignacions de funcionaris/àries al lloc de feina " + llocId + " actualitzades");
 
 			// Lloc de feina: el donam de baixa
@@ -341,7 +341,7 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 
 			// el desasignam del lloc de feina
 			funcionarisLlocsDonatsDeBaixa = funcionariLlocLogicaEjb
-					.donarDeBaixaFuncionariDeLloc(funcionariId, llocId);
+					.donarDeBaixaFuncionariDeLloc(funcionariId, llocId, numeroCai);
 			log.info("Assignacions de Llocs de Feina de Funcionari " + funcionariId + " actualitzades");
 
 			// Funcionari: el donam de baixa

@@ -64,24 +64,28 @@ public class FuncionariLlocLogicaEJB extends FuncionariLlocEJB implements Funcio
 	}
 
 	@PermitAll
-	public List<FuncionariLloc> donarDeBaixaFuncionariDeLloc(long funcionariId) throws I18NException {
-		return donarDeBaixaFuncionariDeLloc(funcionariId, null);
+	public List<FuncionariLloc> donarDeBaixaFuncionariDeLloc(long funcionariId, String numeroCai) throws I18NException {
+		return donarDeBaixaFuncionariDeLloc(funcionariId, null, numeroCai);
 	}
 
 	@PermitAll
-	public List<FuncionariLloc> donarDeBaixaFuncionariDeLloc(long funcionariId, Long llocId) throws I18NException {
+	public List<FuncionariLloc> donarDeBaixaFuncionariDeLloc(long funcionariId, Long llocId, String numeroCai)
+			throws I18NException {
 		Where w = FuncionariLlocFields.FUNCIONARIID.equal(funcionariId);
 		if (llocId != null) {
 			w = Where.AND(w, FuncionariLlocFields.LLOCID.equal(llocId));
 		}
 		List<FuncionariLloc> llocs = select(
 				getWhereFuncionariIsCurrent(w));
-		// TODO:aquí només hauria d'haver-ni un
 		if (llocs != null && llocs.size() > 0) {
 			log.info("Trobats " + llocs.size() + " llocs de feina per al funcionari " + funcionariId);
 			for (FuncionariLloc lloc : llocs) {
-				lloc.setDataFi(new Date(System.currentTimeMillis()));
-				update(lloc);
+				if (lloc.getDataFi() == null) {
+					// aquí només hauria d'haver-ni un
+					lloc.setDataFi(new Date(System.currentTimeMillis()));
+					lloc.setNumeroCai(numeroCai);
+					update(lloc);
+				}
 			}
 		} else {
 			log.info("No s'ha trobat cap lloc de feina per al funcionari " + funcionariId);
@@ -91,15 +95,18 @@ public class FuncionariLlocLogicaEJB extends FuncionariLlocEJB implements Funcio
 	}
 
 	@PermitAll
-	public List<FuncionariLloc> donarDeBaixaFuncionariDeLlocByLloc(long llocId) throws I18NException {
+	public List<FuncionariLloc> donarDeBaixaFuncionariDeLlocByLloc(long llocId, String numeroCai) throws I18NException {
 		List<FuncionariLloc> llocs = select(
 				getWhereFuncionariIsCurrent(FuncionariLlocFields.LLOCID.equal(llocId)));
-		// TODO:aquí només hauria d'haver-ni un
 		if (llocs != null && llocs.size() > 0) {
 			log.info("Trobats " + llocs.size() + " funcionaris assignats per al lloc de feina " + llocId);
 			for (FuncionariLloc lloc : llocs) {
-				lloc.setDataFi(new Date(System.currentTimeMillis()));
-				update(lloc);
+				if (lloc.getDataFi() == null) {
+					// aquí només hauria d'haver-ni un
+					lloc.setDataFi(new Date(System.currentTimeMillis()));
+					lloc.setNumeroCai(numeroCai);
+					update(lloc);
+				}
 			}
 		} else {
 			log.info("No s'ha trobat cap funcionari assignat per al lloc de feina " + llocId);
@@ -120,11 +127,12 @@ public class FuncionariLlocLogicaEJB extends FuncionariLlocEJB implements Funcio
 
 	@Override
 	@PermitAll
-	public FuncionariLlocJPA assignarFuncionari(FuncionariLloc funcionariLloc, String numeroCai, String observacions,
+	public FuncionariLlocJPA assignarFuncionari(FuncionariLloc funcionariLloc, String observacions,
 			long usuarId)
 			throws I18NException, I18NValidationException {
 		long funcionariID = funcionariLloc.getFuncionariID();
 		long llocID = funcionariLloc.getLlocID();
+		String numeroCai = funcionariLloc.getNumeroCai();
 		log.info(numeroCai + " --> assignant funcionari " + funcionariID + " a lloc "
 				+ llocID + " amb observacions " + observacions);
 

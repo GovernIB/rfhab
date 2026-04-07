@@ -175,6 +175,17 @@ public class FuncionariLlocFilterForm extends RFHabBaseFilterForm implements Fun
   }
 
 
+  private java.lang.String numeroCai;
+
+  public java.lang.String getNumeroCai() {
+    return this.numeroCai;
+  }
+
+  public void setNumeroCai(java.lang.String numeroCai) {
+    this.numeroCai = numeroCai;
+  }
+
+
   public FuncionariLlocFilterForm() {
   }
   
@@ -194,6 +205,7 @@ public class FuncionariLlocFilterForm extends RFHabBaseFilterForm implements Fun
     this.dataCreacioFins = __toClone.dataCreacioFins;
     this.usuariIDDesde = __toClone.usuariIDDesde;
     this.usuariIDFins = __toClone.usuariIDFins;
+    this.numeroCai = __toClone.numeroCai;
     this.mapOfLlocForLlocID = __toClone.mapOfLlocForLlocID;
     this.mapOfFuncionariForFuncionariID = __toClone.mapOfFuncionariForFuncionariID;
     this.mapOfUsuariForUsuariID = __toClone.mapOfUsuariForUsuariID;
@@ -203,7 +215,7 @@ public class FuncionariLlocFilterForm extends RFHabBaseFilterForm implements Fun
 
   @Override
   public List<Field<?>> getDefaultFilterByFields() {
-    return new java.util.ArrayList<Field<?>>(Arrays.asList(new Field<?>[] {  }));
+    return new java.util.ArrayList<Field<?>>(Arrays.asList(new Field<?>[] { NUMEROCAI }));
   }
 
   @Override

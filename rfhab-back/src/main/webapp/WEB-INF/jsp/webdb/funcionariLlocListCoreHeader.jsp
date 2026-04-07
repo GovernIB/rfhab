@@ -33,6 +33,9 @@
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,FuncionariLlocFields.USUARIID)}">
         <th>${rfh:getSortIcons(__theFilterForm,FuncionariLlocFields.USUARIID)}</th>
         </c:if>
+        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,FuncionariLlocFields.NUMEROCAI)}">
+        <th>${rfh:getSortIcons(__theFilterForm,FuncionariLlocFields.NUMEROCAI)}</th>
+        </c:if>
 
 
         <c:forEach var="__entry" items="${__theFilterForm.additionalFields}">

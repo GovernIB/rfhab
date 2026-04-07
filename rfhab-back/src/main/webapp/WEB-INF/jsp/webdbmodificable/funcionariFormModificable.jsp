@@ -200,7 +200,7 @@
 								<th><fmt:message key="lloc.nomlf" /></th>
 								<th><fmt:message key="funcionariLloc.dataInici" /></th>
 								<th><fmt:message key="funcionariLloc.dataFi" /></th>
-								<!-- <th><fmt:message key="funcionari.historic.pipella.cai" /></th> -->
+								<th><fmt:message key="funcionari.historic.pipella.cai" /></th>
 								<!-- <th>&nbsp;</th> -->
 							</tr>
 						</thead>
@@ -211,7 +211,7 @@
 									<td>${lloc.lloc.nom}</td>
 									<td><fmt:formatDate pattern="dd/MM/yyyy" value="${lloc.dataInici}" /></td>
 									<td><fmt:formatDate pattern="dd/MM/yyyy" value="${lloc.dataFi}" /></td>
-									<!-- <td>${lloc.numeroCai}</td> -->
+									<td>${lloc.numeroCai}</td>
 									<!-- <td>
 										<a class="btn btn-primary btn-sm" href="<c:url value="/admin/lloc/view/${lloc.lloc.llocID}"/>">
 											<i class="far fa-eye" title="Veure detall"></i>&nbsp;<fmt:message key="detall" />

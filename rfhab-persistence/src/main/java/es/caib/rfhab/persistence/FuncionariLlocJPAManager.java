@@ -55,8 +55,8 @@ public class FuncionariLlocJPAManager
         return list.toArray(new FuncionariLloc[list.size()]);
     };
 
-    public FuncionariLloc create( long _llocID_, long _funcionariID_, java.sql.Date _dataInici_, java.sql.Date _dataFi_, java.sql.Timestamp _dataCreacio_, java.lang.Long _usuariID_) throws I18NException {
-        FuncionariLlocJPA __bean =  new FuncionariLlocJPA(_llocID_,_funcionariID_,_dataInici_,_dataFi_,_dataCreacio_,_usuariID_);
+    public FuncionariLloc create( long _llocID_, long _funcionariID_, java.sql.Date _dataInici_, java.sql.Date _dataFi_, java.sql.Timestamp _dataCreacio_, java.lang.Long _usuariID_, java.lang.String _numeroCai_) throws I18NException {
+        FuncionariLlocJPA __bean =  new FuncionariLlocJPA(_llocID_,_funcionariID_,_dataInici_,_dataFi_,_dataCreacio_,_usuariID_,_numeroCai_);
         return create(__bean);
     }
 

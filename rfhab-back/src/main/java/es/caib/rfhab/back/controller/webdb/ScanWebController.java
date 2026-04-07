@@ -58,10 +58,14 @@ import es.caib.rfhab.back.utils.Tab;
 @Controller
 @RequestMapping(value = "/webdb/scanWeb")
 @SessionAttributes(types = { ScanWebForm.class, ScanWebFilterForm.class })
-@Tile(name="scanWebFormWebDB", contentJsp="/WEB-INF/jsp/webdb/scanWebForm.jsp", extendsTile=Tab.MENU_WEBDB,
-      type=TileType.WEBDB_FORM , attributes={ @TileAttribute(name="titol", value="scanWeb.scanWeb")})
-@Tile(name="scanWebListWebDB", contentJsp="/WEB-INF/jsp/webdb/scanWebList.jsp", extendsTile=Tab.MENU_WEBDB,
-       type=TileType.WEBDB_LIST, attributes={ @TileAttribute(name="titol", value="scanWeb.scanWeb") })
+@Tile(name="scanWebFormWebDB", extendsTile=Tab.MENU_WEBDB,
+    // Els següents atributs no són necessaris si heredes aquesta classe
+    contentJsp="/WEB-INF/jsp/webdb/scanWebForm.jsp", type=TileType.WEBDB_FORM,
+    attributes={ @TileAttribute(name="titol", value="scanWeb.scanWeb")})
+@Tile(name="scanWebListWebDB", extendsTile=Tab.MENU_WEBDB,
+    // Els següents atributs no són necessaris si heredes aquesta classe 
+    contentJsp="/WEB-INF/jsp/webdb/scanWebList.jsp", type=TileType.WEBDB_LIST,
+    attributes={ @TileAttribute(name="titol", value="scanWeb.scanWeb")})
 public class ScanWebController
     extends es.caib.rfhab.back.controller.RFHabFilesBaseController<ScanWeb, java.lang.Long, ScanWebForm> implements ScanWebFields {
 

@@ -55,10 +55,14 @@ import es.caib.rfhab.back.utils.Tab;
 @Controller
 @RequestMapping(value = "/webdb/historic")
 @SessionAttributes(types = { HistoricForm.class, HistoricFilterForm.class })
-@Tile(name="historicFormWebDB", contentJsp="/WEB-INF/jsp/webdb/historicForm.jsp", extendsTile=Tab.MENU_WEBDB,
-      type=TileType.WEBDB_FORM , attributes={ @TileAttribute(name="titol", value="historic.historic")})
-@Tile(name="historicListWebDB", contentJsp="/WEB-INF/jsp/webdb/historicList.jsp", extendsTile=Tab.MENU_WEBDB,
-       type=TileType.WEBDB_LIST, attributes={ @TileAttribute(name="titol", value="historic.historic") })
+@Tile(name="historicFormWebDB", extendsTile=Tab.MENU_WEBDB,
+    // Els següents atributs no són necessaris si heredes aquesta classe
+    contentJsp="/WEB-INF/jsp/webdb/historicForm.jsp", type=TileType.WEBDB_FORM,
+    attributes={ @TileAttribute(name="titol", value="historic.historic")})
+@Tile(name="historicListWebDB", extendsTile=Tab.MENU_WEBDB,
+    // Els següents atributs no són necessaris si heredes aquesta classe 
+    contentJsp="/WEB-INF/jsp/webdb/historicList.jsp", type=TileType.WEBDB_LIST,
+    attributes={ @TileAttribute(name="titol", value="historic.historic")})
 public class HistoricController
     extends es.caib.rfhab.back.controller.RFHabBaseController<Historic, java.lang.Long> implements HistoricFields {
 

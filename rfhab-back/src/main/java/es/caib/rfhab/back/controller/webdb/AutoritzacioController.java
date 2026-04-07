@@ -55,10 +55,14 @@ import es.caib.rfhab.back.utils.Tab;
 @Controller
 @RequestMapping(value = "/webdb/autoritzacio")
 @SessionAttributes(types = { AutoritzacioForm.class, AutoritzacioFilterForm.class })
-@Tile(name="autoritzacioFormWebDB", contentJsp="/WEB-INF/jsp/webdb/autoritzacioForm.jsp", extendsTile=Tab.MENU_WEBDB,
-      type=TileType.WEBDB_FORM , attributes={ @TileAttribute(name="titol", value="autoritzacio.autoritzacio")})
-@Tile(name="autoritzacioListWebDB", contentJsp="/WEB-INF/jsp/webdb/autoritzacioList.jsp", extendsTile=Tab.MENU_WEBDB,
-       type=TileType.WEBDB_LIST, attributes={ @TileAttribute(name="titol", value="autoritzacio.autoritzacio") })
+@Tile(name="autoritzacioFormWebDB", extendsTile=Tab.MENU_WEBDB,
+    // Els següents atributs no són necessaris si heredes aquesta classe
+    contentJsp="/WEB-INF/jsp/webdb/autoritzacioForm.jsp", type=TileType.WEBDB_FORM,
+    attributes={ @TileAttribute(name="titol", value="autoritzacio.autoritzacio")})
+@Tile(name="autoritzacioListWebDB", extendsTile=Tab.MENU_WEBDB,
+    // Els següents atributs no són necessaris si heredes aquesta classe 
+    contentJsp="/WEB-INF/jsp/webdb/autoritzacioList.jsp", type=TileType.WEBDB_LIST,
+    attributes={ @TileAttribute(name="titol", value="autoritzacio.autoritzacio")})
 public class AutoritzacioController
     extends es.caib.rfhab.back.controller.RFHabBaseController<Autoritzacio, java.lang.Long> implements AutoritzacioFields {
 

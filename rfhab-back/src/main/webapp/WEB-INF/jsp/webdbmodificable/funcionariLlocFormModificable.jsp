@@ -1,6 +1,8 @@
 <script>
   document.addEventListener("DOMContentLoaded", function (event) {
     if ("true" != "${isView}") {
+      const taula = document.getElementById("funcionariLloc_tableid");
+      const tbody = taula.querySelector("tbody");
       //afegeix input observacions
       const nouObservacionsTr = tbody.insertRow(-1);
       nouObservacionsTr.id = "funcionariLloc_observacions_rowid";

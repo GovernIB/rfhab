@@ -1,5 +1,9 @@
 package es.caib.rfhab.back.controller.superadmin;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 
 import org.fundaciobit.genapp.common.i18n.I18NException;
@@ -13,8 +17,11 @@ import org.springframework.web.servlet.ModelAndView;
 import es.caib.rfhab.back.controller.webdb.UsuariEntitatController;
 import es.caib.rfhab.back.form.webdb.UsuariEntitatFilterForm;
 import es.caib.rfhab.back.form.webdb.UsuariEntitatForm;
-
+import es.caib.rfhab.back.security.LoginInfo;
+import es.caib.rfhab.logic.EntitatLogicaService;
+import es.caib.rfhab.persistence.EntitatJPA;
 import es.caib.rfhab.persistence.UsuariEntitatJPA;
+import es.caib.rfhab.persistence.UsuariJPA;
 import es.caib.rfhab.model.fields.UsuariEntitatFields;
 
 @Controller
@@ -24,6 +31,9 @@ public class UsuariEntitatSuperAdminController extends UsuariEntitatController {
 
 	private static final String USUARI_ID_NAME_ATTRIBUTE = "usuariId";
 	private static final String ENTITAT_ID_NAME_ATTRIBUTE = "entitatId";
+
+	@EJB(mappedName = EntitatLogicaService.JNDI_NAME)
+	protected EntitatLogicaService entitatEjb;
 
 	@Override
 	public String getTileForm() {
@@ -45,23 +55,23 @@ public class UsuariEntitatSuperAdminController extends UsuariEntitatController {
 
 		if (usuariEntitatForm.isNou()) {
 			UsuariEntitatJPA usuariEntitatItem = new UsuariEntitatJPA();
-			
+
 			if (entitatIdAttribute != null) {
 				usuariEntitatItem.setEntitatID((long) entitatIdAttribute);
 				usuariEntitatForm.addReadOnlyField(UsuariEntitatFields.ENTITATID);
 				request.getSession().removeAttribute(ENTITAT_ID_NAME_ATTRIBUTE);
 			}
-			
+
 			Object usuariIdAttribute = request.getSession().getAttribute(USUARI_ID_NAME_ATTRIBUTE);
 			if (usuariIdAttribute != null) {
 				usuariEntitatItem.setUsuariID((long) usuariIdAttribute);
 				usuariEntitatForm.addReadOnlyField(UsuariEntitatFields.USUARIID);
 				request.getSession().removeAttribute(USUARI_ID_NAME_ATTRIBUTE);
 			}
-			
+
 			usuariEntitatItem.setActiu(true);
 			usuariEntitatForm.setUsuariEntitat(usuariEntitatItem);
-			
+
 		}
 
 		return usuariEntitatForm;
@@ -75,25 +85,44 @@ public class UsuariEntitatSuperAdminController extends UsuariEntitatController {
 
 		return "redirect:/superadmin/usuariEntitat/new";
 	}
-	
+
 	@RequestMapping(value = "/assignarUsuari/{usuariId}", method = RequestMethod.GET)
 	public String assignarEntitat(HttpServletRequest request, @PathVariable(USUARI_ID_NAME_ATTRIBUTE) Long usuariId) {
-		
+
 		log.info("Assignar entitat a usuariID " + usuariId);
 		request.getSession().setAttribute(USUARI_ID_NAME_ATTRIBUTE, usuariId);
-		
+
 		return "redirect:/superadmin/usuariEntitat/new";
-		
 	}
 
 	@Override
 	public String getRedirectWhenCancel(HttpServletRequest request, java.lang.Long usuariEntitatID) {
 		return "redirect:/superadmin/usuari/list/1";
 	}
-	
+
 	@Override
 	public String getRedirectWhenCreated(HttpServletRequest request, UsuariEntitatForm usuariEntitatForm) {
-	    return "redirect:/superadmin/usuari/list/1";
-	  }
+		UsuariEntitatJPA usuariEntitat = usuariEntitatForm.getUsuariEntitat();
+		Long usuariID = usuariEntitat.getUsuariID();
+		Long entitatID = usuariEntitat.getEntitatID();
+
+		LoginInfo loginInfo = LoginInfo.getInstance();
+		UsuariJPA usuariActiu = loginInfo.getUsuariPersona();
+		if (usuariActiu.getUsuariID() == usuariID) {
+			log.info("S'han modificat les dades de l'usuari actiu. Anem a actualitzar les entitats...");
+			Map<Long, EntitatJPA> entitatsActualitzades = new HashMap<>();
+			for (EntitatJPA entitat : loginInfo.getEntitats().values()) {
+				entitatsActualitzades.put(entitat.getEntitatID(), entitat);
+				log.info("Entitat " + entitat.getNom() + " amb ID " + entitat.getEntitatID() + " continua.");
+			}
+
+			EntitatJPA entitat = entitatEjb.findByPrimaryKey(entitatID);
+			entitatsActualitzades.put(entitat.getEntitatID(), entitat);
+			log.info("Entitat " + entitat.getNom() + " amb ID " + entitat.getEntitatID() + " afegida.");
+			loginInfo.setEntitats(entitatsActualitzades);
+		}
+
+		return "redirect:/superadmin/usuari/list/1";
+	}
 
 }

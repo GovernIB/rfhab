@@ -1,6 +1,7 @@
 package es.caib.rfhab.back.controller.superadmin;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import es.caib.rfhab.back.controller.webdb.UsuariController;
 import es.caib.rfhab.back.form.webdb.UsuariFilterForm;
 import es.caib.rfhab.back.form.webdb.UsuariForm;
+import es.caib.rfhab.back.security.LoginInfo;
 import es.caib.rfhab.logic.UsuariEntitatLogicaService;
 import es.caib.rfhab.model.entity.Usuari;
 import es.caib.rfhab.model.fields.EntitatFields;
@@ -173,6 +175,23 @@ public class UsuariSuperAdminController extends UsuariController {
 				new String[] { entitatID.toString(), usuariID.toString() });
 		HtmlUtils.saveMessageInfo(request, missatgeBorrat);
 		log.info(missatgeBorrat);
+
+		LoginInfo loginInfo = LoginInfo.getInstance();
+		UsuariJPA usuariActiu = loginInfo.getUsuariPersona();
+		if (usuariActiu.getUsuariID() == usuariID) {
+			log.info("S'han modificat les dades de l'usuari actiu. Anem a actualitzar les entitats...");
+			Map<Long, EntitatJPA> entitatsActualitzades = new HashMap<>();
+			for (EntitatJPA entitat : loginInfo.getEntitats().values()) {
+				if (entitat.getEntitatID() != entitatID.longValue()) {
+					entitatsActualitzades.put(entitat.getEntitatID(), entitat);
+					log.info("Entitat " + entitat.getNom() + " amb ID " + entitat.getEntitatID() + " continua.");
+				}
+				else{
+					log.info("Entitat " + entitat.getNom() + " amb ID " + entitat.getEntitatID() + " esborrada de la llista.");
+				}
+			}
+			loginInfo.setEntitats(entitatsActualitzades);
+		}
 
 		String redireccio = "redirect:" + getContextWeb() + "/list/1";
 		log.info("Redirigint cap a " + redireccio);

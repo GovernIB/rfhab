@@ -20,24 +20,23 @@ filtre_unitatso_vperdefecte =
 
 <script type="text/javascript">
     <c:set var="nomAttrUnitats" value="<%= Constants.NOM_ATTR_FILTRE_UNITATS %>"/>
-    <c:set var="nomAttrUnitatSuperior" value="<%= Constants.NOM_ATTR_FILTRE_UNITAT_SUPERIOR_ARREL %>"/>
+    <c:set var="nomAttrUnitatSuperior" value="<%= Constants.NOM_ATTR_FILTRE_UNITATS_SUPERIORS %>"/>
     const unitatsOptions = [];
-    const unitatsSuperiorOptions = [];
-    const unitatSuperior = "${requestScope[nomAttrUnitatSuperior]}";
     <c:forEach items="${requestScope[nomAttrUnitats]}" var="unitat">
       console.log("unitat: ${unitat.key} - ${unitat.value}");
       unitatsOptions.push({
         value: "${unitat.key}",
         text: "${unitat.value}",
       });
+    </c:forEach>
+    const unitatsSuperiorOptions = [];
+    <c:forEach items="${requestScope[nomAttrUnitatSuperior]}" var="unitat">
+      console.log("unitat: ${unitat.key} - ${unitat.value}");
       unitatsSuperiorOptions.push({
         value: "${unitat.key}",
         text: "${unitat.value}",
       });
     </c:forEach>
-    if(unitatSuperior){
-      unitatsSuperiorOptions.push({value: unitatSuperior.key, text: unitatSuperior.value});
-    }
 
   $(document).ready(function () {
     document.getElementById("FilterDiv").style.display = "inherit";

@@ -76,7 +76,7 @@ public interface Constants {
         public static final String ATTR_FILTRE_FASSIGNATS_VALOR_PER_DEFECTE = "funcionaris_filtreAssignatsValorPerDefecte";
 
         public static final String NOM_ATTR_FILTRE_UNITATS = "unitatsFiltreCerca";
-        public static final String NOM_ATTR_FILTRE_UNITAT_SUPERIOR_ARREL = "unitatSuperiorArrel";
+        public static final String NOM_ATTR_FILTRE_UNITATS_SUPERIORS = "unitatsSuperiorsCerca";
 
         // PLUGIN ARXIU
         public static final int ARXIU_PLUGIN_REINTENTS_CREAR_DOCUMENT = 5;

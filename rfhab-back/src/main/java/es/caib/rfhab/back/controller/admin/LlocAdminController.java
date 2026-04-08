@@ -77,6 +77,7 @@ import es.caib.rfhab.model.fields.FuncionariLlocFields;
 import es.caib.rfhab.model.fields.HistoricLlocFields;
 import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.model.fields.LlocHabilitacioFields;
+import es.caib.rfhab.model.fields.LlocQueryPath;
 import es.caib.rfhab.model.fields.UnitatFields;
 import es.caib.rfhab.persistence.EntitatJPA;
 import es.caib.rfhab.persistence.LlocJPA;
@@ -243,21 +244,12 @@ public class LlocAdminController extends LlocController {
 		log.info(Constants.NOM_ATTR_FILTRE_UNITATS + ": " + unitatsFiltreCerca.size());
 		log.info(unitatsFiltreCerca);
 
-		EntitatJPA entitatActual = this.entitatLogicaEjb.findByPrimaryKeyWithUnitat(entitatIDActual);
-		UnitatJPA unitatEntitatActual = entitatActual.getUnitat();
-		if (unitatEntitatActual.getSuperior() != null) {
-			Unitat unitatSuperiorAentitatActual = this.unitatEjb.findByCodiDir3(unitatEntitatActual.getSuperior());
-			// TODO: el dia que es sincrontizin com toquen les unitats amb Dir3 #92
-			// Unitat unitatSuperiorAentitatActual =
-			// this.unitatEjb.findByCodiDir3(unitatEntitatActual.getSuperior(),
-			// unitatEntitatActual.getSuperiorVersio());
-			AbstractMap.SimpleEntry<String, String> unitatSuperior = new AbstractMap.SimpleEntry<String, String>(
-					String.valueOf(unitatSuperiorAentitatActual.getUnitatID()),
-					unitatSuperiorAentitatActual.getCodi() + " "
-							+ (lang == "es" ? unitatSuperiorAentitatActual.getDenominacio()
-									: unitatSuperiorAentitatActual.getCooficial()));
-			mav.addObject(Constants.NOM_ATTR_FILTRE_UNITAT_SUPERIOR_ARREL, unitatSuperior);
-		}
+		List<StringKeyValue> _unitatsMareTemp = getUnitatsSuperiorsByEntitatArrel(mav, entitatIDActual);
+		Map<String, String> unitatsMareFiltreCerca = Utils.listToMap(_unitatsMareTemp);
+		unitatsMareFiltreCerca.put("", I18NUtils.tradueix("tots"));
+		mav.addObject(Constants.NOM_ATTR_FILTRE_UNITATS_SUPERIORS, unitatsMareFiltreCerca);
+		log.info(Constants.NOM_ATTR_FILTRE_UNITATS_SUPERIORS + ": " + unitatsMareFiltreCerca.size());
+		log.info(unitatsMareFiltreCerca);
 
 		llocFilterForm.setVisibleExportList(true);
 
@@ -803,13 +795,12 @@ public class LlocAdminController extends LlocController {
 		log.info("unitatSuperiorSelectvalue ==> " + unitatSuperiorSelectvalue);
 
 		Where unitatSuperiorWhere = null;
-		Long unitatSuperiorId = StringUtils.isNotEmpty(unitatSuperiorSelectvalue) ? Long.parseLong(unitatSuperiorSelectvalue) : null;
-		if (unitatSuperiorId != null && unitatSuperiorId > 0) {
-			unitatSuperiorWhere = null;//TODO
-			// select rufill.unitatid, rufill.codi, rufill.superior, rupare.unitatid, rupare.codi from rfh_unitat rufill inner join rfh_unitat rupare on rupare.codi = rufill.superior ;
-			// select * from rfh_lloc rl
-			// inner join (select rufill.unitatid unitatidfill, rupare.unitatid unitatidpare from rfh_unitat rufill inner join rfh_unitat rupare on rupare.codi = rufill.superior) ru on ru.unitatidfill = rl.unitatid 
-			// where ru.unitatidpare = 1455;
+		if (StringUtils.isNotEmpty(unitatSuperiorSelectvalue)) {
+			Long unitatSuperiorId = Long.parseLong(unitatSuperiorSelectvalue);
+			UnitatJPA unitatPare = unitatEjb.findByPrimaryKey(unitatSuperiorId);
+			Where w1 = new LlocQueryPath().UNITAT().SUPERIOR().equal(unitatPare.getCodi());
+			Where w2 = new LlocQueryPath().UNITAT().SUPERIORVERSIO().equal(unitatPare.getVersio());
+			unitatSuperiorWhere = Where.AND(w1, w2);
 		}
 		return unitatSuperiorWhere;
 	}
@@ -970,6 +961,45 @@ public class LlocAdminController extends LlocController {
 			List<Entitat> entitats = entitatLogicaEjb.select(EntitatFields.UNITATID
 					.in(unitatsResult.stream().map(u -> Long.parseLong(u.key)).toArray(Long[]::new)));
 			mav.addObject("entitatsPenjantDeLentitat", entitats);
+		}
+
+		return unitatsResult;
+	}
+
+	public List<StringKeyValue> getUnitatsSuperiorsByEntitatArrel(
+			ModelAndView mav, long entitatId) throws I18NException {
+		List<StringKeyValue> unitatsResult = new ArrayList<>();
+
+		String lang = LocaleContextHolder.getLocale().getLanguage();
+
+		Entitat entitat = entitatLogicaEjb.findByPrimaryKey(entitatId);
+		if (entitat == null) {
+			log.info("No hi ha entitat associada al lloc de feina");
+			return EMPTY_STRINGKEYVALUE_LIST;
+		}
+		Unitat unitatArrel = unitatEjb.findByPrimaryKey(entitat.getUnitatID());
+		if (unitatArrel == null) {
+			log.info("No hi ha unitat associada a l'entitat seleccionada");
+			return EMPTY_STRINGKEYVALUE_LIST;
+		}
+
+		// TODO: FALTARIA AFEGIR VERSIÓ. PERÒ AIXÒ PER QUAN ESTIGUI LA SINCRONITZACIÓ
+		// AMB DIR3
+		List<Unitat> referenciades = unitatEjb.findAllReferencingUnitats(unitatEjb.select(), unitatArrel.getCodi());
+
+		for (Unitat u : referenciades) {
+			if (u.getSuperior() != null) {
+				Unitat unitatMare = u.getSuperiorVersio() != null
+						? unitatEjb.findByCodiDir3(u.getSuperior(), u.getSuperiorVersio())
+						: unitatEjb.findByCodiDir3(u.getSuperior());
+				if (unitatMare == null) {
+					log.warn("La unitat " + u.getCooficial() + " amb ID " + u.getUnitatID() + " no te unitat mare.");
+					continue;
+				}
+				unitatsResult.add(new StringKeyValue(String.valueOf(unitatMare.getUnitatID()),
+						unitatMare.getCodi() + " "
+								+ (lang == "es" ? unitatMare.getDenominacio() : unitatMare.getCooficial())));
+			}
 		}
 
 		return unitatsResult;

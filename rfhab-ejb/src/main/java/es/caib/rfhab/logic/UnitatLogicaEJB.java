@@ -32,7 +32,7 @@ public class UnitatLogicaEJB extends UnitatEJB implements UnitatLogicaService {
         Where codiDir3W = UnitatFields.CODI.equal(codi);
         Where versioW = UnitatFields.VERSIO.equal(versio);
         List<Unitat> resultats = um.select(Where.AND(codiDir3W, versioW));
-        return (resultats != null && resultats.size() > 0) ? resultats.get(0) : null;
+        return getUnitatMaxVersio(resultats);
     }
 
     @Override
@@ -40,8 +40,22 @@ public class UnitatLogicaEJB extends UnitatEJB implements UnitatLogicaService {
     public Unitat findByCodiDir3(String codi) throws I18NException {
         Where codiDir3W = UnitatFields.CODI.equal(codi);
         List<Unitat> resultats = this.select(codiDir3W);
-        return (resultats != null && resultats.size() > 0) ? resultats.get(0) : null;
+
+        return getUnitatMaxVersio(resultats);
         // return UnitatLogicaEJB.findByCodiDir3(this, codi);
+    }
+
+    private static Unitat getUnitatMaxVersio(List<Unitat> resultats) {
+        if (resultats == null) {
+            return null;
+        }
+        Unitat unitatMaxVersio = resultats.get(0);
+        for (Unitat unitat : resultats) {
+            if (unitat.getVersio() > unitatMaxVersio.getVersio()) {
+                unitatMaxVersio = unitat;
+            }
+        }
+        return unitatMaxVersio;
     }
 
     @Override
@@ -50,7 +64,7 @@ public class UnitatLogicaEJB extends UnitatEJB implements UnitatLogicaService {
         Where codiDir3W = UnitatFields.CODI.equal(codi);
         Where versioW = UnitatFields.VERSIO.equal(versio);
         List<Unitat> resultats = this.select(Where.AND(codiDir3W, versioW));
-        return (resultats != null && resultats.size() > 0) ? resultats.get(0) : null;
+        return getUnitatMaxVersio(resultats);
     }
 
     @Override

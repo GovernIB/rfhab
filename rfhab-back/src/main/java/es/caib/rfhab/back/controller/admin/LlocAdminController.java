@@ -1,7 +1,6 @@
 package es.caib.rfhab.back.controller.admin;
 
 import java.sql.Timestamp;
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -79,7 +78,6 @@ import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.model.fields.LlocHabilitacioFields;
 import es.caib.rfhab.model.fields.LlocQueryPath;
 import es.caib.rfhab.model.fields.UnitatFields;
-import es.caib.rfhab.persistence.EntitatJPA;
 import es.caib.rfhab.persistence.LlocJPA;
 import es.caib.rfhab.persistence.UnitatJPA;
 
@@ -798,9 +796,8 @@ public class LlocAdminController extends LlocController {
 		if (StringUtils.isNotEmpty(unitatSuperiorSelectvalue)) {
 			Long unitatSuperiorId = Long.parseLong(unitatSuperiorSelectvalue);
 			UnitatJPA unitatPare = unitatEjb.findByPrimaryKey(unitatSuperiorId);
-			Where w1 = new LlocQueryPath().UNITAT().SUPERIOR().equal(unitatPare.getCodi());
-			Where w2 = new LlocQueryPath().UNITAT().SUPERIORVERSIO().equal(unitatPare.getVersio());
-			unitatSuperiorWhere = Where.AND(w1, w2);
+			log.info("cercam unitat superior amb codi " + unitatPare.getCodi());
+			unitatSuperiorWhere = new LlocQueryPath().UNITAT().SUPERIOR().equal(unitatPare.getCodi());
 		}
 		return unitatSuperiorWhere;
 	}
@@ -989,8 +986,9 @@ public class LlocAdminController extends LlocController {
 
 		for (Unitat u : referenciades) {
 			if (u.getSuperior() != null) {
-				Unitat unitatMare = u.getSuperiorVersio() != null
-						? unitatEjb.findByCodiDir3(u.getSuperior(), u.getSuperiorVersio())
+				Integer superiorVersio = u.getSuperiorVersio();
+				Unitat unitatMare = (superiorVersio != null && superiorVersio > 0)
+						? unitatEjb.findByCodiDir3(u.getSuperior(), superiorVersio)
 						: unitatEjb.findByCodiDir3(u.getSuperior());
 				if (unitatMare == null) {
 					log.warn("La unitat " + u.getCooficial() + " amb ID " + u.getUnitatID() + " no te unitat mare.");

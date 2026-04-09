@@ -270,6 +270,7 @@ public class LlocAdminController extends LlocController {
 		String lang = LocaleContextHolder.getLocale().getLanguage();
 		cleanSessionObjectsForMav(request);
 
+		//TODO: demanar a tnadal si això encara és útil
 		mav.addObject("isView", __isView);
 
 		setUnitatRefListSelects(lang);
@@ -294,6 +295,7 @@ public class LlocAdminController extends LlocController {
 		if (llocForm.isNou()) {
 			llocForm.addAdditionalButton(guardarButton);
 
+			//TODO: demanar a tnadal si això encara és útil
 			mav.addObject("isNew", llocForm.isNou());
 
 			mav.addObject("LLOC_CODILLOC_PLACEHOLDER", Constants.LLOC_CODILLOC_PLACEHOLDER);
@@ -425,8 +427,6 @@ public class LlocAdminController extends LlocController {
 			llocForm.addReadOnlyField(LlocFields.CODILLOC);
 			llocForm.addReadOnlyField(LlocFields.EXPANSIO);
 		}
-
-		mav.addObject("lloc", lloc);
 
 		llocForm.addAdditionalButton(new AdditionalButton(" fas fa-long-arrow-alt-left", "tornar",
 				getContextWeb() + "/tornar", AdditionalButtonStyle.SECONDARY));

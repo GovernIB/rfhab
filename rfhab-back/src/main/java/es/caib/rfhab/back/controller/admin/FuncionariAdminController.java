@@ -202,7 +202,7 @@ public class FuncionariAdminController extends FuncionariController {
 						}
 					});
 
-			mav.addObject("diferenciesDictionary", DbDaoDictionaries.HistoricFuncionari);
+			// mav.addObject("diferenciesDictionary", DbDaoDictionaries.HistoricFuncionari);
 			mav.addObject("historicItems", historicCanvis);
 
 			// no el volem veure al mode de consulta

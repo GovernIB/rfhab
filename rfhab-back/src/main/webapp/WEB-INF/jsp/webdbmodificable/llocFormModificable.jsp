@@ -153,6 +153,7 @@
 										<c:if test="${ h.vell != null && h.nou != null }">
 											<c:set var="vell" value="${h.vell}" />
 											<c:set var="nou" value="${h.nou}" />
+											<!-- descomentar també del controlador, si es descomenta aquesta línia -->
 											<!-- <c:set var="diferenciesDictionary" value="${diferenciesDictionary}" /> -->
 											<!-- <%@include file="diferenciesTable.jsp" %> -->
 											<span><fmt:message key="lloc.historic.canvisdepropietats"/></span>

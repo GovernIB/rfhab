@@ -11,7 +11,6 @@ import es.caib.rfhab.ejb.FuncionariService;
 import es.caib.rfhab.logic.utils.HistoricFuncionariDAO;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.persistence.FuncionariJPA;
-import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
 
 /**
  * 
@@ -65,5 +64,5 @@ public interface FuncionariLogicaService extends FuncionariService {
 			Long entitatId) throws I18NException;
 
 	public void checkIsFuncionariAutoritzat(String language, FuncionariJPA funcionari, List<String> codiHabilitacions,
-			String unitatAdministrativaTramit, Long entitatId, RolsacPlugin rolsacPlugin) throws I18NException;
+			String unitatAdministrativaTramit, Long entitatId) throws I18NException;
 }

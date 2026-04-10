@@ -11,7 +11,6 @@ import es.caib.rfhab.logic.utils.TicketAccesDto.RpersonaInfo;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.Usuari;
 import es.caib.rfhab.persistence.UsuariJPA;
-import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
 
 /**
  * 
@@ -39,8 +38,7 @@ public interface UsuariLogicaService extends UsuariService {
 	public String registraActivitatIobteTicketAccessFh(Funcionari funcionari, String codiDir3, RpersonaInfo interessat,
 			RpersonaInfo representant, String idTramiteCatalogo, String ticketLanguage, String ticketParametros,
 			boolean servicioCatalogo, String tramite, String tramitVersio, String unitatAdministrativa,
-			Timestamp dataActivitat, String procediment, String arxiuExpedientId, String arxiuDocumentId,
-			RolsacPlugin rolsacPlugin)
+			Timestamp dataActivitat, String procediment, String arxiuExpedientId, String arxiuDocumentId)
 			throws I18NException;
 
 	public UsuariJPA findByPrimaryKey(Long _ID_);

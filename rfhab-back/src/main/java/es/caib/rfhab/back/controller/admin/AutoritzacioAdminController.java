@@ -22,14 +22,15 @@ import es.caib.rfhab.back.form.webdb.AutoritzacioFilterForm;
 import es.caib.rfhab.back.form.webdb.AutoritzacioForm;
 import es.caib.rfhab.back.security.LoginInfo;
 import es.caib.rfhab.persistence.AutoritzacioJPA;
-import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
+import es.caib.rfhab.logic.RolsacLogicaService;
 
 @Controller
 @RequestMapping(value = "/admin/autoritzacio")
 @SessionAttributes(types = { AutoritzacioForm.class, AutoritzacioFilterForm.class })
 public class AutoritzacioAdminController extends AutoritzacioController {
 
-	private RolsacPlugin rolsacPlugin = null;
+	@javax.ejb.EJB(mappedName = RolsacLogicaService.JNDI_NAME)
+	protected RolsacLogicaService rolsacLogicaEjb;
 
 	@Override
 	public String getTileForm() {
@@ -103,11 +104,8 @@ public class AutoritzacioAdminController extends AutoritzacioController {
 	public ModelAndView getProcediments(HttpServletRequest request) {
 
 		try {
-			if (rolsacPlugin == null)
-				rolsacPlugin = new RolsacPlugin();
-
 			LoginInfo loginInfo = LoginInfo.getInstance();
-			HashMap<String, String[]> llistaProcediments = rolsacPlugin.reobtenirProcedimentsAll(loginInfo.getLanguage());
+			HashMap<String, String[]> llistaProcediments = rolsacLogicaEjb.reobtenirProcedimentsAll(loginInfo.getLanguage());
 
 			if (llistaProcediments != null) {
 				llistaProcediments.forEach((x, y) -> log.info("Procediment: " + x + " " + y));
@@ -135,11 +133,8 @@ public class AutoritzacioAdminController extends AutoritzacioController {
 	public ModelAndView getTramits(HttpServletRequest request, @PathVariable("procedimentID") String procedimentID) {
 
 		try {
-			if (rolsacPlugin == null)
-				rolsacPlugin = new RolsacPlugin();
-
 			LoginInfo loginInfo = LoginInfo.getInstance();
-			HashMap<String, String[]> llistaTramits = rolsacPlugin.obtenirTramits(procedimentID,
+			HashMap<String, String[]> llistaTramits = rolsacLogicaEjb.obtenirTramits(procedimentID,
 					loginInfo.getLanguage());
 
 			if (llistaTramits != null) {

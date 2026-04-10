@@ -37,7 +37,6 @@ import es.caib.rfhab.model.fields.FuncionariLlocQueryPath;
 import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.HistoricJPA;
 import es.caib.rfhab.persistence.HistoricLlocJPA;
-import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
 
 /**
  * 
@@ -66,6 +65,9 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 	@EJB(mappedName = UnitatLogicaService.JNDI_NAME)
 	protected UnitatLogicaService unitatLogicaEjb;
 
+	@EJB(mappedName = RolsacLogicaService.JNDI_NAME)
+	protected RolsacLogicaService rolsacLogicaEjb;
+
 	@Override
 	@PermitAll
 	public long getFuncionariID(String numero, String usuari, Long entitatId) throws I18NException {
@@ -93,7 +95,7 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 	@Override
 	@PermitAll
 	public void checkIsFuncionariAutoritzat(String language, FuncionariJPA funcionari, List<String> codiHabilitacions,
-			String unitatAdministrativaTramit, Long entitatId, RolsacPlugin rolsacPlugin) throws I18NException {
+			String unitatAdministrativaTramit, Long entitatId) throws I18NException {
 
 		if (!isFuncionariHabilitat(funcionari, codiHabilitacions, entitatId)) {
 			String errorFuncionariNoHabilitat = I18NCommonUtils.tradueix(new Locale(language),
@@ -118,7 +120,7 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 			long unitatId = llocDelFuncionari.getUnitatID();
 			String codiDir3unitatTramit = null;
 			try {
-				codiDir3unitatTramit = rolsacPlugin.getCodiDir3UnitatAdministrativa(unitatAdministrativaTramit);
+				codiDir3unitatTramit = rolsacLogicaEjb.getCodiDir3UnitatAdministrativa(unitatAdministrativaTramit);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

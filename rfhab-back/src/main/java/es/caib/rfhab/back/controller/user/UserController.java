@@ -59,7 +59,7 @@ import es.caib.rfhab.model.fields.IdiomaFields;
 import es.caib.rfhab.model.fields.UsuariFields;
 import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.UsuariJPA;
-import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
+import es.caib.rfhab.logic.RolsacLogicaService;
 
 /**
  * 
@@ -104,7 +104,8 @@ public class UserController extends UsuariController {
 	@EJB(mappedName = FitxerPublicLogicaService.JNDI_NAME)
 	protected FitxerPublicLogicaService fitxerLogicaEjb;
 
-	private RolsacPlugin rolsacPlugin = new RolsacPlugin();
+	@EJB(mappedName = RolsacLogicaService.JNDI_NAME)
+	protected RolsacLogicaService rolsacLogicaEjb;
 
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public ModelAndView home(HttpSession session, HttpServletRequest request, HttpServletResponse response)
@@ -118,7 +119,7 @@ public class UserController extends UsuariController {
 		String username = usuari.getUsername();
 		String funcionariDir3 = getCodiDIR3(request, username);// codiDIR3 del lloc de feina del funcionari
 
-		HashMap<String, String[]> llistaProcediments = rolsacPlugin.obtenirProcedimentsByDir3(funcionariDir3, language);
+		HashMap<String, String[]> llistaProcediments = rolsacLogicaEjb.obtenirProcedimentsByDir3(funcionariDir3, language);
 
 		// HashMap<String, String> llistaTramits =
 		// rolsacPlugin.obtenirTramits("1533169");
@@ -204,7 +205,7 @@ public class UserController extends UsuariController {
 		log.info("obtenirtramit -- identificadorProcediment = " + identificadorProcediment);
 		LoginInfo loginInfo = LoginInfo.getInstance();
 		String language = loginInfo.getLanguage();
-		HashMap<String, String[]> llistaTramits = rolsacPlugin.obtenirTramits(identificadorProcediment, language);
+		HashMap<String, String[]> llistaTramits = rolsacLogicaEjb.obtenirTramits(identificadorProcediment, language);
 		return llistaTramits;
 	}
 
@@ -328,7 +329,7 @@ public class UserController extends UsuariController {
 					interessatTramit,
 					representantTramit,
 					tramitCodi, languageUI, tramitParametres, false, idTraTel, tramitVersio,
-					unitatAdministrativa, dataActivitat, procediment, arxiuExpedientId, arxiuDocumentId, rolsacPlugin);
+					unitatAdministrativa, dataActivitat, procediment, arxiuExpedientId, arxiuDocumentId);
 		} catch (Exception e) {
 			log.error("Error retrieving ticket access. Message: " + e.getMessage());
 			log.error("Error retrieving ticket access. LocalizedMessage: " + e.getLocalizedMessage());

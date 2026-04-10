@@ -48,7 +48,6 @@ import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.validator.ActivitatValidator;
 import es.caib.rfhab.pluginsib.arxiu.ArxiuPlugin;
 import es.caib.rfhab.pluginsib.arxiu.model.DocumentInfo;
-import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
 import es.caib.rfhab.pluginsib.rolsac.model.Tramits;
 
 /**
@@ -66,8 +65,10 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 	@EJB(mappedName = FuncionariLogicaService.JNDI_NAME)
 	protected FuncionariLogicaService funcionariLogicaEjb;
 
+	@EJB(mappedName = RolsacLogicaService.JNDI_NAME)
+	protected RolsacLogicaService rolsacLogicaEjb;
+
 	ArxiuPlugin pluginArxiu = new ArxiuPlugin();
-	protected RolsacPlugin rolsacPlugin = null;
 
 	@Override
 	public List<Activitat> getActivitatsByFuncionariID(Long funcionariId) throws I18NException {
@@ -357,7 +358,7 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 			String llinatge1Representant, String llinatge2Representant,
 			IdentificacioTipus tipusIdentificacioRepresentant, String identificacioRepresentant,
 			String arxiuExpedientId, String arxiuDocumentId, Timestamp dataActivitat, Funcionari funcionariActuant,
-			Long entitatId, RolsacPlugin rolsacPlugin) throws I18NException {
+			Long entitatId) throws I18NException {
 		ActivitatJPA act = new ActivitatJPA();
 		Activitat actTramitRelacionada = null;
 		act.setFuncionariID(funcionariActuant.getFuncionariID());
@@ -396,7 +397,7 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 				}
 
 				funcionariLogicaEjb.checkIsFuncionariAutoritzat(language, (FuncionariJPA) funcionariActuant,
-						codiHabilitacionsNecessaries, unitatAdministrativaTramit, entitatId, rolsacPlugin);
+						codiHabilitacionsNecessaries, unitatAdministrativaTramit, entitatId);
 
 				act.setIdActuacioTramit(idActuacioTramitFh);
 				setActivitatTipusCompareix(tramit, tramitVersio, procediment, arxiuExpedientId, arxiuDocumentId,
@@ -436,7 +437,7 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 				log.info("XYZ YYY unitatAdministrativa = " + unitatAdministrativaTramit);
 
 				funcionariLogicaEjb.checkIsFuncionariAutoritzat(language, (FuncionariJPA) funcionariActuant,
-						codiHabilitacionsNecessaries, unitatAdministrativaTramit, entitatId, rolsacPlugin);
+						codiHabilitacionsNecessaries, unitatAdministrativaTramit, entitatId);
 
 				setActivitatTipusCompareix(actTramitRelacionada.getTramit(),
 						actTramitRelacionada.getTramitVersio() != null
@@ -502,12 +503,9 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 
 	private String getUnitatAdministrativaFromTramit(String language, String tramit)
 			throws I18NException {
-		if (rolsacPlugin == null) {
-			rolsacPlugin = new RolsacPlugin();
-		}
 		Tramits tramitTrobat = null;
 		try {
-			tramitTrobat = rolsacPlugin.obtenirTramitPerId(tramit, language);
+			tramitTrobat = rolsacLogicaEjb.obtenirTramitPerId(tramit, language);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

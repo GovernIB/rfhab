@@ -9,12 +9,12 @@ import es.caib.rfhab.commons.utils.RegistreActivitatTipusValues;
 import es.caib.rfhab.logic.ActivitatLogicaService;
 import es.caib.rfhab.logic.AutoritzacioLogicaService;
 import es.caib.rfhab.logic.FuncionariLogicaService;
+import es.caib.rfhab.logic.RolsacLogicaService;
 import es.caib.rfhab.logic.utils.RegistreActivitatService.RegistreActivitatServiceParams;
 import es.caib.rfhab.logic.utils.RegistreActivitatService.RegistreActivitatValidator;
 import es.caib.rfhab.model.entity.Activitat;
 import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.validator.ActivitatValidator;
-import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
 
 import java.sql.Timestamp;
 import java.util.Locale;
@@ -78,7 +78,8 @@ public class RegistreActivitatFuncionariService extends RestUtils {
 	@EJB(mappedName = FuncionariLogicaService.JNDI_NAME)
 	protected FuncionariLogicaService funcionariLogicaEjb;
 
-	private RolsacPlugin rolsacPlugin = new RolsacPlugin();
+	@EJB(mappedName = RolsacLogicaService.JNDI_NAME)
+	protected RolsacLogicaService rolsacLogicaEjb;
 
 	protected ActivitatValidator<Activitat> validator = new RegistreActivitatValidator();
 
@@ -271,7 +272,7 @@ public class RegistreActivitatFuncionariService extends RestUtils {
 					nomInteressat, llinatge1Interessat, llinatge2Interessat, tipusIdentificacioInteressat,
 					identificacioInteressat, nomRepresentant, llinatge1Representant, llinatge2Representant,
 					tipusIdentificacioRepresentant, identificacioRepresentant, arxiuExpedientId, arxiuDocumentId,
-					dataActivitat, funcionari, funcionari.getEntitatID(), rolsacPlugin);
+						dataActivitat, funcionari, funcionari.getEntitatID());
 			return I18NLogicUtilsApiInterna.tradueix(new Locale(language), "operacio.success");
 		} catch (I18NException re) {
 			log.error(re.getMessage(), re);

@@ -1,17 +1,22 @@
-package es.caib.rfhab.pluginsib.rolsac;
+package es.caib.rfhab.logic;
 
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
-import org.fundaciobit.pluginsib.core.v3.IPluginIB;
+import javax.ejb.Local;
 
-import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.pluginsib.rolsac.model.Tramits;
 
-public interface IRolsacPlugin extends IPluginIB {
+/**
+ * Servei EJB per a la integració amb el catàleg de procediments i tràmits de Rolsac.
+ *
+ * @author jagarcia
+ * @author jpou
+ */
+@Local
+public interface RolsacLogicaService {
 
-	public static final String ROLSAC_PLUGIN_PROPERTY = Constants.RFHAB_PROPERTY_BASE + IPLUGINSIB_BASE_PROPERTIES
-			+ "rolsac.";
+	public static final String JNDI_NAME = "java:app/rfhab-ejb/RolsacLogicaEJB!es.caib.rfhab.logic.RolsacLogicaService";
 
 	public HashMap<String, String[]> obtenirProcedimentsByDir3(String codiDir3, String llengua) throws Exception;
 

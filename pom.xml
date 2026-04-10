@@ -14,6 +14,7 @@
     </parent>
 
     <modules>
+		<module>rfhab-rolsac-model</module>
 		<module>rfhab-pluginsib</module>
         <module>rfhab-model</module>
         <module>rfhab-persistence</module>

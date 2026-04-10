@@ -49,10 +49,21 @@
         </dependency>
 
 		<dependency>
-			<groupId>es.caib.rfhab.pluginsib</groupId>
-			<artifactId>rfhab-pluginsib-rolsac</artifactId>
+			<groupId>es.caib.rfhab</groupId>
+			<artifactId>rfhab-rolsac-model</artifactId>
 			<version>${project.version}</version>
-            <scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.ben-manes.caffeine</groupId>
+			<artifactId>caffeine</artifactId>
+			<version>3.1.8</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.errorprone</groupId>
+					<artifactId>error_prone_annotations</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
         <dependency>
@@ -106,6 +117,18 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
             <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.3</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-io</groupId>
+                    <artifactId>commons-io</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>

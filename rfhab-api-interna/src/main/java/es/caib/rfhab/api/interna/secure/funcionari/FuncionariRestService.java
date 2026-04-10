@@ -13,6 +13,7 @@ import es.caib.rfhab.ejb.LlocService;
 import es.caib.rfhab.ejb.UnitatService;
 import es.caib.rfhab.logic.FuncionariLogicaService;
 import es.caib.rfhab.logic.HabilitacioLogicaService;
+import es.caib.rfhab.logic.RolsacLogicaService;
 import es.caib.rfhab.logic.UsuariLogicaService;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.Lloc;
@@ -25,7 +26,6 @@ import es.caib.rfhab.model.fields.HabilitacioFields;
 import es.caib.rfhab.model.fields.UnitatFields;
 import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.validator.FuncionariValidator;
-import es.caib.rfhab.pluginsib.rolsac.RolsacPlugin;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -122,9 +122,10 @@ public class FuncionariRestService extends RestUtils {
 	@EJB(mappedName = UnitatService.JNDI_NAME)
 	protected UnitatService unitatEjb;
 
-	protected FuncionariValidator<Funcionari> validator = new FuncionariValidator<Funcionari>();
+	@EJB(mappedName = RolsacLogicaService.JNDI_NAME)
+	protected RolsacLogicaService rolsacLogicaEjb;
 
-	protected RolsacPlugin rolsacPlugin = null;
+	protected FuncionariValidator<Funcionari> validator = new FuncionariValidator<Funcionari>();
 
 	protected static final String TAG_NAME = "FuncionariRestService";
 
@@ -353,12 +354,8 @@ public class FuncionariRestService extends RestUtils {
 
 				if (codiDir3.size() > 0) {
 
-					if (rolsacPlugin == null) {
-						rolsacPlugin = new RolsacPlugin();
-					}
-
 					Boolean autoritzat = false;
-					HashMap<String, String[]> procediments = rolsacPlugin.obtenirProcedimentsByDir3(codiDir3.get(0),
+					HashMap<String, String[]> procediments = rolsacLogicaEjb.obtenirProcedimentsByDir3(codiDir3.get(0),
 							language);
 					for (String item : procediments.keySet()) {
 						log.info("Procediment " + item);

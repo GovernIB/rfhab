@@ -51,8 +51,8 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>es.caib.rfhab.pluginsib</groupId>
-			<artifactId>rfhab-pluginsib-rolsac</artifactId>
+			<groupId>es.caib.rfhab</groupId>
+			<artifactId>rfhab-rolsac-model</artifactId>
 			<version>${project.version}</version>
             <scope>provided</scope>
 		</dependency>

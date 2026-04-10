@@ -8,7 +8,6 @@
 	
 	<name>RFHab - PluginsIB</name>
 	<modules>
-		<module>rfhab-pluginsib-rolsac</module>
 		<module>rfhab-pluginsib-arxiu</module>
 		<module>rfhab-pluginsib-digitalib</module>
 		<module>rfhab-pluginsib-dir3caib</module>

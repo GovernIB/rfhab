@@ -46,7 +46,7 @@ public class UnitatLogicaEJB extends UnitatEJB implements UnitatLogicaService {
     }
 
     private static Unitat getUnitatMaxVersio(List<Unitat> resultats) {
-        if (resultats == null) {
+        if (resultats == null || resultats.size() == 0) {
             return null;
         }
         Unitat unitatMaxVersio = resultats.get(0);

@@ -250,7 +250,8 @@ CREATE TABLE public.rfh_funcionarilloc (
     datainici date,
     funcionariid bigint NOT NULL,
     llocid bigint NOT NULL,
-    usuariid bigint
+    usuariid bigint,
+    numerocai character varying(50)
 );
 
 

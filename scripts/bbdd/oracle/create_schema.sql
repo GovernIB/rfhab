@@ -120,6 +120,7 @@ create sequence rfh_usuarientitat_seq start with 1000 increment by  1;
         funcionariid number(19,0) not null,
         llocid number(19,0) not null,
         usuariid number(19,0),
+        numerocai varchar2(50 char),
         primary key (funcionarillocid)
     );
 

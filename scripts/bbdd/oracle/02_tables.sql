@@ -96,7 +96,8 @@
         datainici date,
         funcionariid number(19,0) not null,
         llocid number(19,0) not null,
-        usuariid number(19,0)
+        usuariid number(19,0),
+        numerocai varchar2(50 char)
     );
 
     create table rfh_historic (

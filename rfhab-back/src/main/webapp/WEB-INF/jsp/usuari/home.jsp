@@ -193,14 +193,14 @@ button[disabled][type="submit"] {
 							<h3>1 <fmt:message key="usuari.tramit.dades.titol" /></h3>
 
 							<div class="form-group">
-								<label><fmt:message key="usuari.tramit.dades.nom" /> *</label> <input id="pas1_nom" name="nom" type="text"
+								<label><fmt:message key="usuari.tramit.dades.nom" />*</label> <input id="pas1_nom" name="nom" type="text"
 									class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.nom.placeholder" />" data-bind="value: Nom"
 									data-val="true" data-val-required="<fmt:message key="usuari.tramit.dades.nom.required" />">
 							</div>
 
 							<div class="form-group">
 								<label>
-									<fmt:message key="usuari.tramit.dades.llinatge1" /> *
+									<fmt:message key="usuari.tramit.dades.llinatge1" />*
 								</label> 
 								<input id="pas1_llinatge1"
 									name="llinatge1" type="text" class="form-control"
@@ -220,7 +220,7 @@ button[disabled][type="submit"] {
 
 							<div class="row">
 								<div class="form-group col-6 col-md-4 col-lg-3 col-xl-2">
-									<label><fmt:message key="usuari.tramit.dades.tipusidentificacio" /> *</label>
+									<label><fmt:message key="usuari.tramit.dades.tipusidentificacio" />*</label>
 									<select
 										size
 										id="pas1_tipusIdentificacio" name="tipusIdentificacio"
@@ -236,7 +236,7 @@ button[disabled][type="submit"] {
 								</div>
 	
 								<div class="form-group col-6 col-md-8 col-lg-9 col-xl-10">
-									<label><fmt:message key="usuari.tramit.dades.numeroidentificacio" /> *</label>
+									<label><fmt:message key="usuari.tramit.dades.numeroidentificacio" />*</label>
 									<input
 										id="pas1_identificacion" name="identificacio" type="text"
 										class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.numeroidentificacio" />"
@@ -316,7 +316,7 @@ button[disabled][type="submit"] {
 								<h3><fmt:message key="usuari.tramit.dades.representant.titol" /></h3>
 
 								<div class="form-group">
-									<label><fmt:message key="usuari.tramit.dades.representant.nom" /> *</label>
+									<label><fmt:message key="usuari.tramit.dades.representant.nom" />*</label>
 									<input
 										id="pas1_representant_nom" name="representant_nom" type="text"
 										class="form-control"
@@ -326,7 +326,7 @@ button[disabled][type="submit"] {
 								</div>
 
 								<div class="form-group">
-									<label><fmt:message key="usuari.tramit.dades.representant.llinatge1" /> *</label>
+									<label><fmt:message key="usuari.tramit.dades.representant.llinatge1" />*</label>
 									<input
 										id="pas1_representant_llinatge1" name="representant_llinatge1"
 										type="text" class="form-control"
@@ -346,7 +346,7 @@ button[disabled][type="submit"] {
 
 								<div class="row">
 									<div class="form-group col-6 col-md-4 col-lg-3 col-xl-2">
-										<label><fmt:message key="usuari.tramit.dades.representant.tipusidentificacio" /> *</label>
+										<label><fmt:message key="usuari.tramit.dades.representant.tipusidentificacio" />*</label>
 										<select
 											size
 											id="pas1_representant_tipusIdentificacio"
@@ -363,7 +363,7 @@ button[disabled][type="submit"] {
 									</div>
 
 									<div class="form-group col-6 col-md-8 col-lg-9 col-xl-10">
-										<label><fmt:message key="usuari.tramit.dades.representant.numeroidentificacio" /> *</label> <input
+										<label><fmt:message key="usuari.tramit.dades.representant.numeroidentificacio" />*</label> <input
 											id="pas1_representant_identificacion"
 											name="representant_identificacio" type="text"
 											class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.numeroidentificacio.placeholder" />"

@@ -134,3 +134,8 @@ header nav.fixed-top{
 .search-query {
 	width: 100% !important;
 }
+
+.modal-xl {
+width: 80%;
+max-width: 80%;
+}

@@ -605,21 +605,23 @@ button[disabled][type="submit"] {
 			<div class="msf-navigation">
 				<div class="col-md-12">
 					<div class="row">
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<button type="button" data-type="back"
 								class="btn btn-default msf-nav-button">
 								<i class="fa fa-chevron-left"></i> <fmt:message key="usuari.tramit.navegacio.tornar" />
 							</button>
 						</div>
-						<div class="col-md-4">
-							<button type="button" data-type="next"
-								class="btn btn-default msf-nav-button">
-								Continuar <i class="fa fa-chevron-right"></i>
-							</button>
-						</div>
-						<div class="col-md-4">
-							<button type="submit" data-type="submit"
-								class="btn btn-primary msf-nav-button"><fmt:message key="usuari.tramit.navegacio.finalitzar" /></button>
+						<div class="col-md-6" style="position: relative; min-height: 34px;">
+							<div style="position: absolute; top: 0; right: 25px;">
+								<button type="button" data-type="next"
+									class="btn btn-default msf-nav-button">
+									Continuar <i class="fa fa-chevron-right"></i>
+								</button>
+							</div>
+							<div style="position: absolute; top: 0; right: 25px;">
+								<button type="submit" data-type="submit"
+									class="btn btn-primary msf-nav-button"><fmt:message key="usuari.tramit.navegacio.finalitzar" /></button>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -1457,7 +1459,7 @@ button[disabled][type="submit"] {
 
 	function createModalPujarDocument(modalId) {
 			$('body').append('<div id="' + modalId + '" class="modal hide fade show" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'
-                        + '<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">'
+                        + '<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">'  
 							
                         + '<div class="modal-content">'
 

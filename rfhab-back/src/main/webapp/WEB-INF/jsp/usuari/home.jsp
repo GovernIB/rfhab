@@ -1893,13 +1893,20 @@ button[disabled][type="submit"] {
 		const iframe = document.getElementById(IFRAME_DIGITALIB_ID);
 		// Detectar error de càrrega
 		iframe.addEventListener('error', function () {
+			$('#modal-spinner-carregant').hide();
+			$('#modal-message-carregant').hide();
+
 			console.error('Error: L\'iframe no s\'ha pogut carregar correctament.');
+			$('#' + NO_CARREGAT_IFRAME_DIGITALIB_ID).show();
 			//destruit iframe
 			$('#' + IFRAME_DIGITALIB_ID).remove();
 		});
 
 		// confirmar que s’ha carregat bé
 		iframe.addEventListener('load', function () {
+			$('#modal-spinner-carregant').hide();
+			$('#modal-message-carregant').hide();
+
 			try {
 				// Prova d’accedir al contingut per comprovar si la càrrega ha estat correcta
 				const doc = iframe.contentDocument || iframe.contentWindow.document;
@@ -1908,6 +1915,7 @@ button[disabled][type="submit"] {
 			} catch (e) {
 				// Si no es pot accedir al contingut, probablement per política CORS
 				console.warn('L\'iframe ha carregat però no es pot accedir al contingut (CORS?).');
+			$('#' + NO_CARREGAT_IFRAME_DIGITALIB_ID).show();
 				//destruit iframe
 				$('#' + IFRAME_DIGITALIB_ID).remove();
 			}
@@ -1918,7 +1926,6 @@ button[disabled][type="submit"] {
 		console.log("scanweb iniciat");	
 
 		document.getElementById(URL_NO_CARREGAT_IFRAME_DIGITALIB_ID)?.setAttribute("href", redirectUrl);
-		$('#' + NO_CARREGAT_IFRAME_DIGITALIB_ID).show();
 		afegeixIframeDigitalib(redirectUrl);
 
 		const pollingInterval = 5000; // 5 seconds in milliseconds
@@ -1992,6 +1999,9 @@ button[disabled][type="submit"] {
 		$('#' + NO_CARREGAT_IFRAME_DIGITALIB_ID).hide();
 		$('#' + IFRAME_DIGITALIB_ID)?.remove();
 
+		$('#modal-spinner-carregant').show();
+		$('#modal-message-carregant').show();
+
 		const url = "<%=request.getContextPath() + "/usuari/preparescanweb/"%>";
 		const dataObj = getFormData();
 
@@ -2003,8 +2013,6 @@ button[disabled][type="submit"] {
 			data: dataObj,
         success: function(data, status, xhr) {
             console.log("Resposta preparescanweb:", data);
-			$('#modal-spinner-carregant').hide();
-			$('#modal-message-carregant').hide();
 
             if (data && typeof data === "object") {
                 if (data.hasOwnProperty("error")) {
@@ -2031,6 +2039,9 @@ button[disabled][type="submit"] {
 				let errorText = "Resposta invàlida del servidor.";
 				inserirMsg('danger', errorText);
 			}	
+
+			$('#modal-spinner-carregant').hide();
+			$('#modal-message-carregant').hide();
 
 			$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
         },

@@ -1526,7 +1526,7 @@ button[disabled][type="submit"] {
 		console.log("Descarregar fitxer amb ID: " + fitxerId);
 
 		if (!fitxerId || fitxerId.indexOf(' ') >= 0) {
-			let errorText = "No s'ha pogut descarregar el fitxer: " + fitxerId;//TODO:afegir missatge a traduccions
+			let errorText = "<fmt:message key="usuari.tramit.descarregafitxer.error.nodescarrega" />" + " " + fitxerId;
 			console.error(errorText);
 			inserirMsg('danger', errorText);
 			$('#modal-spinner-carregant').hide();
@@ -1548,7 +1548,7 @@ button[disabled][type="submit"] {
 				$('#modal-spinner-carregant').hide();
 				$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
 				if (!response.ok) {
-					throw new Error('Error al descarregar el fitxer: ' + response.statusText);
+					throw new Error("<fmt:message key="usuari.tramit.descarregafitxer.error.descarrega" />" + ' ' + response.statusText);
 				}
 				return response.blob();
 			})
@@ -1562,7 +1562,7 @@ button[disabled][type="submit"] {
 				}
 			})
 			.catch(error => {
-				let errorText = 'Error descarregant el fitxer: ' + error.message;//TODO:afegir missatge a traduccions
+				let errorText = "<fmt:message key="usuari.tramit.descarregafitxer.error.descarrega" />" + ' ' + error.message;
 				inserirMsg('danger', errorText);
 				$('#modal-spinner-carregant').hide();
 				$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
@@ -1664,7 +1664,7 @@ button[disabled][type="submit"] {
 				method: 'GET',
 				data: dataObj,
 				success: function(data, status, xhr) {
-					const successText = "Consulta a Arxiu correcta, procedim a visualitzar el fitxer";
+					const successText = "<fmt:message key="usuari.tramit.consultaimprimible.ok" />";
 					console.log(successText);
 					inserirMsg('success', successText);
 					document.getElementById('input-pdf').value = data;
@@ -1673,7 +1673,7 @@ button[disabled][type="submit"] {
 					downloadFitxer(data, showIframePdf);
 				},
 				error: function(xhr, status, error) {
-					let errorText = 'Error consultant el document imprimible: ' + (xhr.responseText || error);
+					let errorText = "<fmt:message key="usuari.tramit.consultaimprimible.error" />" + ' ' + (xhr.responseText || error);
 					inserirMsg('danger', errorText);
 					$('#modal-spinner-carregant').hide();
 					$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
@@ -1717,7 +1717,7 @@ button[disabled][type="submit"] {
 						if (data.hasOwnProperty("error")) {
 							// Hi ha errors, mostra'ls per pantalla
 							let error = data["error"];
-							let errorText = "S'ha produït un error:<br>" + error + "<br>";
+							let errorText = "<fmt:message key="usuari.tramit.guardataarxiu.error" />" + "<br>" + error + "<br>";
 							// Mostra l'error dins el modal o com vulguis
 							inserirMsg('danger', errorText);
 							$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
@@ -1727,16 +1727,19 @@ button[disabled][type="submit"] {
 								if (data.hasOwnProperty(expedientId)) {
 									const documentId = data[expedientId];
 									if(documentId){
-										inserirMsg('success', "Fitxer guardat correctament a Arxiu amb ID d'expedient: " + expedientId + 
-											" i ID de document: " + documentId);//TODO: ficar codi de traduccions
+										const missatgeOk = "Fitxer guardat correctament a Arxiu amb ID d'expedient: " + expedientId + 
+											" i ID de document: " + documentId
+										console.info(missatgeOk);
+										// inserirMsg('success', missatgeOk);
 										documentImmprimibleTancaraElModal = true;
 										documentImprimible(documentId);
 										$('#arxiuExpedientId').val(expedientId);
 										$('#arxiuDocumentId').val(documentId);
 									}
 									else {
-										let errorText = "No s'ha pogut guardar el fitxer amb ID d'expedient " + expedientId + " dins Arxiu.";//TODO: ficar codi de traduccions
-										inserirMsg('danger', errorText);
+										inserirMsg('danger', "<fmt:message key="usuari.tramit.guardataarxiu.error" />");
+										let errorText = "No s'ha pogut guardar el fitxer amb ID d'expedient " + expedientId + " dins Arxiu.";
+										console.error(errorText);
 									}
 								}
 							}
@@ -1746,7 +1749,7 @@ button[disabled][type="submit"] {
 							}
 						}
 					} else {
-						let errorText = "Resposta invàlida del servidor.";
+						let errorText = "<fmt:message key="usuari.tramit.guardataarxiu.error.respostaservidor" />";
 						inserirMsg('danger', errorText);
 						$('#modal-spinner-carregant').hide();
 						$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
@@ -1757,7 +1760,7 @@ button[disabled][type="submit"] {
 					// FITXER_ENCRYPTED_ID = [];
 				},
 				error: function(xhr, status, error) {
-					let errorText = 'Error pujant a arxiu el document: ' + (xhr.responseText || error);
+					let errorText = "<fmt:message key="usuari.tramit.guardataarxiu.error.document" />" + ' ' + (xhr.responseText || error);
 					inserirMsg('danger', errorText);
 					$('#modal-spinner-carregant').hide();
 					$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
@@ -1833,7 +1836,7 @@ button[disabled][type="submit"] {
 						} else {
 							console.log('Maximum polling duration reached. Stopping polling.');
 							$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
-							let errorText = 'Exhaurit el temps màxim per pujar el document. Si us plau, obri la finestra modal de nou i torna-ho a intentar.';
+							let errorText = "<fmt:message key="usuari.tramit.guardatabd.error.tempsmaxim" />";
 							inserirMsg('danger', errorText);
 							POLLING_CHECK_SCAN_WEB_FINAL_RUNNING = false;
 						}
@@ -1848,7 +1851,7 @@ button[disabled][type="submit"] {
 
 					// Errors:
 					if(data.length === 0) {
-						const errorText = "No s'ha pogut pujar el document o no s'ha retornat cap fitxer ID i tampoc errors.";//TODO:afegir missatge a traduccions
+						const errorText = "<fmt:message key="usuari.tramit.guardatabd.error.nodata" />";
 						console.error(errorText);
 						console.error("Resposta --> " + data);
 						inserirMsg('danger', errorText);
@@ -1860,7 +1863,7 @@ button[disabled][type="submit"] {
 					for (let i = 0; i < data.length; i++) {
 						const errorResponseOrFileId = data[i];
 						if(!errorResponseOrFileId || errorResponseOrFileId.error){
-							const errorText = "No s'ha pogut pujar el document: " + errorResponseOrFileId.error;//TODO:afegir missatge a traduccions
+							const errorText = "<fmt:message key="usuari.tramit.guardatabd.error" />" + " " + errorResponseOrFileId.error;
 							console.error(errorText);
 							inserirMsg('danger', errorText);
 							$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
@@ -1869,8 +1872,8 @@ button[disabled][type="submit"] {
 
 						document.querySelector('#btn-descarregar-firmat-id').removeAttribute('disabled');
 						FITXER_ENCRYPTED_ID.push(errorResponseOrFileId.urlFitxer);
-						console.log("Document pujat correctament");
-						inserirMsg('success', "El document firmat s'ha guardat correctament a la base de dades. Pujant a Arxiu...");//TODO:afegir missatge a traduccions
+						console.log("El document firmat s'ha guardat correctament a la base de dades. Pujant a Arxiu...");
+						// inserirMsg('success', "El document firmat s'ha guardat correctament a la base de dades. Pujant a Arxiu...");
 						const encryptedIdFitxer = errorResponseOrFileId.urlFitxer.substring(errorResponseOrFileId.urlFitxer.lastIndexOf('/') + 1);
 						guardarFitxerAarxiu(encryptedIdFitxer, errorResponseOrFileId.perfilFirma, errorResponseOrFileId.tipusFirma);
 						return;
@@ -1878,7 +1881,7 @@ button[disabled][type="submit"] {
 				},
 				error: function(xhr, status, error) {
 					$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
-					let errorText = 'Error descarregant el document: ' + (xhr.responseText || error);//TODO:afegir missatge a traduccions
+					let errorText = "<fmt:message key="usuari.tramit.guardatabd.error.nodescarrega" />" + ' ' + (xhr.responseText || error);
 					inserirMsg('danger', errorText);
 				}
 			});

@@ -36,11 +36,11 @@
 </script>
 
 <%-- JS --%>
-<script src="<c:url value="/js/jquery.js"/>"></script>
+<script src="<c:url value="/js/jquery.min.js"/>"></script>
 <script src="<c:url value="/js/popper.min.js"/>"></script>
 
 <%-- Bootstrap JS --%>
-<script src="<c:url value="/js/bootstrap.js"/>"></script>
+<script src="<c:url value="/js/bootstrap.min.js"/>"></script>
 
 
 <%-- https://fontawesome.com/icons?d=gallery&m=free --%>

@@ -105,8 +105,8 @@ try {
 <head>
 <link href="<c:url value="/css/bootstrap.css"/>" rel="stylesheet" media="screen">
 <link href="<c:url value="/css/default.css"/>" rel="stylesheet">
-<script src="<c:url value="/js/jquery.js" />"></script>
-<script src="<c:url value="/js/bootstrap.js"/>"></script>
+<script src="<c:url value="/js/jquery.min.js" />"></script>
+<script src="<c:url value="/js/bootstrap.min.js"/>"></script>
 
 <script type="text/javascript">
   function showError(){

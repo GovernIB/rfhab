@@ -576,6 +576,16 @@ public class UserController extends UsuariController {
 				+ "</html>";
 	}
 
+	@RequestMapping(value = "/checksessio", method = RequestMethod.GET)
+	@ResponseBody
+	public HashMap<String, Boolean> checkSessio(
+			HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+		log.info("ENTRANT A checkSessio");
+		HashMap<String, Boolean> result = new HashMap<String, Boolean>();
+		result.put("sessioActiva", true);
+		return result;
+	}
+
 	@RequestMapping(value = "/nou/{usuariID}/check", method = RequestMethod.GET)
 	public String checkUsuari(@PathVariable("usuariID") java.lang.Long usuariID, HttpServletRequest request,
 			HttpServletResponse response) throws I18NException {

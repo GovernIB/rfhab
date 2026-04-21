@@ -2103,5 +2103,66 @@ button[disabled][type="submit"] {
 		createModalPujarDocument(MODAL_PUJAR_DOCUMENT_ID);
 		console.log("Modal created with ID: " + MODAL_PUJAR_DOCUMENT_ID);
 		document.getElementById('input-pdf').addEventListener('input', comprovaInputPdf);
+
+		createModalSessioCaducada();
+		$('form.msf').on('input', 'input, textarea, select', function() {
+			checkSessio();
+		});
 	});
+</script>
+
+<script type="text/javascript">
+	// Interval mínim entre comprovacions de sessió (parametritzable, en mil·lisegons)
+	var SESSION_CHECK_INTERVAL_MS = 2 * 60 * 1000; // 2 minuts
+
+	var lastSessionCheckTimestamp = 0;
+	var sessioExpirada = false;
+
+	var MODAL_SESSIO_CADUCADA_ID = 'sessio-caducada-modal';
+
+	function createModalSessioCaducada() {
+		$('body').append(
+			'<div id="' + MODAL_SESSIO_CADUCADA_ID + '" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="sessioCaducadaLabel" aria-hidden="true">'
+			+ '<div class="modal-dialog modal-dialog-centered" role="document">'
+			+ '<div class="modal-content">'
+			+ '<div class="modal-header">'
+			+ '<h4 id="sessioCaducadaLabel"><i class="fa fa-exclamation-triangle"></i>&nbsp;<fmt:message key="usuari.sessio.caducada.titol" /></h4>'
+			+ '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+			+ '</div>'
+			+ '<div class="modal-body">'
+			+ '<p><fmt:message key="usuari.sessio.caducada.missatge" /></p>'
+			+ '<p><strong><fmt:message key="usuari.sessio.caducada.guardar" /></strong></p>'
+			+ '</div>'
+			+ '<div class="modal-footer">'
+			+ '<button type="button" class="btn btn-secondary" data-dismiss="modal"><fmt:message key="usuari.sessio.caducada.tancar" /></button>'
+			+ '<button type="button" class="btn btn-primary" onclick="window.location.reload();"><fmt:message key="usuari.sessio.caducada.recarregar" /></button>'
+			+ '</div>'
+			+ '</div>'
+			+ '</div>'
+			+ '</div>'
+		);
+	}
+
+	async function checkSessio() {
+		if (sessioExpirada) return;
+
+		var ara = Date.now();
+		if (ara - lastSessionCheckTimestamp < SESSION_CHECK_INTERVAL_MS) return;
+
+		lastSessionCheckTimestamp = ara;
+
+		var url = "<%=request.getContextPath()%>" + "/usuari/checksessio";
+		try {
+			var response = await fetch(url, {
+				method: 'GET',
+				credentials: 'include'
+			});
+			if (response.redirected || !response.ok) {
+				sessioExpirada = true;
+				$('#' + MODAL_SESSIO_CADUCADA_ID).modal('show');
+			}
+		} catch (error) {
+			console.warn('Error comprovant la sessió:', error);
+		}
+	}
 </script>

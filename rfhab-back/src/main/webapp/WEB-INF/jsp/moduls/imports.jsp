@@ -205,13 +205,15 @@
 	margin: 0rem 4rem;
 }
 
-.btn-primary, .btn-warning, .btn-secondary {
+#FilterDiv .btn-primary, #FilterDiv .btn-warning, #FilterDiv .btn-secondary,
+.table-genapp-list tbody td .btn-group .btn-primary, .table-genapp-list tbody td .btn-group .btn-warning, .table-genapp-list tbody td .btn-group .btn-secondary {
 	background-color: #246EB9;
 	border-color: #246EB9;
 	color: #FDFFFC;
 }
 
-.btn-primary:hover, .btn-warning:hover, .btn-secondary:hover {
+#FilterDiv .btn-primary:hover, #FilterDiv .btn-warning:hover, #FilterDiv .btn-secondary:hover,
+.table-genapp-list tbody td .btn-group .btn-primary:hover, .table-genapp-list tbody td .btn-group .btn-warning:hover, .table-genapp-list tbody td .btn-group .btn-secondary:hover {
 	background-color: #00B2FF;
 	border-color: #00B2FF;
 }

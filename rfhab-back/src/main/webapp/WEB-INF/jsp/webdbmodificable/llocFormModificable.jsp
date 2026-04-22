@@ -157,7 +157,7 @@
 											<!-- <c:set var="diferenciesDictionary" value="${diferenciesDictionary}" /> -->
 											<!-- <%@include file="diferenciesTable.jsp" %> -->
 											<span><fmt:message key="lloc.historic.canvisdepropietats"/></span>
-											<a href="<c:url value="/admin/historiclloc/view/${h.historicLlocId}"/>" class="btn btn-secondary">
+											<a href="<c:url value="/admin/historiclloc/view/${h.historicLlocId}"/>" class="btn btn-info">
 												<i class="far fa-eye" title="<fmt:message key="lloc.historic.veuredetall"/>">
 												</i>
 											</a>

@@ -166,7 +166,7 @@
 											<!-- <c:set var="diferenciesDictionary" value="${diferenciesDictionary}" /> -->
 											<!-- <%@include file="diferenciesTable.jsp" %> -->
 											<span><fmt:message key="funcionari.historic.canvisdepropietats"/></span>
-											<a href="<c:url value="/admin/historic/view/${h.historicId}"/>" class="btn btn-secondary">
+											<a href="<c:url value="/admin/historic/view/${h.historicId}"/>" class="btn btn-info">
 												<i class="far fa-eye" title="<fmt:message key="funcionari.historic.veuredetall"/>">
 												</i>
 											</a>

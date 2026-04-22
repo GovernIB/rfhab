@@ -566,7 +566,7 @@ button[disabled][type="submit"] {
 									</button>
 								</div>
 								<div class="col-md-6">
-									<button type="button" class="btn btn-secondary"  onclick="if(typeof onClickPujarDocument == 'function') {  onClickPujarDocument(this); };">
+									<button type="button" class="btn btn-info"  onclick="if(typeof onClickPujarDocument == 'function') {  onClickPujarDocument(this); };">
 										<i class="fa fa-upload"></i> <fmt:message key="usuari.tramit.documentacio.pujardocument" />
 									</button>										
 								</div>
@@ -607,14 +607,14 @@ button[disabled][type="submit"] {
 					<div class="row">
 						<div class="col-md-6">
 							<button type="button" data-type="back"
-								class="btn btn-default msf-nav-button">
+								class="btn btn-light msf-nav-button">
 								<i class="fa fa-chevron-left"></i> <fmt:message key="usuari.tramit.navegacio.tornar" />
 							</button>
 						</div>
 						<div class="col-md-6" style="position: relative; min-height: 34px;">
 							<div style="position: absolute; top: 0; right: 25px;">
 								<button type="button" data-type="next"
-									class="btn btn-default msf-nav-button">
+									class="btn btn-light msf-nav-button">
 									Continuar <i class="fa fa-chevron-right"></i>
 								</button>
 							</div>

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/moduls/includes.jsp"%>
 
@@ -1868,10 +1868,10 @@ button[disabled][type="submit"] {
 	}
 
 	function afegeixIframeDigitalib(redirectUrl){
-		$('#' + CARREGANT_IFRAME_DIGITALIB_ID).append('<iframe id="' + IFRAME_DIGITALIB_ID + '" src="'+ redirectUrl +'" style="width:100%; height:55vh; min-height:450px; border:none;"></iframe>');
+		$('#' + CARREGANT_IFRAME_DIGITALIB_ID).append('<iframe id="' + IFRAME_DIGITALIB_ID + '" src="'+ redirectUrl +'"  style="width:100%; height:55vh; min-height:450px; border:none;"></iframe>');
 
 		const iframe = document.getElementById(IFRAME_DIGITALIB_ID);
-		// Detectar error de càrrega
+		// Detectar error de carrega
 		iframe.addEventListener('error', function () {
 			$('#modal-spinner-carregant').hide();
 			$('#modal-message-carregant').hide();
@@ -1882,31 +1882,41 @@ button[disabled][type="submit"] {
 			$('#' + IFRAME_DIGITALIB_ID).remove();
 		});
 
-		// confirmar que s’ha carregat bé
+		// Quan l'iframe s'ha carregat (sempre cross-origin: no intentem llegir contentDocument)
 		iframe.addEventListener('load', function () {
 			$('#modal-spinner-carregant').hide();
 			$('#modal-message-carregant').hide();
 
-			try {
-				// Prova d’accedir al contingut per comprovar si la càrrega ha estat correcta
-				const doc = iframe.contentDocument || iframe.contentWindow.document;
-				console.log('L\'iframe ' + IFRAME_DIGITALIB_ID + ' s\'ha carregat correctament.');
-				$('#' + NO_CARREGAT_IFRAME_DIGITALIB_ID).hide();
-			} catch (e) {
-				// Si no es pot accedir al contingut, probablement per política CORS
-				console.warn('L\'iframe ha carregat però no es pot accedir al contingut (CORS?).');
-			$('#' + NO_CARREGAT_IFRAME_DIGITALIB_ID).show();
-				//destruit iframe
-				$('#' + IFRAME_DIGITALIB_ID).remove();
-			}
+			console.log('L\'iframe ' + IFRAME_DIGITALIB_ID + ' s\'ha carregat.');
+			$('#' + NO_CARREGAT_IFRAME_DIGITALIB_ID).hide();
 		});
+	}
+
+	async function carregarIframeDigitalibAmbCheck(redirectUrl) {
+		try {
+			const checkUrl = '<%=request.getContextPath()%>/usuari/checkEmbeddable?url=' + encodeURIComponent(redirectUrl);
+			const resp = await fetch(checkUrl);
+			const embeddable = await resp.text();
+			if (embeddable.trim() === 'true') {
+				console.log('checkEmbeddable: iframe permes, carregant iframe.');
+				afegeixIframeDigitalib(redirectUrl);
+			} else {
+				console.warn('checkEmbeddable: iframe no permes, mostrant link de fallback.');
+				$('#modal-spinner-carregant').hide();
+				$('#modal-message-carregant').hide();
+				$('#' + NO_CARREGAT_IFRAME_DIGITALIB_ID).show();
+			}
+		} catch (e) {
+			console.warn('checkEmbeddable: error en la comprovacio, carregant iframe igualment.', e);
+			afegeixIframeDigitalib(redirectUrl);
+		}
 	}
 
 	function onScanwebIniciat(redirectUrl, transactionID) {
 		console.log("scanweb iniciat");	
 
 		document.getElementById(URL_NO_CARREGAT_IFRAME_DIGITALIB_ID)?.setAttribute("href", redirectUrl);
-		afegeixIframeDigitalib(redirectUrl);
+		carregarIframeDigitalibAmbCheck(redirectUrl);
 
 		const pollingInterval = 5000; // 5 seconds in milliseconds
 		const maxPollingDuration = 900000; // 900 seconds (15 minutes) in milliseconds

@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -337,6 +339,93 @@ public class UserController extends UsuariController {
 		}
 		log.info("Ticket access URL: " + urlTramit);
 		return urlTramit;
+	}
+
+	/**
+	 * Comprova si una URL pot ser incrustada en un iframe llegint les capçaleres
+	 * X-Frame-Options i Content-Security-Policy des del servidor (evita restriccions CORS del navegador).
+	 * Retorna "true" si es pot incrustar, "false" en cas contrari.
+	 */
+	@RequestMapping(value = "/checkEmbeddable", method = RequestMethod.GET)
+	@ResponseBody
+	public String checkEmbeddable(@RequestParam(value = "url", required = true) String iframeUrl,
+			HttpServletRequest request) {
+		try {
+			URL url = new URL(iframeUrl);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("HEAD");
+			conn.setConnectTimeout(5000);
+			conn.setReadTimeout(5000);
+			conn.setInstanceFollowRedirects(true);
+			conn.connect();
+
+			String xFrameOptions = conn.getHeaderField("X-Frame-Options");
+			String csp = conn.getHeaderField("Content-Security-Policy");
+			conn.disconnect();
+
+			log.info("checkEmbeddable URL: " + iframeUrl);
+			log.info("checkEmbeddable X-Frame-Options: " + xFrameOptions);
+			log.info("checkEmbeddable Content-Security-Policy: " + csp);
+
+			// Origen del servidor que fa la petició (ex: "http://jpou:8080")
+			int port = request.getServerPort();
+			String scheme = request.getScheme();
+			String serverName = request.getServerName();
+			String requestOrigin = scheme + "://" + serverName
+					+ (("http".equals(scheme) && port == 80) || ("https".equals(scheme) && port == 443)
+							? "" : ":" + port);
+			log.info("checkEmbeddable requestOrigin: " + requestOrigin);
+
+			if (xFrameOptions != null) {
+				String xfo = xFrameOptions.trim().toUpperCase();
+				if (xfo.equals("DENY")) {
+					return "false";
+				}
+				if (xfo.equals("SAMEORIGIN")) {
+					// L'iframe és cross-origin respecte al servidor de digitalib, no permet embedding
+					return "false";
+				}
+				// ALLOW-FROM <uri>: comprova si l'origen és permès
+				if (xfo.startsWith("ALLOW-FROM ")) {
+					String allowedOrigin = xFrameOptions.trim().substring("ALLOW-FROM ".length()).trim();
+					return allowedOrigin.equalsIgnoreCase(requestOrigin) ? "true" : "false";
+				}
+			}
+
+			if (csp != null && csp.contains("frame-ancestors")) {
+				// Extreu el valor de la directiva frame-ancestors
+				int faIdx = csp.indexOf("frame-ancestors");
+				String afterFa = csp.substring(faIdx + "frame-ancestors".length()).trim();
+				// La directiva acaba en ';' o fi de string
+				int endIdx = afterFa.indexOf(';');
+				String faValue = (endIdx >= 0 ? afterFa.substring(0, endIdx) : afterFa).trim();
+
+				log.info("checkEmbeddable frame-ancestors value: " + faValue);
+
+				if (faValue.equals("'none'")) {
+					return "false";
+				}
+				if (faValue.equals("*")) {
+					return "true";
+				}
+				// Llista d'orígens permesos: comprova si l'origen actual hi és
+				for (String allowed : faValue.split("\\s+")) {
+					if (allowed.equalsIgnoreCase(requestOrigin) || allowed.equals("'self'")) {
+						// 'self' fa referència al servidor de digitalib, no al nostre
+						if (!allowed.equals("'self'")) {
+							return "true";
+						}
+					}
+				}
+				// L'origen actual no és a la llista
+				return "false";
+			}
+
+			return "true";
+		} catch (Exception e) {
+			log.error("checkEmbeddable error per URL " + iframeUrl + ": " + e.getMessage());
+			return "false";
+		}
 	}
 
 	@RequestMapping(value = "/preparescanweb", method = RequestMethod.GET)

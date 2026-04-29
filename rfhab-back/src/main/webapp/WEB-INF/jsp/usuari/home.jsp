@@ -1692,6 +1692,7 @@ button[disabled][type="submit"] {
 
 		$('#modal-spinner-carregant').show();
 		$('#' + NO_CARREGAT_IFRAME_DIGITALIB_ID).hide();
+		$('#' + IFRAME_DIGITALIB_ID)?.hide();
 
 		const makeRequest = async () => { 
 			$.ajax({
@@ -2064,7 +2065,7 @@ button[disabled][type="submit"] {
                     // Hi ha errors, mostra'ls per pantalla
                     let error = data["error"];
                     let errorText = "<fmt:message key="usuari.tramit.scanweb.prepare.error.generic" />" + ' ' + "<br>" + (xhr.responseText || error) + "<br>";
-                    // Mostra l'error dins el modal o com vulguis
+                    // Mostra l'error
                     inserirMsg('danger', errorText);
                 } else {
 					for (const transactionID in data) {

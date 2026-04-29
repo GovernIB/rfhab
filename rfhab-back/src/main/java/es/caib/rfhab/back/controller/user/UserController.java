@@ -835,7 +835,7 @@ public class UserController extends UsuariController {
 		// request.getSession().getAttribute(MenuUserController.URL_BASE_NAVEGADOR)
 		// + getContextWeb();
 		return request.getScheme() + "://" + request.getServerName() + ":"
-				+ +request.getServerPort() + request.getContextPath();
+				+ +request.getServerPort() + request.getContextPath();//TODO: #148
 	}
 
 	protected byte[] getResource(String path) throws Exception {

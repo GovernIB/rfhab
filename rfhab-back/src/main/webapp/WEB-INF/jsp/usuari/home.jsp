@@ -1499,7 +1499,7 @@ button[disabled][type="submit"] {
 		makeRequest();
 	}
 
-	async function downloadFitxer(fitxerId, fileReturnedCallback){
+	async function downloadFitxer(fitxerId, fileReturnedCallback, comprovaInputPdf=false){
 		console.log("Descarregar fitxer amb ID: " + fitxerId);
 
 		if (!fitxerId || fitxerId.indexOf(' ') >= 0) {
@@ -1536,6 +1536,10 @@ button[disabled][type="submit"] {
 				}
 				else{
 					downloadPdf(blob);
+				}
+
+				if(comprovaInputPdf){
+					comprovaInputPdf();
 				}
 			})
 			.catch(error => {
@@ -1646,14 +1650,18 @@ button[disabled][type="submit"] {
 					inserirMsg('success', successText);
 					document.getElementById('input-pdf').value = data;
 					// $("#input-pdf").trigger("input");
-					comprovaInputPdf();
-					downloadFitxer(data, showIframePdf);
+					// comprovaInputPdf();//TODO:prova
+					downloadFitxer(data, showIframePdf, comprovaInputPdf=true);
 				},
 				error: function(xhr, status, error) {
 					let errorText = "<fmt:message key="usuari.tramit.consultaimprimible.error" />" + ' ' + (xhr.responseText || error);
 					inserirMsg('danger', errorText);
 					$('#modal-spinner-carregant').hide();
 					$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
+
+					errorText = "<fmt:message key="usuari.tramit.consultaimprimible.error.peroiniciartramit" />";
+					inserirMsg('warn', errorText);
+					onClickDescarregarFirmat(null, showIframePdf, comprovaInputPdf=true);
 				}
 			});
 		};
@@ -1924,7 +1932,7 @@ button[disabled][type="submit"] {
 		pollCheckResultScanweb(transactionID, pollingInterval, maxPollingDuration);
 	}
 
-	function onClickDescarregarFirmat(button) {
+	function onClickDescarregarFirmat(button, fileReturnedCallback, comprovaInputPdf=false) {
 		console.log("Descarregar fitxer firmat");
 		if(FITXER_ENCRYPTED_ID.length === 0) {
 			let errorText = "No hi ha cap fitxer per descarregar.";
@@ -1934,7 +1942,7 @@ button[disabled][type="submit"] {
 
 		for (let i = 0; i < FITXER_ENCRYPTED_ID.length; i++) {
 			const fitxerId = FITXER_ENCRYPTED_ID[i];
-			downloadFitxer(fitxerId);
+			downloadFitxer(fitxerId, fileReturnedCallback, comprovaInputPdf);
 		}
 	}
 
@@ -2008,7 +2016,7 @@ button[disabled][type="submit"] {
                 if (data.hasOwnProperty("error")) {
                     // Hi ha errors, mostra'ls per pantalla
                     let error = data["error"];
-                    let errorText = "S'ha produït un error:<br>" + error + "<br>";
+                    let errorText = "<fmt:message key="usuari.tramit.scanweb.prepare.error.generic" />" + ' ' + "<br>" + (xhr.responseText || error) + "<br>";
                     // Mostra l'error dins el modal o com vulguis
                     inserirMsg('danger', errorText);
                 } else {
@@ -2019,14 +2027,14 @@ button[disabled][type="submit"] {
 								onScanwebIniciat(redirectUrl, transactionID);
 								return;
 							} else {
-								let errorText = "Falten dades per continuar el procés de pujada del document.";
+								let errorText = "<fmt:message key="usuari.tramit.scanweb.prepare.error.faltendades" />";
 								inserirMsg('danger', errorText);
 							}
 						}
 					}
 				}
 			} else {
-				let errorText = "Resposta invàlida del servidor.";
+				let errorText = "<fmt:message key="usuari.tramit.scanweb.prepare.error.respostainvalida" />";
 				inserirMsg('danger', errorText);
 			}	
 
@@ -2036,10 +2044,12 @@ button[disabled][type="submit"] {
 			$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
         },
         error: function(xhr, status, error) {
-            let errorText = 'Error descarregant el document: ' + (xhr.responseText || error);
+            let errorText = "<fmt:message key="usuari.tramit.scanweb.prepare.error.nodescarrega" />" + ' ' + "<br>" + (xhr.responseText || error) + "<br>";
 			inserirMsg('danger', errorText);
 			$('#modal-spinner-carregant').hide();
 			$('#modal-message-carregant').hide();
+
+			$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
         }});
 	}
 

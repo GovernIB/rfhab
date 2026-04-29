@@ -1499,7 +1499,7 @@ button[disabled][type="submit"] {
 		makeRequest();
 	}
 
-	async function downloadFitxer(fitxerId, fileReturnedCallback, comprovaInputPdf=false){
+	async function downloadFitxer(fitxerId, fileReturnedCallback, refreshPdf=false){
 		console.log("Descarregar fitxer amb ID: " + fitxerId);
 
 		if (!fitxerId || fitxerId.indexOf(' ') >= 0) {
@@ -1538,7 +1538,7 @@ button[disabled][type="submit"] {
 					downloadPdf(blob);
 				}
 
-				if(comprovaInputPdf){
+				if(refreshPdf){
 					comprovaInputPdf();
 				}
 			})
@@ -1651,7 +1651,7 @@ button[disabled][type="submit"] {
 					document.getElementById('input-pdf').value = data;
 					// $("#input-pdf").trigger("input");
 					// comprovaInputPdf();//TODO:prova
-					downloadFitxer(data, showIframePdf, comprovaInputPdf=true);
+					downloadFitxer(data, showIframePdf, true);
 				},
 				error: function(xhr, status, error) {
 					let errorText = "<fmt:message key="usuari.tramit.consultaimprimible.error" />" + ' ' + (xhr.responseText || error);
@@ -1660,8 +1660,11 @@ button[disabled][type="submit"] {
 					$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
 
 					errorText = "<fmt:message key="usuari.tramit.consultaimprimible.error.peroiniciartramit" />";
-					inserirMsg('warn', errorText);
-					onClickDescarregarFirmat(null, showIframePdf, comprovaInputPdf=true);
+					inserirMsg('warning', errorText);
+					
+					//això és obligatori per a poder activar el botó d'iniciar tràmit
+					document.getElementById('input-pdf').value = 1;
+					onClickDescarregarFirmat(null, showIframePdf, true);
 				}
 			});
 		};
@@ -1826,7 +1829,7 @@ button[disabled][type="submit"] {
 
 						if (elapsedTime < maxPollingDuration && POLLING_CHECK_SCAN_WEB_FINAL_RUNNING) {
 							setTimeout(makeRequest, pollingInterval); // Schedule next request
-						} else {
+						} else if(POLLING_CHECK_SCAN_WEB_FINAL_RUNNING){//si s'ha tancat el modal, POLLING_CHECK_SCAN_WEB_FINAL_RUNNING serà true perquè ja no estarà running
 							console.log('Maximum polling duration reached. Stopping polling.');
 							$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
 							let errorText = "<fmt:message key="usuari.tramit.guardatabd.error.tempsmaxim" />";
@@ -1948,7 +1951,7 @@ button[disabled][type="submit"] {
 		pollCheckResultScanweb(transactionID, pollingInterval, maxPollingDuration);
 	}
 
-	function onClickDescarregarFirmat(button, fileReturnedCallback, comprovaInputPdf=false) {
+	function onClickDescarregarFirmat(button, fileReturnedCallback, refreshPdf=false) {
 		console.log("Descarregar fitxer firmat");
 		if(FITXER_ENCRYPTED_ID.length === 0) {
 			let errorText = "No hi ha cap fitxer per descarregar.";
@@ -1958,7 +1961,7 @@ button[disabled][type="submit"] {
 
 		for (let i = 0; i < FITXER_ENCRYPTED_ID.length; i++) {
 			const fitxerId = FITXER_ENCRYPTED_ID[i];
-			downloadFitxer(fitxerId, fileReturnedCallback, comprovaInputPdf);
+			downloadFitxer(fitxerId, fileReturnedCallback, refreshPdf);
 		}
 	}
 
@@ -2007,8 +2010,15 @@ button[disabled][type="submit"] {
 
 	function onScanwebFallit() {
 		let warningText = "<fmt:message key="usuari.tramit.scanweb.error.peroiniciartramit" />";
-		inserirMsg('warn', warningText);
+		inserirMsg('warning', warningText);
+		
+		//això és obligatori per a poder activar el botó d'iniciar tràmit
 		document.getElementById('input-pdf').value = 1;
+
+		// això és obligatori pel registre d'activitat
+		$('#arxiuExpedientId').val(' ');
+		$('#arxiuDocumentId').val(' ');
+
 		comprovaInputPdf();
 	}
 
@@ -2023,7 +2033,7 @@ button[disabled][type="submit"] {
 		//això és obligatori per a poder activar el botó d'iniciar tràmit
 		document.getElementById('input-pdf').value = 1;
 
-		onClickDescarregarFirmat(null, showIframePdf, comprovaInputPdf=true);
+		onClickDescarregarFirmat(null, showIframePdf, true);
 	}
 
 	function onClickPujarDocument(button) {

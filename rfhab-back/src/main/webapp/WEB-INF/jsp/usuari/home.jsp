@@ -1697,6 +1697,7 @@ button[disabled][type="submit"] {
 				data: dataObj,
 				success: function(data, status, xhr) {
 					console.log("Resposta correcta del guardat a arxiu: ", data);
+					let processOk = false;
 
 					if (data && typeof data === "object") {
 						if (data.hasOwnProperty("error")) {
@@ -1720,6 +1721,7 @@ button[disabled][type="submit"] {
 										documentImprimible(documentId);
 										$('#arxiuExpedientId').val(expedientId);
 										$('#arxiuDocumentId').val(documentId);
+										processOk = true;
 									}
 									else {
 										inserirMsg('danger', "<fmt:message key="usuari.tramit.guardataarxiu.error" />");
@@ -1743,12 +1745,18 @@ button[disabled][type="submit"] {
 					// Procés acabat
 					// document.querySelector('#btn-descarregar-firmat-id').setAttribute('disabled', true);
 					// FITXER_ENCRYPTED_ID = [];
+
+					if(!processOk){
+						onGuardarAarxiuFallit();
+					}
 				},
 				error: function(xhr, status, error) {
 					let errorText = "<fmt:message key="usuari.tramit.guardataarxiu.error.document" />" + ' ' + (xhr.responseText || error);
 					inserirMsg('danger', errorText);
 					$('#modal-spinner-carregant').hide();
 					$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
+
+					onGuardarAarxiuFallit();
 				}
 			});
 		};
@@ -2002,6 +2010,20 @@ button[disabled][type="submit"] {
 		inserirMsg('warn', warningText);
 		document.getElementById('input-pdf').value = 1;
 		comprovaInputPdf();
+	}
+
+	function onGuardarAarxiuFallit() {
+		// això és obligatori pel registre d'activitat
+		$('#arxiuExpedientId').val(' ');
+		$('#arxiuDocumentId').val(' ');
+
+		const warningText = "<fmt:message key="usuari.tramit.guardataarxiu.error.peroiniciartramit" />";
+		inserirMsg('warning', warningText);
+
+		//això és obligatori per a poder activar el botó d'iniciar tràmit
+		document.getElementById('input-pdf').value = 1;
+
+		onClickDescarregarFirmat(null, showIframePdf, comprovaInputPdf=true);
 	}
 
 	function onClickPujarDocument(button) {

@@ -1824,6 +1824,8 @@ button[disabled][type="submit"] {
 							let errorText = "<fmt:message key="usuari.tramit.guardatabd.error.tempsmaxim" />";
 							inserirMsg('danger', errorText);
 							POLLING_CHECK_SCAN_WEB_FINAL_RUNNING = false;
+
+							onScanwebFallit();
 						}
 						return;
 					}
@@ -1841,6 +1843,8 @@ button[disabled][type="submit"] {
 						console.error("Resposta --> " + data);
 						inserirMsg('danger', errorText);
 						$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
+
+						onScanwebFallit();
 						return;
 					}
 
@@ -1852,6 +1856,8 @@ button[disabled][type="submit"] {
 							console.error(errorText);
 							inserirMsg('danger', errorText);
 							$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
+
+							onScanwebFallit();
 							return;
 						}
 
@@ -1868,6 +1874,8 @@ button[disabled][type="submit"] {
 					$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
 					let errorText = "<fmt:message key="usuari.tramit.guardatabd.error.nodescarrega" />" + ' ' + (xhr.responseText || error);
 					inserirMsg('danger', errorText);
+
+					onScanwebFallit();
 				}
 			});
 		};
@@ -1927,7 +1935,7 @@ button[disabled][type="submit"] {
 		carregarIframeDigitalibAmbCheck(redirectUrl);
 
 		const pollingInterval = 5000; // 5 seconds in milliseconds
-		const maxPollingDuration = 900000; // 900 seconds (15 minutes) in milliseconds
+		const maxPollingDuration = 300000; // 300 seconds (5 minutes) in milliseconds
 
 		pollCheckResultScanweb(transactionID, pollingInterval, maxPollingDuration);
 	}
@@ -1989,6 +1997,13 @@ button[disabled][type="submit"] {
         }});
 	}
 
+	function onScanwebFallit() {
+		let warningText = "<fmt:message key="usuari.tramit.scanweb.error.peroiniciartramit" />";
+		inserirMsg('warn', warningText);
+		document.getElementById('input-pdf').value = 1;
+		comprovaInputPdf();
+	}
+
 	function onClickPujarDocument(button) {
 		console.log("Pujar document");	
 
@@ -2042,6 +2057,8 @@ button[disabled][type="submit"] {
 			$('#modal-message-carregant').hide();
 
 			$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
+
+			onScanwebFallit();
         },
         error: function(xhr, status, error) {
             let errorText = "<fmt:message key="usuari.tramit.scanweb.prepare.error.nodescarrega" />" + ' ' + "<br>" + (xhr.responseText || error) + "<br>";
@@ -2050,6 +2067,8 @@ button[disabled][type="submit"] {
 			$('#modal-message-carregant').hide();
 
 			$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
+
+			onScanwebFallit();
         }});
 	}
 

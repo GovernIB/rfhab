@@ -53,29 +53,34 @@ public class RolsacLogicaEJB implements RolsacLogicaService {
 	private static final String FILTRE_PROCEDIMENTS_BY_DI3 = "{\"activo\":\"1\",\"telematico\":\"1\",\"disponibleFuncionarioHabilitado\":\"1\", \"codigoUADir3\":\""
 			+ DI3_VALUE_FROM_FILTER + "\", \"buscarEnDescendientesUA\":\"1\"}";
 	private static final String FILTRE_PAGINACIO = "{\"page\":\"1\",\"size\":\"500\"}";
-	private static final long TEMPS_CATXE = 1000 * 60 * 60 * 24; // 24 hores
 
 	final String endpoint;
 	final String usuari;
 	final String pass;
+	final long tempsCatxe;
 
-	AsyncLoadingCache<String, HashMap<String, String[]>> procedimentsAllCatxe = Caffeine.newBuilder()
-			.expireAfterWrite(TEMPS_CATXE, TimeUnit.MILLISECONDS)
-			.buildAsync(k -> getProcedimentsPerLlenguaFromService(k));
-
-	AsyncLoadingCache<String, HashMap<String, String[]>> tramitsFhAllCatxe = Caffeine.newBuilder()
-			.expireAfterWrite(TEMPS_CATXE, TimeUnit.MILLISECONDS)
-			.buildAsync(k -> getTramitsPerLlenguaFromService(k));
-
-	AsyncLoadingCache<String, String> codiDir3UnitatsAdministrativesCatxe = Caffeine.newBuilder()
-			.expireAfterWrite(TEMPS_CATXE, TimeUnit.MILLISECONDS)
-			.buildAsync(k -> getCodiDir3PerUnitatAdministrativaFromService(k));
+	AsyncLoadingCache<String, HashMap<String, String[]>> procedimentsAllCatxe;
+	AsyncLoadingCache<String, HashMap<String, String[]>> tramitsFhAllCatxe;
+	AsyncLoadingCache<String, String> codiDir3UnitatsAdministrativesCatxe;
 
 	public RolsacLogicaEJB() {
 		super();
 		endpoint = Configuracio.getRolsacEndpoint();
 		usuari = Configuracio.getRolsacUsername();
 		pass = Configuracio.getRolsacPassword();
+		tempsCatxe = Configuracio.getRolsacCacheTtl();
+
+		procedimentsAllCatxe = Caffeine.newBuilder()
+				.expireAfterWrite(tempsCatxe, TimeUnit.MILLISECONDS)
+				.buildAsync(k -> getProcedimentsPerLlenguaFromService(k));
+
+		tramitsFhAllCatxe = Caffeine.newBuilder()
+				.expireAfterWrite(tempsCatxe, TimeUnit.MILLISECONDS)
+				.buildAsync(k -> getTramitsPerLlenguaFromService(k));
+
+		codiDir3UnitatsAdministrativesCatxe = Caffeine.newBuilder()
+				.expireAfterWrite(tempsCatxe, TimeUnit.MILLISECONDS)
+				.buildAsync(k -> getCodiDir3PerUnitatAdministrativaFromService(k));
 	}
 
 	@Override

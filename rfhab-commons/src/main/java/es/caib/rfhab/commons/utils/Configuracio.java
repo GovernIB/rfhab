@@ -209,6 +209,11 @@ public class Configuracio implements Constants {
         return getAppSystemProperties().getProperty(RFHAB_PROPERTY_BASE + "rolsac.contrasenya");
     }
 
+    public static long getRolsacCacheTtl() {
+        String value = getAppSystemProperties().getProperty(RFHAB_PROPERTY_BASE + "rolsac.catxe.ttl");
+        return value != null ? Long.parseLong(value) : 1000L * 60 * 60 * 24;
+    }
+
     public static String getDir3CaibEndpoint() {
         return getAppSystemProperties().getProperty(RFHAB_PROPERTY_BASE + "dir3caib.endpoint");
     }

@@ -1920,13 +1920,29 @@ button[disabled][type="submit"] {
 		});
 	}
 
+	function isChrome() {
+		return /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+	}
+
 	async function carregarIframeDigitalibAmbCheck(redirectUrl) {
 		try {
 			const checkUrl = '<%=request.getContextPath()%>/usuari/checkEmbeddable?url=' + encodeURIComponent(redirectUrl);
 			const resp = await fetch(checkUrl);
 			const embeddable = await resp.text();
 			if (embeddable.trim() === 'true') {
-				console.log('checkEmbeddable: iframe permes, carregant iframe.');
+				if (isChrome()) {
+					const crossOriginUrl = '<%=request.getContextPath()%>/usuari/checkCrossOrigin?url=' + encodeURIComponent(redirectUrl);
+					const crossResp = await fetch(crossOriginUrl);
+					const crossOrigin = await crossResp.text();
+					if (crossOrigin.trim() === 'true') {
+						console.warn('checkCrossOrigin: iframe cross-origin en Chrome, mostrant link de fallback.');
+						$('#modal-spinner-carregant').hide();
+						$('#modal-message-carregant').hide();
+						$('#' + NO_CARREGAT_IFRAME_DIGITALIB_ID).show();
+						return;
+					}
+				}
+				console.log('checkEmbeddable: iframe permès, carregant iframe.');
 				afegeixIframeDigitalib(redirectUrl);
 			} else {
 				console.warn('checkEmbeddable: iframe no permes, mostrant link de fallback.');

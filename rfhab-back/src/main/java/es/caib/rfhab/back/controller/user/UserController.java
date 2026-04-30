@@ -121,7 +121,8 @@ public class UserController extends UsuariController {
 		String username = usuari.getUsername();
 		String funcionariDir3 = getCodiDIR3(request, username);// codiDIR3 del lloc de feina del funcionari
 
-		HashMap<String, String[]> llistaProcediments = rolsacLogicaEjb.obtenirProcedimentsByDir3(funcionariDir3, language);
+		HashMap<String, String[]> llistaProcediments = rolsacLogicaEjb.obtenirProcedimentsByDir3(funcionariDir3,
+				language);
 
 		// HashMap<String, String> llistaTramits =
 		// rolsacPlugin.obtenirTramits("1533169");
@@ -343,7 +344,8 @@ public class UserController extends UsuariController {
 
 	/**
 	 * Comprova si una URL pot ser incrustada en un iframe llegint les capçaleres
-	 * X-Frame-Options i Content-Security-Policy des del servidor (evita restriccions CORS del navegador).
+	 * X-Frame-Options i Content-Security-Policy des del servidor (evita
+	 * restriccions CORS del navegador).
 	 * Retorna "true" si es pot incrustar, "false" en cas contrari.
 	 */
 	@RequestMapping(value = "/checkEmbeddable", method = RequestMethod.GET)
@@ -367,13 +369,7 @@ public class UserController extends UsuariController {
 			log.info("checkEmbeddable X-Frame-Options: " + xFrameOptions);
 			log.info("checkEmbeddable Content-Security-Policy: " + csp);
 
-			// Origen del servidor que fa la petició (ex: "http://jpou:8080")
-			int port = request.getServerPort();
-			String scheme = request.getScheme();
-			String serverName = request.getServerName();
-			String requestOrigin = scheme + "://" + serverName
-					+ (("http".equals(scheme) && port == 80) || ("https".equals(scheme) && port == 443)
-							? "" : ":" + port);
+			String requestOrigin = getRequestOrigin(request);
 			log.info("checkEmbeddable requestOrigin: " + requestOrigin);
 
 			if (xFrameOptions != null) {
@@ -382,7 +378,8 @@ public class UserController extends UsuariController {
 					return "false";
 				}
 				if (xfo.equals("SAMEORIGIN")) {
-					// L'iframe és cross-origin respecte al servidor de digitalib, no permet embedding
+					// L'iframe és cross-origin respecte al servidor de digitalib, no permet
+					// embedding
 					return "false";
 				}
 				// ALLOW-FROM <uri>: comprova si l'origen és permès
@@ -425,6 +422,29 @@ public class UserController extends UsuariController {
 		} catch (Exception e) {
 			log.error("checkEmbeddable error per URL " + iframeUrl + ": " + e.getMessage());
 			return "false";
+		}
+	}
+
+	/**
+	 * Comprova si una URL és cross-origin respecte a l'origen del servidor que fa
+	 * la petició.
+	 * Retorna "true" si és cross-origin, "false" si és same-origin.
+	 */
+	@RequestMapping(value = "/checkCrossOrigin", method = RequestMethod.GET)
+	@ResponseBody
+	public String checkCrossOrigin(@RequestParam(value = "url", required = true) String targetUrl,
+			HttpServletRequest request) {
+		try {
+			String targetOrigin = getUrlOrigin(targetUrl);
+			String requestOrigin = getRequestOrigin(request);
+
+			log.info("checkCrossOrigin targetOrigin: " + targetOrigin);
+			log.info("checkCrossOrigin requestOrigin: " + requestOrigin);
+
+			return targetOrigin.equalsIgnoreCase(requestOrigin) ? "false" : "true";
+		} catch (Exception e) {
+			log.error("checkCrossOrigin error per URL " + targetUrl + ": " + e.getMessage());
+			return "true";
 		}
 	}
 
@@ -831,11 +851,27 @@ public class UserController extends UsuariController {
 	}
 
 	protected static String getAbsoluteURLBase(HttpServletRequest request) {
-		// return
-		// request.getSession().getAttribute(MenuUserController.URL_BASE_NAVEGADOR)
-		// + getContextWeb();
-		return request.getScheme() + "://" + request.getServerName() + ":"
-				+ +request.getServerPort() + request.getContextPath();//TODO: #148
+		return getRequestOrigin(request) + request.getContextPath(); // TODO: #148 //request.getSession().getAttribute()
+	}
+
+	protected static String getRequestOrigin(HttpServletRequest request) {
+		int port = request.getServerPort();
+		String scheme = request.getScheme();
+		String host = request.getServerName();
+		boolean defaultPort = ("http".equals(scheme) && port == 80) || ("https".equals(scheme) && port == 443);
+		return scheme + "://" + host + (defaultPort ? "" : ":" + port);
+	}
+
+	protected static String getUrlOrigin(String urlStr) throws java.net.MalformedURLException {
+		URL url = new URL(urlStr);
+		int port = url.getPort();
+		String scheme = url.getProtocol();
+		String host = url.getHost();
+		if (port == -1) {
+			port = "https".equals(scheme) ? 443 : 80;
+		}
+		boolean defaultPort = ("http".equals(scheme) && port == 80) || ("https".equals(scheme) && port == 443);
+		return scheme + "://" + host + (defaultPort ? "" : ":" + port);
 	}
 
 	protected byte[] getResource(String path) throws Exception {

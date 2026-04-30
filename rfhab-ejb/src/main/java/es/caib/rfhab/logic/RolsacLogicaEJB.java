@@ -34,16 +34,19 @@ import es.caib.rfhab.pluginsib.rolsac.model.respostes.RespuestaSimple;
 import es.caib.rfhab.pluginsib.rolsac.model.respostes.RespuestaTramits;
 
 /**
- * EJB Singleton per a la integració amb el catàleg de procediments i tràmits de Rolsac.
- * Gestiona internament una caché d'aplicació compartida per a tots els accessos.
+ * EJB Singleton per a la integració amb el catàleg de procediments i tràmits de
+ * Rolsac.
+ * Gestiona internament una caché d'aplicació compartida per a tots els
+ * accessos.
  *
  * @author jagarcia
  * @author jpou
  */
-// @Singleton
-// @Startup
-// @ConcurrencyManagement(ConcurrencyManagementType.BEAN)
-@Stateless
+// @Stateless
+@Singleton
+@Startup
+@ConcurrencyManagement(ConcurrencyManagementType.BEAN) // La caché de Caffeine ja és thread-safe, per tant no cal el
+														// bloqueig del contenidor
 public class RolsacLogicaEJB implements RolsacLogicaService {
 
 	protected final Logger log = Logger.getLogger(this.getClass());

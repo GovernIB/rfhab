@@ -470,7 +470,7 @@ button[disabled][type="submit"] {
 									<c:set var="containsValues" value="false" />
 									<select id="pas2_procediment" name="procediment-select" class="form-control input-ample-tota-linia" onchange="if(typeof onSelectedProcediment == 'function') {  onSelectedProcediment(this); };">
 										<c:forEach items="${llistaProcediments}" var="tmp">
-											<option value="${tmp.key}">${tmp.value[2]} &nbsp; ${tmp.value[0]}</option>
+											<option value="${tmp.key}" <c:if test="${empty tmp.value[2]}">disabled</c:if>>${tmp.value[2]} &nbsp; ${tmp.value[0]}</option>
 											<c:if test="${not empty tmp.key}">
 												<c:set var="containsValues"  value="true" />
 											</c:if>

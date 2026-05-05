@@ -602,6 +602,10 @@ public class UserController extends UsuariController {
 				tramitConsentimentDto.representantMitjaAcreditacio,
 				tramitConsentimentDto.representantRea,
 				tramitConsentimentDto.representantAltres);
+		if (tramitConsentimentDAO.getProcedimentCodi() == null
+				|| tramitConsentimentDAO.getProcedimentCodi().isEmpty()) {
+			log.warn("NO TENIM CODISIA AL PROCEDIMENT, ÉS MOLT PROBABLE QUE EL TRÀMIT FALLI");
+		}
 		Map<String, Object> freemarkerDadesMap = PlantillaOdtModelConsentiment
 				.buildFreemarkerContext(tramitConsentimentDAO);
 		String plantillaModelConsentimentPath = tramitConsentimentDto.languageUI.startsWith("es")

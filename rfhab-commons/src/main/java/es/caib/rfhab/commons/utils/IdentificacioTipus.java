@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum IdentificacioTipus {
-    DNI(IdentificacioTipusValues.DNI_NAME, IdentificacioTipusValues.DNI_VALUE_STR,
-            IdentificacioTipusValues.DNI_DESCRIPTION),
+    NIF(IdentificacioTipusValues.NIF_NAME, IdentificacioTipusValues.NIF_VALUE_STR,
+            IdentificacioTipusValues.NIF_DESCRIPTION),
     NIE(IdentificacioTipusValues.NIE_NAME, IdentificacioTipusValues.NIE_VALUE_STR,
             IdentificacioTipusValues.NIE_DESCRIPTION),
     PASSAPORT(IdentificacioTipusValues.PASSAPORT_NAME, IdentificacioTipusValues.PASSAPORT_VALUE_STR,

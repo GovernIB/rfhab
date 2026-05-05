@@ -554,7 +554,7 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
                     dto.primerLlinatge,
                     dto.segonLlinatge,
                     FuncionariLogicaEJB.getNumeroFhFromNumeric(Integer.parseInt(dto.numRfh)),
-                    IdentificacioTipus.DNI,
+                    IdentificacioTipus.NIF,
                     dto.nif,
                     dto.usuari,
                     dto.adrecaElectronica,

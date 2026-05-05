@@ -228,7 +228,7 @@ button[disabled][type="submit"] {
 										data-bind="options: availableTypes, selectedOptions: chosenType, optionsCaption: '<fmt:message key="usuari.tramit.dades.numeroidentificacio.placeholder" />'"
 										data-val="true"
 										data-val-required="<fmt:message key="usuari.tramit.dades.tipusidentificacio.required" />">
-										<option value="DNI"><fmt:message key="usuari.tramit.dades.tipusidentificacio.dni" /></option>
+										<option value="NIF"><fmt:message key="usuari.tramit.dades.tipusidentificacio.nif" /></option>
 										<option value="NIE"><fmt:message key="usuari.tramit.dades.tipusidentificacio.nie" /></option>
 										<option value="Passaport"><fmt:message key="usuari.tramit.dades.tipusidentificacio.passaport" /></option>
 										<option value="Altres"><fmt:message key="usuari.tramit.dades.tipusidentificacio.altres" /></option>
@@ -355,7 +355,7 @@ button[disabled][type="submit"] {
 											data-val="true"
 											data-val-required="<fmt:message key="usuari.tramit.dades.tipusidentificacio.required" />"
 											data-rule-required="#representant:checked">
-											<option value="DNI"><fmt:message key="usuari.tramit.dades.tipusidentificacio.dni" /></option>
+											<option value="NIF"><fmt:message key="usuari.tramit.dades.tipusidentificacio.nif" /></option>
 											<option value="NIE"><fmt:message key="usuari.tramit.dades.tipusidentificacio.nie" /></option>
 											<option value="Passaport"><fmt:message key="usuari.tramit.dades.tipusidentificacio.passaport" /></option>
 											<option value="Altres"><fmt:message key="usuari.tramit.dades.tipusidentificacio.altres" /></option>

@@ -179,11 +179,11 @@ public class UsuariLogicaEJB extends UsuariEJB implements UsuariLogicaService {
 					null,
 					idActuacioTramitFh, tramite, tramitVersio, procediment, unitatAdministrativa,
 					interessat.getNombre(), interessat.getApellido1(), interessat.getApellido2(),
-					IdentificacioTipus.DNI,
+					IdentificacioTipus.NIF,
 					interessat.getNif(), representant != null ? representant.getNombre() : null,
 					representant != null ? representant.getApellido1() : null,
 					representant != null ? representant.getApellido2() : null,
-					representant != null ? IdentificacioTipus.DNI : null,
+					representant != null ? IdentificacioTipus.NIF : null,
 					representant != null ? representant.getNif() : null, arxiuExpedientId, arxiuDocumentId,
 				dataActivitat, funcionari, funcionari.getEntitatID());
 

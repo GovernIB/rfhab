@@ -95,7 +95,7 @@ public class OdtToPdfServiceTest {
                                                 "martorell@email.com",
                                                 "C/ Rep", "2", "B", "1", "1a", "Llucmajor", "07620", "699999999",
                                                 "marti@email.com",
-                                                "DNI", "REA123", "Altres dades")),
+                                                "NIF", "REA123", "Altres dades")),
                                                 PLANTILLA_PROVES_CAT_ODT, PLANTILLA_PROVES_CAT_ODT + "_2.pdf" },
                                 { PlantillaOdtModelConsentiment
                                                 .buildFreemarkerContext(new TramitConsentimentDAO("Joanot", "Martorell",

@@ -39,6 +39,7 @@ import es.caib.rfhab.back.form.dto.ScanWebResult;
 import es.caib.rfhab.back.form.webdb.UsuariFilterForm;
 import es.caib.rfhab.back.form.webdb.UsuariForm;
 import es.caib.rfhab.back.security.LoginInfo;
+import es.caib.rfhab.back.utils.UrlUtils;
 import es.caib.rfhab.commons.utils.OdtToPdfService;
 import es.caib.rfhab.logic.ActivitatLogicaService;
 import es.caib.rfhab.logic.EntitatLogicaService;
@@ -369,7 +370,7 @@ public class UserController extends UsuariController {
 			log.info("checkEmbeddable X-Frame-Options: " + xFrameOptions);
 			log.info("checkEmbeddable Content-Security-Policy: " + csp);
 
-			String requestOrigin = getRequestOrigin(request);
+			String requestOrigin = UrlUtils.getUrlOrigin(UrlUtils.getAbsoluteURLBase(request));
 			log.info("checkEmbeddable requestOrigin: " + requestOrigin);
 
 			if (xFrameOptions != null) {
@@ -435,8 +436,8 @@ public class UserController extends UsuariController {
 	public String checkCrossOrigin(@RequestParam(value = "url", required = true) String targetUrl,
 			HttpServletRequest request) {
 		try {
-			String targetOrigin = getUrlOrigin(targetUrl);
-			String requestOrigin = getRequestOrigin(request);
+			String targetOrigin = UrlUtils.getUrlOrigin(targetUrl);
+			String requestOrigin = UrlUtils.getUrlOrigin(UrlUtils.getAbsoluteURLBase(request));
 
 			log.info("checkCrossOrigin targetOrigin: " + targetOrigin);
 			log.info("checkCrossOrigin requestOrigin: " + requestOrigin);
@@ -491,7 +492,7 @@ public class UserController extends UsuariController {
 		// "1254123412",
 		// Arrays.asList("43153858Q"), Arrays.asList("A04013511"), "11223344C", "Pep
 		// Gonella");
-		final String absoluteControllerBase = getAbsoluteControllerBase(request, CONTEXTWEB);
+		final String absoluteControllerBase = UrlUtils.getAbsoluteControllerBase(request, CONTEXTWEB);
 		final String firstPartReturnUrl = absoluteControllerBase + "scanweb/";
 
 		log.info("XYZ YYY firstPartReturnUrl = " + firstPartReturnUrl);
@@ -847,35 +848,6 @@ public class UserController extends UsuariController {
 	public String getTileForm() {
 		// return "userFormCommon";
 		return "usuariFormAdmin";
-	}
-
-	protected static String getAbsoluteControllerBase(HttpServletRequest request,
-			String webContext) {
-		return getAbsoluteURLBase(request) + webContext;
-	}
-
-	protected static String getAbsoluteURLBase(HttpServletRequest request) {
-		return getRequestOrigin(request) + request.getContextPath(); // TODO: #148 //request.getSession().getAttribute()
-	}
-
-	protected static String getRequestOrigin(HttpServletRequest request) {
-		int port = request.getServerPort();
-		String scheme = request.getScheme();
-		String host = request.getServerName();
-		boolean defaultPort = ("http".equals(scheme) && port == 80) || ("https".equals(scheme) && port == 443);
-		return scheme + "://" + host + (defaultPort ? "" : ":" + port);
-	}
-
-	protected static String getUrlOrigin(String urlStr) throws java.net.MalformedURLException {
-		URL url = new URL(urlStr);
-		int port = url.getPort();
-		String scheme = url.getProtocol();
-		String host = url.getHost();
-		if (port == -1) {
-			port = "https".equals(scheme) ? 443 : 80;
-		}
-		boolean defaultPort = ("http".equals(scheme) && port == 80) || ("https".equals(scheme) && port == 443);
-		return scheme + "://" + host + (defaultPort ? "" : ":" + port);
 	}
 
 	protected byte[] getResource(String path) throws Exception {

@@ -1,5 +1,5 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" import="es.caib.rfhab.commons.utils.Configuracio"%>
 <%@ include file="/WEB-INF/jsp/moduls/includes.jsp"%>
 
 <style type="text/css">
@@ -2008,7 +2008,7 @@ button[disabled][type="submit"] {
 		carregarIframeDigitalibAmbCheck(redirectUrl);
 
 		const pollingInterval = 5000; // 5 seconds in milliseconds
-		const maxPollingDuration = 300000; // 300 seconds (5 minutes) in milliseconds
+		const maxPollingDuration = parseInt("<%=Configuracio.getAppSystemProperty("es.caib.rfhab.pluginsib.scanweb.polling.maxduration")%>", 10) || 300000; // 300 seconds (5 minutes) in milliseconds
 
 		pollCheckResultScanweb(transactionID, pollingInterval, maxPollingDuration);
 	}

@@ -529,6 +529,9 @@ button[disabled][type="submit"] {
 											select2Container.addClass("input-ample-tota-linia");
 										});
 									</script>
+									<p id="spinner-carregant-tramits" style="text-align: center; display: none;">
+										<svg style="width:20%;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150"><path fill="none" stroke="#007BFF" stroke-width="15" stroke-linecap="round" stroke-dasharray="300 385" stroke-dashoffset="0" d="M275 75c0 31-27 50-50 50-58 0-92-100-150-100-28 0-50 22-50 50s23 50 50 50c58 0 92-100 150-100 24 0 50 19 50 50Z"><animate attributeName="stroke-dashoffset" calcMode="spline" dur="2" values="685;-685" keySplines="0 0 1 1" repeatCount="indefinite"></animate></path></svg>
+									</p>
 									<input type="hidden" id="tramitId" class="form-control always-validate" data-rule-tramit="true" name="tramitId" value="" />
 									<input type="hidden" id="tramitVersio"  name="tramitVersio" value="1" />
 									<input type="hidden" id="tramitParametres"  name="tramitParametres" value="1" />
@@ -1207,35 +1210,45 @@ button[disabled][type="submit"] {
 
 				comprovaInputPdf();
 
-				const pas2Procediment = $('#pas2_procediment');
-				//TODO:revisar aquesta comrpovació
-				if (pas2Procediment && (!pas2Procediment.data('select2') || $('#pas2_procediment+.select2').css("display") == "none" || $('#pas2_procediment+.select2').css("display") == "hidden"))
-				{
-					pas2Procediment.select2(
-						{
-							placeholder: "<fmt:message key="usuari.tramit.seleccio.procediment.placeholder" />",
-							allowClear: true,
-							language: "${lang}",
-							minimumInputLength: 0
-						}
-					);
-					const select2Container = pas2Procediment.closest('label').find('.select2');
-					select2Container.addClass("input-ample-tota-linia");
+				const $jq = window.jQuery;
+				if (!$jq || !$jq.fn || !$jq.fn.select2) {
+					console.warn('Select2 no carregat a msf:viewChanged. jQuery:', $jq && $jq.fn ? $jq.fn.jquery : 'absent');
+					return;
 				}
-				const pas2Tramit = $('#pas2_tramit');
-				if (pas2Tramit && (!pas2Tramit.data('select2') || $('#pas2_tramit+.select2').css("display") == "none" || $('#pas2_tramit+.select2').css("display") == "hidden"))
+
+				const pas2Procediment = $jq('#pas2_procediment');
+				//TODO:revisar aquesta comrpovació
+				if (pas2Procediment && (!pas2Procediment.data('select2') || $jq('#pas2_procediment+.select2').css("display") == "none" || $jq('#pas2_procediment+.select2').css("display") == "hidden"))
 				{
-					pas2Tramit.select2(
-						{
-							placeholder: "<fmt:message key="usuari.tramit.seleccio.tramit.placeholder" />",
-							allowClear: true,
-							language: "${lang}",
-							minimumInputLength: 0,
-							disabled: true
-						}
-					);
-					const select2Container = pas2Tramit.closest('label').find('.select2');
-					select2Container.addClass("input-ample-tota-linia");
+					if(pas2Procediment.select2){
+						pas2Procediment.select2(
+							{
+								placeholder: "<fmt:message key="usuari.tramit.seleccio.procediment.placeholder" />",
+								allowClear: true,
+								language: "${lang}",
+								minimumInputLength: 0
+							}
+						);
+						const select2Container = pas2Procediment.closest('label').find('.select2');
+						select2Container.addClass("input-ample-tota-linia");
+					}
+				}
+				const pas2Tramit = $jq('#pas2_tramit');
+				if (pas2Tramit && (!pas2Tramit.data('select2') || $jq('#pas2_tramit+.select2').css("display") == "none" || $jq('#pas2_tramit+.select2').css("display") == "hidden"))
+				{
+					if (pas2Tramit.select2) {
+						pas2Tramit.select2(
+							{
+								placeholder: "<fmt:message key="usuari.tramit.seleccio.tramit.placeholder" />",
+								allowClear: true,
+								language: "${lang}",
+								minimumInputLength: 0,
+								disabled: true
+							}
+						);
+						const select2Container = pas2Tramit.closest('label').find('.select2');
+						select2Container.addClass("input-ample-tota-linia");
+					}
 				}
 			});
 
@@ -1396,6 +1409,8 @@ button[disabled][type="submit"] {
 	const URL_NO_CARREGAT_IFRAME_DIGITALIB_ID = 'modal-urlnotloaded-iframe-digitalib';
 	const NO_CARREGAT_IFRAME_DIGITALIB_ID = 'modal-body-nocarregat';
 	const CARREGANT_IFRAME_DIGITALIB_ID = 'modal-body-carregant';
+	const ARXIU_EXPEDIENT_ERROR_VALUE = 'error_no_expedient';
+	const ARXIU_DOCUMENT_ERROR_VALUE = 'error_no_document';
 	var FITXER_ENCRYPTED_ID = [];
 	var POLLING_CHECK_SCAN_WEB_FINAL_RUNNING = false;
 	var MODEL_CONSENTIMENT_FORM_ENVIAT = {};
@@ -1435,7 +1450,7 @@ button[disabled][type="submit"] {
 	}
 
 	function createModalPujarDocument(modalId) {
-			$('body').append('<div id="' + modalId + '" class="modal hide fade show" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'
+			$('body').append('<div id="' + modalId + '" class="modal fade" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'
                         + '<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">'  
 							
                         + '<div class="modal-content">'
@@ -1469,6 +1484,36 @@ button[disabled][type="submit"] {
 				POLLING_CHECK_SCAN_WEB_FINAL_RUNNING = false;
 			})
     }
+
+	function hidePujarDocumentModal() {
+		const $modal = $('#' + MODAL_PUJAR_DOCUMENT_ID);
+		if (!$modal.length) {
+			return;
+		}
+		const modalData = $modal.data('bs.modal');
+		if (modalData && modalData._isTransitioning) {
+			$modal.one('shown.bs.modal', function () {
+				$modal.modal('hide');
+			});
+			return;
+		}
+		$modal.modal('hide');
+	}
+
+	function forceClosePujarDocumentModal() {
+		const $modal = $('#' + MODAL_PUJAR_DOCUMENT_ID);
+		if (!$modal.length) {
+			return;
+		}
+		$modal.modal('hide');
+		window.setTimeout(function () {
+			if ($modal.hasClass('show') || $modal.is(':visible')) {
+				$modal.removeClass('show').attr('aria-hidden', 'true').hide();
+				$('body').removeClass('modal-open').css('padding-right', '');
+				$('.modal-backdrop').remove();
+			}
+		}, 300);
+	}
 
 	async function tancarExpedient(identificadorExpedient) {
 		const url = "<%=request.getContextPath() + "/usuari/tancarexpedient/"%>";
@@ -1507,7 +1552,7 @@ button[disabled][type="submit"] {
 			console.error(errorText);
 			inserirMsg('danger', errorText);
 			$('#modal-spinner-carregant').hide();
-			$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
+			hidePujarDocumentModal();
 			return;
 		}
 
@@ -1523,7 +1568,7 @@ button[disabled][type="submit"] {
 		fetch(request)
 			.then(response => {
 				$('#modal-spinner-carregant').hide();
-				$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
+				hidePujarDocumentModal();
 				if (!response.ok) {
 					throw new Error("<fmt:message key="usuari.tramit.descarregafitxer.error.descarrega" />" + ' ' + response.statusText);
 				}
@@ -1546,7 +1591,7 @@ button[disabled][type="submit"] {
 				let errorText = "<fmt:message key="usuari.tramit.descarregafitxer.error.descarrega" />" + ' ' + error.message;
 				inserirMsg('danger', errorText);
 				$('#modal-spinner-carregant').hide();
-				$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
+				hidePujarDocumentModal();
 			});
 	}
 
@@ -1657,7 +1702,7 @@ button[disabled][type="submit"] {
 					let errorText = "<fmt:message key="usuari.tramit.consultaimprimible.error" />" + ' ' + (xhr.responseText || error);
 					inserirMsg('danger', errorText);
 					$('#modal-spinner-carregant').hide();
-					$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
+					forceClosePujarDocumentModal();
 
 					errorText = "<fmt:message key="usuari.tramit.consultaimprimible.error.peroiniciartramit" />";
 					inserirMsg('warning', errorText);
@@ -1755,11 +1800,11 @@ button[disabled][type="submit"] {
 					}
 				},
 				error: function(xhr, status, error) {
-					let errorText = "<fmt:message key="usuari.tramit.guardataarxiu.error.document" />" + ' ' + (xhr.responseText || error);
-					inserirMsg('danger', errorText);
 					$('#modal-spinner-carregant').hide();
 					$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
 
+					let errorText = "<fmt:message key="usuari.tramit.guardataarxiu.error.document" />" + ' ' + (xhr.responseText || error);
+					inserirMsg('danger', errorText);
 					onGuardarAarxiuFallit();
 				}
 			});
@@ -2033,16 +2078,16 @@ button[disabled][type="submit"] {
 		document.getElementById('input-pdf').value = 1;
 
 		// això és obligatori pel registre d'activitat
-		$('#arxiuExpedientId').val(' ');
-		$('#arxiuDocumentId').val(' ');
+		$('#arxiuExpedientId').val(ARXIU_EXPEDIENT_ERROR_VALUE);
+		$('#arxiuDocumentId').val(ARXIU_DOCUMENT_ERROR_VALUE);
 
 		comprovaInputPdf();
 	}
 
 	function onGuardarAarxiuFallit() {
 		// això és obligatori pel registre d'activitat
-		$('#arxiuExpedientId').val(' ');
-		$('#arxiuDocumentId').val(' ');
+		$('#arxiuExpedientId').val(ARXIU_EXPEDIENT_ERROR_VALUE);
+		$('#arxiuDocumentId').val(ARXIU_DOCUMENT_ERROR_VALUE);
 
 		const warningText = "<fmt:message key="usuari.tramit.guardataarxiu.error.peroiniciartramit" />";
 		inserirMsg('warning', warningText);
@@ -2105,7 +2150,7 @@ button[disabled][type="submit"] {
 			$('#modal-spinner-carregant').hide();
 			$('#modal-message-carregant').hide();
 
-			$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
+			hidePujarDocumentModal();
 
 			onScanwebFallit();
         },
@@ -2115,7 +2160,7 @@ button[disabled][type="submit"] {
 			$('#modal-spinner-carregant').hide();
 			$('#modal-message-carregant').hide();
 
-			$('#' + MODAL_PUJAR_DOCUMENT_ID).modal('hide');
+			hidePujarDocumentModal();
 
 			onScanwebFallit();
         }});

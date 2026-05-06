@@ -371,7 +371,10 @@ public class UserController extends UsuariController {
 			log.info("checkEmbeddable Content-Security-Policy: " + csp);
 
 			String requestOrigin = UrlUtils.getUrlOrigin(UrlUtils.getAbsoluteURLBase(request));
+			// Origen de l'iframe (per resoldre 'self' i SAMEORIGIN)
+			String iframeOrigin = UrlUtils.getUrlOrigin(iframeUrl);
 			log.info("checkEmbeddable requestOrigin: " + requestOrigin);
+			log.info("checkEmbeddable iframeOrigin: " + iframeOrigin);
 
 			if (xFrameOptions != null) {
 				String xfo = xFrameOptions.trim().toUpperCase();
@@ -379,9 +382,9 @@ public class UserController extends UsuariController {
 					return "false";
 				}
 				if (xfo.equals("SAMEORIGIN")) {
-					// L'iframe és cross-origin respecte al servidor de digitalib, no permet
-					// embedding
-					return "false";
+					// SAMEORIGIN permet embedding només des del mateix origen que l'iframe.
+					// Si el client és al mateix host que l'iframe, és permès.
+					return iframeOrigin.equalsIgnoreCase(requestOrigin) ? "true" : "false";
 				}
 				// ALLOW-FROM <uri>: comprova si l'origen és permès
 				if (xfo.startsWith("ALLOW-FROM ")) {
@@ -408,11 +411,14 @@ public class UserController extends UsuariController {
 				}
 				// Llista d'orígens permesos: comprova si l'origen actual hi és
 				for (String allowed : faValue.split("\\s+")) {
-					if (allowed.equalsIgnoreCase(requestOrigin) || allowed.equals("'self'")) {
-						// 'self' fa referència al servidor de digitalib, no al nostre
-						if (!allowed.equals("'self'")) {
+					if (allowed.equals("'self'")) {
+						// 'self' fa referència a l'origen de l'iframe (digitalib), no al client.
+						// Si el client és al mateix host que l'iframe, és permès.
+						if (iframeOrigin.equalsIgnoreCase(requestOrigin)) {
 							return "true";
 						}
+					} else if (allowed.equalsIgnoreCase(requestOrigin)) {
+						return "true";
 					}
 				}
 				// L'origen actual no és a la llista

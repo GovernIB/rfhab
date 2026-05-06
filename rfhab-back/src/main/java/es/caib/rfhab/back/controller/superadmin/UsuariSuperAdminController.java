@@ -1,7 +1,6 @@
 package es.caib.rfhab.back.controller.superadmin;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +8,10 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
 
+import org.fundaciobit.genapp.common.StringKeyValue;
 import org.fundaciobit.genapp.common.i18n.I18NException;
+import org.fundaciobit.genapp.common.query.OrderBy;
+import org.fundaciobit.genapp.common.query.OrderType;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.web.HtmlUtils;
 import org.fundaciobit.genapp.common.web.form.AdditionalButton;
@@ -30,6 +32,7 @@ import es.caib.rfhab.back.security.LoginInfo;
 import es.caib.rfhab.logic.UsuariEntitatLogicaService;
 import es.caib.rfhab.model.entity.Usuari;
 import es.caib.rfhab.model.fields.EntitatFields;
+import es.caib.rfhab.model.fields.IdiomaFields;
 import es.caib.rfhab.model.fields.UsuariEntitatFields;
 import es.caib.rfhab.persistence.EntitatJPA;
 import es.caib.rfhab.persistence.UsuariEntitatJPA;
@@ -185,9 +188,9 @@ public class UsuariSuperAdminController extends UsuariController {
 				if (entitat.getEntitatID() != entitatID.longValue()) {
 					entitatsActualitzades.put(entitat.getEntitatID(), entitat);
 					log.info("Entitat " + entitat.getNom() + " amb ID " + entitat.getEntitatID() + " continua.");
-				}
-				else{
-					log.info("Entitat " + entitat.getNom() + " amb ID " + entitat.getEntitatID() + " esborrada de la llista.");
+				} else {
+					log.info("Entitat " + entitat.getNom() + " amb ID " + entitat.getEntitatID()
+							+ " esborrada de la llista.");
 				}
 			}
 			loginInfo.setEntitats(entitatsActualitzades);
@@ -196,5 +199,12 @@ public class UsuariSuperAdminController extends UsuariController {
 		String redireccio = "redirect:" + getContextWeb() + "/list/1";
 		log.info("Redirigint cap a " + redireccio);
 		return redireccio;
+	}
+
+	@Override
+	public List<StringKeyValue> getReferenceListForIdiomaID(HttpServletRequest request,
+			ModelAndView mav, Where where) throws I18NException {
+		return idiomaRefList.getReferenceList(IdiomaFields.IDIOMAID, where,
+				new OrderBy(IdiomaFields.ORDRE, OrderType.ASC));
 	}
 }

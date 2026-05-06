@@ -157,21 +157,21 @@
                 </configuration>
 
                 <executions>
-                    <!--<execution>
+                    <execution>
                         <id>openapi_interna_1</id>
                         <phase>compile</phase>
                         <goals>
                             <goal>resolve</goal>
                         </goals>
                         <configuration>
-                            <contextId>Exemple Interna Public</contextId>
-                            <outputFileName>openapi_interna_public</outputFileName>
+                            <contextId>RFHab API Interna Public</contextId>
+                            <outputFileName>rfhab_api_interna_public</outputFileName>
                             <resourcePackages>
                                 <package>es.caib.rfhab.api.interna.config</package>
                                 <package>es.caib.rfhab.api.interna.all.exemplepublic</package>
                             </resourcePackages>
                         </configuration>
-                    </execution>-->
+                    </execution>
                     <execution>
                         <id>openapi_interna_2</id>
                         <phase>compile</phase>
@@ -179,8 +179,8 @@
                             <goal>resolve</goal>
                         </goals>
                         <configuration>
-                            <contextId>Exemple Interna Seguretat</contextId>
-                            <outputFileName>rfhab_api_interna</outputFileName>
+                            <contextId>RFHab API Interna Seguretat</contextId>
+                            <outputFileName>rfhab_api_interna_secure</outputFileName>
                             <resourcePackages>
                                 <package>es.caib.rfhab.api.interna.config</package>
                                 <package>es.caib.rfhab.api.interna.secure.activitat</package>
@@ -191,21 +191,21 @@
                             </resourcePackages>
                         </configuration>
                     </execution>
-                    <!--<execution>
+                    <execution>
                         <id>openapi_interna_3</id>
                         <phase>compile</phase>
                         <goals>
                             <goal>resolve</goal>
                         </goals>
                         <configuration>
-                            <contextId>Exemple Interna Dades Obertes</contextId>
-                            <outputFileName>openapi_interna_dadesobertes</outputFileName>
+                            <contextId>RFHab API Interna Dades Obertes</contextId>
+                            <outputFileName>rfhab_api_interna_dadesobertes</outputFileName>
                             <resourcePackages>
                                 <package>es.caib.rfhab.api.interna.config</package>
                                 <package>es.caib.rfhab.api.interna.all.exemplereutilitzacio</package>
                             </resourcePackages>
                         </configuration>
-                    </execution>-->
+                    </execution>
                 </executions>
             </plugin>
 
@@ -258,7 +258,7 @@
                         </goals>
                         <configuration>
                             <inputSpec>
-                                ${project.basedir}/openapi/rfhab_api_interna.json</inputSpec>
+                                ${project.basedir}/openapi/rfhab_api_interna_secure.json</inputSpec>
                             <generatorName>java</generatorName>
                             <skipValidateSpec>true</skipValidateSpec>
                             <configHelp>java</configHelp>

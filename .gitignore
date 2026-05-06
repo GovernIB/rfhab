@@ -72,7 +72,7 @@ rfhab-api-interna/openapi/*.json
 
 # Clients api interna i externa
 rfhab-api-externa-client*
-#rfhab-api-interna-client*
+rfhab-api-interna-client*
 
 # Fitxers generats amb sqlgenerator
 # scripts/sqlgenerator/*.sql

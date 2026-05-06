@@ -1,16 +1,16 @@
 [
     {
-        "url": "./openapi_interna_public.json",
-        "name": "Exemple Interna Public"
+        "url": "./rfhab_api_interna_public.json",
+        "name": "RFHab API Interna Public"
     }
 ,
     {
-        "url": "./rfhab_api_interna.json",
-        "name": "Exemple Interna Seguretat"
+        "url": "./rfhab_api_interna_secure.json",
+        "name": "RFHab API Interna Seguretat"
     }
 ,
     {
-        "url": "./openapi_interna_dadesobertes.json",
-        "name": "Exemple Interna Dades Obertes"
+        "url": "./rfhab_api_interna_dadesobertes.json",
+        "name": "RFHab API Interna Dades Obertes"
     }
 ]

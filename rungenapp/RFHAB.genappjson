@@ -1036,11 +1036,11 @@
       "nameJava": "Entitat",
       "shortName": "entitat",
       "labels": {
-        "ca": "Conselleria/Ens",
+        "ca": "Entitat",
         "es": "Entidad"
       },
       "labelsPlural": {
-        "ca": "Conselleries/Ens",
+        "ca": "Entitats",
         "es": "Entidades"
       },
       "generate": true,

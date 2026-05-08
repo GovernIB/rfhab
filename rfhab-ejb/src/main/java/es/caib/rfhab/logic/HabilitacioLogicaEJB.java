@@ -1,5 +1,6 @@
 package es.caib.rfhab.logic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
@@ -21,6 +22,8 @@ import es.caib.rfhab.model.fields.LlocHabilitacioFields;
 import es.caib.rfhab.model.fields.LlocHabilitacioQueryPath;
 import es.caib.rfhab.model.fields.HabilitacioFields;
 import es.caib.rfhab.persistence.FuncionariJPA;
+import es.caib.rfhab.persistence.HabilitacioJPA;
+import es.caib.rfhab.persistence.HabilitacioJPAManager;
 
 /**
  * 
@@ -51,6 +54,14 @@ public class HabilitacioLogicaEJB extends HabilitacioEJB implements HabilitacioL
     @Override
     @PermitAll
     public Habilitacio findByCodiIfuncionari(String codi, FuncionariJPA funcionari) throws I18NException {
+        Where habilitacioByLlocDeFuncionari = getHabilitacioWhereByFuncionari(funcionari);
+
+        Where codiDir3W = HabilitacioFields.CODI.equal(codi);
+        List<Habilitacio> resultats = select(Where.AND(habilitacioByLlocDeFuncionari, codiDir3W));
+        return (resultats != null && resultats.size() > 0) ? resultats.get(0) : null;
+    }
+
+    private Where getHabilitacioWhereByFuncionari(FuncionariJPA funcionari) throws I18NException {
         Where habilitacioByLlocDeFuncionari = null;
 
         FuncionariLlocQueryPath funcionarilLocQueryPath = new FuncionariLlocQueryPath();
@@ -61,12 +72,26 @@ public class HabilitacioLogicaEJB extends HabilitacioEJB implements HabilitacioL
         LlocHabilitacioQueryPath llocHabilitacioQueryPath = new LlocHabilitacioQueryPath();
         Where whereLloc = llocHabilitacioQueryPath.LLOC().LLOCID().in(subQueryLlocIdFromFuncionari);
         SubQuery<LlocHabilitacio, Long> subQueryHabilitacioIdFromLloc;
-        subQueryHabilitacioIdFromLloc = llocHabilitacioLogicaEJB.getSubQuery(LlocHabilitacioFields.HABILITACIOID, whereLloc);
+        subQueryHabilitacioIdFromLloc = llocHabilitacioLogicaEJB.getSubQuery(LlocHabilitacioFields.HABILITACIOID,
+                whereLloc);
         habilitacioByLlocDeFuncionari = HabilitacioFields.HABILITACIOID.in(subQueryHabilitacioIdFromLloc);
+        return habilitacioByLlocDeFuncionari;
+    }
 
-        Where codiDir3W = HabilitacioFields.CODI.equal(codi);
-        List<Habilitacio> resultats = select(Where.AND(habilitacioByLlocDeFuncionari, codiDir3W));
-        return (resultats != null && resultats.size() > 0) ? resultats.get(0) : null;
+    @Override
+    @PermitAll
+    public List<HabilitacioJPA> findByFuncionari(FuncionariJPA funcionari) throws I18NException {
+        Where habilitacioByLlocDeFuncionari = getHabilitacioWhereByFuncionari(funcionari);
+        List<Habilitacio> resultats = select(habilitacioByLlocDeFuncionari);
+        if (resultats == null) {
+            return null;
+        }
+
+        List<HabilitacioJPA> resultatsJpa = new ArrayList<HabilitacioJPA>(resultats.size());
+        for (Habilitacio habilitacio : resultats) {
+            resultatsJpa.add(HabilitacioJPAManager.convertToJPA(habilitacio));
+        }
+        return resultatsJpa;
     }
 
 }

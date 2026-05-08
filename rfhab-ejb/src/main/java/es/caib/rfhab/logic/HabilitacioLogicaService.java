@@ -1,11 +1,14 @@
 package es.caib.rfhab.logic;
 
+import java.util.List;
+
 import javax.ejb.Local;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 
 import es.caib.rfhab.ejb.HabilitacioService;
 import es.caib.rfhab.model.entity.Habilitacio;
 import es.caib.rfhab.persistence.FuncionariJPA;
+import es.caib.rfhab.persistence.HabilitacioJPA;
 
 /**
  * 
@@ -21,4 +24,5 @@ public interface HabilitacioLogicaService extends HabilitacioService {
 
     public Habilitacio findByCodiIfuncionari(String codi, FuncionariJPA funcionari) throws I18NException;
 
+    public List<HabilitacioJPA> findByFuncionari(FuncionariJPA funcionari) throws I18NException;
 }

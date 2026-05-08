@@ -168,7 +168,8 @@
                             <outputFileName>rfhab_api_interna_public</outputFileName>
                             <resourcePackages>
                                 <package>es.caib.rfhab.api.interna.config</package>
-                                <package>es.caib.rfhab.api.interna.all.exemplepublic</package>
+                                <package>es.caib.rfhab.api.interna.all.general</package>
+                                <package>es.caib.rfhab.api.interna.all.habilitacio</package>
                             </resourcePackages>
                         </configuration>
                     </execution>

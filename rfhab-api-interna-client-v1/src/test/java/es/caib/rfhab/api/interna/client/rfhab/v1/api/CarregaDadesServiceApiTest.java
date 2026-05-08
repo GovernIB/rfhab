@@ -66,6 +66,7 @@ class CarregaDadesServiceApiTest {
         try {
             
         ApiClient client = new ApiClient();
+        // client.setBasePath("https://governdigital.fundaciobit.org/rfhabapi/interna");
         client.setBasePath("http://localhost:8080/rfhabapi/interna");
         HttpBasicAuth auth = (HttpBasicAuth) client.getAuthentication("BasicAuth");
         Properties properties = new Properties();
@@ -83,7 +84,7 @@ class CarregaDadesServiceApiTest {
 
 
         FitxersCarrega fitxers = new FitxersCarrega();
-        fitxers.setExcel(Files.readAllBytes(new File("20251125_RFH_Normalitzat.ods").toPath()));
+        fitxers.setExcel(Files.readAllBytes(new File("20260220_RFH_Normalitzat.ods").toPath()));
         fitxers.setProperties(Files.readAllBytes(new File("carregadormassiu.properties").toPath()));
 
         String response = api.carregaInicialDades(fitxers);

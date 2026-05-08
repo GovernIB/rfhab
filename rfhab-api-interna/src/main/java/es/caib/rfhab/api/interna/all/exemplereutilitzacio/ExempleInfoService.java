@@ -55,7 +55,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
                         url = "https://joinup.ec.europa.eu/sites/default/files/custom-page/attachment/eupl_v1.2_es.pdf"),
                 contact = @Contact(
                         name = "Departament de Govern Digital a la Fundació Bit",
-                        email = "otae@fundaciobit.org",
+                        email = "governdigital@ibdigital.caib.es",
                         url = "https://governdigital.fundaciobit.org")),
         externalDocs = @ExternalDocumentation(
                 description = "Java Client (GovernIB Github)",

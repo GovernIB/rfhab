@@ -502,10 +502,24 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 
 	@Override
 	@PermitAll
+	public FuncionariJPA findByUsuari(String usuari) throws I18NException {
+		List<Funcionari> funcionaris = select(Where.OR(FuncionariFields.USUARI.equal(usuari),
+				FuncionariFields.USUARI.equal(usuari.toUpperCase()),
+				FuncionariFields.USUARI.equal(usuari.toLowerCase())));
+		if (funcionaris == null || funcionaris.size() == 0) {
+			return null;
+		}
+		if (funcionaris.size() > 1) {
+			throw new I18NException("funcionari.error.mesdun", usuari);
+		}
+		return (FuncionariJPA) funcionaris.get(0);
+	}
+
+	@Override
+	@PermitAll
 	public FuncionariJPA comprovarFuncionariActiuByNif(String language, String funcionariNif, boolean checkLloc)
 			throws I18NException {
 		FuncionariJPA funcionari = findByNif(funcionariNif);
-
 		if (funcionari == null) {
 			String errorNoExisteixNif = I18NCommonUtils.tradueix(new Locale(language),
 					"funcionari.error.noexisteixnif",
@@ -513,10 +527,30 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 			log.error(errorNoExisteixNif);
 			throw new I18NException(errorNoExisteixNif);
 		}
+		return comprovarFuncionariActiu(language, funcionari, funcionariNif, checkLloc);
+	}
+
+	@Override
+	@PermitAll
+	public FuncionariJPA comprovarFuncionariActiuByUsuari(String language, String funcionariUsuari, boolean checkLloc)
+			throws I18NException {
+		FuncionariJPA funcionari = findByUsuari(funcionariUsuari);
+		if (funcionari == null) {
+			String errorNoExisteix = I18NCommonUtils.tradueix(new Locale(language),
+					"funcionari.error.noexisteixusuari",
+					new String[] { funcionariUsuari });
+			log.error(errorNoExisteix);
+			throw new I18NException(errorNoExisteix);
+		}
+		return comprovarFuncionariActiu(language, funcionari, funcionariUsuari, checkLloc);
+	}
+
+	private FuncionariJPA comprovarFuncionariActiu(String language, FuncionariJPA funcionari,
+			String identificadorPerError, boolean checkLloc) throws I18NException {
 		if (!isFuncionariActiu(funcionari)) {
 			String errorNoActiu = I18NCommonUtils.tradueix(new Locale(language),
 					"funcionari.error.noactiu",
-					new String[] { funcionariNif });
+					new String[] { identificadorPerError });
 			log.error(errorNoActiu);
 			throw new I18NException(errorNoActiu);
 		}
@@ -531,19 +565,17 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 		if (funcionarisLlocs == null || funcionarisLlocs.size() == 0) {
 			String errorNoAssignat = I18NCommonUtils.tradueix(new Locale(language),
 					"funcionari.error.noassignatlloc",
-					new String[] { funcionariNif });
+					new String[] { identificadorPerError });
 			log.error(errorNoAssignat);
 			throw new I18NException(errorNoAssignat);
 		}
 
 		boolean llocActiu = false;
 		Timestamp ara = new Timestamp(System.currentTimeMillis());
-		List<Lloc> llocsOcupatsPerFuncionari = new ArrayList<Lloc>();
 		List<Lloc> llocsNoActiusOcupatsPerFuncionari = new ArrayList<Lloc>();
 		for (FuncionariLloc fl : funcionarisLlocs) {
 			Lloc lloc = llocLogicaEjb.findByPrimaryKey(fl.getLlocID());
 			if (lloc != null) {
-				llocsOcupatsPerFuncionari.add(lloc);
 				Timestamp llocDataAlta = lloc.getDataalta();
 				if (lloc.getDataBaixa() == null && llocDataAlta != null && llocDataAlta.compareTo(ara) <= 0) {
 					llocActiu = true;
@@ -557,7 +589,7 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 		if (!llocActiu) {
 			String errorLlocNoActiu = I18NCommonUtils.tradueix(new Locale(language),
 					"funcionari.error.llocnoactiu",
-					new String[] { funcionariNif, llocsNoActiusOcupatsPerFuncionari.get(0).getCodiLlocPropi() });
+					new String[] { identificadorPerError, llocsNoActiusOcupatsPerFuncionari.get(0).getCodiLlocPropi() });
 			log.error(errorLlocNoActiu);
 			throw new I18NException(errorLlocNoActiu);
 		}

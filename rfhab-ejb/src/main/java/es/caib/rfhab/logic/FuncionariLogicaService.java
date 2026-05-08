@@ -44,9 +44,14 @@ public interface FuncionariLogicaService extends FuncionariService {
 
 	public FuncionariJPA findByNif(String nif) throws I18NException;
 
+	public FuncionariJPA findByUsuari(String usuari) throws I18NException;
+
 	public boolean isFuncionariActiu(FuncionariJPA funcionari) throws I18NException;
 
 	public FuncionariJPA comprovarFuncionariActiuByNif(String language, String funcionariNif, boolean checkLloc)
+			throws I18NException;
+
+	public FuncionariJPA comprovarFuncionariActiuByUsuari(String language, String funcionariUsuari, boolean checkLloc)
 			throws I18NException;
 
 	public String getNouFuncionariNumero() throws I18NException;

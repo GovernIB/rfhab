@@ -117,7 +117,8 @@
 										</a>
 										<c:if test="${activitat.arxiuDocumentID != null && !activitat.arxiuDocumentID.isEmpty()}">
 											<a href="<c:url value="${UserController.CONTEXTWEB}modelconsentiment/${activitat.arxiuDocumentID}"/>"
-												class="btn btn-success btn-sm" target="_blank">
+												class="btn btn-success btn-sm" target="_blank"
+												onclick="return descarregarModelConsentiment(event, this);">
 													<i class="fa fa-file-download" 
 														title="<fmt:message key="activitat.descarrega.modelconsentiment" />"></i>
 											</a>
@@ -332,6 +333,58 @@
 </c:if>
 
 <script type="text/javascript">
+	async function descarregarModelConsentiment(event, linkElement) {
+		if (event) {
+			event.preventDefault();
+		}
+
+		const url = linkElement ? linkElement.getAttribute("href") : null;
+		const missatgeError = "<fmt:message key='activitat.descarrega.modelconsentiment.error' />";
+		if (!url) {
+			alert(missatgeError);
+			return false;
+		}
+
+		const finestraDescarrega = window.open("", "_blank");
+
+		try {
+			const response = await fetch(url, {
+				method: "GET",
+				credentials: "same-origin"
+			});
+
+			if (!response.ok) {
+				throw new Error("HTTP " + response.status);
+			}
+
+			const contentType = response.headers.get("content-type") || "";
+			if (contentType.indexOf("text/html") !== -1) {
+				throw new Error("Resposta inesperada en HTML");
+			}
+
+			const fitxerBlob = await response.blob();
+			const fitxerUrl = window.URL.createObjectURL(fitxerBlob);
+
+			if (finestraDescarrega) {
+				finestraDescarrega.location = fitxerUrl;
+			} else {
+				window.location.href = fitxerUrl;
+			}
+
+			window.setTimeout(function() {
+				window.URL.revokeObjectURL(fitxerUrl);
+			}, 60000);
+		} catch (error) {
+			if (finestraDescarrega) {
+				finestraDescarrega.close();
+			}
+			console.error("Error descarregant model de consentiment:", error);
+			alert(missatgeError);
+		}
+
+		return false;
+	}
+
 	document
 			.addEventListener(
 					"DOMContentLoaded",

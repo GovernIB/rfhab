@@ -77,6 +77,7 @@ public class FuncionariAdminController extends FuncionariController {
 
 	private static final String TIPUS_IDENTIFICACIO_SELECCIONA = "0";
 	private static final int ACTIVITAT_ITEMS_PER_PAGE = 10;
+	private static final int[] ACTIVITAT_ALLOWED_PAGE_SIZES = { 5, 10, 20, 50 };
 	private static final int ACTIVITAT_MAX_PAGE_LINKS = 10;
 	private static final String TAB_HOME = "home";
 	private static final String TAB_ACTIVITAT = "activitat";
@@ -713,12 +714,13 @@ public class FuncionariAdminController extends FuncionariController {
 			totalItems = 0L;
 		}
 
-		int totalPages = getTotalPages(totalItems, ACTIVITAT_ITEMS_PER_PAGE);
+		int pageSize = getValidActivitatPageSize(request.getParameter("activitatPageSize"));
+		int totalPages = getTotalPages(totalItems, pageSize);
 		int currentPage = parsePositiveInt(request.getParameter("activitatPage"), 1);
 		currentPage = Math.min(currentPage, totalPages);
 
-		int firstResult = (currentPage - 1) * ACTIVITAT_ITEMS_PER_PAGE;
-		List<Activitat> activitats = activitatEJB.select(whereActivitatFuncionari, firstResult, ACTIVITAT_ITEMS_PER_PAGE,
+		int firstResult = (currentPage - 1) * pageSize;
+		List<Activitat> activitats = activitatEJB.select(whereActivitatFuncionari, firstResult, pageSize,
 				new OrderBy(ActivitatFields.DATAACTIVITAT, OrderType.DESC),
 				new OrderBy(ActivitatFields.ACTIVITATID, OrderType.DESC));
 
@@ -733,8 +735,28 @@ public class FuncionariAdminController extends FuncionariController {
 		mav.addObject("activitatEndIndex", endIndex);
 		mav.addObject("activitatTotalPages", totalPages);
 		mav.addObject("activitatTotalItems", totalItems);
+		mav.addObject("activitatPageSize", pageSize);
+		mav.addObject("activitatPageSizeOptions", getActivitatPageSizeOptions());
 
 		return activitats;
+	}
+
+	private int getValidActivitatPageSize(String pageSizeValue) {
+		int requestedPageSize = parsePositiveInt(pageSizeValue, ACTIVITAT_ITEMS_PER_PAGE);
+		for (int allowedPageSize : ACTIVITAT_ALLOWED_PAGE_SIZES) {
+			if (allowedPageSize == requestedPageSize) {
+				return allowedPageSize;
+			}
+		}
+		return ACTIVITAT_ITEMS_PER_PAGE;
+	}
+
+	private List<Integer> getActivitatPageSizeOptions() {
+		List<Integer> pageSizeOptions = new ArrayList<Integer>();
+		for (int allowedPageSize : ACTIVITAT_ALLOWED_PAGE_SIZES) {
+			pageSizeOptions.add(allowedPageSize);
+		}
+		return pageSizeOptions;
 	}
 
 	private int getTotalPages(long totalItems, int itemsPerPage) {

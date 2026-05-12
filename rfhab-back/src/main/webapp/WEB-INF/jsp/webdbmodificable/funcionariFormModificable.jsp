@@ -129,9 +129,24 @@
 					</table>
 				</div>
 
+				<c:url var="activitatPaginationBaseUrl"
+					value="/admin/funcionari/view/${funcionari.funcionariID}" />
+				<div class="row">
+					<div class="col-2">
+						<div class="form-inline">
+							<label for="activitatPageSize" class="mr-2"><fmt:message key="genapp.form.itemsperpage" />:</label>
+							<select id="activitatPageSize" name="activitatPageSize"
+								class="form-control form-control-sm"
+								onchange="window.location.href='${activitatPaginationBaseUrl}?activeTab=activitat&amp;activitatPage=1&amp;activitatPageSize=' + encodeURIComponent(this.value)">
+								<c:forEach var="pageSize" items="${activitatPageSizeOptions}">
+									<option value="${pageSize}" ${pageSize == activitatPageSize ? 'selected' : ''}>${pageSize}</option>
+								</c:forEach>
+							</select>
+						</div>
+					</div>
+				</div>
+
 				<c:if test="${activitatTotalPages > 1}">
-					<c:url var="activitatPaginationBaseUrl"
-						value="/admin/funcionari/view/${funcionari.funcionariID}" />
 					<div class="row" style="margin-left: 0px;">
 						<nav aria-label="Paginacio activitats">
 							<ul class="pagination pagination-sm mb-0">
@@ -139,10 +154,24 @@
 									<c:choose>
 										<c:when test="${activitatCurrentIndex > 1}">
 											<a class="page-link"
-												href="${activitatPaginationBaseUrl}?activeTab=activitat&amp;activitatPage=${activitatCurrentIndex - 1}">&#60;</a>
+												href="${activitatPaginationBaseUrl}?activeTab=activitat&amp;activitatPage=1&amp;activitatPageSize=${activitatPageSize}"
+												title="<fmt:message key='genapp.pagination.primerapagina' />">&#171;</a>
 										</c:when>
 										<c:otherwise>
-											<span class="page-link">&#60;</span>
+											<span class="page-link" title="<fmt:message key='genapp.pagination.primerapagina' />">&#171;</span>
+										</c:otherwise>
+									</c:choose>
+								</li>
+
+								<li class="page-item ${activitatCurrentIndex == 1 ? 'disabled' : ''}">
+									<c:choose>
+										<c:when test="${activitatCurrentIndex > 1}">
+											<a class="page-link"
+												href="${activitatPaginationBaseUrl}?activeTab=activitat&amp;activitatPage=${activitatCurrentIndex - 1}&amp;activitatPageSize=${activitatPageSize}"
+												title="<fmt:message key='genapp.pagination.anterior' />">&#60;</a>
+										</c:when>
+										<c:otherwise>
+											<span class="page-link" title="<fmt:message key='genapp.pagination.anterior' />">&#60;</span>
 										</c:otherwise>
 									</c:choose>
 								</li>
@@ -154,7 +183,7 @@
 										</c:when>
 										<c:otherwise>
 											<li class="page-item"><a class="page-link"
-												href="${activitatPaginationBaseUrl}?activeTab=activitat&amp;activitatPage=${pagina}">${pagina}</a>
+												href="${activitatPaginationBaseUrl}?activeTab=activitat&amp;activitatPage=${pagina}&amp;activitatPageSize=${activitatPageSize}">${pagina}</a>
 											</li>
 										</c:otherwise>
 									</c:choose>
@@ -164,10 +193,24 @@
 									<c:choose>
 										<c:when test="${activitatCurrentIndex < activitatTotalPages}">
 											<a class="page-link"
-												href="${activitatPaginationBaseUrl}?activeTab=activitat&amp;activitatPage=${activitatCurrentIndex + 1}">&#62;</a>
+												href="${activitatPaginationBaseUrl}?activeTab=activitat&amp;activitatPage=${activitatCurrentIndex + 1}&amp;activitatPageSize=${activitatPageSize}"
+												title="<fmt:message key='genapp.pagination.seguent' />">&#62;</a>
 										</c:when>
 										<c:otherwise>
-											<span class="page-link">&#62;</span>
+											<span class="page-link" title="<fmt:message key='genapp.pagination.seguent' />">&#62;</span>
+										</c:otherwise>
+									</c:choose>
+								</li>
+
+								<li class="page-item ${activitatCurrentIndex == activitatTotalPages ? 'disabled' : ''}">
+									<c:choose>
+										<c:when test="${activitatCurrentIndex < activitatTotalPages}">
+											<a class="page-link"
+												href="${activitatPaginationBaseUrl}?activeTab=activitat&amp;activitatPage=${activitatTotalPages}&amp;activitatPageSize=${activitatPageSize}"
+												title="<fmt:message key='genapp.pagination.darrerapagina' />">&#187;</a>
+										</c:when>
+										<c:otherwise>
+											<span class="page-link" title="<fmt:message key='genapp.pagination.darrerapagina' />">&#187;</span>
 										</c:otherwise>
 									</c:choose>
 								</li>

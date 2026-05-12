@@ -14,6 +14,8 @@ import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.i18n.I18NValidationException;
 import org.fundaciobit.genapp.common.query.Field;
 import org.fundaciobit.genapp.common.query.GroupByItem;
+import org.fundaciobit.genapp.common.query.OrderBy;
+import org.fundaciobit.genapp.common.query.OrderType;
 import org.fundaciobit.genapp.common.query.SubQuery;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.query.selectcolumn.Select7Values;
@@ -56,6 +58,7 @@ import es.caib.rfhab.model.entity.Activitat;
 import es.caib.rfhab.model.entity.Funcionari;
 import es.caib.rfhab.model.entity.FuncionariLloc;
 import es.caib.rfhab.model.entity.Lloc;
+import es.caib.rfhab.model.fields.ActivitatFields;
 import es.caib.rfhab.model.fields.FuncionariFields;
 import es.caib.rfhab.model.fields.FuncionariLlocFields;
 import es.caib.rfhab.model.fields.LlocFields;
@@ -73,6 +76,12 @@ public class FuncionariAdminController extends FuncionariController {
 	public static final String CONTEXTWEB = "/admin/funcionari";
 
 	private static final String TIPUS_IDENTIFICACIO_SELECCIONA = "0";
+	private static final int ACTIVITAT_ITEMS_PER_PAGE = 10;
+	private static final int ACTIVITAT_MAX_PAGE_LINKS = 10;
+	private static final String TAB_HOME = "home";
+	private static final String TAB_ACTIVITAT = "activitat";
+	private static final String TAB_HISTORIC = "historic";
+	private static final String TAB_HISTORIC_LLOCS = "historicllocs";
 
 	@EJB(mappedName = FuncionariLogicaService.JNDI_NAME)
 	protected FuncionariLogicaService funcionariLogicaEjb;
@@ -124,6 +133,7 @@ public class FuncionariAdminController extends FuncionariController {
 				jsOpenModalGuardar,
 				AdditionalButtonStyle.PRIMARY);
 		funcionariForm.setSaveButtonVisible(false);
+		mav.addObject("activeTab", getActiveTab(request));
 
 		if (funcionariForm.isNou()) {
 			// botó de guardar
@@ -148,7 +158,7 @@ public class FuncionariAdminController extends FuncionariController {
 			long funcionariId = funcionari.getFuncionariID();
 
 			// Pipella Activitat - Obtenir les activitats que té assignades el funcionari
-			List<Activitat> activitatsFuncionari = activitatEJB.getActivitatsByFuncionariID(funcionariId);
+			List<Activitat> activitatsFuncionari = getActivitatsPaginadesByFuncionariID(funcionariId, request, mav);
 			mav.addObject("activitatItems", activitatsFuncionari);
 			List<StringKeyValue> tipusActivitats = getTipusActivitats();
 			mav.addObject("listOfValuesForTipus", tipusActivitats);
@@ -691,6 +701,70 @@ public class FuncionariAdminController extends FuncionariController {
 		}
 
 		return estatsActivitatsResult;
+	}
+
+	private List<Activitat> getActivitatsPaginadesByFuncionariID(Long funcionariId, HttpServletRequest request,
+			ModelAndView mav) throws I18NException {
+
+		Where whereActivitatFuncionari = ActivitatFields.FUNCIONARIID.equal(funcionariId);
+
+		Long totalItems = activitatEJB.count(whereActivitatFuncionari);
+		if (totalItems == null || totalItems < 0) {
+			totalItems = 0L;
+		}
+
+		int totalPages = getTotalPages(totalItems, ACTIVITAT_ITEMS_PER_PAGE);
+		int currentPage = parsePositiveInt(request.getParameter("activitatPage"), 1);
+		currentPage = Math.min(currentPage, totalPages);
+
+		int firstResult = (currentPage - 1) * ACTIVITAT_ITEMS_PER_PAGE;
+		List<Activitat> activitats = activitatEJB.select(whereActivitatFuncionari, firstResult, ACTIVITAT_ITEMS_PER_PAGE,
+				new OrderBy(ActivitatFields.DATAACTIVITAT, OrderType.DESC),
+				new OrderBy(ActivitatFields.ACTIVITATID, OrderType.DESC));
+
+		int beginIndex = Math.max(1, currentPage - (ACTIVITAT_MAX_PAGE_LINKS / 2));
+		int endIndex = Math.min(totalPages, beginIndex + ACTIVITAT_MAX_PAGE_LINKS - 1);
+		if ((endIndex - beginIndex) < (ACTIVITAT_MAX_PAGE_LINKS - 1)) {
+			beginIndex = Math.max(1, endIndex - ACTIVITAT_MAX_PAGE_LINKS + 1);
+		}
+
+		mav.addObject("activitatCurrentIndex", currentPage);
+		mav.addObject("activitatBeginIndex", beginIndex);
+		mav.addObject("activitatEndIndex", endIndex);
+		mav.addObject("activitatTotalPages", totalPages);
+		mav.addObject("activitatTotalItems", totalItems);
+
+		return activitats;
+	}
+
+	private int getTotalPages(long totalItems, int itemsPerPage) {
+		if (itemsPerPage <= 0 || totalItems <= 0) {
+			return 1;
+		}
+		return (int) (totalItems / itemsPerPage) + ((totalItems % itemsPerPage == 0) ? 0 : 1);
+	}
+
+	private int parsePositiveInt(String value, int defaultValue) {
+		if (value == null || value.isEmpty()) {
+			return defaultValue;
+		}
+		try {
+			int parsedValue = Integer.parseInt(value);
+			return (parsedValue > 0) ? parsedValue : defaultValue;
+		} catch (NumberFormatException e) {
+			return defaultValue;
+		}
+	}
+
+	private String getActiveTab(HttpServletRequest request) {
+		String activeTab = request.getParameter("activeTab");
+		if (TAB_ACTIVITAT.equals(activeTab)
+				|| TAB_HISTORIC.equals(activeTab)
+				|| TAB_HISTORIC_LLOCS.equals(activeTab)
+				|| TAB_HOME.equals(activeTab)) {
+			return activeTab;
+		}
+		return TAB_HOME;
 	}
 
 	@Override

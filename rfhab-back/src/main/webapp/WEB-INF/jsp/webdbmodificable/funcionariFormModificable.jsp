@@ -128,6 +128,53 @@
 						</tbody>
 					</table>
 				</div>
+
+				<c:if test="${activitatTotalPages > 1}">
+					<c:url var="activitatPaginationBaseUrl"
+						value="/admin/funcionari/view/${funcionari.funcionariID}" />
+					<div class="row" style="margin-left: 0px;">
+						<nav aria-label="Paginacio activitats">
+							<ul class="pagination pagination-sm mb-0">
+								<li class="page-item ${activitatCurrentIndex == 1 ? 'disabled' : ''}">
+									<c:choose>
+										<c:when test="${activitatCurrentIndex > 1}">
+											<a class="page-link"
+												href="${activitatPaginationBaseUrl}?activeTab=activitat&amp;activitatPage=${activitatCurrentIndex - 1}">&#60;</a>
+										</c:when>
+										<c:otherwise>
+											<span class="page-link">&#60;</span>
+										</c:otherwise>
+									</c:choose>
+								</li>
+
+								<c:forEach var="pagina" begin="${activitatBeginIndex}" end="${activitatEndIndex}">
+									<c:choose>
+										<c:when test="${pagina == activitatCurrentIndex}">
+											<li class="page-item active"><span class="page-link">${pagina}</span></li>
+										</c:when>
+										<c:otherwise>
+											<li class="page-item"><a class="page-link"
+												href="${activitatPaginationBaseUrl}?activeTab=activitat&amp;activitatPage=${pagina}">${pagina}</a>
+											</li>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+
+								<li class="page-item ${activitatCurrentIndex == activitatTotalPages ? 'disabled' : ''}">
+									<c:choose>
+										<c:when test="${activitatCurrentIndex < activitatTotalPages}">
+											<a class="page-link"
+												href="${activitatPaginationBaseUrl}?activeTab=activitat&amp;activitatPage=${activitatCurrentIndex + 1}">&#62;</a>
+										</c:when>
+										<c:otherwise>
+											<span class="page-link">&#62;</span>
+										</c:otherwise>
+									</c:choose>
+								</li>
+							</ul>
+						</nav>
+					</div>
+				</c:if>
 			</c:if>
 		</div>
 		
@@ -250,10 +297,22 @@
 						document.getElementById("funcionari.numero").placeholder = '${FUNCIONARI_NUMERO_PLACEHOLDER}';
 						document.getElementById("funcionari.correu").placeholder = '${CORREU_PLACEHOLDER}';
 
+						const activeTab = "${activeTab}";
+						if (activeTab) {
+							const tabLink = document.querySelector('#myTab a[href="#' + activeTab + '"]');
+							if (tabLink) {
+								if (typeof window.jQuery !== "undefined" && typeof window.jQuery(tabLink).tab === "function") {
+									window.jQuery(tabLink).tab("show");
+								} else {
+									tabLink.click();
+								}
+							}
+						}
+
 						const correuLabel = document.getElementById("funcionari_correu_columnlabelid")?.querySelector("label");
 						const helpIcon = document.createElement("i");
 						helpIcon.className = "fas fa-question-circle";
-						helpIcon.title = "<fmt:message key="correu"/>";
+						helpIcon.title = "<fmt:message key='correu'/>";
 						helpIcon.style.marginLeft = "5px";
 						if(correuLabel){
 							correuLabel.appendChild(helpIcon);

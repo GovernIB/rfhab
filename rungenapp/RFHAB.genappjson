@@ -1344,7 +1344,7 @@
           "labels": {
             "de": "Size",
             "en": "Size",
-            "ca": "Tamany",
+            "ca": "Mida",
             "es": "Tamaño"
           },
           "javaName": "tamany",

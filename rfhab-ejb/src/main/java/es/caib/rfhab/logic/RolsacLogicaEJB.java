@@ -1,5 +1,6 @@
 package es.caib.rfhab.logic;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import javax.ejb.Stateless;
 import org.jboss.logging.Logger;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.util.LinkedMultiValueMap;
@@ -144,6 +146,13 @@ public class RolsacLogicaEJB implements RolsacLogicaService {
 		}
 	}
 
+	private HttpHeaders buildHeaders() {
+		final HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		return headers;
+	}
+
 	private HashMap<String, String[]> getProcedimentsPerLlenguaFromService(String llengua, List<String> codisDir3)
 			throws Exception {
 		if (llengua == null || llengua.isEmpty()) {
@@ -154,8 +163,7 @@ public class RolsacLogicaEJB implements RolsacLogicaService {
 
 		final RestTemplate restTemplate = new RestTemplate();
 		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(usuari, pass));
-		final HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED);
+		final HttpHeaders headers = buildHeaders();
 
 		HashMap<String, String[]> resultats = null;
 		for (String codiDir3 : codisDir3) {
@@ -209,8 +217,7 @@ public class RolsacLogicaEJB implements RolsacLogicaService {
 
 		final RestTemplate restTemplate = new RestTemplate();
 		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(usuari, pass));
-		final HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED);
+		final HttpHeaders headers = buildHeaders();
 
 		final MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
 		map.add("lang", llengua);
@@ -303,8 +310,7 @@ public class RolsacLogicaEJB implements RolsacLogicaService {
 
 		final RestTemplate restTemplate = new RestTemplate();
 		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(usuari, pass));
-		final HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED);
+		final HttpHeaders headers = buildHeaders();
 
 		final MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
 		map.add("lang", llengua);
@@ -349,8 +355,7 @@ public class RolsacLogicaEJB implements RolsacLogicaService {
 
 		final RestTemplate restTemplate = new RestTemplate();
 		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(usuari, pass));
-		final HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED);
+		final HttpHeaders headers = buildHeaders();
 
 		final MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
 		map.add("idioma", llengua);
@@ -463,8 +468,7 @@ public class RolsacLogicaEJB implements RolsacLogicaService {
 
 		final RestTemplate restTemplate = new RestTemplate();
 		restTemplate.getInterceptors().add(new BasicAuthorizationInterceptor(usuari, pass));
-		final HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED);
+		final HttpHeaders headers = buildHeaders();
 
 		final MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
 

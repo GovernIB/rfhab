@@ -397,7 +397,7 @@
 							</c:forEach>
 							];
 							const llocHabilitacionsSelectId = "lloc_habilitacions_seleccionades_id";
-							const nouHabilitacionsTr = createTrInputFormSelect("lloc_habilitacions_rowid", "lloc_habilitacions_columnlabelid", '<fmt:message key="habilitacio.habilitacio.plural"/>', "lloc_habilitacions_columnvalueid", "habilitacionsSeleccionadesId", llocHabilitacionsSelectId, "llocHabilitacionsSeleccionades", optionsHabilitacions, habilitacionsSeleccionades, onSelectedHabilitacioLloc, true);
+							const nouHabilitacionsTr = createTrInputFormSelect("lloc_habilitacions_rowid", "lloc_habilitacions_columnlabelid", '<fmt:message key="habilitacio.habilitacio"/>', "lloc_habilitacions_columnvalueid", "habilitacionsSeleccionadesId", llocHabilitacionsSelectId, "llocHabilitacionsSeleccionades", optionsHabilitacions, habilitacionsSeleccionades, onSelectedHabilitacioLloc, true);
 							const dataDaltaTr = tbody.querySelector("#lloc_dataalta_rowid");
 							tbody.insertBefore(nouHabilitacionsTr, dataDaltaTr);
 							$('#' + llocHabilitacionsSelectId).select2(

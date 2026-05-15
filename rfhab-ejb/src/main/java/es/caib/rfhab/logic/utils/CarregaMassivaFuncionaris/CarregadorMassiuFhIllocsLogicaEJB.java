@@ -510,6 +510,7 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
             throw new IllegalStateException(
                     "odsFilePath o mapper no inicialitzats. Cal cridar configureOdsPaths abans d'utilitzar carregaFh().");
         }
+        log.info("Processant fitxer: " + odsFilePath);
         List<FuncionariOdsDTO> dtos = mapper.readOdsToDto(new File(odsFilePath), FuncionariOdsDTO.class, true, true);
         for (FuncionariOdsDTO dto : dtos) {
             // Aquí s'aplicarà la lògica de processament i crida a l'API REST externa

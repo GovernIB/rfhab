@@ -78,7 +78,7 @@ public class UsuariSuperAdminController extends UsuariController {
 
 		usuariForm.addHiddenField(DARRERAENTITAT);
 		usuariForm.addReadOnlyField(DATACREACIO);
-		usuariForm.addReadOnlyField(ACTIU);
+		// usuariForm.addReadOnlyField(ACTIU);
 		usuariForm.addReadOnlyField(DATABAIXA);
 
 		usuariForm.setAttachedAdditionalJspCode(true);

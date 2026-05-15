@@ -30,6 +30,7 @@ import es.caib.rfhab.persistence.UsuariJPA;
 /**
  * 
  * @author jagarcia
+ * @author jpou
  *
  */
 @Stateless(name = "AuthenticationLogicaEJB")
@@ -58,6 +59,12 @@ public class AuthenticationLogicaEJB implements AuthenticationLogicaService {
 	@Override
 	public UsuariJPA crearUsuari(UsuariJPA usuario) throws I18NException {
 		return usuariLogicaEjb.crearUsuari(usuario);
+	}
+
+	@Override
+	public UsuariJPA updateUsuariActiu(UsuariJPA usuari, boolean actiu) throws I18NException {
+		usuari.setActiu(actiu);
+		return usuariLogicaEjb.update(usuari);
 	}
 
 	@Override

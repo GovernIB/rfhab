@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 
 import org.fundaciobit.genapp.common.StringKeyValue;
 import org.fundaciobit.genapp.common.i18n.I18NException;
+import org.fundaciobit.genapp.common.i18n.I18NValidationException;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.web.HtmlUtils;
 import org.fundaciobit.genapp.common.web.i18n.I18NUtils;
@@ -863,5 +864,18 @@ public class UserController extends UsuariController {
 	@Override
 	public UsuariJPA findByPrimaryKey(HttpServletRequest request, java.lang.Long usuariID) throws I18NException {
 		return (UsuariJPA) usuariLogicaEjb.findByPrimaryKey(usuariID);
+	}
+
+	@Override
+	public UsuariJPA update(HttpServletRequest request, UsuariJPA usuari)
+			throws I18NException, I18NValidationException {
+
+		LoginInfo loginInfo = LoginInfo.getInstance();
+
+		if (usuari.getUsuariID() == loginInfo.getUsuariPersona().getUsuariID()) {
+			return usuariLogicaEjb.update(usuari);
+		}
+
+		throw new I18NException("usuari.all.nopropi.nomodificar");
 	}
 }

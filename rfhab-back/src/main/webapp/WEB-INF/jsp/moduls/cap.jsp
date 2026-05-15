@@ -149,24 +149,32 @@
 
 						<c:if test="${not empty loginInfo}">
 
-							<c:if test="${pipella eq 'super'}">
+							<c:if test="${rfh:hasRole('ROLE_SUPER')}">
 								<a class="dropdown-item"
 									href="<c:url value="/superadmin/usuari/${loginInfo.getUsuariPersona().getUsuariID()}/edit"></c:url>">
 									<fmt:message key="menu.usuari" />
 								</a>
 							</c:if>
-							<c:if test="${pipella ne 'super'}">
-								<c:if test="${not empty pipella}">
+							<c:if test="${not rfh:hasRole('ROLE_SUPER')}">
+								<c:if test="${rfh:hasRole('ROLE_ADMIN')}">
 									<a class="dropdown-item"
-										href="<c:url value="/${pipella}/usuari/${loginInfo.getUsuariPersona().getUsuariID()}/edit"></c:url>">
+										href="<c:url value="/admin/usuari/${loginInfo.getUsuariPersona().getUsuariID()}/edit"></c:url>">
 										<fmt:message key="menu.usuari" />
 									</a>
 								</c:if>
-								<c:if test="${empty pipella}">
-									<a class="dropdown-item"
-										href="<c:url value="/usuari/${loginInfo.getUsuariPersona().getUsuariID()}/edit"></c:url>">
-										<fmt:message key="menu.usuari" />
-									</a>
+								<c:if test="${not rfh:hasRole('ROLE_ADMIN')}">
+									<c:if test="${rfh:hasRole('ROLE_USER')}">
+										<a class="dropdown-item"
+											href="<c:url value="/user/usuari/${loginInfo.getUsuariPersona().getUsuariID()}/edit"></c:url>">
+											<fmt:message key="menu.usuari" />
+										</a>
+									</c:if>
+									<c:if test="${not rfh:hasRole('ROLE_USER')}">
+										<a class="dropdown-item"
+											href="<c:url value="/usuari/${loginInfo.getUsuariPersona().getUsuariID()}/edit"></c:url>">
+											<fmt:message key="menu.usuari" />
+										</a>
+									</c:if>
 								</c:if>
 							</c:if>
 

@@ -369,6 +369,8 @@ public class AuthenticationSuccessListener implements ApplicationListener<Intera
                     usuariEntitat.setUsuariID(persona.getUsuariID());
                     usuariEntitat = authenticationLogicaEjb.create(usuariEntitat);
                     usuariPersona = persona;
+
+                    authenticationLogicaEjb.updateUsuariActiu(usuariPersona, true);
                 }
 
             } catch (I18NException e) {

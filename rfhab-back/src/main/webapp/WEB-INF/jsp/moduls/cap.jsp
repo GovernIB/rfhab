@@ -83,15 +83,17 @@
 				<c:if test="${rfh:hasRole('ROLE_ADMIN')}">
 					<li id="rolInfoContainer" class="menuCapItem dropdown"
 						onclick="location='<c:url value="/canviarPipella/admin"/>'">
-						<i class="fas fa-address-card"></i> <span class="dropdown-toggle"
-						type="button" id="dropdownMenuRol" data-toggle="dropdown"
-						aria-haspopup="true" aria-expanded="false"> <c:if
-								test="${not empty pipella}">
+						<i class="fas fa-address-card"></i>
+						<span class="dropdown-toggle"
+							type="button" id="dropdownMenuRol" data-toggle="dropdown"
+							aria-haspopup="true" aria-expanded="false">
+							<c:if test="${not empty pipella}">
 								<fmt:message key="rol.${pipella}" />
-							</c:if> <c:if test="${empty pipella}">
+							</c:if>
+							<c:if test="${empty pipella}">
 								<fmt:message key="inici" />
 							</c:if>
-					</span>
+						</span>
 						<div class="dropdown-menu dropdown-menu-right"
 							aria-labelledby="dropdownMenuRol">
 							<sec:authorize access="hasRole('ROLE_ADMIN')">
@@ -117,15 +119,46 @@
 								</c:if>
 							</sec:authorize>
 
-							<sec:authorize access="hasRole('ROLE_ADMIN')">
-								<c:if test="${pipella ne 'webdb'}">
-									<a class="dropdown-item"
-										href="<c:url value="/canviarPipella/webdb"/>"><fmt:message
-											key="rol.webdb" /></a>
+							<sec:authorize access="hasRole('ROLE_SUPER')">
+								<c:if test="${rfh:isDesenvolupament()}">
+									<c:if test="${pipella ne 'webdb'}">
+										<a class="dropdown-item"
+											href="<c:url value="/canviarPipella/webdb"/>"><fmt:message
+												key="rol.webdb" /></a>
+									</c:if>
 								</c:if>
 							</sec:authorize>
 						</div>
 					</li>
+				</c:if>
+
+				<c:if test="${not rfh:hasRole('ROLE_ADMIN')}">
+					<c:if test="${rfh:hasRole('ROLE_USER')}">
+						<li id="rolInfoContainer" class="menuCapItem dropdown"
+							onclick="location='<c:url value="/canviarPipella/user"/>'">
+							<i class="fas fa-address-card"></i>
+							<span class="dropdown-toggle"
+								type="button" id="dropdownMenuRol" data-toggle="dropdown"
+								aria-haspopup="true" aria-expanded="false">
+								<c:if test="${not empty pipella}">
+									<fmt:message key="rol.${pipella}" />
+								</c:if>
+								<c:if test="${empty pipella}">
+									<fmt:message key="inici" />
+								</c:if>
+							</span>
+							<div class="dropdown-menu dropdown-menu-right"
+								aria-labelledby="dropdownMenuRol">
+								<sec:authorize access="hasRole('ROLE_USER')">
+									<c:if test="${pipella ne 'user'}">
+										<a class="dropdown-item"
+											href="<c:url value="/canviarPipella/user"/>"><fmt:message
+												key="rol.user" /></a>
+									</c:if>
+								</sec:authorize>
+							</div>
+						</li>
+					</c:if>
 				</c:if>
 
 				<%--  CONFIGURACIÓ DE L'USUARI AMB MENU D'IDIOMES  --%>

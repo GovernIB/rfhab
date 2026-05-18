@@ -81,7 +81,7 @@ public class PrincipalController {
 				return new ModelAndView("webdb");
 			}
 
-			if (Configuracio.isDesenvolupament() && "desenvolupament".equals(pipella)) {
+			if (Configuracio.isDesenvolupament() && LoginInfo.hasRole("ROLE_SUPER") && "desenvolupament".equals(pipella)) {
 				return new ModelAndView("desenvolupament");
 			}
 

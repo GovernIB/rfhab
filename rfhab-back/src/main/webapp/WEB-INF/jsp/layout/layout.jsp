@@ -52,13 +52,15 @@
 							key="rol.webdb" /></a></a></li>
 			</sec:authorize>
 
-			<c:if test="${prefixLowercase}:isDesenvolupament()}">
-				<li class="nav-item"><a
-					class="nav-link ${(pipella eq 'desenvolupament')?'active' : '' }"
-					href="<c:url value="/canviarPipella/desenvolupament"/>"> <fmt:message
-							key="desenvolupament" />
-				</a></li>
-			</c:if>
+			<sec:authorize access="hasRole('ROLE_SUPER')">
+				<c:if test="${rfh:isDesenvolupament()}">
+					<li class="nav-item"><a
+						class="nav-link ${(pipella eq 'desenvolupament')?'active' : '' }"
+						href="<c:url value="/canviarPipella/desenvolupament"/>"> <fmt:message
+								key="desenvolupament" />
+					</a></li>
+				</c:if>
+			</sec:authorize>
 
 		</ul>
 

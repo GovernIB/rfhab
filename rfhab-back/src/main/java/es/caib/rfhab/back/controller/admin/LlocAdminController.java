@@ -1124,10 +1124,14 @@ public class LlocAdminController extends LlocController {
 			List<Lloc> result = new ArrayList();
 			Map<Long, Timestamp> mapDarreraModificacio = new HashMap<>();
 			List<Long> idsAfegits = new ArrayList();
+			int rsize = resultat.size();
+			if(itemsPerPage == null){
+				itemsPerPage = rsize;
+			}
 			// TODO: ineficient total, això se carrega tota sa paginació i es recorr sempre
 			// tots els resultats...
 			for (int i = 0; i < (inici + itemsPerPage + noApliquenPelsFiltres)
-					&& i < resultat.size(); i++) {
+					&& i < rsize; i++) {
 				Select2Values<Long, Timestamp> select2Values = resultat.get(i);
 				log.info(select2Values.getValue1() + " " + select2Values.getValue2());
 				Long llocId = select2Values.getValue1();

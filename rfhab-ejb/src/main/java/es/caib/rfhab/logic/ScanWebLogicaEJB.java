@@ -81,16 +81,33 @@ public class ScanWebLogicaEJB extends ScanWebEJB implements ScanWebLogicaService
 	public Map<String, MassiveScanWebSimpleSubtransactionResult> finalitzaEscaneig(String transactionID,
 			HttpServletResponse response)
 			throws Exception {
-		Map<String, MassiveScanWebSimpleSubtransactionResult> fitxersFirmatsOerrors = scanwebPlugin.finalitzaEscaneig(
-				transactionID);
+		try {
+			Map<String, MassiveScanWebSimpleSubtransactionResult> fitxersFirmatsOerrors = scanwebPlugin
+					.finalitzaEscaneig(transactionID);
 
-		log.info("XYZ ZZZ urlFitxersFirmatsOerrors = " + fitxersFirmatsOerrors);
-		if (transactionsStarted.containsKey(transactionID)) {
-			transactionsStarted.put(transactionID, fitxersFirmatsOerrors);
-			return fitxersFirmatsOerrors;
-		} else {
-			log.error("XYZ ZZZ transactionID not found: " + transactionID);
-			throw new Exception("Transaction ID not found: " + transactionID);
+			log.info("XYZ ZZZ urlFitxersFirmatsOerrors = " + fitxersFirmatsOerrors);
+			if (transactionsStarted.containsKey(transactionID)) {
+				transactionsStarted.put(transactionID, fitxersFirmatsOerrors);
+				return fitxersFirmatsOerrors;
+			} else {
+				log.error("XYZ ZZZ transactionID not found: " + transactionID);
+				throw new Exception("Transaction ID not found: " + transactionID);
+			}
+		} catch (Exception ex) {
+			log.error(ex);
+			if (transactionsStarted.containsKey(transactionID)) {
+				MassiveScanWebSimpleSubtransactionResult error = new MassiveScanWebSimpleSubtransactionResult();
+				MassiveScanWebSimpleStatus statusError = new MassiveScanWebSimpleStatus();
+				statusError.setErrorMessage(ex.getLocalizedMessage());
+				statusError.setErrorStackTrace(ex.getStackTrace().toString());
+				statusError.setStatus(ScanWebSimplePlugin.CONSTANTS.getMassiveScanWebSimpleStatusSTATUSFINALERROR());
+				error.setStatus(statusError);
+				Map<String, MassiveScanWebSimpleSubtransactionResult> errorMap = new HashMap<>();
+				errorMap.put(transactionID, error);
+				transactionsStarted.put(transactionID, errorMap);
+				return errorMap;
+			}
+			throw ex;
 		}
 	}
 

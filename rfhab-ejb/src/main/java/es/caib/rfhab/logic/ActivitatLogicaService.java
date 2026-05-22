@@ -40,6 +40,8 @@ public interface ActivitatLogicaService extends ActivitatService {
 			List<String> interessats, List<String> organs)
 			throws I18NException;
 
+	public void processarTancamentExpedientsPendentsArxiu() throws I18NException;
+
 	public Fitxer documentImprimible(String identificador) throws IOException, FileNotFoundException, ArxiuException;
 
 	public Activitat createIupdate(Activitat activitatAcrear, Activitat activitatAactualitzar) throws I18NException;

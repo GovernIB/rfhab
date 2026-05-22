@@ -115,6 +115,14 @@ public class ActivitatQueryPath extends org.fundaciobit.genapp.common.query.Quer
     return new StringField(getQueryPath(), ActivitatFields.PROCEDIMENT);
   }
 
+  public IntegerField ARXIUREINTENTS() {
+    return new IntegerField(getQueryPath(), ActivitatFields.ARXIUREINTENTS);
+  }
+
+  public IntegerField ARXIUESTAT() {
+    return new IntegerField(getQueryPath(), ActivitatFields.ARXIUESTAT);
+  }
+
 
 
   @Override

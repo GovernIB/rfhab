@@ -25,7 +25,9 @@
         tipus number(10,0) not null,
         tramit varchar2(150 char),
         tramitversio number(10,0),
-        url varchar2(255 char)
+        url varchar2(255 char),
+        arxiureintents number(10,0),
+        arxiuestat number(10,0)
     );
 
     create table rfh_autoritzacio (

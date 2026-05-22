@@ -721,3 +721,39 @@
         </tr>
         </c:if>
         
+        <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.ARXIUREINTENTS)}">
+        <tr id="activitat_arxiuReintents_rowid">
+          <td id="activitat_arxiuReintents_columnlabelid">
+            <label>
+              <fmt:message key="${(empty __theForm.labels[ActivitatFields.ARXIUREINTENTS])?'activitat.arxiuReintents':__theForm.labels[ActivitatFields.ARXIUREINTENTS]}" />
+             </label>
+              <c:if test="${not empty __theForm.help[ActivitatFields.ARXIUREINTENTS]}">
+              <i class="fas fa-info-circle" title="${__theForm.help[ActivitatFields.ARXIUREINTENTS]}" ></i>
+              </c:if>
+            </td>
+          <td id="activitat_arxiuReintents_columnvalueid">
+            <form:errors path="activitat.arxiuReintents" cssClass="errorField alert alert-danger" />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUREINTENTS)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUREINTENTS)? ' uneditable-input' : ''}"  style=""  path="activitat.arxiuReintents"   />
+
+           </td>
+        </tr>
+        </c:if>
+        
+        <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.ARXIUESTAT)}">
+        <tr id="activitat_arxiuEstat_rowid">
+          <td id="activitat_arxiuEstat_columnlabelid">
+            <label>
+              <fmt:message key="${(empty __theForm.labels[ActivitatFields.ARXIUESTAT])?'activitat.arxiuEstat':__theForm.labels[ActivitatFields.ARXIUESTAT]}" />
+             </label>
+              <c:if test="${not empty __theForm.help[ActivitatFields.ARXIUESTAT]}">
+              <i class="fas fa-info-circle" title="${__theForm.help[ActivitatFields.ARXIUESTAT]}" ></i>
+              </c:if>
+            </td>
+          <td id="activitat_arxiuEstat_columnvalueid">
+            <form:errors path="activitat.arxiuEstat" cssClass="errorField alert alert-danger" />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUESTAT)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUESTAT)? ' uneditable-input' : ''}"  style=""  path="activitat.arxiuEstat"   />
+
+           </td>
+        </tr>
+        </c:if>
+        

@@ -82,5 +82,11 @@ public interface Constants {
         public static final int ARXIU_PLUGIN_REINTENTS_CREAR_DOCUMENT = 5;
         public static final int ARXIU_PLUGIN_REINTENTS_TANCAR_EXPEDIENT = 5;
 
+        // SCHEDULER TANCAMENT EXPEDIENTS A ARXIU
+        public static final int ARXIU_TANCAMENT_EXPEDIENTS_SCHEDULER_HORA_DEFECTE = 2;
+        public static final int ARXIU_TANCAMENT_EXPEDIENTS_SCHEDULER_NHORES_DEFECTE = 24;
+        public static final int ARXIU_TANCAMENT_EXPEDIENTS_MAX_REINTENTS_DEFECTE = 4;
+        public static final int ARXIU_TANCAMENT_EXPEDIENTS_DIES_REINTENT_DEFECTE = 2;
+
         public static final String NUMEROCAI_BUIT = " ";
 }

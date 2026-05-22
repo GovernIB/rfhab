@@ -43,7 +43,9 @@ create sequence rfh_usuarientitat_seq start with 1000 increment by  1;
         tramit varchar2(150 char),
         tramitversio number(10,0),
         url varchar2(255 char),
-        primary key (activitatid)
+        primary key (activitatid),
+        arxiureintents number(10,0),
+        arxiuestat number(10,0)
     );
 
     create table rfh_autoritzacio (

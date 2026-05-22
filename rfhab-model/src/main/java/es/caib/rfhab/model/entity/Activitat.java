@@ -80,6 +80,12 @@ public interface Activitat extends org.fundaciobit.genapp.common.IGenAppEntity {
 	public java.lang.String getProcediment();
 	public void setProcediment(java.lang.String _procediment_);
 
+	public java.lang.Integer getArxiuReintents();
+	public void setArxiuReintents(java.lang.Integer _arxiuReintents_);
+
+	public java.lang.Integer getArxiuEstat();
+	public void setArxiuEstat(java.lang.Integer _arxiuEstat_);
+
 
 
   // ======================================

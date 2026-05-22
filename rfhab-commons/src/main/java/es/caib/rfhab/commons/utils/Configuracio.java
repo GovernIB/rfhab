@@ -82,6 +82,27 @@ public class Configuracio implements Constants {
 
     }
 
+    private static int getIntAppSystemProperty(String key, int defaultValue) {
+        String value = getAppSystemProperties().getProperty(key);
+        if (value == null || value.trim().isEmpty()) {
+            return defaultValue;
+        }
+        try {
+            return Integer.parseInt(value.trim());
+        } catch (Exception e) {
+            LOG.error("Error parsing int value for key " + key + ". Using default value " + defaultValue, e);
+            return defaultValue;
+        }
+    }
+
+    private static boolean getBooleanAppSystemProperty(String key, boolean defaultValue) {
+        String value = getAppSystemProperties().getProperty(key);
+        if (value == null || value.trim().isEmpty()) {
+            return defaultValue;
+        }
+        return Boolean.parseBoolean(value.trim());
+    }
+
     public static Properties getSystemAndFileProperties() {
         Properties properties = new Properties();
         properties.putAll(System.getProperties());
@@ -288,6 +309,54 @@ public class Configuracio implements Constants {
 
     public static String getCarregadorMassiuEntitatId(Properties properties) {
         return properties.getProperty(CARREGADORMASSIU_PROPERTY_BASE + "entitatcarregadorid");
+    }
+
+    public static int getArxiuTancamentExpedientsSchedulerHora() {
+        final int defaultValue = ARXIU_TANCAMENT_EXPEDIENTS_SCHEDULER_HORA_DEFECTE;
+        int value = getIntAppSystemProperty(RFHAB_PROPERTY_BASE + "arxiu.tancarexpedient.scheduler.hora", defaultValue);
+        if (value < 0 || value > 23) {
+            LOG.warn("Hora de scheduler fora de rang [0..23] (" + value + "), emprant valor per defecte "
+                    + defaultValue);
+            return defaultValue;
+        }
+        return value;
+    }
+
+    public static int getArxiuTancamentExpedientsSchedulerNhores() {
+        final int defaultValue = ARXIU_TANCAMENT_EXPEDIENTS_SCHEDULER_NHORES_DEFECTE;
+        int value = getIntAppSystemProperty(RFHAB_PROPERTY_BASE + "arxiu.tancarexpedient.scheduler.nhores", defaultValue);
+        if (value < 1 || value > 24) {
+            LOG.warn("Nombre d'hores de scheduler fora de rang [1..24] (" + value + "), emprant valor per defecte "
+                    + defaultValue);
+            return defaultValue;
+        }
+        return value;
+    }
+
+    public static int getArxiuTancamentExpedientsMaxReintents() {
+        final int defaultValue = ARXIU_TANCAMENT_EXPEDIENTS_MAX_REINTENTS_DEFECTE;
+        int value = getIntAppSystemProperty(RFHAB_PROPERTY_BASE + "arxiu.tancarexpedient.scheduler.maxreintents",
+                defaultValue);
+        if (value < 1) {
+            LOG.warn("Màxim de reintents invàlid (" + value + "), emprant valor per defecte " + defaultValue);
+            return defaultValue;
+        }
+        return value;
+    }
+
+    public static int getArxiuTancamentExpedientsDiesReintent() {
+        final int defaultValue = ARXIU_TANCAMENT_EXPEDIENTS_DIES_REINTENT_DEFECTE;
+        int value = getIntAppSystemProperty(RFHAB_PROPERTY_BASE + "arxiu.tancarexpedient.scheduler.diesreintent",
+                defaultValue);
+        if (value < 0) {
+            LOG.warn("Dies entre reintents invàlid (" + value + "), emprant valor per defecte " + defaultValue);
+            return defaultValue;
+        }
+        return value;
+    }
+
+    public static boolean isArxiuTancamentExpedientsSchedulerActiu() {
+        return getBooleanAppSystemProperty(RFHAB_PROPERTY_BASE + "arxiu.tancarexpedient.scheduler.actiu", true);
     }
 
     public static String getAppSystemProperty(String key) {

@@ -214,8 +214,6 @@ public class UserController extends UsuariController {
 		return llistaTramits;
 	}
 
-	// TODO:convertir això a asincron i fer tasca nocturna, amb gestió de
-	// reintents...
 	@RequestMapping(value = "/tancarexpedient", method = RequestMethod.GET)
 	@ResponseBody
 	public void tancarExpedient(

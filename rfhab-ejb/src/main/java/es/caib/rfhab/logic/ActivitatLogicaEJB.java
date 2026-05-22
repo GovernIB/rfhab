@@ -19,6 +19,8 @@ import org.fundaciobit.genapp.common.filesystem.FileSystemManager;
 import org.fundaciobit.genapp.common.i18n.I18NCommonUtils;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.i18n.I18NFieldError;
+import org.fundaciobit.genapp.common.query.OrderBy;
+import org.fundaciobit.genapp.common.query.OrderType;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.validation.BeanValidatorResult;
 import es.caib.pluginsib.arxiu.api.ArxiuException;
@@ -31,11 +33,14 @@ import es.caib.pluginsib.arxiu.api.DocumentContingut;
 import es.caib.pluginsib.arxiu.api.DocumentEstatElaboracio;
 import es.caib.pluginsib.arxiu.api.DocumentTipus;
 import es.caib.rfhab.commons.utils.ActivitatEstat;
+import es.caib.rfhab.commons.utils.ArxiuTancamentExpedientEstat;
+import es.caib.rfhab.commons.utils.Configuracio;
 import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.commons.utils.FileNameCleaner;
 import es.caib.rfhab.commons.utils.IdentificacioTipus;
 import es.caib.rfhab.commons.utils.RegistreActivitatTipus;
 import es.caib.rfhab.commons.utils.RegistreActivitatTipusHabilitacions;
+import es.caib.rfhab.commons.utils.StringUtils;
 import es.caib.rfhab.ejb.ActivitatEJB;
 import es.caib.rfhab.model.entity.Activitat;
 import es.caib.rfhab.model.entity.Fitxer;
@@ -46,6 +51,7 @@ import es.caib.rfhab.persistence.ActivitatJPA;
 import es.caib.rfhab.persistence.FitxerJPA;
 import es.caib.rfhab.persistence.FuncionariJPA;
 import es.caib.rfhab.persistence.validator.ActivitatValidator;
+import es.caib.pluginsib.arxiu.api.ExpedientEstat;
 import es.caib.rfhab.pluginsib.arxiu.ArxiuPlugin;
 import es.caib.rfhab.pluginsib.arxiu.model.DocumentInfo;
 import es.caib.rfhab.pluginsib.rolsac.model.Tramits;
@@ -73,6 +79,135 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 	@Override
 	public List<Activitat> getActivitatsByFuncionariID(Long funcionariId) throws I18NException {
 		return this.select(ActivitatFields.FUNCIONARIID.equal(funcionariId));
+	}
+
+	@Override
+	public void processarTancamentExpedientsPendentsArxiu() throws I18NException {
+		final int maxReintents = Configuracio.getArxiuTancamentExpedientsMaxReintents();
+		final int diesEntreReintents = Configuracio.getArxiuTancamentExpedientsDiesReintent();
+
+		Where wherePendents = construirWhereActivitatsPendentsArxiu(maxReintents, diesEntreReintents);
+		OrderBy orderBy = new OrderBy(ActivitatFields.DATACREACIO, OrderType.ASC);
+		List<Activitat> activitatsPendents = select(wherePendents, orderBy);
+
+		log.info("ActivitatLogicaEJB::processarTancamentExpedientsPendentsArxiu::activitats trobades: "
+				+ activitatsPendents.size());
+
+		int tancats = 0;
+		int pendents = 0;
+		int exhaurits = 0;
+
+		for (Activitat activitat : activitatsPendents) {
+			if (!StringUtils.isNotEmpty(activitat.getArxiuExpedientID())) {
+				continue;
+			}
+
+			try {
+				boolean tancat = tancarExpedientAmbComprovacio(activitat.getArxiuExpedientID());
+				if (tancat) {
+					marcarActivitatArxiuTancada(activitat);
+					tancats++;
+				} else {
+					boolean exhaurit = incrementarReintentIMarcarPendencia(activitat, maxReintents);
+					if (exhaurit) {
+						exhaurits++;
+					} else {
+						pendents++;
+					}
+				}
+			} catch (I18NException e) {
+				log.error("Error processant el tancament de l'expedient per a l'activitat "
+						+ activitat.getActivitatID() + ": " + e.getMessage(), e);
+			}
+		}
+
+		log.info("ActivitatLogicaEJB::processarTancamentExpedientsPendentsArxiu::resum => tancats="
+				+ tancats + ", pendents=" + pendents + ", exhaurits=" + exhaurits);
+	}
+
+	private Where construirWhereActivitatsPendentsArxiu(int maxReintents, int diesEntreReintents) {
+		Where wTeExpedientId = Where.AND(
+				ActivitatFields.ARXIUEXPEDIENTID.isNotNull(),
+				ActivitatFields.ARXIUEXPEDIENTID.notEqual(""));
+
+		Where wEstatPendent = Where.OR(
+				ActivitatFields.ARXIUESTAT.isNull(),
+				ActivitatFields.ARXIUESTAT.equal(ArxiuTancamentExpedientEstat.PENDENT.getValue()));
+
+		Where wNoExhaurit = Where.OR(
+				ActivitatFields.ARXIUREINTENTS.isNull(),
+				ActivitatFields.ARXIUREINTENTS.lessThan(maxReintents));
+
+		Where where = Where.AND(wTeExpedientId, wEstatPendent, wNoExhaurit);
+
+		if (diesEntreReintents <= 0) {
+			return where;
+		}
+
+		Timestamp dataLimit = new Timestamp(System.currentTimeMillis() - diesEntreReintents * 24L * 60L * 60L * 1000L);
+
+		Where wPrimerIntent = Where.OR(
+				ActivitatFields.ARXIUREINTENTS.isNull(),
+				ActivitatFields.ARXIUREINTENTS.equal(0));
+
+		Where wReintentMadur = Where.AND(
+				ActivitatFields.ARXIUREINTENTS.greaterThan(0),
+				ActivitatFields.DATACREACIO.lessThan(dataLimit));
+
+		return Where.AND(where, Where.OR(wPrimerIntent, wReintentMadur));
+	}
+
+	private boolean tancarExpedientAmbComprovacio(String expedientId) {
+		ExpedientEstat estatAbans = consultarEstatExpedientSegur(expedientId);
+		if (ExpedientEstat.TANCAT.equals(estatAbans)) {
+			return true;
+		}
+
+		try {
+			pluginArxiu.tancarExpedientPerId(expedientId);
+		} catch (Exception e) {
+			log.warn("No s'ha pogut executar tancarExpedientPerId(" + expedientId
+					+ "). Es comprovarà l'estat real de l'expedient.", e);
+		}
+
+		ExpedientEstat estatDespres = consultarEstatExpedientSegur(expedientId);
+		return ExpedientEstat.TANCAT.equals(estatDespres);
+	}
+
+	private ExpedientEstat consultarEstatExpedientSegur(String expedientId) {
+		try {
+			return pluginArxiu.consultarEstatExpedient(expedientId, null);
+		} catch (Exception e) {
+			log.warn("No s'ha pogut consultar l'estat real de l'expedient " + expedientId + ": " + e.getMessage());
+			return null;
+		}
+	}
+
+	private void marcarActivitatArxiuTancada(Activitat activitat) throws I18NException {
+		activitat.setArxiuEstat(ArxiuTancamentExpedientEstat.TANCAT.getValue());
+		if (activitat.getArxiuReintents() == null) {
+			activitat.setArxiuReintents(0);
+		}
+		update(activitat);
+	}
+
+	private boolean incrementarReintentIMarcarPendencia(Activitat activitat, int maxReintents) throws I18NException {
+		int reintentsActuals = (activitat.getArxiuReintents() != null) ? activitat.getArxiuReintents() : 0;
+		reintentsActuals++;
+
+		activitat.setArxiuReintents(reintentsActuals);
+		//TODO: #57 Canviar a nova data reintetns
+		activitat.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+
+		if (reintentsActuals >= maxReintents) {
+			activitat.setArxiuEstat(ArxiuTancamentExpedientEstat.EXHAURIT_REINTENTS.getValue());
+			update(activitat);
+			return true;
+		}
+
+		activitat.setArxiuEstat(ArxiuTancamentExpedientEstat.PENDENT.getValue());
+		update(activitat);
+		return false;
 	}
 
 	@Override
@@ -178,8 +313,7 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 		log.info("ActivitatLogicaEJB::tancarExpedient");
 		if (identificador == null || identificador.isEmpty()) {
 			log.error("Identificador d'expedient no pot ser null o buit.");
-			throw new I18NException("error.identificador.expedient",
-					"El identificador d'expedient no pot ser null o buit.");
+			throw new I18NException("error.identificador.expedient");
 		}
 
 		// TODO: afegir guardat a taula d'arxiu???
@@ -193,13 +327,12 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 			if (identificadorExpedient != null) {
 				log.info("ActivitatLogicaEJB::tancarExpedient::expedient tancat amb id: " + identificadorExpedient);
 			} else {
-				if (intents <= Constants.ARXIU_PLUGIN_REINTENTS_TANCAR_EXPEDIENT) {
+				if (intents < Constants.ARXIU_PLUGIN_REINTENTS_TANCAR_EXPEDIENT) {
 					log.warn("ActivitatLogicaEJB::tancarExpedient::no s'ha pogut tancar l'expedient, reintentant");
 				} else {
 					log.error(
 							"ActivitatLogicaEJB::tancarExpedient::no s'ha pogut tancar l'expedient, no es reintentarà més");
-					// TODO:crear missatge
-					throw new I18NException("error.tancament.expedient", "No s'ha pogut tancar l'expedient.");
+					throw new I18NException("error.tancament.expedient");
 				}
 			}
 		}
@@ -346,6 +479,13 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 		act.setRepresentantNom(nomRepresentant);
 		act.setRepresentantLlinatge1(llinatge1Representant);
 		act.setRepresentantLlinatge2(llinatge2Representant);
+
+		if (StringUtils.isNotEmpty(arxiuExpedientId)) {
+			act.setArxiuEstat(ArxiuTancamentExpedientEstat.PENDENT.getValue());
+			if (act.getArxiuReintents() == null) {
+				act.setArxiuReintents(0);
+			}
+		}
 	}
 
 	@Override

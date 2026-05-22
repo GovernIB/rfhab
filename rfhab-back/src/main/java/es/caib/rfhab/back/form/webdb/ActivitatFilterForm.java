@@ -395,6 +395,50 @@ public class ActivitatFilterForm extends RFHabBaseFilterForm implements Activita
   }
 
 
+  private java.lang.Integer arxiuReintentsDesde;
+
+  public java.lang.Integer getArxiuReintentsDesde() {
+    return this.arxiuReintentsDesde;
+  }
+
+  public void setArxiuReintentsDesde(java.lang.Integer arxiuReintentsDesde) {
+    this.arxiuReintentsDesde = arxiuReintentsDesde;
+  }
+
+
+  private java.lang.Integer arxiuReintentsFins;
+
+  public java.lang.Integer getArxiuReintentsFins() {
+    return this.arxiuReintentsFins;
+  }
+
+  public void setArxiuReintentsFins(java.lang.Integer arxiuReintentsFins) {
+    this.arxiuReintentsFins = arxiuReintentsFins;
+  }
+
+
+  private java.lang.Integer arxiuEstatDesde;
+
+  public java.lang.Integer getArxiuEstatDesde() {
+    return this.arxiuEstatDesde;
+  }
+
+  public void setArxiuEstatDesde(java.lang.Integer arxiuEstatDesde) {
+    this.arxiuEstatDesde = arxiuEstatDesde;
+  }
+
+
+  private java.lang.Integer arxiuEstatFins;
+
+  public java.lang.Integer getArxiuEstatFins() {
+    return this.arxiuEstatFins;
+  }
+
+  public void setArxiuEstatFins(java.lang.Integer arxiuEstatFins) {
+    this.arxiuEstatFins = arxiuEstatFins;
+  }
+
+
   public ActivitatFilterForm() {
   }
   
@@ -434,6 +478,10 @@ public class ActivitatFilterForm extends RFHabBaseFilterForm implements Activita
     this.dataActivitatFins = __toClone.dataActivitatFins;
     this.idActuacioTramit = __toClone.idActuacioTramit;
     this.procediment = __toClone.procediment;
+    this.arxiuReintentsDesde = __toClone.arxiuReintentsDesde;
+    this.arxiuReintentsFins = __toClone.arxiuReintentsFins;
+    this.arxiuEstatDesde = __toClone.arxiuEstatDesde;
+    this.arxiuEstatFins = __toClone.arxiuEstatFins;
     this.mapOfFuncionariForFuncionariID = __toClone.mapOfFuncionariForFuncionariID;
     this.mapOfValuesForTipus = __toClone.mapOfValuesForTipus;
     this.mapOfValuesForEstat = __toClone.mapOfValuesForEstat;

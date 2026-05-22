@@ -159,6 +159,16 @@
           ${activitat.procediment}
           </td>
         </c:if>
+        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.ARXIUREINTENTS)}">
+          <td>
+          ${activitat.arxiuReintents}
+          </td>
+        </c:if>
+        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.ARXIUESTAT)}">
+          <td>
+          ${activitat.arxiuEstat}
+          </td>
+        </c:if>
 
 
         <!--  /** Additional Fields */  -->

@@ -90,6 +90,12 @@
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.PROCEDIMENT)}">
         <th>${rfh:getSortIcons(__theFilterForm,ActivitatFields.PROCEDIMENT)}</th>
         </c:if>
+        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.ARXIUREINTENTS)}">
+        <th>${rfh:getSortIcons(__theFilterForm,ActivitatFields.ARXIUREINTENTS)}</th>
+        </c:if>
+        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.ARXIUESTAT)}">
+        <th>${rfh:getSortIcons(__theFilterForm,ActivitatFields.ARXIUESTAT)}</th>
+        </c:if>
 
 
         <c:forEach var="__entry" items="${__theFilterForm.additionalFields}">

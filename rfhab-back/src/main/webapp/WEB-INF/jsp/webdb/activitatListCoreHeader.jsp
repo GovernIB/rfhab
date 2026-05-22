@@ -96,6 +96,9 @@
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.ARXIUESTAT)}">
         <th>${rfh:getSortIcons(__theFilterForm,ActivitatFields.ARXIUESTAT)}</th>
         </c:if>
+        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.ARXIUDARRERINTENT)}">
+        <th>${rfh:getSortIcons(__theFilterForm,ActivitatFields.ARXIUDARRERINTENT)}</th>
+        </c:if>
 
 
         <c:forEach var="__entry" items="${__theFilterForm.additionalFields}">

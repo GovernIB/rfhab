@@ -67,7 +67,8 @@ CREATE TABLE public.rfh_activitat (
     idactuaciotramit character varying(255),
     procediment character varying(150),
     arxiureintents integer,
-    arxiuestat integer
+    arxiuestat integer,
+    arxiudarrerintent timestamp without time zone
 );
 
 

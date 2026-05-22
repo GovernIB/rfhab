@@ -484,6 +484,16 @@
         <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/usuariList.jsp" />
     </definition>
 
+
+    <definition name="usuariEntitatFormWebDB" extends="webdb">
+        <put-attribute name="titol" value="usuariEntitat.usuariEntitat" />
+        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/usuariEntitatForm.jsp" />
+    </definition>
+    
+    <definition name="usuariEntitatListWebDB" extends="webdb">
+        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/usuariEntitatList.jsp" />
+    </definition>
+
 <!-- ==== GENAPP MARK END -->
 
 </tiles-definitions>

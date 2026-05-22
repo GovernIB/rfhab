@@ -87,7 +87,7 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 		final int diesEntreReintents = Configuracio.getArxiuTancamentExpedientsDiesReintent();
 
 		Where wherePendents = construirWhereActivitatsPendentsArxiu(maxReintents, diesEntreReintents);
-		OrderBy orderBy = new OrderBy(ActivitatFields.DATACREACIO, OrderType.ASC);
+		OrderBy orderBy = new OrderBy(ActivitatFields.ARXIUDARRERINTENT, OrderType.ASC);
 		List<Activitat> activitatsPendents = select(wherePendents, orderBy);
 
 		log.info("ActivitatLogicaEJB::processarTancamentExpedientsPendentsArxiu::activitats trobades: "
@@ -152,7 +152,7 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 
 		Where wReintentMadur = Where.AND(
 				ActivitatFields.ARXIUREINTENTS.greaterThan(0),
-				ActivitatFields.DATACREACIO.lessThan(dataLimit));
+				Where.OR(ActivitatFields.ARXIUDARRERINTENT.isNull(), ActivitatFields.ARXIUDARRERINTENT.lessThan(dataLimit)));
 
 		return Where.AND(where, Where.OR(wPrimerIntent, wReintentMadur));
 	}
@@ -196,8 +196,7 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 		reintentsActuals++;
 
 		activitat.setArxiuReintents(reintentsActuals);
-		//TODO: #57 Canviar a nova data reintetns
-		activitat.setDataCreacio(new Timestamp(System.currentTimeMillis()));
+		activitat.setArxiuDarrerIntent(new Timestamp(System.currentTimeMillis()));
 
 		if (reintentsActuals >= maxReintents) {
 			activitat.setArxiuEstat(ArxiuTancamentExpedientEstat.EXHAURIT_REINTENTS.getValue());

@@ -556,6 +556,56 @@
 
 
         </c:if>
+        <c:if test="${gen:contains(__theFilterForm.filterByFields ,ActivitatFields.ARXIUDARRERINTENT)}">
+<%-- FILTRE DATE-TIME --%>
+            <div class="input-group" style="padding-right:4px;padding-bottom:4px;align-items:center;">
+              <span class="add-on"><fmt:message key="activitat.arxiuDarrerIntent" />:</span>
+              <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
+            <div class="form-group"  style="margin-bottom: 0px;" >
+                <div class="input-group date" id="arxiuDarrerIntentDesde" data-target-input="nearest">
+                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#arxiuDarrerIntentDesde" path="arxiuDarrerIntentDesde" />
+                    <c:if test="${!false}" >
+                    <div class="input-group-append"  data-target="#arxiuDarrerIntentDesde"  data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                    </c:if>
+                </div>
+            </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#arxiuDarrerIntentDesde').datetimepicker({
+                    format: '${gen:getJSDateTimePattern()}',
+                    locale: '${lang}',
+                    icons: {
+                       time: 'far fa-clock'
+                    }
+                });
+            });
+        </script>              <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
+            <div class="form-group"  style="margin-bottom: 0px;" >
+                <div class="input-group date" id="arxiuDarrerIntentFins" data-target-input="nearest">
+                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#arxiuDarrerIntentFins" path="arxiuDarrerIntentFins" />
+                    <c:if test="${!false}" >
+                    <div class="input-group-append"  data-target="#arxiuDarrerIntentFins"  data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                    </c:if>
+                </div>
+            </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#arxiuDarrerIntentFins').datetimepicker({
+                    format: '${gen:getJSDateTimePattern()}',
+                    locale: '${lang}',
+                    icons: {
+                       time: 'far fa-clock'
+                    }
+                });
+            });
+        </script>            </div>
+
+    
+        </c:if>
 
       <c:forEach var="__entry" items="${__theFilterForm.additionalFields}">
       <c:if test="${ __entry.key >= 0 && not empty __entry.value.searchBy }">

@@ -169,6 +169,9 @@
           ${activitat.arxiuEstat}
           </td>
         </c:if>
+        <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.ARXIUDARRERINTENT)}">
+          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${activitat.arxiuDarrerIntent}" /></td>
+        </c:if>
 
 
         <!--  /** Additional Fields */  -->

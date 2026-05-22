@@ -86,6 +86,9 @@ public interface Activitat extends org.fundaciobit.genapp.common.IGenAppEntity {
 	public java.lang.Integer getArxiuEstat();
 	public void setArxiuEstat(java.lang.Integer _arxiuEstat_);
 
+	public java.sql.Timestamp getArxiuDarrerIntent();
+	public void setArxiuDarrerIntent(java.sql.Timestamp _arxiuDarrerIntent_);
+
 
 
   // ======================================

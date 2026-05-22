@@ -757,3 +757,39 @@
         </tr>
         </c:if>
         
+        <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.ARXIUDARRERINTENT)}">
+        <tr id="activitat_arxiuDarrerIntent_rowid">
+          <td id="activitat_arxiuDarrerIntent_columnlabelid">
+            <label>
+              <fmt:message key="${(empty __theForm.labels[ActivitatFields.ARXIUDARRERINTENT])?'activitat.arxiuDarrerIntent':__theForm.labels[ActivitatFields.ARXIUDARRERINTENT]}" />
+             </label>
+              <c:if test="${not empty __theForm.help[ActivitatFields.ARXIUDARRERINTENT]}">
+              <i class="fas fa-info-circle" title="${__theForm.help[ActivitatFields.ARXIUDARRERINTENT]}" ></i>
+              </c:if>
+            </td>
+          <td id="activitat_arxiuDarrerIntent_columnvalueid">
+    <form:errors path="activitat.arxiuDarrerIntent" cssClass="errorField alert alert-danger" />
+            <div class="form-group"  style="margin-bottom: 0px;" >
+                <div class="input-group date" id="activitat_arxiuDarrerIntent" data-target-input="nearest">
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUDARRERINTENT)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#activitat_arxiuDarrerIntent" path="activitat.arxiuDarrerIntent" />
+                    <c:if test="${!gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUDARRERINTENT)}" >
+                    <div class="input-group-append"  data-target="#activitat_arxiuDarrerIntent"  data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                    </c:if>
+                </div>
+            </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#activitat_arxiuDarrerIntent').datetimepicker({
+                    format: '${gen:getJSDateTimePattern()}',
+                    locale: '${lang}',
+                    icons: {
+                       time: 'far fa-clock'
+                    }
+                });
+            });
+        </script>           </td>
+        </tr>
+        </c:if>
+        

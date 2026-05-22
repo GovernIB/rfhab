@@ -439,6 +439,28 @@ public class ActivitatFilterForm extends RFHabBaseFilterForm implements Activita
   }
 
 
+  private java.sql.Timestamp arxiuDarrerIntentDesde;
+
+  public java.sql.Timestamp getArxiuDarrerIntentDesde() {
+    return this.arxiuDarrerIntentDesde;
+  }
+
+  public void setArxiuDarrerIntentDesde(java.sql.Timestamp arxiuDarrerIntentDesde) {
+    this.arxiuDarrerIntentDesde = arxiuDarrerIntentDesde;
+  }
+
+
+  private java.sql.Timestamp arxiuDarrerIntentFins;
+
+  public java.sql.Timestamp getArxiuDarrerIntentFins() {
+    return this.arxiuDarrerIntentFins;
+  }
+
+  public void setArxiuDarrerIntentFins(java.sql.Timestamp arxiuDarrerIntentFins) {
+    this.arxiuDarrerIntentFins = arxiuDarrerIntentFins;
+  }
+
+
   public ActivitatFilterForm() {
   }
   
@@ -482,6 +504,8 @@ public class ActivitatFilterForm extends RFHabBaseFilterForm implements Activita
     this.arxiuReintentsFins = __toClone.arxiuReintentsFins;
     this.arxiuEstatDesde = __toClone.arxiuEstatDesde;
     this.arxiuEstatFins = __toClone.arxiuEstatFins;
+    this.arxiuDarrerIntentDesde = __toClone.arxiuDarrerIntentDesde;
+    this.arxiuDarrerIntentFins = __toClone.arxiuDarrerIntentFins;
     this.mapOfFuncionariForFuncionariID = __toClone.mapOfFuncionariForFuncionariID;
     this.mapOfValuesForTipus = __toClone.mapOfValuesForTipus;
     this.mapOfValuesForEstat = __toClone.mapOfValuesForEstat;

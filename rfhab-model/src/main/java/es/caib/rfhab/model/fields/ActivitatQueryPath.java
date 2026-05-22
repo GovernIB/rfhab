@@ -123,6 +123,10 @@ public class ActivitatQueryPath extends org.fundaciobit.genapp.common.query.Quer
     return new IntegerField(getQueryPath(), ActivitatFields.ARXIUESTAT);
   }
 
+  public TimestampField ARXIUDARRERINTENT() {
+    return new TimestampField(getQueryPath(), ActivitatFields.ARXIUDARRERINTENT);
+  }
+
 
 
   @Override

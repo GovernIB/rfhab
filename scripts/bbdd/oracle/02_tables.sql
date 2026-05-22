@@ -27,7 +27,8 @@
         tramitversio number(10,0),
         url varchar2(255 char),
         arxiureintents number(10,0),
-        arxiuestat number(10,0)
+        arxiuestat number(10,0),
+        arxiudarrerintent timestamp
     );
 
     create table rfh_autoritzacio (

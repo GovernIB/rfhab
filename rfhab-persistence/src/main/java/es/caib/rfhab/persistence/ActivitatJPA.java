@@ -109,6 +109,9 @@ public class ActivitatJPA implements Activitat {
     @Column(name="arxiuestat",length = 10)
     java.lang.Integer arxiuEstat;
 
+    @Column(name="arxiudarrerintent",length = 29,precision = 6)
+    java.sql.Timestamp arxiuDarrerIntent;
+
 
 
   /** Constructor Buit */
@@ -116,7 +119,7 @@ public class ActivitatJPA implements Activitat {
   }
 
   /** Constructor amb tots els camps  */
-  public ActivitatJPA(long activitatID , long funcionariID , int tipus , java.lang.String registre , java.lang.String tramit , java.lang.String codiSia , java.lang.Long autoritzacioID , java.sql.Timestamp dataCreacio , java.lang.String interessatNom , java.lang.String interessatLlinatge1 , java.lang.String interessatLlinatge2 , java.lang.Integer interessatTipus , java.lang.String interessatIdentificacio , java.lang.String representantNom , java.lang.String representantLlinatge1 , java.lang.String representantLlinatge2 , java.lang.Integer representantTipus , java.lang.String representantIdentificacio , java.lang.Integer tramitVersio , java.lang.String arxiuDocumentID , java.lang.String arxiuExpedientID , int estat , java.lang.String url , java.sql.Timestamp dataActivitat , java.lang.String idActuacioTramit , java.lang.String procediment , java.lang.Integer arxiuReintents , java.lang.Integer arxiuEstat) {
+  public ActivitatJPA(long activitatID , long funcionariID , int tipus , java.lang.String registre , java.lang.String tramit , java.lang.String codiSia , java.lang.Long autoritzacioID , java.sql.Timestamp dataCreacio , java.lang.String interessatNom , java.lang.String interessatLlinatge1 , java.lang.String interessatLlinatge2 , java.lang.Integer interessatTipus , java.lang.String interessatIdentificacio , java.lang.String representantNom , java.lang.String representantLlinatge1 , java.lang.String representantLlinatge2 , java.lang.Integer representantTipus , java.lang.String representantIdentificacio , java.lang.Integer tramitVersio , java.lang.String arxiuDocumentID , java.lang.String arxiuExpedientID , int estat , java.lang.String url , java.sql.Timestamp dataActivitat , java.lang.String idActuacioTramit , java.lang.String procediment , java.lang.Integer arxiuReintents , java.lang.Integer arxiuEstat , java.sql.Timestamp arxiuDarrerIntent) {
     this.activitatID=activitatID;
     this.funcionariID=funcionariID;
     this.tipus=tipus;
@@ -145,9 +148,10 @@ public class ActivitatJPA implements Activitat {
     this.procediment=procediment;
     this.arxiuReintents=arxiuReintents;
     this.arxiuEstat=arxiuEstat;
+    this.arxiuDarrerIntent=arxiuDarrerIntent;
 }
   /** Constructor sense valors autoincrementals */
-  public ActivitatJPA(long funcionariID , int tipus , java.lang.String registre , java.lang.String tramit , java.lang.String codiSia , java.lang.Long autoritzacioID , java.sql.Timestamp dataCreacio , java.lang.String interessatNom , java.lang.String interessatLlinatge1 , java.lang.String interessatLlinatge2 , java.lang.Integer interessatTipus , java.lang.String interessatIdentificacio , java.lang.String representantNom , java.lang.String representantLlinatge1 , java.lang.String representantLlinatge2 , java.lang.Integer representantTipus , java.lang.String representantIdentificacio , java.lang.Integer tramitVersio , java.lang.String arxiuDocumentID , java.lang.String arxiuExpedientID , int estat , java.lang.String url , java.sql.Timestamp dataActivitat , java.lang.String idActuacioTramit , java.lang.String procediment , java.lang.Integer arxiuReintents , java.lang.Integer arxiuEstat) {
+  public ActivitatJPA(long funcionariID , int tipus , java.lang.String registre , java.lang.String tramit , java.lang.String codiSia , java.lang.Long autoritzacioID , java.sql.Timestamp dataCreacio , java.lang.String interessatNom , java.lang.String interessatLlinatge1 , java.lang.String interessatLlinatge2 , java.lang.Integer interessatTipus , java.lang.String interessatIdentificacio , java.lang.String representantNom , java.lang.String representantLlinatge1 , java.lang.String representantLlinatge2 , java.lang.Integer representantTipus , java.lang.String representantIdentificacio , java.lang.Integer tramitVersio , java.lang.String arxiuDocumentID , java.lang.String arxiuExpedientID , int estat , java.lang.String url , java.sql.Timestamp dataActivitat , java.lang.String idActuacioTramit , java.lang.String procediment , java.lang.Integer arxiuReintents , java.lang.Integer arxiuEstat , java.sql.Timestamp arxiuDarrerIntent) {
     this.funcionariID=funcionariID;
     this.tipus=tipus;
     this.registre=registre;
@@ -175,6 +179,7 @@ public class ActivitatJPA implements Activitat {
     this.procediment=procediment;
     this.arxiuReintents=arxiuReintents;
     this.arxiuEstat=arxiuEstat;
+    this.arxiuDarrerIntent=arxiuDarrerIntent;
 }
   /** Constructor dels valors Not Null */
   public ActivitatJPA(long activitatID , long funcionariID , int tipus , java.sql.Timestamp dataCreacio , int estat , java.sql.Timestamp dataActivitat) {
@@ -214,6 +219,7 @@ public class ActivitatJPA implements Activitat {
     this.setProcediment(__bean.getProcediment());
     this.setArxiuReintents(__bean.getArxiuReintents());
     this.setArxiuEstat(__bean.getArxiuEstat());
+    this.setArxiuDarrerIntent(__bean.getArxiuDarrerIntent());
 	}
 
 	public long getActivitatID() {
@@ -412,6 +418,13 @@ public class ActivitatJPA implements Activitat {
 		this.arxiuEstat = _arxiuEstat_;
 	};
 
+	public java.sql.Timestamp getArxiuDarrerIntent() {
+		return(arxiuDarrerIntent);
+	};
+	public void setArxiuDarrerIntent(java.sql.Timestamp _arxiuDarrerIntent_) {
+		this.arxiuDarrerIntent = _arxiuDarrerIntent_;
+	};
+
 
 
     @Override
@@ -474,6 +487,7 @@ public class ActivitatJPA implements Activitat {
     __tmp.setProcediment(__bean.getProcediment());
     __tmp.setArxiuReintents(__bean.getArxiuReintents());
     __tmp.setArxiuEstat(__bean.getArxiuEstat());
+    __tmp.setArxiuDarrerIntent(__bean.getArxiuDarrerIntent());
 		return __tmp;
 	}
 

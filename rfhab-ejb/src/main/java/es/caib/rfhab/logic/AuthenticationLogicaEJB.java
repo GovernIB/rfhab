@@ -8,12 +8,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 
 import org.apache.log4j.Logger;
 import org.fundaciobit.genapp.common.i18n.I18NException;
-
 import javax.ejb.Stateless;
 import javax.validation.constraints.NotNull;
 
@@ -61,12 +61,14 @@ public class AuthenticationLogicaEJB implements AuthenticationLogicaService {
 		return usuariLogicaEjb.crearUsuari(usuario);
 	}
 
+	@PermitAll
 	@Override
 	public UsuariJPA updateUsuariActiu(UsuariJPA usuari, boolean actiu) throws I18NException {
 		usuari.setActiu(actiu);
 		return usuariLogicaEjb.update(usuari);
 	}
 
+	@PermitAll
 	@Override
 	public UsuariEntitatJPA create(UsuariEntitatJPA usuariEntitat) throws I18NException {
 		return (UsuariEntitatJPA) usuariEntitatLogicaEjb.create(usuariEntitat);

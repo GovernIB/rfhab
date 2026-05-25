@@ -6,7 +6,6 @@ import javax.ejb.Local;
 import javax.validation.constraints.NotNull;
 
 import org.fundaciobit.genapp.common.i18n.I18NException;
-
 import es.caib.rfhab.ejb.UsuariEntitatService;
 import es.caib.rfhab.model.entity.UsuariEntitat;
 import es.caib.rfhab.persistence.EntitatJPA;
@@ -33,4 +32,6 @@ public interface UsuariEntitatLogicaService extends UsuariEntitatService {
 
 	public boolean isActiuUsuariEntitat(@NotNull long usuariID, @NotNull long entitatID) throws I18NException;
 
+	public UsuariEntitatJPA create(UsuariEntitatJPA usuariEntitat)
+			throws I18NException;
 }

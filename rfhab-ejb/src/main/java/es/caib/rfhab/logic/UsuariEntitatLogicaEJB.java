@@ -80,4 +80,11 @@ public class UsuariEntitatLogicaEJB extends UsuariEntitatEJB implements UsuariEn
 				? usuarisEntitatsTrobades.get(0).isActiu()
 				: false;
 	}
+
+	@Override
+	@PermitAll
+	public UsuariEntitatJPA create(UsuariEntitatJPA usuariEntitat)
+			throws I18NException {
+		return (UsuariEntitatJPA) super.create(usuariEntitat);
+	}
 }

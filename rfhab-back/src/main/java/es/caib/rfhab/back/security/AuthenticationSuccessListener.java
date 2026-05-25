@@ -330,7 +330,10 @@ public class AuthenticationSuccessListener implements ApplicationListener<Intera
             UsuariEntitatJPA usuariEntitat = null;
 
             {
-                if (containsRoleAdmin) {
+                boolean createNewRoleUserWithDefaultEntitatAndActiu = Configuracio
+                        .isCreateNewUserRoleUserWithDefaultEntitatAndActiu();
+
+                if (containsRoleAdmin || (containsRoleUser && createNewRoleUserWithDefaultEntitatAndActiu)) {
                     String defaultEntityCode = Configuracio.getDefaultEntitat();
                     log.info("Entitat per defecte: " + defaultEntityCode);
 

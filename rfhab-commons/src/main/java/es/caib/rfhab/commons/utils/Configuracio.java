@@ -161,6 +161,11 @@ public class Configuracio implements Constants {
         return getAppProperties().getProperty(RFHAB_PROPERTY_BASE + "defaultentitat", "1");
     }
 
+    public static boolean isCreateNewUserRoleUserWithDefaultEntitatAndActiu() {
+        return "true".equalsIgnoreCase(getAppProperties()
+                .getProperty(RFHAB_PROPERTY_BASE + "newuser.roleuser.defaultentitatiactiu", "true"));
+    }
+
     public static Long getMaxUploadSizeInBytes() {
         return getLongAppProperty(RFHAB_PROPERTY_BASE + "maxuploadsizeinbytes");
     }

@@ -81,6 +81,7 @@ public interface Constants {
         // PLUGIN ARXIU
         public static final int ARXIU_PLUGIN_REINTENTS_CREAR_DOCUMENT = 5;
         public static final int ARXIU_PLUGIN_REINTENTS_TANCAR_EXPEDIENT = 5;
+        public static final String ARXIU_EXPEDIENT_ERROR_VALUE = "error_no_expedient";
 
         // SCHEDULER TANCAMENT EXPEDIENTS A ARXIU
         public static final int ARXIU_TANCAMENT_EXPEDIENTS_SCHEDULER_HORA_DEFECTE = 2;

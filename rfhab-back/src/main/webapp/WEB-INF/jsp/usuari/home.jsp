@@ -1,5 +1,5 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" import="es.caib.rfhab.commons.utils.Configuracio"%>
+	pageEncoding="UTF-8" import="es.caib.rfhab.commons.utils.Configuracio,es.caib.rfhab.commons.utils.Constants"%>
 <%@ include file="/WEB-INF/jsp/moduls/includes.jsp"%>
 
 <style type="text/css">
@@ -1409,7 +1409,7 @@ button[disabled][type="submit"] {
 	const URL_NO_CARREGAT_IFRAME_DIGITALIB_ID = 'modal-urlnotloaded-iframe-digitalib';
 	const NO_CARREGAT_IFRAME_DIGITALIB_ID = 'modal-body-nocarregat';
 	const CARREGANT_IFRAME_DIGITALIB_ID = 'modal-body-carregant';
-	const ARXIU_EXPEDIENT_ERROR_VALUE = 'error_no_expedient';
+	const ARXIU_EXPEDIENT_ERROR_VALUE = '<%=Constants.ARXIU_EXPEDIENT_ERROR_VALUE%>';
 	const ARXIU_DOCUMENT_ERROR_VALUE = 'error_no_document';
 	var FITXER_ENCRYPTED_ID = [];
 	var POLLING_CHECK_SCAN_WEB_FINAL_RUNNING = false;

@@ -128,7 +128,8 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 	private Where construirWhereActivitatsPendentsArxiu(int maxReintents, int diesEntreReintents) {
 		Where wTeExpedientId = Where.AND(
 				ActivitatFields.ARXIUEXPEDIENTID.isNotNull(),
-				ActivitatFields.ARXIUEXPEDIENTID.notEqual(""));
+				ActivitatFields.ARXIUEXPEDIENTID.notEqual(""),
+				ActivitatFields.ARXIUEXPEDIENTID.notEqual(Constants.ARXIU_EXPEDIENT_ERROR_VALUE));
 
 		Where wEstatPendent = Where.OR(
 				ActivitatFields.ARXIUESTAT.isNull(),

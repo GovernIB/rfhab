@@ -7,6 +7,7 @@ import org.fundaciobit.genapp.common.i18n.I18NArgumentString;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 
 import es.caib.rfhab.logic.AuthenticationLogicaService;
+import es.caib.rfhab.logic.EntitatLogicaService;
 import es.caib.rfhab.logic.IdiomaLogicaService;
 import es.caib.rfhab.logic.UnitatLogicaService;
 
@@ -23,6 +24,7 @@ public final class EjbManager {
 	protected static AuthenticationLogicaService authenticationLogicaEjb;
 	protected static IdiomaLogicaService idiomaLogicaEjb;
 	protected static UnitatLogicaService unitatEjb;
+	protected static EntitatLogicaService entitatEjb;
 
 	public static AuthenticationLogicaService getAuthenticationLogicaEJB() throws I18NException {
 
@@ -59,6 +61,19 @@ public final class EjbManager {
 			}
 		}
 		return unitatEjb;
+	}
+
+	public static EntitatLogicaService getEntitatEjb() throws I18NException {
+
+		if (entitatEjb == null) {
+			try {
+				entitatEjb = (EntitatLogicaService) new InitialContext()
+						.lookup(EntitatLogicaService.JNDI_NAME);
+			} catch (Throwable e) {
+				throwNewI18NException(e, "EntitatLogicaService");
+			}
+		}
+		return entitatEjb;
 	}
 
 	private static void throwNewI18NException(Throwable e, String name) throws I18NException {

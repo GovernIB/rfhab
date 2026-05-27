@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import es.caib.rfhab.commons.utils.Configuracio;
 import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.logic.AuthenticationLogicaService;
+import es.caib.rfhab.logic.EntitatLogicaService;
 import es.caib.rfhab.logic.IdiomaLogicaService;
 import es.caib.rfhab.logic.UnitatLogicaService;
 import es.caib.rfhab.logic.utils.EjbManager;
@@ -27,7 +28,6 @@ import es.caib.rfhab.persistence.UsuariJPA;
 import org.fundaciobit.genapp.common.i18n.I18NException;
 import org.fundaciobit.genapp.common.i18n.I18NTranslation;
 import org.fundaciobit.genapp.common.i18n.I18NValidationException;
-import org.fundaciobit.genapp.common.web.HtmlUtils;
 import org.fundaciobit.genapp.common.web.i18n.I18NUtils;
 import org.fundaciobit.pluginsib.core.v3.utils.PluginsManager;
 import org.fundaciobit.pluginsib.userinformation.IUserInformationPlugin;
@@ -66,6 +66,8 @@ public class AuthenticationSuccessListener implements ApplicationListener<Intera
 
     protected UnitatLogicaService unitatEjb;
 
+    protected EntitatLogicaService entitatEjb;
+
     @Override
     public synchronized void onApplicationEvent(InteractiveAuthenticationSuccessEvent event) {
 
@@ -73,6 +75,7 @@ public class AuthenticationSuccessListener implements ApplicationListener<Intera
             authenticationLogicaEjb = EjbManager.getAuthenticationLogicaEJB();
             idiomaLogicaEjb = EjbManager.getIdiomaLogicaEJB();
             unitatEjb = EjbManager.getUnitatEJB();
+            entitatEjb = EjbManager.getEntitatEjb();
         } catch (I18NException e) {
             log.error(e.getMessage());
         }
@@ -274,7 +277,8 @@ public class AuthenticationSuccessListener implements ApplicationListener<Intera
                 }
 
                 persona = new UsuariJPA();
-                persona.setCorreu(info.getEmail() == null || info.getEmail().trim().isEmpty() ? "noemail@" : info.getEmail());
+                persona.setCorreu(
+                        info.getEmail() == null || info.getEmail().trim().isEmpty() ? "noemail@" : info.getEmail());
 
                 persona.setNom(nom);
                 persona.setLlinatge1(llinatge1);
@@ -371,6 +375,14 @@ public class AuthenticationSuccessListener implements ApplicationListener<Intera
                 } else {
                     usuariEntitat.setUsuariID(persona.getUsuariID());
                     usuariEntitat = authenticationLogicaEjb.create(usuariEntitat);
+                    long entitatNovaId = usuariEntitat.getEntitatID();
+                    if (!entitats.containsKey(entitatNovaId)) {
+                        EntitatJPA entitat = (EntitatJPA) entitatEjb.findByPrimaryKey(entitatNovaId);
+                        log.info("entitat => " + entitat.getEntitatID() + " ## actiu: " + entitat.isActiu());
+                        entitats.put(entitatNovaId, entitat);
+                        entitatIDActual = entitatNovaId;
+                    }
+
                     usuariPersona = persona;
 
                     authenticationLogicaEjb.updateUsuariActiu(usuariPersona, true);
@@ -384,7 +396,7 @@ public class AuthenticationSuccessListener implements ApplicationListener<Intera
             log.info("necesitaConfigurarUsuari = " + necesitaConfigurar);
         }
 
-        if(!necesitaConfigurar){
+        if (!necesitaConfigurar) {
             if (usuariPersona.getUsuariEntitats().size() < 1) {
                 I18NTranslation translation = new I18NTranslation("error.senseentitat", username);
                 log.error("error senseentitat => " + I18NUtils.tradueix(translation));
@@ -395,7 +407,7 @@ public class AuthenticationSuccessListener implements ApplicationListener<Intera
                     throw new LoginException(I18NUtils.tradueix(translation));
                 }
             }
-    
+
             if (entitatIDActual == null) {
                 I18NTranslation translation = new I18NTranslation("error.senseentitatactiva", username);
                 log.error("error senseentitatactiva => " + I18NUtils.tradueix(translation));

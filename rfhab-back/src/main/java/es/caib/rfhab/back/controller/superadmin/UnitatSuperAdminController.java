@@ -67,13 +67,27 @@ public class UnitatSuperAdminController extends UnitatController {
 			throws Exception {
 
 		Dir3CaibPlugin api = new Dir3CaibPlugin();
-		api.sincronitzar();
-		
-		
-		ModelAndView mav = new ModelAndView("option1Admin");
-		mav.addObject("optionNumber", "OPCIÓ SINCRONITZAR AMB DIR3CAIB");
-		return mav;
+		//TODO: obtenir codidir3 d'entitat actual
+		//TODO (si és primera descàrrega i volem dur tot l'arbre, passar null com a dates):
+		// Descarga ultimaDescarga = descargaEjb.ultimaDescarga(RegwebConstantes.DESCARGA_UNIDAD, entidadId);
+		// Timestamp fechaUltimaActualizacion = null;
+		// if (ultimaDescarga.getFechaImportacion() != null) {
+		// 	fechaUltimaActualizacion = new Timestamp(ultimaDescarga.getFechaImportacion().getTime());
+		// }
 
+		// // Establecemos la fecha de la primera sincronizacion
+		// Descarga primeraDescarga = descargaEjb.primeraDescarga(RegwebConstantes.DESCARGA_UNIDAD, entidadId);
+		// Timestamp fechaSincronizacion = null;
+		// if (primeraDescarga.getFechaImportacion() != null) {
+		// 	fechaSincronizacion = new Timestamp(primeraDescarga.getFechaImportacion().getTime());
+		// }
+ 
+		// api.sincronitzar(entitatCodiDir3, fechaUltimaActualizacion, fechaSincronizacion);
+
+		// ModelAndView mav = new ModelAndView("option1Admin");
+		// mav.addObject("optionNumber", "OPCIÓ SINCRONITZAR AMB DIR3CAIB");
+		// return mav;
+		return llistatPaginat(request, response, 1);
 	}
 
 }

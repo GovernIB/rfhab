@@ -1,0 +1,3 @@
+dir3caib.endpoint=http://localhost:8080/dir3caib/ws/Dir3CaibObtenerUnidades?wsdl
+dir3caib.usuari=usuari
+dir3caib.contrasenya=contrasenya

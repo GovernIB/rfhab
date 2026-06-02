@@ -63,9 +63,6 @@ public class ArxiuPlugin extends AbstractPluginProperties implements es.caib.rfh
 	/* Propietats del plugin */
 	public static final String PROPERTY_SERIE_DOCUMENTAL = ARXIU_PLUGIN_PROPERTY + "serieDocumental";
 	private static final String PROPERTY_CLASIFICACIO = ARXIU_PLUGIN_PROPERTY + "classificacio";
-	private static final String PROPERTY_CODI_APLICACIO = ARXIU_PLUGIN_PROPERTY + "aplicacio";
-	private static final String PROPERTY_TANCAR_EXPEDIENT = ARXIU_PLUGIN_PROPERTY + "tancarExpedient";
-	private static final String PROPERTY_SCHEDULER_EXPRESSION = ARXIU_PLUGIN_PROPERTY + "scheduler";
 
 	protected final ArxiuManager arxiuManager = new ArxiuManager();
 

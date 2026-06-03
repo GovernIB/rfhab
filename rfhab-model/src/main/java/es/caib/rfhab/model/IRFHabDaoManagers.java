@@ -17,6 +17,7 @@ public interface IRFHabDaoManagers {
 	public ILlocHabilitacioManager getLlocHabilitacioManager();
 	public IPluginManager getPluginManager();
 	public IScanWebManager getScanWebManager();
+	public ISincroUnitatsManager getSincroUnitatsManager();
 	public ITraduccioManager getTraduccioManager();
 	public IUnitatManager getUnitatManager();
 	public IUsuariManager getUsuariManager();

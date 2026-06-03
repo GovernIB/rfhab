@@ -15,6 +15,7 @@
     grant select on rfh_unitat_seq to www_rfhab;
     grant select on rfh_usuari_seq to www_rfhab;
     grant select on rfh_usuarientitat_seq to www_rfhab;
+    grant select on rfh_sincrounitats_seq to www_rfhab;
     grant select,insert,delete,update on rfh_activitat to www_rfhab;
     grant select,insert,delete,update on rfh_autoritzacio to www_rfhab;
     grant select,insert,delete,update on rfh_digitalib to www_rfhab;
@@ -34,3 +35,4 @@
     grant select,insert,delete,update on rfh_unitat to www_rfhab;
     grant select,insert,delete,update on rfh_usuari to www_rfhab;
     grant select,insert,delete,update on rfh_usuarientitat to www_rfhab;
+    grant select,insert,delete,update on rfh_sincrounitats to www_rfhab;

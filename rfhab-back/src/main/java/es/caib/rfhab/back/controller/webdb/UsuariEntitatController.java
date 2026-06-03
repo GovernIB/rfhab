@@ -51,7 +51,7 @@ import es.caib.rfhab.back.utils.Tab;
  * 
  * @author GenApp
  */
-@MenuOption(labelCode="usuariEntitat.usuariEntitat.plural", order=180, group=Tab.MENU_WEBDB)
+@MenuOption(labelCode="usuariEntitat.usuariEntitat.plural", order=190, group=Tab.MENU_WEBDB)
 @Controller
 @RequestMapping(value = "/webdb/usuariEntitat")
 @SessionAttributes(types = { UsuariEntitatForm.class, UsuariEntitatFilterForm.class })

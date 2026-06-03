@@ -15,3 +15,4 @@ create sequence rfh_traduccio_seq start with 1000 increment by  1;
 create sequence rfh_unitat_seq start with 1000 increment by  1;
 create sequence rfh_usuari_seq start with 1000 increment by  1;
 create sequence rfh_usuarientitat_seq start with 1000 increment by  1;
+create sequence rfh_sincrounitats_seq start with 1000 increment by  1;

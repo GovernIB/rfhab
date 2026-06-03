@@ -1353,3 +1353,27 @@ ALTER TABLE ONLY public.rfh_usuarientitat
 -- PostgreSQL database dump complete
 --
 
+-- todo: passar pes sqlgen. i també afegir a drop_schema
+CREATE SEQUENCE public.rfh_sincrounitats_seq
+    START WITH 1000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+CREATE TABLE public.rfh_sincrounitats (
+    sincrounitatsid bigint DEFAULT nextval('public.rfh_sincrounitats_seq'::regclass) NOT NULL,
+    datacreacio timestamp without time zone NOT NULL,
+    datadarrerasincro timestamp without time zone,
+    dataprimerasincro timestamp without time zone,
+    codientitat character varying(50) NOT NULL,
+    observacions text,
+    usuariid bigint
+);
+
+ALTER TABLE ONLY public.rfh_sincrounitats
+    ADD CONSTRAINT rfh_sincrounitats_pk PRIMARY KEY (sincrounitatsid);
+CREATE INDEX rfh_sincrounitats_pk_i ON public.rfh_sincrounitats USING btree (sincrounitatsid);
+ALTER TABLE ONLY public.rfh_sincrounitats
+    ADD CONSTRAINT rfh_sncunitats_usuari_usuid_fk FOREIGN KEY (usuariid) REFERENCES public.rfh_usuari(usuariid);
+create index rfh_sncunitats_usuariid_fk_i on public.rfh_sincrounitats USING btree (usuariid);

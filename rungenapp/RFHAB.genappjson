@@ -3989,6 +3989,218 @@
       ]
     },
     {
+      "name": "rfh_sincrounitats",
+      "nameJava": "SincroUnitats",
+      "shortName": "sncunitats",
+      "labels": {
+        "ca": "Sincronització d\u0027unitats",
+        "es": "Sincronización de Unidades"
+      },
+      "labelsPlural": {
+        "ca": "Sincronitzacions d\u0027unitats",
+        "es": "Sincronizaciones de Unidades"
+      },
+      "generate": true,
+      "fileMappingEntity": false,
+      "languageMappingEntity": false,
+      "translationEntity": false,
+      "translationMapEntity": false,
+      "fields": [
+        {
+          "PK": "rfh_sincrounitats_pk",
+          "index": "rfh_sincrounitats_pk_i",
+          "isAutoIncrement": true,
+          "sqlName": "sincrounitatsid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "ID",
+            "es": "ID"
+          },
+          "javaName": "sincrounitatsId",
+          "javaType": "long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": true,
+          "transientField": false,
+          "defaultValue": "nextval(\u0027rfh_sincrounitats_seq\u0027::regclass)",
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 0
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "datacreacio",
+          "sqlType": 93,
+          "size": 29,
+          "digits": 6,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Data creació",
+            "es": "Fecha creación"
+          },
+          "javaName": "dataCreacio",
+          "javaType": "java.sql.Timestamp",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 7
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "datadarrerasincro",
+          "sqlType": 93,
+          "size": 29,
+          "digits": 6,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Data darrera sincronització",
+            "es": "Fecha última sincronización"
+          },
+          "javaName": "dataDarreraSincro",
+          "javaType": "java.sql.Timestamp",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 7
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "dataprimerasincro",
+          "sqlType": 93,
+          "size": 29,
+          "digits": 6,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Data primera sincronització",
+            "es": "Fecha primera sincronización"
+          },
+          "javaName": "dataPrimeraSincro",
+          "javaType": "java.sql.Timestamp",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 7
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "codientitat",
+          "sqlType": 12,
+          "size": 50,
+          "digits": 0,
+          "isNotNullable": true,
+          "labels": {
+            "ca": "Codi dir3 d\u0027entitat",
+            "es": "Código dir3 de Entidad"
+          },
+          "javaName": "codiEntitat",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 1
+          },
+          "foreignKeys": []
+        },
+        {
+          "isAutoIncrement": false,
+          "sqlName": "observacions",
+          "sqlType": 12,
+          "size": 2147483647,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Observacions",
+            "es": "Observaciones"
+          },
+          "javaName": "observacions",
+          "javaType": "java.lang.String",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 2
+          },
+          "foreignKeys": []
+        },
+        {
+          "index": "rfh_sncunitats_usuariid_fk_i",
+          "isAutoIncrement": false,
+          "sqlName": "usuariid",
+          "sqlType": -5,
+          "size": 19,
+          "digits": 0,
+          "isNotNullable": false,
+          "labels": {
+            "ca": "Usuari Id",
+            "es": "Usuario Id"
+          },
+          "javaName": "usuariId",
+          "javaType": "java.lang.Long",
+          "traduible": false,
+          "showInWebList": true,
+          "showInReferenceList": false,
+          "transientField": false,
+          "filter": false,
+          "orderBy": 0,
+          "groupBy": false,
+          "webFieldInfo": {
+            "webtype": 3,
+            "foreignKey": {
+              "name": "rfh_sncunitats_usuari_usuid_fk",
+              "table": "rfh_usuari",
+              "field": "usuariid",
+              "type": 1
+            }
+          },
+          "foreignKeys": [
+            {
+              "name": "rfh_sncunitats_usuari_usuid_fk",
+              "table": "rfh_usuari",
+              "field": "usuariid",
+              "type": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "rfh_traduccio",
       "nameJava": "Traduccio",
       "shortName": "traduccio",
@@ -4543,6 +4755,12 @@
             {
               "name": "rfh_histolloc_usuari_id_fk",
               "table": "rfh_historiclloc",
+              "field": "usuariid",
+              "type": 0
+            },
+            {
+              "name": "rfh_sncunitats_usuari_usuid_fk",
+              "table": "rfh_sincrounitats",
               "field": "usuariid",
               "type": 0
             },

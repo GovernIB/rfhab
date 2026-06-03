@@ -215,6 +215,12 @@
         usuariid number(19,0) not null
     );
 
-
-
-
+    create table rfh_sincrounitats (
+       sincrounitatsid number(19,0) not null,
+        datacreacio timestamp not null,
+        datadarrerasincro timestamp,
+        dataprimerasincro timestamp,
+        codientitat varchar2(50 char) not null,
+        observacions clob,
+        usuariid number(19,0)
+    );

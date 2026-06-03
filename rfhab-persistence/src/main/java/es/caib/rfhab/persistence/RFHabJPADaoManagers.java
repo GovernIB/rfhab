@@ -20,6 +20,7 @@ public final class RFHabJPADaoManagers implements IRFHabDaoManagers{
    private final LlocHabilitacioJPAManager rfh_llochabilitacio;
    private final PluginJPAManager rfh_plugin;
    private final ScanWebJPAManager rfh_digitalib;
+   private final SincroUnitatsJPAManager rfh_sincrounitats;
    private final TraduccioJPAManager rfh_traduccio;
    private final UnitatJPAManager rfh_unitat;
    private final UsuariJPAManager rfh_usuari;
@@ -40,6 +41,7 @@ public final class RFHabJPADaoManagers implements IRFHabDaoManagers{
     this.rfh_llochabilitacio = new LlocHabilitacioJPAManager(__em);
     this.rfh_plugin = new PluginJPAManager(__em);
     this.rfh_digitalib = new ScanWebJPAManager(__em);
+    this.rfh_sincrounitats = new SincroUnitatsJPAManager(__em);
     this.rfh_traduccio = new TraduccioJPAManager(__em);
     this.rfh_unitat = new UnitatJPAManager(__em);
     this.rfh_usuari = new UsuariJPAManager(__em);
@@ -100,6 +102,10 @@ public final class RFHabJPADaoManagers implements IRFHabDaoManagers{
 
     public IScanWebManager getScanWebManager() {
         return this.rfh_digitalib;
+    };
+
+    public ISincroUnitatsManager getSincroUnitatsManager() {
+        return this.rfh_sincrounitats;
     };
 
     public ITraduccioManager getTraduccioManager() {

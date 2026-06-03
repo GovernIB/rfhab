@@ -38,6 +38,8 @@
 
     alter table rfh_usuarientitat add constraint rfh_usuarientitat_pk primary key (usuarientitatid);
 
+    alter table rfh_sincrounitats add constraint rfh_sincrounitats_pk primary key (sincrounitatsid);
+
  -- FINAL PKs
 
 
@@ -167,6 +169,12 @@
        add constraint rfh_usuarient_usuari_usuari_fk 
        foreign key (usuariid) 
        references rfh_usuari;
+
+   alter table rfh_sincrounitats 
+       add constraint rfh_sncunitats_usuari_usuid_fk 
+       foreign key (usuariid) 
+       references rfh_usuari;
+
  -- FINAL FKs
 
 

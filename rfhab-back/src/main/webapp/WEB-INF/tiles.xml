@@ -455,6 +455,16 @@
     </definition>
 
 
+    <definition name="sincroUnitatsFormWebDB" extends="webdb">
+        <put-attribute name="titol" value="sincroUnitats.sincroUnitats" />
+        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/sincroUnitatsForm.jsp" />
+    </definition>
+    
+    <definition name="sincroUnitatsListWebDB" extends="webdb">
+        <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/sincroUnitatsList.jsp" />
+    </definition>
+
+
     <definition name="traduccioFormWebDB" extends="webdb">
         <put-attribute name="titol" value="traduccio.traduccio" />
         <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/traduccioForm.jsp" />

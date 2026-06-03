@@ -22,3 +22,5 @@ create index rfh_llochabil_llocid_fk_i on rfh_llochabilitacio (llocid);
 -- create index rfh_usuari_pk_i on rfh_usuari (usuariid);
 create index rfh_usuari_darreraentitat_fk_i on rfh_usuari (darreraentitat);
 create index rfh_usuarient_entitatid_fk_i on rfh_usuarientitat (entitatid);
+create index rfh_sincrounitats_pk_i on rfh_sincrounitats (sincrounitatsid);
+create index rfh_sncunitats_usuariid_fk_i on rfh_sincrounitats (usuariid);

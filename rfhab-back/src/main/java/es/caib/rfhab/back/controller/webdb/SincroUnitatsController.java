@@ -32,12 +32,12 @@ import java.util.Set;
 import java.util.Arrays;
 
 import es.caib.rfhab.back.form.webdb.*;
-import es.caib.rfhab.back.form.webdb.UnitatForm;
+import es.caib.rfhab.back.form.webdb.SincroUnitatsForm;
 
-import es.caib.rfhab.back.validator.webdb.UnitatWebValidator;
+import es.caib.rfhab.back.validator.webdb.SincroUnitatsWebValidator;
 
-import es.caib.rfhab.persistence.UnitatJPA;
-import es.caib.rfhab.model.entity.Unitat;
+import es.caib.rfhab.persistence.SincroUnitatsJPA;
+import es.caib.rfhab.model.entity.SincroUnitats;
 import es.caib.rfhab.model.fields.*;
 import org.fundaciobit.genapp.common.web.menuoptions.MenuOption;
 import org.fundaciobit.genapp.common.web.tiles.Tile;
@@ -46,49 +46,53 @@ import org.fundaciobit.genapp.common.web.tiles.TileType;
 import es.caib.rfhab.back.utils.Tab;
 
 /**
- * Controller per gestionar un Unitat
+ * Controller per gestionar un SincroUnitats
  *  ========= FITXER AUTOGENERAT - NO MODIFICAR !!!!! 
  * 
  * @author GenApp
  */
-@MenuOption(labelCode="unitat.unitat.plural", order=170, group=Tab.MENU_WEBDB)
+@MenuOption(labelCode="sincroUnitats.sincroUnitats.plural", order=140, group=Tab.MENU_WEBDB)
 @Controller
-@RequestMapping(value = "/webdb/unitat")
-@SessionAttributes(types = { UnitatForm.class, UnitatFilterForm.class })
-@Tile(name="unitatFormWebDB", extendsTile=Tab.MENU_WEBDB,
+@RequestMapping(value = "/webdb/sincroUnitats")
+@SessionAttributes(types = { SincroUnitatsForm.class, SincroUnitatsFilterForm.class })
+@Tile(name="sincroUnitatsFormWebDB", extendsTile=Tab.MENU_WEBDB,
     // Els següents atributs no són necessaris si heredes aquesta classe
-    contentJsp="/WEB-INF/jsp/webdb/unitatForm.jsp", type=TileType.WEBDB_FORM,
-    attributes={ @TileAttribute(name="titol", value="unitat.unitat")})
-@Tile(name="unitatListWebDB", extendsTile=Tab.MENU_WEBDB,
+    contentJsp="/WEB-INF/jsp/webdb/sincroUnitatsForm.jsp", type=TileType.WEBDB_FORM,
+    attributes={ @TileAttribute(name="titol", value="sincroUnitats.sincroUnitats")})
+@Tile(name="sincroUnitatsListWebDB", extendsTile=Tab.MENU_WEBDB,
     // Els següents atributs no són necessaris si heredes aquesta classe 
-    contentJsp="/WEB-INF/jsp/webdb/unitatList.jsp", type=TileType.WEBDB_LIST,
-    attributes={ @TileAttribute(name="titol", value="unitat.unitat")})
-public class UnitatController
-    extends es.caib.rfhab.back.controller.RFHabBaseController<Unitat, java.lang.Long> implements UnitatFields {
+    contentJsp="/WEB-INF/jsp/webdb/sincroUnitatsList.jsp", type=TileType.WEBDB_LIST,
+    attributes={ @TileAttribute(name="titol", value="sincroUnitats.sincroUnitats")})
+public class SincroUnitatsController
+    extends es.caib.rfhab.back.controller.RFHabBaseController<SincroUnitats, java.lang.Long> implements SincroUnitatsFields {
 
-  @EJB(mappedName = es.caib.rfhab.ejb.UnitatService.JNDI_NAME)
-  protected es.caib.rfhab.ejb.UnitatService unitatEjb;
-
-  @Autowired
-  private UnitatWebValidator unitatWebValidator;
+  @EJB(mappedName = es.caib.rfhab.ejb.SincroUnitatsService.JNDI_NAME)
+  protected es.caib.rfhab.ejb.SincroUnitatsService sincroUnitatsEjb;
 
   @Autowired
-  protected UnitatRefList unitatRefList;
+  private SincroUnitatsWebValidator sincroUnitatsWebValidator;
+
+  @Autowired
+  protected SincroUnitatsRefList sincroUnitatsRefList;
+
+  // References 
+  @Autowired
+  protected UsuariRefList usuariRefList;
 
   /**
-   * Llistat de totes Unitat
+   * Llistat de totes SincroUnitats
    */
   @RequestMapping(value = "/list", method = RequestMethod.GET)
   public String llistat(HttpServletRequest request,
     HttpServletResponse response) throws I18NException {
-    UnitatFilterForm ff;
-    ff = (UnitatFilterForm) request.getSession().getAttribute(getSessionAttributeFilterForm());
+    SincroUnitatsFilterForm ff;
+    ff = (SincroUnitatsFilterForm) request.getSession().getAttribute(getSessionAttributeFilterForm());
     int pagina = (ff == null)? 1: ff.getPage();
     return "redirect:" + getContextWeb() + "/list/" + pagina;
   }
 
   /**
-   * Primera peticio per llistar Unitat de forma paginada
+   * Primera peticio per llistar SincroUnitats de forma paginada
    */
   @RequestMapping(value = "/list/{pagina}", method = RequestMethod.GET)
   public ModelAndView llistatPaginat(HttpServletRequest request,
@@ -99,29 +103,29 @@ public class UnitatController
       return null;
     }
     ModelAndView mav = new ModelAndView(getTileList());
-    llistat(mav, request, getUnitatFilterForm(pagina, mav, request));
+    llistat(mav, request, getSincroUnitatsFilterForm(pagina, mav, request));
     return mav;
   }
 
-  public UnitatFilterForm getUnitatFilterForm(Integer pagina, ModelAndView mav,
+  public SincroUnitatsFilterForm getSincroUnitatsFilterForm(Integer pagina, ModelAndView mav,
     HttpServletRequest request) throws I18NException {
-    UnitatFilterForm unitatFilterForm;
-    unitatFilterForm = (UnitatFilterForm) request.getSession().getAttribute(getSessionAttributeFilterForm());
-    if(unitatFilterForm == null) {
-      unitatFilterForm = new UnitatFilterForm();
-      unitatFilterForm.setContexte(getContextWeb());
-      unitatFilterForm.setEntityNameCode(getEntityNameCode());
-      unitatFilterForm.setEntityNameCodePlural(getEntityNameCodePlural());
-      unitatFilterForm.setNou(true);
+    SincroUnitatsFilterForm sincroUnitatsFilterForm;
+    sincroUnitatsFilterForm = (SincroUnitatsFilterForm) request.getSession().getAttribute(getSessionAttributeFilterForm());
+    if(sincroUnitatsFilterForm == null) {
+      sincroUnitatsFilterForm = new SincroUnitatsFilterForm();
+      sincroUnitatsFilterForm.setContexte(getContextWeb());
+      sincroUnitatsFilterForm.setEntityNameCode(getEntityNameCode());
+      sincroUnitatsFilterForm.setEntityNameCodePlural(getEntityNameCodePlural());
+      sincroUnitatsFilterForm.setNou(true);
     } else {
-      unitatFilterForm.setNou(false);
+      sincroUnitatsFilterForm.setNou(false);
     }
-    unitatFilterForm.setPage(pagina == null ? 1 : pagina);
-    return unitatFilterForm;
+    sincroUnitatsFilterForm.setPage(pagina == null ? 1 : pagina);
+    return sincroUnitatsFilterForm;
   }
 
   /**
-   * Segona i següent peticions per llistar Unitat de forma paginada
+   * Segona i següent peticions per llistar SincroUnitats de forma paginada
    * 
    * @param request
    * @param pagina
@@ -132,7 +136,7 @@ public class UnitatController
   @RequestMapping(value = "/list/{pagina}", method = RequestMethod.POST)
   public ModelAndView llistatPaginat(HttpServletRequest request,
       HttpServletResponse response,@PathVariable Integer pagina,
-      @ModelAttribute UnitatFilterForm filterForm) throws I18NException {
+      @ModelAttribute SincroUnitatsFilterForm filterForm) throws I18NException {
     if(!isActiveList()) {
       response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       return null;
@@ -144,14 +148,14 @@ public class UnitatController
     // Actualitza el filter form
 
     request.getSession().setAttribute(getSessionAttributeFilterForm(), filterForm);
-    filterForm = getUnitatFilterForm(pagina, mav, request);
+    filterForm = getSincroUnitatsFilterForm(pagina, mav, request);
 
     llistat(mav, request, filterForm);
     return mav;
   }
 
   /**
-   * Codi centralitzat de llistat de Unitat de forma paginada.
+   * Codi centralitzat de llistat de SincroUnitats de forma paginada.
    * 
    * @param request
    * @param filterForm
@@ -159,8 +163,8 @@ public class UnitatController
    * @return
    * @throws I18NException
    */
-  protected List<Unitat> llistat(ModelAndView mav, HttpServletRequest request,
-     UnitatFilterForm filterForm) throws I18NException {
+  protected List<SincroUnitats> llistat(ModelAndView mav, HttpServletRequest request,
+     SincroUnitatsFilterForm filterForm) throws I18NException {
 
     int pagina = filterForm.getPage();
     request.getSession().setAttribute(getSessionAttributeFilterForm(), filterForm);
@@ -169,24 +173,24 @@ public class UnitatController
 
     preList(request, mav, filterForm);
 
-    List<Unitat> unitat = processarLlistat(unitatEjb,
+    List<SincroUnitats> sincroUnitats = processarLlistat(sincroUnitatsEjb,
         filterForm, pagina, getAdditionalCondition(request), mav);
 
-    mav.addObject("unitatItems", unitat);
+    mav.addObject("sincroUnitatsItems", sincroUnitats);
 
-    mav.addObject("unitatFilterForm", filterForm);
+    mav.addObject("sincroUnitatsFilterForm", filterForm);
 
-    fillReferencesForList(filterForm,request, mav, unitat, (List<GroupByItem>)mav.getModel().get("groupby_items"));
+    fillReferencesForList(filterForm,request, mav, sincroUnitats, (List<GroupByItem>)mav.getModel().get("groupby_items"));
 
-    postList(request, mav, filterForm, unitat);
+    postList(request, mav, filterForm, sincroUnitats);
 
-    return unitat;
+    return sincroUnitats;
   }
 
 
-  public Map<Field<?>, GroupByItem> fillReferencesForList(UnitatFilterForm filterForm,
+  public Map<Field<?>, GroupByItem> fillReferencesForList(SincroUnitatsFilterForm filterForm,
     HttpServletRequest request, ModelAndView mav,
-      List<Unitat> list, List<GroupByItem> groupItems) throws I18NException {
+      List<SincroUnitats> list, List<GroupByItem> groupItems) throws I18NException {
     Map<Field<?>, GroupByItem> groupByItemsMap = new HashMap<Field<?>, GroupByItem>();
     for (GroupByItem groupByItem : groupItems) {
       groupByItemsMap.put(groupByItem.getField(),groupByItem);
@@ -195,13 +199,13 @@ public class UnitatController
     Map<String, String> _tmp;
     List<StringKeyValue> _listSKV;
 
-    // Field estat
+    // Field usuariId
     {
-      _listSKV = getReferenceListForEstat(request, mav, filterForm, list, groupByItemsMap, null);
+      _listSKV = getReferenceListForUsuariId(request, mav, filterForm, list, groupByItemsMap, null);
       _tmp = Utils.listToMap(_listSKV);
-      filterForm.setMapOfValuesForEstat(_tmp);
-      if (filterForm.getGroupByFields().contains(ESTAT)) {
-        fillValuesToGroupByItems(_tmp, groupByItemsMap, ESTAT, false);
+      filterForm.setMapOfUsuariForUsuariId(_tmp);
+      if (filterForm.getGroupByFields().contains(USUARIID)) {
+        fillValuesToGroupByItems(_tmp, groupByItemsMap, USUARIID, false);
       };
     }
 
@@ -212,15 +216,15 @@ public class UnitatController
   @RequestMapping(value = "/export/{dataExporterID}", method = RequestMethod.POST)
   public void exportList(@PathVariable("dataExporterID") String dataExporterID,
     HttpServletRequest request, HttpServletResponse response,
-    UnitatFilterForm filterForm) throws Exception, I18NException {
+    SincroUnitatsFilterForm filterForm) throws Exception, I18NException {
 
     ModelAndView mav = new ModelAndView(getTileList());
-    List<Unitat> list = llistat(mav, request, filterForm);
-    Field<?>[] allFields = ALL_UNITAT_FIELDS;
+    List<SincroUnitats> list = llistat(mav, request, filterForm);
+    Field<?>[] allFields = ALL_SINCROUNITATS_FIELDS;
 
     java.util.Map<Field<?>, java.util.Map<String, String>> __mapping;
     __mapping = new java.util.HashMap<Field<?>, java.util.Map<String, String>>();
-    __mapping.put(ESTAT, filterForm.getMapOfValuesForEstat());
+    __mapping.put(USUARIID, filterForm.getMapOfUsuariForUsuariId());
     exportData(request, response, dataExporterID, filterForm,
           list, allFields, __mapping, PRIMARYKEY_FIELDS);
   }
@@ -228,10 +232,10 @@ public class UnitatController
 
 
   /**
-   * Carregar el formulari per un nou Unitat
+   * Carregar el formulari per un nou SincroUnitats
    */
   @RequestMapping(value = "/new", method = RequestMethod.GET)
-  public ModelAndView crearUnitatGet(HttpServletRequest request,
+  public ModelAndView crearSincroUnitatsGet(HttpServletRequest request,
       HttpServletResponse response) throws I18NException {
 
     if(!isActiveFormNew()) {
@@ -239,9 +243,9 @@ public class UnitatController
       return null;
     }
     ModelAndView mav = new ModelAndView(getTileForm());
-    UnitatForm unitatForm = getUnitatForm(null, false, request, mav);
-    mav.addObject("unitatForm" ,unitatForm);
-    fillReferencesForForm(unitatForm, request, mav);
+    SincroUnitatsForm sincroUnitatsForm = getSincroUnitatsForm(null, false, request, mav);
+    mav.addObject("sincroUnitatsForm" ,sincroUnitatsForm);
+    fillReferencesForForm(sincroUnitatsForm, request, mav);
   
     return mav;
   }
@@ -251,40 +255,40 @@ public class UnitatController
    * @return
    * @throws Exception
    */
-  public UnitatForm getUnitatForm(UnitatJPA _jpa,
+  public SincroUnitatsForm getSincroUnitatsForm(SincroUnitatsJPA _jpa,
        boolean __isView, HttpServletRequest request, ModelAndView mav) throws I18NException {
-    UnitatForm unitatForm;
+    SincroUnitatsForm sincroUnitatsForm;
     if(_jpa == null) {
-      unitatForm = new UnitatForm(new UnitatJPA(), true);
+      sincroUnitatsForm = new SincroUnitatsForm(new SincroUnitatsJPA(), true);
     } else {
-      unitatForm = new UnitatForm(_jpa, false);
-      unitatForm.setView(__isView);
+      sincroUnitatsForm = new SincroUnitatsForm(_jpa, false);
+      sincroUnitatsForm.setView(__isView);
     }
-    unitatForm.setContexte(getContextWeb());
-    unitatForm.setEntityNameCode(getEntityNameCode());
-    unitatForm.setEntityNameCodePlural(getEntityNameCodePlural());
-    return unitatForm;
+    sincroUnitatsForm.setContexte(getContextWeb());
+    sincroUnitatsForm.setEntityNameCode(getEntityNameCode());
+    sincroUnitatsForm.setEntityNameCodePlural(getEntityNameCodePlural());
+    return sincroUnitatsForm;
   }
 
-  public void fillReferencesForForm(UnitatForm unitatForm,
+  public void fillReferencesForForm(SincroUnitatsForm sincroUnitatsForm,
     HttpServletRequest request, ModelAndView mav) throws I18NException {
     // Comprovam si ja esta definida la llista
-    if (unitatForm.getListOfValuesForEstat() == null) {
-      List<StringKeyValue> _listSKV = getReferenceListForEstat(request, mav, unitatForm, null);
+    if (sincroUnitatsForm.getListOfUsuariForUsuariId() == null) {
+      List<StringKeyValue> _listSKV = getReferenceListForUsuariId(request, mav, sincroUnitatsForm, null);
 
       if(_listSKV != null && !_listSKV.isEmpty()) { 
           java.util.Collections.sort(_listSKV, STRINGKEYVALUE_COMPARATOR);
       }
-      unitatForm.setListOfValuesForEstat(_listSKV);
+      sincroUnitatsForm.setListOfUsuariForUsuariId(_listSKV);
     }
     
   }
 
   /**
-   * Guardar un nou Unitat
+   * Guardar un nou SincroUnitats
    */
   @RequestMapping(value = "/new", method = RequestMethod.POST)
-  public String crearUnitatPost(@ModelAttribute UnitatForm unitatForm,
+  public String crearSincroUnitatsPost(@ModelAttribute SincroUnitatsForm sincroUnitatsForm,
       BindingResult result, HttpServletRequest request,
       HttpServletResponse response) throws Exception {
     if(!isActiveFormNew()) {
@@ -292,21 +296,21 @@ public class UnitatController
       return null;
     }
 
-    UnitatJPA unitat = unitatForm.getUnitat();
+    SincroUnitatsJPA sincroUnitats = sincroUnitatsForm.getSincroUnitats();
 
     try {
-      preValidate(request, unitatForm, result);
-      getWebValidator().validate(unitatForm, result);
-      postValidate(request,unitatForm, result);
+      preValidate(request, sincroUnitatsForm, result);
+      getWebValidator().validate(sincroUnitatsForm, result);
+      postValidate(request,sincroUnitatsForm, result);
 
       if (result.hasErrors()) {
         result.reject("error.form");
         return getTileForm();
       } else {
-        unitat = create(request, unitat);
-        createMessageSuccess(request, "success.creation", unitat.getUnitatID());
-        unitatForm.setUnitat(unitat);
-        return getRedirectWhenCreated(request, unitatForm);
+        sincroUnitats = create(request, sincroUnitats);
+        createMessageSuccess(request, "success.creation", sincroUnitats.getSincrounitatsId());
+        sincroUnitatsForm.setSincroUnitats(sincroUnitats);
+        return getRedirectWhenCreated(request, sincroUnitatsForm);
       }
     } catch (Throwable __e) {
       if (__e instanceof I18NValidationException) {
@@ -319,16 +323,16 @@ public class UnitatController
     }
   }
 
-  @RequestMapping(value = "/view/{unitatID}", method = RequestMethod.GET)
-  public ModelAndView veureUnitatGet(@PathVariable("unitatID") java.lang.Long unitatID,
+  @RequestMapping(value = "/view/{sincrounitatsId}", method = RequestMethod.GET)
+  public ModelAndView veureSincroUnitatsGet(@PathVariable("sincrounitatsId") java.lang.Long sincrounitatsId,
       HttpServletRequest request,
       HttpServletResponse response) throws I18NException {
-      return editAndViewUnitatGet(unitatID,
+      return editAndViewSincroUnitatsGet(sincrounitatsId,
         request, response, true);
   }
 
 
-  protected ModelAndView editAndViewUnitatGet(@PathVariable("unitatID") java.lang.Long unitatID,
+  protected ModelAndView editAndViewSincroUnitatsGet(@PathVariable("sincrounitatsId") java.lang.Long sincrounitatsId,
       HttpServletRequest request,
       HttpServletResponse response, boolean __isView) throws I18NException {
     if((!__isView) && !isActiveFormEdit()) {
@@ -340,45 +344,45 @@ public class UnitatController
         return null;
       }
     }
-    UnitatJPA unitat = findByPrimaryKey(request, unitatID);
+    SincroUnitatsJPA sincroUnitats = findByPrimaryKey(request, sincrounitatsId);
 
-    if (unitat == null) {
-      createMessageWarning(request, "error.notfound", unitatID);
+    if (sincroUnitats == null) {
+      createMessageWarning(request, "error.notfound", sincrounitatsId);
       return llistatPaginat(request, response, 1);
     } else {
       ModelAndView mav = new ModelAndView(getTileForm());
-      UnitatForm unitatForm = getUnitatForm(unitat, __isView, request, mav);
-      unitatForm.setView(__isView);
+      SincroUnitatsForm sincroUnitatsForm = getSincroUnitatsForm(sincroUnitats, __isView, request, mav);
+      sincroUnitatsForm.setView(__isView);
       if(__isView) {
-        unitatForm.setAllFieldsReadOnly(ALL_UNITAT_FIELDS);
-        unitatForm.setSaveButtonVisible(false);
-        unitatForm.setDeleteButtonVisible(false);
+        sincroUnitatsForm.setAllFieldsReadOnly(ALL_SINCROUNITATS_FIELDS);
+        sincroUnitatsForm.setSaveButtonVisible(false);
+        sincroUnitatsForm.setDeleteButtonVisible(false);
       }
-      fillReferencesForForm(unitatForm, request, mav);
-      mav.addObject("unitatForm", unitatForm);
+      fillReferencesForForm(sincroUnitatsForm, request, mav);
+      mav.addObject("sincroUnitatsForm", sincroUnitatsForm);
       return mav;
     }
   }
 
 
   /**
-   * Carregar el formulari per modificar un Unitat existent
+   * Carregar el formulari per modificar un SincroUnitats existent
    */
-  @RequestMapping(value = "/{unitatID}/edit", method = RequestMethod.GET)
-  public ModelAndView editarUnitatGet(@PathVariable("unitatID") java.lang.Long unitatID,
+  @RequestMapping(value = "/{sincrounitatsId}/edit", method = RequestMethod.GET)
+  public ModelAndView editarSincroUnitatsGet(@PathVariable("sincrounitatsId") java.lang.Long sincrounitatsId,
       HttpServletRequest request,
       HttpServletResponse response) throws I18NException {
-      return editAndViewUnitatGet(unitatID,
+      return editAndViewSincroUnitatsGet(sincrounitatsId,
         request, response, false);
   }
 
 
 
   /**
-   * Editar un Unitat existent
+   * Editar un SincroUnitats existent
    */
-  @RequestMapping(value = "/{unitatID}/edit", method = RequestMethod.POST)
-  public String editarUnitatPost(@ModelAttribute UnitatForm unitatForm,
+  @RequestMapping(value = "/{sincrounitatsId}/edit", method = RequestMethod.POST)
+  public String editarSincroUnitatsPost(@ModelAttribute SincroUnitatsForm sincroUnitatsForm,
       BindingResult result, SessionStatus status, HttpServletRequest request,
       HttpServletResponse response) throws I18NException {
 
@@ -386,21 +390,21 @@ public class UnitatController
       response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       return null;
     }
-    UnitatJPA unitat = unitatForm.getUnitat();
+    SincroUnitatsJPA sincroUnitats = sincroUnitatsForm.getSincroUnitats();
 
     try {
-      preValidate(request, unitatForm, result);
-      getWebValidator().validate(unitatForm, result);
-      postValidate(request, unitatForm, result);
+      preValidate(request, sincroUnitatsForm, result);
+      getWebValidator().validate(sincroUnitatsForm, result);
+      postValidate(request, sincroUnitatsForm, result);
 
       if (result.hasErrors()) {
         result.reject("error.form");
         return getTileForm();
       } else {
-        unitat = update(request, unitat);
-        createMessageSuccess(request, "success.modification", unitat.getUnitatID());
+        sincroUnitats = update(request, sincroUnitats);
+        createMessageSuccess(request, "success.modification", sincroUnitats.getSincrounitatsId());
         status.setComplete();
-        return getRedirectWhenModified(request, unitatForm, null);
+        return getRedirectWhenModified(request, sincroUnitatsForm, null);
       }
     } catch (Throwable __e) {
       if (__e instanceof I18NValidationException) {
@@ -408,19 +412,19 @@ public class UnitatController
         return getTileForm();
       }
       String msg = createMessageError(request, "error.modification",
-          unitat.getUnitatID(), __e);
+          sincroUnitats.getSincrounitatsId(), __e);
       log.error(msg, __e);
-      return getRedirectWhenModified(request, unitatForm, __e);
+      return getRedirectWhenModified(request, sincroUnitatsForm, __e);
     }
 
   }
 
 
   /**
-   * Eliminar un Unitat existent
+   * Eliminar un SincroUnitats existent
    */
-  @RequestMapping(value = "/{unitatID}/delete")
-  public String eliminarUnitat(@PathVariable("unitatID") java.lang.Long unitatID,
+  @RequestMapping(value = "/{sincrounitatsId}/delete")
+  public String eliminarSincroUnitats(@PathVariable("sincrounitatsId") java.lang.Long sincrounitatsId,
       HttpServletRequest request,HttpServletResponse response) {
 
     if(!isActiveDelete()) {
@@ -428,20 +432,20 @@ public class UnitatController
       return null;
     }
     try {
-      Unitat unitat = this.findByPrimaryKey(request, unitatID);
-      if (unitat == null) {
-        String __msg = createMessageError(request, "error.notfound", unitatID);
-        return getRedirectWhenDelete(request, unitatID, new Exception(__msg));
+      SincroUnitats sincroUnitats = this.findByPrimaryKey(request, sincrounitatsId);
+      if (sincroUnitats == null) {
+        String __msg = createMessageError(request, "error.notfound", sincrounitatsId);
+        return getRedirectWhenDelete(request, sincrounitatsId, new Exception(__msg));
       } else {
-        delete(request, unitat);
-        createMessageSuccess(request, "success.deleted", unitatID);
-        return getRedirectWhenDelete(request, unitatID,null);
+        delete(request, sincroUnitats);
+        createMessageSuccess(request, "success.deleted", sincrounitatsId);
+        return getRedirectWhenDelete(request, sincrounitatsId,null);
       }
 
     } catch (Throwable e) {
-      String msg = createMessageError(request, "error.deleting", unitatID, e);
+      String msg = createMessageError(request, "error.deleting", sincrounitatsId, e);
       log.error(msg, e);
-      return getRedirectWhenDelete(request, unitatID, e);
+      return getRedirectWhenDelete(request, sincrounitatsId, e);
     }
   }
 
@@ -449,7 +453,7 @@ public class UnitatController
 @RequestMapping(value = "/deleteSelected", method = RequestMethod.POST)
 public String deleteSelected(HttpServletRequest request,
     HttpServletResponse response,
-    @ModelAttribute UnitatFilterForm filterForm) throws Exception {
+    @ModelAttribute SincroUnitatsFilterForm filterForm) throws Exception {
 
   if(!isActiveDelete()) {
     response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -460,7 +464,7 @@ public String deleteSelected(HttpServletRequest request,
   String redirect = null;
   if (seleccionats != null && seleccionats.length != 0) {
     for (int i = 0; i < seleccionats.length; i++) {
-      redirect = eliminarUnitat(stringToPK(seleccionats[i]), request, response);
+      redirect = eliminarSincroUnitats(stringToPK(seleccionats[i]), request, response);
     }
   }
   if (redirect == null) {
@@ -477,8 +481,8 @@ public java.lang.Long stringToPK(String value) {
 }
 
   @Override
-  public String[] getArgumentsMissatge(Object __unitatID, Throwable e) {
-    java.lang.Long unitatID = (java.lang.Long)__unitatID;
+  public String[] getArgumentsMissatge(Object __sincrounitatsId, Throwable e) {
+    java.lang.Long sincrounitatsId = (java.lang.Long)__sincrounitatsId;
     String exceptionMsg = "";
     if (e != null) {
       if (e instanceof I18NException) {
@@ -488,70 +492,70 @@ public java.lang.Long stringToPK(String value) {
         exceptionMsg = e.getMessage();
       };
     };
-    if (unitatID == null) {
+    if (sincrounitatsId == null) {
       return new String[] { I18NUtils.tradueix(getEntityNameCode()),
          getPrimaryKeyColumnsTranslated(), null, exceptionMsg };
     } else {
       return new String[] { I18NUtils.tradueix(getEntityNameCode()),
         getPrimaryKeyColumnsTranslated(),
-         String.valueOf(unitatID),
+         String.valueOf(sincrounitatsId),
  exceptionMsg };
     }
   }
 
   public String getEntityNameCode() {
-    return "unitat.unitat";
+    return "sincroUnitats.sincroUnitats";
   }
 
   public String getEntityNameCodePlural() {
-    return "unitat.unitat.plural";
+    return "sincroUnitats.sincroUnitats.plural";
   }
 
   public String getPrimaryKeyColumnsTranslated() {
-    return  I18NUtils.tradueix("unitat.unitatID");
+    return  I18NUtils.tradueix("sincroUnitats.sincrounitatsId");
   }
 
-  @InitBinder("unitatFilterForm")
+  @InitBinder("sincroUnitatsFilterForm")
   public void initBinderFilterForm(WebDataBinder binder) {
     super.initBinder(binder);
   }
 
-  @InitBinder("unitatForm")
+  @InitBinder("sincroUnitatsForm")
   public void initBinderForm(WebDataBinder binder) {
     super.initBinder(binder);
 
     binder.setValidator(getWebValidator());
 
 
-    initDisallowedFields(binder, "unitat.unitatID");
+    initDisallowedFields(binder, "sincroUnitats.sincrounitatsId");
   }
 
-  public UnitatWebValidator getWebValidator() {
-    return unitatWebValidator;
+  public SincroUnitatsWebValidator getWebValidator() {
+    return sincroUnitatsWebValidator;
   }
 
 
-  public void setWebValidator(UnitatWebValidator __val) {
+  public void setWebValidator(SincroUnitatsWebValidator __val) {
     if (__val != null) {
-      this.unitatWebValidator= __val;
+      this.sincroUnitatsWebValidator= __val;
     }
   }
 
 
   /**
-   * Entra aqui al pitjar el boto cancel en el llistat de Unitat
+   * Entra aqui al pitjar el boto cancel en el llistat de SincroUnitats
    */
-  @RequestMapping(value = "/{unitatID}/cancel")
-  public String cancelUnitat(@PathVariable("unitatID") java.lang.Long unitatID,
+  @RequestMapping(value = "/{sincrounitatsId}/cancel")
+  public String cancelSincroUnitats(@PathVariable("sincrounitatsId") java.lang.Long sincrounitatsId,
       HttpServletRequest request,HttpServletResponse response) {
-     return getRedirectWhenCancel(request, unitatID);
+     return getRedirectWhenCancel(request, sincrounitatsId);
   }
 
   /**
-   * Entra aqui al pitjar el boto cancel en el la creació de Unitat
+   * Entra aqui al pitjar el boto cancel en el la creació de SincroUnitats
    */
   @RequestMapping(value = "/cancel")
-  public String cancelUnitat(HttpServletRequest request,HttpServletResponse response) {
+  public String cancelSincroUnitats(HttpServletRequest request,HttpServletResponse response) {
      return getRedirectWhenCancel(request, null);
   }
 
@@ -587,35 +591,43 @@ public java.lang.Long stringToPK(String value) {
   }
 
 
-  public List<StringKeyValue> getReferenceListForEstat(HttpServletRequest request,
-       ModelAndView mav, UnitatForm unitatForm, Where where)  throws I18NException {
-    if (unitatForm.isHiddenField(ESTAT)) {
+  public List<StringKeyValue> getReferenceListForUsuariId(HttpServletRequest request,
+       ModelAndView mav, SincroUnitatsForm sincroUnitatsForm, Where where)  throws I18NException {
+    if (sincroUnitatsForm.isHiddenField(USUARIID)) {
       return EMPTY_STRINGKEYVALUE_LIST;
     }
-    return getReferenceListForEstat(request, mav, where);
+    Where _where = null;
+    if (sincroUnitatsForm.isReadOnlyField(USUARIID)) {
+      _where = UsuariFields.USUARIID.equal(sincroUnitatsForm.getSincroUnitats().getUsuariId());
+    }
+    return getReferenceListForUsuariId(request, mav, Where.AND(where, _where));
   }
 
 
-  public List<StringKeyValue> getReferenceListForEstat(HttpServletRequest request,
-       ModelAndView mav, UnitatFilterForm unitatFilterForm,
-       List<Unitat> list, Map<Field<?>, GroupByItem> _groupByItemsMap, Where where)  throws I18NException {
-    if (unitatFilterForm.isHiddenField(ESTAT)
-       && !unitatFilterForm.isGroupByField(ESTAT)
-       && !unitatFilterForm.isFilterByField(ESTAT)) {
+  public List<StringKeyValue> getReferenceListForUsuariId(HttpServletRequest request,
+       ModelAndView mav, SincroUnitatsFilterForm sincroUnitatsFilterForm,
+       List<SincroUnitats> list, Map<Field<?>, GroupByItem> _groupByItemsMap, Where where)  throws I18NException {
+    if (sincroUnitatsFilterForm.isHiddenField(USUARIID)
+       && !sincroUnitatsFilterForm.isGroupByField(USUARIID)) {
       return EMPTY_STRINGKEYVALUE_LIST;
     }
     Where _w = null;
-    return getReferenceListForEstat(request, mav, Where.AND(where,_w));
+    if (!_groupByItemsMap.containsKey(USUARIID)) {
+      // OBTENIR TOTES LES CLAUS (PK) i despres només cercar referències d'aquestes PK
+      java.util.Set<java.lang.Long> _pkList = new java.util.HashSet<java.lang.Long>();
+      for (SincroUnitats _item : list) {
+        if(_item.getUsuariId() == null) { continue; };
+        _pkList.add(_item.getUsuariId());
+        }
+        _w = UsuariFields.USUARIID.in(_pkList);
+      }
+    return getReferenceListForUsuariId(request, mav, Where.AND(where,_w));
   }
 
 
-  public List<StringKeyValue> getReferenceListForEstat(HttpServletRequest request,
+  public List<StringKeyValue> getReferenceListForUsuariId(HttpServletRequest request,
        ModelAndView mav, Where where)  throws I18NException {
-    List<StringKeyValue> __tmp = new java.util.ArrayList<StringKeyValue>();
-    __tmp.add(new StringKeyValue("0" , "0"));
-    __tmp.add(new StringKeyValue("1" , "1"));
-    __tmp.add(new StringKeyValue("2" , "2"));
-    return __tmp;
+    return usuariRefList.getReferenceList(UsuariFields.USUARIID, where );
   }
 
 
@@ -652,23 +664,23 @@ public java.lang.Long stringToPK(String value) {
             return values[0];
         }  }
 
-  public void preValidate(HttpServletRequest request,UnitatForm unitatForm , BindingResult result)  throws I18NException {
+  public void preValidate(HttpServletRequest request,SincroUnitatsForm sincroUnitatsForm , BindingResult result)  throws I18NException {
   }
 
-  public void postValidate(HttpServletRequest request,UnitatForm unitatForm, BindingResult result)  throws I18NException {
+  public void postValidate(HttpServletRequest request,SincroUnitatsForm sincroUnitatsForm, BindingResult result)  throws I18NException {
   }
 
-  public void preList(HttpServletRequest request, ModelAndView mav, UnitatFilterForm filterForm)  throws I18NException {
+  public void preList(HttpServletRequest request, ModelAndView mav, SincroUnitatsFilterForm filterForm)  throws I18NException {
   }
 
-  public void postList(HttpServletRequest request, ModelAndView mav, UnitatFilterForm filterForm,  List<Unitat> list) throws I18NException {
+  public void postList(HttpServletRequest request, ModelAndView mav, SincroUnitatsFilterForm filterForm,  List<SincroUnitats> list) throws I18NException {
   }
 
-  public String getRedirectWhenCreated(HttpServletRequest request, UnitatForm unitatForm) {
+  public String getRedirectWhenCreated(HttpServletRequest request, SincroUnitatsForm sincroUnitatsForm) {
     return "redirect:" + getContextWeb() + "/list/1";
   }
 
-  public String getRedirectWhenModified(HttpServletRequest request, UnitatForm unitatForm, Throwable __e) {
+  public String getRedirectWhenModified(HttpServletRequest request, SincroUnitatsForm sincroUnitatsForm, Throwable __e) {
     if (__e == null) {
       return "redirect:" + getContextWeb() + "/list";
     } else {
@@ -676,11 +688,11 @@ public java.lang.Long stringToPK(String value) {
     }
   }
 
-  public String getRedirectWhenDelete(HttpServletRequest request, java.lang.Long unitatID, Throwable __e) {
+  public String getRedirectWhenDelete(HttpServletRequest request, java.lang.Long sincrounitatsId, Throwable __e) {
     return "redirect:" + getContextWeb() + "/list";
   }
 
-  public String getRedirectWhenCancel(HttpServletRequest request, java.lang.Long unitatID) {
+  public String getRedirectWhenCancel(HttpServletRequest request, java.lang.Long sincrounitatsId) {
     return "redirect:" + getContextWeb() + "/list";
   }
 
@@ -702,7 +714,7 @@ public java.lang.Long stringToPK(String value) {
         } catch (Exception e) {
             log.error("Error en el getTileForm: " + e.getMessage(), e);
         }
-    return "unitatFormWebDB";
+    return "sincroUnitatsFormWebDB";
   }
 
     public String getTileList() {
@@ -723,11 +735,11 @@ public java.lang.Long stringToPK(String value) {
         } catch (Exception e) {
             log.error("Error en el getTileList: " + e.getMessage(), e);
         }
-        return "unitatListWebDB";
+        return "sincroUnitatsListWebDB";
     }
 
   public String getSessionAttributeFilterForm() {
-    return "Unitat_FilterForm_" + this.getClass().getName();
+    return "SincroUnitats_FilterForm_" + this.getClass().getName();
   }
 
 
@@ -737,25 +749,25 @@ public java.lang.Long stringToPK(String value) {
   }
 
 
-  public UnitatJPA findByPrimaryKey(HttpServletRequest request, java.lang.Long unitatID) throws I18NException {
-    return (UnitatJPA) unitatEjb.findByPrimaryKey(unitatID);
+  public SincroUnitatsJPA findByPrimaryKey(HttpServletRequest request, java.lang.Long sincrounitatsId) throws I18NException {
+    return (SincroUnitatsJPA) sincroUnitatsEjb.findByPrimaryKey(sincrounitatsId);
   }
 
 
-  public UnitatJPA create(HttpServletRequest request, UnitatJPA unitat)
+  public SincroUnitatsJPA create(HttpServletRequest request, SincroUnitatsJPA sincroUnitats)
     throws I18NException, I18NValidationException {
-    return (UnitatJPA) unitatEjb.create(unitat);
+    return (SincroUnitatsJPA) sincroUnitatsEjb.create(sincroUnitats);
   }
 
 
-  public UnitatJPA update(HttpServletRequest request, UnitatJPA unitat)
+  public SincroUnitatsJPA update(HttpServletRequest request, SincroUnitatsJPA sincroUnitats)
     throws I18NException, I18NValidationException {
-    return (UnitatJPA) unitatEjb.update(unitat);
+    return (SincroUnitatsJPA) sincroUnitatsEjb.update(sincroUnitats);
   }
 
 
-  public void delete(HttpServletRequest request, Unitat unitat) throws I18NException {
-    unitatEjb.delete(unitat);
+  public void delete(HttpServletRequest request, SincroUnitats sincroUnitats) throws I18NException {
+    sincroUnitatsEjb.delete(sincroUnitats);
   }
 
 } // Final de Classe

@@ -277,6 +277,19 @@ public class UsuariJPA implements Usuari {
     }
 
 
+// EXP  Field:usuariid | Table: rfh_sincrounitats | Type: 0  
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuari")
+    private Set<SincroUnitatsJPA> sincroUnitatss = new HashSet<SincroUnitatsJPA>(0);
+    public  Set<SincroUnitatsJPA> getSincroUnitatss() {
+    return this.sincroUnitatss;
+  }
+
+    public void setSincroUnitatss(Set<SincroUnitatsJPA> sincroUnitatss) {
+      this.sincroUnitatss = sincroUnitatss;
+    }
+
+
 // EXP  Field:usuariid | Table: rfh_usuarientitat | Type: 0  
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuari")
@@ -367,6 +380,10 @@ public class UsuariJPA implements Usuari {
     if(!"FuncionariLlocJPA".equals(origenJPA) 
        && ( !org.fundaciobit.genapp.common.utils.Utils.isEmpty(__jpa.funcionariLlocs) || org.hibernate.Hibernate.isInitialized(__jpa.getFuncionariLlocs())) ) {
       __tmp.setFuncionariLlocs(FuncionariLlocJPA.copyJPA(__jpa.getFuncionariLlocs(), __alreadyCopied,"UsuariJPA"));
+    }
+    if(!"SincroUnitatsJPA".equals(origenJPA) 
+       && ( !org.fundaciobit.genapp.common.utils.Utils.isEmpty(__jpa.sincroUnitatss) || org.hibernate.Hibernate.isInitialized(__jpa.getSincroUnitatss())) ) {
+      __tmp.setSincroUnitatss(SincroUnitatsJPA.copyJPA(__jpa.getSincroUnitatss(), __alreadyCopied,"UsuariJPA"));
     }
     if(!"UsuariEntitatJPA".equals(origenJPA) 
        && ( !org.fundaciobit.genapp.common.utils.Utils.isEmpty(__jpa.usuariEntitats) || org.hibernate.Hibernate.isInitialized(__jpa.getUsuariEntitats())) ) {

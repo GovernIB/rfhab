@@ -21,3 +21,5 @@ create index rfh_sincrounitats_pk_i on rfh_sincrounitats (sincrounitatsid);
 create index rfh_sncunitats_usuariid_fk_i on rfh_sincrounitats (usuariid);
 grant select on rfh_sincrounitats_seq to www_rfhab;
 grant select,insert,delete,update on rfh_sincrounitats to www_rfhab;
+
+ALTER TABLE RFH_LLOCHABILITACIO RENAME CONSTRAINT rfh_llochab_hab_habilitacid_fk TO rfh_llochabil_hab_habid_fk;

@@ -131,7 +131,7 @@
        references rfh_lloc;
 
     alter table rfh_llochabilitacio 
-       add constraint rfh_llochab_hab_habilitacid_fk 
+       add constraint rfh_llochabil_hab_habid_fk 
        foreign key (habilitacioid) 
        references rfh_habilitacio;
 

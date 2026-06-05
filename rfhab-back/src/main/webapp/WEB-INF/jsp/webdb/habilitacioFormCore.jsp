@@ -18,14 +18,14 @@
          <ul class="nav nav-tabs" style="margin: 0 15px -1px;">
              <c:forEach items="${__theForm.idiomesTraduccio}" var="idioma" varStatus="counter">
             <li class="nav-item ">
-                 <a class="nav-link ${(counter.index == 0)? 'active':''}" href="#${counter.index}_tab_nom_${idioma.idiomaID}" data-toggle="tab">${idioma.nom}</a>
+                 <a class="nav-link ${(counter.index == 0)? 'active':''}" href="#tab_nom_${counter.index}_${idioma.idiomaID}" data-toggle="tab">${idioma.nom}</a>
             </li>
           </c:forEach>
            
          </ul>
          <div class="tab-content well well-white" style="padding:8px;margin:0px;">
            <c:forEach items="${__theForm.idiomesTraduccio}" var="idioma" varStatus="counter">
-           <div class="tab-pane ${(counter.index == 0)? 'active':'' }" id="${counter.index}_tab_nom_${idioma.idiomaID}">
+           <div class="tab-pane ${(counter.index == 0)? 'active':'' }" id="tab_nom_${counter.index}_${idioma.idiomaID}">
                <form:errors path="habilitacio.nom.traduccions['${idioma.idiomaID}'].valor" cssClass="errorField alert alert-danger"/>
                <form:input path="habilitacio.nom.traduccions['${idioma.idiomaID}'].valor" cssClass="form-control  ${gen:contains(__theForm.readOnlyFields ,HabilitacioFields.NOMID)? ' uneditable-input' : ''}" readonly="${gen:contains(__theForm.readOnlyFields ,HabilitacioFields.NOMID)}" maxlength="4000" />
            </div>

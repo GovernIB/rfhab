@@ -55,6 +55,8 @@
             <module name="org.apache.commons.collections" export="TRUE"/>
             <module name="org.apache.velocity" export="TRUE"/>
             <module name="org.apache.xerces" export="TRUE"/>
+            <module name="javax.activation.api" export="TRUE"/>
+            <module name="javax.annotation.api" export="TRUE"/>
         </dependencies>
         <exclusions>
             <module name="org.jboss.resteasy.resteasy-json-binding-provider"/>

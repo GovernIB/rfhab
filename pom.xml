@@ -110,7 +110,6 @@
         <!-- Versions de les llibreries emprades dins els mòduls -->
         <activation.version>1.1.1.redhat-5</activation.version>
         <mp-openapi.version>1.0.1</mp-openapi.version>
-        <jaxb-api.version>2.3.1</jaxb-api.version>
         <!-- <slf4j.version>1.7.30</slf4j.version> -->
         <keycloak.version>6.0.1</keycloak.version>
         <cxf.version>3.2.5.redhat-00001</cxf.version>
@@ -157,9 +156,9 @@
             </dependency>
             <!-- A partir de Java 11 les llibreries JAXB ja no s'inclouen al JDK -->
             <dependency>
-                <groupId>javax.xml.bind</groupId>
-                <artifactId>jaxb-api</artifactId>
-                <version>${jaxb-api.version}</version>
+                <groupId>org.jboss.spec.javax.xml.bind</groupId>
+                <artifactId>jboss-jaxb-api_2.3_spec</artifactId>
+                <version>1.0.1.Final-redhat-1</version>
             </dependency>
             <dependency>
                 <groupId>javax.persistence</groupId>

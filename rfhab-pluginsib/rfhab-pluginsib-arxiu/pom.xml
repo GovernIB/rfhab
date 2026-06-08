@@ -5,7 +5,7 @@
 	<artifactId>rfhab-pluginsib-arxiu</artifactId>
 	
 	<groupId>es.caib.rfhab.pluginsib</groupId>
-	<version>1.0.4</version>
+	<version>1.0.5</version>
 	<packaging>jar</packaging>
 	
 	<name>RFHAB PluginsIB - Arxiu</name>
@@ -18,7 +18,7 @@
 	<parent>
         <artifactId>rfhab-pluginsib</artifactId>
         <groupId>es.caib.rfhab.pluginsib</groupId>
-		<version>1.0.4</version>
+		<version>1.0.5</version>
     </parent>
 	    
 	<properties>

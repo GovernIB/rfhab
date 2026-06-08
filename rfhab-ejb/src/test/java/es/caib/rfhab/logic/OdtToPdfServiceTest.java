@@ -109,7 +109,8 @@ public class OdtToPdfServiceTest {
                                                                 "611111111", "nimi@email.com",
                                                                 "Via Rep", "11", null, null, null, "Alcúdia", "07400",
                                                                 "688888888", "galba@email.com",
-                                                                "Passaport", "REA999", "Observacions")),
+                                                                "NIE", "REA999", "Observacions")),
+                                                                // "Passaport", "REA999", "Observacions")),
                                                 PLANTILLA_PROVES_CAST_ODT, PLANTILLA_PROVES_CAST_ODT + "_2.pdf" },
                 });
         }

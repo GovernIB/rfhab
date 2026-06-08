@@ -1657,7 +1657,7 @@
           "showInWebList": true,
           "showInReferenceList": false,
           "transientField": false,
-          "minAllowedValue": "0,1,2,3,4",
+          "minAllowedValue": "0,1,2,4",
           "filter": false,
           "orderBy": 0,
           "groupBy": false,

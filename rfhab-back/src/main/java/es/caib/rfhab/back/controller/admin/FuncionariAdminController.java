@@ -677,7 +677,7 @@ public class FuncionariAdminController extends FuncionariController {
 		__tmp.add(new StringKeyValue(TIPUS_IDENTIFICACIO_SELECCIONA, I18NUtils.tradueix("tipusidentificacio.0")));
 		__tmp.add(new StringKeyValue("1", I18NUtils.tradueix("tipusidentificacio.1")));
 		__tmp.add(new StringKeyValue("2", I18NUtils.tradueix("tipusidentificacio.2")));
-		__tmp.add(new StringKeyValue("3", I18NUtils.tradueix("tipusidentificacio.3")));
+		// __tmp.add(new StringKeyValue("3", I18NUtils.tradueix("tipusidentificacio.3")));
 		__tmp.add(new StringKeyValue("4", I18NUtils.tradueix("tipusidentificacio.4")));
 		return __tmp;
 	}

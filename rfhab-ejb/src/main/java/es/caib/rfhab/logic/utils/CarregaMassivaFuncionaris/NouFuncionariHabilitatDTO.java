@@ -53,12 +53,12 @@ public class NouFuncionariHabilitatDTO implements java.io.Serializable {
 
     /**
      * Tipus d'identificació del funcionari/ària. Obligatori.
-     * Valors possibles: NIF, NIE, passaport, etc.
+     * Valors possibles: NIF, NIE, etc.
      */
     public IdentificacioTipus tipusIdentificador;
 
     /**
-     * Identificador (NIF, NIE o passaport). Obligatori.
+     * Identificador (NIF o NIE). Obligatori.
      */
     public String identificador;
 

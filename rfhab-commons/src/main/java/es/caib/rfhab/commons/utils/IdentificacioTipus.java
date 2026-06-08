@@ -8,8 +8,8 @@ public enum IdentificacioTipus {
             IdentificacioTipusValues.NIF_DESCRIPTION),
     NIE(IdentificacioTipusValues.NIE_NAME, IdentificacioTipusValues.NIE_VALUE_STR,
             IdentificacioTipusValues.NIE_DESCRIPTION),
-    PASSAPORT(IdentificacioTipusValues.PASSAPORT_NAME, IdentificacioTipusValues.PASSAPORT_VALUE_STR,
-            IdentificacioTipusValues.PASSAPORT_DESCRIPTION),
+    // PASSAPORT(IdentificacioTipusValues.PASSAPORT_NAME, IdentificacioTipusValues.PASSAPORT_VALUE_STR,
+    //         IdentificacioTipusValues.PASSAPORT_DESCRIPTION),
     ALTRES(IdentificacioTipusValues.ALTRES_NAME, IdentificacioTipusValues.ALTRES_VALUE_STR,
             IdentificacioTipusValues.ALTRES_DESCRIPTION);
 

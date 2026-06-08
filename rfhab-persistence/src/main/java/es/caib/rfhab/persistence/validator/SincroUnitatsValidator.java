@@ -36,17 +36,13 @@ public class SincroUnitatsValidator<I extends SincroUnitats>
         "genapp.validation.required",
         new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(DATACREACIO)));
 
-    __vr.rejectIfEmptyOrWhitespace(__target__,DATADARRERASINCRO, 
-        "genapp.validation.required",
-        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(DATADARRERASINCRO)));
-
-    __vr.rejectIfEmptyOrWhitespace(__target__,DATAPRIMERASINCRO, 
-        "genapp.validation.required",
-        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(DATAPRIMERASINCRO)));
-
     __vr.rejectIfEmptyOrWhitespace(__target__,CODIENTITAT, 
         "genapp.validation.required",
         new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(CODIENTITAT)));
+
+    __vr.rejectIfEmptyOrWhitespace(__target__,USUARIID, 
+        "genapp.validation.required",
+        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(USUARIID)));
 
     // Check size
     if (__vr.getFieldErrorCount(CODIENTITAT) == 0) {
@@ -83,15 +79,13 @@ public class SincroUnitatsValidator<I extends SincroUnitats>
     // Fields with References to Other tables 
     if (__vr.getFieldErrorCount(USUARIID) == 0) {
       java.lang.Long __usuariid = __target__.getUsuariId();
-      if (__usuariid != null ) {
-        Long __count_ = null;
-        try { __count_ = __usuariManager.count(UsuariFields.USUARIID.equal(__usuariid)); } catch(org.fundaciobit.genapp.common.i18n.I18NException e) { e.printStackTrace(); };
-        if (__count_ == null || __count_ == 0) {        
-          __vr.rejectValue(USUARIID, "error.notfound",
+      Long __count_ = null;
+      try { __count_ = __usuariManager.count(UsuariFields.USUARIID.equal(__usuariid)); } catch(org.fundaciobit.genapp.common.i18n.I18NException e) { e.printStackTrace(); };
+      if (__count_ == null || __count_ == 0) {        
+        __vr.rejectValue(USUARIID, "error.notfound",
          new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("usuari.usuari"),
          new org.fundaciobit.genapp.common.i18n.I18NArgumentCode("usuari.usuariID"),
          new org.fundaciobit.genapp.common.i18n.I18NArgumentString(String.valueOf(__usuariid)));
-        }
       }
     }
 

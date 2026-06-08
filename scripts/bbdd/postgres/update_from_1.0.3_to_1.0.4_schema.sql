@@ -16,7 +16,7 @@ CREATE TABLE rfh_sincrounitats (
     dataprimerasincro timestamp without time zone,
     codientitat character varying(50) NOT NULL,
     observacions text,
-    usuariid bigint
+    usuariid bigint not null
 );
 
 ALTER TABLE ONLY rfh_sincrounitats

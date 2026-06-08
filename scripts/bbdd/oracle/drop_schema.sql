@@ -25,6 +25,8 @@
 
     drop table rfh_plugin cascade constraints;
 
+    drop table rfh_sincrounitats cascade constraints;
+
     drop table rfh_habilitacio cascade constraints;
 
     drop table rfh_traduccio cascade constraints;
@@ -60,6 +62,8 @@
     drop sequence rfh_llochabilitacio_seq;
 
     drop sequence rfh_plugin_seq;
+
+    drop sequence rfh_sincrounitats_seq;
 
     drop sequence rfh_habilitacio_seq;
 

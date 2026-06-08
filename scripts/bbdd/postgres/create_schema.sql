@@ -1353,7 +1353,6 @@ ALTER TABLE ONLY public.rfh_usuarientitat
 -- PostgreSQL database dump complete
 --
 
--- todo: passar pes sqlgen. i també afegir a drop_schema
 CREATE SEQUENCE public.rfh_sincrounitats_seq
     START WITH 1000
     INCREMENT BY 1
@@ -1368,7 +1367,7 @@ CREATE TABLE public.rfh_sincrounitats (
     dataprimerasincro timestamp without time zone,
     codientitat character varying(50) NOT NULL,
     observacions text,
-    usuariid bigint
+    usuariid bigint not null
 );
 
 ALTER TABLE ONLY public.rfh_sincrounitats

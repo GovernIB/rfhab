@@ -222,5 +222,5 @@
         dataprimerasincro timestamp,
         codientitat varchar2(50 char) not null,
         observacions clob,
-        usuariid number(19,0)
+        usuariid number(19,0) not null
     );

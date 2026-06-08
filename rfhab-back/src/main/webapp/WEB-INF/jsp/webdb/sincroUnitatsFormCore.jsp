@@ -42,7 +42,7 @@
         <tr id="sincroUnitats_dataDarreraSincro_rowid">
           <td id="sincroUnitats_dataDarreraSincro_columnlabelid">
             <label>
-              <fmt:message key="${(empty __theForm.labels[SincroUnitatsFields.DATADARRERASINCRO])?'sincroUnitats.dataDarreraSincro':__theForm.labels[SincroUnitatsFields.DATADARRERASINCRO]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[SincroUnitatsFields.DATADARRERASINCRO])?'sincroUnitats.dataDarreraSincro':__theForm.labels[SincroUnitatsFields.DATADARRERASINCRO]}" />
              </label>
               <c:if test="${not empty __theForm.help[SincroUnitatsFields.DATADARRERASINCRO]}">
               <i class="fas fa-info-circle" title="${__theForm.help[SincroUnitatsFields.DATADARRERASINCRO]}" ></i>
@@ -78,7 +78,7 @@
         <tr id="sincroUnitats_dataPrimeraSincro_rowid">
           <td id="sincroUnitats_dataPrimeraSincro_columnlabelid">
             <label>
-              <fmt:message key="${(empty __theForm.labels[SincroUnitatsFields.DATAPRIMERASINCRO])?'sincroUnitats.dataPrimeraSincro':__theForm.labels[SincroUnitatsFields.DATAPRIMERASINCRO]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[SincroUnitatsFields.DATAPRIMERASINCRO])?'sincroUnitats.dataPrimeraSincro':__theForm.labels[SincroUnitatsFields.DATAPRIMERASINCRO]}" />
              </label>
               <c:if test="${not empty __theForm.help[SincroUnitatsFields.DATAPRIMERASINCRO]}">
               <i class="fas fa-info-circle" title="${__theForm.help[SincroUnitatsFields.DATAPRIMERASINCRO]}" ></i>
@@ -171,7 +171,7 @@
         <tr id="sincroUnitats_usuariId_rowid">
           <td id="sincroUnitats_usuariId_columnlabelid">
             <label>
-              <fmt:message key="${(empty __theForm.labels[SincroUnitatsFields.USUARIID])?'sincroUnitats.usuariId':__theForm.labels[SincroUnitatsFields.USUARIID]}" />
+              <fmt:message key="${(empty __theForm.labels[SincroUnitatsFields.USUARIID])?'sincroUnitats.usuariId':__theForm.labels[SincroUnitatsFields.USUARIID]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[SincroUnitatsFields.USUARIID]}">
               <i class="fas fa-info-circle" title="${__theForm.help[SincroUnitatsFields.USUARIID]}" ></i>
@@ -192,15 +192,6 @@
                   <c:set var="containEmptyValue"  value="true" />
                 </c:if>
             </c:forEach>
-            <%-- El camp pot ser null, per la qual cosa afegim una entrada buida si no s'ha definit abans --%>
-            <c:if test="${not containEmptyValue}">
-              <c:if test="${empty __theForm.sincroUnitats.usuariId }">
-                  <form:option value="" selected="true" ></form:option>
-              </c:if>
-              <c:if test="${not empty __theForm.sincroUnitats.usuariId }">
-                  <form:option value="" ></form:option>
-              </c:if>
-            </c:if>
           </form:select>
           </c:if>
            </td>

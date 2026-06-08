@@ -59,6 +59,9 @@
     alter table rfh_plugin 
        drop constraint if exists rfh_plugin_entitat_entitati_fk;
 
+    alter table rfh_sincrounitats 
+       drop constraint if exists rfh_sncunitats_usuari_usuid_fk;
+
     alter table rfh_habilitacio 
        drop constraint if exists rfh_habil_traduccio_nomid_fk;
 
@@ -103,6 +106,8 @@
 
     drop table if exists rfh_plugin cascade;
 
+    drop table if exists rfh_sincrounitats cascade;
+
     drop table if exists rfh_habilitacio cascade;
 
     drop table if exists rfh_traduccio cascade;
@@ -138,6 +143,8 @@
     drop sequence if exists rfh_llochabilitacio_seq;
 
     drop sequence if exists rfh_plugin_seq;
+
+    drop sequence if exists rfh_sincrounitats_seq;
 
     drop sequence if exists rfh_habilitacio_seq;
 

@@ -4065,7 +4065,7 @@
           "sqlType": 93,
           "size": 29,
           "digits": 6,
-          "isNotNullable": true,
+          "isNotNullable": false,
           "labels": {
             "ca": "Data darrera sincronització",
             "es": "Fecha última sincronización"
@@ -4090,7 +4090,7 @@
           "sqlType": 93,
           "size": 29,
           "digits": 6,
-          "isNotNullable": true,
+          "isNotNullable": false,
           "labels": {
             "ca": "Data primera sincronització",
             "es": "Fecha primera sincronización"
@@ -4166,7 +4166,7 @@
           "sqlType": -5,
           "size": 19,
           "digits": 0,
-          "isNotNullable": false,
+          "isNotNullable": true,
           "labels": {
             "ca": "Usuari Id",
             "es": "Usuario Id"

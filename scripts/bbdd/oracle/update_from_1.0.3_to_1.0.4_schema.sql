@@ -10,7 +10,7 @@ create table rfh_sincrounitats (
     dataprimerasincro timestamp,
     codientitat varchar2(50 char) not null,
     observacions clob,
-    usuariid number(19,0)
+    usuariid number(19,0) not null
 );
 alter table rfh_sincrounitats add constraint rfh_sincrounitats_pk primary key (sincrounitatsid);
 alter table rfh_sincrounitats 

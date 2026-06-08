@@ -41,12 +41,11 @@ public class SincroUnitatsBean implements SincroUnitats {
     this.usuariId=usuariId;
 }
   /** Constructor dels valors Not Null */
-  public SincroUnitatsBean(long sincrounitatsId , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataDarreraSincro , java.sql.Timestamp dataPrimeraSincro , java.lang.String codiEntitat) {
+  public SincroUnitatsBean(long sincrounitatsId , java.sql.Timestamp dataCreacio , java.lang.String codiEntitat , java.lang.Long usuariId) {
     this.sincrounitatsId=sincrounitatsId;
     this.dataCreacio=dataCreacio;
-    this.dataDarreraSincro=dataDarreraSincro;
-    this.dataPrimeraSincro=dataPrimeraSincro;
     this.codiEntitat=codiEntitat;
+    this.usuariId=usuariId;
 }
   public SincroUnitatsBean(SincroUnitats __bean) {
     this.setSincrounitatsId(__bean.getSincrounitatsId());

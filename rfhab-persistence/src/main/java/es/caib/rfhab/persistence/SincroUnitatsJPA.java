@@ -33,10 +33,10 @@ public class SincroUnitatsJPA implements SincroUnitats {
     @Column(name="datacreacio",nullable = false,length = 29,precision = 6)
     java.sql.Timestamp dataCreacio;
 
-    @Column(name="datadarrerasincro",nullable = false,length = 29,precision = 6)
+    @Column(name="datadarrerasincro",length = 29,precision = 6)
     java.sql.Timestamp dataDarreraSincro;
 
-    @Column(name="dataprimerasincro",nullable = false,length = 29,precision = 6)
+    @Column(name="dataprimerasincro",length = 29,precision = 6)
     java.sql.Timestamp dataPrimeraSincro;
 
     @Column(name="codientitat",nullable = false,length = 50)
@@ -47,7 +47,7 @@ public class SincroUnitatsJPA implements SincroUnitats {
     @Type(type = "org.hibernate.type.TextType")
     java.lang.String observacions;
 
-    @Column(name="usuariid",length = 19)
+    @Column(name="usuariid",nullable = false,length = 19)
     java.lang.Long usuariId;
 
 
@@ -76,12 +76,11 @@ public class SincroUnitatsJPA implements SincroUnitats {
     this.usuariId=usuariId;
 }
   /** Constructor dels valors Not Null */
-  public SincroUnitatsJPA(long sincrounitatsId , java.sql.Timestamp dataCreacio , java.sql.Timestamp dataDarreraSincro , java.sql.Timestamp dataPrimeraSincro , java.lang.String codiEntitat) {
+  public SincroUnitatsJPA(long sincrounitatsId , java.sql.Timestamp dataCreacio , java.lang.String codiEntitat , java.lang.Long usuariId) {
     this.sincrounitatsId=sincrounitatsId;
     this.dataCreacio=dataCreacio;
-    this.dataDarreraSincro=dataDarreraSincro;
-    this.dataPrimeraSincro=dataPrimeraSincro;
     this.codiEntitat=codiEntitat;
+    this.usuariId=usuariId;
 }
   public SincroUnitatsJPA(SincroUnitats __bean) {
     this.setSincrounitatsId(__bean.getSincrounitatsId());
@@ -160,7 +159,7 @@ public class SincroUnitatsJPA implements SincroUnitats {
 // IMP Field:usuariid | Table: rfh_usuari | Type: 1  
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuariid", referencedColumnName ="usuariID", nullable = true, insertable=false, updatable=false, foreignKey=@ForeignKey(name="rfh_sncunitats_usuari_usuid_fk"))
+    @JoinColumn(name = "usuariid", referencedColumnName ="usuariID", nullable = false, insertable=false, updatable=false, foreignKey=@ForeignKey(name="rfh_sncunitats_usuari_usuid_fk"))
     private UsuariJPA usuari;
 
     public UsuariJPA getUsuari() {

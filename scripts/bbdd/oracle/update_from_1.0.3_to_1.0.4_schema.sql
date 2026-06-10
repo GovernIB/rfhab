@@ -17,7 +17,6 @@ alter table rfh_sincrounitats
     add constraint rfh_sncunitats_usuari_usuid_fk 
     foreign key (usuariid) 
     references rfh_usuari;
-create index rfh_sincrounitats_pk_i on rfh_sincrounitats (sincrounitatsid);
 create index rfh_sncunitats_usuariid_fk_i on rfh_sincrounitats (usuariid);
 grant select on rfh_sincrounitats_seq to www_rfhab;
 grant select,insert,delete,update on rfh_sincrounitats to www_rfhab;

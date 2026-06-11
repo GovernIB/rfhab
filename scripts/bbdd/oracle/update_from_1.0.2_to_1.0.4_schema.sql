@@ -22,3 +22,4 @@ grant select on rfh_sincrounitats_seq to www_rfhab;
 grant select,insert,delete,update on rfh_sincrounitats to www_rfhab;
 
 ALTER TABLE RFH_LLOCHABILITACIO RENAME CONSTRAINT rfh_llochab_hab_habilitacid_fk TO rfh_llochabil_hab_habid_fk;
+create index rfh_habilitacio_nomid_fk_i on rfh_habilitacio (nomid);

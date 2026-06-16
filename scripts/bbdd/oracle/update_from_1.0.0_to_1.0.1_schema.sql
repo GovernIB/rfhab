@@ -8,7 +8,7 @@ ALTER TABLE RFH_HABILITACIO ALTER COLUMN habilitacioid SET DEFAULT nextval('rfh_
 ALTER TABLE RFH_HABILITACIO RENAME CONSTRAINT rfh_rol_pk TO rfh_habilitacio_pk;
 ALTER TABLE RFH_HABILITACIO RENAME CONSTRAINT rfh_rol_traduccio_nomid_fk TO rfh_habil_traduccio_nomid_fk;
 ALTER INDEX RFH_ROL_NOMID_FK_I RENAME TO rfh_habilitacio_nomid_fk_i;
-ALTER INDEX RFH_ROL_PK_I RENAME TO rfh_habilitacio_pk_i;
+--ALTER INDEX RFH_ROL_PK_I RENAME TO rfh_habilitacio_pk_i;
 
 ALTER TABLE RFH_LLOCROL RENAME TO rfh_llochabilitacio;
 ALTER TABLE RFH_LLOCHABILITACIO RENAME COLUMN llocrolid TO llochabilitacioid;
@@ -19,5 +19,5 @@ ALTER TABLE RFH_LLOCHABILITACIO RENAME CONSTRAINT rfh_llocrol_pk TO rfh_llochabi
 ALTER TABLE RFH_LLOCHABILITACIO RENAME CONSTRAINT rfh_llocrol_lloc_llocid_fk TO rfh_llochabil_lloc_llocid_fk;
 ALTER TABLE RFH_LLOCHABILITACIO RENAME CONSTRAINT rfh_llocrol_rol_rolid_fk TO rfh_llochab_hab_habilitacid_fk;
 ALTER INDEX RFH_LLOCROL_LLOCID_FK_I RENAME TO rfh_llochabil_llocid_fk_i;
-ALTER INDEX RFH_LLOCROL_PK_I RENAME TO rfh_llochabilitacio_pk_i;
+--ALTER INDEX RFH_LLOCROL_PK_I RENAME TO rfh_llochabilitacio_pk_i;
 ALTER INDEX RFH_LLOCROL_ROLID_FK_I RENAME TO rfh_llochabil_hab_habid_fk_i;

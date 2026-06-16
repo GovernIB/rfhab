@@ -309,9 +309,15 @@ public class FuncionariAdminController extends FuncionariController {
 				? request.getParameter("lloc.personalOamr")
 				: "";
 		request.getSession().removeAttribute(Constants.ATTR_FILTRE_FOAMR_VALOR_PER_DEFECTE);
-		String actiusSelectvalue = (StringUtils.isNotEmpty(request.getParameter("actiusSegonsDatabaixaName")))
-				? request.getParameter("actiusSegonsDatabaixaName")
-				: "";
+		final String actiusSelectParam = request.getParameter("actiusSegonsDatabaixaName");
+		String actiusSelectvalue;
+		if (actiusSelectParam != null) {
+			actiusSelectvalue = actiusSelectParam;
+		} else {
+			final String filtreActiusValorPerDefecte = (String) request.getSession()
+					.getAttribute(Constants.ATTR_FILTRE_FACTIUS_VALOR_PER_DEFECTE);
+			actiusSelectvalue = StringUtils.isNotEmpty(filtreActiusValorPerDefecte) ? filtreActiusValorPerDefecte : "1";
+		}
 		request.getSession().removeAttribute(Constants.ATTR_FILTRE_FACTIUS_VALOR_PER_DEFECTE);
 		String assignatsSelectvalue = (StringUtils.isNotEmpty(request.getParameter("assignatsAllocName")))
 				? request.getParameter("assignatsAllocName")
@@ -486,9 +492,15 @@ public class FuncionariAdminController extends FuncionariController {
 
 	public Where getAdditionalConditionDonatsDeBaixa(HttpServletRequest request) throws I18NException {
 		// filtrar per donats de baixa (actius)
-		final String actiusSelectvalue = (StringUtils.isNotEmpty(request.getParameter("actiusSegonsDatabaixaName")))
-				? request.getParameter("actiusSegonsDatabaixaName")
-				: "";
+		final String actiusSelectParam = request.getParameter("actiusSegonsDatabaixaName");
+		String actiusSelectvalue;
+		if (actiusSelectParam != null) {
+			actiusSelectvalue = actiusSelectParam;
+		} else {
+			final String filtreActiusValorPerDefecte = (String) request.getSession()
+					.getAttribute(Constants.ATTR_FILTRE_FACTIUS_VALOR_PER_DEFECTE);
+			actiusSelectvalue = StringUtils.isNotEmpty(filtreActiusValorPerDefecte) ? filtreActiusValorPerDefecte : "1";
+		}
 		log.info("actiusSelectvalue ==> " + actiusSelectvalue);
 
 		if (TIPUS_IDENTIFICACIO_SELECCIONA.equals(actiusSelectvalue)) {

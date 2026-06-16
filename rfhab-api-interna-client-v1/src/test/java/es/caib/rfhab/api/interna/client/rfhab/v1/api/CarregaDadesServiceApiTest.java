@@ -84,7 +84,7 @@ class CarregaDadesServiceApiTest {
 
 
         FitxersCarrega fitxers = new FitxersCarrega();
-        fitxers.setExcel(Files.readAllBytes(new File("20260220_RFH_Normalitzat.ods").toPath()));
+        fitxers.setExcel(Files.readAllBytes(new File("20260610 RFH COMPLET.ods").toPath()));
         fitxers.setProperties(Files.readAllBytes(new File("carregadormassiu.properties").toPath()));
 
         String response = api.carregaInicialDades(fitxers);

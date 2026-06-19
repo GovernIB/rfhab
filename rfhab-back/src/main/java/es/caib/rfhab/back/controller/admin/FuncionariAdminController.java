@@ -327,6 +327,7 @@ public class FuncionariAdminController extends FuncionariController {
 		if (funcionariFilterForm.isNou()) {
 
 			funcionariFilterForm.addHiddenField(FUNCIONARIID);
+			funcionariFilterForm.addHiddenField(NUMERO);
 			funcionariFilterForm.addHiddenField(DATACREACIO);
 			funcionariFilterForm.addHiddenField(TIPUSIDENTIFICADOR);
 			// funcionariFilterForm.addHiddenField(IDENTIFICADOR);

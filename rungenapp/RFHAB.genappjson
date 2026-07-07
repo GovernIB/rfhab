@@ -2092,8 +2092,8 @@
           "digits": 0,
           "isNotNullable": false,
           "labels": {
-            "ca": "Número CAI",
-            "es": "Número CAI"
+            "ca": "Número de CAI",
+            "es": "Número de CAI"
           },
           "javaName": "numeroCai",
           "javaType": "java.lang.String",
@@ -2376,8 +2376,8 @@
           "digits": 0,
           "isNotNullable": true,
           "labels": {
-            "ca": "Número CAI",
-            "es": "Número CAI"
+            "ca": "Número de CAI",
+            "es": "Número de CAI"
           },
           "javaName": "numeroCai",
           "javaType": "java.lang.String",

@@ -521,7 +521,7 @@ public class FuncionariRestService extends RestUtils {
 			@Parameter(description = "Usuari", required = true, schema = @Schema(implementation = String.class)) @QueryParam("username") @NotNull String username,
 			@Parameter(description = "Correu electrònic", required = true, example = Constants.CORREU_PLACEHOLDER, schema = @Schema(implementation = String.class, pattern = CORREU_PATTERN)) @QueryParam("correu") @NotNull String correu,
 			@Parameter(description = "EntitatID", required = true, example = "1000") @QueryParam("entitatId") @NotNull Long entitatId,
-			@Parameter(description = "Número CAI", required = false, schema = @Schema(defaultValue = Constants.NUMEROCAI_BUIT, implementation = String.class)) @QueryParam("numerocai") String numeroCai,
+			@Parameter(description = "Número de CAI", required = false, schema = @Schema(defaultValue = Constants.NUMEROCAI_BUIT, implementation = String.class)) @QueryParam("numerocai") String numeroCai,
 			@Parameter(description = "Observacions", required = false) @QueryParam("observacions") String observacions,
 			@Parameter(description = "Data de baixa", required = false, example = "2025-08-31T06:15:00+00:00", schema = @Schema(implementation = String.class, pattern = DATE_PATTERN_ISO8601_DATE_AND_TIME)) @QueryParam("databaixa") String dataBaixaStr) {
 		try {
@@ -675,13 +675,13 @@ public class FuncionariRestService extends RestUtils {
 			@Parameter(description = "Identificador de l'usuari que està realitzant el registre d'un nou FH", required = true, example = "9999", schema = @Schema(type = "int")) @NotNull @QueryParam("usuariid") Integer usuariId,
 			@Parameter(description = "Identificador (NIF o NIE)", required = true) @NotNull @QueryParam("identificador") String identificador,
 			// @Parameter(description = "Identificador (NIF, NIE o passaport)", required = true) @NotNull @QueryParam("identificador") String identificador,
-			@Parameter(description = "Número CAI", required = false, schema = @Schema(defaultValue = Constants.NUMEROCAI_BUIT, implementation = String.class)) @QueryParam("numerocai") String numeroCai) {
+			@Parameter(description = "Número de CAI", required = false, schema = @Schema(defaultValue = Constants.NUMEROCAI_BUIT, implementation = String.class)) @QueryParam("numerocai") String numeroCai) {
 		try {
 			StringBuilder sb = new StringBuilder();
 			sb.append("Llengua: " + language + "\n");
 			sb.append("Usuari: " + usuariId + "\n");
 			sb.append("Funcionari identificador: " + identificador + "\n");
-			sb.append("Número CAI: " + numeroCai + "\n");
+			sb.append("Número de CAI: " + numeroCai + "\n");
 			log.info(sb.toString());
 			if (numeroCai == null) {
 				numeroCai = Constants.NUMEROCAI_BUIT;
@@ -764,13 +764,13 @@ public class FuncionariRestService extends RestUtils {
 			@Parameter(description = "Identificador de l'usuari que està realitzant el registre d'un nou FH", required = true, example = "9999", schema = @Schema(type = "int")) @NotNull @QueryParam("usuariid") Integer usuariId,
 			@Parameter(description = "Identificador (NIF o NIE)", required = true) @NotNull @QueryParam("identificador") String identificador,
 			// @Parameter(description = "Identificador (NIF, NIE o passaport)", required = true) @NotNull @QueryParam("identificador") String identificador,
-			@Parameter(description = "Número CAI", required = false, schema = @Schema(defaultValue = Constants.NUMEROCAI_BUIT, implementation = String.class)) @QueryParam("numerocai") String numeroCai) {
+			@Parameter(description = "Número de CAI", required = false, schema = @Schema(defaultValue = Constants.NUMEROCAI_BUIT, implementation = String.class)) @QueryParam("numerocai") String numeroCai) {
 		try {
 			StringBuilder sb = new StringBuilder();
 			sb.append("Llengua: " + language + "\n");
 			sb.append("Usuari: " + usuariId + "\n");
 			sb.append("Funcionari identificador: " + identificador + "\n");
-			sb.append("Número CAI: " + numeroCai + "\n");
+			sb.append("Número de CAI: " + numeroCai + "\n");
 			log.info(sb.toString());
 
 			if (numeroCai == null) {

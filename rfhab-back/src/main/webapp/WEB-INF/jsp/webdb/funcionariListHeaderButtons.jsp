@@ -38,7 +38,7 @@
      
       <%-- BOTO DE NOU ELEMENT EN LLISTAT  --%>
     <c:if test="${__theFilterForm.addButtonVisible}">
-      <a class="btn btn-sm btn-success float-right botoselecciolist"  style="" role="button" 
+      <a class="btn btn-sm btn-success-contrast float-right botoselecciolist"  style="" role="button" 
         href="<c:url value="${contexte}/new"/>"> <i class="fas fa-plus-circle"></i>
        <fmt:message key="genapp.createtitle" >
          <fmt:param value="${entityname}"/>

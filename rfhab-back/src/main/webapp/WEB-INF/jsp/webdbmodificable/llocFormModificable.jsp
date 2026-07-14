@@ -75,7 +75,7 @@
 									<td><fmt:formatDate pattern="dd/MM/yyyy" value="${funcionariItem.dataInici}" /></td>
 									<td><fmt:formatDate pattern="dd/MM/yyyy" value="${funcionariItem.dataFi}" /></td>
 									<td>${funcionariItem.numeroCai}</td>
-									<!-- <td><a class="btn btn-primary btn-sm" href="<c:url value="/admin/funcionari/view/${funcionariItem.funcionariID}"/>"><fmt:message key="detall"/></a></td> -->
+									<!-- <td><a class="btn btn-primary-contrast btn-sm" href="<c:url value="/admin/funcionari/view/${funcionariItem.funcionariID}"/>"><fmt:message key="detall"/></a></td> -->
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -206,7 +206,7 @@
 									<td><fmt:formatDate pattern="dd/MM/yyyy" value="${funcionariItem.dataInici}" /></td>
 									<td><fmt:formatDate pattern="dd/MM/yyyy" value="${funcionariItem.dataFi}" /></td>
 									<td>${funcionariItem.numeroCai}</td>
-									<!-- <td><a class="btn btn-primary btn-sm" href="<c:url value="/admin/funcionari/view/${funcionariItem.funcionariID}"/>"><fmt:message key="detall"/></a></td> -->
+									<!-- <td><a class="btn btn-primary-contrast btn-sm" href="<c:url value="/admin/funcionari/view/${funcionariItem.funcionariID}"/>"><fmt:message key="detall"/></a></td> -->
 								</tr>
 							</c:forEach>
 						</tbody>

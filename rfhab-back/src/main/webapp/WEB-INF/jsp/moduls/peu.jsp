@@ -33,7 +33,7 @@
 
 			<!-- Button to trigger modal -->
 			<small><a href="#modalAjuda" role="button"
-				data-toggle="modal" style="color:#999"><fmt:message key="ajuda.necessitau" /></a></small>
+				data-toggle="modal"><fmt:message key="ajuda.necessitau" /></a></small>
 		</div>
 
 
@@ -94,6 +94,17 @@
 
 #peu-esquerra {
 	width: 25rem;
+}
+
+#peu-esquerra small,
+#peu-esquerra small *,
+#peu-dreta small,
+#peu-dreta small *,
+#peu-dreta a,
+#peu-dreta a:hover,
+#peu-dreta a:focus,
+#peu-dreta a:active {
+	color: #ffffff !important;
 }
 
 #modalAjuda {

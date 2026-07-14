@@ -205,17 +205,17 @@
 	margin: 0rem 4rem;
 }
 
-#FilterDiv .btn-primary, #FilterDiv .btn-warning, #FilterDiv .btn-secondary,
-.table-genapp-list tbody td .btn-group .btn-primary, .table-genapp-list tbody td .btn-group .btn-warning, .table-genapp-list tbody td .btn-group .btn-secondary {
-	background-color: #246EB9;
-	border-color: #246EB9;
+#FilterDiv .btn-primary-contrast, #FilterDiv .btn-warning, #FilterDiv .btn-secondary,
+.table-genapp-list tbody td .btn-group .btn-primary-contrast, .table-genapp-list tbody td .btn-group .btn-warning, .table-genapp-list tbody td .btn-group .btn-secondary {
+	background-color: #00356e;
+	border-color: #00356e;
 	color: #FDFFFC;
 }
 
-#FilterDiv .btn-primary:hover, #FilterDiv .btn-warning:hover, #FilterDiv .btn-secondary:hover,
-.table-genapp-list tbody td .btn-group .btn-primary:hover, .table-genapp-list tbody td .btn-group .btn-warning:hover, .table-genapp-list tbody td .btn-group .btn-secondary:hover {
-	background-color: #00B2FF;
-	border-color: #00B2FF;
+#FilterDiv .btn-primary-contrast:hover, #FilterDiv .btn-warning:hover, #FilterDiv .btn-secondary:hover,
+.table-genapp-list tbody td .btn-group .btn-primary-contrast:hover, .table-genapp-list tbody td .btn-group .btn-warning:hover, .table-genapp-list tbody td .btn-group .btn-secondary:hover {
+	background-color: #246EB9;
+	border-color: #246EB9;
 }
 
 ul {

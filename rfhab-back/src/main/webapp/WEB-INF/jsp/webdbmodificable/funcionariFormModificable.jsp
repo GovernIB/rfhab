@@ -54,7 +54,7 @@
 										</c:if>
 									</td>
 									<td><fmt:formatDate value="${lloc.dataInici}" /></td>
-									<td><a class="btn btn-primary btn-sm"
+									<td><a class="btn btn-primary-contrast btn-sm"
 										href="<c:url value="/admin/lloc/view/${lloc.lloc.llocID}"/>"><i
 											class="far fa-eye" title="Veure detall"></i>&nbsp;<fmt:message key="detall" /></a></td>
 								</tr>
@@ -68,7 +68,7 @@
 				<div class="row" style="margin-left: 12px;">
 					<div class="alert alert-warning" role="alert"><fmt:message key="funcionari.sense.lloc" /></div>
 					<p>
-						<a class="btn btn-primary btn-sm"
+						<a class="btn btn-primary-contrast btn-sm"
 							href="<c:url value="/admin/funcionarilloc/assignarfuncionari/${funcionari.funcionariID}"/>"><fmt:message key="funcionari.assignar.lloc" /></a>
 					</p>
 				</div>
@@ -112,12 +112,12 @@
 									<td>${gen:findValue(activitat.estat, listOfValuesForEstat)}</td>
 									<td>
 										<a href="<c:url value="/user/activitat/view/${activitat.activitatID}"/>"
-											class="btn btn-primary btn-sm" target="_blank">
+											class="btn btn-primary-contrast btn-sm" target="_blank">
 												<i class="far fa-eye" title="Veure detall"></i>
 										</a>
 										<c:if test="${activitat.arxiuDocumentID != null && !activitat.arxiuDocumentID.isEmpty()}">
 											<a href="<c:url value="${UserController.CONTEXTWEB}modelconsentiment/${activitat.arxiuDocumentID}"/>"
-												class="btn btn-success btn-sm" target="_blank"
+												class="btn btn-success-contrast btn-sm" target="_blank"
 												onclick="return descarregarModelConsentiment(event, this);">
 													<i class="fa fa-file-download" 
 														title="<fmt:message key="activitat.descarrega.modelconsentiment" />"></i>
@@ -305,7 +305,7 @@
 									<td><fmt:formatDate pattern="dd/MM/yyyy" value="${lloc.dataFi}" /></td>
 									<td>${lloc.numeroCai}</td>
 									<!-- <td>
-										<a class="btn btn-primary btn-sm" href="<c:url value="/admin/lloc/view/${lloc.lloc.llocID}"/>">
+										<a class="btn btn-primary-contrast btn-sm" href="<c:url value="/admin/lloc/view/${lloc.lloc.llocID}"/>">
 											<i class="far fa-eye" title="Veure detall"></i>&nbsp;<fmt:message key="detall" />
 										</a>
 									</td> -->

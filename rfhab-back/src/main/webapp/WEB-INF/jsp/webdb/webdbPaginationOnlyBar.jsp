@@ -59,7 +59,7 @@ function submitPage(page) {
         // First |< 
         if (start != 1) {
         %>
-        <li class="page-item"><a class="page-link" href="#" onclick="submitPage(0)"
+        <li class="page-item-contrast"><a class="page-link-contrast" href="#" onclick="submitPage(0)"
             title="<fmt:message key="genapp.pagination.primerapagina" />">
                 <div style="transform: rotate(-90deg)">&#8892;</div>
         </a></li>
@@ -73,7 +73,7 @@ function submitPage(page) {
         <fmt:message var="retrocedirTitle" key="genapp.pagination.retrocedir">
             <fmt:param value="${retrocedir}" />
         </fmt:message>
-        <li class="page-item"><a class="page-link" href="#" style="letter-spacing: -4px;" onclick="submitPage(${retrocedir})"
+        <li class="page-item-contrast"><a class="page-link-contrast" href="#" style="letter-spacing: -4px;" onclick="submitPage(${retrocedir})"
             title="${retrocedirTitle}"> &lt;&lt; </a></li>
         <%
         }
@@ -81,7 +81,7 @@ function submitPage(page) {
         // Previous < 
         if (currentIndex != 1) {
         %>
-        <li class="page-item"><a class="page-link" href="#"
+        <li class="page-item-contrast"><a class="page-link-contrast" href="#"
             onclick="submitPage(<%=Math.max(1, currentIndex - 1)%>)"
             title="<fmt:message key="genapp.pagination.anterior" />"> &#60; </a></li>
         <%
@@ -92,10 +92,10 @@ function submitPage(page) {
         <c:forEach var="i" begin="${start}" end="${end}">
             <c:choose>
                 <c:when test="${i == currentIndex}">
-                    <li class="page-item active"><a class="page-link" href="#"><c:out value="${i}" /></a></li>
+                    <li class="page-item-contrast active"><a class="page-link-contrast" href="#"><c:out value="${i}" /></a></li>
                 </c:when>
                 <c:otherwise>
-                    <li class="page-item"><a class="page-link" href="#" onclick="submitPage(${i})"> <c:out
+                    <li class="page-item-contrast"><a class="page-link-contrast" href="#" onclick="submitPage(${i})"> <c:out
                                 value="${i}" />
                     </a></li>
                 </c:otherwise>
@@ -107,7 +107,7 @@ function submitPage(page) {
         if (currentIndex != totalPages) {
         %>
 
-        <li class="page-item"><a class="page-link" href="#"
+        <li class="page-item-contrast"><a class="page-link-contrast" href="#"
             onclick="submitPage(<%=Math.min(currentIndex + 1, totalPages)%>)"
             title="<fmt:message key="genapp.pagination.seguent" />"> &#62; </a></li>
         <%
@@ -120,7 +120,7 @@ function submitPage(page) {
         <fmt:message var="avancarTitle" key="genapp.pagination.avancar">
             <fmt:param value="${avancar}" />
         </fmt:message>
-        <li class="page-item"><a class="page-link" style="letter-spacing:-4px;" href="#" onclick="submitPage(${avancar})"
+        <li class="page-item-contrast"><a class="page-link-contrast" style="letter-spacing:-4px;" href="#" onclick="submitPage(${avancar})"
             title="${avancarTitle}">&#62;&#62;</a></li>
         <%
         }
@@ -128,7 +128,7 @@ function submitPage(page) {
         // Last  >|
         if (end != totalPages) {
         %>
-        <li class="page-item"><a class="page-link" href="#" onclick="submitPage(${totalPages})"
+        <li class="page-item-contrast"><a class="page-link-contrast" href="#" onclick="submitPage(${totalPages})"
             title="<fmt:message key="genapp.pagination.darrerapagina" />">
                 <div style="transform: rotate(+90deg)">&#8892;</div>
         </a></li>

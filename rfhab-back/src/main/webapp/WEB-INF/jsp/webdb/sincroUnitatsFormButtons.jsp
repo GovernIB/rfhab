@@ -3,7 +3,7 @@
   
   <div class="navbar-form" style="text-align:right">
     <c:if test="${__theForm.saveButtonVisible}">
-    <input type="submit" class="btn btn-primary" value="<fmt:message key="genapp.save"/>">
+    <input type="submit" class="btn btn-primary-contrast" value="<fmt:message key="genapp.save"/>">
     </c:if>
     <c:if test="${__theForm.cancelButtonVisible}">
     <input type="button" class="btn btn-secondary" onclick="goTo('<c:url value="${contexte}${__theForm.nou?'':'/'.concat(__theForm.sincroUnitats.sincrounitatsId)}/cancel"/>')" value="<fmt:message key="genapp.cancel"/>">

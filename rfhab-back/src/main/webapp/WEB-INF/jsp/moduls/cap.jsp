@@ -247,7 +247,7 @@
 			<ul class="navbar-nav mobil">
 
 				<li class="dropdown">
-					<button class="btn btn-primary dropdown-toggle" type="button"
+					<button class="btn btn-primary-contrast dropdown-toggle" type="button"
 						id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
 						aria-expanded="false">
 						<i class="fas fa-bars"></i>

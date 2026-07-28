@@ -23,6 +23,7 @@ function replaceUnitatsFilter(options) {
 
 function replaceOamrFilter() {
   const inputPersonalOamrLabel = "OAMR: ";
+  const inputPersonalOamrDescription = "Filtra si son personal OAMR.";
   const options = [
     {
       value: "",
@@ -52,7 +53,11 @@ function replaceOamrFilter() {
       inputAdedFieldPersonalOamrName,
       inputAdedFieldPersonalOamrName,
       inputPersonalOamrLabel,
-      options
+      options,
+      false,
+      null,
+      null,
+      inputPersonalOamrDescription
     );
   }
 
@@ -63,7 +68,11 @@ function replaceOamrFilter() {
       inputPersonalOamrName,
       inputPersonalOamrName,
       inputPersonalOamrLabel,
-      options
+      options,
+      false,
+      null,
+      null,
+      inputPersonalOamrDescription
     );
   }
 
@@ -75,7 +84,10 @@ function replaceOamrFilter() {
       inputSelectPersonalOamrName,
       inputPersonalOamrLabel,
       options,
-      true
+      true,
+      null,
+      null,
+      inputPersonalOamrDescription
     );
   }
 
@@ -98,6 +110,7 @@ function addActiusSelectFilter(filterCookieName, totsTraduit, labelTraduit) {
     },
   ];
   const label = (labelTraduit ?? "Habilitats") + ": ";
+  const description = "Mostra actius, donats de baixa o tots.";
 
   let formFilterContainer = document.querySelector("#FilterDiv > .form-inline");
   const actiusSelect = addNewSelectFilterToForm(
@@ -105,7 +118,8 @@ function addActiusSelectFilter(filterCookieName, totsTraduit, labelTraduit) {
     options,
     label,
     "actius-segons-databaixa-id",
-    "actiusSegonsDatabaixaName"
+    "actiusSegonsDatabaixaName",
+    description
   );
 
   if (actiusSelect && filterCookieName) {
@@ -130,6 +144,7 @@ function addActiusSelectFilter(filterCookieName, totsTraduit, labelTraduit) {
 
 function addUnitatsSuperiorSelectFilter(filterCookieName, options, labelTraduit) {
   const label = (labelTraduit ?? "Unitat superior") + ": ";
+  const description = "Filtra per unitat superior.";
 
   let formFilterContainer = document.querySelector("#FilterDiv > .form-inline");
   const unitatsSuperiorSelect = addNewSelectFilterToForm(
@@ -137,7 +152,8 @@ function addUnitatsSuperiorSelectFilter(filterCookieName, options, labelTraduit)
     options,
     label,
     "unitat-superior-id",
-    "unitatSuperiorName"
+    "unitatSuperiorName",
+    description
   );
 
   if (unitatsSuperiorSelect && filterCookieName) {
@@ -176,6 +192,7 @@ function addAssignatsLlocSelectFilter(filterCookieName) {
     },
   ];
   const label = "Assignats a Lloc: ";
+  const description = "Filtra si tenen un lloc assignat.";
 
   let formFilterContainer = document.querySelector("#FilterDiv > .form-inline");
   const actiusSelect = addNewSelectFilterToForm(
@@ -183,7 +200,8 @@ function addAssignatsLlocSelectFilter(filterCookieName) {
     options,
     label,
     "assignats-a-lloc-id",
-    "assignatsAllocName"
+    "assignatsAllocName",
+    description
   );
 
   if (actiusSelect && filterCookieName) {
@@ -208,6 +226,7 @@ function addAssignatsLlocSelectFilter(filterCookieName) {
 
 function addOamrSelectFilter(filterCookieName) {
   const inputPersonalOamrLabel = "OAMR: ";
+  const inputPersonalOamrDescription = "Filtra si son personal OAMR.";
   const options = [
     {
       value: "",
@@ -230,7 +249,8 @@ function addOamrSelectFilter(filterCookieName) {
     options,
     inputPersonalOamrLabel,
     inputAdedFieldPersonalOamrName,
-    inputAdedFieldPersonalOamrName
+    inputAdedFieldPersonalOamrName,
+    inputPersonalOamrDescription
   );
 
   if (actiusSelect && filterCookieName) {

@@ -23,7 +23,9 @@
 
 		<!-- Logo i nom aplicació -->
 		<div id="logoEntitatContainer" class="logoEntitat">
-			<a href="https://governdigital.fundaciobit.org/rfhabback"> <img
+			<a href="https://governdigital.fundaciobit.org/rfhabback"
+				aria-label="Enllaç a la pàgina inicial"
+				title="Enllaç a la pàgina inicial"> <img
 				src="<c:url value="/img/logo-caib.png"/>"
 				alt="Govern de les Illes Balears" style="height: 55px;" />
 			</a>
@@ -50,7 +52,7 @@
 				<%-- ENTITAT DE L'USUARI --%>
 
 				<li id="entitatInfoContainer" class="menuCapItem dropdown"><i
-					class="fas fa-university"></i> <span class="dropdown-toggle"
+					class="fas fa-university"></i> <button class="dropdown-toggle"
 					type="button" id="dropdownMenuEntitat" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false">
 						<%
@@ -61,7 +63,7 @@
 						%>Null<%
 						}
 						%>
-				</span>
+				</button>
 
 					<div class="dropdown-menu dropdown-menu-right"
 						aria-labelledby="dropdownMenuEntitat">
@@ -84,7 +86,7 @@
 					<li id="rolInfoContainer" class="menuCapItem dropdown"
 						onclick="location='<c:url value="/canviarPipella/admin"/>'">
 						<i class="fas fa-address-card"></i>
-						<span class="dropdown-toggle"
+						<button class="dropdown-toggle"
 							type="button" id="dropdownMenuRol" data-toggle="dropdown"
 							aria-haspopup="true" aria-expanded="false">
 							<c:if test="${not empty pipella}">
@@ -93,7 +95,7 @@
 							<c:if test="${empty pipella}">
 								<fmt:message key="inici" />
 							</c:if>
-						</span>
+						</button>
 						<div class="dropdown-menu dropdown-menu-right"
 							aria-labelledby="dropdownMenuRol">
 							<sec:authorize access="hasRole('ROLE_ADMIN')">
@@ -137,7 +139,7 @@
 						<li id="rolInfoContainer" class="menuCapItem dropdown"
 							onclick="location='<c:url value="/canviarPipella/user"/>'">
 							<i class="fas fa-address-card"></i>
-							<span class="dropdown-toggle"
+							<button class="dropdown-toggle"
 								type="button" id="dropdownMenuRol" data-toggle="dropdown"
 								aria-haspopup="true" aria-expanded="false">
 								<c:if test="${not empty pipella}">
@@ -146,7 +148,7 @@
 								<c:if test="${empty pipella}">
 									<fmt:message key="inici" />
 								</c:if>
-							</span>
+							</button>
 							<div class="dropdown-menu dropdown-menu-right"
 								aria-labelledby="dropdownMenuRol">
 								<sec:authorize access="hasRole('ROLE_USER')">
@@ -164,11 +166,11 @@
 				<%--  CONFIGURACIÓ DE L'USUARI AMB MENU D'IDIOMES  --%>
 
 				<li id="userInfoContainer" class="menuCapItem dropdown"><i
-					class="fa fa-user"></i> <span class="dropdown-toggle" type="button"
+					class="fa fa-user"></i> <button class="dropdown-toggle" type="button"
 					id="dropdownMenuUser" data-toggle="dropdown" aria-haspopup="true"
 					aria-expanded="false"> <%=loginInfo.getUsuariPersona().getNom() + " " + loginInfo.getUsuariPersona().getLlinatge1() + " ("
 		+ loginInfo.getUsuariPersona().getUsername() + ")"%>
-				</span>
+				</button>
 
 					<div class="dropdown-menu  dropdown-menu-right"
 						aria-labelledby="dropdownMenuUser">
@@ -378,10 +380,18 @@ header {
 	color: black;
 }
 
-.menuCapItem span {
+.menuCapItem span,
+.menuCapItem button.dropdown-toggle {
 	color: black;
 	text-transform: uppercase;
 	margin-left: 4px;
+}
+
+.menuCapItem button.dropdown-toggle {
+	background: transparent;
+	border: 0;
+	padding: 0;
+	font: inherit;
 }
 
 #menuCapContainer li {

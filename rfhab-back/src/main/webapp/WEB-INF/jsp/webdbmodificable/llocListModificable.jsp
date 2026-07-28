@@ -39,6 +39,67 @@ filtre_unitatso_vperdefecte =
     </c:forEach>
 
   $(document).ready(function () {
+    const defaultButtonAriaLabel = "Boton";
+
+    function normalizeLabelText(value) {
+      if (!value) {
+        return "";
+      }
+      return value.replace(/\u00a0/g, " ").trim();
+    }
+
+    function inferButtonAriaLabel(buttonElement) {
+      const explicitAriaLabel = normalizeLabelText(buttonElement.getAttribute("aria-label"));
+      if (explicitAriaLabel) {
+        return explicitAriaLabel;
+      }
+
+      const titleLabel = normalizeLabelText(buttonElement.getAttribute("title"));
+      if (titleLabel) {
+        return titleLabel;
+      }
+
+      const valueLabel = normalizeLabelText(buttonElement.value);
+      if (valueLabel) {
+        return valueLabel;
+      }
+
+      const textLabel = normalizeLabelText(buttonElement.textContent);
+      if (textLabel) {
+        return textLabel;
+      }
+
+      const imageElement = buttonElement.querySelector("img");
+      if (imageElement) {
+        const imageAlt = normalizeLabelText(imageElement.getAttribute("alt"));
+        if (imageAlt) {
+          return imageAlt;
+        }
+
+        const imageTitle = normalizeLabelText(imageElement.getAttribute("title"));
+        if (imageTitle) {
+          return imageTitle;
+        }
+      }
+
+      const idLabel = normalizeLabelText(buttonElement.id ? buttonElement.id.replace(/[_-]+/g, " ") : "");
+      if (idLabel) {
+        return idLabel;
+      }
+
+      return defaultButtonAriaLabel;
+    }
+
+    function applyButtonsAccessibilityAttributes() {
+      const buttonSelector = "button, input[type='button'], input[type='submit'], input[type='reset'], a.btn";
+      const buttonElements = document.querySelectorAll(buttonSelector);
+
+      buttonElements.forEach(function (buttonElement) {
+        buttonElement.setAttribute("role", "button");
+        buttonElement.setAttribute("aria-label", inferButtonAriaLabel(buttonElement));
+      });
+    }
+
     document.getElementById("FilterDiv").style.display = "inherit";
     document.getElementById("FilterButton").style.display = "none";
 
@@ -132,11 +193,14 @@ filtre_unitatso_vperdefecte =
 
     formatDataAltaColumn();
     setTimeout(formatDataAltaColumn, 0);
+    applyButtonsAccessibilityAttributes();
+    setTimeout(applyButtonsAccessibilityAttributes, 0);
 
     const tableBody = document.querySelector("table.table-genapp-list tbody");
     if (tableBody && window.MutationObserver) {
       const observer = new MutationObserver(function () {
         formatDataAltaColumn();
+        applyButtonsAccessibilityAttributes();
       });
       observer.observe(tableBody, { childList: true, subtree: true });
     }

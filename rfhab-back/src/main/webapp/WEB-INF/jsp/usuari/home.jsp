@@ -162,7 +162,7 @@ button[disabled][type="submit"] {
 
 		<div class="progress">
 			<div class="progress-bar progress-bar-success progress-bar-striped"
-				role="progressbar" aria-valuenow="0" aria-valuemin="0"
+				role="progressbar" aria-label="<fmt:message key=\"usuari.tramit.progres.nom\" />" aria-valuenow="0" aria-valuemin="0"
 				aria-valuemax="100" style="width: 0%">
 				<span class="sr-only">0%</span>
 			</div>
@@ -308,12 +308,12 @@ button[disabled][type="submit"] {
 							</div>
 							<div class="form-group">
 								<input type="checkbox" name="representant" value="representant"
-									id="representant"> <fmt:message key="usuari.tramit.dades.representant" />
+									id="representant"> <label for="representant">Representant</label><fmt:message key="usuari.tramit.dades.representant" />
 							</div>
 
 							<div class="formRepresentant" style="display: none;">
 
-								<h3><fmt:message key="usuari.tramit.dades.representant.titol" /></h3>
+								<h3><fmt:message key="usuari.tramit.dades.representant.titol"/></h3>
 
 								<div class="form-group">
 									<label><fmt:message key="usuari.tramit.dades.representant.nom" />*</label>

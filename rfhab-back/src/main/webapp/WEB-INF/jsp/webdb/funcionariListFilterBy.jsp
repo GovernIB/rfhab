@@ -75,7 +75,7 @@
               <fmt:message key="genapp.form.searchby" var="cercapernumero" >                
                  <fmt:param value="${numero}"/>
               </fmt:message>
-              <span class="add-on"><c:out value="${numero}" />:</span>
+                <label class="add-on" for="numero" title="${cercapernumero}"><c:out value="${numero}" />:</label>
               <form:input cssClass="search-query input-medium" placeholder="${cercapernumero}" path="numero" />
             </div>
 
@@ -154,7 +154,7 @@
               <fmt:message key="genapp.form.searchby" var="cercaperidentificador" >                
                  <fmt:param value="${identificador}"/>
               </fmt:message>
-              <span class="add-on"><c:out value="${identificador}" />:</span>
+                <label class="add-on" for="identificador" title="${cercaperidentificador}"><c:out value="${identificador}" />:</label>
               <form:input cssClass="search-query input-medium" placeholder="${cercaperidentificador}" path="identificador" />
             </div>
 
@@ -167,7 +167,7 @@
               <fmt:message key="genapp.form.searchby" var="cercaperusuari" >                
                  <fmt:param value="${usuari}"/>
               </fmt:message>
-              <span class="add-on"><c:out value="${usuari}" />:</span>
+                <label class="add-on" for="usuari" title="${cercaperusuari}"><c:out value="${usuari}" />:</label>
               <form:input cssClass="search-query input-medium" placeholder="${cercaperusuari}" path="usuari" />
             </div>
 

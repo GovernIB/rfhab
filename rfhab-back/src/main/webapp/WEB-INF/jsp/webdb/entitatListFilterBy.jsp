@@ -57,12 +57,13 @@
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="entitatIDDesde" />
+              <label for="entitatIDDesde_${entitat.entitatID}" class="sr-only">Seleccionar per ID desde</label>
+              <form:input id="entitatIDDesde_${entitat.entitatID}" cssClass="input-append input-small" path="entitatIDDesde" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
-
-              <form:input cssClass="input-append input-small search-query" path="entitatIDFins" />
+              <label for="entitatIDFins_${entitat.entitatID}" class="sr-only">Seleccionar per ID fins</label>
+              <form:input id="entitatIDFins_${entitat.entitatID}" cssClass="input-append input-small search-query" path="entitatIDFins" />
 
             </div>
 

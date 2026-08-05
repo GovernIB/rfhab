@@ -82,3 +82,6 @@ rfhab-ejb/carregadormassiu.properties
 doc/QuadernsDeCarrega/QuadernDeCarrega_actualitzacio_1.0.1/(CAT) Manual de Migració de Versions.odt
 rfhab-api-interna/testfiles/carregadormassiu.properties
 rfhab-api-interna-client-v1/carregadormassiu.properties
+scripts/bbdd/oracle/create_user.sql
+scripts/bbdd/oracle/delete_user.sql
+scripts/bbdd/oracle/initial_users.sql

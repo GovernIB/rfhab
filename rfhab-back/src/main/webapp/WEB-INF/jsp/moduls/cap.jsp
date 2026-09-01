@@ -106,13 +106,12 @@
 								</c:if>
 							</sec:authorize>
 							<sec:authorize access="hasRole('ROLE_USER')">
-								<c:if test="${pipella ne 'user'}">
+								<c:if test="${pipella ne 'user' && not rfh:getAmagarAssistentTramits()}">
 									<a class="dropdown-item"
 										href="<c:url value="/canviarPipella/user"/>"><fmt:message
 											key="rol.user" /></a>
 								</c:if>
 							</sec:authorize>
-
 							<sec:authorize access="hasRole('ROLE_SUPER')">
 								<c:if test="${pipella ne 'super'}">
 									<a class="dropdown-item"
@@ -120,7 +119,6 @@
 											key="rol.super" /></a>
 								</c:if>
 							</sec:authorize>
-
 							<sec:authorize access="hasRole('ROLE_SUPER')">
 								<c:if test="${rfh:isDesenvolupament()}">
 									<c:if test="${pipella ne 'webdb'}">
@@ -152,7 +150,7 @@
 							<div class="dropdown-menu dropdown-menu-right"
 								aria-labelledby="dropdownMenuRol">
 								<sec:authorize access="hasRole('ROLE_USER')">
-									<c:if test="${pipella ne 'user'}">
+									<c:if test="${pipella ne 'user' && not rfh:getAmagarAssistentTramits()}">
 										<a class="dropdown-item"
 											href="<c:url value="/canviarPipella/user"/>"><fmt:message
 												key="rol.user" /></a>

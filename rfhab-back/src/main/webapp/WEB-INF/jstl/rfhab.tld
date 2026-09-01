@@ -52,6 +52,13 @@
 </function>
 
 <function>
+        <name>getAmagarAssistentTramits</name>
+        <description>Retorna si s'ha d'amagar l'opció de funcionari/ària</description>
+        <function-class>es.caib.rfhab.commons.utils.Configuracio</function-class>
+        <function-signature>boolean getAmagarAssistentTramits()</function-signature>
+</function>
+
+<function>
         <name>hasRole</name>
         <description>hasRole</description>
         <function-class>es.caib.rfhab.back.security.LoginInfo</function-class>

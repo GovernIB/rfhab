@@ -75,6 +75,10 @@
 	<definition name="homeUsuari" extends="usuari">
 		<put-attribute name="contingut" value="/WEB-INF/jsp/usuari/home.jsp" />
 	</definition>
+
+    <definition name="declaracioaccessibilitat" extends="usuari">
+        <put-attribute name="contingut" value="/WEB-INF/jsp/usuari/declaracioaccessibilitat.jsp" />
+    </definition>
 	
 	<definition name="scanPage" extends="usuari">
 		<put-attribute name="contingut" value="/WEB-INF/jsp/moduls/blanc.jsp" />

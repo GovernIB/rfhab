@@ -120,6 +120,10 @@ public class Configuracio implements Constants {
         return "true".equalsIgnoreCase(getAppProperties().getProperty(RFHAB_PROPERTY_BASE + "iscaib"));
     }
 
+    public static boolean getAmagarAssistentTramits() {
+        return "true".equalsIgnoreCase(getAppProperties().getProperty(RFHAB_PROPERTY_BASE + "amagarAssistentTramits", "false"));
+    }
+
     public static String getAppEmail() {
         return getAppProperties().getProperty(RFHAB_PROPERTY_BASE + "email.from");
     }

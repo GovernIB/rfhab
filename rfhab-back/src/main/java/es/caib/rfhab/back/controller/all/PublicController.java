@@ -51,6 +51,11 @@ public class PublicController {
         response.getWriter().close();
 
     }
+
+    	@RequestMapping(value = "/declaracioaccessibilitat")
+    	public ModelAndView declaracioaccessibilitat() {
+    		return new ModelAndView("declaracioaccessibilitat");
+    	}
     
     
     @RequestMapping(value = "/public/avislegal")

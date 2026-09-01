@@ -6,7 +6,7 @@
     <parent>
         <artifactId>rfhab</artifactId>
         <groupId>es.caib.rfhab</groupId>
-        <version>1.0.6</version>
+        <version>1.0.5</version>
     </parent>
     <artifactId>rfhab-api-interna</artifactId>
     <packaging>war</packaging>

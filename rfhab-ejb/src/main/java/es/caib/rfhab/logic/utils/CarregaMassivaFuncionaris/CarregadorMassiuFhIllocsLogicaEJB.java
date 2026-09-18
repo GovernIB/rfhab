@@ -647,17 +647,17 @@ public class CarregadorMassiuFhIllocsLogicaEJB implements CarregadorMassiuFhIllo
                     dto.numCaiAlta,
                     habilitacions.stream().map(Object::toString)
                             .collect(Collectors.toUnmodifiableList()).toArray(new String[0]),
-                    dto.observacionsAlta, null, null);
+                    dto.observacionsAlta, dataAltaFh, dataBaixaFh);
             log.info("Creant lloc: " + nouLloc.toString());
             String respostaNouLloc = nouLloc(nouLloc);
             log.info("Resposta creació lloc: " + respostaNouLloc);
             codiLlocPropi = respostaNouLloc;
 
-            log.info("Donant alta lloc: " + dto.codiLlocFeina + " - " + dto.expansio);
+            /*log.info("Donant alta lloc: " + dto.codiLlocFeina + " - " + dto.expansio);
             String respostaDonarAltaLloc = donarAltaLloc(lang, usuariId, dto.codiLlocFeina, dto.expansio,
                     codiLlocPropi,
                     dto.numCaiAlta);
-            log.info("Resposta donar alta lloc: " + respostaDonarAltaLloc);
+            log.info("Resposta donar alta lloc: " + respostaDonarAltaLloc);*/
         } else {
             // SI EL LLOC JA EXISTIA, NOMÉS EL DONAREM D'ALTA EN CAS D'ESTAR DONAT DE BAIXA
             if (consultaLloc.donatDeBaixa) {

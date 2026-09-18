@@ -212,7 +212,7 @@ public class LlocRestService extends RestUtils {
 						parseDateTimeISO8601ToDate(dataBaixaStr, "data", language).getTime());
 			}
 			Timestamp dataAlta = null;
-			if (dataBaixaStr != null && !dataAltaStr.isEmpty()) {
+			if (dataAltaStr != null && !dataAltaStr.isEmpty()) {
 				dataAlta = new Timestamp(
 						parseDateTimeISO8601ToDate(dataAltaStr, "data", language).getTime());
 			}

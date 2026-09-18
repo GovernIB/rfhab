@@ -424,8 +424,8 @@ public class LlocAdminController extends LlocController {
 				mav.addObject("historic", historicCanvis);
 			}
 
-			llocForm.addReadOnlyField(LlocFields.CODILLOC);
-			llocForm.addReadOnlyField(LlocFields.EXPANSIO);
+			// llocForm.addReadOnlyField(LlocFields.CODILLOC);
+			// llocForm.addReadOnlyField(LlocFields.EXPANSIO);
 		}
 
 		llocForm.addAdditionalButton(new AdditionalButton(" fas fa-long-arrow-alt-left", "tornar",

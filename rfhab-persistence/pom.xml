@@ -65,13 +65,6 @@
             <scope>provided</scope>
         </dependency>
 
-
-        <!-- Dependències de test -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
 		
 		<dependency>
             <groupId>org.postgresql</groupId>

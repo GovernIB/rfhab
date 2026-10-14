@@ -137,6 +137,11 @@
     </properties>
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.13.2</version>
+            </dependency>
             <!-- Force odfdom-java version for all modules -->
             <dependency>
                 <groupId>org.odftoolkit</groupId>

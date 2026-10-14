@@ -33,7 +33,7 @@
 
 		<div id="logoRfhabContainer" class="logoEntitat">
 			<img src="<c:url value="/img/app-logo.png"/>" style="height: 4rem;"
-				alt="RFHab" title="RFHab" />
+				alt="RFHab" />
 		</div>
 
 		<%
@@ -65,7 +65,7 @@
 						%>
 				</button>
 
-					<div class="dropdown-menu dropdown-menu-right"
+					<div class="dropdown-menu dropdown-menu-right" role="menu"
 						aria-labelledby="dropdownMenuEntitat">
 
 						<%
@@ -96,7 +96,7 @@
 								<fmt:message key="inici" />
 							</c:if>
 						</button>
-						<div class="dropdown-menu dropdown-menu-right"
+						<div class="dropdown-menu dropdown-menu-right" role="menu"
 							aria-labelledby="dropdownMenuRol">
 							<sec:authorize access="hasRole('ROLE_ADMIN')">
 								<c:if test="${pipella ne 'admin'}">
@@ -147,7 +147,7 @@
 									<fmt:message key="inici" />
 								</c:if>
 							</button>
-							<div class="dropdown-menu dropdown-menu-right"
+							<div class="dropdown-menu dropdown-menu-right" role="menu"
 								aria-labelledby="dropdownMenuRol">
 								<sec:authorize access="hasRole('ROLE_USER')">
 									<c:if test="${pipella ne 'user' && not rfh:getAmagarAssistentTramits()}">
@@ -170,7 +170,7 @@
 		+ loginInfo.getUsuariPersona().getUsername() + ")"%>
 				</button>
 
-					<div class="dropdown-menu  dropdown-menu-right"
+					<div class="dropdown-menu  dropdown-menu-right" role="menu"
 						aria-labelledby="dropdownMenuUser">
 
 						<c:if test="${empty loginInfo}">
@@ -221,8 +221,8 @@
 								<c:set var="idiomaID" value="${idioma.idiomaID}" />
 								<a class="dropdown-item" href="?lang=${idiomaID}"> <img
 									src="<c:url value="/img/${idiomaID}_petit_${lang eq idiomaID? 'on' : 'off'}.gif"/>"
-									alt="${idiomaID}" style="margin-right: 0.5rem;" width="17"
-									height="14" border="0" />${idioma.nom}
+									alt="${idiomaID}" style="margin-right: 0.5rem; border: 0px;" width="17"
+									height="14" />${idioma.nom}
 								</a>
 							</c:forEach>
 
@@ -253,7 +253,7 @@
 						<i class="fas fa-bars"></i>
 						<fmt:message key="menu" />
 					</button>
-					<div class="dropdown-menu dropdown-menu-right"
+					<div class="dropdown-menu dropdown-menu-right" role="menu"
 						aria-labelledby="dropdownMenu1">
 
 						<%-- MENU FUNCIONARI/ÀRIA --%>
@@ -325,7 +325,7 @@
 <!-- FI Header -->
 
 <!-- CAPÇALERA MODERNA -->
-<script type="text/javascript">
+<script>
 	$('.subtitolMay').css('font-size', '1rem !important');
 </script>
 
@@ -451,4 +451,3 @@ h1 {
 				+ tipus + '/' + btoa(window.location);
 	}
 </script>
-

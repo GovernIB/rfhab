@@ -5,7 +5,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,HistoricLlocFields.LLOCID)}">
         <tr id="historicLloc_llocID_rowid">
           <td id="historicLloc_llocID_columnlabelid">
-            <label>
+            <label for="historicLloc.llocID">
               <fmt:message key="${(empty __theForm.labels[HistoricLlocFields.LLOCID])?'historicLloc.llocID':__theForm.labels[HistoricLlocFields.LLOCID]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[HistoricLlocFields.LLOCID]}">
@@ -16,11 +16,11 @@
           <form:errors path="historicLloc.llocID" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,HistoricLlocFields.LLOCID)}" >
           <form:hidden path="historicLloc.llocID"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.historicLloc.llocID,__theForm.listOfLlocForLlocID)}"  />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.historicLloc.llocID,__theForm.listOfLlocForLlocID)}" aria-label="historicLloc.llocID" />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,HistoricLlocFields.LLOCID)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select id="historicLloc_llocID"  onchange="if(typeof onChangeLlocID == 'function') {  onChangeLlocID(this); };"  cssClass="form-control col-md-9-optional" path="historicLloc.llocID">
+          <form:select id="historicLloc_llocID"  onchange="if(typeof onChangeLlocID == 'function') {  onChangeLlocID(this); };"  cssClass="form-control col-md-9-optional" path="historicLloc.llocID"  aria-label="historicLloc.llocID" >
             <c:forEach items="${__theForm.listOfLlocForLlocID}" var="tmp">
                 <form:option value="${tmp.key}">${tmp.value}</form:option>
                 <c:if test="${empty tmp.key}">
@@ -36,7 +36,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,HistoricLlocFields.NUMEROCAI)}">
         <tr id="historicLloc_numeroCai_rowid">
           <td id="historicLloc_numeroCai_columnlabelid">
-            <label>
+            <label for="historicLloc.numeroCai">
               <fmt:message key="${(empty __theForm.labels[HistoricLlocFields.NUMEROCAI])?'historicLloc.numeroCai':__theForm.labels[HistoricLlocFields.NUMEROCAI]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[HistoricLlocFields.NUMEROCAI]}">
@@ -54,7 +54,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,HistoricLlocFields.OBSERVACIONS)}">
         <tr id="historicLloc_observacions_rowid">
           <td id="historicLloc_observacions_columnlabelid">
-            <label>
+            <label for="historicLloc.observacions">
               <fmt:message key="${(empty __theForm.labels[HistoricLlocFields.OBSERVACIONS])?'historicLloc.observacions':__theForm.labels[HistoricLlocFields.OBSERVACIONS]}" />
              </label>
               <c:if test="${not empty __theForm.help[HistoricLlocFields.OBSERVACIONS]}">
@@ -70,14 +70,14 @@
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_observacions" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_observacions" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('historicLloc.observacions'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('historicLloc.observacions'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('historicLloc.observacions'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_observacions').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_observacions').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_observacions').css('display', valor);
@@ -93,7 +93,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,HistoricLlocFields.DATACREACIO)}">
         <tr id="historicLloc_dataCreacio_rowid">
           <td id="historicLloc_dataCreacio_columnlabelid">
-            <label>
+            <label for="historicLloc.dataCreacio">
               <fmt:message key="${(empty __theForm.labels[HistoricLlocFields.DATACREACIO])?'historicLloc.dataCreacio':__theForm.labels[HistoricLlocFields.DATACREACIO]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[HistoricLlocFields.DATACREACIO]}">
@@ -103,8 +103,8 @@
           <td id="historicLloc_dataCreacio_columnvalueid">
     <form:errors path="historicLloc.dataCreacio" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
-                <div class="input-group date" id="historicLloc_dataCreacio" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,HistoricLlocFields.DATACREACIO)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#historicLloc_dataCreacio" path="historicLloc.dataCreacio" />
+                <div class="input-group date" id="historicLloc_dataCreacioDiv" data-target-input="nearest">
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,HistoricLlocFields.DATACREACIO)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#historicLloc_dataCreacio" path="historicLloc.dataCreacio" aria-label="historicLloc.dataCreacio"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,HistoricLlocFields.DATACREACIO)}" >
                     <div class="input-group-append"  data-target="#historicLloc_dataCreacio"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -112,7 +112,7 @@
                     </c:if>
                 </div>
             </div>
-        <script type="text/javascript">
+        <script>
             $(function () {
                 $('#historicLloc_dataCreacio').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
@@ -122,14 +122,15 @@
                     }
                 });
             });
-        </script>           </td>
+        </script>
+           </td>
         </tr>
         </c:if>
         
         <c:if test="${!gen:contains(__theForm.hiddenFields,HistoricLlocFields.USUARIID)}">
         <tr id="historicLloc_usuariID_rowid">
           <td id="historicLloc_usuariID_columnlabelid">
-            <label>
+            <label for="historicLloc.usuariID">
               <fmt:message key="${(empty __theForm.labels[HistoricLlocFields.USUARIID])?'historicLloc.usuariID':__theForm.labels[HistoricLlocFields.USUARIID]}" />
              </label>
               <c:if test="${not empty __theForm.help[HistoricLlocFields.USUARIID]}">
@@ -140,11 +141,11 @@
           <form:errors path="historicLloc.usuariID" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,HistoricLlocFields.USUARIID)}" >
           <form:hidden path="historicLloc.usuariID"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.historicLloc.usuariID,__theForm.listOfUsuariForUsuariID)}"  />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.historicLloc.usuariID,__theForm.listOfUsuariForUsuariID)}" aria-label="historicLloc.usuariID" />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,HistoricLlocFields.USUARIID)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select id="historicLloc_usuariID"  onchange="if(typeof onChangeUsuariID == 'function') {  onChangeUsuariID(this); };"  cssClass="form-control col-md-9-optional" path="historicLloc.usuariID">
+          <form:select id="historicLloc_usuariID"  onchange="if(typeof onChangeUsuariID == 'function') {  onChangeUsuariID(this); };"  cssClass="form-control col-md-9-optional" path="historicLloc.usuariID"  aria-label="historicLloc.usuariID" >
             <c:forEach items="${__theForm.listOfUsuariForUsuariID}" var="tmp">
                 <form:option value="${tmp.key}">${tmp.value}</form:option>
                 <c:if test="${empty tmp.key}">

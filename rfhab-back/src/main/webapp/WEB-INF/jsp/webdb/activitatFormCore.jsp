@@ -5,7 +5,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.FUNCIONARIID)}">
         <tr id="activitat_funcionariID_rowid">
           <td id="activitat_funcionariID_columnlabelid">
-            <label>
+            <label for="activitat.funcionariID">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.FUNCIONARIID])?'activitat.funcionariID':__theForm.labels[ActivitatFields.FUNCIONARIID]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.FUNCIONARIID]}">
@@ -16,11 +16,11 @@
           <form:errors path="activitat.funcionariID" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.FUNCIONARIID)}" >
           <form:hidden path="activitat.funcionariID"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.activitat.funcionariID,__theForm.listOfFuncionariForFuncionariID)}"  />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.activitat.funcionariID,__theForm.listOfFuncionariForFuncionariID)}" aria-label="activitat.funcionariID" />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,ActivitatFields.FUNCIONARIID)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select id="activitat_funcionariID"  onchange="if(typeof onChangeFuncionariID == 'function') {  onChangeFuncionariID(this); };"  cssClass="form-control col-md-9-optional" path="activitat.funcionariID">
+          <form:select id="activitat_funcionariID"  onchange="if(typeof onChangeFuncionariID == 'function') {  onChangeFuncionariID(this); };"  cssClass="form-control col-md-9-optional" path="activitat.funcionariID"  aria-label="activitat.funcionariID" >
             <c:forEach items="${__theForm.listOfFuncionariForFuncionariID}" var="tmp">
                 <form:option value="${tmp.key}">${tmp.value}</form:option>
                 <c:if test="${empty tmp.key}">
@@ -41,7 +41,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.TIPUS)}">
         <tr id="activitat_tipus_rowid">
           <td id="activitat_tipus_columnlabelid">
-            <label>
+            <label for="activitat.tipus">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.TIPUS])?'activitat.tipus':__theForm.labels[ActivitatFields.TIPUS]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.TIPUS]}">
@@ -52,11 +52,11 @@
           <form:errors path="activitat.tipus" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.TIPUS)}" >
           <form:hidden path="activitat.tipus"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.activitat.tipus,__theForm.listOfValuesForTipus)}"  />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.activitat.tipus,__theForm.listOfValuesForTipus)}" aria-label="activitat.tipus" />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,ActivitatFields.TIPUS)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select id="activitat_tipus"  onchange="if(typeof onChangeTipus == 'function') {  onChangeTipus(this); };"  cssClass="form-control col-md-9-optional" path="activitat.tipus">
+          <form:select id="activitat_tipus"  onchange="if(typeof onChangeTipus == 'function') {  onChangeTipus(this); };"  cssClass="form-control col-md-9-optional" path="activitat.tipus"  aria-label="activitat.tipus" >
             <c:forEach items="${__theForm.listOfValuesForTipus}" var="tmp">
                 <form:option value="${tmp.key}">${tmp.value}</form:option>
                 <c:if test="${empty tmp.key}">
@@ -72,7 +72,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.REGISTRE)}">
         <tr id="activitat_registre_rowid">
           <td id="activitat_registre_columnlabelid">
-            <label>
+            <label for="activitat.registre">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.REGISTRE])?'activitat.registre':__theForm.labels[ActivitatFields.REGISTRE]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.REGISTRE]}">
@@ -90,7 +90,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.TRAMIT)}">
         <tr id="activitat_tramit_rowid">
           <td id="activitat_tramit_columnlabelid">
-            <label>
+            <label for="activitat.tramit">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.TRAMIT])?'activitat.tramit':__theForm.labels[ActivitatFields.TRAMIT]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.TRAMIT]}">
@@ -108,7 +108,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.CODISIA)}">
         <tr id="activitat_codiSia_rowid">
           <td id="activitat_codiSia_columnlabelid">
-            <label>
+            <label for="activitat.codiSia">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.CODISIA])?'activitat.codiSia':__theForm.labels[ActivitatFields.CODISIA]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.CODISIA]}">
@@ -126,7 +126,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.AUTORITZACIOID)}">
         <tr id="activitat_autoritzacioID_rowid">
           <td id="activitat_autoritzacioID_columnlabelid">
-            <label>
+            <label for="activitat.autoritzacioID">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.AUTORITZACIOID])?'activitat.autoritzacioID':__theForm.labels[ActivitatFields.AUTORITZACIOID]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.AUTORITZACIOID]}">
@@ -144,7 +144,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.DATACREACIO)}">
         <tr id="activitat_dataCreacio_rowid">
           <td id="activitat_dataCreacio_columnlabelid">
-            <label>
+            <label for="activitat.dataCreacio">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.DATACREACIO])?'activitat.dataCreacio':__theForm.labels[ActivitatFields.DATACREACIO]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.DATACREACIO]}">
@@ -154,8 +154,8 @@
           <td id="activitat_dataCreacio_columnvalueid">
     <form:errors path="activitat.dataCreacio" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
-                <div class="input-group date" id="activitat_dataCreacio" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.DATACREACIO)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#activitat_dataCreacio" path="activitat.dataCreacio" />
+                <div class="input-group date" id="activitat_dataCreacioDiv" data-target-input="nearest">
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.DATACREACIO)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#activitat_dataCreacio" path="activitat.dataCreacio" aria-label="activitat.dataCreacio"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,ActivitatFields.DATACREACIO)}" >
                     <div class="input-group-append"  data-target="#activitat_dataCreacio"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -163,7 +163,7 @@
                     </c:if>
                 </div>
             </div>
-        <script type="text/javascript">
+        <script>
             $(function () {
                 $('#activitat_dataCreacio').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
@@ -173,14 +173,15 @@
                     }
                 });
             });
-        </script>           </td>
+        </script>
+           </td>
         </tr>
         </c:if>
         
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.INTERESSATNOM)}">
         <tr id="activitat_interessatNom_rowid">
           <td id="activitat_interessatNom_columnlabelid">
-            <label>
+            <label for="activitat.interessatNom">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.INTERESSATNOM])?'activitat.interessatNom':__theForm.labels[ActivitatFields.INTERESSATNOM]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.INTERESSATNOM]}">
@@ -196,14 +197,14 @@
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_interessatNom" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_interessatNom" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.interessatNom'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('activitat.interessatNom'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.interessatNom'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_interessatNom').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_interessatNom').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_interessatNom').css('display', valor);
@@ -219,7 +220,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.INTERESSATLLINATGE1)}">
         <tr id="activitat_interessatLlinatge1_rowid">
           <td id="activitat_interessatLlinatge1_columnlabelid">
-            <label>
+            <label for="activitat.interessatLlinatge1">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.INTERESSATLLINATGE1])?'activitat.interessatLlinatge1':__theForm.labels[ActivitatFields.INTERESSATLLINATGE1]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.INTERESSATLLINATGE1]}">
@@ -235,14 +236,14 @@
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_interessatLlinatge1" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_interessatLlinatge1" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.interessatLlinatge1'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('activitat.interessatLlinatge1'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.interessatLlinatge1'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_interessatLlinatge1').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_interessatLlinatge1').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_interessatLlinatge1').css('display', valor);
@@ -258,7 +259,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.INTERESSATLLINATGE2)}">
         <tr id="activitat_interessatLlinatge2_rowid">
           <td id="activitat_interessatLlinatge2_columnlabelid">
-            <label>
+            <label for="activitat.interessatLlinatge2">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.INTERESSATLLINATGE2])?'activitat.interessatLlinatge2':__theForm.labels[ActivitatFields.INTERESSATLLINATGE2]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.INTERESSATLLINATGE2]}">
@@ -274,14 +275,14 @@
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_interessatLlinatge2" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_interessatLlinatge2" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.interessatLlinatge2'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('activitat.interessatLlinatge2'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.interessatLlinatge2'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_interessatLlinatge2').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_interessatLlinatge2').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_interessatLlinatge2').css('display', valor);
@@ -297,7 +298,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.INTERESSATTIPUS)}">
         <tr id="activitat_interessatTipus_rowid">
           <td id="activitat_interessatTipus_columnlabelid">
-            <label>
+            <label for="activitat.interessatTipus">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.INTERESSATTIPUS])?'activitat.interessatTipus':__theForm.labels[ActivitatFields.INTERESSATTIPUS]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.INTERESSATTIPUS]}">
@@ -315,7 +316,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.INTERESSATIDENTIFICACIO)}">
         <tr id="activitat_interessatIdentificacio_rowid">
           <td id="activitat_interessatIdentificacio_columnlabelid">
-            <label>
+            <label for="activitat.interessatIdentificacio">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.INTERESSATIDENTIFICACIO])?'activitat.interessatIdentificacio':__theForm.labels[ActivitatFields.INTERESSATIDENTIFICACIO]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.INTERESSATIDENTIFICACIO]}">
@@ -333,7 +334,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.REPRESENTANTNOM)}">
         <tr id="activitat_representantNom_rowid">
           <td id="activitat_representantNom_columnlabelid">
-            <label>
+            <label for="activitat.representantNom">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.REPRESENTANTNOM])?'activitat.representantNom':__theForm.labels[ActivitatFields.REPRESENTANTNOM]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.REPRESENTANTNOM]}">
@@ -349,14 +350,14 @@
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_representantNom" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_representantNom" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.representantNom'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('activitat.representantNom'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.representantNom'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_representantNom').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_representantNom').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_representantNom').css('display', valor);
@@ -372,7 +373,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.REPRESENTANTLLINATGE1)}">
         <tr id="activitat_representantLlinatge1_rowid">
           <td id="activitat_representantLlinatge1_columnlabelid">
-            <label>
+            <label for="activitat.representantLlinatge1">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.REPRESENTANTLLINATGE1])?'activitat.representantLlinatge1':__theForm.labels[ActivitatFields.REPRESENTANTLLINATGE1]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.REPRESENTANTLLINATGE1]}">
@@ -388,14 +389,14 @@
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_representantLlinatge1" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_representantLlinatge1" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.representantLlinatge1'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('activitat.representantLlinatge1'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.representantLlinatge1'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_representantLlinatge1').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_representantLlinatge1').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_representantLlinatge1').css('display', valor);
@@ -411,7 +412,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.REPRESENTANTLLINATGE2)}">
         <tr id="activitat_representantLlinatge2_rowid">
           <td id="activitat_representantLlinatge2_columnlabelid">
-            <label>
+            <label for="activitat.representantLlinatge2">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.REPRESENTANTLLINATGE2])?'activitat.representantLlinatge2':__theForm.labels[ActivitatFields.REPRESENTANTLLINATGE2]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.REPRESENTANTLLINATGE2]}">
@@ -427,14 +428,14 @@
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_representantLlinatge2" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_representantLlinatge2" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.representantLlinatge2'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('activitat.representantLlinatge2'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.representantLlinatge2'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_representantLlinatge2').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_representantLlinatge2').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_representantLlinatge2').css('display', valor);
@@ -450,7 +451,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.REPRESENTANTTIPUS)}">
         <tr id="activitat_representantTipus_rowid">
           <td id="activitat_representantTipus_columnlabelid">
-            <label>
+            <label for="activitat.representantTipus">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.REPRESENTANTTIPUS])?'activitat.representantTipus':__theForm.labels[ActivitatFields.REPRESENTANTTIPUS]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.REPRESENTANTTIPUS]}">
@@ -468,7 +469,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.REPRESENTANTIDENTIFICACIO)}">
         <tr id="activitat_representantIdentificacio_rowid">
           <td id="activitat_representantIdentificacio_columnlabelid">
-            <label>
+            <label for="activitat.representantIdentificacio">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.REPRESENTANTIDENTIFICACIO])?'activitat.representantIdentificacio':__theForm.labels[ActivitatFields.REPRESENTANTIDENTIFICACIO]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.REPRESENTANTIDENTIFICACIO]}">
@@ -486,7 +487,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.TRAMITVERSIO)}">
         <tr id="activitat_tramitVersio_rowid">
           <td id="activitat_tramitVersio_columnlabelid">
-            <label>
+            <label for="activitat.tramitVersio">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.TRAMITVERSIO])?'activitat.tramitVersio':__theForm.labels[ActivitatFields.TRAMITVERSIO]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.TRAMITVERSIO]}">
@@ -504,7 +505,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.ARXIUDOCUMENTID)}">
         <tr id="activitat_arxiuDocumentID_rowid">
           <td id="activitat_arxiuDocumentID_columnlabelid">
-            <label>
+            <label for="activitat.arxiuDocumentID">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.ARXIUDOCUMENTID])?'activitat.arxiuDocumentID':__theForm.labels[ActivitatFields.ARXIUDOCUMENTID]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.ARXIUDOCUMENTID]}">
@@ -520,14 +521,14 @@
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_arxiuDocumentID" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_arxiuDocumentID" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.arxiuDocumentID'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('activitat.arxiuDocumentID'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.arxiuDocumentID'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_arxiuDocumentID').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_arxiuDocumentID').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_arxiuDocumentID').css('display', valor);
@@ -543,7 +544,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.ARXIUEXPEDIENTID)}">
         <tr id="activitat_arxiuExpedientID_rowid">
           <td id="activitat_arxiuExpedientID_columnlabelid">
-            <label>
+            <label for="activitat.arxiuExpedientID">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.ARXIUEXPEDIENTID])?'activitat.arxiuExpedientID':__theForm.labels[ActivitatFields.ARXIUEXPEDIENTID]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.ARXIUEXPEDIENTID]}">
@@ -559,14 +560,14 @@
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_arxiuExpedientID" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_arxiuExpedientID" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.arxiuExpedientID'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('activitat.arxiuExpedientID'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.arxiuExpedientID'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_arxiuExpedientID').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_arxiuExpedientID').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_arxiuExpedientID').css('display', valor);
@@ -582,7 +583,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.ESTAT)}">
         <tr id="activitat_estat_rowid">
           <td id="activitat_estat_columnlabelid">
-            <label>
+            <label for="activitat.estat">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.ESTAT])?'activitat.estat':__theForm.labels[ActivitatFields.ESTAT]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.ESTAT]}">
@@ -593,11 +594,11 @@
           <form:errors path="activitat.estat" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.ESTAT)}" >
           <form:hidden path="activitat.estat"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.activitat.estat,__theForm.listOfValuesForEstat)}"  />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.activitat.estat,__theForm.listOfValuesForEstat)}" aria-label="activitat.estat" />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,ActivitatFields.ESTAT)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select id="activitat_estat"  onchange="if(typeof onChangeEstat == 'function') {  onChangeEstat(this); };"  cssClass="form-control col-md-9-optional" path="activitat.estat">
+          <form:select id="activitat_estat"  onchange="if(typeof onChangeEstat == 'function') {  onChangeEstat(this); };"  cssClass="form-control col-md-9-optional" path="activitat.estat"  aria-label="activitat.estat" >
             <c:forEach items="${__theForm.listOfValuesForEstat}" var="tmp">
                 <form:option value="${tmp.key}">${tmp.value}</form:option>
                 <c:if test="${empty tmp.key}">
@@ -613,7 +614,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.URL)}">
         <tr id="activitat_url_rowid">
           <td id="activitat_url_columnlabelid">
-            <label>
+            <label for="activitat.url">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.URL])?'activitat.url':__theForm.labels[ActivitatFields.URL]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.URL]}">
@@ -629,14 +630,14 @@
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_url" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_url" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.url'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('activitat.url'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.url'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_url').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_url').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_url').css('display', valor);
@@ -652,7 +653,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.DATAACTIVITAT)}">
         <tr id="activitat_dataActivitat_rowid">
           <td id="activitat_dataActivitat_columnlabelid">
-            <label>
+            <label for="activitat.dataActivitat">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.DATAACTIVITAT])?'activitat.dataActivitat':__theForm.labels[ActivitatFields.DATAACTIVITAT]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.DATAACTIVITAT]}">
@@ -662,8 +663,8 @@
           <td id="activitat_dataActivitat_columnvalueid">
     <form:errors path="activitat.dataActivitat" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
-                <div class="input-group date" id="activitat_dataActivitat" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.DATAACTIVITAT)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#activitat_dataActivitat" path="activitat.dataActivitat" />
+                <div class="input-group date" id="activitat_dataActivitatDiv" data-target-input="nearest">
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.DATAACTIVITAT)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#activitat_dataActivitat" path="activitat.dataActivitat" aria-label="activitat.dataActivitat"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,ActivitatFields.DATAACTIVITAT)}" >
                     <div class="input-group-append"  data-target="#activitat_dataActivitat"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -671,7 +672,7 @@
                     </c:if>
                 </div>
             </div>
-        <script type="text/javascript">
+        <script>
             $(function () {
                 $('#activitat_dataActivitat').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
@@ -681,14 +682,15 @@
                     }
                 });
             });
-        </script>           </td>
+        </script>
+           </td>
         </tr>
         </c:if>
         
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.IDACTUACIOTRAMIT)}">
         <tr id="activitat_idActuacioTramit_rowid">
           <td id="activitat_idActuacioTramit_columnlabelid">
-            <label>
+            <label for="activitat.idActuacioTramit">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.IDACTUACIOTRAMIT])?'activitat.idActuacioTramit':__theForm.labels[ActivitatFields.IDACTUACIOTRAMIT]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.IDACTUACIOTRAMIT]}">
@@ -706,7 +708,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.PROCEDIMENT)}">
         <tr id="activitat_procediment_rowid">
           <td id="activitat_procediment_columnlabelid">
-            <label>
+            <label for="activitat.procediment">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.PROCEDIMENT])?'activitat.procediment':__theForm.labels[ActivitatFields.PROCEDIMENT]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.PROCEDIMENT]}">
@@ -724,7 +726,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.ARXIUREINTENTS)}">
         <tr id="activitat_arxiuReintents_rowid">
           <td id="activitat_arxiuReintents_columnlabelid">
-            <label>
+            <label for="activitat.arxiuReintents">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.ARXIUREINTENTS])?'activitat.arxiuReintents':__theForm.labels[ActivitatFields.ARXIUREINTENTS]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.ARXIUREINTENTS]}">
@@ -742,7 +744,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.ARXIUESTAT)}">
         <tr id="activitat_arxiuEstat_rowid">
           <td id="activitat_arxiuEstat_columnlabelid">
-            <label>
+            <label for="activitat.arxiuEstat">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.ARXIUESTAT])?'activitat.arxiuEstat':__theForm.labels[ActivitatFields.ARXIUESTAT]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.ARXIUESTAT]}">
@@ -760,7 +762,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.ARXIUDARRERINTENT)}">
         <tr id="activitat_arxiuDarrerIntent_rowid">
           <td id="activitat_arxiuDarrerIntent_columnlabelid">
-            <label>
+            <label for="activitat.arxiuDarrerIntent">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.ARXIUDARRERINTENT])?'activitat.arxiuDarrerIntent':__theForm.labels[ActivitatFields.ARXIUDARRERINTENT]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.ARXIUDARRERINTENT]}">
@@ -770,8 +772,8 @@
           <td id="activitat_arxiuDarrerIntent_columnvalueid">
     <form:errors path="activitat.arxiuDarrerIntent" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
-                <div class="input-group date" id="activitat_arxiuDarrerIntent" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUDARRERINTENT)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#activitat_arxiuDarrerIntent" path="activitat.arxiuDarrerIntent" />
+                <div class="input-group date" id="activitat_arxiuDarrerIntentDiv" data-target-input="nearest">
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUDARRERINTENT)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#activitat_arxiuDarrerIntent" path="activitat.arxiuDarrerIntent" aria-label="activitat.arxiuDarrerIntent"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUDARRERINTENT)}" >
                     <div class="input-group-append"  data-target="#activitat_arxiuDarrerIntent"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -779,7 +781,7 @@
                     </c:if>
                 </div>
             </div>
-        <script type="text/javascript">
+        <script>
             $(function () {
                 $('#activitat_arxiuDarrerIntent').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
@@ -789,7 +791,8 @@
                     }
                 });
             });
-        </script>           </td>
+        </script>
+           </td>
         </tr>
         </c:if>
         

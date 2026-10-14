@@ -634,13 +634,13 @@ button[disabled][type="submit"] {
 	</div>
 </div>
 
-<script type="text/javascript"
+<script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
 
-<script type="text/javascript"
+<script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
 
-<script type="text/javascript">
+<script>
 	function comprovaInputPdf() {
 		var inputPdf = document.getElementById('input-pdf');
 		var submitBtn = document.querySelector("button[type='submit'][data-type='submit']");
@@ -1197,7 +1197,7 @@ button[disabled][type="submit"] {
 			}));
 </script>
 
-<script type="text/javascript">
+<script>
 	$(document).on(
 			"msf:viewChanged",
 			function(event, data) {
@@ -1403,7 +1403,7 @@ button[disabled][type="submit"] {
 	}
 </script>
 
-<script type="text/javascript">
+<script>
 	const MODAL_PUJAR_DOCUMENT_ID = 'pujar-document-digitalib-modal';
 	const IFRAME_DIGITALIB_ID = 'modal-iframe-digitalib';
 	const URL_NO_CARREGAT_IFRAME_DIGITALIB_ID = 'modal-urlnotloaded-iframe-digitalib';
@@ -2244,7 +2244,7 @@ button[disabled][type="submit"] {
 	});
 </script>
 
-<script type="text/javascript">
+<script>
 	// Interval mínim entre comprovacions de sessió (parametritzable, en mil·lisegons)
 	var SESSION_CHECK_INTERVAL_MS = 2 * 60 * 1000; // 2 minuts
 

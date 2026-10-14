@@ -1,4 +1,4 @@
-<script type="text/javascript">
+<script>
 	$(document).ready(function() {
 		document.getElementById('FilterDiv').style.display = 'inherit'; 
 		document.getElementById('FilterButton').style.display = 'none';

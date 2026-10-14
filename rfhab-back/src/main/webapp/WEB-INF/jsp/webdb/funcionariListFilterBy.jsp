@@ -19,7 +19,7 @@
            <a class="float-right" style="margin-left:10px" href="#"> <i title="<fmt:message key="genapp.form.hidefilter"/>" onclick="document.getElementById('FilterDiv').style.display='none'; document.getElementById('FilterButton').style.display='inline';" class="far fa-window-close"></i></a>
            <input style="margin-left: 3px" class="btn btn-sm btn-warning float-right" type="button" onclick="clear_form_elements(this.form)" value="<fmt:message key="genapp.form.clean"/>"/>
            <input style="margin-left: 3px" class="btn btn-sm btn-warning float-right" type="reset" value="<fmt:message key="genapp.form.reset"/>"/>
-           <input style="margin-left: 3px" class="btn btn-sm btn-primary-contrast float-right" type="submit" value="<fmt:message key="genapp.form.search"/>"/>
+           <input style="margin-left: 3px" class="btn btn-sm btn-primary float-right" type="submit" value="<fmt:message key="genapp.form.search"/>"/>
 
         </div>
       </div>
@@ -27,8 +27,10 @@
       
       <c:forEach var="__entry" items="${__theFilterForm.additionalFields}">
       <c:if test="${ __entry.key < 0 && not empty __entry.value.searchBy }">
-      <div class="input-group" style="padding-right: 4px;padding-bottom: 4px;">
+      <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
+        <label for="${__entry.value.codeName}" style="display: inline;">
         <span class="add-on"><fmt:message key="${__entry.value.codeName}" />:</span>
+        </label>
         <fmt:message key="genapp.form.searchby" var="cercaperAF" >
           <fmt:param>
             <fmt:message key="${__entry.value.codeName}" />
@@ -37,12 +39,12 @@
         <c:choose>
           <c:when test="${gen:isFieldSearchInRange(__entry.value.searchBy)}">
             <span class="add-on"><fmt:message key="genapp.from" /></span>
-            <input id="${__entry.value.searchBy.fullName}" name="${__entry.value.searchBy.fullName}" class="input-small input-medium" type="text" value="${__entry.value.searchByValue}"/>
+            <input aria-label="${__entry.value.codeName}"  id="${__entry.value.searchBy.fullName}" name="${__entry.value.searchBy.fullName}" class="input-small input-medium" type="text" value="${__entry.value.searchByValue}"/>
             <span class="add-on"><fmt:message key="genapp.to" /></span>
             <input id="${__entry.value.searchBy.fullName}Fins" name="${__entry.value.searchBy.fullName}Fins" class="input-small input-medium search-query" type="text" value="${__entry.value.searchByValueFins}"/>
           </c:when>
           <c:otherwise>
-            <input id="${__entry.value.searchBy.fullName}" name="${__entry.value.searchBy.fullName}" class="search-query input-medium" placeholder="${cercaperAF}" type="text" value="${__entry.value.searchByValue}"/>
+            <input aria-label="${__entry.value.codeName}" id="${__entry.value.searchBy.fullName}" name="${__entry.value.searchBy.fullName}" class="search-query input-medium" placeholder="${cercaperAF}" type="text" value="${__entry.value.searchByValue}"/>
           </c:otherwise>
         </c:choose>
       </div>
@@ -51,9 +53,11 @@
 
 
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,FuncionariFields.FUNCIONARIID)}">
-            <div class="input-group" style="padding-right: 4px;padding-bottom: 4px;">
+            <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
+              <label for="funcionari_funcionariID" style="display: inline;">
               <span class="add-on"><fmt:message key="funcionari.funcionariID" />:</span>
+              </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
@@ -70,76 +74,99 @@
         </c:if>
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,FuncionariFields.NUMERO)}">
             <%-- FILTRE STRING --%>
-            <div class="input-prepend" style="padding-right: 4px;padding-bottom: 4px;">
+            <div class="input-prepend" style="padding-right: 24px;padding-bottom: 4px;">
+              <label for="numero" style="display: inline;">
               <fmt:message key="funcionari.numero" var="numero" />
               <fmt:message key="genapp.form.searchby" var="cercapernumero" >                
                  <fmt:param value="${numero}"/>
               </fmt:message>
-                <label class="add-on" for="numero" title="${cercapernumero}"><c:out value="${numero}" />:</label>
-              <form:input cssClass="search-query input-medium" placeholder="${cercapernumero}" path="numero" />
+              <span class="add-on"><c:out value="${numero}" />:</span>
+              </label>
+              <form:input cssClass="search-query input-medium" placeholder="${cercapernumero}" path="numero" aria-label="numero" />
             </div>
 
 
         </c:if>
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,FuncionariFields.NOM)}">
             <%-- FILTRE STRING --%>
-            <div class="input-prepend" style="padding-right: 4px;padding-bottom: 4px;">
+            <div class="input-prepend" style="padding-right: 24px;padding-bottom: 4px;">
+              <label for="nom" style="display: inline;">
               <fmt:message key="funcionari.nom" var="nom" />
               <fmt:message key="genapp.form.searchby" var="cercapernom" >                
                  <fmt:param value="${nom}"/>
               </fmt:message>
               <span class="add-on"><c:out value="${nom}" />:</span>
-              <form:input cssClass="search-query input-medium" placeholder="${cercapernom}" path="nom" />
+              </label>
+              <form:input cssClass="search-query input-medium" placeholder="${cercapernom}" path="nom" aria-label="nom" />
             </div>
 
 
         </c:if>
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,FuncionariFields.LLINATGE1)}">
             <%-- FILTRE STRING --%>
-            <div class="input-prepend" style="padding-right: 4px;padding-bottom: 4px;">
+            <div class="input-prepend" style="padding-right: 24px;padding-bottom: 4px;">
+              <label for="llinatge1" style="display: inline;">
               <fmt:message key="funcionari.llinatge1" var="llinatge1" />
               <fmt:message key="genapp.form.searchby" var="cercaperllinatge1" >                
                  <fmt:param value="${llinatge1}"/>
               </fmt:message>
               <span class="add-on"><c:out value="${llinatge1}" />:</span>
-              <form:input cssClass="search-query input-medium" placeholder="${cercaperllinatge1}" path="llinatge1" />
+              </label>
+              <form:input cssClass="search-query input-medium" placeholder="${cercaperllinatge1}" path="llinatge1" aria-label="llinatge1" />
             </div>
 
 
         </c:if>
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,FuncionariFields.LLINATGE2)}">
             <%-- FILTRE STRING --%>
-            <div class="input-prepend" style="padding-right: 4px;padding-bottom: 4px;">
+            <div class="input-prepend" style="padding-right: 24px;padding-bottom: 4px;">
+              <label for="llinatge2" style="display: inline;">
               <fmt:message key="funcionari.llinatge2" var="llinatge2" />
               <fmt:message key="genapp.form.searchby" var="cercaperllinatge2" >                
                  <fmt:param value="${llinatge2}"/>
               </fmt:message>
               <span class="add-on"><c:out value="${llinatge2}" />:</span>
-              <form:input cssClass="search-query input-medium" placeholder="${cercaperllinatge2}" path="llinatge2" />
+              </label>
+              <form:input cssClass="search-query input-medium" placeholder="${cercaperllinatge2}" path="llinatge2" aria-label="llinatge2" />
             </div>
 
 
         </c:if>
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,FuncionariFields.TIPUSIDENTIFICADOR)}">
-            <div class="input-group" style="padding-right: 4px;padding-bottom: 4px;">
+            <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
               <%-- FILTRE NUMERO SELECT MULTIPLE --%>
-              <div class="input-group-prepend" style="padding-top: 5px;padding-right: 5px;">
+              <div class="input-group-prepend" style="padding-top: 5px;padding-right: 24px;">
+              <label for="funcionari_tipusIdentificadorSelect" style="display: inline;">
                  <span class="add-on"><fmt:message key="funcionari.tipusIdentificador" />:</span>
+              </label>
               </div>
 
               <div class="input-group-prepend" style="min-width:200px">
-                <form:select id="funcionari_tipusIdentificador_select" path="tipusIdentificadorSelect" cssClass="search-query input-medium form-control select2 select2-hidden-accessible" multiple="true" style="width:100%;" tabindex="-1" aria-hidden="true">
+                <form:select aria-label="funcionari_tipusIdentificadorSelect"   id="funcionari_tipusIdentificador_select" path="tipusIdentificadorSelect" cssClass="search-query input-medium form-control select2 select2-hidden-accessible" multiple="true" style="width:100%;" tabindex="-1" aria-hidden="true">
                     <c:forEach var="_entry" items="${__theFilterForm.mapOfValuesForTipusIdentificador}">
                       <option value="${_entry.key}" ${fn:contains(__theFilterForm.tipusIdentificadorSelect, _entry.key)?'selected':''} >${_entry.value}</option>
                     </c:forEach>
                 </form:select>
               </div>
 
-              <script type="text/javascript">
+              <script>
                 $(document).ready(function() {
-                    $('#funcionari_tipusIdentificador_select').select2({
+                    var $select = $('#funcionari_tipusIdentificador_select');
+                    var ariaLabel = $select.attr('aria-label');
+
+                    $select.select2({
                         closeOnSelect: false
                     });
+
+                    if (ariaLabel) {
+                        $select.next('.select2-container')
+                               .find('[role="combobox"]')
+                               .attr('aria-label', ariaLabel);
+                        $select.next('.select2-container')
+                               .find('.select2-search__field')
+                               .attr('aria-label', ariaLabel);
+                    }
+
                     $('.select2-selection__rendered').css('padding-bottom','5px');
                 });
               </script>
@@ -149,51 +176,59 @@
         </c:if>
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,FuncionariFields.IDENTIFICADOR)}">
             <%-- FILTRE STRING --%>
-            <div class="input-prepend" style="padding-right: 4px;padding-bottom: 4px;">
+            <div class="input-prepend" style="padding-right: 24px;padding-bottom: 4px;">
+              <label for="identificador" style="display: inline;">
               <fmt:message key="funcionari.identificador" var="identificador" />
               <fmt:message key="genapp.form.searchby" var="cercaperidentificador" >                
                  <fmt:param value="${identificador}"/>
               </fmt:message>
-                <label class="add-on" for="identificador" title="${cercaperidentificador}"><c:out value="${identificador}" />:</label>
-              <form:input cssClass="search-query input-medium" placeholder="${cercaperidentificador}" path="identificador" />
+              <span class="add-on"><c:out value="${identificador}" />:</span>
+              </label>
+              <form:input cssClass="search-query input-medium" placeholder="${cercaperidentificador}" path="identificador" aria-label="identificador" />
             </div>
 
 
         </c:if>
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,FuncionariFields.USUARI)}">
             <%-- FILTRE STRING --%>
-            <div class="input-prepend" style="padding-right: 4px;padding-bottom: 4px;">
+            <div class="input-prepend" style="padding-right: 24px;padding-bottom: 4px;">
+              <label for="usuari" style="display: inline;">
               <fmt:message key="funcionari.usuari" var="usuari" />
               <fmt:message key="genapp.form.searchby" var="cercaperusuari" >                
                  <fmt:param value="${usuari}"/>
               </fmt:message>
-                <label class="add-on" for="usuari" title="${cercaperusuari}"><c:out value="${usuari}" />:</label>
-              <form:input cssClass="search-query input-medium" placeholder="${cercaperusuari}" path="usuari" />
+              <span class="add-on"><c:out value="${usuari}" />:</span>
+              </label>
+              <form:input cssClass="search-query input-medium" placeholder="${cercaperusuari}" path="usuari" aria-label="usuari" />
             </div>
 
 
         </c:if>
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,FuncionariFields.CORREU)}">
             <%-- FILTRE STRING --%>
-            <div class="input-prepend" style="padding-right: 4px;padding-bottom: 4px;">
+            <div class="input-prepend" style="padding-right: 24px;padding-bottom: 4px;">
+              <label for="correu" style="display: inline;">
               <fmt:message key="funcionari.correu" var="correu" />
               <fmt:message key="genapp.form.searchby" var="cercapercorreu" >                
                  <fmt:param value="${correu}"/>
               </fmt:message>
               <span class="add-on"><c:out value="${correu}" />:</span>
-              <form:input cssClass="search-query input-medium" placeholder="${cercapercorreu}" path="correu" />
+              </label>
+              <form:input cssClass="search-query input-medium" placeholder="${cercapercorreu}" path="correu" aria-label="correu" />
             </div>
 
 
         </c:if>
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,FuncionariFields.DATACREACIO)}">
 <%-- FILTRE DATE-TIME --%>
-            <div class="input-group" style="padding-right:4px;padding-bottom:4px;align-items:center;">
-              <span class="add-on"><fmt:message key="funcionari.dataCreacio" />:</span>
+            <div class="input-group" style="padding-right:24px;padding-bottom:4px;align-items:center;">
+              <span style="display: inline;">
+              <span class="add-on"><fmt:message key="funcionari_dataCreacio" />:</span>
+              </span>
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
             <div class="form-group"  style="margin-bottom: 0px;" >
-                <div class="input-group date" id="dataCreacioDesde" data-target-input="nearest">
-                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataCreacioDesde" path="dataCreacioDesde" />
+                <div class="input-group date" id="dataCreacioDesdeDiv" data-target-input="nearest">
+                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataCreacioDesde" path="dataCreacioDesde" aria-label="funcionari_dataCreacio"  />
                     <c:if test="${!false}" >
                     <div class="input-group-append"  data-target="#dataCreacioDesde"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -201,7 +236,7 @@
                     </c:if>
                 </div>
             </div>
-        <script type="text/javascript">
+        <script>
             $(function () {
                 $('#dataCreacioDesde').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
@@ -211,10 +246,11 @@
                     }
                 });
             });
-        </script>              <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
+        </script>
+              <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
             <div class="form-group"  style="margin-bottom: 0px;" >
-                <div class="input-group date" id="dataCreacioFins" data-target-input="nearest">
-                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataCreacioFins" path="dataCreacioFins" />
+                <div class="input-group date" id="dataCreacioFinsDiv" data-target-input="nearest">
+                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataCreacioFins" path="dataCreacioFins" aria-label="funcionari_dataCreacio"  />
                     <c:if test="${!false}" >
                     <div class="input-group-append"  data-target="#dataCreacioFins"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -222,7 +258,7 @@
                     </c:if>
                 </div>
             </div>
-        <script type="text/javascript">
+        <script>
             $(function () {
                 $('#dataCreacioFins').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
@@ -232,31 +268,36 @@
                     }
                 });
             });
-        </script>            </div>
+        </script>
+            </div>
 
     
         </c:if>
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,FuncionariFields.OBSERVACIONS)}">
             <%-- FILTRE STRING --%>
-            <div class="input-prepend" style="padding-right: 4px;padding-bottom: 4px;">
+            <div class="input-prepend" style="padding-right: 24px;padding-bottom: 4px;">
+              <label for="observacions" style="display: inline;">
               <fmt:message key="funcionari.observacions" var="observacions" />
               <fmt:message key="genapp.form.searchby" var="cercaperobservacions" >                
                  <fmt:param value="${observacions}"/>
               </fmt:message>
               <span class="add-on"><c:out value="${observacions}" />:</span>
-              <form:input cssClass="search-query input-medium" placeholder="${cercaperobservacions}" path="observacions" />
+              </label>
+              <form:input cssClass="search-query input-medium" placeholder="${cercaperobservacions}" path="observacions" aria-label="observacions" />
             </div>
 
 
         </c:if>
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,FuncionariFields.DATABAIXA)}">
 <%-- FILTRE DATE-TIME --%>
-            <div class="input-group" style="padding-right:4px;padding-bottom:4px;align-items:center;">
-              <span class="add-on"><fmt:message key="funcionari.dataBaixa" />:</span>
+            <div class="input-group" style="padding-right:24px;padding-bottom:4px;align-items:center;">
+              <span style="display: inline;">
+              <span class="add-on"><fmt:message key="funcionari_dataBaixa" />:</span>
+              </span>
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
             <div class="form-group"  style="margin-bottom: 0px;" >
-                <div class="input-group date" id="dataBaixaDesde" data-target-input="nearest">
-                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataBaixaDesde" path="dataBaixaDesde" />
+                <div class="input-group date" id="dataBaixaDesdeDiv" data-target-input="nearest">
+                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataBaixaDesde" path="dataBaixaDesde" aria-label="funcionari_dataBaixa"  />
                     <c:if test="${!false}" >
                     <div class="input-group-append"  data-target="#dataBaixaDesde"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -264,7 +305,7 @@
                     </c:if>
                 </div>
             </div>
-        <script type="text/javascript">
+        <script>
             $(function () {
                 $('#dataBaixaDesde').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
@@ -274,10 +315,11 @@
                     }
                 });
             });
-        </script>              <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
+        </script>
+              <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
             <div class="form-group"  style="margin-bottom: 0px;" >
-                <div class="input-group date" id="dataBaixaFins" data-target-input="nearest">
-                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataBaixaFins" path="dataBaixaFins" />
+                <div class="input-group date" id="dataBaixaFinsDiv" data-target-input="nearest">
+                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataBaixaFins" path="dataBaixaFins" aria-label="funcionari_dataBaixa"  />
                     <c:if test="${!false}" >
                     <div class="input-group-append"  data-target="#dataBaixaFins"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -285,7 +327,7 @@
                     </c:if>
                 </div>
             </div>
-        <script type="text/javascript">
+        <script>
             $(function () {
                 $('#dataBaixaFins').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
@@ -295,14 +337,17 @@
                     }
                 });
             });
-        </script>            </div>
+        </script>
+            </div>
 
     
         </c:if>
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,FuncionariFields.ENTITATID)}">
-            <div class="input-group" style="padding-right: 4px;padding-bottom: 4px;">
+            <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
+              <label for="funcionari_entitatID" style="display: inline;">
               <span class="add-on"><fmt:message key="funcionari.entitatID" />:</span>
+              </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
@@ -320,8 +365,10 @@
 
       <c:forEach var="__entry" items="${__theFilterForm.additionalFields}">
       <c:if test="${ __entry.key >= 0 && not empty __entry.value.searchBy }">
-      <div class="input-group" style="padding-right: 4px;padding-bottom: 4px;">
+      <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
+        <label for="${__entry.value.codeName}" style="display: inline;">
         <span class="add-on"><fmt:message key="${__entry.value.codeName}" />:</span>
+        </label>
         <fmt:message key="genapp.form.searchby" var="cercaperAF" >
           <fmt:param>
             <fmt:message key="${__entry.value.codeName}" />
@@ -330,12 +377,12 @@
         <c:choose>
           <c:when test="${gen:isFieldSearchInRange(__entry.value.searchBy)}">
             <span class="add-on"><fmt:message key="genapp.from" /></span>
-            <input id="${__entry.value.searchBy.fullName}" name="${__entry.value.searchBy.fullName}" class="input-small input-medium" type="text" value="${__entry.value.searchByValue}"/>
+            <input aria-label="${__entry.value.codeName}"  id="${__entry.value.searchBy.fullName}" name="${__entry.value.searchBy.fullName}" class="input-small input-medium" type="text" value="${__entry.value.searchByValue}"/>
             <span class="add-on"><fmt:message key="genapp.to" /></span>
             <input id="${__entry.value.searchBy.fullName}Fins" name="${__entry.value.searchBy.fullName}Fins" class="input-small input-medium search-query" type="text" value="${__entry.value.searchByValueFins}"/>
           </c:when>
           <c:otherwise>
-            <input id="${__entry.value.searchBy.fullName}" name="${__entry.value.searchBy.fullName}" class="search-query input-medium" placeholder="${cercaperAF}" type="text" value="${__entry.value.searchByValue}"/>
+            <input aria-label="${__entry.value.codeName}" id="${__entry.value.searchBy.fullName}" name="${__entry.value.searchBy.fullName}" class="search-query input-medium" placeholder="${cercaperAF}" type="text" value="${__entry.value.searchByValue}"/>
           </c:otherwise>
         </c:choose>
       </div>

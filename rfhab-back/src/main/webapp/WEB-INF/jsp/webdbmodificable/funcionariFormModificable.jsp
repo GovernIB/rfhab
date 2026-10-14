@@ -332,7 +332,7 @@
 </div>
 </c:if>
 
-<script type="text/javascript">
+<script>
 	async function descarregarModelConsentiment(event, linkElement) {
 		if (event) {
 			event.preventDefault();

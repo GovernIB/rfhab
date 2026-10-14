@@ -1,18 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ include file="/WEB-INF/jsp/moduls/includes.jsp"%>
-<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="<c:url value="/img/favicon.ico"/>" rel="shortcut icon" type="image/x-icon">
 
 <title><fmt:message key="app.benvingut" /></title>
 
 <!-- CSS -->
-<link href="<c:url value="/css/styles.css"/>" rel="stylesheet">
-<link href="<c:url value="/css/default.css"/>" rel="stylesheet">
-
-
-<link href="<c:url value="/css/genapp.css"/>" rel="stylesheet">
-
 <%-- Bootstrap CSS --%>
 <link href="<c:url value="/css/bootstrap.css"/>" rel="stylesheet">
 <link href="<c:url value="/css/datatables.min.css"/>" rel="stylesheet">
@@ -29,6 +23,9 @@
 <%--  Select Multiple --%>
 <link href="<c:url value="/css/select2.min.css"/>" rel="stylesheet">
 
+<link href="<c:url value="/css/styles.css"/>" rel="stylesheet">
+<link href="<c:url value="/css/default.css"/>" rel="stylesheet">
+<link href="<c:url value="/css/genapp.css"/>" rel="stylesheet">
 <link href="<c:url value="/css/stylesapp.css"/>" rel="stylesheet">
 
 <script>
@@ -58,7 +55,7 @@
 <script src="<c:url value="/js/select2_i18n/${lang}.js"/>"></script>
 
 
-<script type="text/javascript">
+<script>
     function clear_form_elements(ele) {
 
         tags = ele.getElementsByTagName('input');
@@ -233,4 +230,3 @@ form {
 	font-size: 1.35rem !important;
 }
 </style>
-

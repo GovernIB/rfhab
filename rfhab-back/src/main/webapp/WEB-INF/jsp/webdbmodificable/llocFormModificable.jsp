@@ -218,7 +218,7 @@
 </div>
 </c:if>
 
-<script type="text/javascript">
+<script>
 	function findUnitatByArrel(unitats, unitatId) {
 		// Cerca la unitat amb el unitatId especificat
 		let unitatTrobada = unitats.find(unitat => unitat.unitatID === unitatId);

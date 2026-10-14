@@ -65,6 +65,8 @@
             <scope>provided</scope>
         </dependency>
 
+
+        <!-- Dependències de test -->
 		
 		<dependency>
             <groupId>org.postgresql</groupId>

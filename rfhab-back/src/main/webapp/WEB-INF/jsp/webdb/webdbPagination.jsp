@@ -5,7 +5,7 @@
     import="org.fundaciobit.genapp.common.web.exportdata.DataExporterManager"%>
 <%@ include file="/WEB-INF/jsp/moduls/includes.jsp"%>
 
-<script type="text/javascript">
+<script>
 
 var currentActionForExporter = "";
 

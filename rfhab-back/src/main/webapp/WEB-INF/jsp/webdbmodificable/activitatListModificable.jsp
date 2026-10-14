@@ -13,7 +13,7 @@
   }
 </style>
 
-<script type="text/javascript">
+<script>
   const tipusActivitatOptions = [];
   console.log("tipusActivitatFiltreCerca: ${tipusActivitatFiltreCerca}");//todo:eliminar
   <c:forEach items="${tipusActivitatFiltreCerca}" var="tipusActivitat">

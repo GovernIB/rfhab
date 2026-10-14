@@ -5,7 +5,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ScanWebFields.TRANSACTIONID)}">
         <tr id="scanWeb_transactionID_rowid">
           <td id="scanWeb_transactionID_columnlabelid">
-            <label>
+            <label for="scanWeb.transactionID">
               <fmt:message key="${(empty __theForm.labels[ScanWebFields.TRANSACTIONID])?'scanWeb.transactionID':__theForm.labels[ScanWebFields.TRANSACTIONID]}" />
              </label>
               <c:if test="${not empty __theForm.help[ScanWebFields.TRANSACTIONID]}">
@@ -23,7 +23,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ScanWebFields.TRANSACTIONWEBID)}">
         <tr id="scanWeb_transactionWebID_rowid">
           <td id="scanWeb_transactionWebID_columnlabelid">
-            <label>
+            <label for="scanWeb.transactionWebID">
               <fmt:message key="${(empty __theForm.labels[ScanWebFields.TRANSACTIONWEBID])?'scanWeb.transactionWebID':__theForm.labels[ScanWebFields.TRANSACTIONWEBID]}" />
              </label>
               <c:if test="${not empty __theForm.help[ScanWebFields.TRANSACTIONWEBID]}">
@@ -39,14 +39,14 @@
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_transactionWebID" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_transactionWebID" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('scanWeb.transactionWebID'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('scanWeb.transactionWebID'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('scanWeb.transactionWebID'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_transactionWebID').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_transactionWebID').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_transactionWebID').css('display', valor);
@@ -62,7 +62,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ScanWebFields.STATUS)}">
         <tr id="scanWeb_status_rowid">
           <td id="scanWeb_status_columnlabelid">
-            <label>
+            <label for="scanWeb.status">
               <fmt:message key="${(empty __theForm.labels[ScanWebFields.STATUS])?'scanWeb.status':__theForm.labels[ScanWebFields.STATUS]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[ScanWebFields.STATUS]}">
@@ -80,7 +80,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ScanWebFields.FITXERID)}">
         <tr id="scanWeb_fitxerID_rowid">
           <td id="scanWeb_fitxerID_columnlabelid">
-            <label>
+            <label for="scanWeb.fitxerID">
               <fmt:message key="${(empty __theForm.labels[ScanWebFields.FITXERID])?'scanWeb.fitxerID':__theForm.labels[ScanWebFields.FITXERID]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[ScanWebFields.FITXERID]}">
@@ -96,7 +96,7 @@
               <div class="input-group col-md-9-optional" style="padding: 0px">
                 <div class="custom-file">
                   <form:input  readonly="${ gen:contains(__theForm.readOnlyFields ,ScanWebFields.FITXERID)? 'true' : 'false'}" cssClass="custom-file-input form-control  ${gen:contains(__theForm.readOnlyFields ,ScanWebFields.FITXERID)? ' uneditable-input' : ''}"   path="fitxerID" type="file" />
-                  <label class="custom-file-label" for="fitxerID">
+                  <label class="custom-file-label" for="fitxerID" aria-label="Browser">
                   </label>
                 </div>
                 <c:choose>
@@ -114,7 +114,7 @@
                   <small></small>
                   </span>
                 </div>
-                <script type="text/javascript">
+                <script>
 					$('#fitxerID').on('change', function(){
 						var ruta = $('#fitxerID').val(); 
 						var rutaArray = ruta.split('\\');
@@ -132,7 +132,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ScanWebFields.FILEINFO)}">
         <tr id="scanWeb_fileInfo_rowid">
           <td id="scanWeb_fileInfo_columnlabelid">
-            <label>
+            <label for="scanWeb.fileInfo">
               <fmt:message key="${(empty __theForm.labels[ScanWebFields.FILEINFO])?'scanWeb.fileInfo':__theForm.labels[ScanWebFields.FILEINFO]}" />
              </label>
               <c:if test="${not empty __theForm.help[ScanWebFields.FILEINFO]}">
@@ -148,14 +148,14 @@
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_fileInfo" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_fileInfo" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('scanWeb.fileInfo'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('scanWeb.fileInfo'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('scanWeb.fileInfo'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_fileInfo').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_fileInfo').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_fileInfo').css('display', valor);
@@ -171,7 +171,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ScanWebFields.SIGNEDFILEINFO)}">
         <tr id="scanWeb_signedFileInfo_rowid">
           <td id="scanWeb_signedFileInfo_columnlabelid">
-            <label>
+            <label for="scanWeb.signedFileInfo">
               <fmt:message key="${(empty __theForm.labels[ScanWebFields.SIGNEDFILEINFO])?'scanWeb.signedFileInfo':__theForm.labels[ScanWebFields.SIGNEDFILEINFO]}" />
              </label>
               <c:if test="${not empty __theForm.help[ScanWebFields.SIGNEDFILEINFO]}">
@@ -187,14 +187,14 @@
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_signedFileInfo" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_signedFileInfo" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('scanWeb.signedFileInfo'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('scanWeb.signedFileInfo'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('scanWeb.signedFileInfo'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_signedFileInfo').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_signedFileInfo').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_signedFileInfo').css('display', valor);
@@ -210,7 +210,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ScanWebFields.METADADES)}">
         <tr id="scanWeb_metadades_rowid">
           <td id="scanWeb_metadades_columnlabelid">
-            <label>
+            <label for="scanWeb.metadades">
               <fmt:message key="${(empty __theForm.labels[ScanWebFields.METADADES])?'scanWeb.metadades':__theForm.labels[ScanWebFields.METADADES]}" />
              </label>
               <c:if test="${not empty __theForm.help[ScanWebFields.METADADES]}">
@@ -226,14 +226,14 @@
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_metadades" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_metadades" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('scanWeb.metadades'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('scanWeb.metadades'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('scanWeb.metadades'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_metadades').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_metadades').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_metadades').css('display', valor);
@@ -249,7 +249,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ScanWebFields.MISSATGE)}">
         <tr id="scanWeb_missatge_rowid">
           <td id="scanWeb_missatge_columnlabelid">
-            <label>
+            <label for="scanWeb.missatge">
               <fmt:message key="${(empty __theForm.labels[ScanWebFields.MISSATGE])?'scanWeb.missatge':__theForm.labels[ScanWebFields.MISSATGE]}" />
              </label>
               <c:if test="${not empty __theForm.help[ScanWebFields.MISSATGE]}">
@@ -265,14 +265,14 @@
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_missatge" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_missatge" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('scanWeb.missatge'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('scanWeb.missatge'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('scanWeb.missatge'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_missatge').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_missatge').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_missatge').css('display', valor);
@@ -288,7 +288,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ScanWebFields.USUARIID)}">
         <tr id="scanWeb_usuariID_rowid">
           <td id="scanWeb_usuariID_columnlabelid">
-            <label>
+            <label for="scanWeb.usuariID">
               <fmt:message key="${(empty __theForm.labels[ScanWebFields.USUARIID])?'scanWeb.usuariID':__theForm.labels[ScanWebFields.USUARIID]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[ScanWebFields.USUARIID]}">
@@ -299,11 +299,11 @@
           <form:errors path="scanWeb.usuariID" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,ScanWebFields.USUARIID)}" >
           <form:hidden path="scanWeb.usuariID"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.scanWeb.usuariID,__theForm.listOfUsuariForUsuariID)}"  />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.scanWeb.usuariID,__theForm.listOfUsuariForUsuariID)}" aria-label="scanWeb.usuariID" />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,ScanWebFields.USUARIID)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select id="scanWeb_usuariID"  onchange="if(typeof onChangeUsuariID == 'function') {  onChangeUsuariID(this); };"  cssClass="form-control col-md-9-optional" path="scanWeb.usuariID">
+          <form:select id="scanWeb_usuariID"  onchange="if(typeof onChangeUsuariID == 'function') {  onChangeUsuariID(this); };"  cssClass="form-control col-md-9-optional" path="scanWeb.usuariID"  aria-label="scanWeb.usuariID" >
             <c:forEach items="${__theForm.listOfUsuariForUsuariID}" var="tmp">
                 <form:option value="${tmp.key}">${tmp.value}</form:option>
                 <c:if test="${empty tmp.key}">
@@ -319,7 +319,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ScanWebFields.DATACREACIO)}">
         <tr id="scanWeb_dataCreacio_rowid">
           <td id="scanWeb_dataCreacio_columnlabelid">
-            <label>
+            <label for="scanWeb.dataCreacio">
               <fmt:message key="${(empty __theForm.labels[ScanWebFields.DATACREACIO])?'scanWeb.dataCreacio':__theForm.labels[ScanWebFields.DATACREACIO]}" />
              </label>
               <c:if test="${not empty __theForm.help[ScanWebFields.DATACREACIO]}">
@@ -329,8 +329,8 @@
           <td id="scanWeb_dataCreacio_columnvalueid">
     <form:errors path="scanWeb.dataCreacio" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
-                <div class="input-group date" id="scanWeb_dataCreacio" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ScanWebFields.DATACREACIO)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#scanWeb_dataCreacio" path="scanWeb.dataCreacio" />
+                <div class="input-group date" id="scanWeb_dataCreacioDiv" data-target-input="nearest">
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ScanWebFields.DATACREACIO)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#scanWeb_dataCreacio" path="scanWeb.dataCreacio" aria-label="scanWeb.dataCreacio"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,ScanWebFields.DATACREACIO)}" >
                     <div class="input-group-append"  data-target="#scanWeb_dataCreacio"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -338,7 +338,7 @@
                     </c:if>
                 </div>
             </div>
-        <script type="text/javascript">
+        <script>
             $(function () {
                 $('#scanWeb_dataCreacio').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
@@ -348,14 +348,15 @@
                     }
                 });
             });
-        </script>           </td>
+        </script>
+           </td>
         </tr>
         </c:if>
         
         <c:if test="${!gen:contains(__theForm.hiddenFields,ScanWebFields.ENTITATID)}">
         <tr id="scanWeb_entitatID_rowid">
           <td id="scanWeb_entitatID_columnlabelid">
-            <label>
+            <label for="scanWeb.entitatID">
               <fmt:message key="${(empty __theForm.labels[ScanWebFields.ENTITATID])?'scanWeb.entitatID':__theForm.labels[ScanWebFields.ENTITATID]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[ScanWebFields.ENTITATID]}">

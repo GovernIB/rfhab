@@ -11,7 +11,7 @@
 <div>
 <br/>
 <center>
-<img src="<c:url value="/img/app-logo.png"/>" width="195" alt="RFHab" title="RFHab"/>
+<img src="<c:url value="/img/app-logo.png"/>" width="195" alt="RFHab"/>
 
 <br/>
 <br/>
@@ -19,16 +19,11 @@
 
 <br/>
 <br/>
-<table border="0" >
-<tr>
-<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-<td valign="top">
+<div>
 <a href="https://governdigital.fundaciobit.org" target="_blank">
-<img src="<c:url value="/img/fundaciobit.png"/>"  alt="Fundaci� Bit" title="Fundaci� Bit"/>
+<img src="<c:url value="/img/fundaciobit.png"/>"  alt="IBDigital"/>
 </a>
-</td>
-</tr>
-</table>
+</div>
 <br/>
 </center>
  

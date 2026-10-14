@@ -5,7 +5,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,FuncionariFields.NUMERO)}">
         <tr id="funcionari_numero_rowid">
           <td id="funcionari_numero_columnlabelid">
-            <label>
+            <label for="funcionari.numero">
               <fmt:message key="${(empty __theForm.labels[FuncionariFields.NUMERO])?'funcionari.numero':__theForm.labels[FuncionariFields.NUMERO]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[FuncionariFields.NUMERO]}">
@@ -23,7 +23,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,FuncionariFields.NOM)}">
         <tr id="funcionari_nom_rowid">
           <td id="funcionari_nom_columnlabelid">
-            <label>
+            <label for="funcionari.nom">
               <fmt:message key="${(empty __theForm.labels[FuncionariFields.NOM])?'funcionari.nom':__theForm.labels[FuncionariFields.NOM]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[FuncionariFields.NOM]}">
@@ -41,7 +41,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,FuncionariFields.LLINATGE1)}">
         <tr id="funcionari_llinatge1_rowid">
           <td id="funcionari_llinatge1_columnlabelid">
-            <label>
+            <label for="funcionari.llinatge1">
               <fmt:message key="${(empty __theForm.labels[FuncionariFields.LLINATGE1])?'funcionari.llinatge1':__theForm.labels[FuncionariFields.LLINATGE1]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[FuncionariFields.LLINATGE1]}">
@@ -59,7 +59,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,FuncionariFields.LLINATGE2)}">
         <tr id="funcionari_llinatge2_rowid">
           <td id="funcionari_llinatge2_columnlabelid">
-            <label>
+            <label for="funcionari.llinatge2">
               <fmt:message key="${(empty __theForm.labels[FuncionariFields.LLINATGE2])?'funcionari.llinatge2':__theForm.labels[FuncionariFields.LLINATGE2]}" />
              </label>
               <c:if test="${not empty __theForm.help[FuncionariFields.LLINATGE2]}">
@@ -77,7 +77,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,FuncionariFields.TIPUSIDENTIFICADOR)}">
         <tr id="funcionari_tipusIdentificador_rowid">
           <td id="funcionari_tipusIdentificador_columnlabelid">
-            <label>
+            <label for="funcionari.tipusIdentificador">
               <fmt:message key="${(empty __theForm.labels[FuncionariFields.TIPUSIDENTIFICADOR])?'funcionari.tipusIdentificador':__theForm.labels[FuncionariFields.TIPUSIDENTIFICADOR]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[FuncionariFields.TIPUSIDENTIFICADOR]}">
@@ -88,11 +88,11 @@
           <form:errors path="funcionari.tipusIdentificador" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,FuncionariFields.TIPUSIDENTIFICADOR)}" >
           <form:hidden path="funcionari.tipusIdentificador"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.funcionari.tipusIdentificador,__theForm.listOfValuesForTipusIdentificador)}"  />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.funcionari.tipusIdentificador,__theForm.listOfValuesForTipusIdentificador)}" aria-label="funcionari.tipusIdentificador" />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,FuncionariFields.TIPUSIDENTIFICADOR)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select id="funcionari_tipusIdentificador"  onchange="if(typeof onChangeTipusIdentificador == 'function') {  onChangeTipusIdentificador(this); };"  cssClass="form-control col-md-9-optional" path="funcionari.tipusIdentificador">
+          <form:select id="funcionari_tipusIdentificador"  onchange="if(typeof onChangeTipusIdentificador == 'function') {  onChangeTipusIdentificador(this); };"  cssClass="form-control col-md-9-optional" path="funcionari.tipusIdentificador"  aria-label="funcionari.tipusIdentificador" >
             <c:forEach items="${__theForm.listOfValuesForTipusIdentificador}" var="tmp">
                 <form:option value="${tmp.key}">${tmp.value}</form:option>
                 <c:if test="${empty tmp.key}">
@@ -108,7 +108,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,FuncionariFields.IDENTIFICADOR)}">
         <tr id="funcionari_identificador_rowid">
           <td id="funcionari_identificador_columnlabelid">
-            <label>
+            <label for="funcionari.identificador">
               <fmt:message key="${(empty __theForm.labels[FuncionariFields.IDENTIFICADOR])?'funcionari.identificador':__theForm.labels[FuncionariFields.IDENTIFICADOR]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[FuncionariFields.IDENTIFICADOR]}">
@@ -126,7 +126,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,FuncionariFields.USUARI)}">
         <tr id="funcionari_usuari_rowid">
           <td id="funcionari_usuari_columnlabelid">
-            <label>
+            <label for="funcionari.usuari">
               <fmt:message key="${(empty __theForm.labels[FuncionariFields.USUARI])?'funcionari.usuari':__theForm.labels[FuncionariFields.USUARI]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[FuncionariFields.USUARI]}">
@@ -144,7 +144,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,FuncionariFields.CORREU)}">
         <tr id="funcionari_correu_rowid">
           <td id="funcionari_correu_columnlabelid">
-            <label>
+            <label for="funcionari.correu">
               <fmt:message key="${(empty __theForm.labels[FuncionariFields.CORREU])?'funcionari.correu':__theForm.labels[FuncionariFields.CORREU]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[FuncionariFields.CORREU]}">
@@ -162,7 +162,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,FuncionariFields.DATACREACIO)}">
         <tr id="funcionari_dataCreacio_rowid">
           <td id="funcionari_dataCreacio_columnlabelid">
-            <label>
+            <label for="funcionari.dataCreacio">
               <fmt:message key="${(empty __theForm.labels[FuncionariFields.DATACREACIO])?'funcionari.dataCreacio':__theForm.labels[FuncionariFields.DATACREACIO]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[FuncionariFields.DATACREACIO]}">
@@ -172,8 +172,8 @@
           <td id="funcionari_dataCreacio_columnvalueid">
     <form:errors path="funcionari.dataCreacio" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
-                <div class="input-group date" id="funcionari_dataCreacio" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,FuncionariFields.DATACREACIO)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#funcionari_dataCreacio" path="funcionari.dataCreacio" />
+                <div class="input-group date" id="funcionari_dataCreacioDiv" data-target-input="nearest">
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,FuncionariFields.DATACREACIO)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#funcionari_dataCreacio" path="funcionari.dataCreacio" aria-label="funcionari.dataCreacio"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,FuncionariFields.DATACREACIO)}" >
                     <div class="input-group-append"  data-target="#funcionari_dataCreacio"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -181,7 +181,7 @@
                     </c:if>
                 </div>
             </div>
-        <script type="text/javascript">
+        <script>
             $(function () {
                 $('#funcionari_dataCreacio').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
@@ -191,14 +191,15 @@
                     }
                 });
             });
-        </script>           </td>
+        </script>
+           </td>
         </tr>
         </c:if>
         
         <c:if test="${!gen:contains(__theForm.hiddenFields,FuncionariFields.OBSERVACIONS)}">
         <tr id="funcionari_observacions_rowid">
           <td id="funcionari_observacions_columnlabelid">
-            <label>
+            <label for="funcionari.observacions">
               <fmt:message key="${(empty __theForm.labels[FuncionariFields.OBSERVACIONS])?'funcionari.observacions':__theForm.labels[FuncionariFields.OBSERVACIONS]}" />
              </label>
               <c:if test="${not empty __theForm.help[FuncionariFields.OBSERVACIONS]}">
@@ -214,14 +215,14 @@
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_observacions" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_observacions" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('funcionari.observacions'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('funcionari.observacions'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('funcionari.observacions'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_observacions').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_observacions').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_observacions').css('display', valor);
@@ -237,7 +238,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,FuncionariFields.DATABAIXA)}">
         <tr id="funcionari_dataBaixa_rowid">
           <td id="funcionari_dataBaixa_columnlabelid">
-            <label>
+            <label for="funcionari.dataBaixa">
               <fmt:message key="${(empty __theForm.labels[FuncionariFields.DATABAIXA])?'funcionari.dataBaixa':__theForm.labels[FuncionariFields.DATABAIXA]}" />
              </label>
               <c:if test="${not empty __theForm.help[FuncionariFields.DATABAIXA]}">
@@ -247,8 +248,8 @@
           <td id="funcionari_dataBaixa_columnvalueid">
     <form:errors path="funcionari.dataBaixa" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
-                <div class="input-group date" id="funcionari_dataBaixa" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,FuncionariFields.DATABAIXA)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#funcionari_dataBaixa" path="funcionari.dataBaixa" />
+                <div class="input-group date" id="funcionari_dataBaixaDiv" data-target-input="nearest">
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,FuncionariFields.DATABAIXA)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#funcionari_dataBaixa" path="funcionari.dataBaixa" aria-label="funcionari.dataBaixa"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,FuncionariFields.DATABAIXA)}" >
                     <div class="input-group-append"  data-target="#funcionari_dataBaixa"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -256,7 +257,7 @@
                     </c:if>
                 </div>
             </div>
-        <script type="text/javascript">
+        <script>
             $(function () {
                 $('#funcionari_dataBaixa').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
@@ -266,14 +267,15 @@
                     }
                 });
             });
-        </script>           </td>
+        </script>
+           </td>
         </tr>
         </c:if>
         
         <c:if test="${!gen:contains(__theForm.hiddenFields,FuncionariFields.ENTITATID)}">
         <tr id="funcionari_entitatID_rowid">
           <td id="funcionari_entitatID_columnlabelid">
-            <label>
+            <label for="funcionari.entitatID">
               <fmt:message key="${(empty __theForm.labels[FuncionariFields.ENTITATID])?'funcionari.entitatID':__theForm.labels[FuncionariFields.ENTITATID]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[FuncionariFields.ENTITATID]}">

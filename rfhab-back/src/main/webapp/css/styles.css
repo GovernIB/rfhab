@@ -1,26 +1,29 @@
 /* Estils generals */
-@font-face {
-	font-family: 'Bariol Regular';
-	src: url('../fonts/Bariol_Regular.ttf');
-}
 body {
 	padding-top: 4.5rem;
-	font: normal 100% 'Bariol Regular', Arial, Helvetica, sans-serif;
+	font: normal 100% Arial, Helvetica, sans-serif;
 	color: #333;
 	background-color: #f7f7f7;
 }
 a{
-	color: #4dba79;
+	color: #317a4c;
 }
 a:hover{
 	color: #000;
 	text-decoration: none;
 }
+.link-accessibilitat {
+	color: #0069d9;
+}
+.link-accessibilitat:hover,
+.link-accessibilitat:focus {
+	color: #000;
+}
 .p-3aplicacio{
 	padding: 3.5rem 1rem!important;
 }
 .verde{
-	color: #4dba79;
+	color: #317a4c;
 }
 .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
 .bg-white {
@@ -37,8 +40,8 @@ a:hover{
 	cursor: not-allowed !important;
 }
 .btn-primary.aplicacio-btn {
-	background-color: #4dba79;
-	border-color: #4dba79;
+	background-color: #317a4c;
+	border-color: #317a4c;
 	border: none !important;
 }
 .btn-primary.aplicacio-btn:hover,
@@ -74,6 +77,26 @@ a:hover{
 	margin-left: auto;
 	margin-right: auto;
 }
+
+.tree a {
+	color: #0069d9;
+}
+.tree a:hover,
+.tree a:focus {
+	color: #000;
+}
+
+.btn-success {
+	background-color: #317a4c;
+}
+.btn-primary {
+	background-color: #0069d9;
+	border-color: #0062cc;
+}
+.btn-info {
+	color: #000;
+}
+
 /* FI Estils generals */
 
 /* Motlla de pa */
@@ -110,14 +133,14 @@ a:hover{
 /* APLICA QUAN WIDTH MENOR DE 768px */
 @media only screen and (max-width : 767px) {
 	.colorVerd{
-		background-color: #4DBA79 !important;
+		background-color: #317a4c !important;
 		margin-left: 0px !important;
 	}
 	.colorVerd:hover{
-		background-color: #4DBA79 !important;
+		background-color: #317a4c !important;
 	}
 	.mobil li a:hover{
-		background-color: #4DBA79 !important;
+		background-color: #317a4c !important;
 	}
 	.peuResponsive{
 		display: list-item !important;
@@ -145,7 +168,7 @@ a:hover{
 		color: #000 !important;
 	}
 	a.dropdown-item.mobil:hover {
-		color: #4dba79 !important;
+		color: #317a4c !important;
 		background-color: #FFF !important;
 	}
 	.p-3aplicacio{
@@ -259,9 +282,13 @@ a:hover{
 	content: '\e024\0000a0' !important;
 }
 .bg-aplicacio{
-	background-color: #4dba79 !important;
+	background-color: #317a4c !important;
 	padding-left: 0px;
 	padding-right: 0px;
+}
+.menuGovern .subtitol,
+.menuGovern .subtitolMay {
+	color: #fff !important;
 }
 .menuGovern{
 	min-width: 400px;
@@ -277,6 +304,13 @@ a:hover{
 .subtitolMay{
 	font-size: 0.85em !important;
 	text-transform: uppercase;
+	font-weight: bold;
+}
+.titol {
+	font-weight: bold;
+}
+.nav-link {
+	color: rgb(0, 95, 255) !important;
 }
 .menuGovern span, strong{
 	font-size: 1em;
@@ -338,7 +372,7 @@ a.dropdown-item{
 	background-color: #fff;
 }
 a.dropdown-item.mobil:hover{
-	color: #4dba79 !important;
+	color: #317a4c !important;
 	background-color: #fff;
 }
 /* FI Men� m�bil */
@@ -350,7 +384,7 @@ a.dropdown-item.mobil:hover{
 }
 .btn-suport{
 	background-color: transparent;
-	color: #4dba79;
+	color: #317a4c;
 	padding: 0px;
 	cursor: pointer;
 	margin-bottom: 2px;
@@ -370,7 +404,7 @@ a.dropdown-item.mobil:hover{
 	list-style: circle;
 }
 .dades a {
-	color: #4dba79;
+	color: #317a4c;
 }
 .dades a:hover,
 .dades a:focus {
@@ -390,7 +424,20 @@ a.dropdown-item.mobil:hover{
 a.linkPeu:hover,
 a.linkPeu:focus,
 a.linkPeu:active {
-	color: #4dba79 !important;
+	color: #317a4c !important;
+}
+/* Footer contrast */
+#footer small,
+#footer small i,
+#footer small span {
+	color: #595959;
+}
+#footer a {
+	color: #0069d9;
+}
+#footer a:hover,
+#footer a:focus {
+	color: #000;
 }
 /* FI Peu */
 
@@ -424,7 +471,7 @@ a.iconoXarxes{
 a.iconoXarxes svg { transform: scale(.7, .7); }
 a.iconoXarxes:hover,
 a.iconoXarxes:focus,
-a.iconoXarxes:active { background-color: #4dba79; border-color: #4dba79; }
+a.iconoXarxes:active { background-color: #317a4c; border-color: #317a4c; }
 a.iconoXarxes:hover path,
 a.iconoXarxes:focus path,
 a.iconoXarxes:active path { fill: #fff; }
@@ -448,7 +495,7 @@ a.iconoXarxes{
 	padding:30px 10px;
 	margin:20px 0px;
 	border: thin outset;
-	font: normal 100% 'Bariol Regular', Arial, Helvetica, sans-serif;
+	font: normal 100% Arial, Helvetica, sans-serif;
 	color: #333;
 }
 .box-part:hover{
@@ -473,8 +520,8 @@ a.iconoXarxes{
 	filter: invert(78%) sepia(53%) saturate(428%) hue-rotate(91deg) brightness(96%) contrast(94%);
 }
 .titolMenu{
-	font: normal 100% 'Bariol Regular', Arial, Helvetica, sans-serif;
-	color: #4dba79;
+	font: normal 100% Arial, Helvetica, sans-serif;
+	color: #317a4c;
 	font-size: 1.5em;
 	display: flow-root;
 }
@@ -482,14 +529,50 @@ a.iconoXarxes{
 
 /* Per paginació */
 .page-link{
-	color: #4dba79;
+	color: #317a4c;
 }
 .page-item.active .page-link {
-	background-color: #4dba79;
-	border-color: #4dba79;
+	background-color: #0069d9;
+	border-color: #0069d9;
 }
 .page-link:focus, .page-link:hover {
 	color: #000;
 }
 
+ul.gj-list-bootstrap li [data-role=display] {
+	padding: 0;
+}
 
+ul.gj-list-bootstrap li [data-role=expander].gj-tree-material-icons-expander {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+.no-disponible {
+	display: none;
+	visibility: hidden;
+}
+
+.disponible {
+	display: block;
+	visibility: visible;
+}
+
+.mainMenu .upper-right-corner {
+	z-index: 9;
+	float: right;
+	padding-right: 9px;
+}
+
+.mainMenu .upper-left-corner {
+	z-index: 9;
+	float: left;
+}
+
+.thumbnail {
+	line-height: 20px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
+	transition: all 0.2s ease-in-out;
+}

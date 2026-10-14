@@ -5,7 +5,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,AutoritzacioFields.LLOCID)}">
         <tr id="autoritzacio_llocID_rowid">
           <td id="autoritzacio_llocID_columnlabelid">
-            <label>
+            <label for="autoritzacio.llocID">
               <fmt:message key="${(empty __theForm.labels[AutoritzacioFields.LLOCID])?'autoritzacio.llocID':__theForm.labels[AutoritzacioFields.LLOCID]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[AutoritzacioFields.LLOCID]}">
@@ -16,11 +16,11 @@
           <form:errors path="autoritzacio.llocID" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.LLOCID)}" >
           <form:hidden path="autoritzacio.llocID"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.autoritzacio.llocID,__theForm.listOfLlocForLlocID)}"  />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.autoritzacio.llocID,__theForm.listOfLlocForLlocID)}" aria-label="autoritzacio.llocID" />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.LLOCID)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select id="autoritzacio_llocID"  onchange="if(typeof onChangeLlocID == 'function') {  onChangeLlocID(this); };"  cssClass="form-control col-md-9-optional" path="autoritzacio.llocID">
+          <form:select id="autoritzacio_llocID"  onchange="if(typeof onChangeLlocID == 'function') {  onChangeLlocID(this); };"  cssClass="form-control col-md-9-optional" path="autoritzacio.llocID"  aria-label="autoritzacio.llocID" >
             <c:forEach items="${__theForm.listOfLlocForLlocID}" var="tmp">
                 <form:option value="${tmp.key}">${tmp.value}</form:option>
                 <c:if test="${empty tmp.key}">
@@ -36,7 +36,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,AutoritzacioFields.CODISIA)}">
         <tr id="autoritzacio_codiSia_rowid">
           <td id="autoritzacio_codiSia_columnlabelid">
-            <label>
+            <label for="autoritzacio.codiSia">
               <fmt:message key="${(empty __theForm.labels[AutoritzacioFields.CODISIA])?'autoritzacio.codiSia':__theForm.labels[AutoritzacioFields.CODISIA]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[AutoritzacioFields.CODISIA]}">
@@ -54,7 +54,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,AutoritzacioFields.PROCEDIMENT)}">
         <tr id="autoritzacio_procediment_rowid">
           <td id="autoritzacio_procediment_columnlabelid">
-            <label>
+            <label for="autoritzacio.procediment">
               <fmt:message key="${(empty __theForm.labels[AutoritzacioFields.PROCEDIMENT])?'autoritzacio.procediment':__theForm.labels[AutoritzacioFields.PROCEDIMENT]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[AutoritzacioFields.PROCEDIMENT]}">
@@ -72,7 +72,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,AutoritzacioFields.CAI)}">
         <tr id="autoritzacio_cai_rowid">
           <td id="autoritzacio_cai_columnlabelid">
-            <label>
+            <label for="autoritzacio.cai">
               <fmt:message key="${(empty __theForm.labels[AutoritzacioFields.CAI])?'autoritzacio.cai':__theForm.labels[AutoritzacioFields.CAI]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[AutoritzacioFields.CAI]}">
@@ -90,7 +90,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,AutoritzacioFields.DATAINICI)}">
         <tr id="autoritzacio_dataInici_rowid">
           <td id="autoritzacio_dataInici_columnlabelid">
-            <label>
+            <label for="autoritzacio.dataInici">
               <fmt:message key="${(empty __theForm.labels[AutoritzacioFields.DATAINICI])?'autoritzacio.dataInici':__theForm.labels[AutoritzacioFields.DATAINICI]}" />
              </label>
               <c:if test="${not empty __theForm.help[AutoritzacioFields.DATAINICI]}">
@@ -100,8 +100,8 @@
           <td id="autoritzacio_dataInici_columnvalueid">
     <form:errors path="autoritzacio.dataInici" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
-                <div class="input-group date" id="autoritzacio_dataInici" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.DATAINICI)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#autoritzacio_dataInici" path="autoritzacio.dataInici" />
+                <div class="input-group date" id="autoritzacio_dataIniciDiv" data-target-input="nearest">
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.DATAINICI)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#autoritzacio_dataInici" path="autoritzacio.dataInici" aria-label="autoritzacio.dataInici"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.DATAINICI)}" >
                     <div class="input-group-append"  data-target="#autoritzacio_dataInici"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -109,7 +109,7 @@
                     </c:if>
                 </div>
             </div>
-        <script type="text/javascript">
+        <script>
             $(function () {
                 $('#autoritzacio_dataInici').datetimepicker({
                     format: '${gen:getJSDatePattern()}',
@@ -119,14 +119,15 @@
                     }
                 });
             });
-        </script>           </td>
+        </script>
+           </td>
         </tr>
         </c:if>
         
         <c:if test="${!gen:contains(__theForm.hiddenFields,AutoritzacioFields.DATAFI)}">
         <tr id="autoritzacio_dataFi_rowid">
           <td id="autoritzacio_dataFi_columnlabelid">
-            <label>
+            <label for="autoritzacio.dataFi">
               <fmt:message key="${(empty __theForm.labels[AutoritzacioFields.DATAFI])?'autoritzacio.dataFi':__theForm.labels[AutoritzacioFields.DATAFI]}" />
              </label>
               <c:if test="${not empty __theForm.help[AutoritzacioFields.DATAFI]}">
@@ -136,8 +137,8 @@
           <td id="autoritzacio_dataFi_columnvalueid">
     <form:errors path="autoritzacio.dataFi" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
-                <div class="input-group date" id="autoritzacio_dataFi" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.DATAFI)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#autoritzacio_dataFi" path="autoritzacio.dataFi" />
+                <div class="input-group date" id="autoritzacio_dataFiDiv" data-target-input="nearest">
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.DATAFI)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#autoritzacio_dataFi" path="autoritzacio.dataFi" aria-label="autoritzacio.dataFi"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.DATAFI)}" >
                     <div class="input-group-append"  data-target="#autoritzacio_dataFi"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -145,7 +146,7 @@
                     </c:if>
                 </div>
             </div>
-        <script type="text/javascript">
+        <script>
             $(function () {
                 $('#autoritzacio_dataFi').datetimepicker({
                     format: '${gen:getJSDatePattern()}',
@@ -155,14 +156,15 @@
                     }
                 });
             });
-        </script>           </td>
+        </script>
+           </td>
         </tr>
         </c:if>
         
         <c:if test="${!gen:contains(__theForm.hiddenFields,AutoritzacioFields.DATACREACIO)}">
         <tr id="autoritzacio_dataCreacio_rowid">
           <td id="autoritzacio_dataCreacio_columnlabelid">
-            <label>
+            <label for="autoritzacio.dataCreacio">
               <fmt:message key="${(empty __theForm.labels[AutoritzacioFields.DATACREACIO])?'autoritzacio.dataCreacio':__theForm.labels[AutoritzacioFields.DATACREACIO]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[AutoritzacioFields.DATACREACIO]}">
@@ -172,8 +174,8 @@
           <td id="autoritzacio_dataCreacio_columnvalueid">
     <form:errors path="autoritzacio.dataCreacio" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
-                <div class="input-group date" id="autoritzacio_dataCreacio" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.DATACREACIO)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#autoritzacio_dataCreacio" path="autoritzacio.dataCreacio" />
+                <div class="input-group date" id="autoritzacio_dataCreacioDiv" data-target-input="nearest">
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.DATACREACIO)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#autoritzacio_dataCreacio" path="autoritzacio.dataCreacio" aria-label="autoritzacio.dataCreacio"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.DATACREACIO)}" >
                     <div class="input-group-append"  data-target="#autoritzacio_dataCreacio"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -181,7 +183,7 @@
                     </c:if>
                 </div>
             </div>
-        <script type="text/javascript">
+        <script>
             $(function () {
                 $('#autoritzacio_dataCreacio').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
@@ -191,14 +193,15 @@
                     }
                 });
             });
-        </script>           </td>
+        </script>
+           </td>
         </tr>
         </c:if>
         
         <c:if test="${!gen:contains(__theForm.hiddenFields,AutoritzacioFields.OBSERVACIONS)}">
         <tr id="autoritzacio_observacions_rowid">
           <td id="autoritzacio_observacions_columnlabelid">
-            <label>
+            <label for="autoritzacio.observacions">
               <fmt:message key="${(empty __theForm.labels[AutoritzacioFields.OBSERVACIONS])?'autoritzacio.observacions':__theForm.labels[AutoritzacioFields.OBSERVACIONS]}" />
              </label>
               <c:if test="${not empty __theForm.help[AutoritzacioFields.OBSERVACIONS]}">
@@ -214,14 +217,14 @@
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_observacions" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_observacions" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('autoritzacio.observacions'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('autoritzacio.observacions'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('autoritzacio.observacions'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_observacions').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_observacions').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_observacions').css('display', valor);
@@ -237,7 +240,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,AutoritzacioFields.USUARIID)}">
         <tr id="autoritzacio_usuariID_rowid">
           <td id="autoritzacio_usuariID_columnlabelid">
-            <label>
+            <label for="autoritzacio.usuariID">
               <fmt:message key="${(empty __theForm.labels[AutoritzacioFields.USUARIID])?'autoritzacio.usuariID':__theForm.labels[AutoritzacioFields.USUARIID]}" />
              </label>
               <c:if test="${not empty __theForm.help[AutoritzacioFields.USUARIID]}">
@@ -255,7 +258,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,AutoritzacioFields.FUNCIONARIID)}">
         <tr id="autoritzacio_funcionariID_rowid">
           <td id="autoritzacio_funcionariID_columnlabelid">
-            <label>
+            <label for="autoritzacio.funcionariID">
               <fmt:message key="${(empty __theForm.labels[AutoritzacioFields.FUNCIONARIID])?'autoritzacio.funcionariID':__theForm.labels[AutoritzacioFields.FUNCIONARIID]}" />
              </label>
               <c:if test="${not empty __theForm.help[AutoritzacioFields.FUNCIONARIID]}">
@@ -266,11 +269,11 @@
           <form:errors path="autoritzacio.funcionariID" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.FUNCIONARIID)}" >
           <form:hidden path="autoritzacio.funcionariID"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.autoritzacio.funcionariID,__theForm.listOfFuncionariForFuncionariID)}"  />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.autoritzacio.funcionariID,__theForm.listOfFuncionariForFuncionariID)}" aria-label="autoritzacio.funcionariID" />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.FUNCIONARIID)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select id="autoritzacio_funcionariID"  onchange="if(typeof onChangeFuncionariID == 'function') {  onChangeFuncionariID(this); };"  cssClass="form-control col-md-9-optional" path="autoritzacio.funcionariID">
+          <form:select id="autoritzacio_funcionariID"  onchange="if(typeof onChangeFuncionariID == 'function') {  onChangeFuncionariID(this); };"  cssClass="form-control col-md-9-optional" path="autoritzacio.funcionariID"  aria-label="autoritzacio.funcionariID" >
             <c:forEach items="${__theForm.listOfFuncionariForFuncionariID}" var="tmp">
                 <form:option value="${tmp.key}">${tmp.value}</form:option>
                 <c:if test="${empty tmp.key}">

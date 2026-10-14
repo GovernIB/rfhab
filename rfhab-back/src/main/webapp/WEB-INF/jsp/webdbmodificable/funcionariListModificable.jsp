@@ -24,7 +24,7 @@ filtre_fassignats_vperdefecte =
   ><fmt:message key="${FuncionariFields.DATABAIXA.codeLabel}" />
 </span>
 
-<script type="text/javascript">
+<script>
   $(document).ready(function () {
     document.getElementById("FilterDiv").style.display = "inherit";
     document.getElementById("FilterButton").style.display = "none";

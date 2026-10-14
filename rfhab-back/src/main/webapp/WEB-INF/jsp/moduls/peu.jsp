@@ -7,7 +7,7 @@
 
 		<!-- Esquerra -->
 		<div id="peu-esquerra">
-			<strong class="font-weight-bold h6"> ${versio.projectName}
+			<strong class="font-weight-bold"> ${versio.projectName}
 				v${versio.version}<%=Configuracio.isCAIB() ? "-caib" : ""%>
 
 			</strong> <br /> <small> Build: ${versio.buildTime} <br /> JDK: ${version.jdkVersion} <br />
@@ -20,6 +20,7 @@
 			<span style="padding-top: 2px">
 			 <i><fmt:message key="desenvolupatper" /></i></span>
 			 </small>
+			<small><a class="text-dark linkPeu" href="<c:url value='/public/accessibilitat'/>"><fmt:message key="labels.accessibilitat" /></a></small>
 		</div>
 
 
@@ -34,9 +35,8 @@
 			</a> <br />
 
 			<!-- Button to trigger modal -->
-			<small><a href="#modalAjuda" role="button"
+			<small><a class="linkAjudaPeu" href="#modalAjuda" role="button"
 				data-toggle="modal"><fmt:message key="ajuda.necessitau" /></a></small>
-			<small><a href="<c:url value='/declaracioaccessibilitat'/>"><fmt:message key="labels.accessibilitat" /></a></small>
 		</div>
 
 
@@ -61,7 +61,7 @@
                         <li><fmt:message key="ajuda.viatelefon" /><%=Configuracio.getAjudaViaTelefon()%></li>
                         <li><fmt:message key="ajuda.viaweb" /><%=Configuracio.getAjudaViaWeb()%></li>
                         <li><fmt:message key="ajuda.viaemail" />
-                            <a href="mailto: help@help.hl"><%=Configuracio.getAjudaViaEmail()%></a>
+                            <a href="mailto:help@help.hl"><%=Configuracio.getAjudaViaEmail()%></a>
                         </li>
                     </ul>
                 </div>

@@ -5,7 +5,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,UnitatFields.CODI)}">
         <tr id="unitat_codi_rowid">
           <td id="unitat_codi_columnlabelid">
-            <label>
+            <label for="unitat.codi">
               <fmt:message key="${(empty __theForm.labels[UnitatFields.CODI])?'unitat.codi':__theForm.labels[UnitatFields.CODI]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[UnitatFields.CODI]}">
@@ -23,7 +23,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,UnitatFields.VERSIO)}">
         <tr id="unitat_versio_rowid">
           <td id="unitat_versio_columnlabelid">
-            <label>
+            <label for="unitat.versio">
               <fmt:message key="${(empty __theForm.labels[UnitatFields.VERSIO])?'unitat.versio':__theForm.labels[UnitatFields.VERSIO]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[UnitatFields.VERSIO]}">
@@ -41,7 +41,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,UnitatFields.DENOMINACIO)}">
         <tr id="unitat_denominacio_rowid">
           <td id="unitat_denominacio_columnlabelid">
-            <label>
+            <label for="unitat.denominacio">
               <fmt:message key="${(empty __theForm.labels[UnitatFields.DENOMINACIO])?'unitat.denominacio':__theForm.labels[UnitatFields.DENOMINACIO]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[UnitatFields.DENOMINACIO]}">
@@ -57,14 +57,14 @@
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_denominacio" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_denominacio" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('unitat.denominacio'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('unitat.denominacio'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('unitat.denominacio'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_denominacio').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_denominacio').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_denominacio').css('display', valor);
@@ -80,7 +80,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,UnitatFields.COOFICIAL)}">
         <tr id="unitat_cooficial_rowid">
           <td id="unitat_cooficial_columnlabelid">
-            <label>
+            <label for="unitat.cooficial">
               <fmt:message key="${(empty __theForm.labels[UnitatFields.COOFICIAL])?'unitat.cooficial':__theForm.labels[UnitatFields.COOFICIAL]}" />
              </label>
               <c:if test="${not empty __theForm.help[UnitatFields.COOFICIAL]}">
@@ -96,14 +96,14 @@
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_cooficial" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_cooficial" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('unitat.cooficial'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('unitat.cooficial'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('unitat.cooficial'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_cooficial').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_cooficial').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_cooficial').css('display', valor);
@@ -119,7 +119,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,UnitatFields.ARREL)}">
         <tr id="unitat_arrel_rowid">
           <td id="unitat_arrel_columnlabelid">
-            <label>
+            <label for="unitat.arrel">
               <fmt:message key="${(empty __theForm.labels[UnitatFields.ARREL])?'unitat.arrel':__theForm.labels[UnitatFields.ARREL]}" />
              </label>
               <c:if test="${not empty __theForm.help[UnitatFields.ARREL]}">
@@ -137,7 +137,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,UnitatFields.ARRELVERSIO)}">
         <tr id="unitat_arrelVersio_rowid">
           <td id="unitat_arrelVersio_columnlabelid">
-            <label>
+            <label for="unitat.arrelVersio">
               <fmt:message key="${(empty __theForm.labels[UnitatFields.ARRELVERSIO])?'unitat.arrelVersio':__theForm.labels[UnitatFields.ARRELVERSIO]}" />
              </label>
               <c:if test="${not empty __theForm.help[UnitatFields.ARRELVERSIO]}">
@@ -155,7 +155,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,UnitatFields.SUPERIOR)}">
         <tr id="unitat_superior_rowid">
           <td id="unitat_superior_columnlabelid">
-            <label>
+            <label for="unitat.superior">
               <fmt:message key="${(empty __theForm.labels[UnitatFields.SUPERIOR])?'unitat.superior':__theForm.labels[UnitatFields.SUPERIOR]}" />
              </label>
               <c:if test="${not empty __theForm.help[UnitatFields.SUPERIOR]}">
@@ -173,7 +173,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,UnitatFields.SUPERIORVERSIO)}">
         <tr id="unitat_superiorVersio_rowid">
           <td id="unitat_superiorVersio_columnlabelid">
-            <label>
+            <label for="unitat.superiorVersio">
               <fmt:message key="${(empty __theForm.labels[UnitatFields.SUPERIORVERSIO])?'unitat.superiorVersio':__theForm.labels[UnitatFields.SUPERIORVERSIO]}" />
              </label>
               <c:if test="${not empty __theForm.help[UnitatFields.SUPERIORVERSIO]}">
@@ -191,7 +191,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,UnitatFields.ESTAT)}">
         <tr id="unitat_estat_rowid">
           <td id="unitat_estat_columnlabelid">
-            <label>
+            <label for="unitat.estat">
               <fmt:message key="${(empty __theForm.labels[UnitatFields.ESTAT])?'unitat.estat':__theForm.labels[UnitatFields.ESTAT]}" />
              </label>
               <c:if test="${not empty __theForm.help[UnitatFields.ESTAT]}">
@@ -202,11 +202,11 @@
           <form:errors path="unitat.estat" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,UnitatFields.ESTAT)}" >
           <form:hidden path="unitat.estat"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.unitat.estat,__theForm.listOfValuesForEstat)}"  />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.unitat.estat,__theForm.listOfValuesForEstat)}" aria-label="unitat.estat" />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,UnitatFields.ESTAT)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select id="unitat_estat"  onchange="if(typeof onChangeEstat == 'function') {  onChangeEstat(this); };"  cssClass="form-control col-md-9-optional" path="unitat.estat">
+          <form:select id="unitat_estat"  onchange="if(typeof onChangeEstat == 'function') {  onChangeEstat(this); };"  cssClass="form-control col-md-9-optional" path="unitat.estat"  aria-label="unitat.estat" >
             <c:forEach items="${__theForm.listOfValuesForEstat}" var="tmp">
                 <form:option value="${tmp.key}">${tmp.value}</form:option>
                 <c:if test="${empty tmp.key}">

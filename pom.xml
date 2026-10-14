@@ -137,11 +137,12 @@
     </properties>
     <dependencyManagement>
         <dependencies>
-            <dependency>
+            <!-- delegat a caib-artifacts-jdk11-jboss72or74-with-github-governib-distribution -->
+            <!-- <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>4.13.2</version>
-            </dependency>
+            </dependency> -->
             <!-- Force odfdom-java version for all modules -->
             <dependency>
                 <groupId>org.odftoolkit</groupId>

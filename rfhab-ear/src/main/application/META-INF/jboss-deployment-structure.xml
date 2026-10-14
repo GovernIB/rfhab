@@ -59,6 +59,8 @@
             <module name="javax.annotation.api" export="TRUE"/>
         </dependencies>
         <exclusions>
+            <!-- Per evitar problemes amb els Bindings de les APIs RestEasy -->
+            <!-- Així suporten tipus especials com byte[], timestamp, ... -->
             <module name="org.jboss.resteasy.resteasy-json-binding-provider"/>
         </exclusions>
     </deployment>

@@ -36,7 +36,7 @@ form.msf {
 .msf-header {
 	padding-top: 10px;
 	margin-bottom: 40px;
-	color: #555;
+	color: #777;
 }
 
 .msf-header .msf-step {
@@ -54,7 +54,7 @@ form.msf {
 	width: 60px;
 	line-height: 55px;
 	text-align: center;
-	border: 3px solid #555;
+	border: 3px solid #777;
 	border-radius: 100%;
 	font-size: 30px;
 	margin-left: 10px;
@@ -162,7 +162,7 @@ button[disabled][type="submit"] {
 
 		<div class="progress">
 			<div class="progress-bar progress-bar-success progress-bar-striped"
-				role="progressbar" aria-label="<fmt:message key='usuari.tramit.progres.nom' />" aria-valuenow="0" aria-valuemin="0"
+				role="progressbar" aria-valuenow="0" aria-valuemin="0"
 				aria-valuemax="100" style="width: 0%">
 				<span class="sr-only">0%</span>
 			</div>
@@ -308,12 +308,12 @@ button[disabled][type="submit"] {
 							</div>
 							<div class="form-group">
 								<input type="checkbox" name="representant" value="representant"
-									id="representant"> <label for="representant">Representant</label><fmt:message key="usuari.tramit.dades.representant" />
+									id="representant"> <fmt:message key="usuari.tramit.dades.representant" />
 							</div>
 
 							<div class="formRepresentant" style="display: none;">
 
-								<h3><fmt:message key="usuari.tramit.dades.representant.titol"/></h3>
+								<h3><fmt:message key="usuari.tramit.dades.representant.titol" /></h3>
 
 								<div class="form-group">
 									<label><fmt:message key="usuari.tramit.dades.representant.nom" />*</label>
@@ -564,7 +564,7 @@ button[disabled][type="submit"] {
 
 							<div class="row buttonsDiv">
 								<div class="col-md-6">
-									<button type="button" id="btn-descarregar-firmat-id" style="display: none;" class="btn btn-primary-contrast" disabled onclick="if(typeof onClickDescarregarFirmat == 'function') {  onClickDescarregarFirmat(this); };">
+									<button type="button" id="btn-descarregar-firmat-id" style="display: none;" class="btn btn-primary" disabled onclick="if(typeof onClickDescarregarFirmat == 'function') {  onClickDescarregarFirmat(this); };">
 										<i class="fa fa-file-pdf"></i> <fmt:message key="usuari.tramit.documentacio.descarregarfirmat" />
 									</button>
 								</div>
@@ -623,7 +623,7 @@ button[disabled][type="submit"] {
 							</div>
 							<div style="position: absolute; top: 0; right: 25px;">
 								<button type="submit" data-type="submit"
-									class="btn btn-primary-contrast msf-nav-button"><fmt:message key="usuari.tramit.navegacio.finalitzar" /></button>
+									class="btn btn-primary msf-nav-button"><fmt:message key="usuari.tramit.navegacio.finalitzar" /></button>
 							</div>
 						</div>
 					</div>
@@ -2268,7 +2268,7 @@ button[disabled][type="submit"] {
 			+ '</div>'
 			+ '<div class="modal-footer">'
 			+ '<button type="button" class="btn btn-secondary" data-dismiss="modal"><fmt:message key="usuari.sessio.caducada.tancar" /></button>'
-			+ '<button type="button" class="btn btn-primary-contrast" onclick="window.location.reload();"><fmt:message key="usuari.sessio.caducada.recarregar" /></button>'
+			+ '<button type="button" class="btn btn-primary" onclick="window.location.reload();"><fmt:message key="usuari.sessio.caducada.recarregar" /></button>'
 			+ '</div>'
 			+ '</div>'
 			+ '</div>'

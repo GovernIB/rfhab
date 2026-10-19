@@ -19,7 +19,7 @@
            <a class="float-right" style="margin-left:10px" href="#"> <i title="<fmt:message key="genapp.form.hidefilter"/>" onclick="document.getElementById('FilterDiv').style.display='none'; document.getElementById('FilterButton').style.display='inline';" class="far fa-window-close"></i></a>
            <input style="margin-left: 3px" class="btn btn-sm btn-warning float-right" type="button" onclick="clear_form_elements(this.form)" value="<fmt:message key="genapp.form.clean"/>"/>
            <input style="margin-left: 3px" class="btn btn-sm btn-warning float-right" type="reset" value="<fmt:message key="genapp.form.reset"/>"/>
-           <input style="margin-left: 3px" class="btn btn-sm btn-primary-contrast float-right" type="submit" value="<fmt:message key="genapp.form.search"/>"/>
+           <input style="margin-left: 3px" class="btn btn-sm btn-primary float-right" type="submit" value="<fmt:message key="genapp.form.search"/>"/>
 
         </div>
       </div>
@@ -75,7 +75,7 @@
               <fmt:message key="genapp.form.searchby" var="cercapernumero" >                
                  <fmt:param value="${numero}"/>
               </fmt:message>
-                <label class="add-on" for="numero" title="${cercapernumero}"><c:out value="${numero}" />:</label>
+              <span class="add-on"><c:out value="${numero}" />:</span>
               <form:input cssClass="search-query input-medium" placeholder="${cercapernumero}" path="numero" />
             </div>
 
@@ -154,7 +154,7 @@
               <fmt:message key="genapp.form.searchby" var="cercaperidentificador" >                
                  <fmt:param value="${identificador}"/>
               </fmt:message>
-                <label class="add-on" for="identificador" title="${cercaperidentificador}"><c:out value="${identificador}" />:</label>
+              <span class="add-on"><c:out value="${identificador}" />:</span>
               <form:input cssClass="search-query input-medium" placeholder="${cercaperidentificador}" path="identificador" />
             </div>
 
@@ -167,7 +167,7 @@
               <fmt:message key="genapp.form.searchby" var="cercaperusuari" >                
                  <fmt:param value="${usuari}"/>
               </fmt:message>
-                <label class="add-on" for="usuari" title="${cercaperusuari}"><c:out value="${usuari}" />:</label>
+              <span class="add-on"><c:out value="${usuari}" />:</span>
               <form:input cssClass="search-query input-medium" placeholder="${cercaperusuari}" path="usuari" />
             </div>
 

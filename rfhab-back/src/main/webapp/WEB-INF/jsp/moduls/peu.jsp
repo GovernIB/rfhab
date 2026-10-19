@@ -25,9 +25,7 @@
 
 		<!-- Dreta -->
 		<div id="peu-dreta" >
-			<a href="https://www.caib.es/" target="_blank"
-				aria-label="Enllaç a la web de la CAIB"
-				title="Enllaç a la web de la CAIB"> <img
+			<a href="https://www.caib.es/" target="_blank"> <img
 				src="<c:url value="/img/app-logo-bn.png"/>" 
 				style="height: 35px;" 
 				alt="Govern de les Illes Balears" />
@@ -97,17 +95,6 @@
 
 #peu-esquerra {
 	width: 25rem;
-}
-
-#peu-esquerra small,
-#peu-esquerra small *,
-#peu-dreta small,
-#peu-dreta small *,
-#peu-dreta a,
-#peu-dreta a:hover,
-#peu-dreta a:focus,
-#peu-dreta a:active {
-	color: #ffffff !important;
 }
 
 #modalAjuda {

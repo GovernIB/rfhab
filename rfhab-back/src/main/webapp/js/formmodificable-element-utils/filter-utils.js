@@ -3,25 +3,20 @@ function addNewSelectFilterToContainer(
   options,
   label,
   newInputId,
-  newInputName,
-  description = null
+  newInputName
 ) {
   //estils per quan son selects o desde i fins
   parentContainer.classList.remove("input-group");
   parentContainer.classList.add("input-prepend");
 
   //afegim etiqueta amb el títol
-  const labelElement = document.createElement("label");
+  const labelElement = document.createElement("span");
   labelElement.classList.add("add-on");
-  labelElement.setAttribute("for", newInputId);
-  labelElement.textContent = description ? label + " " + description : label;
+  labelElement.innerHTML = label;
   parentContainer.appendChild(labelElement);
 
   //afegim nou select
   const selectElement = createSelect(newInputId, newInputName, options);
-  if (description) {
-    selectElement.title = description;
-  }
   parentContainer.appendChild(selectElement);
 
   return selectElement;
@@ -39,10 +34,9 @@ function addNewTextInputFilterToContainer(
   parentContainer.classList.add("input-prepend");
 
   //afegim etiqueta amb el títol
-  const labelElement = document.createElement("label");
+  const labelElement = document.createElement("span");
   labelElement.classList.add("add-on");
-  labelElement.setAttribute("for", newInputId);
-  labelElement.textContent = label;
+  labelElement.innerHTML = label;
   parentContainer.appendChild(labelElement);
 
   //afegim nou select
@@ -57,8 +51,7 @@ function addNewSelectFilterToForm(
   options,
   label,
   newInputId,
-  newInputName,
-  description = null
+  newInputName
 ) {
   //afegim contenidor del select
   const parentContainer = document.createElement("div");
@@ -71,8 +64,7 @@ function addNewSelectFilterToForm(
     options,
     label,
     newInputId,
-    newInputName,
-    description
+    newInputName
   );
 }
 
@@ -84,8 +76,7 @@ function replaceFilterForSelectFilter(
   options,
   wasSelect = false,
   newInputIdFins = null,
-  newInputNameFins = null,
-  description = null
+  newInputNameFins = null
 ) {
   let parentContainer = inputElement.parentElement;
   // si el input es un select, el parentContainer es el div que conté el select
@@ -104,8 +95,7 @@ function replaceFilterForSelectFilter(
     options,
     label,
     newInputId,
-    newInputName,
-    description
+    newInputName
   );
 
   //si era desde i fins, afegim un segon select, ocult i que sempre tengui el mateix valor que el primer

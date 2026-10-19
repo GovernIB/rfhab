@@ -20,7 +20,7 @@ body {
 	/* background-image:url(../img/background-pattern.jpg); */
 	color:#333;
 	padding:0 !important;
-	font-size: 0.95rem;
+	font-size: 120%;
 }
 
 .botoselecciolist {
@@ -450,7 +450,6 @@ width: 62%;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
 	transition: all 0.2s ease-in-out;
 }
-
 
 
 

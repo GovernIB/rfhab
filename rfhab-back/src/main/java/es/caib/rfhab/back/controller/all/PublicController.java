@@ -10,10 +10,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.fundaciobit.genapp.common.web.tiles.Tile;
+import org.fundaciobit.genapp.common.web.tiles.TileType;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import es.caib.rfhab.back.utils.Tab;
+import es.caib.rfhab.commons.utils.Configuracio;
 
 /**
  * 
@@ -21,6 +26,8 @@ import javax.servlet.http.HttpSession;
  * 
  */
 @Controller
+@Tile(name = "acessibilitat", extendsTile = Tab.MENU_PUBLIC_AND_COMMON, type = TileType.ANOTHER,
+		contentJsp = "/WEB-INF/jsp/all/acessibilitat.jsp")
 public class PublicController {
 
 	protected final Logger log = Logger.getLogger(getClass());
@@ -51,6 +58,14 @@ public class PublicController {
         response.getWriter().close();
 
     }
+
+	@RequestMapping(value = "/public/accessibilitat")
+	public ModelAndView accessibilitat(HttpSession session, HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		ModelAndView mav = new ModelAndView("acessibilitat");
+		mav.addObject("backurl", Configuracio.getBackUrl());
+		return mav;
+	}
 
     	@RequestMapping(value = "/declaracioaccessibilitat")
     	public ModelAndView declaracioaccessibilitat() {

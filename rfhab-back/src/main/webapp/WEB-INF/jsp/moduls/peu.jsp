@@ -7,7 +7,7 @@
 
 		<!-- Esquerra -->
 		<div id="peu-esquerra">
-			<strong class="font-weight-bold h6"> ${versio.projectName}
+			<strong class="font-weight-bold"> ${versio.projectName}
 				v${versio.version}<%=Configuracio.isCAIB() ? "-caib" : ""%>
 
 			</strong> <br /> <small> Build: ${versio.buildTime} <br /> JDK: ${version.jdkVersion} <br />
@@ -20,6 +20,8 @@
 			<span style="padding-top: 2px">
 			 <i><fmt:message key="desenvolupatper" /></i></span>
 			 </small>
+			<br />
+			<a class="text-dark linkPeu" href="<c:url value='/public/accessibilitat'/>"><fmt:message key="labels.accessibilitat" /></a>
 		</div>
 
 

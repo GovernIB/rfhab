@@ -69,7 +69,7 @@
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UsuariFields.ACTIU)}">
           <td>
-            <img height="18" width="18" src="<c:url value="/img/icn_alert_${usuari.actiu?'success':'error'}.png"/>">
+            <img height="18" width="18" src="<c:url value="/img/icn_alert_${usuari.actiu?'success':'error'}.png"/>" alt="${usuari.actiu}" >
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UsuariFields.DATACREACIO)}">

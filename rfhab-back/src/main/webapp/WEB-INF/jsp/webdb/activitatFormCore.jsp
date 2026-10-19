@@ -5,7 +5,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.FUNCIONARIID)}">
         <tr id="activitat_funcionariID_rowid">
           <td id="activitat_funcionariID_columnlabelid">
-            <label>
+            <label for="activitat.funcionariID">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.FUNCIONARIID])?'activitat.funcionariID':__theForm.labels[ActivitatFields.FUNCIONARIID]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.FUNCIONARIID]}">
@@ -16,20 +16,23 @@
           <form:errors path="activitat.funcionariID" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.FUNCIONARIID)}" >
           <form:hidden path="activitat.funcionariID"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.activitat.funcionariID,__theForm.listOfFuncionariForFuncionariID)}"  />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.activitat.funcionariID,__theForm.listOfFuncionariForFuncionariID)}" aria-label="activitat.funcionariID" />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,ActivitatFields.FUNCIONARIID)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select id="activitat_funcionariID"  onchange="if(typeof onChangeFuncionariID == 'function') {  onChangeFuncionariID(this); };"  cssClass="form-control col-md-9-optional" path="activitat.funcionariID">
+          <form:select path="activitat.funcionariID" onchange="if(typeof onChangeFuncionariID == 'function') {  onChangeFuncionariID(this); };"  cssClass="form-control col-md-9-optional"  aria-label="activitat.funcionariID" >
+
+
             <c:forEach items="${__theForm.listOfFuncionariForFuncionariID}" var="tmp">
                 <form:option value="${tmp.key}">${tmp.value}</form:option>
+
                 <c:if test="${empty tmp.key}">
                   <c:set var="containEmptyValue"  value="true" />
                 </c:if>
             </c:forEach>
           <script>
               $(document).ready(function() {
-                  $('#activitat_funcionariID').select2();
+                  $('#activitat.funcionariID').select2();
               });
           </script>
           </form:select>
@@ -41,7 +44,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.TIPUS)}">
         <tr id="activitat_tipus_rowid">
           <td id="activitat_tipus_columnlabelid">
-            <label>
+            <label for="activitat.tipus">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.TIPUS])?'activitat.tipus':__theForm.labels[ActivitatFields.TIPUS]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.TIPUS]}">
@@ -52,13 +55,16 @@
           <form:errors path="activitat.tipus" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.TIPUS)}" >
           <form:hidden path="activitat.tipus"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.activitat.tipus,__theForm.listOfValuesForTipus)}"  />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.activitat.tipus,__theForm.listOfValuesForTipus)}" aria-label="activitat.tipus" />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,ActivitatFields.TIPUS)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select id="activitat_tipus"  onchange="if(typeof onChangeTipus == 'function') {  onChangeTipus(this); };"  cssClass="form-control col-md-9-optional" path="activitat.tipus">
+          <form:select path="activitat.tipus" onchange="if(typeof onChangeTipus == 'function') {  onChangeTipus(this); };"  cssClass="form-control col-md-9-optional"  aria-label="activitat.tipus" >
+
+
             <c:forEach items="${__theForm.listOfValuesForTipus}" var="tmp">
                 <form:option value="${tmp.key}">${tmp.value}</form:option>
+
                 <c:if test="${empty tmp.key}">
                   <c:set var="containEmptyValue"  value="true" />
                 </c:if>
@@ -72,7 +78,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.REGISTRE)}">
         <tr id="activitat_registre_rowid">
           <td id="activitat_registre_columnlabelid">
-            <label>
+            <label for="activitat.registre">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.REGISTRE])?'activitat.registre':__theForm.labels[ActivitatFields.REGISTRE]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.REGISTRE]}">
@@ -81,7 +87,7 @@
             </td>
           <td id="activitat_registre_columnvalueid">
             <form:errors path="activitat.registre" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.REGISTRE)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.REGISTRE)? ' uneditable-input' : ''}"  style="" maxlength="50" path="activitat.registre"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.REGISTRE)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.REGISTRE)? ' uneditable-input' : ''}"  style="" maxlength="50" path="activitat.registre"   />
 
            </td>
         </tr>
@@ -90,7 +96,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.TRAMIT)}">
         <tr id="activitat_tramit_rowid">
           <td id="activitat_tramit_columnlabelid">
-            <label>
+            <label for="activitat.tramit">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.TRAMIT])?'activitat.tramit':__theForm.labels[ActivitatFields.TRAMIT]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.TRAMIT]}">
@@ -99,7 +105,7 @@
             </td>
           <td id="activitat_tramit_columnvalueid">
             <form:errors path="activitat.tramit" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.TRAMIT)? 'true' : 'false'}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.TRAMIT)? ' uneditable-input' : ''}"  style="" maxlength="150" path="activitat.tramit"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.TRAMIT)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.TRAMIT)? ' uneditable-input' : ''}"  style="" maxlength="150" path="activitat.tramit"   />
 
            </td>
         </tr>
@@ -108,7 +114,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.CODISIA)}">
         <tr id="activitat_codiSia_rowid">
           <td id="activitat_codiSia_columnlabelid">
-            <label>
+            <label for="activitat.codiSia">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.CODISIA])?'activitat.codiSia':__theForm.labels[ActivitatFields.CODISIA]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.CODISIA]}">
@@ -117,7 +123,7 @@
             </td>
           <td id="activitat_codiSia_columnvalueid">
             <form:errors path="activitat.codiSia" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.CODISIA)? 'true' : 'false'}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.CODISIA)? ' uneditable-input' : ''}"  style="" maxlength="150" path="activitat.codiSia"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.CODISIA)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.CODISIA)? ' uneditable-input' : ''}"  style="" maxlength="150" path="activitat.codiSia"   />
 
            </td>
         </tr>
@@ -126,7 +132,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.AUTORITZACIOID)}">
         <tr id="activitat_autoritzacioID_rowid">
           <td id="activitat_autoritzacioID_columnlabelid">
-            <label>
+            <label for="activitat.autoritzacioID">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.AUTORITZACIOID])?'activitat.autoritzacioID':__theForm.labels[ActivitatFields.AUTORITZACIOID]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.AUTORITZACIOID]}">
@@ -135,7 +141,7 @@
             </td>
           <td id="activitat_autoritzacioID_columnvalueid">
             <form:errors path="activitat.autoritzacioID" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.AUTORITZACIOID)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.AUTORITZACIOID)? ' uneditable-input' : ''}"  style=""  path="activitat.autoritzacioID"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.AUTORITZACIOID)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.AUTORITZACIOID)? ' uneditable-input' : ''}"  style=""  path="activitat.autoritzacioID"   />
 
            </td>
         </tr>
@@ -144,7 +150,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.DATACREACIO)}">
         <tr id="activitat_dataCreacio_rowid">
           <td id="activitat_dataCreacio_columnlabelid">
-            <label>
+            <label for="activitat.dataCreacio">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.DATACREACIO])?'activitat.dataCreacio':__theForm.labels[ActivitatFields.DATACREACIO]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.DATACREACIO]}">
@@ -154,8 +160,8 @@
           <td id="activitat_dataCreacio_columnvalueid">
     <form:errors path="activitat.dataCreacio" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
-                <div class="input-group date" id="activitat_dataCreacio" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.DATACREACIO)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#activitat_dataCreacio" path="activitat.dataCreacio" />
+                <div class="input-group date" id="activitat_dataCreacioDiv" data-target-input="nearest">
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#activitat_dataCreacio" path="activitat.dataCreacio" aria-labelledby="activitat.dataCreacio"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,ActivitatFields.DATACREACIO)}" >
                     <div class="input-group-append"  data-target="#activitat_dataCreacio"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -163,7 +169,7 @@
                     </c:if>
                 </div>
             </div>
-        <script type="text/javascript">
+        <script>
             $(function () {
                 $('#activitat_dataCreacio').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
@@ -173,14 +179,15 @@
                     }
                 });
             });
-        </script>           </td>
+        </script>
+           </td>
         </tr>
         </c:if>
         
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.INTERESSATNOM)}">
         <tr id="activitat_interessatNom_rowid">
           <td id="activitat_interessatNom_columnlabelid">
-            <label>
+            <label for="activitat.interessatNom">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.INTERESSATNOM])?'activitat.interessatNom':__theForm.labels[ActivitatFields.INTERESSATNOM]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.INTERESSATNOM]}">
@@ -192,18 +199,18 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATNOM)? 'true' : 'false'}" path="activitat.interessatNom"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATNOM)? 'readonly' : ''}" path="activitat.interessatNom"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_interessatNom" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_interessatNom" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.interessatNom'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('activitat.interessatNom'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.interessatNom'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_interessatNom').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_interessatNom').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_interessatNom').css('display', valor);
@@ -219,7 +226,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.INTERESSATLLINATGE1)}">
         <tr id="activitat_interessatLlinatge1_rowid">
           <td id="activitat_interessatLlinatge1_columnlabelid">
-            <label>
+            <label for="activitat.interessatLlinatge1">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.INTERESSATLLINATGE1])?'activitat.interessatLlinatge1':__theForm.labels[ActivitatFields.INTERESSATLLINATGE1]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.INTERESSATLLINATGE1]}">
@@ -231,18 +238,18 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATLLINATGE1)? 'true' : 'false'}" path="activitat.interessatLlinatge1"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATLLINATGE1)? 'readonly' : ''}" path="activitat.interessatLlinatge1"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_interessatLlinatge1" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_interessatLlinatge1" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.interessatLlinatge1'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('activitat.interessatLlinatge1'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.interessatLlinatge1'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_interessatLlinatge1').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_interessatLlinatge1').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_interessatLlinatge1').css('display', valor);
@@ -258,7 +265,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.INTERESSATLLINATGE2)}">
         <tr id="activitat_interessatLlinatge2_rowid">
           <td id="activitat_interessatLlinatge2_columnlabelid">
-            <label>
+            <label for="activitat.interessatLlinatge2">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.INTERESSATLLINATGE2])?'activitat.interessatLlinatge2':__theForm.labels[ActivitatFields.INTERESSATLLINATGE2]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.INTERESSATLLINATGE2]}">
@@ -270,18 +277,18 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATLLINATGE2)? 'true' : 'false'}" path="activitat.interessatLlinatge2"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATLLINATGE2)? 'readonly' : ''}" path="activitat.interessatLlinatge2"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_interessatLlinatge2" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_interessatLlinatge2" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.interessatLlinatge2'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('activitat.interessatLlinatge2'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.interessatLlinatge2'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_interessatLlinatge2').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_interessatLlinatge2').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_interessatLlinatge2').css('display', valor);
@@ -297,7 +304,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.INTERESSATTIPUS)}">
         <tr id="activitat_interessatTipus_rowid">
           <td id="activitat_interessatTipus_columnlabelid">
-            <label>
+            <label for="activitat.interessatTipus">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.INTERESSATTIPUS])?'activitat.interessatTipus':__theForm.labels[ActivitatFields.INTERESSATTIPUS]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.INTERESSATTIPUS]}">
@@ -306,7 +313,7 @@
             </td>
           <td id="activitat_interessatTipus_columnvalueid">
             <form:errors path="activitat.interessatTipus" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATTIPUS)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATTIPUS)? ' uneditable-input' : ''}"  style=""  path="activitat.interessatTipus"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATTIPUS)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATTIPUS)? ' uneditable-input' : ''}"  style=""  path="activitat.interessatTipus"   />
 
            </td>
         </tr>
@@ -315,7 +322,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.INTERESSATIDENTIFICACIO)}">
         <tr id="activitat_interessatIdentificacio_rowid">
           <td id="activitat_interessatIdentificacio_columnlabelid">
-            <label>
+            <label for="activitat.interessatIdentificacio">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.INTERESSATIDENTIFICACIO])?'activitat.interessatIdentificacio':__theForm.labels[ActivitatFields.INTERESSATIDENTIFICACIO]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.INTERESSATIDENTIFICACIO]}">
@@ -324,7 +331,7 @@
             </td>
           <td id="activitat_interessatIdentificacio_columnvalueid">
             <form:errors path="activitat.interessatIdentificacio" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATIDENTIFICACIO)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATIDENTIFICACIO)? ' uneditable-input' : ''}"  style="" maxlength="50" path="activitat.interessatIdentificacio"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATIDENTIFICACIO)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATIDENTIFICACIO)? ' uneditable-input' : ''}"  style="" maxlength="50" path="activitat.interessatIdentificacio"   />
 
            </td>
         </tr>
@@ -333,7 +340,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.REPRESENTANTNOM)}">
         <tr id="activitat_representantNom_rowid">
           <td id="activitat_representantNom_columnlabelid">
-            <label>
+            <label for="activitat.representantNom">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.REPRESENTANTNOM])?'activitat.representantNom':__theForm.labels[ActivitatFields.REPRESENTANTNOM]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.REPRESENTANTNOM]}">
@@ -345,18 +352,18 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTNOM)? 'true' : 'false'}" path="activitat.representantNom"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTNOM)? 'readonly' : ''}" path="activitat.representantNom"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_representantNom" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_representantNom" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.representantNom'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('activitat.representantNom'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.representantNom'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_representantNom').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_representantNom').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_representantNom').css('display', valor);
@@ -372,7 +379,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.REPRESENTANTLLINATGE1)}">
         <tr id="activitat_representantLlinatge1_rowid">
           <td id="activitat_representantLlinatge1_columnlabelid">
-            <label>
+            <label for="activitat.representantLlinatge1">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.REPRESENTANTLLINATGE1])?'activitat.representantLlinatge1':__theForm.labels[ActivitatFields.REPRESENTANTLLINATGE1]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.REPRESENTANTLLINATGE1]}">
@@ -384,18 +391,18 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTLLINATGE1)? 'true' : 'false'}" path="activitat.representantLlinatge1"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTLLINATGE1)? 'readonly' : ''}" path="activitat.representantLlinatge1"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_representantLlinatge1" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_representantLlinatge1" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.representantLlinatge1'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('activitat.representantLlinatge1'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.representantLlinatge1'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_representantLlinatge1').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_representantLlinatge1').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_representantLlinatge1').css('display', valor);
@@ -411,7 +418,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.REPRESENTANTLLINATGE2)}">
         <tr id="activitat_representantLlinatge2_rowid">
           <td id="activitat_representantLlinatge2_columnlabelid">
-            <label>
+            <label for="activitat.representantLlinatge2">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.REPRESENTANTLLINATGE2])?'activitat.representantLlinatge2':__theForm.labels[ActivitatFields.REPRESENTANTLLINATGE2]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.REPRESENTANTLLINATGE2]}">
@@ -423,18 +430,18 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTLLINATGE2)? 'true' : 'false'}" path="activitat.representantLlinatge2"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTLLINATGE2)? 'readonly' : ''}" path="activitat.representantLlinatge2"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_representantLlinatge2" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_representantLlinatge2" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.representantLlinatge2'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('activitat.representantLlinatge2'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.representantLlinatge2'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_representantLlinatge2').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_representantLlinatge2').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_representantLlinatge2').css('display', valor);
@@ -450,7 +457,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.REPRESENTANTTIPUS)}">
         <tr id="activitat_representantTipus_rowid">
           <td id="activitat_representantTipus_columnlabelid">
-            <label>
+            <label for="activitat.representantTipus">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.REPRESENTANTTIPUS])?'activitat.representantTipus':__theForm.labels[ActivitatFields.REPRESENTANTTIPUS]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.REPRESENTANTTIPUS]}">
@@ -459,7 +466,7 @@
             </td>
           <td id="activitat_representantTipus_columnvalueid">
             <form:errors path="activitat.representantTipus" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTTIPUS)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTTIPUS)? ' uneditable-input' : ''}"  style=""  path="activitat.representantTipus"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTTIPUS)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTTIPUS)? ' uneditable-input' : ''}"  style=""  path="activitat.representantTipus"   />
 
            </td>
         </tr>
@@ -468,7 +475,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.REPRESENTANTIDENTIFICACIO)}">
         <tr id="activitat_representantIdentificacio_rowid">
           <td id="activitat_representantIdentificacio_columnlabelid">
-            <label>
+            <label for="activitat.representantIdentificacio">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.REPRESENTANTIDENTIFICACIO])?'activitat.representantIdentificacio':__theForm.labels[ActivitatFields.REPRESENTANTIDENTIFICACIO]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.REPRESENTANTIDENTIFICACIO]}">
@@ -477,7 +484,7 @@
             </td>
           <td id="activitat_representantIdentificacio_columnvalueid">
             <form:errors path="activitat.representantIdentificacio" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTIDENTIFICACIO)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTIDENTIFICACIO)? ' uneditable-input' : ''}"  style="" maxlength="50" path="activitat.representantIdentificacio"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTIDENTIFICACIO)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTIDENTIFICACIO)? ' uneditable-input' : ''}"  style="" maxlength="50" path="activitat.representantIdentificacio"   />
 
            </td>
         </tr>
@@ -486,7 +493,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.TRAMITVERSIO)}">
         <tr id="activitat_tramitVersio_rowid">
           <td id="activitat_tramitVersio_columnlabelid">
-            <label>
+            <label for="activitat.tramitVersio">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.TRAMITVERSIO])?'activitat.tramitVersio':__theForm.labels[ActivitatFields.TRAMITVERSIO]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.TRAMITVERSIO]}">
@@ -495,7 +502,7 @@
             </td>
           <td id="activitat_tramitVersio_columnvalueid">
             <form:errors path="activitat.tramitVersio" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.TRAMITVERSIO)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.TRAMITVERSIO)? ' uneditable-input' : ''}"  style=""  path="activitat.tramitVersio"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.TRAMITVERSIO)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.TRAMITVERSIO)? ' uneditable-input' : ''}"  style=""  path="activitat.tramitVersio"   />
 
            </td>
         </tr>
@@ -504,7 +511,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.ARXIUDOCUMENTID)}">
         <tr id="activitat_arxiuDocumentID_rowid">
           <td id="activitat_arxiuDocumentID_columnlabelid">
-            <label>
+            <label for="activitat.arxiuDocumentID">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.ARXIUDOCUMENTID])?'activitat.arxiuDocumentID':__theForm.labels[ActivitatFields.ARXIUDOCUMENTID]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.ARXIUDOCUMENTID]}">
@@ -516,18 +523,18 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUDOCUMENTID)? 'true' : 'false'}" path="activitat.arxiuDocumentID"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUDOCUMENTID)? 'readonly' : ''}" path="activitat.arxiuDocumentID"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_arxiuDocumentID" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_arxiuDocumentID" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.arxiuDocumentID'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('activitat.arxiuDocumentID'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.arxiuDocumentID'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_arxiuDocumentID').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_arxiuDocumentID').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_arxiuDocumentID').css('display', valor);
@@ -543,7 +550,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.ARXIUEXPEDIENTID)}">
         <tr id="activitat_arxiuExpedientID_rowid">
           <td id="activitat_arxiuExpedientID_columnlabelid">
-            <label>
+            <label for="activitat.arxiuExpedientID">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.ARXIUEXPEDIENTID])?'activitat.arxiuExpedientID':__theForm.labels[ActivitatFields.ARXIUEXPEDIENTID]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.ARXIUEXPEDIENTID]}">
@@ -555,18 +562,18 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUEXPEDIENTID)? 'true' : 'false'}" path="activitat.arxiuExpedientID"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUEXPEDIENTID)? 'readonly' : ''}" path="activitat.arxiuExpedientID"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_arxiuExpedientID" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_arxiuExpedientID" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.arxiuExpedientID'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('activitat.arxiuExpedientID'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.arxiuExpedientID'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_arxiuExpedientID').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_arxiuExpedientID').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_arxiuExpedientID').css('display', valor);
@@ -582,7 +589,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.ESTAT)}">
         <tr id="activitat_estat_rowid">
           <td id="activitat_estat_columnlabelid">
-            <label>
+            <label for="activitat.estat">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.ESTAT])?'activitat.estat':__theForm.labels[ActivitatFields.ESTAT]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.ESTAT]}">
@@ -593,13 +600,16 @@
           <form:errors path="activitat.estat" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.ESTAT)}" >
           <form:hidden path="activitat.estat"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.activitat.estat,__theForm.listOfValuesForEstat)}"  />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.activitat.estat,__theForm.listOfValuesForEstat)}" aria-label="activitat.estat" />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,ActivitatFields.ESTAT)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select id="activitat_estat"  onchange="if(typeof onChangeEstat == 'function') {  onChangeEstat(this); };"  cssClass="form-control col-md-9-optional" path="activitat.estat">
+          <form:select path="activitat.estat" onchange="if(typeof onChangeEstat == 'function') {  onChangeEstat(this); };"  cssClass="form-control col-md-9-optional"  aria-label="activitat.estat" >
+
+
             <c:forEach items="${__theForm.listOfValuesForEstat}" var="tmp">
                 <form:option value="${tmp.key}">${tmp.value}</form:option>
+
                 <c:if test="${empty tmp.key}">
                   <c:set var="containEmptyValue"  value="true" />
                 </c:if>
@@ -613,7 +623,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.URL)}">
         <tr id="activitat_url_rowid">
           <td id="activitat_url_columnlabelid">
-            <label>
+            <label for="activitat.url">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.URL])?'activitat.url':__theForm.labels[ActivitatFields.URL]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.URL]}">
@@ -625,18 +635,18 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.URL)? 'true' : 'false'}" path="activitat.url"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.URL)? 'readonly' : ''}" path="activitat.url"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_url" style="vertical-align:top;display:inline;position:relative;">
-        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;"><span class="caret"></span></button>
+        <button  class="btn btn-secondary btn-sm dropdown-toggle" type="button" style="margin-left:0px;" aria-label="Opcions de format"><span class="caret"></span></button>
         <div id="dropdownMenuContainer_url" class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.url'); ta.wrap='off';" >No Wrap</a>
           <a class="dropdown-item"  href="#" onclick="javascript:var ta=document.getElementById('activitat.url'); ta.wrap='soft';">Soft Wrap</a>
           <a class="dropdown-item" href="#" onclick="javascript:var ta=document.getElementById('activitat.url'); ta.wrap='hard';">Hard Wrap</a>
         </div>
       </div>
-      <script type="text/javascript">
+      <script>
 			$('#dropdownMenuButton_url').on('click', function(){
 					var valor = ($('#dropdownMenuContainer_url').css('display') != 'none') ? 'none' : 'block';
                  $('#dropdownMenuContainer_url').css('display', valor);
@@ -652,7 +662,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.DATAACTIVITAT)}">
         <tr id="activitat_dataActivitat_rowid">
           <td id="activitat_dataActivitat_columnlabelid">
-            <label>
+            <label for="activitat.dataActivitat">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.DATAACTIVITAT])?'activitat.dataActivitat':__theForm.labels[ActivitatFields.DATAACTIVITAT]}" /> &nbsp;(*)
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.DATAACTIVITAT]}">
@@ -662,8 +672,8 @@
           <td id="activitat_dataActivitat_columnvalueid">
     <form:errors path="activitat.dataActivitat" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
-                <div class="input-group date" id="activitat_dataActivitat" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.DATAACTIVITAT)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#activitat_dataActivitat" path="activitat.dataActivitat" />
+                <div class="input-group date" id="activitat_dataActivitatDiv" data-target-input="nearest">
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.DATAACTIVITAT)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#activitat_dataActivitat" path="activitat.dataActivitat" aria-labelledby="activitat.dataActivitat"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,ActivitatFields.DATAACTIVITAT)}" >
                     <div class="input-group-append"  data-target="#activitat_dataActivitat"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -671,7 +681,7 @@
                     </c:if>
                 </div>
             </div>
-        <script type="text/javascript">
+        <script>
             $(function () {
                 $('#activitat_dataActivitat').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
@@ -681,14 +691,15 @@
                     }
                 });
             });
-        </script>           </td>
+        </script>
+           </td>
         </tr>
         </c:if>
         
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.IDACTUACIOTRAMIT)}">
         <tr id="activitat_idActuacioTramit_rowid">
           <td id="activitat_idActuacioTramit_columnlabelid">
-            <label>
+            <label for="activitat.idActuacioTramit">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.IDACTUACIOTRAMIT])?'activitat.idActuacioTramit':__theForm.labels[ActivitatFields.IDACTUACIOTRAMIT]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.IDACTUACIOTRAMIT]}">
@@ -697,7 +708,7 @@
             </td>
           <td id="activitat_idActuacioTramit_columnvalueid">
             <form:errors path="activitat.idActuacioTramit" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.IDACTUACIOTRAMIT)? 'true' : 'false'}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.IDACTUACIOTRAMIT)? ' uneditable-input' : ''}"  style="" maxlength="255" path="activitat.idActuacioTramit"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.IDACTUACIOTRAMIT)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.IDACTUACIOTRAMIT)? ' uneditable-input' : ''}"  style="" maxlength="255" path="activitat.idActuacioTramit"   />
 
            </td>
         </tr>
@@ -706,7 +717,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.PROCEDIMENT)}">
         <tr id="activitat_procediment_rowid">
           <td id="activitat_procediment_columnlabelid">
-            <label>
+            <label for="activitat.procediment">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.PROCEDIMENT])?'activitat.procediment':__theForm.labels[ActivitatFields.PROCEDIMENT]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.PROCEDIMENT]}">
@@ -715,7 +726,7 @@
             </td>
           <td id="activitat_procediment_columnvalueid">
             <form:errors path="activitat.procediment" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.PROCEDIMENT)? 'true' : 'false'}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.PROCEDIMENT)? ' uneditable-input' : ''}"  style="" maxlength="150" path="activitat.procediment"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.PROCEDIMENT)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.PROCEDIMENT)? ' uneditable-input' : ''}"  style="" maxlength="150" path="activitat.procediment"   />
 
            </td>
         </tr>
@@ -724,7 +735,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.ARXIUREINTENTS)}">
         <tr id="activitat_arxiuReintents_rowid">
           <td id="activitat_arxiuReintents_columnlabelid">
-            <label>
+            <label for="activitat.arxiuReintents">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.ARXIUREINTENTS])?'activitat.arxiuReintents':__theForm.labels[ActivitatFields.ARXIUREINTENTS]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.ARXIUREINTENTS]}">
@@ -733,7 +744,7 @@
             </td>
           <td id="activitat_arxiuReintents_columnvalueid">
             <form:errors path="activitat.arxiuReintents" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUREINTENTS)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUREINTENTS)? ' uneditable-input' : ''}"  style=""  path="activitat.arxiuReintents"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUREINTENTS)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUREINTENTS)? ' uneditable-input' : ''}"  style=""  path="activitat.arxiuReintents"   />
 
            </td>
         </tr>
@@ -742,7 +753,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.ARXIUESTAT)}">
         <tr id="activitat_arxiuEstat_rowid">
           <td id="activitat_arxiuEstat_columnlabelid">
-            <label>
+            <label for="activitat.arxiuEstat">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.ARXIUESTAT])?'activitat.arxiuEstat':__theForm.labels[ActivitatFields.ARXIUESTAT]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.ARXIUESTAT]}">
@@ -751,7 +762,7 @@
             </td>
           <td id="activitat_arxiuEstat_columnvalueid">
             <form:errors path="activitat.arxiuEstat" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUESTAT)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUESTAT)? ' uneditable-input' : ''}"  style=""  path="activitat.arxiuEstat"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUESTAT)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUESTAT)? ' uneditable-input' : ''}"  style=""  path="activitat.arxiuEstat"   />
 
            </td>
         </tr>
@@ -760,7 +771,7 @@
         <c:if test="${!gen:contains(__theForm.hiddenFields,ActivitatFields.ARXIUDARRERINTENT)}">
         <tr id="activitat_arxiuDarrerIntent_rowid">
           <td id="activitat_arxiuDarrerIntent_columnlabelid">
-            <label>
+            <label for="activitat.arxiuDarrerIntent">
               <fmt:message key="${(empty __theForm.labels[ActivitatFields.ARXIUDARRERINTENT])?'activitat.arxiuDarrerIntent':__theForm.labels[ActivitatFields.ARXIUDARRERINTENT]}" />
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.ARXIUDARRERINTENT]}">
@@ -770,8 +781,8 @@
           <td id="activitat_arxiuDarrerIntent_columnvalueid">
     <form:errors path="activitat.arxiuDarrerIntent" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
-                <div class="input-group date" id="activitat_arxiuDarrerIntent" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUDARRERINTENT)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#activitat_arxiuDarrerIntent" path="activitat.arxiuDarrerIntent" />
+                <div class="input-group date" id="activitat_arxiuDarrerIntentDiv" data-target-input="nearest">
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUDARRERINTENT)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#activitat_arxiuDarrerIntent" path="activitat.arxiuDarrerIntent" aria-labelledby="activitat.arxiuDarrerIntent"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUDARRERINTENT)}" >
                     <div class="input-group-append"  data-target="#activitat_arxiuDarrerIntent"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -779,7 +790,7 @@
                     </c:if>
                 </div>
             </div>
-        <script type="text/javascript">
+        <script>
             $(function () {
                 $('#activitat_arxiuDarrerIntent').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
@@ -789,7 +800,8 @@
                     }
                 });
             });
-        </script>           </td>
+        </script>
+           </td>
         </tr>
         </c:if>
         

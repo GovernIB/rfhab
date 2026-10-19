@@ -10,7 +10,7 @@
 
 <div>
 <br/>
-<center>
+<div style="text-align:center;">
 <img src="<c:url value="/img/app-logo.png"/>" width="195" alt="RFHab"/>
 
 <br/>
@@ -25,7 +25,7 @@
 </a>
 </div>
 <br/>
-</center>
+</div>
  
 </div>
 

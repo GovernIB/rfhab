@@ -160,7 +160,8 @@ body {
 	border-bottom: 1px solid #666;
 }
 label {
-	font-size:12px;
+	font-size:14px;
+	font-weight:bold;
 }
 a {
 	color:#314b87;
@@ -450,6 +451,5 @@ width: 62%;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
 	transition: all 0.2s ease-in-out;
 }
-
 
 

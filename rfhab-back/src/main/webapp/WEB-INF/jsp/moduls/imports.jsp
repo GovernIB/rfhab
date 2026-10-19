@@ -7,12 +7,6 @@
 <title><fmt:message key="app.benvingut" /></title>
 
 <!-- CSS -->
-<link href="<c:url value="/css/styles.css"/>" rel="stylesheet">
-<link href="<c:url value="/css/default.css"/>" rel="stylesheet">
-
-
-<link href="<c:url value="/css/genapp.css"/>" rel="stylesheet">
-
 <%-- Bootstrap CSS --%>
 <link href="<c:url value="/css/bootstrap.css"/>" rel="stylesheet">
 <link href="<c:url value="/css/datatables.min.css"/>" rel="stylesheet">
@@ -29,6 +23,9 @@
 <%--  Select Multiple --%>
 <link href="<c:url value="/css/select2.min.css"/>" rel="stylesheet">
 
+<link href="<c:url value="/css/styles.css"/>" rel="stylesheet">
+<link href="<c:url value="/css/default.css"/>" rel="stylesheet">
+<link href="<c:url value="/css/genapp.css"/>" rel="stylesheet">
 <link href="<c:url value="/css/stylesapp.css"/>" rel="stylesheet">
 
 <script>
@@ -233,4 +230,3 @@ form {
 	font-size: 1.35rem !important;
 }
 </style>
-

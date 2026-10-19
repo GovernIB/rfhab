@@ -1,26 +1,28 @@
 /* Estils generals */
-@font-face {
-	font-family: 'Bariol Regular';
-	src: url('../fonts/Bariol_Regular.ttf');
-}
 body {
 	padding-top: 4.5rem;
-	font: normal 100% 'Bariol Regular', Arial, Helvetica, sans-serif;
 	color: #333;
 	background-color: #f7f7f7;
 }
 a{
-	color: #4dba79;
+	color: #317a4c;
 }
 a:hover{
 	color: #000;
 	text-decoration: none;
 }
+.link-accessibilitat {
+	color: #0069d9;
+}
+.link-accessibilitat:hover,
+.link-accessibilitat:focus {
+	color: #000;
+}
 .p-3aplicacio{
 	padding: 3.5rem 1rem!important;
 }
 .verde{
-	color: #4dba79;
+	color: #317a4c;
 }
 .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
 .bg-white {
@@ -37,8 +39,8 @@ a:hover{
 	cursor: not-allowed !important;
 }
 .btn-primary.aplicacio-btn {
-	background-color: #4dba79;
-	border-color: #4dba79;
+	background-color: #317a4c;
+	border-color: #317a4c;
 	border: none !important;
 }
 .btn-primary.aplicacio-btn:hover,
@@ -62,6 +64,16 @@ a:hover{
 	outline: none !important;
 	box-shadow: none !important;
 }
+.btn-success {
+	background-color: #317a4c;
+}
+.btn-primary {
+	background-color: #0069d9;
+	border-color: #0062cc;
+}
+.btn-info {
+	color: #000;
+}
 
 .lh15{
 	line-height:1.5
@@ -73,6 +85,17 @@ a:hover{
 	float: none;
 	margin-left: auto;
 	margin-right: auto;
+}
+/*
+Menú d'inici (arbre) amb contrast suficient (WCAG AA).
+Sobreescriu el blau #007bff (~4.0:1) per un blau més fosc accessible.
+*/
+.tree a {
+	color: #0069d9;
+}
+.tree a:hover,
+.tree a:focus {
+	color: #000;
 }
 /* FI Estils generals */
 
@@ -145,7 +168,7 @@ a:hover{
 		color: #000 !important;
 	}
 	a.dropdown-item.mobil:hover {
-		color: #4dba79 !important;
+		color: #317a4c !important;
 		background-color: #FFF !important;
 	}
 	.p-3aplicacio{
@@ -259,9 +282,18 @@ a:hover{
 	content: '\e024\0000a0' !important;
 }
 .bg-aplicacio{
-	background-color: #4dba79 !important;
+	background-color: #317a4c !important;
 	padding-left: 0px;
 	padding-right: 0px;
+}
+/*
+El text d'usuari de la capçalera heretava un blanc translúcid
+de Bootstrap (navbar-dark) que no complia el contrast. Es força blanc pur
+perquè, sobre el verd corporatiu enfosquit, compleixi WCAG AA.
+*/
+.menuGovern .subtitol,
+.menuGovern .subtitolMay {
+	color: #fff !important;
 }
 .menuGovern{
 	min-width: 400px;
@@ -302,6 +334,19 @@ a:hover{
 .minW0{
 	min-width: 0;
 }
+/*
+Sobreescriu el color per defecte de Bootstrap de .nav-link per
+millorar l'accessibilitat (contrast)
+*/
+.nav-link{
+	color: rgb(0, 95, 255) !important;
+}
+.titol {
+	font-weight: bold;
+}
+.subtitolMay {
+	font-weight: bold;
+}
 /* FI Cap�alera */
 
 /* Men� m�bil */
@@ -338,7 +383,7 @@ a.dropdown-item{
 	background-color: #fff;
 }
 a.dropdown-item.mobil:hover{
-	color: #4dba79 !important;
+	color: #317a4c !important;
 	background-color: #fff;
 }
 /* FI Men� m�bil */
@@ -350,7 +395,7 @@ a.dropdown-item.mobil:hover{
 }
 .btn-suport{
 	background-color: transparent;
-	color: #4dba79;
+	color: #317a4c;
 	padding: 0px;
 	cursor: pointer;
 	margin-bottom: 2px;
@@ -370,7 +415,7 @@ a.dropdown-item.mobil:hover{
 	list-style: circle;
 }
 .dades a {
-	color: #4dba79;
+	color: #317a4c;
 }
 .dades a:hover,
 .dades a:focus {
@@ -381,6 +426,20 @@ a.dropdown-item.mobil:hover{
 /* FI Suport */
 
 /* Peu */
+/* Keep footer text readable against the dark footer background. */
+#footer small,
+#footer small i,
+#footer small span {
+	color: #fff;
+}
+#footer a {
+	color: #fff;
+}
+#footer a:hover,
+#footer a:focus {
+	color: #fff;
+	text-decoration: underline;
+}
 .opcionsPeu li::before {
 	content: "\0000a0\0000a0|\0000a0\0000a0";
 }
@@ -390,7 +449,7 @@ a.dropdown-item.mobil:hover{
 a.linkPeu:hover,
 a.linkPeu:focus,
 a.linkPeu:active {
-	color: #4dba79 !important;
+	color: #317a4c !important;
 }
 /* FI Peu */
 
@@ -424,7 +483,7 @@ a.iconoXarxes{
 a.iconoXarxes svg { transform: scale(.7, .7); }
 a.iconoXarxes:hover,
 a.iconoXarxes:focus,
-a.iconoXarxes:active { background-color: #4dba79; border-color: #4dba79; }
+a.iconoXarxes:active { background-color: #317a4c; border-color: #317a4c; }
 a.iconoXarxes:hover path,
 a.iconoXarxes:focus path,
 a.iconoXarxes:active path { fill: #fff; }
@@ -448,7 +507,6 @@ a.iconoXarxes{
 	padding:30px 10px;
 	margin:20px 0px;
 	border: thin outset;
-	font: normal 100% 'Bariol Regular', Arial, Helvetica, sans-serif;
 	color: #333;
 }
 .box-part:hover{
@@ -473,8 +531,7 @@ a.iconoXarxes{
 	filter: invert(78%) sepia(53%) saturate(428%) hue-rotate(91deg) brightness(96%) contrast(94%);
 }
 .titolMenu{
-	font: normal 100% 'Bariol Regular', Arial, Helvetica, sans-serif;
-	color: #4dba79;
+	color: #317a4c;
 	font-size: 1.5em;
 	display: flow-root;
 }
@@ -482,14 +539,12 @@ a.iconoXarxes{
 
 /* Per paginació */
 .page-link{
-	color: #4dba79;
+	color: #317a4c;
 }
 .page-item.active .page-link {
-	background-color: #4dba79;
-	border-color: #4dba79;
+	background-color: #317a4c;
+	border-color: #317a4c;
 }
 .page-link:focus, .page-link:hover {
 	color: #000;
 }
-
-

@@ -32,7 +32,7 @@
 			</a> <br />
 
 			<!-- Button to trigger modal -->
-			<small><a href="#modalAjuda" role="button"
+			<small><a class="linkAjudaPeu" href="#modalAjuda" role="button"
 				data-toggle="modal"><fmt:message key="ajuda.necessitau" /></a></small>
 			<small><a href="<c:url value='/declaracioaccessibilitat'/>"><fmt:message key="labels.accessibilitat" /></a></small>
 		</div>

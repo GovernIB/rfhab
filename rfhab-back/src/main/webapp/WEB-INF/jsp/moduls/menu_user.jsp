@@ -2,7 +2,7 @@
 %><%@ include file="/WEB-INF/jsp/moduls/includes.jsp"%>
 <c:set var="url" value="${urlActual}" />
 <div>
-  <h5>Menú ROLE_USER</h5>
+  <span style="font-size: 1.25rem">Menú ROLE_USER</span>
   <ul class="tree" style="margin: 3px; padding: 0px;">
 
 
@@ -33,4 +33,3 @@
    
   </ul>
 </div>
-

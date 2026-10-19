@@ -31,7 +31,7 @@
 
 		<div id="logoRfhabContainer" class="logoEntitat">
 			<img src="<c:url value="/img/app-logo.png"/>" style="height: 4rem;"
-				alt="RFHab" title="RFHab" />
+				alt="RFHab" />
 		</div>
 
 		<%
@@ -441,4 +441,3 @@ h1 {
 				+ tipus + '/' + btoa(window.location);
 	}
 </script>
-

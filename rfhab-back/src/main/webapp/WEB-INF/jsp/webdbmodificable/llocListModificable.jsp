@@ -18,7 +18,7 @@ filtre_unitatso_vperdefecte =
   }
 </style>
 
-<script type="text/javascript">
+<script>
     <c:set var="nomAttrUnitats" value="<%= Constants.NOM_ATTR_FILTRE_UNITATS %>"/>
     <c:set var="nomAttrUnitatSuperior" value="<%= Constants.NOM_ATTR_FILTRE_UNITATS_SUPERIORS %>"/>
     const unitatsOptions = [];

@@ -1,4 +1,4 @@
-<script type="text/javascript">
+<script>
 	
 	function cargarSelect() {
 		$.ajax({
@@ -25,11 +25,11 @@
 					miTd.empty(); 
 					miTd.append(miSelect); 
 				} else {
-					console.error('No se encontró el TD con ID "autoritzacio_procediment_columnvalueid"');
+					console.error('No se encontrï¿½ el TD con ID "autoritzacio_procediment_columnvalueid"');
 				}
 			},
 			error : function(xhr, status, error) {
-				console.error('Ocurrió un error:', status, error);
+				console.error('Ocurriï¿½ un error:', status, error);
 			}
 		});
 	}

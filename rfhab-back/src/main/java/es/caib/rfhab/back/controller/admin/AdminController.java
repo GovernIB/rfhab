@@ -2,6 +2,8 @@ package es.caib.rfhab.back.controller.admin;
 
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +13,9 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.fundaciobit.genapp.common.web.menuoptions.MenuItem;
+import org.fundaciobit.genapp.common.web.menuoptions.MenuOption;
 import org.fundaciobit.genapp.common.web.menuoptions.MenuOptionManager;
+import org.fundaciobit.genapp.common.web.i18n.I18NUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,6 +31,12 @@ import org.fundaciobit.genapp.common.web.tiles.TileType;
  *
  */
 @Controller
+@MenuOption(
+    labelCode = "=WebPages list",
+    order = 1050,
+    group = Tab.MENU_ADMIN,
+    baseLink = "/admin/webpages",
+    relativeLink = "")
 @Tile(name = "webpages", extendsTile = Tab.MENU_ADMIN, type = TileType.ANOTHER,
     contentJsp = "/WEB-INF/jsp/admin/webpages.jsp")
 @RequestMapping(value = "/admin/")
@@ -44,7 +54,33 @@ public class AdminController {
   }  
 
   @RequestMapping(value = "/webpages")
-  public ModelAndView webPages(HttpServletRequest request) {
+  public ModelAndView webPages(HttpServletRequest request) throws Exception {
+    String[] tabs = { Tab.MENU_PUBLIC_AND_COMMON, Tab.MENU_USER, Tab.MENU_ADMIN };
+    List<Map<String, String>> keyValueList = new ArrayList<>();
+
+    for (String tab : tabs) {
+      List<MenuItem> items = MenuOptionManager.getMenuItems(tab);
+      for (MenuItem item : items) {
+        if (item == null) {
+          continue;
+        }
+
+        String label = item.getLabel();
+        if (label.startsWith("=")) {
+          label = label.substring(1);
+        } else {
+          label = I18NUtils.tradueix(label);
+        }
+
+        Map<String, String> keyValueItem = new LinkedHashMap<>();
+        keyValueItem.put("pre", tab);
+        keyValueItem.put("key", label);
+        keyValueItem.put("value", Configuracio.getBackUrl() + item.getUrl());
+        keyValueItem.put("post", "");
+        keyValueList.add(keyValueItem);
+      }
+    }
+
     String subtitle = "Per descarregar les URL a les pàgines web en format pla, feis clic aquí:"
         + " <b><a target=\"_blank\" href=\"" + request.getContextPath()
         + "/admin/webpagesplain?includenew=true\">[AMB NEW]</a></b>"
@@ -52,6 +88,8 @@ public class AdminController {
         + "/admin/webpagesplain?includenew=false\">[SENSE NEW]</a></b>";
     ModelAndView mav = new ModelAndView("webpages");
     mav.addObject("subtitle", subtitle);
+    mav.addObject("title", "Llistat d'Opcions de Menú");
+    mav.addObject("keyValueList", keyValueList);
     return mav;
   }
 

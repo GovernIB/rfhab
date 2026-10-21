@@ -13,7 +13,7 @@
 <body>
 
     <!--  CONTINGUT  -->
-    <div style="padding: 10px">
+    <main style="padding: 10px">
 
       <!--  Missatges  -->
       <%-- <tiles:insertAttribute name="missatges" />  --%>
@@ -23,8 +23,8 @@
       <tiles:insertAttribute name="contingut" >           
       </tiles:insertAttribute>
 
-      <!-- FINAL DIV CONTINGUT -->
-    </div>
+      <!-- FINAL CONTINGUT -->
+    </main>
 
 </body>
 </html>

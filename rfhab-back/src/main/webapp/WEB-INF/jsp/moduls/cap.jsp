@@ -94,7 +94,7 @@
 								<fmt:message key="inici" />
 							</c:if>
 						</span>
-						<div class="dropdown-menu dropdown-menu-right" role="menu"
+						<div class="dropdown-menu dropdown-menu-right"
 							aria-labelledby="dropdownMenuRol">
 							<sec:authorize access="hasRole('ROLE_ADMIN')">
 								<c:if test="${pipella ne 'admin'}">
@@ -145,7 +145,7 @@
 									<fmt:message key="inici" />
 								</c:if>
 							</span>
-							<div class="dropdown-menu dropdown-menu-right" role="menu"
+							<div class="dropdown-menu dropdown-menu-right"
 								aria-labelledby="dropdownMenuRol">
 								<sec:authorize access="hasRole('ROLE_USER')">
 									<c:if test="${pipella ne 'user' && not rfh:getAmagarAssistentTramits()}">
@@ -168,7 +168,7 @@
 		+ loginInfo.getUsuariPersona().getUsername() + ")"%>
 				</span>
 
-					<div class="dropdown-menu  dropdown-menu-right" role="menu"
+					<div class="dropdown-menu  dropdown-menu-right"
 						aria-labelledby="dropdownMenuUser">
 
 						<c:if test="${empty loginInfo}">
@@ -217,7 +217,7 @@
 
 							<c:forEach var="idioma" items="${idiomes}" varStatus="status">
 								<c:set var="idiomaID" value="${idioma.idiomaID}" />
-								<a class="dropdown-item" href="?lang=${idiomaID}"> <img
+								<a class="dropdown-item" lang="${idiomaID}" href="?lang=${idiomaID}"> <img
 									src="<c:url value="/img/${idiomaID}_petit_${lang eq idiomaID? 'on' : 'off'}.gif"/>"
 									alt="${idiomaID}" style="margin-right: 0.5rem; border:0px" width="17"
 									height="14" />${idioma.nom}

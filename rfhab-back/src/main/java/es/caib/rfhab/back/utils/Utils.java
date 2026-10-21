@@ -83,16 +83,22 @@ public class Utils {
             }
 
             if (orderedBythisfield) {
-
-                html = "<span style=\"cursor:row-resize\" onClick=\"javascript:executeOrderBy('" + field + "', "
-                        + !isOrderedAsc + ");\"" + " title=\""
-                        + I18NUtils.tradueix(!isOrderedAsc ? "genapp.form.sort.asc" : "genapp.form.sort.desc") + "\" >"
-                        + getText(code) + "<i class=\""
-                        + (isOrderedAsc ? "fas fa-sort-alpha-up" : "fas fa-sort-alpha-up-alt") + "\"></i></span>";
+                String jsCall = "executeOrderBy('" + field + "', " + !isOrderedAsc + ");";
+                html = "<span style=\"cursor:row-resize\" role=\"button\" tabindex=\"0\""
+                        + " onclick=\"javascript:" + jsCall + "\""
+                        + " onkeypress=\"javascript:if(event.key==='Enter'||event.key===' '){event.preventDefault();"
+                        + jsCall + "}\"" + " title=\""
+                        + I18NUtils.tradueix(!isOrderedAsc ? "genapp.form.sort.asc" : "genapp.form.sort.desc")
+                        + "\" >" + getText(code) + "<i class=\""
+                        + (isOrderedAsc ? "fas fa-sort-alpha-up" : "fas fa-sort-alpha-up-alt")
+                        + "\" aria-hidden=\"true\"></i></span>";
             } else {
-                html = "<span style=\"cursor:row-resize\" onclick=\"javascript:executeOrderBy('" + field
-                        + "', true);\" " + " title=\"" + I18NUtils.tradueix("genapp.form.sort.asc") + "\">"
-                        + getText(code) + "<i class=\"fas fa-sort\"></i></span>";
+                String jsCall = "executeOrderBy('" + field + "', true);";
+                html = "<span style=\"cursor:row-resize\" role=\"button\" tabindex=\"0\""
+                        + " onclick=\"javascript:" + jsCall + "\""
+                        + " onkeypress=\"javascript:if(event.key==='Enter'||event.key===' '){event.preventDefault();"
+                        + jsCall + "}\"" + " title=\"" + I18NUtils.tradueix("genapp.form.sort.asc") + "\">"
+                        + getText(code) + "<i class=\"fas fa-sort\" aria-hidden=\"true\"></i></span>";
             }
             return html;
         } else {

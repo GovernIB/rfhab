@@ -6,7 +6,7 @@
 <footer id="footer">
 
 		<!-- Esquerra -->
-		<div id="peu-esquerra">
+		<div id="peu-esquerra" style="line-height: 1.8;">
 			<strong class="font-weight-bold"> ${versio.projectName}
 				v${versio.version}<%=Configuracio.isCAIB() ? "-caib" : ""%>
 

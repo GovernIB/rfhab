@@ -25,29 +25,41 @@
 
 
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UsuariEntitatFields.USUARIENTITATID)}">
-          <td>
+        <td>
           ${usuariEntitat.usuariEntitatID}
+             <c:if test="${empty usuariEntitat.usuariEntitatID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UsuariEntitatFields.ENTITATID)}">
-          <td>
+        <td>
           <c:set var="tmp">${usuariEntitat.entitatID}</c:set>
           <c:if test="${not empty tmp}">
           ${__theFilterForm.mapOfEntitatForEntitatID[tmp]}
           </c:if>
+             <c:if test="${empty usuariEntitat.entitatID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UsuariEntitatFields.USUARIID)}">
-          <td>
+        <td>
           <c:set var="tmp">${usuariEntitat.usuariID}</c:set>
           <c:if test="${not empty tmp}">
           ${__theFilterForm.mapOfUsuariForUsuariID[tmp]}
           </c:if>
+             <c:if test="${empty usuariEntitat.usuariID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UsuariEntitatFields.ACTIU)}">
-          <td>
+        <td>
             <img height="18" width="18" src="<c:url value="/img/icn_alert_${usuariEntitat.actiu?'success':'error'}.png"/>" alt="${usuariEntitat.actiu}" >
+             <c:if test="${empty usuariEntitat.actiu}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
 

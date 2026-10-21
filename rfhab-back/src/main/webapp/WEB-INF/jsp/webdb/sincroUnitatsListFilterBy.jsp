@@ -81,9 +81,9 @@
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="dataCreacioDesdeDiv" data-target-input="nearest">
-                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataCreacioDesde" path="dataCreacioDesde" aria-labelledby="sincroUnitats_dataCreacio_label"  />
+                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataCreacioDesdeDiv" path="dataCreacioDesde"  aria-labelledby="sincroUnitats_dataCreacio_label"   />
                     <c:if test="${!false}" >
-                    <div class="input-group-append"  data-target="#dataCreacioDesde"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#dataCreacioDesdeDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -91,7 +91,7 @@
             </div>
         <script>
             $(function () {
-                $('#dataCreacioDesde').datetimepicker({
+                $('#dataCreacioDesdeDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {
@@ -103,9 +103,9 @@
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="dataCreacioFinsDiv" data-target-input="nearest">
-                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataCreacioFins" path="dataCreacioFins" aria-labelledby="sincroUnitats_dataCreacio_label"  />
+                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataCreacioFinsDiv" path="dataCreacioFins"  aria-labelledby="sincroUnitats_dataCreacio_label"   />
                     <c:if test="${!false}" >
-                    <div class="input-group-append"  data-target="#dataCreacioFins"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#dataCreacioFinsDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -113,7 +113,7 @@
             </div>
         <script>
             $(function () {
-                $('#dataCreacioFins').datetimepicker({
+                $('#dataCreacioFinsDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {
@@ -135,9 +135,9 @@
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="dataDarreraSincroDesdeDiv" data-target-input="nearest">
-                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataDarreraSincroDesde" path="dataDarreraSincroDesde" aria-labelledby="sincroUnitats_dataDarreraSincro_label"  />
+                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataDarreraSincroDesdeDiv" path="dataDarreraSincroDesde"  aria-labelledby="sincroUnitats_dataDarreraSincro_label"   />
                     <c:if test="${!false}" >
-                    <div class="input-group-append"  data-target="#dataDarreraSincroDesde"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#dataDarreraSincroDesdeDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -145,7 +145,7 @@
             </div>
         <script>
             $(function () {
-                $('#dataDarreraSincroDesde').datetimepicker({
+                $('#dataDarreraSincroDesdeDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {
@@ -157,9 +157,9 @@
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="dataDarreraSincroFinsDiv" data-target-input="nearest">
-                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataDarreraSincroFins" path="dataDarreraSincroFins" aria-labelledby="sincroUnitats_dataDarreraSincro_label"  />
+                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataDarreraSincroFinsDiv" path="dataDarreraSincroFins"  aria-labelledby="sincroUnitats_dataDarreraSincro_label"   />
                     <c:if test="${!false}" >
-                    <div class="input-group-append"  data-target="#dataDarreraSincroFins"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#dataDarreraSincroFinsDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -167,7 +167,7 @@
             </div>
         <script>
             $(function () {
-                $('#dataDarreraSincroFins').datetimepicker({
+                $('#dataDarreraSincroFinsDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {
@@ -189,9 +189,9 @@
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="dataPrimeraSincroDesdeDiv" data-target-input="nearest">
-                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataPrimeraSincroDesde" path="dataPrimeraSincroDesde" aria-labelledby="sincroUnitats_dataPrimeraSincro_label"  />
+                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataPrimeraSincroDesdeDiv" path="dataPrimeraSincroDesde"  aria-labelledby="sincroUnitats_dataPrimeraSincro_label"   />
                     <c:if test="${!false}" >
-                    <div class="input-group-append"  data-target="#dataPrimeraSincroDesde"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#dataPrimeraSincroDesdeDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -199,7 +199,7 @@
             </div>
         <script>
             $(function () {
-                $('#dataPrimeraSincroDesde').datetimepicker({
+                $('#dataPrimeraSincroDesdeDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {
@@ -211,9 +211,9 @@
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="dataPrimeraSincroFinsDiv" data-target-input="nearest">
-                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataPrimeraSincroFins" path="dataPrimeraSincroFins" aria-labelledby="sincroUnitats_dataPrimeraSincro_label"  />
+                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataPrimeraSincroFinsDiv" path="dataPrimeraSincroFins"  aria-labelledby="sincroUnitats_dataPrimeraSincro_label"   />
                     <c:if test="${!false}" >
-                    <div class="input-group-append"  data-target="#dataPrimeraSincroFins"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#dataPrimeraSincroFinsDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -221,7 +221,7 @@
             </div>
         <script>
             $(function () {
-                $('#dataPrimeraSincroFins').datetimepicker({
+                $('#dataPrimeraSincroFinsDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {

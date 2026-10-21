@@ -25,58 +25,97 @@
 
 
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,AutoritzacioFields.AUTORITZACIOID)}">
-          <td>
+        <td>
           ${autoritzacio.autoritzacioID}
+             <c:if test="${empty autoritzacio.autoritzacioID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,AutoritzacioFields.LLOCID)}">
-          <td>
+        <td>
           <c:set var="tmp">${autoritzacio.llocID}</c:set>
           <c:if test="${not empty tmp}">
           ${__theFilterForm.mapOfLlocForLlocID[tmp]}
           </c:if>
+             <c:if test="${empty autoritzacio.llocID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,AutoritzacioFields.CODISIA)}">
-          <td>
+        <td>
           ${autoritzacio.codiSia}
+             <c:if test="${empty autoritzacio.codiSia}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,AutoritzacioFields.PROCEDIMENT)}">
-          <td>
+        <td>
           ${autoritzacio.procediment}
+             <c:if test="${empty autoritzacio.procediment}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,AutoritzacioFields.CAI)}">
-          <td>
+        <td>
           ${autoritzacio.cai}
+             <c:if test="${empty autoritzacio.cai}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,AutoritzacioFields.DATAINICI)}">
-          <td> <fmt:formatDate pattern="${gen:getDatePattern()}" value="${autoritzacio.dataInici}" /></td>
+        <td>
+         <fmt:formatDate pattern="${gen:getDatePattern()}" value="${autoritzacio.dataInici}" />
+             <c:if test="${empty autoritzacio.dataInici}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
+          </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,AutoritzacioFields.DATAFI)}">
-          <td> <fmt:formatDate pattern="${gen:getDatePattern()}" value="${autoritzacio.dataFi}" /></td>
+        <td>
+         <fmt:formatDate pattern="${gen:getDatePattern()}" value="${autoritzacio.dataFi}" />
+             <c:if test="${empty autoritzacio.dataFi}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
+          </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,AutoritzacioFields.DATACREACIO)}">
-          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${autoritzacio.dataCreacio}" /></td>
+        <td>
+          <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${autoritzacio.dataCreacio}" />
+             <c:if test="${empty autoritzacio.dataCreacio}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
+          </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,AutoritzacioFields.OBSERVACIONS)}">
-          <td>
+        <td>
           ${autoritzacio.observacions}
+             <c:if test="${empty autoritzacio.observacions}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,AutoritzacioFields.USUARIID)}">
-          <td>
+        <td>
           ${autoritzacio.usuariID}
+             <c:if test="${empty autoritzacio.usuariID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,AutoritzacioFields.FUNCIONARIID)}">
-          <td>
+        <td>
           <c:set var="tmp">${autoritzacio.funcionariID}</c:set>
           <c:if test="${not empty tmp}">
           ${__theFilterForm.mapOfFuncionariForFuncionariID[tmp]}
           </c:if>
+             <c:if test="${empty autoritzacio.funcionariID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
 

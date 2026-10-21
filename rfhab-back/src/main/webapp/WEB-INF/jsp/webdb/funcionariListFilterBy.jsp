@@ -228,9 +228,9 @@
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="dataCreacioDesdeDiv" data-target-input="nearest">
-                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataCreacioDesde" path="dataCreacioDesde" aria-labelledby="funcionari_dataCreacio_label"  />
+                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataCreacioDesdeDiv" path="dataCreacioDesde"  aria-labelledby="funcionari_dataCreacio_label"   />
                     <c:if test="${!false}" >
-                    <div class="input-group-append"  data-target="#dataCreacioDesde"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#dataCreacioDesdeDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -238,7 +238,7 @@
             </div>
         <script>
             $(function () {
-                $('#dataCreacioDesde').datetimepicker({
+                $('#dataCreacioDesdeDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {
@@ -250,9 +250,9 @@
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="dataCreacioFinsDiv" data-target-input="nearest">
-                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataCreacioFins" path="dataCreacioFins" aria-labelledby="funcionari_dataCreacio_label"  />
+                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataCreacioFinsDiv" path="dataCreacioFins"  aria-labelledby="funcionari_dataCreacio_label"   />
                     <c:if test="${!false}" >
-                    <div class="input-group-append"  data-target="#dataCreacioFins"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#dataCreacioFinsDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -260,7 +260,7 @@
             </div>
         <script>
             $(function () {
-                $('#dataCreacioFins').datetimepicker({
+                $('#dataCreacioFinsDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {
@@ -297,9 +297,9 @@
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="dataBaixaDesdeDiv" data-target-input="nearest">
-                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataBaixaDesde" path="dataBaixaDesde" aria-labelledby="funcionari_dataBaixa_label"  />
+                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataBaixaDesdeDiv" path="dataBaixaDesde"  aria-labelledby="funcionari_dataBaixa_label"   />
                     <c:if test="${!false}" >
-                    <div class="input-group-append"  data-target="#dataBaixaDesde"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#dataBaixaDesdeDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -307,7 +307,7 @@
             </div>
         <script>
             $(function () {
-                $('#dataBaixaDesde').datetimepicker({
+                $('#dataBaixaDesdeDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {
@@ -319,9 +319,9 @@
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="dataBaixaFinsDiv" data-target-input="nearest">
-                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataBaixaFins" path="dataBaixaFins" aria-labelledby="funcionari_dataBaixa_label"  />
+                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataBaixaFinsDiv" path="dataBaixaFins"  aria-labelledby="funcionari_dataBaixa_label"   />
                     <c:if test="${!false}" >
-                    <div class="input-group-append"  data-target="#dataBaixaFins"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#dataBaixaFinsDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -329,7 +329,7 @@
             </div>
         <script>
             $(function () {
-                $('#dataBaixaFins').datetimepicker({
+                $('#dataBaixaFinsDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {

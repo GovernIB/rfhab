@@ -25,66 +25,108 @@
 
 
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.LLOCID)}">
-          <td>
+        <td>
           ${lloc.llocID}
+             <c:if test="${empty lloc.llocID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.CODILLOCPROPI)}">
-          <td>
+        <td>
           ${lloc.codiLlocPropi}
+             <c:if test="${empty lloc.codiLlocPropi}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.CODILLOC)}">
-          <td>
+        <td>
           ${lloc.codiLloc}
+             <c:if test="${empty lloc.codiLloc}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.EXPANSIO)}">
-          <td>
+        <td>
           ${lloc.expansio}
+             <c:if test="${empty lloc.expansio}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.NOM)}">
-          <td>
+        <td>
           ${lloc.nom}
+             <c:if test="${empty lloc.nom}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.ENTITATID)}">
-          <td>
+        <td>
           <c:set var="tmp">${lloc.entitatID}</c:set>
           <c:if test="${not empty tmp}">
           ${__theFilterForm.mapOfEntitatForEntitatID[tmp]}
           </c:if>
+             <c:if test="${empty lloc.entitatID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.UNITATID)}">
-          <td>
+        <td>
           <c:set var="tmp">${lloc.unitatID}</c:set>
           <c:if test="${not empty tmp}">
           ${__theFilterForm.mapOfUnitatForUnitatID[tmp]}
           </c:if>
+             <c:if test="${empty lloc.unitatID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.DATAALTA)}">
-          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${lloc.dataalta}" /></td>
+        <td>
+          <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${lloc.dataalta}" />
+             <c:if test="${empty lloc.dataalta}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
+          </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.DATACREACIO)}">
-          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${lloc.dataCreacio}" /></td>
+        <td>
+          <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${lloc.dataCreacio}" />
+             <c:if test="${empty lloc.dataCreacio}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
+          </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.DATABAIXA)}">
-          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${lloc.dataBaixa}" /></td>
+        <td>
+          <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${lloc.dataBaixa}" />
+             <c:if test="${empty lloc.dataBaixa}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
+          </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.PERSONALOAMR)}">
-          <td>
+        <td>
           <c:set var="tmp">${lloc.personalOamr}</c:set>
           <c:if test="${not empty tmp}">
           ${__theFilterForm.mapOfValuesForPersonalOamr[tmp]}
           </c:if>
+             <c:if test="${empty lloc.personalOamr}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocFields.OBSERVACIONS)}">
-          <td>
+        <td>
           ${lloc.observacions}
+             <c:if test="${empty lloc.observacions}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
 

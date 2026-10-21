@@ -63,7 +63,7 @@
         <tr id="scanWeb_status_rowid">
           <td id="scanWeb_status_columnlabelid">
             <label for="scanWeb.status">
-              <fmt:message key="${(empty __theForm.labels[ScanWebFields.STATUS])?'scanWeb.status':__theForm.labels[ScanWebFields.STATUS]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[ScanWebFields.STATUS])?'scanWeb.status':__theForm.labels[ScanWebFields.STATUS]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[ScanWebFields.STATUS]}">
               <i class="fas fa-info-circle" title="${__theForm.help[ScanWebFields.STATUS]}" ></i>
@@ -71,7 +71,7 @@
             </td>
           <td id="scanWeb_status_columnvalueid">
             <form:errors path="scanWeb.status" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ScanWebFields.STATUS)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ScanWebFields.STATUS)? ' uneditable-input' : ''}"  style=""  path="scanWeb.status"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ScanWebFields.STATUS)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ScanWebFields.STATUS)? ' uneditable-input' : ''}"  style=""  path="scanWeb.status"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -81,7 +81,7 @@
         <tr id="scanWeb_fitxerID_rowid">
           <td id="scanWeb_fitxerID_columnlabelid">
             <label for="scanWeb.fitxerID">
-              <fmt:message key="${(empty __theForm.labels[ScanWebFields.FITXERID])?'scanWeb.fitxerID':__theForm.labels[ScanWebFields.FITXERID]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[ScanWebFields.FITXERID])?'scanWeb.fitxerID':__theForm.labels[ScanWebFields.FITXERID]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[ScanWebFields.FITXERID]}">
               <i class="fas fa-info-circle" title="${__theForm.help[ScanWebFields.FITXERID]}" ></i>
@@ -95,14 +95,17 @@
             <c:if test="${!gen:contains(__theForm.readOnlyFields ,ScanWebFields.FITXERID)}" >
               <div class="input-group col-md-9-optional" style="padding: 0px">
                 <div class="custom-file">
-                  <input id="scanWeb.fitxerID" name="fitxerID" class="custom-file-input form-control  ${gen:contains(__theForm.readOnlyFields ,ScanWebFields.FITXERID)? ' uneditable-input' : ''}"  type="file" />
-                  <label class="custom-file-label" for="scanWeb.fitxerID" >
-                  </label>
+                  <input id="scanWeb.fitxerID" name="fitxerID" class="custom-file-input form-control  ${gen:contains(__theForm.readOnlyFields ,ScanWebFields.FITXERID)? ' uneditable-input' : ''}"  type="file"  required aria-required="true"  />
+                  <span id="fitxerID-custom-file-label2" class="custom-file-label" >
+                    <c:if test="${ empty __theForm.scanWeb.fitxer}">
+                    <fmt:message key="genapp.form.file.select"/>
+                    </c:if>
+                  </span>
                 </div>
                 <c:choose>
                 <c:when test="${not empty __theForm.scanWeb.fitxer}">
-                <div class="input-group-append">
-                  <span class="input-group-text">
+                <div class="input-group-append input-group-append-file">
+                  <span class="input-group-text" id="fitxerID-custom-file-label">
                   <small>              <a target="_blank" href="<c:url value="${rfh:fileUrl(__theForm.scanWeb.fitxer)}"/>">${__theForm.scanWeb.fitxer.nom}</a>
 </small>
                   </span>
@@ -114,15 +117,17 @@
                   <small></small>
                   </span>
                 </div>
+                </c:otherwise>
+                </c:choose>
                 <script>
-					$('#fitxerID').on('change', function(){
-						var ruta = $('#fitxerID').val(); 
+					$('#scanWeb\\.fitxerID').on('change', function(){
+						var ruta = $('#scanWeb\\.fitxerID').val(); 
 						var rutaArray = ruta.split('\\');
 						$('#fitxerID-custom-file-label').css('display','block');
 						$('#fitxerID-custom-file-label small').html(rutaArray[rutaArray.length - 1]);
-					});
-				</script>                </c:otherwise>
-                </c:choose>
+                       $('#fitxerID-custom-file-label2').html(rutaArray[rutaArray.length - 1]);
+                   });
+				</script>
               </div>
             </c:if>
            </td>
@@ -289,7 +294,7 @@
         <tr id="scanWeb_usuariID_rowid">
           <td id="scanWeb_usuariID_columnlabelid">
             <label for="scanWeb.usuariID">
-              <fmt:message key="${(empty __theForm.labels[ScanWebFields.USUARIID])?'scanWeb.usuariID':__theForm.labels[ScanWebFields.USUARIID]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[ScanWebFields.USUARIID])?'scanWeb.usuariID':__theForm.labels[ScanWebFields.USUARIID]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[ScanWebFields.USUARIID]}">
               <i class="fas fa-info-circle" title="${__theForm.help[ScanWebFields.USUARIID]}" ></i>
@@ -299,11 +304,11 @@
           <form:errors path="scanWeb.usuariID" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,ScanWebFields.USUARIID)}" >
           <form:hidden path="scanWeb.usuariID"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.scanWeb.usuariID,__theForm.listOfUsuariForUsuariID)}" aria-label="scanWeb.usuariID" />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.scanWeb.usuariID,__theForm.listOfUsuariForUsuariID)}" aria-label="scanWeb.usuariID"   required aria-required="true"  />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,ScanWebFields.USUARIID)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select path="scanWeb.usuariID" onchange="if(typeof onChangeUsuariID == 'function') {  onChangeUsuariID(this); };"  cssClass="form-control col-md-9-optional"  aria-label="scanWeb.usuariID" >
+          <form:select path="scanWeb.usuariID" cssClass="form-control col-md-9-optional"  required="required"  aria-required="true"  onchange="if(typeof onChangeUsuariID == 'function') {  onChangeUsuariID(this); };">
 
 
             <c:forEach items="${__theForm.listOfUsuariForUsuariID}" var="tmp">
@@ -333,9 +338,9 @@
     <form:errors path="scanWeb.dataCreacio" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="scanWeb_dataCreacioDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ScanWebFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#scanWeb_dataCreacio" path="scanWeb.dataCreacio" aria-labelledby="scanWeb.dataCreacio"  />
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ScanWebFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#scanWeb_dataCreacioDiv" path="scanWeb.dataCreacio"   />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,ScanWebFields.DATACREACIO)}" >
-                    <div class="input-group-append"  data-target="#scanWeb_dataCreacio"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#scanWeb_dataCreacioDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -343,7 +348,7 @@
             </div>
         <script>
             $(function () {
-                $('#scanWeb_dataCreacio').datetimepicker({
+                $('#scanWeb_dataCreacioDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {
@@ -360,7 +365,7 @@
         <tr id="scanWeb_entitatID_rowid">
           <td id="scanWeb_entitatID_columnlabelid">
             <label for="scanWeb.entitatID">
-              <fmt:message key="${(empty __theForm.labels[ScanWebFields.ENTITATID])?'scanWeb.entitatID':__theForm.labels[ScanWebFields.ENTITATID]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[ScanWebFields.ENTITATID])?'scanWeb.entitatID':__theForm.labels[ScanWebFields.ENTITATID]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[ScanWebFields.ENTITATID]}">
               <i class="fas fa-info-circle" title="${__theForm.help[ScanWebFields.ENTITATID]}" ></i>
@@ -368,7 +373,7 @@
             </td>
           <td id="scanWeb_entitatID_columnvalueid">
             <form:errors path="scanWeb.entitatID" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ScanWebFields.ENTITATID)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ScanWebFields.ENTITATID)? ' uneditable-input' : ''}"  style=""  path="scanWeb.entitatID"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ScanWebFields.ENTITATID)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ScanWebFields.ENTITATID)? ' uneditable-input' : ''}"  style=""  path="scanWeb.entitatID"  required="required"  aria-required="true"   />
 
            </td>
         </tr>

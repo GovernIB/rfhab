@@ -6,7 +6,7 @@
         <tr id="llocHabilitacio_dataCreacio_rowid">
           <td id="llocHabilitacio_dataCreacio_columnlabelid">
             <label for="llocHabilitacio.dataCreacio">
-              <fmt:message key="${(empty __theForm.labels[LlocHabilitacioFields.DATACREACIO])?'llocHabilitacio.dataCreacio':__theForm.labels[LlocHabilitacioFields.DATACREACIO]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[LlocHabilitacioFields.DATACREACIO])?'llocHabilitacio.dataCreacio':__theForm.labels[LlocHabilitacioFields.DATACREACIO]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[LlocHabilitacioFields.DATACREACIO]}">
               <i class="fas fa-info-circle" title="${__theForm.help[LlocHabilitacioFields.DATACREACIO]}" ></i>
@@ -16,9 +16,9 @@
     <form:errors path="llocHabilitacio.dataCreacio" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="llocHabilitacio_dataCreacioDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocHabilitacioFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#llocHabilitacio_dataCreacio" path="llocHabilitacio.dataCreacio" aria-labelledby="llocHabilitacio.dataCreacio"  />
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocHabilitacioFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#llocHabilitacio_dataCreacioDiv" path="llocHabilitacio.dataCreacio"   required="required"  aria-required="true"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,LlocHabilitacioFields.DATACREACIO)}" >
-                    <div class="input-group-append"  data-target="#llocHabilitacio_dataCreacio"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#llocHabilitacio_dataCreacioDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -26,7 +26,7 @@
             </div>
         <script>
             $(function () {
-                $('#llocHabilitacio_dataCreacio').datetimepicker({
+                $('#llocHabilitacio_dataCreacioDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {
@@ -43,7 +43,7 @@
         <tr id="llocHabilitacio_llocID_rowid">
           <td id="llocHabilitacio_llocID_columnlabelid">
             <label for="llocHabilitacio.llocID">
-              <fmt:message key="${(empty __theForm.labels[LlocHabilitacioFields.LLOCID])?'llocHabilitacio.llocID':__theForm.labels[LlocHabilitacioFields.LLOCID]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[LlocHabilitacioFields.LLOCID])?'llocHabilitacio.llocID':__theForm.labels[LlocHabilitacioFields.LLOCID]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[LlocHabilitacioFields.LLOCID]}">
               <i class="fas fa-info-circle" title="${__theForm.help[LlocHabilitacioFields.LLOCID]}" ></i>
@@ -53,11 +53,11 @@
           <form:errors path="llocHabilitacio.llocID" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,LlocHabilitacioFields.LLOCID)}" >
           <form:hidden path="llocHabilitacio.llocID"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.llocHabilitacio.llocID,__theForm.listOfLlocForLlocID)}" aria-label="llocHabilitacio.llocID" />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.llocHabilitacio.llocID,__theForm.listOfLlocForLlocID)}" aria-label="llocHabilitacio.llocID"   required aria-required="true"  />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,LlocHabilitacioFields.LLOCID)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select path="llocHabilitacio.llocID" onchange="if(typeof onChangeLlocID == 'function') {  onChangeLlocID(this); };"  cssClass="form-control col-md-9-optional"  aria-label="llocHabilitacio.llocID" >
+          <form:select path="llocHabilitacio.llocID" cssClass="form-control col-md-9-optional"  required="required"  aria-required="true"  onchange="if(typeof onChangeLlocID == 'function') {  onChangeLlocID(this); };">
 
 
             <c:forEach items="${__theForm.listOfLlocForLlocID}" var="tmp">
@@ -77,7 +77,7 @@
         <tr id="llocHabilitacio_habilitacioId_rowid">
           <td id="llocHabilitacio_habilitacioId_columnlabelid">
             <label for="llocHabilitacio.habilitacioId">
-              <fmt:message key="${(empty __theForm.labels[LlocHabilitacioFields.HABILITACIOID])?'llocHabilitacio.habilitacioId':__theForm.labels[LlocHabilitacioFields.HABILITACIOID]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[LlocHabilitacioFields.HABILITACIOID])?'llocHabilitacio.habilitacioId':__theForm.labels[LlocHabilitacioFields.HABILITACIOID]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[LlocHabilitacioFields.HABILITACIOID]}">
               <i class="fas fa-info-circle" title="${__theForm.help[LlocHabilitacioFields.HABILITACIOID]}" ></i>
@@ -87,11 +87,11 @@
           <form:errors path="llocHabilitacio.habilitacioId" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,LlocHabilitacioFields.HABILITACIOID)}" >
           <form:hidden path="llocHabilitacio.habilitacioId"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.llocHabilitacio.habilitacioId,__theForm.listOfHabilitacioForHabilitacioId)}" aria-label="llocHabilitacio.habilitacioId" />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.llocHabilitacio.habilitacioId,__theForm.listOfHabilitacioForHabilitacioId)}" aria-label="llocHabilitacio.habilitacioId"   required aria-required="true"  />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,LlocHabilitacioFields.HABILITACIOID)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select path="llocHabilitacio.habilitacioId" onchange="if(typeof onChangeHabilitacioId == 'function') {  onChangeHabilitacioId(this); };"  cssClass="form-control col-md-9-optional"  aria-label="llocHabilitacio.habilitacioId" >
+          <form:select path="llocHabilitacio.habilitacioId" cssClass="form-control col-md-9-optional"  required="required"  aria-required="true"  onchange="if(typeof onChangeHabilitacioId == 'function') {  onChangeHabilitacioId(this); };">
 
 
             <c:forEach items="${__theForm.listOfHabilitacioForHabilitacioId}" var="tmp">

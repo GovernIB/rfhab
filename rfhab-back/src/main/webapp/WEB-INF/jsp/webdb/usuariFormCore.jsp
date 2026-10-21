@@ -6,7 +6,7 @@
         <tr id="usuari_nom_rowid">
           <td id="usuari_nom_columnlabelid">
             <label for="usuari.nom">
-              <fmt:message key="${(empty __theForm.labels[UsuariFields.NOM])?'usuari.nom':__theForm.labels[UsuariFields.NOM]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[UsuariFields.NOM])?'usuari.nom':__theForm.labels[UsuariFields.NOM]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[UsuariFields.NOM]}">
               <i class="fas fa-info-circle" title="${__theForm.help[UsuariFields.NOM]}" ></i>
@@ -14,7 +14,7 @@
             </td>
           <td id="usuari_nom_columnvalueid">
             <form:errors path="usuari.nom" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,UsuariFields.NOM)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,UsuariFields.NOM)? ' uneditable-input' : ''}"  style="" maxlength="255" path="usuari.nom"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,UsuariFields.NOM)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,UsuariFields.NOM)? ' uneditable-input' : ''}"  style="" maxlength="255" path="usuari.nom"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -24,7 +24,7 @@
         <tr id="usuari_llinatge1_rowid">
           <td id="usuari_llinatge1_columnlabelid">
             <label for="usuari.llinatge1">
-              <fmt:message key="${(empty __theForm.labels[UsuariFields.LLINATGE1])?'usuari.llinatge1':__theForm.labels[UsuariFields.LLINATGE1]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[UsuariFields.LLINATGE1])?'usuari.llinatge1':__theForm.labels[UsuariFields.LLINATGE1]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[UsuariFields.LLINATGE1]}">
               <i class="fas fa-info-circle" title="${__theForm.help[UsuariFields.LLINATGE1]}" ></i>
@@ -32,7 +32,7 @@
             </td>
           <td id="usuari_llinatge1_columnvalueid">
             <form:errors path="usuari.llinatge1" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,UsuariFields.LLINATGE1)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,UsuariFields.LLINATGE1)? ' uneditable-input' : ''}"  style="" maxlength="255" path="usuari.llinatge1"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,UsuariFields.LLINATGE1)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,UsuariFields.LLINATGE1)? ' uneditable-input' : ''}"  style="" maxlength="255" path="usuari.llinatge1"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -60,7 +60,7 @@
         <tr id="usuari_nif_rowid">
           <td id="usuari_nif_columnlabelid">
             <label for="usuari.nif">
-              <fmt:message key="${(empty __theForm.labels[UsuariFields.NIF])?'usuari.nif':__theForm.labels[UsuariFields.NIF]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[UsuariFields.NIF])?'usuari.nif':__theForm.labels[UsuariFields.NIF]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[UsuariFields.NIF]}">
               <i class="fas fa-info-circle" title="${__theForm.help[UsuariFields.NIF]}" ></i>
@@ -68,7 +68,7 @@
             </td>
           <td id="usuari_nif_columnvalueid">
             <form:errors path="usuari.nif" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,UsuariFields.NIF)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,UsuariFields.NIF)? ' uneditable-input' : ''}"  style="" maxlength="50" path="usuari.nif"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,UsuariFields.NIF)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,UsuariFields.NIF)? ' uneditable-input' : ''}"  style="" maxlength="50" path="usuari.nif"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -96,7 +96,7 @@
         <tr id="usuari_correu_rowid">
           <td id="usuari_correu_columnlabelid">
             <label for="usuari.correu">
-              <fmt:message key="${(empty __theForm.labels[UsuariFields.CORREU])?'usuari.correu':__theForm.labels[UsuariFields.CORREU]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[UsuariFields.CORREU])?'usuari.correu':__theForm.labels[UsuariFields.CORREU]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[UsuariFields.CORREU]}">
               <i class="fas fa-info-circle" title="${__theForm.help[UsuariFields.CORREU]}" ></i>
@@ -104,7 +104,7 @@
             </td>
           <td id="usuari_correu_columnvalueid">
             <form:errors path="usuari.correu" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,UsuariFields.CORREU)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,UsuariFields.CORREU)? ' uneditable-input' : ''}"  style="" maxlength="255" path="usuari.correu"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,UsuariFields.CORREU)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,UsuariFields.CORREU)? ' uneditable-input' : ''}"  style="" maxlength="255" path="usuari.correu"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -114,7 +114,7 @@
         <tr id="usuari_idiomaID_rowid">
           <td id="usuari_idiomaID_columnlabelid">
             <label for="usuari.idiomaID">
-              <fmt:message key="${(empty __theForm.labels[UsuariFields.IDIOMAID])?'usuari.idiomaID':__theForm.labels[UsuariFields.IDIOMAID]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[UsuariFields.IDIOMAID])?'usuari.idiomaID':__theForm.labels[UsuariFields.IDIOMAID]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[UsuariFields.IDIOMAID]}">
               <i class="fas fa-info-circle" title="${__theForm.help[UsuariFields.IDIOMAID]}" ></i>
@@ -124,11 +124,11 @@
           <form:errors path="usuari.idiomaID" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,UsuariFields.IDIOMAID)}" >
           <form:hidden path="usuari.idiomaID"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.usuari.idiomaID,__theForm.listOfIdiomaForIdiomaID)}" aria-label="usuari.idiomaID" />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.usuari.idiomaID,__theForm.listOfIdiomaForIdiomaID)}" aria-label="usuari.idiomaID"   required aria-required="true"  />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,UsuariFields.IDIOMAID)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select path="usuari.idiomaID" onchange="if(typeof onChangeIdiomaID == 'function') {  onChangeIdiomaID(this); };"  cssClass="form-control col-md-9-optional"  aria-label="usuari.idiomaID" >
+          <form:select path="usuari.idiomaID" cssClass="form-control col-md-9-optional"  required="required"  aria-required="true"  onchange="if(typeof onChangeIdiomaID == 'function') {  onChangeIdiomaID(this); };">
 
 
             <c:forEach items="${__theForm.listOfIdiomaForIdiomaID}" var="tmp">
@@ -157,7 +157,10 @@
           <td id="usuari_actiu_columnvalueid">
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,UsuariFields.ACTIU)}" >
               <form:errors  path="usuari.actiu" cssClass="errorField alert alert-danger" />
-              <form:checkbox cssClass="" onclick="javascript:return ${ gen:contains(__theForm.readOnlyFields ,UsuariFields.ACTIU)? 'false' : 'true'}" id="usuari.actiu" path="usuari.actiu"  aria-label="usuari.actiu" />
+<fieldset>
+<legend class="sr-only">Evitar errors d'Accessibilitat</legend>
+              <form:checkbox cssClass="" onclick="javascript:return ${ gen:contains(__theForm.readOnlyFields ,UsuariFields.ACTIU)? 'false' : 'true'}" id="usuari.actiu" path="usuari.actiu"   />
+</fieldset>
           </c:if>
           <c:if test="${gen:contains(__theForm.readOnlyFields ,UsuariFields.ACTIU)}" >
                 <fmt:message key="genapp.checkbox.${__theForm.usuari.actiu}" />
@@ -170,7 +173,7 @@
         <tr id="usuari_dataCreacio_rowid">
           <td id="usuari_dataCreacio_columnlabelid">
             <label for="usuari.dataCreacio">
-              <fmt:message key="${(empty __theForm.labels[UsuariFields.DATACREACIO])?'usuari.dataCreacio':__theForm.labels[UsuariFields.DATACREACIO]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[UsuariFields.DATACREACIO])?'usuari.dataCreacio':__theForm.labels[UsuariFields.DATACREACIO]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[UsuariFields.DATACREACIO]}">
               <i class="fas fa-info-circle" title="${__theForm.help[UsuariFields.DATACREACIO]}" ></i>
@@ -180,9 +183,9 @@
     <form:errors path="usuari.dataCreacio" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="usuari_dataCreacioDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,UsuariFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#usuari_dataCreacio" path="usuari.dataCreacio" aria-labelledby="usuari.dataCreacio"  />
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,UsuariFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#usuari_dataCreacioDiv" path="usuari.dataCreacio"   required="required"  aria-required="true"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,UsuariFields.DATACREACIO)}" >
-                    <div class="input-group-append"  data-target="#usuari_dataCreacio"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#usuari_dataCreacioDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -190,7 +193,7 @@
             </div>
         <script>
             $(function () {
-                $('#usuari_dataCreacio').datetimepicker({
+                $('#usuari_dataCreacioDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {
@@ -217,11 +220,11 @@
           <form:errors path="usuari.darreraEntitat" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,UsuariFields.DARRERAENTITAT)}" >
           <form:hidden path="usuari.darreraEntitat"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.usuari.darreraEntitat,__theForm.listOfEntitatForDarreraEntitat)}" aria-label="usuari.darreraEntitat" />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.usuari.darreraEntitat,__theForm.listOfEntitatForDarreraEntitat)}" aria-label="usuari.darreraEntitat"   />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,UsuariFields.DARRERAENTITAT)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select path="usuari.darreraEntitat" onchange="if(typeof onChangeDarreraEntitat == 'function') {  onChangeDarreraEntitat(this); };"  cssClass="form-control col-md-9-optional"  aria-label="usuari.darreraEntitat" >
+          <form:select path="usuari.darreraEntitat" cssClass="form-control col-md-9-optional"  onchange="if(typeof onChangeDarreraEntitat == 'function') {  onChangeDarreraEntitat(this); };">
 
 
             <c:forEach items="${__theForm.listOfEntitatForDarreraEntitat}" var="tmp">
@@ -262,9 +265,9 @@
     <form:errors path="usuari.dataBaixa" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="usuari_dataBaixaDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,UsuariFields.DATABAIXA)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#usuari_dataBaixa" path="usuari.dataBaixa" aria-labelledby="usuari.dataBaixa"  />
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,UsuariFields.DATABAIXA)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#usuari_dataBaixaDiv" path="usuari.dataBaixa"   />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,UsuariFields.DATABAIXA)}" >
-                    <div class="input-group-append"  data-target="#usuari_dataBaixa"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#usuari_dataBaixaDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -272,7 +275,7 @@
             </div>
         <script>
             $(function () {
-                $('#usuari_dataBaixa').datetimepicker({
+                $('#usuari_dataBaixaDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {

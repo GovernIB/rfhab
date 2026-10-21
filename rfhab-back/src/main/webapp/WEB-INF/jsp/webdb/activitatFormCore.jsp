@@ -6,7 +6,7 @@
         <tr id="activitat_funcionariID_rowid">
           <td id="activitat_funcionariID_columnlabelid">
             <label for="activitat.funcionariID">
-              <fmt:message key="${(empty __theForm.labels[ActivitatFields.FUNCIONARIID])?'activitat.funcionariID':__theForm.labels[ActivitatFields.FUNCIONARIID]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[ActivitatFields.FUNCIONARIID])?'activitat.funcionariID':__theForm.labels[ActivitatFields.FUNCIONARIID]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.FUNCIONARIID]}">
               <i class="fas fa-info-circle" title="${__theForm.help[ActivitatFields.FUNCIONARIID]}" ></i>
@@ -16,11 +16,11 @@
           <form:errors path="activitat.funcionariID" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.FUNCIONARIID)}" >
           <form:hidden path="activitat.funcionariID"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.activitat.funcionariID,__theForm.listOfFuncionariForFuncionariID)}" aria-label="activitat.funcionariID" />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.activitat.funcionariID,__theForm.listOfFuncionariForFuncionariID)}" aria-label="activitat.funcionariID"   required aria-required="true"  />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,ActivitatFields.FUNCIONARIID)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select path="activitat.funcionariID" onchange="if(typeof onChangeFuncionariID == 'function') {  onChangeFuncionariID(this); };"  cssClass="form-control col-md-9-optional"  aria-label="activitat.funcionariID" >
+          <form:select path="activitat.funcionariID" cssClass="form-control col-md-9-optional"  required="required"  aria-required="true"  onchange="if(typeof onChangeFuncionariID == 'function') {  onChangeFuncionariID(this); };">
 
 
             <c:forEach items="${__theForm.listOfFuncionariForFuncionariID}" var="tmp">
@@ -32,7 +32,7 @@
             </c:forEach>
           <script>
               $(document).ready(function() {
-                  $('#activitat.funcionariID').select2();
+                  $('#activitat\\.funcionariID').select2();
               });
           </script>
           </form:select>
@@ -45,7 +45,7 @@
         <tr id="activitat_tipus_rowid">
           <td id="activitat_tipus_columnlabelid">
             <label for="activitat.tipus">
-              <fmt:message key="${(empty __theForm.labels[ActivitatFields.TIPUS])?'activitat.tipus':__theForm.labels[ActivitatFields.TIPUS]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[ActivitatFields.TIPUS])?'activitat.tipus':__theForm.labels[ActivitatFields.TIPUS]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.TIPUS]}">
               <i class="fas fa-info-circle" title="${__theForm.help[ActivitatFields.TIPUS]}" ></i>
@@ -55,11 +55,11 @@
           <form:errors path="activitat.tipus" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.TIPUS)}" >
           <form:hidden path="activitat.tipus"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.activitat.tipus,__theForm.listOfValuesForTipus)}" aria-label="activitat.tipus" />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.activitat.tipus,__theForm.listOfValuesForTipus)}" aria-label="activitat.tipus"   required aria-required="true"  />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,ActivitatFields.TIPUS)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select path="activitat.tipus" onchange="if(typeof onChangeTipus == 'function') {  onChangeTipus(this); };"  cssClass="form-control col-md-9-optional"  aria-label="activitat.tipus" >
+          <form:select path="activitat.tipus" cssClass="form-control col-md-9-optional"  required="required"  aria-required="true"  onchange="if(typeof onChangeTipus == 'function') {  onChangeTipus(this); };">
 
 
             <c:forEach items="${__theForm.listOfValuesForTipus}" var="tmp">
@@ -151,7 +151,7 @@
         <tr id="activitat_dataCreacio_rowid">
           <td id="activitat_dataCreacio_columnlabelid">
             <label for="activitat.dataCreacio">
-              <fmt:message key="${(empty __theForm.labels[ActivitatFields.DATACREACIO])?'activitat.dataCreacio':__theForm.labels[ActivitatFields.DATACREACIO]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[ActivitatFields.DATACREACIO])?'activitat.dataCreacio':__theForm.labels[ActivitatFields.DATACREACIO]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.DATACREACIO]}">
               <i class="fas fa-info-circle" title="${__theForm.help[ActivitatFields.DATACREACIO]}" ></i>
@@ -161,9 +161,9 @@
     <form:errors path="activitat.dataCreacio" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="activitat_dataCreacioDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#activitat_dataCreacio" path="activitat.dataCreacio" aria-labelledby="activitat.dataCreacio"  />
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#activitat_dataCreacioDiv" path="activitat.dataCreacio"   required="required"  aria-required="true"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,ActivitatFields.DATACREACIO)}" >
-                    <div class="input-group-append"  data-target="#activitat_dataCreacio"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#activitat_dataCreacioDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -171,7 +171,7 @@
             </div>
         <script>
             $(function () {
-                $('#activitat_dataCreacio').datetimepicker({
+                $('#activitat_dataCreacioDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {
@@ -590,7 +590,7 @@
         <tr id="activitat_estat_rowid">
           <td id="activitat_estat_columnlabelid">
             <label for="activitat.estat">
-              <fmt:message key="${(empty __theForm.labels[ActivitatFields.ESTAT])?'activitat.estat':__theForm.labels[ActivitatFields.ESTAT]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[ActivitatFields.ESTAT])?'activitat.estat':__theForm.labels[ActivitatFields.ESTAT]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.ESTAT]}">
               <i class="fas fa-info-circle" title="${__theForm.help[ActivitatFields.ESTAT]}" ></i>
@@ -600,11 +600,11 @@
           <form:errors path="activitat.estat" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.ESTAT)}" >
           <form:hidden path="activitat.estat"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.activitat.estat,__theForm.listOfValuesForEstat)}" aria-label="activitat.estat" />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.activitat.estat,__theForm.listOfValuesForEstat)}" aria-label="activitat.estat"   required aria-required="true"  />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,ActivitatFields.ESTAT)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select path="activitat.estat" onchange="if(typeof onChangeEstat == 'function') {  onChangeEstat(this); };"  cssClass="form-control col-md-9-optional"  aria-label="activitat.estat" >
+          <form:select path="activitat.estat" cssClass="form-control col-md-9-optional"  required="required"  aria-required="true"  onchange="if(typeof onChangeEstat == 'function') {  onChangeEstat(this); };">
 
 
             <c:forEach items="${__theForm.listOfValuesForEstat}" var="tmp">
@@ -663,7 +663,7 @@
         <tr id="activitat_dataActivitat_rowid">
           <td id="activitat_dataActivitat_columnlabelid">
             <label for="activitat.dataActivitat">
-              <fmt:message key="${(empty __theForm.labels[ActivitatFields.DATAACTIVITAT])?'activitat.dataActivitat':__theForm.labels[ActivitatFields.DATAACTIVITAT]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[ActivitatFields.DATAACTIVITAT])?'activitat.dataActivitat':__theForm.labels[ActivitatFields.DATAACTIVITAT]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[ActivitatFields.DATAACTIVITAT]}">
               <i class="fas fa-info-circle" title="${__theForm.help[ActivitatFields.DATAACTIVITAT]}" ></i>
@@ -673,9 +673,9 @@
     <form:errors path="activitat.dataActivitat" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="activitat_dataActivitatDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.DATAACTIVITAT)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#activitat_dataActivitat" path="activitat.dataActivitat" aria-labelledby="activitat.dataActivitat"  />
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.DATAACTIVITAT)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#activitat_dataActivitatDiv" path="activitat.dataActivitat"   required="required"  aria-required="true"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,ActivitatFields.DATAACTIVITAT)}" >
-                    <div class="input-group-append"  data-target="#activitat_dataActivitat"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#activitat_dataActivitatDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -683,7 +683,7 @@
             </div>
         <script>
             $(function () {
-                $('#activitat_dataActivitat').datetimepicker({
+                $('#activitat_dataActivitatDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {
@@ -782,9 +782,9 @@
     <form:errors path="activitat.arxiuDarrerIntent" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="activitat_arxiuDarrerIntentDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUDARRERINTENT)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#activitat_arxiuDarrerIntent" path="activitat.arxiuDarrerIntent" aria-labelledby="activitat.arxiuDarrerIntent"  />
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUDARRERINTENT)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#activitat_arxiuDarrerIntentDiv" path="activitat.arxiuDarrerIntent"   />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUDARRERINTENT)}" >
-                    <div class="input-group-append"  data-target="#activitat_arxiuDarrerIntent"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#activitat_arxiuDarrerIntentDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -792,7 +792,7 @@
             </div>
         <script>
             $(function () {
-                $('#activitat_arxiuDarrerIntent').datetimepicker({
+                $('#activitat_arxiuDarrerIntentDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {

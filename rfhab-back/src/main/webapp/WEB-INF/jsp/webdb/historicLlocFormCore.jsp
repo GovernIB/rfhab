@@ -6,7 +6,7 @@
         <tr id="historicLloc_llocID_rowid">
           <td id="historicLloc_llocID_columnlabelid">
             <label for="historicLloc.llocID">
-              <fmt:message key="${(empty __theForm.labels[HistoricLlocFields.LLOCID])?'historicLloc.llocID':__theForm.labels[HistoricLlocFields.LLOCID]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[HistoricLlocFields.LLOCID])?'historicLloc.llocID':__theForm.labels[HistoricLlocFields.LLOCID]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[HistoricLlocFields.LLOCID]}">
               <i class="fas fa-info-circle" title="${__theForm.help[HistoricLlocFields.LLOCID]}" ></i>
@@ -16,11 +16,11 @@
           <form:errors path="historicLloc.llocID" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,HistoricLlocFields.LLOCID)}" >
           <form:hidden path="historicLloc.llocID"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.historicLloc.llocID,__theForm.listOfLlocForLlocID)}" aria-label="historicLloc.llocID" />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.historicLloc.llocID,__theForm.listOfLlocForLlocID)}" aria-label="historicLloc.llocID"   required aria-required="true"  />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,HistoricLlocFields.LLOCID)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select path="historicLloc.llocID" onchange="if(typeof onChangeLlocID == 'function') {  onChangeLlocID(this); };"  cssClass="form-control col-md-9-optional"  aria-label="historicLloc.llocID" >
+          <form:select path="historicLloc.llocID" cssClass="form-control col-md-9-optional"  required="required"  aria-required="true"  onchange="if(typeof onChangeLlocID == 'function') {  onChangeLlocID(this); };">
 
 
             <c:forEach items="${__theForm.listOfLlocForLlocID}" var="tmp">
@@ -40,7 +40,7 @@
         <tr id="historicLloc_numeroCai_rowid">
           <td id="historicLloc_numeroCai_columnlabelid">
             <label for="historicLloc.numeroCai">
-              <fmt:message key="${(empty __theForm.labels[HistoricLlocFields.NUMEROCAI])?'historicLloc.numeroCai':__theForm.labels[HistoricLlocFields.NUMEROCAI]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[HistoricLlocFields.NUMEROCAI])?'historicLloc.numeroCai':__theForm.labels[HistoricLlocFields.NUMEROCAI]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[HistoricLlocFields.NUMEROCAI]}">
               <i class="fas fa-info-circle" title="${__theForm.help[HistoricLlocFields.NUMEROCAI]}" ></i>
@@ -48,7 +48,7 @@
             </td>
           <td id="historicLloc_numeroCai_columnvalueid">
             <form:errors path="historicLloc.numeroCai" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,HistoricLlocFields.NUMEROCAI)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,HistoricLlocFields.NUMEROCAI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="historicLloc.numeroCai"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,HistoricLlocFields.NUMEROCAI)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,HistoricLlocFields.NUMEROCAI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="historicLloc.numeroCai"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -97,7 +97,7 @@
         <tr id="historicLloc_dataCreacio_rowid">
           <td id="historicLloc_dataCreacio_columnlabelid">
             <label for="historicLloc.dataCreacio">
-              <fmt:message key="${(empty __theForm.labels[HistoricLlocFields.DATACREACIO])?'historicLloc.dataCreacio':__theForm.labels[HistoricLlocFields.DATACREACIO]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[HistoricLlocFields.DATACREACIO])?'historicLloc.dataCreacio':__theForm.labels[HistoricLlocFields.DATACREACIO]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[HistoricLlocFields.DATACREACIO]}">
               <i class="fas fa-info-circle" title="${__theForm.help[HistoricLlocFields.DATACREACIO]}" ></i>
@@ -107,9 +107,9 @@
     <form:errors path="historicLloc.dataCreacio" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="historicLloc_dataCreacioDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,HistoricLlocFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#historicLloc_dataCreacio" path="historicLloc.dataCreacio" aria-labelledby="historicLloc.dataCreacio"  />
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,HistoricLlocFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#historicLloc_dataCreacioDiv" path="historicLloc.dataCreacio"   required="required"  aria-required="true"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,HistoricLlocFields.DATACREACIO)}" >
-                    <div class="input-group-append"  data-target="#historicLloc_dataCreacio"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#historicLloc_dataCreacioDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -117,7 +117,7 @@
             </div>
         <script>
             $(function () {
-                $('#historicLloc_dataCreacio').datetimepicker({
+                $('#historicLloc_dataCreacioDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {
@@ -144,11 +144,11 @@
           <form:errors path="historicLloc.usuariID" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,HistoricLlocFields.USUARIID)}" >
           <form:hidden path="historicLloc.usuariID"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.historicLloc.usuariID,__theForm.listOfUsuariForUsuariID)}" aria-label="historicLloc.usuariID" />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.historicLloc.usuariID,__theForm.listOfUsuariForUsuariID)}" aria-label="historicLloc.usuariID"   />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,HistoricLlocFields.USUARIID)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select path="historicLloc.usuariID" onchange="if(typeof onChangeUsuariID == 'function') {  onChangeUsuariID(this); };"  cssClass="form-control col-md-9-optional"  aria-label="historicLloc.usuariID" >
+          <form:select path="historicLloc.usuariID" cssClass="form-control col-md-9-optional"  onchange="if(typeof onChangeUsuariID == 'function') {  onChangeUsuariID(this); };">
 
 
             <c:forEach items="${__theForm.listOfUsuariForUsuariID}" var="tmp">

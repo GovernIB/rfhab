@@ -136,9 +136,9 @@
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="dataBaixaDesdeDiv" data-target-input="nearest">
-                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataBaixaDesde" path="dataBaixaDesde" aria-labelledby="entitat_dataBaixa_label"  />
+                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataBaixaDesdeDiv" path="dataBaixaDesde"  aria-labelledby="entitat_dataBaixa_label"   />
                     <c:if test="${!false}" >
-                    <div class="input-group-append"  data-target="#dataBaixaDesde"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#dataBaixaDesdeDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -146,7 +146,7 @@
             </div>
         <script>
             $(function () {
-                $('#dataBaixaDesde').datetimepicker({
+                $('#dataBaixaDesdeDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {
@@ -158,9 +158,9 @@
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="dataBaixaFinsDiv" data-target-input="nearest">
-                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataBaixaFins" path="dataBaixaFins" aria-labelledby="entitat_dataBaixa_label"  />
+                      <form:input  cssClass="form-control datetimepicker-input"  data-target="#dataBaixaFinsDiv" path="dataBaixaFins"  aria-labelledby="entitat_dataBaixa_label"   />
                     <c:if test="${!false}" >
-                    <div class="input-group-append"  data-target="#dataBaixaFins"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#dataBaixaFinsDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -168,7 +168,7 @@
             </div>
         <script>
             $(function () {
-                $('#dataBaixaFins').datetimepicker({
+                $('#dataBaixaFinsDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {

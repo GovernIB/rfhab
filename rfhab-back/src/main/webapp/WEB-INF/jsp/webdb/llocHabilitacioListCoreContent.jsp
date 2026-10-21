@@ -25,27 +25,41 @@
 
 
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocHabilitacioFields.LLOCHABILITACIOID)}">
-          <td>
+        <td>
           ${llocHabilitacio.llocHabilitacioID}
+             <c:if test="${empty llocHabilitacio.llocHabilitacioID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocHabilitacioFields.DATACREACIO)}">
-          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${llocHabilitacio.dataCreacio}" /></td>
+        <td>
+          <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${llocHabilitacio.dataCreacio}" />
+             <c:if test="${empty llocHabilitacio.dataCreacio}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
+          </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocHabilitacioFields.LLOCID)}">
-          <td>
+        <td>
           <c:set var="tmp">${llocHabilitacio.llocID}</c:set>
           <c:if test="${not empty tmp}">
           ${__theFilterForm.mapOfLlocForLlocID[tmp]}
           </c:if>
+             <c:if test="${empty llocHabilitacio.llocID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,LlocHabilitacioFields.HABILITACIOID)}">
-          <td>
+        <td>
           <c:set var="tmp">${llocHabilitacio.habilitacioId}</c:set>
           <c:if test="${not empty tmp}">
           ${__theFilterForm.mapOfHabilitacioForHabilitacioId[tmp]}
           </c:if>
+             <c:if test="${empty llocHabilitacio.habilitacioId}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
 

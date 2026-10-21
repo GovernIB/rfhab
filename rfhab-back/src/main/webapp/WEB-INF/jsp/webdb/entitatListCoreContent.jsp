@@ -25,30 +25,47 @@
 
 
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,EntitatFields.ENTITATID)}">
-          <td>
+        <td>
           ${entitat.entitatID}
+             <c:if test="${empty entitat.entitatID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,EntitatFields.NOM)}">
-          <td>
+        <td>
           ${entitat.nom}
+             <c:if test="${empty entitat.nom}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,EntitatFields.ACTIU)}">
-          <td>
+        <td>
             <img height="18" width="18" src="<c:url value="/img/icn_alert_${entitat.actiu?'success':'error'}.png"/>" alt="${entitat.actiu}" >
+             <c:if test="${empty entitat.actiu}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,EntitatFields.UNITATID)}">
-          <td>
+        <td>
           <c:set var="tmp">${entitat.unitatID}</c:set>
           <c:if test="${not empty tmp}">
           ${__theFilterForm.mapOfUnitatForUnitatID[tmp]}
           </c:if>
+             <c:if test="${empty entitat.unitatID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,EntitatFields.DATABAIXA)}">
-          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${entitat.dataBaixa}" /></td>
+        <td>
+          <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${entitat.dataBaixa}" />
+             <c:if test="${empty entitat.dataBaixa}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
+          </td>
         </c:if>
 
 

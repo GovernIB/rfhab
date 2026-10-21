@@ -25,46 +25,76 @@
 
 
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,FuncionariLlocFields.FUNCIONARILLOCID)}">
-          <td>
+        <td>
           ${funcionariLloc.funcionarillocID}
+             <c:if test="${empty funcionariLloc.funcionarillocID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,FuncionariLlocFields.LLOCID)}">
-          <td>
+        <td>
           <c:set var="tmp">${funcionariLloc.llocID}</c:set>
           <c:if test="${not empty tmp}">
           ${__theFilterForm.mapOfLlocForLlocID[tmp]}
           </c:if>
+             <c:if test="${empty funcionariLloc.llocID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,FuncionariLlocFields.FUNCIONARIID)}">
-          <td>
+        <td>
           <c:set var="tmp">${funcionariLloc.funcionariID}</c:set>
           <c:if test="${not empty tmp}">
           ${__theFilterForm.mapOfFuncionariForFuncionariID[tmp]}
           </c:if>
+             <c:if test="${empty funcionariLloc.funcionariID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,FuncionariLlocFields.DATAINICI)}">
-          <td> <fmt:formatDate pattern="${gen:getDatePattern()}" value="${funcionariLloc.dataInici}" /></td>
+        <td>
+         <fmt:formatDate pattern="${gen:getDatePattern()}" value="${funcionariLloc.dataInici}" />
+             <c:if test="${empty funcionariLloc.dataInici}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
+          </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,FuncionariLlocFields.DATAFI)}">
-          <td> <fmt:formatDate pattern="${gen:getDatePattern()}" value="${funcionariLloc.dataFi}" /></td>
+        <td>
+         <fmt:formatDate pattern="${gen:getDatePattern()}" value="${funcionariLloc.dataFi}" />
+             <c:if test="${empty funcionariLloc.dataFi}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
+          </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,FuncionariLlocFields.DATACREACIO)}">
-          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${funcionariLloc.dataCreacio}" /></td>
+        <td>
+          <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${funcionariLloc.dataCreacio}" />
+             <c:if test="${empty funcionariLloc.dataCreacio}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
+          </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,FuncionariLlocFields.USUARIID)}">
-          <td>
+        <td>
           <c:set var="tmp">${funcionariLloc.usuariID}</c:set>
           <c:if test="${not empty tmp}">
           ${__theFilterForm.mapOfUsuariForUsuariID[tmp]}
           </c:if>
+             <c:if test="${empty funcionariLloc.usuariID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,FuncionariLlocFields.NUMEROCAI)}">
-          <td>
+        <td>
           ${funcionariLloc.numeroCai}
+             <c:if test="${empty funcionariLloc.numeroCai}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
 

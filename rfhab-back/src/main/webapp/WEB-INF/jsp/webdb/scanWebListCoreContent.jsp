@@ -25,66 +25,104 @@
 
 
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ScanWebFields.DIGITALID)}">
-          <td>
+        <td>
           ${scanWeb.digitalID}
+             <c:if test="${empty scanWeb.digitalID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ScanWebFields.TRANSACTIONID)}">
-          <td>
+        <td>
           ${scanWeb.transactionID}
+             <c:if test="${empty scanWeb.transactionID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ScanWebFields.TRANSACTIONWEBID)}">
-          <td>
+        <td>
           ${scanWeb.transactionWebID}
+             <c:if test="${empty scanWeb.transactionWebID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ScanWebFields.STATUS)}">
-          <td>
+        <td>
           ${scanWeb.status}
+             <c:if test="${empty scanWeb.status}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ScanWebFields.FITXERID)}">
-          <td>
+        <td>
             <c:if test="${not empty scanWeb.fitxer}">
               <a target="_blank" href="<c:url value="${rfh:fileUrl(scanWeb.fitxer)}"/>">${scanWeb.fitxer.nom}</a>
             </c:if>
-           </td>
+             <c:if test="${empty scanWeb.fitxer}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
+          </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ScanWebFields.FILEINFO)}">
-          <td>
+        <td>
           ${scanWeb.fileInfo}
+             <c:if test="${empty scanWeb.fileInfo}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ScanWebFields.SIGNEDFILEINFO)}">
-          <td>
+        <td>
           ${scanWeb.signedFileInfo}
+             <c:if test="${empty scanWeb.signedFileInfo}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ScanWebFields.METADADES)}">
-          <td>
+        <td>
           ${scanWeb.metadades}
+             <c:if test="${empty scanWeb.metadades}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ScanWebFields.MISSATGE)}">
-          <td>
+        <td>
           ${scanWeb.missatge}
+             <c:if test="${empty scanWeb.missatge}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ScanWebFields.USUARIID)}">
-          <td>
+        <td>
           <c:set var="tmp">${scanWeb.usuariID}</c:set>
           <c:if test="${not empty tmp}">
           ${__theFilterForm.mapOfUsuariForUsuariID[tmp]}
           </c:if>
+             <c:if test="${empty scanWeb.usuariID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ScanWebFields.DATACREACIO)}">
-          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${scanWeb.dataCreacio}" /></td>
+        <td>
+          <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${scanWeb.dataCreacio}" />
+             <c:if test="${empty scanWeb.dataCreacio}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
+          </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ScanWebFields.ENTITATID)}">
-          <td>
+        <td>
           ${scanWeb.entitatID}
+             <c:if test="${empty scanWeb.entitatID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
 

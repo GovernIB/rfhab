@@ -25,152 +25,245 @@
 
 
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.ACTIVITATID)}">
-          <td>
+        <td>
           ${activitat.activitatID}
+             <c:if test="${empty activitat.activitatID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.FUNCIONARIID)}">
-          <td>
+        <td>
           <c:set var="tmp">${activitat.funcionariID}</c:set>
           <c:if test="${not empty tmp}">
           ${__theFilterForm.mapOfFuncionariForFuncionariID[tmp]}
           </c:if>
+             <c:if test="${empty activitat.funcionariID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.TIPUS)}">
-          <td>
+        <td>
           <c:set var="tmp">${activitat.tipus}</c:set>
           <c:if test="${not empty tmp}">
           ${__theFilterForm.mapOfValuesForTipus[tmp]}
           </c:if>
+             <c:if test="${empty activitat.tipus}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.REGISTRE)}">
-          <td>
+        <td>
           ${activitat.registre}
+             <c:if test="${empty activitat.registre}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.TRAMIT)}">
-          <td>
+        <td>
           ${activitat.tramit}
+             <c:if test="${empty activitat.tramit}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.CODISIA)}">
-          <td>
+        <td>
           ${activitat.codiSia}
+             <c:if test="${empty activitat.codiSia}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.AUTORITZACIOID)}">
-          <td>
+        <td>
           ${activitat.autoritzacioID}
+             <c:if test="${empty activitat.autoritzacioID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.DATACREACIO)}">
-          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${activitat.dataCreacio}" /></td>
+        <td>
+          <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${activitat.dataCreacio}" />
+             <c:if test="${empty activitat.dataCreacio}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
+          </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.INTERESSATNOM)}">
-          <td>
+        <td>
           ${activitat.interessatNom}
+             <c:if test="${empty activitat.interessatNom}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.INTERESSATLLINATGE1)}">
-          <td>
+        <td>
           ${activitat.interessatLlinatge1}
+             <c:if test="${empty activitat.interessatLlinatge1}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.INTERESSATLLINATGE2)}">
-          <td>
+        <td>
           ${activitat.interessatLlinatge2}
+             <c:if test="${empty activitat.interessatLlinatge2}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.INTERESSATTIPUS)}">
-          <td>
+        <td>
           ${activitat.interessatTipus}
+             <c:if test="${empty activitat.interessatTipus}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.INTERESSATIDENTIFICACIO)}">
-          <td>
+        <td>
           ${activitat.interessatIdentificacio}
+             <c:if test="${empty activitat.interessatIdentificacio}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.REPRESENTANTNOM)}">
-          <td>
+        <td>
           ${activitat.representantNom}
+             <c:if test="${empty activitat.representantNom}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.REPRESENTANTLLINATGE1)}">
-          <td>
+        <td>
           ${activitat.representantLlinatge1}
+             <c:if test="${empty activitat.representantLlinatge1}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.REPRESENTANTLLINATGE2)}">
-          <td>
+        <td>
           ${activitat.representantLlinatge2}
+             <c:if test="${empty activitat.representantLlinatge2}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.REPRESENTANTTIPUS)}">
-          <td>
+        <td>
           ${activitat.representantTipus}
+             <c:if test="${empty activitat.representantTipus}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.REPRESENTANTIDENTIFICACIO)}">
-          <td>
+        <td>
           ${activitat.representantIdentificacio}
+             <c:if test="${empty activitat.representantIdentificacio}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.TRAMITVERSIO)}">
-          <td>
+        <td>
           ${activitat.tramitVersio}
+             <c:if test="${empty activitat.tramitVersio}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.ARXIUDOCUMENTID)}">
-          <td>
+        <td>
           ${activitat.arxiuDocumentID}
+             <c:if test="${empty activitat.arxiuDocumentID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.ARXIUEXPEDIENTID)}">
-          <td>
+        <td>
           ${activitat.arxiuExpedientID}
+             <c:if test="${empty activitat.arxiuExpedientID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.ESTAT)}">
-          <td>
+        <td>
           <c:set var="tmp">${activitat.estat}</c:set>
           <c:if test="${not empty tmp}">
           ${__theFilterForm.mapOfValuesForEstat[tmp]}
           </c:if>
+             <c:if test="${empty activitat.estat}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.URL)}">
-          <td>
+        <td>
           ${activitat.url}
+             <c:if test="${empty activitat.url}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.DATAACTIVITAT)}">
-          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${activitat.dataActivitat}" /></td>
+        <td>
+          <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${activitat.dataActivitat}" />
+             <c:if test="${empty activitat.dataActivitat}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
+          </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.IDACTUACIOTRAMIT)}">
-          <td>
+        <td>
           ${activitat.idActuacioTramit}
+             <c:if test="${empty activitat.idActuacioTramit}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.PROCEDIMENT)}">
-          <td>
+        <td>
           ${activitat.procediment}
+             <c:if test="${empty activitat.procediment}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.ARXIUREINTENTS)}">
-          <td>
+        <td>
           ${activitat.arxiuReintents}
+             <c:if test="${empty activitat.arxiuReintents}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.ARXIUESTAT)}">
-          <td>
+        <td>
           ${activitat.arxiuEstat}
+             <c:if test="${empty activitat.arxiuEstat}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,ActivitatFields.ARXIUDARRERINTENT)}">
-          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${activitat.arxiuDarrerIntent}" /></td>
+        <td>
+          <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${activitat.arxiuDarrerIntent}" />
+             <c:if test="${empty activitat.arxiuDarrerIntent}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
+          </td>
         </c:if>
 
 

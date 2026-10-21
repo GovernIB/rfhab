@@ -6,7 +6,7 @@
         <tr id="unitat_codi_rowid">
           <td id="unitat_codi_columnlabelid">
             <label for="unitat.codi">
-              <fmt:message key="${(empty __theForm.labels[UnitatFields.CODI])?'unitat.codi':__theForm.labels[UnitatFields.CODI]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[UnitatFields.CODI])?'unitat.codi':__theForm.labels[UnitatFields.CODI]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[UnitatFields.CODI]}">
               <i class="fas fa-info-circle" title="${__theForm.help[UnitatFields.CODI]}" ></i>
@@ -14,7 +14,7 @@
             </td>
           <td id="unitat_codi_columnvalueid">
             <form:errors path="unitat.codi" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,UnitatFields.CODI)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,UnitatFields.CODI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="unitat.codi"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,UnitatFields.CODI)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,UnitatFields.CODI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="unitat.codi"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -24,7 +24,7 @@
         <tr id="unitat_versio_rowid">
           <td id="unitat_versio_columnlabelid">
             <label for="unitat.versio">
-              <fmt:message key="${(empty __theForm.labels[UnitatFields.VERSIO])?'unitat.versio':__theForm.labels[UnitatFields.VERSIO]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[UnitatFields.VERSIO])?'unitat.versio':__theForm.labels[UnitatFields.VERSIO]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[UnitatFields.VERSIO]}">
               <i class="fas fa-info-circle" title="${__theForm.help[UnitatFields.VERSIO]}" ></i>
@@ -32,7 +32,7 @@
             </td>
           <td id="unitat_versio_columnvalueid">
             <form:errors path="unitat.versio" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,UnitatFields.VERSIO)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,UnitatFields.VERSIO)? ' uneditable-input' : ''}"  style=""  path="unitat.versio"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,UnitatFields.VERSIO)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,UnitatFields.VERSIO)? ' uneditable-input' : ''}"  style=""  path="unitat.versio"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -42,7 +42,7 @@
         <tr id="unitat_denominacio_rowid">
           <td id="unitat_denominacio_columnlabelid">
             <label for="unitat.denominacio">
-              <fmt:message key="${(empty __theForm.labels[UnitatFields.DENOMINACIO])?'unitat.denominacio':__theForm.labels[UnitatFields.DENOMINACIO]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[UnitatFields.DENOMINACIO])?'unitat.denominacio':__theForm.labels[UnitatFields.DENOMINACIO]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[UnitatFields.DENOMINACIO]}">
               <i class="fas fa-info-circle" title="${__theForm.help[UnitatFields.DENOMINACIO]}" ></i>
@@ -53,7 +53,7 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,UnitatFields.DENOMINACIO)? 'readonly' : ''}" path="unitat.denominacio"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,UnitatFields.DENOMINACIO)? 'readonly' : ''}" path="unitat.denominacio"  required="required"  aria-required="true"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_denominacio" style="vertical-align:top;display:inline;position:relative;">
@@ -202,11 +202,11 @@
           <form:errors path="unitat.estat" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,UnitatFields.ESTAT)}" >
           <form:hidden path="unitat.estat"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.unitat.estat,__theForm.listOfValuesForEstat)}" aria-label="unitat.estat" />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.unitat.estat,__theForm.listOfValuesForEstat)}" aria-label="unitat.estat"   />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,UnitatFields.ESTAT)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select path="unitat.estat" onchange="if(typeof onChangeEstat == 'function') {  onChangeEstat(this); };"  cssClass="form-control col-md-9-optional"  aria-label="unitat.estat" >
+          <form:select path="unitat.estat" cssClass="form-control col-md-9-optional"  onchange="if(typeof onChangeEstat == 'function') {  onChangeEstat(this); };">
 
 
             <c:forEach items="${__theForm.listOfValuesForEstat}" var="tmp">

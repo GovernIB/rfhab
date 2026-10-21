@@ -6,7 +6,7 @@
         <tr id="habilitacio_nomID_rowid">
           <td id="habilitacio_nomID_columnlabelid">
             <label id="habilitacio_nomID_labelid">
-              <fmt:message key="${(empty __theForm.labels[HabilitacioFields.NOMID])?'habilitacio.nomID':__theForm.labels[HabilitacioFields.NOMID]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[HabilitacioFields.NOMID])?'habilitacio.nomID':__theForm.labels[HabilitacioFields.NOMID]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[HabilitacioFields.NOMID]}">
               <i class="fas fa-info-circle" title="${__theForm.help[HabilitacioFields.NOMID]}" ></i>
@@ -18,7 +18,7 @@
          <ul class="nav nav-tabs" style="margin: 0 15px -1px;">
              <c:forEach items="${__theForm.idiomesTraduccio}" var="idioma" varStatus="counter">
             <li class="nav-item ">
-                 <a class="nav-link ${(counter.index == 0)? 'active':''}" href="#tab_${counter.index}_nom_${idioma.idiomaID}" data-toggle="tab">${idioma.nom}</a>
+                 <a class="nav-link ${(counter.index == 0)? 'active':''}" href="#tab_${counter.index}_nom_${idioma.idiomaID}" lang="${idioma.idiomaID}" data-toggle="tab">${idioma.nom}</a>
             </li>
           </c:forEach>
            
@@ -27,7 +27,7 @@
            <c:forEach items="${__theForm.idiomesTraduccio}" var="idioma" varStatus="counter">
            <div class="tab-pane ${(counter.index == 0)? 'active':'' }" id="tab_${counter.index}_nom_${idioma.idiomaID}">
                <form:errors path="habilitacio.nom.traduccions['${idioma.idiomaID}'].valor" cssClass="errorField alert alert-danger"/>
-               <form:input aria-labelledby="habilitacio.nomID_labelid" path="habilitacio.nom.traduccions['${idioma.idiomaID}'].valor" cssClass="form-control  ${gen:contains(__theForm.readOnlyFields ,HabilitacioFields.NOMID)? ' uneditable-input' : ''}" readonly="${gen:contains(__theForm.readOnlyFields ,HabilitacioFields.NOMID)}" maxlength="4000" />
+               <form:input required="required"  aria-required="true"  aria-labelledby="habilitacio_nomID_labelid" path="habilitacio.nom.traduccions['${idioma.idiomaID}'].valor" cssClass="form-control  ${gen:contains(__theForm.readOnlyFields ,HabilitacioFields.NOMID)? ' uneditable-input' : ''}" readonly="${gen:contains(__theForm.readOnlyFields ,HabilitacioFields.NOMID)}" maxlength="4000" />
            </div>
            </c:forEach>
          </div>
@@ -41,7 +41,7 @@
         <tr id="habilitacio_codi_rowid">
           <td id="habilitacio_codi_columnlabelid">
             <label for="habilitacio.codi">
-              <fmt:message key="${(empty __theForm.labels[HabilitacioFields.CODI])?'habilitacio.codi':__theForm.labels[HabilitacioFields.CODI]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[HabilitacioFields.CODI])?'habilitacio.codi':__theForm.labels[HabilitacioFields.CODI]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[HabilitacioFields.CODI]}">
               <i class="fas fa-info-circle" title="${__theForm.help[HabilitacioFields.CODI]}" ></i>
@@ -49,7 +49,7 @@
             </td>
           <td id="habilitacio_codi_columnvalueid">
             <form:errors path="habilitacio.codi" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,HabilitacioFields.CODI)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,HabilitacioFields.CODI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="habilitacio.codi"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,HabilitacioFields.CODI)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,HabilitacioFields.CODI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="habilitacio.codi"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -69,9 +69,9 @@
     <form:errors path="habilitacio.dataCreacio" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="habilitacio_dataCreacioDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,HabilitacioFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#habilitacio_dataCreacio" path="habilitacio.dataCreacio" aria-labelledby="habilitacio.dataCreacio"  />
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,HabilitacioFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#habilitacio_dataCreacioDiv" path="habilitacio.dataCreacio"   />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,HabilitacioFields.DATACREACIO)}" >
-                    <div class="input-group-append"  data-target="#habilitacio_dataCreacio"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#habilitacio_dataCreacioDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -79,7 +79,7 @@
             </div>
         <script>
             $(function () {
-                $('#habilitacio_dataCreacio').datetimepicker({
+                $('#habilitacio_dataCreacioDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {
@@ -96,7 +96,7 @@
         <tr id="habilitacio_entitatID_rowid">
           <td id="habilitacio_entitatID_columnlabelid">
             <label for="habilitacio.entitatID">
-              <fmt:message key="${(empty __theForm.labels[HabilitacioFields.ENTITATID])?'habilitacio.entitatID':__theForm.labels[HabilitacioFields.ENTITATID]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[HabilitacioFields.ENTITATID])?'habilitacio.entitatID':__theForm.labels[HabilitacioFields.ENTITATID]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[HabilitacioFields.ENTITATID]}">
               <i class="fas fa-info-circle" title="${__theForm.help[HabilitacioFields.ENTITATID]}" ></i>
@@ -104,7 +104,7 @@
             </td>
           <td id="habilitacio_entitatID_columnvalueid">
             <form:errors path="habilitacio.entitatID" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,HabilitacioFields.ENTITATID)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,HabilitacioFields.ENTITATID)? ' uneditable-input' : ''}"  style=""  path="habilitacio.entitatID"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,HabilitacioFields.ENTITATID)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,HabilitacioFields.ENTITATID)? ' uneditable-input' : ''}"  style=""  path="habilitacio.entitatID"  required="required"  aria-required="true"   />
 
            </td>
         </tr>

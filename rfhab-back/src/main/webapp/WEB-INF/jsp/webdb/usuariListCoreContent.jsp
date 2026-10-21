@@ -25,66 +25,106 @@
 
 
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UsuariFields.USUARIID)}">
-          <td>
+        <td>
           ${usuari.usuariID}
+             <c:if test="${empty usuari.usuariID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UsuariFields.NOM)}">
-          <td>
+        <td>
           ${usuari.nom}
+             <c:if test="${empty usuari.nom}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UsuariFields.LLINATGE1)}">
-          <td>
+        <td>
           ${usuari.llinatge1}
+             <c:if test="${empty usuari.llinatge1}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UsuariFields.LLINATGE2)}">
-          <td>
+        <td>
           ${usuari.llinatge2}
+             <c:if test="${empty usuari.llinatge2}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UsuariFields.NIF)}">
-          <td>
+        <td>
           ${usuari.nif}
+             <c:if test="${empty usuari.nif}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UsuariFields.USERNAME)}">
-          <td>
+        <td>
           ${usuari.username}
+             <c:if test="${empty usuari.username}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UsuariFields.CORREU)}">
-          <td>
+        <td>
           ${usuari.correu}
+             <c:if test="${empty usuari.correu}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UsuariFields.IDIOMAID)}">
-          <td>
+        <td>
           <c:set var="tmp">${usuari.idiomaID}</c:set>
           <c:if test="${not empty tmp}">
           ${__theFilterForm.mapOfIdiomaForIdiomaID[tmp]}
           </c:if>
+             <c:if test="${empty usuari.idiomaID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UsuariFields.ACTIU)}">
-          <td>
+        <td>
             <img height="18" width="18" src="<c:url value="/img/icn_alert_${usuari.actiu?'success':'error'}.png"/>" alt="${usuari.actiu}" >
+             <c:if test="${empty usuari.actiu}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UsuariFields.DATACREACIO)}">
-          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${usuari.dataCreacio}" /></td>
+        <td>
+          <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${usuari.dataCreacio}" />
+             <c:if test="${empty usuari.dataCreacio}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
+          </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UsuariFields.DARRERAENTITAT)}">
-          <td>
+        <td>
           <c:set var="tmp">${usuari.darreraEntitat}</c:set>
           <c:if test="${not empty tmp}">
           ${__theFilterForm.mapOfEntitatForDarreraEntitat[tmp]}
           </c:if>
+             <c:if test="${empty usuari.darreraEntitat}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UsuariFields.DATABAIXA)}">
-          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${usuari.dataBaixa}" /></td>
+        <td>
+          <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${usuari.dataBaixa}" />
+             <c:if test="${empty usuari.dataBaixa}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
+          </td>
         </c:if>
 
 

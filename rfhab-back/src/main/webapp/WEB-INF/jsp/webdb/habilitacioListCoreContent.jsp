@@ -25,29 +25,46 @@
 
 
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,HabilitacioFields.HABILITACIOID)}">
-          <td>
+        <td>
           ${habilitacio.habilitacioID}
+             <c:if test="${empty habilitacio.habilitacioID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,HabilitacioFields.NOMID)}">
-          <td>
+        <td>
           <c:set var="tmp">${habilitacio.nomID}</c:set>
           <c:if test="${not empty tmp}">
           ${habilitacio.nom.traduccions[lang].valor}
           </c:if>
+             <c:if test="${empty habilitacio.nom}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,HabilitacioFields.CODI)}">
-          <td>
+        <td>
           ${habilitacio.codi}
+             <c:if test="${empty habilitacio.codi}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,HabilitacioFields.DATACREACIO)}">
-          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${habilitacio.dataCreacio}" /></td>
+        <td>
+          <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${habilitacio.dataCreacio}" />
+             <c:if test="${empty habilitacio.dataCreacio}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
+          </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,HabilitacioFields.ENTITATID)}">
-          <td>
+        <td>
           ${habilitacio.entitatID}
+             <c:if test="${empty habilitacio.entitatID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
 

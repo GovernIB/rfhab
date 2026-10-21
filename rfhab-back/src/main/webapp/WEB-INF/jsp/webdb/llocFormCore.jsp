@@ -6,7 +6,7 @@
         <tr id="lloc_codiLlocPropi_rowid">
           <td id="lloc_codiLlocPropi_columnlabelid">
             <label for="lloc.codiLlocPropi">
-              <fmt:message key="${(empty __theForm.labels[LlocFields.CODILLOCPROPI])?'lloc.codiLlocPropi':__theForm.labels[LlocFields.CODILLOCPROPI]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[LlocFields.CODILLOCPROPI])?'lloc.codiLlocPropi':__theForm.labels[LlocFields.CODILLOCPROPI]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[LlocFields.CODILLOCPROPI]}">
               <i class="fas fa-info-circle" title="${__theForm.help[LlocFields.CODILLOCPROPI]}" ></i>
@@ -14,7 +14,7 @@
             </td>
           <td id="lloc_codiLlocPropi_columnvalueid">
             <form:errors path="lloc.codiLlocPropi" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocFields.CODILLOCPROPI)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,LlocFields.CODILLOCPROPI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="lloc.codiLlocPropi"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocFields.CODILLOCPROPI)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,LlocFields.CODILLOCPROPI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="lloc.codiLlocPropi"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -60,7 +60,7 @@
         <tr id="lloc_nom_rowid">
           <td id="lloc_nom_columnlabelid">
             <label for="lloc.nom">
-              <fmt:message key="${(empty __theForm.labels[LlocFields.NOM])?'lloc.nom':__theForm.labels[LlocFields.NOM]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[LlocFields.NOM])?'lloc.nom':__theForm.labels[LlocFields.NOM]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[LlocFields.NOM]}">
               <i class="fas fa-info-circle" title="${__theForm.help[LlocFields.NOM]}" ></i>
@@ -68,7 +68,7 @@
             </td>
           <td id="lloc_nom_columnvalueid">
             <form:errors path="lloc.nom" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocFields.NOM)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,LlocFields.NOM)? ' uneditable-input' : ''}"  style="" maxlength="255" path="lloc.nom"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocFields.NOM)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,LlocFields.NOM)? ' uneditable-input' : ''}"  style="" maxlength="255" path="lloc.nom"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -78,7 +78,7 @@
         <tr id="lloc_entitatID_rowid">
           <td id="lloc_entitatID_columnlabelid">
             <label for="lloc.entitatID">
-              <fmt:message key="${(empty __theForm.labels[LlocFields.ENTITATID])?'lloc.entitatID':__theForm.labels[LlocFields.ENTITATID]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[LlocFields.ENTITATID])?'lloc.entitatID':__theForm.labels[LlocFields.ENTITATID]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[LlocFields.ENTITATID]}">
               <i class="fas fa-info-circle" title="${__theForm.help[LlocFields.ENTITATID]}" ></i>
@@ -88,11 +88,11 @@
           <form:errors path="lloc.entitatID" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,LlocFields.ENTITATID)}" >
           <form:hidden path="lloc.entitatID"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.lloc.entitatID,__theForm.listOfEntitatForEntitatID)}" aria-label="lloc.entitatID" />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.lloc.entitatID,__theForm.listOfEntitatForEntitatID)}" aria-label="lloc.entitatID"   required aria-required="true"  />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,LlocFields.ENTITATID)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select path="lloc.entitatID" onchange="if(typeof onChangeEntitatID == 'function') {  onChangeEntitatID(this); };"  cssClass="form-control col-md-9-optional"  aria-label="lloc.entitatID" >
+          <form:select path="lloc.entitatID" cssClass="form-control col-md-9-optional"  required="required"  aria-required="true"  onchange="if(typeof onChangeEntitatID == 'function') {  onChangeEntitatID(this); };">
 
 
             <c:forEach items="${__theForm.listOfEntitatForEntitatID}" var="tmp">
@@ -112,7 +112,7 @@
         <tr id="lloc_unitatID_rowid">
           <td id="lloc_unitatID_columnlabelid">
             <label for="lloc.unitatID">
-              <fmt:message key="${(empty __theForm.labels[LlocFields.UNITATID])?'lloc.unitatID':__theForm.labels[LlocFields.UNITATID]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[LlocFields.UNITATID])?'lloc.unitatID':__theForm.labels[LlocFields.UNITATID]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[LlocFields.UNITATID]}">
               <i class="fas fa-info-circle" title="${__theForm.help[LlocFields.UNITATID]}" ></i>
@@ -122,11 +122,11 @@
           <form:errors path="lloc.unitatID" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,LlocFields.UNITATID)}" >
           <form:hidden path="lloc.unitatID"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.lloc.unitatID,__theForm.listOfUnitatForUnitatID)}" aria-label="lloc.unitatID" />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.lloc.unitatID,__theForm.listOfUnitatForUnitatID)}" aria-label="lloc.unitatID"   required aria-required="true"  />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,LlocFields.UNITATID)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select path="lloc.unitatID" onchange="if(typeof onChangeUnitatID == 'function') {  onChangeUnitatID(this); };"  cssClass="form-control col-md-9-optional"  aria-label="lloc.unitatID" >
+          <form:select path="lloc.unitatID" cssClass="form-control col-md-9-optional"  required="required"  aria-required="true"  onchange="if(typeof onChangeUnitatID == 'function') {  onChangeUnitatID(this); };">
 
 
             <c:forEach items="${__theForm.listOfUnitatForUnitatID}" var="tmp">
@@ -138,7 +138,7 @@
             </c:forEach>
           <script>
               $(document).ready(function() {
-                  $('#lloc.unitatID').select2();
+                  $('#lloc\\.unitatID').select2();
               });
           </script>
           </form:select>
@@ -161,9 +161,9 @@
     <form:errors path="lloc.dataalta" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="lloc_dataaltaDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocFields.DATAALTA)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#lloc_dataalta" path="lloc.dataalta" aria-labelledby="lloc.dataalta"  />
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocFields.DATAALTA)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#lloc_dataaltaDiv" path="lloc.dataalta"   />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,LlocFields.DATAALTA)}" >
-                    <div class="input-group-append"  data-target="#lloc_dataalta"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#lloc_dataaltaDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -171,7 +171,7 @@
             </div>
         <script>
             $(function () {
-                $('#lloc_dataalta').datetimepicker({
+                $('#lloc_dataaltaDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {
@@ -188,7 +188,7 @@
         <tr id="lloc_dataCreacio_rowid">
           <td id="lloc_dataCreacio_columnlabelid">
             <label for="lloc.dataCreacio">
-              <fmt:message key="${(empty __theForm.labels[LlocFields.DATACREACIO])?'lloc.dataCreacio':__theForm.labels[LlocFields.DATACREACIO]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[LlocFields.DATACREACIO])?'lloc.dataCreacio':__theForm.labels[LlocFields.DATACREACIO]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[LlocFields.DATACREACIO]}">
               <i class="fas fa-info-circle" title="${__theForm.help[LlocFields.DATACREACIO]}" ></i>
@@ -198,9 +198,9 @@
     <form:errors path="lloc.dataCreacio" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="lloc_dataCreacioDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#lloc_dataCreacio" path="lloc.dataCreacio" aria-labelledby="lloc.dataCreacio"  />
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#lloc_dataCreacioDiv" path="lloc.dataCreacio"   required="required"  aria-required="true"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,LlocFields.DATACREACIO)}" >
-                    <div class="input-group-append"  data-target="#lloc_dataCreacio"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#lloc_dataCreacioDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -208,7 +208,7 @@
             </div>
         <script>
             $(function () {
-                $('#lloc_dataCreacio').datetimepicker({
+                $('#lloc_dataCreacioDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {
@@ -235,9 +235,9 @@
     <form:errors path="lloc.dataBaixa" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="lloc_dataBaixaDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocFields.DATABAIXA)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#lloc_dataBaixa" path="lloc.dataBaixa" aria-labelledby="lloc.dataBaixa"  />
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocFields.DATABAIXA)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#lloc_dataBaixaDiv" path="lloc.dataBaixa"   />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,LlocFields.DATABAIXA)}" >
-                    <div class="input-group-append"  data-target="#lloc_dataBaixa"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#lloc_dataBaixaDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -245,7 +245,7 @@
             </div>
         <script>
             $(function () {
-                $('#lloc_dataBaixa').datetimepicker({
+                $('#lloc_dataBaixaDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {
@@ -262,7 +262,7 @@
         <tr id="lloc_personalOamr_rowid">
           <td id="lloc_personalOamr_columnlabelid">
             <label for="lloc.personalOamr">
-              <fmt:message key="${(empty __theForm.labels[LlocFields.PERSONALOAMR])?'lloc.personalOamr':__theForm.labels[LlocFields.PERSONALOAMR]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[LlocFields.PERSONALOAMR])?'lloc.personalOamr':__theForm.labels[LlocFields.PERSONALOAMR]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[LlocFields.PERSONALOAMR]}">
               <i class="fas fa-info-circle" title="${__theForm.help[LlocFields.PERSONALOAMR]}" ></i>
@@ -272,11 +272,11 @@
           <form:errors path="lloc.personalOamr" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,LlocFields.PERSONALOAMR)}" >
           <form:hidden path="lloc.personalOamr"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.lloc.personalOamr,__theForm.listOfValuesForPersonalOamr)}" aria-label="lloc.personalOamr" />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.lloc.personalOamr,__theForm.listOfValuesForPersonalOamr)}" aria-label="lloc.personalOamr"   required aria-required="true"  />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,LlocFields.PERSONALOAMR)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select path="lloc.personalOamr" onchange="if(typeof onChangePersonalOamr == 'function') {  onChangePersonalOamr(this); };"  cssClass="form-control col-md-9-optional"  aria-label="lloc.personalOamr" >
+          <form:select path="lloc.personalOamr" cssClass="form-control col-md-9-optional"  required="required"  aria-required="true"  onchange="if(typeof onChangePersonalOamr == 'function') {  onChangePersonalOamr(this); };">
 
 
             <c:forEach items="${__theForm.listOfValuesForPersonalOamr}" var="tmp">

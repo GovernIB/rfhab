@@ -25,37 +25,57 @@
 
 
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,HistoricFields.HISTORICID)}">
-          <td>
+        <td>
           ${historic.historicID}
+             <c:if test="${empty historic.historicID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,HistoricFields.FUNCIONARIID)}">
-          <td>
+        <td>
           <c:set var="tmp">${historic.funcionariID}</c:set>
           <c:if test="${not empty tmp}">
           ${__theFilterForm.mapOfFuncionariForFuncionariID[tmp]}
           </c:if>
+             <c:if test="${empty historic.funcionariID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,HistoricFields.NUMEROCAI)}">
-          <td>
+        <td>
           ${historic.numeroCai}
+             <c:if test="${empty historic.numeroCai}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,HistoricFields.OBSERVACIONS)}">
-          <td>
+        <td>
           ${historic.observacions}
+             <c:if test="${empty historic.observacions}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,HistoricFields.DATACREACIO)}">
-          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${historic.dataCreacio}" /></td>
+        <td>
+          <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${historic.dataCreacio}" />
+             <c:if test="${empty historic.dataCreacio}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
+          </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,HistoricFields.USUARIID)}">
-          <td>
+        <td>
           <c:set var="tmp">${historic.usuariID}</c:set>
           <c:if test="${not empty tmp}">
           ${__theFilterForm.mapOfUsuariForUsuariID[tmp]}
           </c:if>
+             <c:if test="${empty historic.usuariID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
 

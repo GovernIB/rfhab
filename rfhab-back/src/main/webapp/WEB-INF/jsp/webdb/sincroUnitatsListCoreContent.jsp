@@ -25,35 +25,62 @@
 
 
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,SincroUnitatsFields.SINCROUNITATSID)}">
-          <td>
+        <td>
           ${sincroUnitats.sincrounitatsId}
+             <c:if test="${empty sincroUnitats.sincrounitatsId}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,SincroUnitatsFields.DATACREACIO)}">
-          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${sincroUnitats.dataCreacio}" /></td>
+        <td>
+          <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${sincroUnitats.dataCreacio}" />
+             <c:if test="${empty sincroUnitats.dataCreacio}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
+          </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,SincroUnitatsFields.DATADARRERASINCRO)}">
-          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${sincroUnitats.dataDarreraSincro}" /></td>
+        <td>
+          <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${sincroUnitats.dataDarreraSincro}" />
+             <c:if test="${empty sincroUnitats.dataDarreraSincro}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
+          </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,SincroUnitatsFields.DATAPRIMERASINCRO)}">
-          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${sincroUnitats.dataPrimeraSincro}" /></td>
+        <td>
+          <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${sincroUnitats.dataPrimeraSincro}" />
+             <c:if test="${empty sincroUnitats.dataPrimeraSincro}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
+          </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,SincroUnitatsFields.CODIENTITAT)}">
-          <td>
+        <td>
           ${sincroUnitats.codiEntitat}
+             <c:if test="${empty sincroUnitats.codiEntitat}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,SincroUnitatsFields.OBSERVACIONS)}">
-          <td>
+        <td>
           ${sincroUnitats.observacions}
+             <c:if test="${empty sincroUnitats.observacions}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,SincroUnitatsFields.USUARIID)}">
-          <td>
+        <td>
           <c:set var="tmp">${sincroUnitats.usuariId}</c:set>
           <c:if test="${not empty tmp}">
           ${__theFilterForm.mapOfUsuariForUsuariId[tmp]}
           </c:if>
+             <c:if test="${empty sincroUnitats.usuariId}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
 

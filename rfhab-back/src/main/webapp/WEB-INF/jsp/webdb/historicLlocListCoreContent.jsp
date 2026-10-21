@@ -25,37 +25,57 @@
 
 
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,HistoricLlocFields.HISTORICLLOCID)}">
-          <td>
+        <td>
           ${historicLloc.historicllocID}
+             <c:if test="${empty historicLloc.historicllocID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,HistoricLlocFields.LLOCID)}">
-          <td>
+        <td>
           <c:set var="tmp">${historicLloc.llocID}</c:set>
           <c:if test="${not empty tmp}">
           ${__theFilterForm.mapOfLlocForLlocID[tmp]}
           </c:if>
+             <c:if test="${empty historicLloc.llocID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,HistoricLlocFields.NUMEROCAI)}">
-          <td>
+        <td>
           ${historicLloc.numeroCai}
+             <c:if test="${empty historicLloc.numeroCai}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,HistoricLlocFields.OBSERVACIONS)}">
-          <td>
+        <td>
           ${historicLloc.observacions}
+             <c:if test="${empty historicLloc.observacions}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,HistoricLlocFields.DATACREACIO)}">
-          <td> <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${historicLloc.dataCreacio}" /></td>
+        <td>
+          <fmt:formatDate pattern="${gen:getDateTimePattern()}" value="${historicLloc.dataCreacio}" />
+             <c:if test="${empty historicLloc.dataCreacio}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
+          </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,HistoricLlocFields.USUARIID)}">
-          <td>
+        <td>
           <c:set var="tmp">${historicLloc.usuariID}</c:set>
           <c:if test="${not empty tmp}">
           ${__theFilterForm.mapOfUsuariForUsuariID[tmp]}
           </c:if>
+             <c:if test="${empty historicLloc.usuariID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
 

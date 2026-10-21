@@ -25,56 +25,86 @@
 
 
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UnitatFields.UNITATID)}">
-          <td>
+        <td>
           ${unitat.unitatID}
+             <c:if test="${empty unitat.unitatID}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UnitatFields.CODI)}">
-          <td>
+        <td>
           ${unitat.codi}
+             <c:if test="${empty unitat.codi}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UnitatFields.VERSIO)}">
-          <td>
+        <td>
           ${unitat.versio}
+             <c:if test="${empty unitat.versio}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UnitatFields.DENOMINACIO)}">
-          <td>
+        <td>
           ${unitat.denominacio}
+             <c:if test="${empty unitat.denominacio}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UnitatFields.COOFICIAL)}">
-          <td>
+        <td>
           ${unitat.cooficial}
+             <c:if test="${empty unitat.cooficial}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UnitatFields.ARREL)}">
-          <td>
+        <td>
           ${unitat.arrel}
+             <c:if test="${empty unitat.arrel}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UnitatFields.ARRELVERSIO)}">
-          <td>
+        <td>
           ${unitat.arrelVersio}
+             <c:if test="${empty unitat.arrelVersio}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UnitatFields.SUPERIOR)}">
-          <td>
+        <td>
           ${unitat.superior}
+             <c:if test="${empty unitat.superior}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UnitatFields.SUPERIORVERSIO)}">
-          <td>
+        <td>
           ${unitat.superiorVersio}
+             <c:if test="${empty unitat.superiorVersio}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
         <c:if test="${!gen:contains(__theFilterForm.hiddenFields,UnitatFields.ESTAT)}">
-          <td>
+        <td>
           <c:set var="tmp">${unitat.estat}</c:set>
           <c:if test="${not empty tmp}">
           ${__theFilterForm.mapOfValuesForEstat[tmp]}
           </c:if>
+             <c:if test="${empty unitat.estat}">
+             <span aria-hidden="true">&nbsp;</span><span class="sr-only">Sense valor</span>
+             </c:if>
           </td>
         </c:if>
 

@@ -6,7 +6,7 @@
         <tr id="plugin_nom_rowid">
           <td id="plugin_nom_columnlabelid">
             <label for="plugin.nom">
-              <fmt:message key="${(empty __theForm.labels[PluginFields.NOM])?'plugin.nom':__theForm.labels[PluginFields.NOM]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[PluginFields.NOM])?'plugin.nom':__theForm.labels[PluginFields.NOM]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[PluginFields.NOM]}">
               <i class="fas fa-info-circle" title="${__theForm.help[PluginFields.NOM]}" ></i>
@@ -14,7 +14,7 @@
             </td>
           <td id="plugin_nom_columnvalueid">
             <form:errors path="plugin.nom" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,PluginFields.NOM)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,PluginFields.NOM)? ' uneditable-input' : ''}"  style="" maxlength="255" path="plugin.nom"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,PluginFields.NOM)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,PluginFields.NOM)? ' uneditable-input' : ''}"  style="" maxlength="255" path="plugin.nom"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -24,7 +24,7 @@
         <tr id="plugin_descripcio_rowid">
           <td id="plugin_descripcio_columnlabelid">
             <label for="plugin.descripcio">
-              <fmt:message key="${(empty __theForm.labels[PluginFields.DESCRIPCIO])?'plugin.descripcio':__theForm.labels[PluginFields.DESCRIPCIO]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[PluginFields.DESCRIPCIO])?'plugin.descripcio':__theForm.labels[PluginFields.DESCRIPCIO]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[PluginFields.DESCRIPCIO]}">
               <i class="fas fa-info-circle" title="${__theForm.help[PluginFields.DESCRIPCIO]}" ></i>
@@ -35,7 +35,7 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,PluginFields.DESCRIPCIO)? 'readonly' : ''}" path="plugin.descripcio"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,PluginFields.DESCRIPCIO)? 'readonly' : ''}" path="plugin.descripcio"  required="required"  aria-required="true"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_descripcio" style="vertical-align:top;display:inline;position:relative;">
@@ -81,7 +81,7 @@
         <tr id="plugin_entitatID_rowid">
           <td id="plugin_entitatID_columnlabelid">
             <label for="plugin.entitatID">
-              <fmt:message key="${(empty __theForm.labels[PluginFields.ENTITATID])?'plugin.entitatID':__theForm.labels[PluginFields.ENTITATID]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[PluginFields.ENTITATID])?'plugin.entitatID':__theForm.labels[PluginFields.ENTITATID]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[PluginFields.ENTITATID]}">
               <i class="fas fa-info-circle" title="${__theForm.help[PluginFields.ENTITATID]}" ></i>
@@ -91,11 +91,11 @@
           <form:errors path="plugin.entitatID" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,PluginFields.ENTITATID)}" >
           <form:hidden path="plugin.entitatID"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.plugin.entitatID,__theForm.listOfEntitatForEntitatID)}" aria-label="plugin.entitatID" />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.plugin.entitatID,__theForm.listOfEntitatForEntitatID)}" aria-label="plugin.entitatID"   required aria-required="true"  />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,PluginFields.ENTITATID)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select path="plugin.entitatID" onchange="if(typeof onChangeEntitatID == 'function') {  onChangeEntitatID(this); };"  cssClass="form-control col-md-9-optional"  aria-label="plugin.entitatID" >
+          <form:select path="plugin.entitatID" cssClass="form-control col-md-9-optional"  required="required"  aria-required="true"  onchange="if(typeof onChangeEntitatID == 'function') {  onChangeEntitatID(this); };">
 
 
             <c:forEach items="${__theForm.listOfEntitatForEntitatID}" var="tmp">
@@ -163,7 +163,10 @@
           <td id="plugin_actiu_columnvalueid">
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,PluginFields.ACTIU)}" >
               <form:errors  path="plugin.actiu" cssClass="errorField alert alert-danger" />
-              <form:checkbox cssClass="" onclick="javascript:return ${ gen:contains(__theForm.readOnlyFields ,PluginFields.ACTIU)? 'false' : 'true'}" id="plugin.actiu" path="plugin.actiu"  aria-label="plugin.actiu" />
+<fieldset>
+<legend class="sr-only">Evitar errors d'Accessibilitat</legend>
+              <form:checkbox cssClass="" onclick="javascript:return ${ gen:contains(__theForm.readOnlyFields ,PluginFields.ACTIU)? 'false' : 'true'}" id="plugin.actiu" path="plugin.actiu"   />
+</fieldset>
           </c:if>
           <c:if test="${gen:contains(__theForm.readOnlyFields ,PluginFields.ACTIU)}" >
                 <fmt:message key="genapp.checkbox.${__theForm.plugin.actiu}" />
@@ -186,9 +189,9 @@
     <form:errors path="plugin.dataCreacio" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="plugin_dataCreacioDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,PluginFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#plugin_dataCreacio" path="plugin.dataCreacio" aria-labelledby="plugin.dataCreacio"  />
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,PluginFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#plugin_dataCreacioDiv" path="plugin.dataCreacio"   />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,PluginFields.DATACREACIO)}" >
-                    <div class="input-group-append"  data-target="#plugin_dataCreacio"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#plugin_dataCreacioDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -196,7 +199,7 @@
             </div>
         <script>
             $(function () {
-                $('#plugin_dataCreacio').datetimepicker({
+                $('#plugin_dataCreacioDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {
@@ -213,7 +216,7 @@
         <tr id="plugin_tipus_rowid">
           <td id="plugin_tipus_columnlabelid">
             <label for="plugin.tipus">
-              <fmt:message key="${(empty __theForm.labels[PluginFields.TIPUS])?'plugin.tipus':__theForm.labels[PluginFields.TIPUS]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[PluginFields.TIPUS])?'plugin.tipus':__theForm.labels[PluginFields.TIPUS]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[PluginFields.TIPUS]}">
               <i class="fas fa-info-circle" title="${__theForm.help[PluginFields.TIPUS]}" ></i>
@@ -223,11 +226,11 @@
           <form:errors path="plugin.tipus" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,PluginFields.TIPUS)}" >
           <form:hidden path="plugin.tipus"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.plugin.tipus,__theForm.listOfValuesForTipus)}" aria-label="plugin.tipus" />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.plugin.tipus,__theForm.listOfValuesForTipus)}" aria-label="plugin.tipus"   required aria-required="true"  />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,PluginFields.TIPUS)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select path="plugin.tipus" onchange="if(typeof onChangeTipus == 'function') {  onChangeTipus(this); };"  cssClass="form-control col-md-9-optional"  aria-label="plugin.tipus" >
+          <form:select path="plugin.tipus" cssClass="form-control col-md-9-optional"  required="required"  aria-required="true"  onchange="if(typeof onChangeTipus == 'function') {  onChangeTipus(this); };">
 
 
             <c:forEach items="${__theForm.listOfValuesForTipus}" var="tmp">

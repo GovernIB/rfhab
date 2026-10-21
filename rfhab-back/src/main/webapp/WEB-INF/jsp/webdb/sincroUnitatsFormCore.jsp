@@ -6,7 +6,7 @@
         <tr id="sincroUnitats_dataCreacio_rowid">
           <td id="sincroUnitats_dataCreacio_columnlabelid">
             <label for="sincroUnitats.dataCreacio">
-              <fmt:message key="${(empty __theForm.labels[SincroUnitatsFields.DATACREACIO])?'sincroUnitats.dataCreacio':__theForm.labels[SincroUnitatsFields.DATACREACIO]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[SincroUnitatsFields.DATACREACIO])?'sincroUnitats.dataCreacio':__theForm.labels[SincroUnitatsFields.DATACREACIO]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[SincroUnitatsFields.DATACREACIO]}">
               <i class="fas fa-info-circle" title="${__theForm.help[SincroUnitatsFields.DATACREACIO]}" ></i>
@@ -16,9 +16,9 @@
     <form:errors path="sincroUnitats.dataCreacio" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="sincroUnitats_dataCreacioDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#sincroUnitats_dataCreacio" path="sincroUnitats.dataCreacio" aria-labelledby="sincroUnitats.dataCreacio"  />
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#sincroUnitats_dataCreacioDiv" path="sincroUnitats.dataCreacio"   required="required"  aria-required="true"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.DATACREACIO)}" >
-                    <div class="input-group-append"  data-target="#sincroUnitats_dataCreacio"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#sincroUnitats_dataCreacioDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -26,7 +26,7 @@
             </div>
         <script>
             $(function () {
-                $('#sincroUnitats_dataCreacio').datetimepicker({
+                $('#sincroUnitats_dataCreacioDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {
@@ -53,9 +53,9 @@
     <form:errors path="sincroUnitats.dataDarreraSincro" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="sincroUnitats_dataDarreraSincroDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.DATADARRERASINCRO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#sincroUnitats_dataDarreraSincro" path="sincroUnitats.dataDarreraSincro" aria-labelledby="sincroUnitats.dataDarreraSincro"  />
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.DATADARRERASINCRO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#sincroUnitats_dataDarreraSincroDiv" path="sincroUnitats.dataDarreraSincro"   />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.DATADARRERASINCRO)}" >
-                    <div class="input-group-append"  data-target="#sincroUnitats_dataDarreraSincro"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#sincroUnitats_dataDarreraSincroDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -63,7 +63,7 @@
             </div>
         <script>
             $(function () {
-                $('#sincroUnitats_dataDarreraSincro').datetimepicker({
+                $('#sincroUnitats_dataDarreraSincroDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {
@@ -90,9 +90,9 @@
     <form:errors path="sincroUnitats.dataPrimeraSincro" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="sincroUnitats_dataPrimeraSincroDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.DATAPRIMERASINCRO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#sincroUnitats_dataPrimeraSincro" path="sincroUnitats.dataPrimeraSincro" aria-labelledby="sincroUnitats.dataPrimeraSincro"  />
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.DATAPRIMERASINCRO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#sincroUnitats_dataPrimeraSincroDiv" path="sincroUnitats.dataPrimeraSincro"   />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.DATAPRIMERASINCRO)}" >
-                    <div class="input-group-append"  data-target="#sincroUnitats_dataPrimeraSincro"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#sincroUnitats_dataPrimeraSincroDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -100,7 +100,7 @@
             </div>
         <script>
             $(function () {
-                $('#sincroUnitats_dataPrimeraSincro').datetimepicker({
+                $('#sincroUnitats_dataPrimeraSincroDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {
@@ -117,7 +117,7 @@
         <tr id="sincroUnitats_codiEntitat_rowid">
           <td id="sincroUnitats_codiEntitat_columnlabelid">
             <label for="sincroUnitats.codiEntitat">
-              <fmt:message key="${(empty __theForm.labels[SincroUnitatsFields.CODIENTITAT])?'sincroUnitats.codiEntitat':__theForm.labels[SincroUnitatsFields.CODIENTITAT]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[SincroUnitatsFields.CODIENTITAT])?'sincroUnitats.codiEntitat':__theForm.labels[SincroUnitatsFields.CODIENTITAT]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[SincroUnitatsFields.CODIENTITAT]}">
               <i class="fas fa-info-circle" title="${__theForm.help[SincroUnitatsFields.CODIENTITAT]}" ></i>
@@ -125,7 +125,7 @@
             </td>
           <td id="sincroUnitats_codiEntitat_columnvalueid">
             <form:errors path="sincroUnitats.codiEntitat" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.CODIENTITAT)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.CODIENTITAT)? ' uneditable-input' : ''}"  style="" maxlength="50" path="sincroUnitats.codiEntitat"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.CODIENTITAT)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.CODIENTITAT)? ' uneditable-input' : ''}"  style="" maxlength="50" path="sincroUnitats.codiEntitat"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -174,7 +174,7 @@
         <tr id="sincroUnitats_usuariId_rowid">
           <td id="sincroUnitats_usuariId_columnlabelid">
             <label for="sincroUnitats.usuariId">
-              <fmt:message key="${(empty __theForm.labels[SincroUnitatsFields.USUARIID])?'sincroUnitats.usuariId':__theForm.labels[SincroUnitatsFields.USUARIID]}" /> &nbsp;(*)
+              <fmt:message key="${(empty __theForm.labels[SincroUnitatsFields.USUARIID])?'sincroUnitats.usuariId':__theForm.labels[SincroUnitatsFields.USUARIID]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
              </label>
               <c:if test="${not empty __theForm.help[SincroUnitatsFields.USUARIID]}">
               <i class="fas fa-info-circle" title="${__theForm.help[SincroUnitatsFields.USUARIID]}" ></i>
@@ -184,11 +184,11 @@
           <form:errors path="sincroUnitats.usuariId" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.USUARIID)}" >
           <form:hidden path="sincroUnitats.usuariId"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.sincroUnitats.usuariId,__theForm.listOfUsuariForUsuariId)}" aria-label="sincroUnitats.usuariId" />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.sincroUnitats.usuariId,__theForm.listOfUsuariForUsuariId)}" aria-label="sincroUnitats.usuariId"   required aria-required="true"  />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.USUARIID)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select path="sincroUnitats.usuariId" onchange="if(typeof onChangeUsuariId == 'function') {  onChangeUsuariId(this); };"  cssClass="form-control col-md-9-optional"  aria-label="sincroUnitats.usuariId" >
+          <form:select path="sincroUnitats.usuariId" cssClass="form-control col-md-9-optional"  required="required"  aria-required="true"  onchange="if(typeof onChangeUsuariId == 'function') {  onChangeUsuariId(this); };">
 
 
             <c:forEach items="${__theForm.listOfUsuariForUsuariId}" var="tmp">

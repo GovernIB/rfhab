@@ -33,7 +33,10 @@
           <td id="entitat_actiu_columnvalueid">
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,EntitatFields.ACTIU)}" >
               <form:errors  path="entitat.actiu" cssClass="errorField alert alert-danger" />
-              <form:checkbox cssClass="" onclick="javascript:return ${ gen:contains(__theForm.readOnlyFields ,EntitatFields.ACTIU)? 'false' : 'true'}" id="entitat.actiu" path="entitat.actiu"  aria-label="entitat.actiu" />
+<fieldset>
+<legend class="sr-only">Evitar errors d'Accessibilitat</legend>
+              <form:checkbox cssClass="" onclick="javascript:return ${ gen:contains(__theForm.readOnlyFields ,EntitatFields.ACTIU)? 'false' : 'true'}" id="entitat.actiu" path="entitat.actiu"   />
+</fieldset>
           </c:if>
           <c:if test="${gen:contains(__theForm.readOnlyFields ,EntitatFields.ACTIU)}" >
                 <fmt:message key="genapp.checkbox.${__theForm.entitat.actiu}" />
@@ -56,11 +59,11 @@
           <form:errors path="entitat.unitatID" cssClass="errorField alert alert-danger" />
           <c:if test="${gen:contains(__theForm.readOnlyFields ,EntitatFields.UNITATID)}" >
           <form:hidden path="entitat.unitatID"/>
-          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.entitat.unitatID,__theForm.listOfUnitatForUnitatID)}" aria-label="entitat.unitatID" />
+          <input type="text" readonly="true" class="form-control col-md-9-optional uneditable-input" value="${gen:findValue(__theForm.entitat.unitatID,__theForm.listOfUnitatForUnitatID)}" aria-label="entitat.unitatID"   />
           </c:if>
           <c:if test="${!gen:contains(__theForm.readOnlyFields ,EntitatFields.UNITATID)}" >
           <c:set var="containEmptyValue"  value="false" />
-          <form:select path="entitat.unitatID" onchange="if(typeof onChangeUnitatID == 'function') {  onChangeUnitatID(this); };"  cssClass="form-control col-md-9-optional"  aria-label="entitat.unitatID" >
+          <form:select path="entitat.unitatID" cssClass="form-control col-md-9-optional"  onchange="if(typeof onChangeUnitatID == 'function') {  onChangeUnitatID(this); };">
 
 
             <c:forEach items="${__theForm.listOfUnitatForUnitatID}" var="tmp">
@@ -101,9 +104,9 @@
     <form:errors path="entitat.dataBaixa" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="entitat_dataBaixaDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,EntitatFields.DATABAIXA)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#entitat_dataBaixa" path="entitat.dataBaixa" aria-labelledby="entitat.dataBaixa"  />
+                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,EntitatFields.DATABAIXA)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#entitat_dataBaixaDiv" path="entitat.dataBaixa"   />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,EntitatFields.DATABAIXA)}" >
-                    <div class="input-group-append"  data-target="#entitat_dataBaixa"  data-toggle="datetimepicker">
+                    <div class="input-group-append"  data-target="#entitat_dataBaixaDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     </c:if>
@@ -111,7 +114,7 @@
             </div>
         <script>
             $(function () {
-                $('#entitat_dataBaixa').datetimepicker({
+                $('#entitat_dataBaixaDiv').datetimepicker({
                     format: '${gen:getJSDateTimePattern()}',
                     locale: '${lang}',
                     icons: {

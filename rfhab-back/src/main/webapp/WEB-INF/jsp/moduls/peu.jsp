@@ -21,7 +21,6 @@
 			 <i><fmt:message key="desenvolupatper" /></i></span>
 			 </small>
 			<br />
-			<a class="text-dark linkPeu" href="<c:url value='/public/accessibilitat'/>"><fmt:message key="labels.accessibilitat" /></a>
 		</div>
 
 

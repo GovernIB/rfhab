@@ -241,9 +241,6 @@ Sobreescriu el blau #007bff (~4.0:1) per un blau més fosc accessible.
 	.dadesSuport li{
 		list-style: circle !important;
 	}
-	.navbar-nav.mobil {
-		padding-left: 20px !important;
-	}
 	.navbar-toggler {
 		padding: 0.25rem !important;
 		font-size: 1rem !important;
@@ -362,10 +359,6 @@ millorar l'accessibilitat (contrast)
 	margin-left: auto!important;
 	padding-right: 20px;
 	padding-top: 10px !important;
-}
-.navbar-nav.mobil{
-	padding-top: 10px;
-	padding-left: 40px;
 }
 .mobil li a:hover{
 	color: #fff !important;
@@ -589,4 +582,49 @@ ul.gj-list-bootstrap li [data-role=expander].gj-tree-material-icons-expander {
   border-radius: 4px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
   transition: all 0.2s ease-in-out;
+}
+
+/* aquest ha d'anar al contrari que navbar-expand-XX */
+@media (min-width: 991.98px) {
+    #menuCapContainer {
+        -ms-flex-direction: column !important;
+        flex-direction: column !important;
+    }
+}
+
+div.row:has(> .table-genapp.table-genapp-list) {
+	width: 100%;
+	overflow-x: auto; /* Això absorveix qualsevol desbordament de la taula */
+}
+.table-genapp.table-genapp-list{
+	width: max-content !important;
+  	max-width: 100%; /* Si cap, es queda al 100% del pare, si és més petita, es queda amb la seva mida */
+}
+/* Opció: La solució estricta (Forçar la taula a acatar el 100%)
+Si vols que la taula es quedi amb la seva mida si és petita, però que es bloquegi al 100% i retalle/trenqui les paraules si és gran, necessites això:
+css
+table {
+  width: max-content;
+  max-width: 100%;
+  Força a la taula a dividir l'espai de forma estricta
+  table-layout: fixed; 
+}
+th, td {
+  Força a les paraules llargues a trencar-se en línies noves si no caben
+  word-break: break-word; 
+  overflow-wrap: break-word;
+} */
+ 
+/* Sobreescrivim comportament de bootstrap perquè no volem que els botons surtin de la cel·la de la taula */
+table.table-genapp-list .btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 100%;
+    vertical-align: top;
+    justify-content: center;
+}
+
+table.table-genapp-list .btn-group > .btn {
+    flex: 0 0 auto;
+    width: auto;
 }

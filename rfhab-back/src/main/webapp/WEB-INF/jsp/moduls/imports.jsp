@@ -215,10 +215,6 @@
 	border-color: #00B2FF;
 }
 
-ul {
-	padding: 5px !important;
-}
-
 form {
 	padding: 0.75rem;
 	padding-top: 0px;

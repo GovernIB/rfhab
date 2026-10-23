@@ -12,7 +12,7 @@
 
 <header>
 	<!-- Header -->
-	<nav id="nav-cap" class="navbar navbar-expand-md navbar-dark">
+	<nav id="nav-cap" class="navbar navbar-expand-lg navbar-dark">
 
 		<button class="navbar-toggler botoMobil" type="button"
 			data-toggle="collapse" data-target="#navbarCollapse"
@@ -43,7 +43,7 @@
 		System.out.println("Entitats: " + entitats.size());
 		%>
 
-		<div id="menuCapContainer">
+		<div id="menuCapContainer" class="navbar-collapse flex-row">
 
 			<ul class="navbar-nav mobil">
 
@@ -234,18 +234,14 @@
 
 					</div></li>
 			</ul>
-		</div>
 		<!-- Fi Logo i nom aplicació -->
 
 		<!-- Botons -->
 		<c:if test="${not empty pipella}">
-		<div id="botoneraCapContainer" class="collapse navbar-collapse"
-			id="navbarCollapse">
-
-			<ul class="navbar-nav mobil">
+			<ul class="navbar-nav mobil" id="navbarCollapse">
 
 				<li class="dropdown">
-					<button class="btn btn-primary dropdown-toggle" type="button"
+					<button class="btn btn-primary dropdown-toggle botonera-menu-cap-container" type="button"
 						id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
 						aria-expanded="false">
 						<i class="fas fa-bars"></i>
@@ -344,6 +340,7 @@ header {
 	box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
 	padding: 0 5rem;
 	height: 6rem;
+	flex-wrap: wrap;
 }
 
 .subtitolMay {
@@ -359,21 +356,21 @@ header {
 	border-right: 1px solid black;
 }
 
-#botoneraCapContainer {
-	margin-top: 2.5rem;
-	/*   margin-bottom: 1rem; */
-}
-
-#botoneraCapContainer button {
+button.botonera-menu-cap-container {
 	padding: 0.2rem 0.65rem;
 }
 
 #menuCapContainer {
-	position: absolute;
-	top: 11px;
-	right: 88px;
-	display: flex;
 	color: black;
+	flex: 1 1 0;
+    min-width: 0;
+    color: black;
+    flex-direction: row;
+    -ms-flex-direction: row;
+}
+
+.menuCapItem {
+	min-inline-size: fit-content;
 }
 
 .menuCapItem span {

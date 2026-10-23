@@ -50,7 +50,8 @@ header nav.fixed-top{
 	padding: 0 1rem;
 }
 
-.btn { margin-left:10px; }
+:not(.btn-group) > .btn { margin-left:10px; }
+.btn-group{ padding-left: 10px; }
 #GroupDiv { font-size:90%; }
 #FilterDiv { font-size:90%; }
 #filterDiv .page-header .btn { padding: 1px 5px; }

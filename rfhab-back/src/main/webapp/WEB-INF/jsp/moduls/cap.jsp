@@ -341,6 +341,7 @@ header {
 	padding: 0 5rem;
 	height: 6rem;
 	flex-wrap: wrap;
+	min-width: max-content !important;
 }
 
 .subtitolMay {

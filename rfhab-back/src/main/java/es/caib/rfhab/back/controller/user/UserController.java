@@ -764,7 +764,6 @@ public class UserController extends UsuariController {
 		userForm.addHiddenField(UsuariFields.DARRERAENTITAT);
 		userForm.addReadOnlyField(UsuariFields.DATACREACIO);
 		userForm.addReadOnlyField(UsuariFields.ACTIU);
-		userForm.addReadOnlyField(UsuariFields.CORREU);
 		userForm.addReadOnlyField(UsuariFields.NOM);
 		userForm.addReadOnlyField(UsuariFields.LLINATGE1);
 		userForm.addReadOnlyField(UsuariFields.LLINATGE2);
@@ -775,12 +774,18 @@ public class UserController extends UsuariController {
 
 		// camps indispensables per l'aplicació
 		if (usuari.getUsername() != null) {
-			userForm.addReadOnlyField(USERNAME);
+			userForm.addReadOnlyField(UsuariFields.USERNAME);
 		}
+		// camps indispensables per l'aplicació
+		String correu = usuari.getCorreu();
+		if (correu != null && correu.trim().length() > 0) {
+			userForm.addReadOnlyField(UsuariFields.CORREU);
+		}
+
 		// camps indispensables per l'aplicació
 		String nif = usuari.getNif();
 		if (nif != null && nif.trim().length() > 0) {
-			userForm.addReadOnlyField(NIF);
+			userForm.addReadOnlyField(UsuariFields.NIF);
 		}
 
 		Usuari usuariLogin = loginInfo.getUsuariPersona();

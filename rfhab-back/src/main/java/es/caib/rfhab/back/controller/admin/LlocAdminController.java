@@ -607,7 +607,7 @@ public class LlocAdminController extends LlocController {
 		LlocJPA lloc = llocForm.getLloc();
 		lloc.setEntitatID(Long.parseLong(request.getParameter("lloc.entitatID")));
 
-		if (llocForm.isNou()) {
+		// if (llocForm.isNou()) {
 			// CODI LLOC PROPI DE RFHAB
 			String codiLloc = lloc.getCodiLloc();
 			String expansioLloc = lloc.getExpansio();
@@ -617,7 +617,7 @@ public class LlocAdminController extends LlocController {
 			if ((codiLloc == null || codiLloc.isEmpty()) && (expansioLloc == null || expansioLloc.isEmpty())) {
 				lloc.setCodiLloc(Constants.CODILLOC_FAKE_BUIT);
 			}
-		}
+		// }
 
 		if (String.valueOf(lloc.getPersonalOamr()).equals(TIPUS_PERSONAL_OAMR)) {
 			result.rejectValue(LlocFields.PERSONALOAMR.codeLabel, "error.required",

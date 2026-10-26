@@ -63,7 +63,7 @@
 						%>
 				</button>
 
-					<div class="dropdown-menu dropdown-menu-right" role="menu"
+					<div class="dropdown-menu dropdown-menu-right"
 						aria-labelledby="dropdownMenuEntitat">
 
 						<%
@@ -247,7 +247,7 @@
 						<i class="fas fa-bars"></i>
 						<fmt:message key="menu" />
 					</button>
-					<div class="dropdown-menu dropdown-menu-right" role="menu"
+					<div class="dropdown-menu dropdown-menu-right"
 						aria-labelledby="dropdownMenu1">
 
 						<%-- MENU FUNCIONARI/ÀRIA --%>

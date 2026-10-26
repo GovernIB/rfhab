@@ -48,6 +48,9 @@ function createTrInputFormSelect(
     '<label style="font-weight:bold; text-align:right;">' +
     labelText +
     "</label>";
+  const labelElement = nouTd1.querySelector("label");
+  labelElement.htmlFor = selectId;
+  labelElement.id = selectId + "_label";
   nouTr.appendChild(nouTd1);
 
   const nouInputInvisible = document.createElement("input");

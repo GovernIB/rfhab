@@ -7,7 +7,7 @@
 	<tbody>
 		<tr id="lloc_unitatsuperiorID_rowid">
 			<td id="lloc_unitatsuperiorID_columnlabelid">
-				<label>
+				<label for="lloc_unitatsuperiorID">
 					<fmt:message key="unitat.superior" />
 				</label>
 			</td>
@@ -374,7 +374,7 @@
 
 							const nouTd1NumeroCai = document.createElement("td");
 							nouTd1NumeroCai.id = "lloc_numerocai_columnlabelid";
-							nouTd1NumeroCai.innerHTML = '<label style="font-weight:bold; text-align:right;"><fmt:message key="historic.numeroCai"/></label>';
+							nouTd1NumeroCai.innerHTML = '<label for="numerocai" style="font-weight:bold; text-align:right;"><fmt:message key="historic.numeroCai"/></label>';
 							nouNumeroCaiTr.appendChild(nouTd1NumeroCai);
 
 							const nouTd2NumeroCai = document.createElement("td");
@@ -409,6 +409,9 @@
 									disabled: false
 								}
 							);
+							const habilitacionsLabelId = llocHabilitacionsSelectId + "_label";
+							const habilitacionsSearchInput = nouHabilitacionsTr.querySelector(".select2-search__field");
+							habilitacionsSearchInput.setAttribute("aria-labelledby", habilitacionsLabelId);
 
 							//mostra observacions com a soft wrap i l'oculta
 							const taObservacions = document.getElementById('lloc.observacions');

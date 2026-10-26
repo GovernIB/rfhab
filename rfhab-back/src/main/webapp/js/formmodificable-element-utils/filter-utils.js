@@ -10,9 +10,11 @@ function addNewSelectFilterToContainer(
   parentContainer.classList.add("input-prepend");
 
   //afegim etiqueta amb el títol
-  const labelElement = document.createElement("span");
+  const labelElement = document.createElement("label");
   labelElement.classList.add("add-on");
-  labelElement.innerHTML = label;
+  labelElement.classList.add("filter-control-label");
+  labelElement.htmlFor = newInputId;
+  labelElement.textContent = label;
   parentContainer.appendChild(labelElement);
 
   //afegim nou select
@@ -34,9 +36,11 @@ function addNewTextInputFilterToContainer(
   parentContainer.classList.add("input-prepend");
 
   //afegim etiqueta amb el títol
-  const labelElement = document.createElement("span");
+  const labelElement = document.createElement("label");
   labelElement.classList.add("add-on");
-  labelElement.innerHTML = label;
+  labelElement.classList.add("filter-control-label");
+  labelElement.htmlFor = newInputId;
+  labelElement.textContent = label;
   parentContainer.appendChild(labelElement);
 
   //afegim nou select

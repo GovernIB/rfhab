@@ -286,6 +286,22 @@ Sobreescriu el blau #007bff (~4.0:1) per un blau més fosc accessible.
 	padding-left: 0px;
 	padding-right: 0px;
 }
+.filter-control-label {
+	display: inline !important;
+	margin-bottom: 0 !important;
+	font-size: inherit;
+	font-weight: inherit;
+}
+.menuCapDropdownToggle {
+	display: inline;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: inherit;
+	font: inherit;
+	line-height: inherit;
+	text-align: inherit;
+}
 /*
 El text d'usuari de la capçalera heretava un blanc translúcid
 de Bootstrap (navbar-dark) que no complia el contrast. Es força blanc pur

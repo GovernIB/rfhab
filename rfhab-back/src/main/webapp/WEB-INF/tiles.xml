@@ -111,7 +111,12 @@
         <put-attribute name="menu" value="/WEB-INF/jsp/moduls/blanc.jsp" />
         <put-attribute name="pipella" value="super" />
     </definition>
-    
+
+    <definition name="webpages" extends="superadmin">
+        <put-attribute name="titol" value="entitat.entitat" />
+        <put-attribute name="contingut" value="/WEB-INF/jsp/admin/webpages.jsp" />
+    </definition>
+
     <definition name="entitatFormSuperAdmin" extends="superadmin">
         <put-attribute name="titol" value="entitat.entitat" />
         <put-attribute name="contingut" value="/WEB-INF/jsp/webdb/entitatForm.jsp" />

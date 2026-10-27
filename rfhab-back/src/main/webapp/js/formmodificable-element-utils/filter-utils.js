@@ -18,7 +18,7 @@ function addNewSelectFilterToContainer(
   parentContainer.appendChild(labelElement);
 
   //afegim nou select
-  const selectElement = createSelect(newInputId, newInputName, options);
+  const selectElement = createSelect(newInputId, newInputName, options, newInputName);
   parentContainer.appendChild(selectElement);
 
   return selectElement;
@@ -107,7 +107,8 @@ function replaceFilterForSelectFilter(
     const selectElementFins = createSelect(
       newInputIdFins,
       newInputNameFins,
-      options
+      options,
+      newInputNameFins
     );
     selectElement.addEventListener("change", () => {
       selectElementFins.value = selectElement.value;
@@ -193,7 +194,15 @@ function replaceFilterForTextInputFilterWithOtherName(
   );
 }
 
-function createSelect(id, name, options) {
+function createHiddenLabelForInput(forInputId, labelMessage) {
+  const labelElement = document.createElement("label");
+  labelElement.classList.add("sr-only");
+  labelElement.htmlFor = forInputId;
+  labelElement.textContent = labelMessage;
+  return labelElement;
+}
+
+function createSelect(id, name, options, hiddenLabelMessage = "") {
   const selectElement = document.createElement("select");
   selectElement.classList.add("input-medium");
   selectElement.id = id;
@@ -205,6 +214,8 @@ function createSelect(id, name, options) {
     optionElement.text = option.text;
     selectElement.appendChild(optionElement);
   });
+
+  createHiddenLabelForInput(id, hiddenLabelMessage);
   return selectElement;
 }
 

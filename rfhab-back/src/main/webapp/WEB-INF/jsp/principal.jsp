@@ -9,24 +9,20 @@
 <div class="spacer"></div>
 
 <div>
-<br/>
-<div style="text-align:center;">
+<div style="text-align:center; margin-top: 2.5rem;">
 <img src="<c:url value="/img/app-logo.png"/>" width="195" alt="RFHab"/>
 
-<br/>
-<br/>
-<fmt:message key="benvinguda" />
+<p style="margin-top: 2.5rem;">
+	<fmt:message key="benvinguda" />
+</p>
 
-<br/>
-<br/>
-<div>
-<a href="https://governdigital.fundaciobit.org" target="_blank">
-<img src="<c:url value="/img/fundaciobit.png"/>"  alt="Fundaci� Bit"/>
-</a>
+<div style="margin-top: 2.5rem; margin-bottom: 2.5rem;">
+	<a href="https://governdigital.fundaciobit.org" target="_blank">
+		<img src="<c:url value="/img/fundaciobit.png"/>"  alt="Fundaci� Bit"/>
+	</a>
 </div>
-<br/>
 </div>
- 
+
 </div>
 
 <c:if test="${rfh:isDesenvolupament()}">

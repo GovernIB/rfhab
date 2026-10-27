@@ -177,7 +177,6 @@ p {
 
 table th {
 	background-color: #fff;
- *background-color: #fff;
 	background-image: -ms-linear-gradient(top, #f9f9f9, #ededed);
 	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f9f9f9), to(#ededed));
 	background-image: -webkit-linear-gradient(top, #f9f9f9, #ededed);
@@ -387,19 +386,6 @@ width: 62%;
 }
 }
 
-/* IE 7 */
-*+html .main-menu button.dropdown-toggle {
-	padding:3px 8px !important;
-}
-*+html .main-menu .btn-group {
-	position:absolute;
-	right:40px;
-	margin-top:7px;
-	z-index:10;
-}
-*+html .dropdown-menu { z-index:100;}
-
-
 .trace {display: none;}
 
 
@@ -412,7 +398,6 @@ width: 62%;
    position: relative;
    margin: 15px 0;
    padding: 39px 19px 14px;
-   *padding-top: 19px;
    background-color: #fff;
    border: 1px solid #ddd;
    -webkit-border-radius: 4px;

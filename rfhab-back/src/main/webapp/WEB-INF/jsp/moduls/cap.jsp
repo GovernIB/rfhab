@@ -81,8 +81,7 @@
 
 				<%--  PIPELLES SEGONS EL ROL DE L'USUARI --%>
 				<c:if test="${rfh:hasRole('ROLE_ADMIN')}">
-					<li id="rolInfoContainer" class="menuCapItem dropdown"
-						onclick="location='<c:url value="/canviarPipella/admin"/>'">
+					<li id="rolInfoContainer" class="menuCapItem dropdown">
 						<i class="fas fa-address-card"></i>
 						<button class="dropdown-toggle menuCapDropdownToggle"
 							type="button" id="dropdownMenuRol" data-toggle="dropdown"
@@ -132,8 +131,7 @@
 
 				<c:if test="${not rfh:hasRole('ROLE_ADMIN')}">
 					<c:if test="${rfh:hasRole('ROLE_USER')}">
-						<li id="rolInfoContainer" class="menuCapItem dropdown"
-							onclick="location='<c:url value="/canviarPipella/user"/>'">
+						<li id="rolInfoContainer" class="menuCapItem dropdown">
 							<i class="fas fa-address-card"></i>
 							<button class="dropdown-toggle menuCapDropdownToggle"
 								type="button" id="dropdownMenuRol" data-toggle="dropdown"

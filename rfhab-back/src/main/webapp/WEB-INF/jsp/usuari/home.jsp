@@ -170,18 +170,18 @@ button[disabled][type="submit"] {
 		<form class="form-horizontal msf">
 			<div class="msf-header">
 				<div class="row text-center">
-					<div class="msf-step col-md-3">
+					<h1 class="msf-step col-md-3">
 						<span><em>1</em> <fmt:message key="usuari.tramit.titol.dades" /></span>
-					</div>
-					<div class="msf-step col-md-3">
+					</h1>
+					<h1 class="msf-step col-md-3">
 						<span><em>2</em> <fmt:message key="usuari.tramit.titol.seleccio" /></span>
-					</div>
-					<div class="msf-step col-md-3">
+					</h1>
+					<h1 class="msf-step col-md-3">
 						<span><em>3</em> <fmt:message key="usuari.tramit.titol.documentacio" /></span>
-					</div>
-					<div class="msf-step col-md-3">
+					</h1>
+					<h1 class="msf-step col-md-3">
 						<span><em>4</em> <fmt:message key="usuari.tramit.titol.iniciar" /></span>
-					</div>
+					</h1>
 				</div>
 			</div>
 
@@ -190,16 +190,17 @@ button[disabled][type="submit"] {
 					<div class="row justify-content-center">
 						<div class="col-12 col-lg-10 col-xl-8">
 
-							<h3>1 <fmt:message key="usuari.tramit.dades.titol" /></h3>
+							<h2>1 <fmt:message key="usuari.tramit.dades.titol" /></h2>
 
 							<div class="form-group">
-								<label><fmt:message key="usuari.tramit.dades.nom" />*</label> <input id="pas1_nom" name="nom" type="text"
-									class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.nom.placeholder" />" data-bind="value: Nom"
-									data-val="true" data-val-required="<fmt:message key="usuari.tramit.dades.nom.required" />">
+								<label for="pas1_nom"><fmt:message key="usuari.tramit.dades.nom" />*</label>
+									<input id="pas1_nom" name="nom" type="text"
+										class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.nom.placeholder" />" data-bind="value: Nom"
+										data-val="true" data-val-required="<fmt:message key="usuari.tramit.dades.nom.required" />">
 							</div>
 
 							<div class="form-group">
-								<label>
+								<label for="pas1_llinatge1">
 									<fmt:message key="usuari.tramit.dades.llinatge1" />*
 								</label> 
 								<input id="pas1_llinatge1"
@@ -209,7 +210,7 @@ button[disabled][type="submit"] {
 									data-val-required="<fmt:message key="usuari.tramit.dades.llinatge1.required" />">
 							</div>
 							<div class="form-group">
-								<label>
+								<label for="pas1_llinatge2">
 									<fmt:message key="usuari.tramit.dades.llinatge2" />
 								</label> 
 								<input id="pas1_llinatge2"
@@ -220,7 +221,7 @@ button[disabled][type="submit"] {
 
 							<div class="row">
 								<div class="form-group col-6 col-md-4 col-lg-3 col-xl-2">
-									<label><fmt:message key="usuari.tramit.dades.tipusidentificacio" />*</label>
+									<label for="pas1_tipusIdentificacio"><fmt:message key="usuari.tramit.dades.tipusidentificacio" />*</label>
 									<select
 										size
 										id="pas1_tipusIdentificacio" name="tipusIdentificacio"
@@ -236,7 +237,7 @@ button[disabled][type="submit"] {
 								</div>
 	
 								<div class="form-group col-6 col-md-8 col-lg-9 col-xl-10">
-									<label><fmt:message key="usuari.tramit.dades.numeroidentificacio" />*</label>
+									<label for="pas1_identificacion"><fmt:message key="usuari.tramit.dades.numeroidentificacio" />*</label>
 									<input
 										id="pas1_identificacion" name="identificacio" type="text"
 										class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.numeroidentificacio" />"
@@ -246,7 +247,7 @@ button[disabled][type="submit"] {
 							</div>
 							<!-- Camps addicionals per interessat -->
 							<div class="form-group">
-								<label><fmt:message key="usuari.tramit.dades.interessatadreca" /></label>
+								<label for="pas1_interessat_adreca"><fmt:message key="usuari.tramit.dades.interessatadreca" /></label>
 								<input
 									id="pas1_interessat_adreca" name="interessat_adreca" type="text"
 									class="form-control" placeholder="<fmt:message key='usuari.tramit.dades.interessatadreca.placeholder' />"
@@ -254,25 +255,25 @@ button[disabled][type="submit"] {
 							</div>
 							<div class="row">
 								<div class="form-group col-6 col-md-3">
-									<label><fmt:message key="usuari.tramit.dades.interessatadrecanumero" /></label>
+									<label for="pas1_interessat_adreca_numero"><fmt:message key="usuari.tramit.dades.interessatadrecanumero" /></label>
 									<input id="pas1_interessat_adreca_numero" name="interessat_adreca_numero" type="text"
 										class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.interessatadrecanumero.placeholder" />"
 										data-bind="value: InteressatAdrecaNumero" data-val="false">
 								</div>
 								<div class="form-group col-6 col-md-3">
-									<label><fmt:message key="usuari.tramit.dades.interessatadrecaescala" /></label>
+									<label for="pas1_interessat_adreca_escala"><fmt:message key="usuari.tramit.dades.interessatadrecaescala" /></label>
 									<input id="pas1_interessat_adreca_escala" name="interessat_adreca_escala" type="text"
 										class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.interessatadrecaescala.placeholder" />"
 										data-bind="value: InteressatAdrecaEscala" data-val="false">
 								</div>
 								<div class="form-group col-6 col-md-3">
-									<label><fmt:message key="usuari.tramit.dades.interessatadrecapis" /></label>
+									<label for="pas1_interessat_adreca_pis"><fmt:message key="usuari.tramit.dades.interessatadrecapis" /></label>
 									<input id="pas1_interessat_adreca_pis" name="interessat_adreca_pis" type="text"
 										class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.interessatadrecapis.placeholder" />"
 										data-bind="value: InteressatAdrecaPis" data-val="false">
 								</div>
 								<div class="form-group col-6 col-md-3">
-									<label><fmt:message key="usuari.tramit.dades.interessatadrecaporta" /></label>
+									<label for="pas1_interessat_adreca_porta"><fmt:message key="usuari.tramit.dades.interessatadrecaporta" /></label>
 									<input id="pas1_interessat_adreca_porta" name="interessat_adreca_porta" type="text"
 										class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.interessatadrecaporta.placeholder" />"
 										data-bind="value: InteressatAdrecaPorta" data-val="false">
@@ -280,13 +281,13 @@ button[disabled][type="submit"] {
 							</div>
 							<div class="row">
 								<div class="form-group col-12 col-md-8">
-									<label><fmt:message key="usuari.tramit.dades.interessatadrecamunicipi" /></label>
+									<label for="pas1_interessat_adreca_municipi"><fmt:message key="usuari.tramit.dades.interessatadrecamunicipi" /></label>
 									<input id="pas1_interessat_adreca_municipi" name="interessat_adreca_municipi" type="text"
 										class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.interessatadrecamunicipi.placeholder" />"
 										data-bind="value: InteressatAdrecaMunicipi" data-val="false">
 								</div>
 								<div class="form-group col-12 col-md-4">
-									<label><fmt:message key="usuari.tramit.dades.interessatadrecacodipostal" /></label>
+									<label for="pas1_interessat_adreca_codipostal"><fmt:message key="usuari.tramit.dades.interessatadrecacodipostal" /></label>
 									<input id="pas1_interessat_adreca_codipostal" name="interessat_adreca_codipostal" type="text"
 										class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.interessatadrecacodipostal.placeholder" />"
 										data-bind="value: InteressatAdrecaCodiPostal" data-val="false">
@@ -294,13 +295,13 @@ button[disabled][type="submit"] {
 							</div>
 							<div class="row">
 								<div class="form-group col-12 col-md-6">
-									<label><fmt:message key="usuari.tramit.dades.interessattelefon" /></label>
+									<label for="pas1_interessat_telefon"><fmt:message key="usuari.tramit.dades.interessattelefon" /></label>
 									<input id="pas1_interessat_telefon" name="interessat_telefon" type="text"
 										class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.interessattelefon.placeholder" />"
 										data-bind="value: InteressatTelefon" data-val="false">
 								</div>
 								<div class="form-group col-12 col-md-6">
-									<label><fmt:message key="usuari.tramit.dades.interessatcorreu" /></label>
+									<label for="pas1_interessat_correu"><fmt:message key="usuari.tramit.dades.interessatcorreu" /></label>
 									<input id="pas1_interessat_correu" name="interessat_correu" type="email"
 										class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.interessatcorreu.placeholder" />"
 										data-bind="value: InteressatCorreu" data-val="false">
@@ -316,7 +317,7 @@ button[disabled][type="submit"] {
 								<h3><fmt:message key="usuari.tramit.dades.representant.titol" /></h3>
 
 								<div class="form-group">
-									<label><fmt:message key="usuari.tramit.dades.representant.nom" />*</label>
+									<label for="pas1_representant_nom"><fmt:message key="usuari.tramit.dades.representant.nom" />*</label>
 									<input
 										id="pas1_representant_nom" name="representant_nom" type="text"
 										class="form-control"
@@ -326,7 +327,7 @@ button[disabled][type="submit"] {
 								</div>
 
 								<div class="form-group">
-									<label><fmt:message key="usuari.tramit.dades.representant.llinatge1" />*</label>
+									<label for="pas1_representant_llinatge1"><fmt:message key="usuari.tramit.dades.representant.llinatge1" />*</label>
 									<input
 										id="pas1_representant_llinatge1" name="representant_llinatge1"
 										type="text" class="form-control"
@@ -336,7 +337,7 @@ button[disabled][type="submit"] {
 										data-rule-required="#representant:checked">
 								</div>
 								<div class="form-group">
-									<label><fmt:message key="usuari.tramit.dades.representant.llinatge2" /></label>
+									<label for="pas1_representant_llinatge2"><fmt:message key="usuari.tramit.dades.representant.llinatge2" /></label>
 									<input
 										id="pas1_representant_llinatge2" name="representant_llinatge2"
 										type="text" class="form-control"
@@ -346,7 +347,7 @@ button[disabled][type="submit"] {
 
 								<div class="row">
 									<div class="form-group col-6 col-md-4 col-lg-3 col-xl-2">
-										<label><fmt:message key="usuari.tramit.dades.representant.tipusidentificacio" />*</label>
+										<label for="pas1_representant_tipusIdentificacio"><fmt:message key="usuari.tramit.dades.representant.tipusidentificacio" />*</label>
 										<select
 											size
 											id="pas1_representant_tipusIdentificacio"
@@ -363,43 +364,44 @@ button[disabled][type="submit"] {
 									</div>
 
 									<div class="form-group col-6 col-md-8 col-lg-9 col-xl-10">
-										<label><fmt:message key="usuari.tramit.dades.representant.numeroidentificacio" />*</label> <input
-											id="pas1_representant_identificacion"
-											name="representant_identificacio" type="text"
-											class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.numeroidentificacio.placeholder" />"
-											data-bind="value: Identificacio" data-val="true"
-											data-val-required="<fmt:message key="usuari.tramit.dades.numeroidentificacio.required" />"
-											data-rule-required="#representant:checked">
+										<label for="pas1_representant_identificacion"><fmt:message key="usuari.tramit.dades.representant.numeroidentificacio" />*</label>
+											<input
+												id="pas1_representant_identificacion"
+												name="representant_identificacio" type="text"
+												class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.numeroidentificacio.placeholder" />"
+												data-bind="value: Identificacio" data-val="true"
+												data-val-required="<fmt:message key="usuari.tramit.dades.numeroidentificacio.required" />"
+												data-rule-required="#representant:checked">
 									</div>
 								</div>
 
 								<div class="form-group">
-									<label><fmt:message key="usuari.tramit.dades.representantadreca" /></label>
+									<label for="pas1_representant_adreca"><fmt:message key="usuari.tramit.dades.representantadreca" /></label>
 									<input id="pas1_representant_adreca" name="representant_adreca" type="text"
 										class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.representantadreca.placeholder" />"
 										data-bind="value: RepresentantAdreca" data-val="false">
 								</div>
 								<div class="row">
 									<div class="form-group col-6 col-md-3">
-										<label><fmt:message key="usuari.tramit.dades.representantadrecanumero" /></label>
+										<label for="pas1_representant_adreca_numero"><fmt:message key="usuari.tramit.dades.representantadrecanumero" /></label>
 										<input id="pas1_representant_adreca_numero" name="representant_adreca_numero" type="text"
 											class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.representantadrecanumero.placeholder" />"
 											data-bind="value: RepresentantAdrecaNumero" data-val="false">
 									</div>
 									<div class="form-group col-6 col-md-3">
-										<label><fmt:message key="usuari.tramit.dades.representantadrecaescala" /></label>
+										<label for="pas1_representant_adreca_escala"><fmt:message key="usuari.tramit.dades.representantadrecaescala" /></label>
 										<input id="pas1_representant_adreca_escala" name="representant_adreca_escala" type="text"
 											class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.representantadrecaescala.placeholder" />"
 											data-bind="value: RepresentantAdrecaEscala" data-val="false">
 									</div>
 									<div class="form-group col-6 col-md-3">
-										<label><fmt:message key="usuari.tramit.dades.representantadrecapis" /></label>
+										<label for="pas1_representant_adreca_pis"><fmt:message key="usuari.tramit.dades.representantadrecapis" /></label>
 										<input id="pas1_representant_adreca_pis" name="representant_adreca_pis" type="text"
 											class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.representantadrecapis.placeholder" />"
 											data-bind="value: RepresentantAdrecaPis" data-val="false">
 									</div>
 									<div class="form-group col-6 col-md-3">
-										<label><fmt:message key="usuari.tramit.dades.representantadrecaporta" /></label>
+										<label for="pas1_representant_adreca_porta"><fmt:message key="usuari.tramit.dades.representantadrecaporta" /></label>
 										<input id="pas1_representant_adreca_porta" name="representant_adreca_porta" type="text"
 											class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.representantadrecaporta.placeholder" />"
 											data-bind="value: RepresentantAdrecaPorta" data-val="false">
@@ -407,13 +409,13 @@ button[disabled][type="submit"] {
 								</div>
 								<div class="row">
 									<div class="form-group col-12 col-md-8">
-										<label><fmt:message key="usuari.tramit.dades.representantadrecamunicipi" /></label>
+										<label for="pas1_representant_adreca_municipi"><fmt:message key="usuari.tramit.dades.representantadrecamunicipi" /></label>
 										<input id="pas1_representant_adreca_municipi" name="representant_adreca_municipi" type="text"
 											class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.representantadrecamunicipi.placeholder" />"
 											data-bind="value: RepresentantAdrecaMunicipi" data-val="false">
 									</div>
 									<div class="form-group col-12 col-md-4">
-										<label><fmt:message key="usuari.tramit.dades.representantadrecacodipostal" /></label>
+										<label for="pas1_representant_adreca_codipostal"><fmt:message key="usuari.tramit.dades.representantadrecacodipostal" /></label>
 										<input id="pas1_representant_adreca_codipostal" name="representant_adreca_codipostal" type="text"
 											class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.representantadrecacodipostal.placeholder" />"
 											data-bind="value: RepresentantAdrecaCodiPostal" data-val="false">
@@ -421,13 +423,13 @@ button[disabled][type="submit"] {
 								</div>
 								<div class="row">
 									<div class="form-group col-12 col-md-6">
-										<label><fmt:message key="usuari.tramit.dades.representanttelefon" /></label>
+										<label for="pas1_representant_telefon"><fmt:message key="usuari.tramit.dades.representanttelefon" /></label>
 										<input id="pas1_representant_telefon" name="representant_telefon" type="text"
 											class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.representanttelefon.placeholder" />"
 											data-bind="value: RepresentantTelefon" data-val="false">
 									</div>
 									<div class="form-group col-12 col-md-6">
-										<label><fmt:message key="usuari.tramit.dades.representantcorreu" /></label>
+										<label for="pas1_representant_correu"><fmt:message key="usuari.tramit.dades.representantcorreu" /></label>
 										<input id="pas1_representant_correu" name="representant_correu" type="email"
 											class="form-control" placeholder="<fmt:message key="usuari.tramit.dades.representantcorreu.placeholder" />"
 											data-bind="value: RepresentantCorreu" data-val="false">
@@ -435,19 +437,19 @@ button[disabled][type="submit"] {
 								</div>
 								<div class="row">
 									<div class="form-group col-12 col-md-6 col-lg-4">
-										<label>Mitjà d'acreditació</label>
+										<label for="pas1_representant_mitja_acreditacio">Mitjà d'acreditació</label>
 										<input id="pas1_representant_mitja_acreditacio" name="representant_mitja_acreditacio" type="text"
 											class="form-control" placeholder="Mitjà d'acreditació"
 											data-bind="value: RepresentantMitjaAcreditacio" data-val="false">
 									</div>
 									<div class="form-group col-12 col-md-6 col-lg-8">
-										<label>REA</label>
+										<label for="pas1_representant_rea">REA</label>
 										<input id="pas1_representant_rea" name="representant_rea" type="text"
 											class="form-control" placeholder="REA"
 											data-bind="value: RepresentantRea" data-val="false">
 									</div>
 									<div class="form-group col-12 col-md-12 col-lg-12">
-										<label>Altres</label>
+										<label for="pas1_representant_altres">Altres</label>
 										<input id="pas1_representant_altres" name="representant_altres" type="text"
 											class="form-control" placeholder="Altres"
 											data-bind="value: RepresentantAltres" data-val="false">
@@ -462,7 +464,7 @@ button[disabled][type="submit"] {
 					<div class="row justify-content-center">
 						<div class="col-12 col-lg-10 col-xl-8">
 
-							<h3>2 <fmt:message key="usuari.tramit.seleccio.titol" /></h3>
+							<h2>2 <fmt:message key="usuari.tramit.seleccio.titol" /></h2>
 
 							<div class="form-group">
 								<label for="pas2_procediment" class="w-100">
@@ -547,7 +549,7 @@ button[disabled][type="submit"] {
 					<div class="row justify-content-center">
 						<div class="col-12 col-lg-10 col-xl-8">
 
-							<h3>3 <fmt:message key="usuari.tramit.documentacio.titol" /></h3>
+							<h2>3 <fmt:message key="usuari.tramit.documentacio.titol" /></h2>
 
 							<div class="form-group pdfVisor">
 								<div class="col-12 flex-childs-centered" style="display: none; min-height: 325px; max-height: 44.5vh;" id="spinner-carregant-iframepdf">
@@ -556,6 +558,7 @@ button[disabled][type="submit"] {
 									</p>
 								</div>
 								<iframe id="iframe-pdf" style="display: none; overflow: auto; max-height: 44.5vh;" src="" type="application/pdf" width="100%" height="600"></iframe>
+								<label for="input-pdf" style="display: none;">pdf file</label>
 								<input style="display: none;" id="input-pdf" name="inputPdf" type="text" class="form-control" 
 									data-bind="value: Pdf" data-val="true" data-val-required="<fmt:message key="usuari.tramit.iniciar.apoderament" />">
 								<input type="hidden" id="arxiuExpedientId" name="arxiuExpedientId" value="" />
@@ -582,7 +585,7 @@ button[disabled][type="submit"] {
 					<div class="row justify-content-center">
 						<div class="col-12 col-lg-10 col-xl-8" style="min-height: 325px;" id="div-iniciar-tramit">
 
-							<h3><fmt:message key="usuari.tramit.iniciar.titol" /></h3>
+							<h2><fmt:message key="usuari.tramit.iniciar.titol" /></h2>
 
 							<p><fmt:message key="usuari.tramit.iniciar.redireccionamentautomatic" /></p>
 							<p>

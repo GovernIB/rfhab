@@ -389,10 +389,6 @@ button.botonera-menu-cap-container {
 	padding-right: 0px;
 }
 
-h1 {
-	color: darkgreen;
-}
-
 #FilterButton, #GroupButton {
 	background-color: #E1E1E1;
 	border-color: #E1E1E1;

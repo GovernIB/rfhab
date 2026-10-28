@@ -3,7 +3,8 @@ function addNewSelectFilterToContainer(
   options,
   label,
   newInputId,
-  newInputName
+  newInputName,
+  ariaLabelledBy = ""
 ) {
   //estils per quan son selects o desde i fins
   parentContainer.classList.remove("input-group");
@@ -13,12 +14,17 @@ function addNewSelectFilterToContainer(
   const labelElement = document.createElement("label");
   labelElement.classList.add("add-on");
   labelElement.classList.add("filter-control-label");
-  labelElement.htmlFor = newInputId;
+  if(!ariaLabelledBy){
+    labelElement.htmlFor = newInputId;
+  }
+  else{
+    labelElement.id = ariaLabelledBy;
+  }
   labelElement.textContent = label;
   parentContainer.appendChild(labelElement);
 
   //afegim nou select
-  const selectElement = createSelect(newInputId, newInputName, options, newInputName);
+  const selectElement = createSelect(newInputId, newInputName, options, ariaLabelledBy);
   parentContainer.appendChild(selectElement);
 
   return selectElement;
@@ -94,12 +100,14 @@ function replaceFilterForSelectFilter(
   }
 
   //afegim nou select
+  const labelId = newInputId + "-label";
   const selectElement = addNewSelectFilterToContainer(
     parentContainer,
     options,
     label,
     newInputId,
-    newInputName
+    newInputName,
+    newInputNameFins ? labelId : ""
   );
 
   //si era desde i fins, afegim un segon select, ocult i que sempre tengui el mateix valor que el primer
@@ -108,7 +116,7 @@ function replaceFilterForSelectFilter(
       newInputIdFins,
       newInputNameFins,
       options,
-      newInputNameFins
+      labelId
     );
     selectElement.addEventListener("change", () => {
       selectElementFins.value = selectElement.value;
@@ -202,7 +210,7 @@ function createHiddenLabelForInput(forInputId, labelMessage) {
   return labelElement;
 }
 
-function createSelect(id, name, options, hiddenLabelMessage = "") {
+function createSelect(id, name, options, ariaLabelledBy = "") {
   const selectElement = document.createElement("select");
   selectElement.classList.add("input-medium");
   selectElement.id = id;
@@ -215,7 +223,10 @@ function createSelect(id, name, options, hiddenLabelMessage = "") {
     selectElement.appendChild(optionElement);
   });
 
-  createHiddenLabelForInput(id, hiddenLabelMessage);
+  if(ariaLabelledBy){
+    selectElement.setAttribute("aria-labelledby", ariaLabelledBy);
+  }
+
   return selectElement;
 }
 

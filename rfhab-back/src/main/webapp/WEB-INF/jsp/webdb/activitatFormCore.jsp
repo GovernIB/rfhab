@@ -30,12 +30,12 @@
                   <c:set var="containEmptyValue"  value="true" />
                 </c:if>
             </c:forEach>
+          </form:select>
           <script>
               $(document).ready(function() {
                   $('#activitat\\.funcionariID').select2();
               });
           </script>
-          </form:select>
           </c:if>
            </td>
         </tr>

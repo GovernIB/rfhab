@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/jsp/moduls/includes.jsp"%>
   
 <div class="lead" style="margin-bottom:10px">
-<span style="font-size: 1.25rem;font-weight: bold;">
+<span class="llistaformularititol">
  <c:choose>
   <c:when test="${fn:startsWith(historicLlocForm.titleCode,'=')}">
        <c:out value="${fn:substringAfter(historicLlocForm.titleCode, '=')}" escapeXml="false"/>
@@ -26,7 +26,7 @@
     </c:otherwise>
  </c:choose></span>
   <c:if test="${not empty historicLlocForm.subTitleCode}">
-<h6 style="line-height: 10px; margin-top: 0px; margin-bottom: 0px;font-style:italic;">
+<span class="llistaformularisubtitol">
 <c:set var="subtitleTranslated" value="${fn:startsWith(historicLlocForm.subTitleCode,'=')}" />
 <c:if test="${subtitleTranslated}">
    <c:out value="${fn:substringAfter(historicLlocForm.subTitleCode, '=')}" escapeXml="false"/>
@@ -34,6 +34,6 @@
 <c:if test="${not subtitleTranslated}">
   <fmt:message key="${historicLlocForm.subTitleCode}" />
 </c:if>
-</h6>
+</span>
   </c:if>
 </div>

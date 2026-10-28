@@ -289,12 +289,12 @@
             <%-- El camp pot ser null, per la qual cosa afegim una entrada buida si no s'ha definit abans --%>
             <c:if test="${not containEmptyValue}">
               <c:if test="${empty __theForm.autoritzacio.funcionariID }">
-                  <option value="" label=" " selected></option>
+                  <option value="" selected></option>
 
               </c:if>
               <c:if test="${not empty __theForm.autoritzacio.funcionariID }">
 
-                  <option value="" label=" "></option>
+                  <option value="" ></option>
               </c:if>
             </c:if>
           </form:select>

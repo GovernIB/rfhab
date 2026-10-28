@@ -55,18 +55,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,LlocFields.LLOCID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="lloc_llocID" style="display: inline;">
+              <label id="lloc_llocID" style="display: inline;">
               <span class="add-on"><fmt:message key="lloc.llocID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="llocIDDesde" />
+              <form:input cssClass="input-append input-small" path="llocIDDesde"  aria-labelledby="lloc_llocID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="llocIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="llocIDFins"  aria-labelledby="lloc_llocID" />
 
             </div>
 
@@ -135,18 +135,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,LlocFields.ENTITATID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="lloc_entitatID" style="display: inline;">
+              <label id="lloc_entitatID" style="display: inline;">
               <span class="add-on"><fmt:message key="lloc.entitatID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="entitatIDDesde" />
+              <form:input cssClass="input-append input-small" path="entitatIDDesde"  aria-labelledby="lloc_entitatID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="entitatIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="entitatIDFins"  aria-labelledby="lloc_entitatID" />
 
             </div>
 
@@ -155,18 +155,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,LlocFields.UNITATID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="lloc_unitatID" style="display: inline;">
+              <label id="lloc_unitatID" style="display: inline;">
               <span class="add-on"><fmt:message key="lloc.unitatID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="unitatIDDesde" />
+              <form:input cssClass="input-append input-small" path="unitatIDDesde"  aria-labelledby="lloc_unitatID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="unitatIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="unitatIDFins"  aria-labelledby="lloc_unitatID" />
 
             </div>
 
@@ -344,30 +344,24 @@
               </div>
 
               <div class="input-group-prepend" style="min-width:200px">
-                <form:select aria-label="lloc_personalOamr_select"   id="lloc_personalOamr_select" path="personalOamrSelect" cssClass="search-query input-medium form-control select2 select2-hidden-accessible" multiple="true" style="width:100%;" tabindex="-1" aria-hidden="true">
+              <form:select id="lloc_personalOamr_select" path="personalOamrSelect"  cssClass="search-query input-medium form-control select2 select2-hidden-accessible" multiple="true" style="width:100%;" tabindex="-1" aria-hidden="true">
                     <c:forEach var="_entry" items="${__theFilterForm.mapOfValuesForPersonalOamr}">
                       <option value="${_entry.key}" ${fn:contains(__theFilterForm.personalOamrSelect, _entry.key)?'selected':''} >${_entry.value}</option>
                     </c:forEach>
-                </form:select>
+              </form:select>
               </div>
-
               <script>
                 $(document).ready(function() {
                     var $select = $('#lloc_personalOamr_select');
-                    var ariaLabel = $select.attr('aria-label');
-
                     $select.select2({
                         closeOnSelect: false
                     });
-
-                    if (ariaLabel) {
-                        $select.next('.select2-container')
-                               .find('[role="combobox"]')
-                               .attr('aria-label', ariaLabel);
-                        $select.next('.select2-container')
-                               .find('.select2-search__field')
-                               .attr('aria-label', ariaLabel);
-                    }
+                    $select.next('.select2-container')
+                           .find('[role="combobox"]')
+                           .attr('aria-label', "lloc_personalOamr_select");
+                    $select.next('.select2-container')
+                           .find('.select2-search__field')
+                           .attr('aria-label', "lloc_personalOamr_select");
 
                     $('.select2-selection__rendered').css('padding-bottom','5px');
                 });

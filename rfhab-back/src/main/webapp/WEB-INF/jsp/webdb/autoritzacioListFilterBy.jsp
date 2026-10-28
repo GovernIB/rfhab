@@ -55,18 +55,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,AutoritzacioFields.AUTORITZACIOID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="autoritzacio_autoritzacioID" style="display: inline;">
+              <label id="autoritzacio_autoritzacioID" style="display: inline;">
               <span class="add-on"><fmt:message key="autoritzacio.autoritzacioID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="autoritzacioIDDesde" />
+              <form:input cssClass="input-append input-small" path="autoritzacioIDDesde"  aria-labelledby="autoritzacio_autoritzacioID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="autoritzacioIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="autoritzacioIDFins"  aria-labelledby="autoritzacio_autoritzacioID" />
 
             </div>
 
@@ -75,18 +75,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,AutoritzacioFields.LLOCID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="autoritzacio_llocID" style="display: inline;">
+              <label id="autoritzacio_llocID" style="display: inline;">
               <span class="add-on"><fmt:message key="autoritzacio.llocID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="llocIDDesde" />
+              <form:input cssClass="input-append input-small" path="llocIDDesde"  aria-labelledby="autoritzacio_llocID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="llocIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="llocIDFins"  aria-labelledby="autoritzacio_llocID" />
 
             </div>
 
@@ -317,18 +317,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,AutoritzacioFields.USUARIID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="autoritzacio_usuariID" style="display: inline;">
+              <label id="autoritzacio_usuariID" style="display: inline;">
               <span class="add-on"><fmt:message key="autoritzacio.usuariID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="usuariIDDesde" />
+              <form:input cssClass="input-append input-small" path="usuariIDDesde"  aria-labelledby="autoritzacio_usuariID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="usuariIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="usuariIDFins"  aria-labelledby="autoritzacio_usuariID" />
 
             </div>
 
@@ -337,18 +337,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,AutoritzacioFields.FUNCIONARIID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="autoritzacio_funcionariID" style="display: inline;">
+              <label id="autoritzacio_funcionariID" style="display: inline;">
               <span class="add-on"><fmt:message key="autoritzacio.funcionariID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="funcionariIDDesde" />
+              <form:input cssClass="input-append input-small" path="funcionariIDDesde"  aria-labelledby="autoritzacio_funcionariID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="funcionariIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="funcionariIDFins"  aria-labelledby="autoritzacio_funcionariID" />
 
             </div>
 

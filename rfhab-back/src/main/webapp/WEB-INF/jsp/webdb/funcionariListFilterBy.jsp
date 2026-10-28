@@ -55,18 +55,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,FuncionariFields.FUNCIONARIID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="funcionari_funcionariID" style="display: inline;">
+              <label id="funcionari_funcionariID" style="display: inline;">
               <span class="add-on"><fmt:message key="funcionari.funcionariID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="funcionariIDDesde" />
+              <form:input cssClass="input-append input-small" path="funcionariIDDesde"  aria-labelledby="funcionari_funcionariID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="funcionariIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="funcionariIDFins"  aria-labelledby="funcionari_funcionariID" />
 
             </div>
 
@@ -142,30 +142,24 @@
               </div>
 
               <div class="input-group-prepend" style="min-width:200px">
-                <form:select aria-label="funcionari_tipusIdentificador_select"   id="funcionari_tipusIdentificador_select" path="tipusIdentificadorSelect" cssClass="search-query input-medium form-control select2 select2-hidden-accessible" multiple="true" style="width:100%;" tabindex="-1" aria-hidden="true">
+              <form:select id="funcionari_tipusIdentificador_select" path="tipusIdentificadorSelect"  cssClass="search-query input-medium form-control select2 select2-hidden-accessible" multiple="true" style="width:100%;" tabindex="-1" aria-hidden="true">
                     <c:forEach var="_entry" items="${__theFilterForm.mapOfValuesForTipusIdentificador}">
                       <option value="${_entry.key}" ${fn:contains(__theFilterForm.tipusIdentificadorSelect, _entry.key)?'selected':''} >${_entry.value}</option>
                     </c:forEach>
-                </form:select>
+              </form:select>
               </div>
-
               <script>
                 $(document).ready(function() {
                     var $select = $('#funcionari_tipusIdentificador_select');
-                    var ariaLabel = $select.attr('aria-label');
-
                     $select.select2({
                         closeOnSelect: false
                     });
-
-                    if (ariaLabel) {
-                        $select.next('.select2-container')
-                               .find('[role="combobox"]')
-                               .attr('aria-label', ariaLabel);
-                        $select.next('.select2-container')
-                               .find('.select2-search__field')
-                               .attr('aria-label', ariaLabel);
-                    }
+                    $select.next('.select2-container')
+                           .find('[role="combobox"]')
+                           .attr('aria-label', "funcionari_tipusIdentificador_select");
+                    $select.next('.select2-container')
+                           .find('.select2-search__field')
+                           .attr('aria-label', "funcionari_tipusIdentificador_select");
 
                     $('.select2-selection__rendered').css('padding-bottom','5px');
                 });
@@ -345,18 +339,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,FuncionariFields.ENTITATID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="funcionari_entitatID" style="display: inline;">
+              <label id="funcionari_entitatID" style="display: inline;">
               <span class="add-on"><fmt:message key="funcionari.entitatID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="entitatIDDesde" />
+              <form:input cssClass="input-append input-small" path="entitatIDDesde"  aria-labelledby="funcionari_entitatID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="entitatIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="entitatIDFins"  aria-labelledby="funcionari_entitatID" />
 
             </div>
 

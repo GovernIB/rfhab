@@ -55,18 +55,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,HistoricFields.HISTORICID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="historic_historicID" style="display: inline;">
+              <label id="historic_historicID" style="display: inline;">
               <span class="add-on"><fmt:message key="historic.historicID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="historicIDDesde" />
+              <form:input cssClass="input-append input-small" path="historicIDDesde"  aria-labelledby="historic_historicID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="historicIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="historicIDFins"  aria-labelledby="historic_historicID" />
 
             </div>
 
@@ -75,18 +75,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,HistoricFields.FUNCIONARIID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="historic_funcionariID" style="display: inline;">
+              <label id="historic_funcionariID" style="display: inline;">
               <span class="add-on"><fmt:message key="historic.funcionariID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="funcionariIDDesde" />
+              <form:input cssClass="input-append input-small" path="funcionariIDDesde"  aria-labelledby="historic_funcionariID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="funcionariIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="funcionariIDFins"  aria-labelledby="historic_funcionariID" />
 
             </div>
 
@@ -179,18 +179,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,HistoricFields.USUARIID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="historic_usuariID" style="display: inline;">
+              <label id="historic_usuariID" style="display: inline;">
               <span class="add-on"><fmt:message key="historic.usuariID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="usuariIDDesde" />
+              <form:input cssClass="input-append input-small" path="usuariIDDesde"  aria-labelledby="historic_usuariID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="usuariIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="usuariIDFins"  aria-labelledby="historic_usuariID" />
 
             </div>
 

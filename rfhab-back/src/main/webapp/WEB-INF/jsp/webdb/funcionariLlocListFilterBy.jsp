@@ -55,18 +55,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,FuncionariLlocFields.FUNCIONARILLOCID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="funcionariLloc_funcionarillocID" style="display: inline;">
+              <label id="funcionariLloc_funcionarillocID" style="display: inline;">
               <span class="add-on"><fmt:message key="funcionariLloc.funcionarillocID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="funcionarillocIDDesde" />
+              <form:input cssClass="input-append input-small" path="funcionarillocIDDesde"  aria-labelledby="funcionariLloc_funcionarillocID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="funcionarillocIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="funcionarillocIDFins"  aria-labelledby="funcionariLloc_funcionarillocID" />
 
             </div>
 
@@ -75,18 +75,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,FuncionariLlocFields.LLOCID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="funcionariLloc_llocID" style="display: inline;">
+              <label id="funcionariLloc_llocID" style="display: inline;">
               <span class="add-on"><fmt:message key="funcionariLloc.llocID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="llocIDDesde" />
+              <form:input cssClass="input-append input-small" path="llocIDDesde"  aria-labelledby="funcionariLloc_llocID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="llocIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="llocIDFins"  aria-labelledby="funcionariLloc_llocID" />
 
             </div>
 
@@ -95,18 +95,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,FuncionariLlocFields.FUNCIONARIID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="funcionariLloc_funcionariID" style="display: inline;">
+              <label id="funcionariLloc_funcionariID" style="display: inline;">
               <span class="add-on"><fmt:message key="funcionariLloc.funcionariID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="funcionariIDDesde" />
+              <form:input cssClass="input-append input-small" path="funcionariIDDesde"  aria-labelledby="funcionariLloc_funcionariID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="funcionariIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="funcionariIDFins"  aria-labelledby="funcionariLloc_funcionariID" />
 
             </div>
 
@@ -277,18 +277,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,FuncionariLlocFields.USUARIID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="funcionariLloc_usuariID" style="display: inline;">
+              <label id="funcionariLloc_usuariID" style="display: inline;">
               <span class="add-on"><fmt:message key="funcionariLloc.usuariID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="usuariIDDesde" />
+              <form:input cssClass="input-append input-small" path="usuariIDDesde"  aria-labelledby="funcionariLloc_usuariID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="usuariIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="usuariIDFins"  aria-labelledby="funcionariLloc_usuariID" />
 
             </div>
 

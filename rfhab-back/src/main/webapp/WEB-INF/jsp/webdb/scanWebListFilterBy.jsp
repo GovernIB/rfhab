@@ -55,18 +55,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,ScanWebFields.DIGITALID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="scanWeb_digitalID" style="display: inline;">
+              <label id="scanWeb_digitalID" style="display: inline;">
               <span class="add-on"><fmt:message key="scanWeb.digitalID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="digitalIDDesde" />
+              <form:input cssClass="input-append input-small" path="digitalIDDesde"  aria-labelledby="scanWeb_digitalID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="digitalIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="digitalIDFins"  aria-labelledby="scanWeb_digitalID" />
 
             </div>
 
@@ -75,18 +75,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,ScanWebFields.TRANSACTIONID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="scanWeb_transactionID" style="display: inline;">
+              <label id="scanWeb_transactionID" style="display: inline;">
               <span class="add-on"><fmt:message key="scanWeb.transactionID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="transactionIDDesde" />
+              <form:input cssClass="input-append input-small" path="transactionIDDesde"  aria-labelledby="scanWeb_transactionID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="transactionIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="transactionIDFins"  aria-labelledby="scanWeb_transactionID" />
 
             </div>
 
@@ -110,18 +110,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,ScanWebFields.STATUS)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="scanWeb_status" style="display: inline;">
+              <label id="scanWeb_status" style="display: inline;">
               <span class="add-on"><fmt:message key="scanWeb.status" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="statusDesde" />
+              <form:input cssClass="input-append input-small" path="statusDesde"  aria-labelledby="scanWeb_status" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="statusFins" />
+              <form:input cssClass="input-append input-small search-query" path="statusFins"  aria-labelledby="scanWeb_status" />
 
             </div>
 
@@ -190,18 +190,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,ScanWebFields.USUARIID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="scanWeb_usuariID" style="display: inline;">
+              <label id="scanWeb_usuariID" style="display: inline;">
               <span class="add-on"><fmt:message key="scanWeb.usuariID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="usuariIDDesde" />
+              <form:input cssClass="input-append input-small" path="usuariIDDesde"  aria-labelledby="scanWeb_usuariID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="usuariIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="usuariIDFins"  aria-labelledby="scanWeb_usuariID" />
 
             </div>
 
@@ -264,18 +264,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,ScanWebFields.ENTITATID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="scanWeb_entitatID" style="display: inline;">
+              <label id="scanWeb_entitatID" style="display: inline;">
               <span class="add-on"><fmt:message key="scanWeb.entitatID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="entitatIDDesde" />
+              <form:input cssClass="input-append input-small" path="entitatIDDesde"  aria-labelledby="scanWeb_entitatID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="entitatIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="entitatIDFins"  aria-labelledby="scanWeb_entitatID" />
 
             </div>
 

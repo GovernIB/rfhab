@@ -55,18 +55,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,HabilitacioFields.HABILITACIOID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="habilitacio_habilitacioID" style="display: inline;">
+              <label id="habilitacio_habilitacioID" style="display: inline;">
               <span class="add-on"><fmt:message key="habilitacio.habilitacioID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="habilitacioIDDesde" />
+              <form:input cssClass="input-append input-small" path="habilitacioIDDesde"  aria-labelledby="habilitacio_habilitacioID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="habilitacioIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="habilitacioIDFins"  aria-labelledby="habilitacio_habilitacioID" />
 
             </div>
 
@@ -75,18 +75,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,HabilitacioFields.NOMID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="habilitacio_nomID" style="display: inline;">
+              <label id="habilitacio_nomID" style="display: inline;">
               <span class="add-on"><fmt:message key="habilitacio.nomID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="nomIDDesde" />
+              <form:input cssClass="input-append input-small" path="nomIDDesde"  aria-labelledby="habilitacio_nomID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="nomIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="nomIDFins"  aria-labelledby="habilitacio_nomID" />
 
             </div>
 
@@ -164,18 +164,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,HabilitacioFields.ENTITATID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="habilitacio_entitatID" style="display: inline;">
+              <label id="habilitacio_entitatID" style="display: inline;">
               <span class="add-on"><fmt:message key="habilitacio.entitatID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="entitatIDDesde" />
+              <form:input cssClass="input-append input-small" path="entitatIDDesde"  aria-labelledby="habilitacio_entitatID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="entitatIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="entitatIDFins"  aria-labelledby="habilitacio_entitatID" />
 
             </div>
 

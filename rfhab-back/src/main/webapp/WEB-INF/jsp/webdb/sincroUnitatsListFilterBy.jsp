@@ -55,18 +55,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,SincroUnitatsFields.SINCROUNITATSID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="sincroUnitats_sincrounitatsId" style="display: inline;">
+              <label id="sincroUnitats_sincrounitatsId" style="display: inline;">
               <span class="add-on"><fmt:message key="sincroUnitats.sincrounitatsId" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="sincrounitatsIdDesde" />
+              <form:input cssClass="input-append input-small" path="sincrounitatsIdDesde"  aria-labelledby="sincroUnitats_sincrounitatsId" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="sincrounitatsIdFins" />
+              <form:input cssClass="input-append input-small search-query" path="sincrounitatsIdFins"  aria-labelledby="sincroUnitats_sincrounitatsId" />
 
             </div>
 
@@ -267,18 +267,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,SincroUnitatsFields.USUARIID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="sincroUnitats_usuariId" style="display: inline;">
+              <label id="sincroUnitats_usuariId" style="display: inline;">
               <span class="add-on"><fmt:message key="sincroUnitats.usuariId" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="usuariIdDesde" />
+              <form:input cssClass="input-append input-small" path="usuariIdDesde"  aria-labelledby="sincroUnitats_usuariId" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="usuariIdFins" />
+              <form:input cssClass="input-append input-small search-query" path="usuariIdFins"  aria-labelledby="sincroUnitats_usuariId" />
 
             </div>
 

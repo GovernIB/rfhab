@@ -55,18 +55,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,HistoricLlocFields.HISTORICLLOCID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="historicLloc_historicllocID" style="display: inline;">
+              <label id="historicLloc_historicllocID" style="display: inline;">
               <span class="add-on"><fmt:message key="historicLloc.historicllocID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="historicllocIDDesde" />
+              <form:input cssClass="input-append input-small" path="historicllocIDDesde"  aria-labelledby="historicLloc_historicllocID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="historicllocIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="historicllocIDFins"  aria-labelledby="historicLloc_historicllocID" />
 
             </div>
 
@@ -75,18 +75,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,HistoricLlocFields.LLOCID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="historicLloc_llocID" style="display: inline;">
+              <label id="historicLloc_llocID" style="display: inline;">
               <span class="add-on"><fmt:message key="historicLloc.llocID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="llocIDDesde" />
+              <form:input cssClass="input-append input-small" path="llocIDDesde"  aria-labelledby="historicLloc_llocID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="llocIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="llocIDFins"  aria-labelledby="historicLloc_llocID" />
 
             </div>
 
@@ -179,18 +179,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,HistoricLlocFields.USUARIID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="historicLloc_usuariID" style="display: inline;">
+              <label id="historicLloc_usuariID" style="display: inline;">
               <span class="add-on"><fmt:message key="historicLloc.usuariID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="usuariIDDesde" />
+              <form:input cssClass="input-append input-small" path="usuariIDDesde"  aria-labelledby="historicLloc_usuariID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="usuariIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="usuariIDFins"  aria-labelledby="historicLloc_usuariID" />
 
             </div>
 

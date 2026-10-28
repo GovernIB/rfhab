@@ -55,18 +55,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,ActivitatFields.ACTIVITATID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="activitat_activitatID" style="display: inline;">
+              <label id="activitat_activitatID" style="display: inline;">
               <span class="add-on"><fmt:message key="activitat.activitatID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="activitatIDDesde" />
+              <form:input cssClass="input-append input-small" path="activitatIDDesde"  aria-labelledby="activitat_activitatID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="activitatIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="activitatIDFins"  aria-labelledby="activitat_activitatID" />
 
             </div>
 
@@ -75,18 +75,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,ActivitatFields.FUNCIONARIID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="activitat_funcionariID" style="display: inline;">
+              <label id="activitat_funcionariID" style="display: inline;">
               <span class="add-on"><fmt:message key="activitat.funcionariID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="funcionariIDDesde" />
+              <form:input cssClass="input-append input-small" path="funcionariIDDesde"  aria-labelledby="activitat_funcionariID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="funcionariIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="funcionariIDFins"  aria-labelledby="activitat_funcionariID" />
 
             </div>
 
@@ -102,30 +102,24 @@
               </div>
 
               <div class="input-group-prepend" style="min-width:200px">
-                <form:select aria-label="activitat_tipus_select"   id="activitat_tipus_select" path="tipusSelect" cssClass="search-query input-medium form-control select2 select2-hidden-accessible" multiple="true" style="width:100%;" tabindex="-1" aria-hidden="true">
+              <form:select id="activitat_tipus_select" path="tipusSelect"  cssClass="search-query input-medium form-control select2 select2-hidden-accessible" multiple="true" style="width:100%;" tabindex="-1" aria-hidden="true">
                     <c:forEach var="_entry" items="${__theFilterForm.mapOfValuesForTipus}">
                       <option value="${_entry.key}" ${fn:contains(__theFilterForm.tipusSelect, _entry.key)?'selected':''} >${_entry.value}</option>
                     </c:forEach>
-                </form:select>
+              </form:select>
               </div>
-
               <script>
                 $(document).ready(function() {
                     var $select = $('#activitat_tipus_select');
-                    var ariaLabel = $select.attr('aria-label');
-
                     $select.select2({
                         closeOnSelect: false
                     });
-
-                    if (ariaLabel) {
-                        $select.next('.select2-container')
-                               .find('[role="combobox"]')
-                               .attr('aria-label', ariaLabel);
-                        $select.next('.select2-container')
-                               .find('.select2-search__field')
-                               .attr('aria-label', ariaLabel);
-                    }
+                    $select.next('.select2-container')
+                           .find('[role="combobox"]')
+                           .attr('aria-label', "activitat_tipus_select");
+                    $select.next('.select2-container')
+                           .find('.select2-search__field')
+                           .attr('aria-label', "activitat_tipus_select");
 
                     $('.select2-selection__rendered').css('padding-bottom','5px');
                 });
@@ -182,18 +176,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,ActivitatFields.AUTORITZACIOID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="activitat_autoritzacioID" style="display: inline;">
+              <label id="activitat_autoritzacioID" style="display: inline;">
               <span class="add-on"><fmt:message key="activitat.autoritzacioID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="autoritzacioIDDesde" />
+              <form:input cssClass="input-append input-small" path="autoritzacioIDDesde"  aria-labelledby="activitat_autoritzacioID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="autoritzacioIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="autoritzacioIDFins"  aria-labelledby="activitat_autoritzacioID" />
 
             </div>
 
@@ -301,18 +295,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,ActivitatFields.INTERESSATTIPUS)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="activitat_interessatTipus" style="display: inline;">
+              <label id="activitat_interessatTipus" style="display: inline;">
               <span class="add-on"><fmt:message key="activitat.interessatTipus" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="interessatTipusDesde" />
+              <form:input cssClass="input-append input-small" path="interessatTipusDesde"  aria-labelledby="activitat_interessatTipus" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="interessatTipusFins" />
+              <form:input cssClass="input-append input-small search-query" path="interessatTipusFins"  aria-labelledby="activitat_interessatTipus" />
 
             </div>
 
@@ -381,18 +375,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,ActivitatFields.REPRESENTANTTIPUS)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="activitat_representantTipus" style="display: inline;">
+              <label id="activitat_representantTipus" style="display: inline;">
               <span class="add-on"><fmt:message key="activitat.representantTipus" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="representantTipusDesde" />
+              <form:input cssClass="input-append input-small" path="representantTipusDesde"  aria-labelledby="activitat_representantTipus" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="representantTipusFins" />
+              <form:input cssClass="input-append input-small search-query" path="representantTipusFins"  aria-labelledby="activitat_representantTipus" />
 
             </div>
 
@@ -416,18 +410,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,ActivitatFields.TRAMITVERSIO)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="activitat_tramitVersio" style="display: inline;">
+              <label id="activitat_tramitVersio" style="display: inline;">
               <span class="add-on"><fmt:message key="activitat.tramitVersio" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="tramitVersioDesde" />
+              <form:input cssClass="input-append input-small" path="tramitVersioDesde"  aria-labelledby="activitat_tramitVersio" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="tramitVersioFins" />
+              <form:input cssClass="input-append input-small search-query" path="tramitVersioFins"  aria-labelledby="activitat_tramitVersio" />
 
             </div>
 
@@ -473,30 +467,24 @@
               </div>
 
               <div class="input-group-prepend" style="min-width:200px">
-                <form:select aria-label="activitat_estat_select"   id="activitat_estat_select" path="estatSelect" cssClass="search-query input-medium form-control select2 select2-hidden-accessible" multiple="true" style="width:100%;" tabindex="-1" aria-hidden="true">
+              <form:select id="activitat_estat_select" path="estatSelect"  cssClass="search-query input-medium form-control select2 select2-hidden-accessible" multiple="true" style="width:100%;" tabindex="-1" aria-hidden="true">
                     <c:forEach var="_entry" items="${__theFilterForm.mapOfValuesForEstat}">
                       <option value="${_entry.key}" ${fn:contains(__theFilterForm.estatSelect, _entry.key)?'selected':''} >${_entry.value}</option>
                     </c:forEach>
-                </form:select>
+              </form:select>
               </div>
-
               <script>
                 $(document).ready(function() {
                     var $select = $('#activitat_estat_select');
-                    var ariaLabel = $select.attr('aria-label');
-
                     $select.select2({
                         closeOnSelect: false
                     });
-
-                    if (ariaLabel) {
-                        $select.next('.select2-container')
-                               .find('[role="combobox"]')
-                               .attr('aria-label', ariaLabel);
-                        $select.next('.select2-container')
-                               .find('.select2-search__field')
-                               .attr('aria-label', ariaLabel);
-                    }
+                    $select.next('.select2-container')
+                           .find('[role="combobox"]')
+                           .attr('aria-label', "activitat_estat_select");
+                    $select.next('.select2-container')
+                           .find('.select2-search__field')
+                           .attr('aria-label', "activitat_estat_select");
 
                     $('.select2-selection__rendered').css('padding-bottom','5px');
                 });
@@ -607,18 +595,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,ActivitatFields.ARXIUREINTENTS)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="activitat_arxiuReintents" style="display: inline;">
+              <label id="activitat_arxiuReintents" style="display: inline;">
               <span class="add-on"><fmt:message key="activitat.arxiuReintents" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="arxiuReintentsDesde" />
+              <form:input cssClass="input-append input-small" path="arxiuReintentsDesde"  aria-labelledby="activitat_arxiuReintents" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="arxiuReintentsFins" />
+              <form:input cssClass="input-append input-small search-query" path="arxiuReintentsFins"  aria-labelledby="activitat_arxiuReintents" />
 
             </div>
 
@@ -627,18 +615,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,ActivitatFields.ARXIUESTAT)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="activitat_arxiuEstat" style="display: inline;">
+              <label id="activitat_arxiuEstat" style="display: inline;">
               <span class="add-on"><fmt:message key="activitat.arxiuEstat" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="arxiuEstatDesde" />
+              <form:input cssClass="input-append input-small" path="arxiuEstatDesde"  aria-labelledby="activitat_arxiuEstat" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="arxiuEstatFins" />
+              <form:input cssClass="input-append input-small search-query" path="arxiuEstatFins"  aria-labelledby="activitat_arxiuEstat" />
 
             </div>
 

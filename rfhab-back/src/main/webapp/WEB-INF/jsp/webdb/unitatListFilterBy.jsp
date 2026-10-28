@@ -55,18 +55,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,UnitatFields.UNITATID)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="unitat_unitatID" style="display: inline;">
+              <label id="unitat_unitatID" style="display: inline;">
               <span class="add-on"><fmt:message key="unitat.unitatID" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="unitatIDDesde" />
+              <form:input cssClass="input-append input-small" path="unitatIDDesde"  aria-labelledby="unitat_unitatID" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="unitatIDFins" />
+              <form:input cssClass="input-append input-small search-query" path="unitatIDFins"  aria-labelledby="unitat_unitatID" />
 
             </div>
 
@@ -90,18 +90,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,UnitatFields.VERSIO)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="unitat_versio" style="display: inline;">
+              <label id="unitat_versio" style="display: inline;">
               <span class="add-on"><fmt:message key="unitat.versio" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="versioDesde" />
+              <form:input cssClass="input-append input-small" path="versioDesde"  aria-labelledby="unitat_versio" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="versioFins" />
+              <form:input cssClass="input-append input-small search-query" path="versioFins"  aria-labelledby="unitat_versio" />
 
             </div>
 
@@ -155,18 +155,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,UnitatFields.ARRELVERSIO)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="unitat_arrelVersio" style="display: inline;">
+              <label id="unitat_arrelVersio" style="display: inline;">
               <span class="add-on"><fmt:message key="unitat.arrelVersio" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="arrelVersioDesde" />
+              <form:input cssClass="input-append input-small" path="arrelVersioDesde"  aria-labelledby="unitat_arrelVersio" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="arrelVersioFins" />
+              <form:input cssClass="input-append input-small search-query" path="arrelVersioFins"  aria-labelledby="unitat_arrelVersio" />
 
             </div>
 
@@ -190,18 +190,18 @@
         <c:if test="${gen:contains(__theFilterForm.filterByFields ,UnitatFields.SUPERIORVERSIO)}">
             <div class="input-group" style="padding-right: 24px;padding-bottom: 4px;">
             <%-- FILTRE NUMERO DESDE-FINS --%>
-              <label for="unitat_superiorVersio" style="display: inline;">
+              <label id="unitat_superiorVersio" style="display: inline;">
               <span class="add-on"><fmt:message key="unitat.superiorVersio" />:</span>
               </label>
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.from" /></span>
               
-              <form:input cssClass="input-append input-small" path="superiorVersioDesde" />
+              <form:input cssClass="input-append input-small" path="superiorVersioDesde"  aria-labelledby="unitat_superiorVersio" />
 
 
               <span class="add-on">&nbsp;<fmt:message key="genapp.to" />&nbsp;</span>
 
-              <form:input cssClass="input-append input-small search-query" path="superiorVersioFins" />
+              <form:input cssClass="input-append input-small search-query" path="superiorVersioFins"  aria-labelledby="unitat_superiorVersio" />
 
             </div>
 

@@ -33,54 +33,239 @@
       RD 1112/2018</a
     >
   </p>
+
+  <br />
   <ul class="mb-3">
     <li>
-      <span class="font-weight-bold"
-        >1. Mida mínima d'elements i botons tàctils insuficient:</span
-      >
+      <p>
+        <span class="font-weight-bold">
+          1. Ús d’encapçalaments: Absència d’un encapçalament principal H1 o
+          estructura incorrecta.
+        </span>
+      </p>
+      <p>
+        <span>
+          Els elements d’encapçalament (H1...H6) serveixen per identificar els
+          títols de les diferents seccions en què s’estructura un document. El
+          nivell emprat en cada encapçalament és el que definirà l’estructura
+          jeràrquica de les seccions del document. Per tant, aquesta estructura
+          d’encapçalaments i els nivells emprats ha de ser correcta, reflectint
+          l’estructura lògica del contingut de la pàgina, identificant com a
+          encapçalaments tots els títols de secció, sense emprar elements
+          d’encapçalament únicament per crear efectes de presentació i sense
+          saltar nivells intermedis en descendir en la jerarquia
+          d’encapçalaments.
+        </span>
+      </p>
+      <p>
+        <span>
+          S'ha detectat que la majoria de les pàgines analitzades no contenen
+          cap element d'encapçalament, o els que hi ha no inclouen un
+          encapçalament principal H1 que correspongui amb el títol de la pàgina.
+          Addicionalment, en una de les pàgines s'han trobat encapçalaments
+          consecutius del mateix nivell sense contingut entre ells, cosa que
+          genera una estructura jeràrquica incorrecta.
+        </span>
+      </p>
+      <p>
+        <span>
+          Una estructura correcta d’encapçalaments és de gran importància, ja
+          que les aplicacions d’usuari i els productes de suport, com els
+          lectors de pantalla, poden proporcionar mecanismes especials de
+          navegació que permetin als usuaris accedir de manera ràpida a les
+          diferents seccions que componen una pàgina web (p. ex. mitjançant un
+          índex o mapa del document amb accessos directes a les diferents
+          seccions).
+        </span>
+      </p>
     </li>
-    <p>
-      La mida mínima dels botons i elements tàctils hauria de ser de 24 pixels,
-      o la mida suficient.
-    </p>
     <li>
-      <span class="font-weight-bold"
-        >2. Manca d'etiquetes label per a elements de formulari:</span
-      >
+      <p>
+        <span class="font-weight-bold">
+          2. Separació de contingut i presentació: Generació de contingut des de
+          fulls d'estil.
+        </span>
+      </p>
+      <p>
+        <span>
+          No s'han d'emprar els fulls d'estil per incloure contingut o
+          informació, ja que d'aquesta manera no estarà disponible per als
+          lectors de pantalla o altres aplicacions d'usuari no gràfiques. Tota
+          la informació ha d'estar disponible en el contingut de la pàgina, en
+          el codi HTML.
+        </span>
+      </p>
+      <p>
+        <span>
+          S'ha detectat que el lloc web inclou text des de fulls d'estil CSS
+          mitjançant els pseudoelements <code>:before</code> o
+          <code>:after</code> i la propietat <code>content</code>. Això afecta
+          components com els calendaris i selectors de data/hora.
+        </span>
+      </p>
     </li>
-    <p>
-      Les etiquetes label serveixen per identificar en llenguatge humà els
-      elements d'un formulari i definir breument el seu contingut. S'han
-      identificat formularis on manquen aquestes etiquetes.
-    </p>
     <li>
-      <span class="font-weight-bold"
-        >3. Elements ARIA amb atributs incomplets o incorrectes:</span
-      >
+      <p>
+        <span class="font-weight-bold">
+          3. Independència del dispositiu: Indicador del focus del teclat no
+          visible.
+        </span>
+      </p>
+      <p>
+        <span>
+          L'indicador del focus del teclat ha de ser visible perquè els usuaris
+          que fan servir un navegador gràfic amb teclat o un dispositiu similar
+          com a mitjà d'interacció (persones amb discapacitats motrius) puguin
+          veure la posició del focus mentre tabulen pels elements d'interacció
+          de la pàgina.
+        </span>
+      </p>
+      <p>
+        <span>
+          S'ha detectat que el codi CSS del lloc web elimina l'indicador del
+          focus per defecte dels navegadors (mitjançant propietats com
+          <code>outline: none</code> o <code>outline: 0</code>) sense
+          proporcionar cap estil alternatiu. Això fa que els usuaris que
+          naveguen amb teclat no puguin veure en quin element es troben.
+        </span>
+      </p>
     </li>
-    <p>
-      Els elements ARIA serveixen per identificar i descriure elements d'una
-      pàgina web per als usuaris que fan servir lectors de pantalla. S'han
-      identificat elements amb atributs incomplets o incorrectes.
-    </p>
     <li>
-      <span class="font-weight-bold"
-        >4. Manca de contrast suficient entre el text i el fons:</span
-      >
+      <p>
+        <span class="font-weight-bold">
+          4. Múltiples vies de navegació: Absència d'un mapa web i d'un cercador
+          al lloc.
+        </span>
+      </p>
+      <p>
+        <span>
+          Com que els usuaris poden tenir diferents limitacions o necessitats,
+          per facilitar que tothom pugui trobar la informació que busca en un
+          lloc web és necessari proporcionar mecanismes alternatius al menú de
+          navegació principal. A alguns usuaris els pot resultar més útil o
+          fàcil consultar un mapa web o utilitzar una funció de cerca que
+          interactuar amb els menús de navegació.
+        </span>
+      </p>
+      <p>
+        <span>
+          S'ha detectat que algunes pàgines del lloc web (pàgines 2, 3, 6 i 7)
+          no ofereixen cap mecanisme alternatiu de navegació, com ara un enllaç
+          a un mapa web o una opció de cerca al lloc.
+        </span>
+      </p>
     </li>
-    <p>
-      El contrast entre el text i el fons ha de ser suficient per garantir la
-      llegibilitat. S'han identificat casos on el contrast no és suficient.
-    </p>
+    <li>
+      <p>
+        <span class="font-weight-bold">
+          5. Formularis i etiquetes: Camps de formulari sense etiqueta o sense
+          indicar quins són obligatoris.
+        </span>
+      </p>
+      <p>
+        <span>
+          Els camps de formulari han de disposar d'un text a mode d'etiqueta que
+          identifiqui quina és la seva funció, associat explícitament mitjançant
+          l'element <code>LABEL</code> o, alternativament, amb atributs com
+          <code>title</code> o <code>aria-label</code>. A més, en els formularis
+          amb diversos camps s'ha de proporcionar informació perquè els usuaris
+          puguin diferenciar entre els camps obligatoris i els opcionals.
+        </span>
+      </p>
+      <p>
+        <span>
+          S'han detectat diverses incidències: hi ha camps de formulari (com
+          caselles de selecció) que no tenen cap etiqueta associada que
+          n'identifiqui la finalitat; hi ha formularis de filtres on no s'indica
+          quins camps són obligatoris; i en una pàgina s'ha detectat que les
+          etiquetes <code>LABEL</code> existeixen però estan ocultes visualment.
+        </span>
+      </p>
+    </li>
+    <li>
+      <p>
+        <span class="font-weight-bold">
+          6. Taules de dades: Estructura incorrecta dels encapçalaments.
+        </span>
+      </p>
+      <p>
+        <span>
+          Si en la primera fila d'una taula de dades hi ha alguna cel·la
+          d'encapçalament (<code>TH</code>), llavors la resta de cel·les
+          d'aquella fila que continguin text també han de ser encapçalaments. El
+          mateix és aplicable per a la primera columna. És a dir, en la primera
+          fila i en la primera columna no poden barrejar-se cel·les de dades i
+          cel·les d'encapçalament. Les taules de dades han d'estar correctament
+          estructurades perquè els productes de suport, com els lectors de
+          pantalla, les puguin interpretar correctament.
+        </span>
+      </p>
+      <p>
+        <span>
+          S'ha detectat una taula de dades on la primera fila barreja cel·les
+          d'encapçalament amb cel·les de dades, cosa que dificulta la
+          interpretació de la informació per part de les tecnologies de suport.
+        </span>
+      </p>
+    </li>
+    <li>
+      <p>
+        <span class="font-weight-bold">
+          7. Títol de pàgina i de marcs: Absència d'un títol adequat per al marc
+          iframe.
+        </span>
+      </p>
+      <p>
+        <span>
+          S'ha d'evitar, en la mesura del possible, l'ús de marcs a les pàgines.
+          De no ser possible evitar-ho, s'ha de proporcionar un títol a cada
+          marc que descrigui la seva finalitat o el seu contingut, de manera que
+          els usuaris de lectors de pantalla puguin decidir prèviament si volen
+          accedir o no al seu contingut. Aquesta descripció s'ha d'indicar en
+          l'atribut <code>title</code>.
+        </span>
+      </p>
+      <p>
+        <span>
+          S'ha detectat un element <code>IFRAME</code> (utilitzat per mostrar
+          documents PDF) que no disposa de l'atribut <code>title</code> que en
+          descrigui el propòsit.
+        </span>
+      </p>
+    </li>
+    <li>
+      <p>
+        <span class="font-weight-bold">
+          8. Compatibilitat: Errors en el codi CSS.
+        </span>
+      </p>
+      <p>
+        <span>
+          El codi de les fulls d'estil ha d'estar lliure d'errors que puguin
+          suposar una inconsistència en la seva interpretació per part de
+          diferents navegadors o aplicacions d'usuari. El codi ha de poder ser
+          processat sense inconsistències, és a dir, ha de ser com a mínim
+          sintàcticament correcte.
+        </span>
+      </p>
+      <p>
+        <span>
+          S'han detectat errors d'anàlisi (parse errors) en blocs d'estil
+          incrustats a la pàgina, concretament en l'ús del selector
+          <code>last-child</code>, que poden afectar la correcta visualització o
+          funcionament de la pàgina en alguns navegadors.
+        </span>
+      </p>
+    </li>
   </ul>
+  <br />
 
   <h2 class="h5 mb-2">Preparació de la present declaració d'accessibilitat</h2>
   <p class="mb-3">
-    La present declaració va ser preparada el 26 d'agost de 2026 mitjançant una
-    autoevaluació del mateix organisme. 
+    La present declaració va ser preparada el 3 de novembre de 2026 mitjançant
+    una autoevaluació del mateix organisme.
   </p>
-  <p>Darrera revisió de la declaració: 26
-    d'agost de 2026.</p>
+  <p>Darrera revisió de la declaració: 3 de novembre de 2026.</p>
 
   <h2 class="h5 mb-2">Observacions i dades de contacte</h2>
   <p class="mb-3">
@@ -106,18 +291,19 @@
   </p>
   <ul>
     <li>Una queixa relativa al compliment dels requisits del RD 1112/2018 o</li>
-    <li>Una sol·licitud de informació accesible relativa a:
-        <ul class="ml-4 subcategories">
-            <li>
-                Continguts que estan exclosos de l'àmbit d'aplicació del RD 1112/2018,
-                segons el que estableix l'article 3, apartat 4 o
-            </li>
+    <li>
+      Una sol·licitud de informació accesible relativa a:
+      <ul class="ml-4 subcategories">
+        <li>
+          Continguts que estan exclosos de l'àmbit d'aplicació del RD 1112/2018,
+          segons el que estableix l'article 3, apartat 4 o
+        </li>
 
-            <li>
-                Continguts que es troben exents del compliment dels requisits
-                d'accessibilitat, per imposar una càrrega desproporcionada.
-            </li>
-        </ul>
+        <li>
+          Continguts que es troben exents del compliment dels requisits
+          d'accessibilitat, per imposar una càrrega desproporcionada.
+        </li>
+      </ul>
     </li>
   </ul>
   <p>
@@ -151,11 +337,11 @@
 
   <h2 class="h5 mb-2">Contingut opcional</h2>
   <p class="mb-3">
-    La darrera revisió d'accessibilitat s'ha realitzat a l'agost de 2026. S'han
-    dut a terme una validació manual amb eines assistides, i s'han corregit els
-    errors per una autoevaluació duta a terme per l'organisme del sector públic.
-    El resultat obtingut és el seguent:
+    La darrera revisió d'accessibilitat s'ha realitzat al novembre de 2026.
+    S'han dut a terme una validació manual amb eines assistides, i s'han
+    corregit els errors per una autoevaluació duta a terme per l'organisme del
+    sector públic. El resultat obtingut és el seguent:
   </p>
-  <p>Nivell AA WCAG 2.1</p>
+  <p>Nivell A WCAG 2.1</p>
   <p>Situació de compliment estimada: Parcialment Conforme.</p>
 </section>

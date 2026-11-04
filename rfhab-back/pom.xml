@@ -435,6 +435,13 @@
                             <filtering>true</filtering>
                         </resource>
                     </webResources>
+
+					<!-- per evitar avisos de que certs jars han desaparegut llançant warnings al server.log, quan en realitat s'han substituït per mòduls del jboss -->
+					<archive>
+						<manifest>
+							<addClasspath>false</addClasspath>
+						</manifest>
+					</archive>
                 </configuration>
             </plugin>
 

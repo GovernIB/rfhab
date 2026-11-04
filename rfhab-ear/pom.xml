@@ -257,7 +257,9 @@
                         <!--suppress UnresolvedMavenProperty -->
                         <!-- Nom mòduls d'acord amb punt 4.2 de l'Estàndard CAIB -->
 					<outputFileNameMapping>@{artifactId}@-@{version}@.@{extension}@</outputFileNameMapping>
-				
+					
+					<!-- per evitar avisos de que certs jars han desaparegut llançant warnings al server.log, quan en realitat s'han substituït per mòduls del jboss -->
+					<skipClassPathModification>true</skipClassPathModification>
 
 					<archive>
 						<manifest>

@@ -137,6 +137,8 @@ public class FuncionariLlocAdminController extends FuncionariLlocController {
 				+
 				"        if(!funcionariName) funcionariName = document.getElementById('funcionariLloc_funcionariID')?.options[document.getElementById('funcionariLloc_funcionariID')?.selectedIndex ?? 0].text;\r\n"
 				+
+				"        if(!funcionariName) funcionariName = document.getElementById('funcionariLloc\\.funcionariID')?.options[document.getElementById('funcionariLloc\\.funcionariID')?.selectedIndex ?? 0].text;\r\n"
+				+
 				"        if(funcionariName == '" + I18NUtils.tradueix("trieuopcio") + "') funcionariName = '';\r\n"
 				+
 				"        let llocFeinaName = document.querySelector('#funcionariLloc\\\\.llocID + input')?.value;\r\n"

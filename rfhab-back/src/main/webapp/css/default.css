@@ -215,7 +215,6 @@ small {
 }
 .table .subtable td, .table .subtable th { border-left:0;}
 .table .subtable th { background-color:#efefef; background-image:none;}
-.modal { top: 50%;}
 .tooltip {z-index: 1050 !important;}
 
 /* Generic */

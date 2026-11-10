@@ -7,30 +7,38 @@
 
 		<!-- Esquerra -->
 		<div id="peu-esquerra" style="line-height: 1.8;">
-			<strong class="font-weight-bold"> ${versio.projectName}
-				v${versio.version}<%=Configuracio.isCAIB() ? "-caib" : ""%>
-
-			</strong> <br /> <small> Build: ${versio.buildTime} <br /> JDK: ${version.jdkVersion} <br />
-			<fmt:message key="revisio" />: 
-			<c:if test="${empty versio.scmRevision}">
-				<fmt:message key="scmversion.msg" />
-			</c:if>
-			<c:if test="${not empty versio.scmRevision}">${versio.scmRevision}</c:if>
-			<br />
-			<span style="padding-top: 2px">
-			 <i><fmt:message key="desenvolupatper" /></i></span>
+			<p>
+				<strong class="font-weight-bold"> ${versio.projectName}
+					v${versio.version}<%=Configuracio.isCAIB() ? "-caib" : ""%>
+				</strong> 
+			</p>
+			<small>
+				<p> Build: ${versio.buildTime} </p>
+				<p> JDK: ${version.jdkVersion} </p>
+				<p>
+					<fmt:message key="revisio" />: 
+					<c:if test="${empty versio.scmRevision}">
+						<fmt:message key="scmversion.msg" />
+					</c:if>
+					<c:if test="${not empty versio.scmRevision}">${versio.scmRevision}</c:if>
+				</p>
+				<p>
+					<span style="padding-top: 2px">
+					<i><fmt:message key="desenvolupatper" /></i></span>
+				</p>
 			 </small>
-			<br />
 		</div>
 
 
 		<!-- Dreta -->
 		<div id="peu-dreta" >
-			<a href="https://www.caib.es/" target="_blank"> <img
-				src="<c:url value="/img/app-logo-bn.png"/>" 
-				style="height: 35px;" 
-				alt="Govern de les Illes Balears" />
-			</a> <br />
+			<p>
+				<a href="https://www.caib.es/" target="_blank"> <img
+					src="<c:url value="/img/app-logo-bn.png"/>" 
+					style="height: 35px;" 
+					alt="Govern de les Illes Balears" />
+				</a>
+			</p>
 
 			<!-- Button to trigger modal -->
 			<small><a class="linkAjudaPeu" href="#modalAjuda" role="button"

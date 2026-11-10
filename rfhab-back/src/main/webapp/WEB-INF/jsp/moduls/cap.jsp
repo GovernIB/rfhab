@@ -23,7 +23,7 @@
 
 		<!-- Logo i nom aplicació -->
 		<div id="logoEntitatContainer" class="logoEntitat">
-			<a href="https://governdigital.fundaciobit.org/rfhabback"> <img
+			<a href="https://www.caib.es/webgoib/que-necessites"> <img
 				src="<c:url value="/img/logo-caib.png"/>"
 				alt="Govern de les Illes Balears" style="height: 55px;" />
 			</a>
@@ -32,6 +32,7 @@
 		<div id="logoRfhabContainer" class="logoEntitat">
 			<img src="<c:url value="/img/app-logo.png"/>" style="height: 4rem;"
 				alt="RFHab" />
+			<h1 class="sr-only">RFHAB</h1>
 		</div>
 
 		<%

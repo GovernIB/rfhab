@@ -6,22 +6,15 @@ import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.fundaciobit.genapp.common.StringKeyValue;
 import org.fundaciobit.genapp.common.i18n.I18NException;
-import org.fundaciobit.genapp.common.query.SubQuery;
 import org.fundaciobit.genapp.common.query.Where;
 import org.fundaciobit.genapp.common.utils.Utils;
 import org.fundaciobit.genapp.common.web.form.AdditionalButton;
 import org.fundaciobit.genapp.common.web.form.AdditionalButtonStyle;
 import org.fundaciobit.genapp.common.web.i18n.I18NUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -38,14 +31,7 @@ import es.caib.rfhab.logic.ActivitatLogicaService;
 import es.caib.rfhab.logic.FuncionariLogicaService;
 import es.caib.rfhab.logic.UnitatLogicaService;
 import es.caib.rfhab.model.entity.Activitat;
-import es.caib.rfhab.model.entity.Funcionari;
-import es.caib.rfhab.model.entity.FuncionariLloc;
-import es.caib.rfhab.model.entity.Lloc;
 import es.caib.rfhab.model.fields.ActivitatFields;
-import es.caib.rfhab.model.fields.FuncionariFields;
-import es.caib.rfhab.model.fields.FuncionariLlocFields;
-import es.caib.rfhab.model.fields.FuncionariLlocQueryPath;
-import es.caib.rfhab.model.fields.LlocFields;
 import es.caib.rfhab.persistence.ActivitatJPA;
 
 /*

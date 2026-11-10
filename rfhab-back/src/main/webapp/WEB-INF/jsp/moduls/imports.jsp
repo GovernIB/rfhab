@@ -4,8 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="<c:url value="/img/favicon.ico"/>" rel="shortcut icon" type="image/x-icon">
 
-<title><fmt:message key="app.benvingut" /></title>
-
+<title><fmt:message key="app.benvingut" /> - ${urlActual}</title>
 <!-- CSS -->
 <%-- Bootstrap CSS --%>
 <link href="<c:url value="/css/bootstrap.css"/>" rel="stylesheet">

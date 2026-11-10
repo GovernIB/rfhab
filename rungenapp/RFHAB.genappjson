@@ -2374,7 +2374,7 @@
           "sqlType": 12,
           "size": 50,
           "digits": 0,
-          "isNotNullable": true,
+          "isNotNullable": false,
           "labels": {
             "ca": "Número de CAI",
             "es": "Número de CAI"

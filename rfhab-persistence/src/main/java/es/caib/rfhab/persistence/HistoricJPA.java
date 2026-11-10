@@ -34,7 +34,7 @@ public class HistoricJPA implements Historic {
     @Column(name="funcionariid",nullable = false,length = 19)
     long funcionariID;
 
-    @Column(name="numerocai",nullable = false,length = 50)
+    @Column(name="numerocai",length = 50)
     java.lang.String numeroCai;
 
     @Column(name="observacions",length = 2147483647)
@@ -72,10 +72,9 @@ public class HistoricJPA implements Historic {
     this.usuariID=usuariID;
 }
   /** Constructor dels valors Not Null */
-  public HistoricJPA(long historicID , long funcionariID , java.lang.String numeroCai , java.sql.Timestamp dataCreacio) {
+  public HistoricJPA(long historicID , long funcionariID , java.sql.Timestamp dataCreacio) {
     this.historicID=historicID;
     this.funcionariID=funcionariID;
-    this.numeroCai=numeroCai;
     this.dataCreacio=dataCreacio;
 }
   public HistoricJPA(Historic __bean) {

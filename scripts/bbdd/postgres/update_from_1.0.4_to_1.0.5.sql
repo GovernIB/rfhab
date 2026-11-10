@@ -1,0 +1,1 @@
+ALTER TABLE rfh_historic ALTER COLUMN numerocai DROP NOT NULL;

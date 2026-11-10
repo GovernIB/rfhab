@@ -107,7 +107,7 @@
        historicid number(19,0) not null,
         datacreacio timestamp not null,
         funcionariid number(19,0) not null,
-        numerocai varchar2(50 char) not null,
+        numerocai varchar2(50 char),
         observacions clob,
         usuariid number(19,0)
     );

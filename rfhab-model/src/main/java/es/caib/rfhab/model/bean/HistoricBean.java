@@ -38,10 +38,9 @@ public class HistoricBean implements Historic {
     this.usuariID=usuariID;
 }
   /** Constructor dels valors Not Null */
-  public HistoricBean(long historicID , long funcionariID , java.lang.String numeroCai , java.sql.Timestamp dataCreacio) {
+  public HistoricBean(long historicID , long funcionariID , java.sql.Timestamp dataCreacio) {
     this.historicID=historicID;
     this.funcionariID=funcionariID;
-    this.numeroCai=numeroCai;
     this.dataCreacio=dataCreacio;
 }
   public HistoricBean(Historic __bean) {

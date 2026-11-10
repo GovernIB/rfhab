@@ -40,7 +40,7 @@
         <tr id="historic_numeroCai_rowid">
           <td id="historic_numeroCai_columnlabelid">
             <label for="historic.numeroCai">
-              <fmt:message key="${(empty __theForm.labels[HistoricFields.NUMEROCAI])?'historic.numeroCai':__theForm.labels[HistoricFields.NUMEROCAI]}" />&nbsp;<span class="text-danger" aria-hidden="true">(*)</span><span class="sr-only">(obligatori, obligatorio)</span>
+              <fmt:message key="${(empty __theForm.labels[HistoricFields.NUMEROCAI])?'historic.numeroCai':__theForm.labels[HistoricFields.NUMEROCAI]}" />
              </label>
               <c:if test="${not empty __theForm.help[HistoricFields.NUMEROCAI]}">
               <i class="fas fa-info-circle" title="${__theForm.help[HistoricFields.NUMEROCAI]}" ></i>
@@ -48,7 +48,7 @@
             </td>
           <td id="historic_numeroCai_columnvalueid">
             <form:errors path="historic.numeroCai" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,HistoricFields.NUMEROCAI)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,HistoricFields.NUMEROCAI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="historic.numeroCai"  required="required"  aria-required="true"   />
+            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,HistoricFields.NUMEROCAI)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,HistoricFields.NUMEROCAI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="historic.numeroCai"   />
 
            </td>
         </tr>

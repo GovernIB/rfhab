@@ -38,10 +38,6 @@ public class HistoricValidator<I extends Historic>
         "genapp.validation.required",
         new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(FUNCIONARIID)));
 
-    __vr.rejectIfEmptyOrWhitespace(__target__,NUMEROCAI, 
-        "genapp.validation.required",
-        new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(NUMEROCAI)));
-
     __vr.rejectIfEmptyOrWhitespace(__target__,DATACREACIO, 
         "genapp.validation.required",
         new org.fundaciobit.genapp.common.i18n.I18NArgumentCode(get(DATACREACIO)));

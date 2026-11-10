@@ -280,7 +280,7 @@ CREATE TABLE public.rfh_historic (
     historicid bigint DEFAULT nextval('public.rfh_historic_seq'::regclass) NOT NULL,
     datacreacio timestamp without time zone NOT NULL,
     funcionariid bigint NOT NULL,
-    numerocai character varying(50) NOT NULL,
+    numerocai character varying(50),
     observacions text,
     usuariid bigint
 );

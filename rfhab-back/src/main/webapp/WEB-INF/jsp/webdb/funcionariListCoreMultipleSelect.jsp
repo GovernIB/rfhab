@@ -1,8 +1,8 @@
       <%--  CHECK DE SELECCIO MULTIPLE  --%>
       <c:if test="${__theFilterForm.visibleMultipleSelection}">
-      <td>
-       <form:checkbox path="selectedItems" aria-label="Seleccionar" value="${funcionari.funcionariID}"/>
-       &nbsp;
-      </td>
+        <th>
+        <form:checkbox path="selectedItems" aria-label="Seleccionar" value="${funcionari.funcionariID}"/>
+            <span class="sr-only">Seleccionar fila</span>
+        </th>
       </c:if>
 

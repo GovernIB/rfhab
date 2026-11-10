@@ -87,7 +87,7 @@
             </td>
           <td id="activitat_registre_columnvalueid">
             <form:errors path="activitat.registre" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.REGISTRE)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.REGISTRE)? ' uneditable-input' : ''}"  style="" maxlength="50" path="activitat.registre"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.REGISTRE)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.REGISTRE)? ' uneditable-input' : ''}"  style="" maxlength="50" path="activitat.registre"   />
 
            </td>
         </tr>
@@ -105,7 +105,7 @@
             </td>
           <td id="activitat_tramit_columnvalueid">
             <form:errors path="activitat.tramit" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.TRAMIT)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.TRAMIT)? ' uneditable-input' : ''}"  style="" maxlength="150" path="activitat.tramit"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.TRAMIT)? 'true' : 'false'}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.TRAMIT)? ' uneditable-input' : ''}"  style="" maxlength="150" path="activitat.tramit"   />
 
            </td>
         </tr>
@@ -123,7 +123,7 @@
             </td>
           <td id="activitat_codiSia_columnvalueid">
             <form:errors path="activitat.codiSia" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.CODISIA)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.CODISIA)? ' uneditable-input' : ''}"  style="" maxlength="150" path="activitat.codiSia"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.CODISIA)? 'true' : 'false'}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.CODISIA)? ' uneditable-input' : ''}"  style="" maxlength="150" path="activitat.codiSia"   />
 
            </td>
         </tr>
@@ -141,7 +141,7 @@
             </td>
           <td id="activitat_autoritzacioID_columnvalueid">
             <form:errors path="activitat.autoritzacioID" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.AUTORITZACIOID)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.AUTORITZACIOID)? ' uneditable-input' : ''}"  style=""  path="activitat.autoritzacioID"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.AUTORITZACIOID)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.AUTORITZACIOID)? ' uneditable-input' : ''}"  style=""  path="activitat.autoritzacioID"   />
 
            </td>
         </tr>
@@ -161,14 +161,11 @@
     <form:errors path="activitat.dataCreacio" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="activitat_dataCreacioDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#activitat_dataCreacioDiv" path="activitat.dataCreacio"   required="required"  aria-required="true"  />
+                      <form:input readonly="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.DATACREACIO)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#activitat_dataCreacioDiv" path="activitat.dataCreacio"   required="required"  aria-required="true"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,ActivitatFields.DATACREACIO)}" >
                     <div class="input-group-append"  data-target="#activitat_dataCreacioDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
-                    </c:if>
-                </div>
-            </div>
         <script>
             $(function () {
                 $('#activitat_dataCreacioDiv').datetimepicker({
@@ -180,6 +177,9 @@
                 });
             });
         </script>
+                    </c:if>
+                </div>
+            </div>
            </td>
         </tr>
         </c:if>
@@ -199,7 +199,7 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATNOM)? 'readonly' : ''}" path="activitat.interessatNom"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATNOM)? 'true' : 'false'}" path="activitat.interessatNom"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_interessatNom" style="vertical-align:top;display:inline;position:relative;">
@@ -238,7 +238,7 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATLLINATGE1)? 'readonly' : ''}" path="activitat.interessatLlinatge1"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATLLINATGE1)? 'true' : 'false'}" path="activitat.interessatLlinatge1"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_interessatLlinatge1" style="vertical-align:top;display:inline;position:relative;">
@@ -277,7 +277,7 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATLLINATGE2)? 'readonly' : ''}" path="activitat.interessatLlinatge2"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATLLINATGE2)? 'true' : 'false'}" path="activitat.interessatLlinatge2"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_interessatLlinatge2" style="vertical-align:top;display:inline;position:relative;">
@@ -313,7 +313,7 @@
             </td>
           <td id="activitat_interessatTipus_columnvalueid">
             <form:errors path="activitat.interessatTipus" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATTIPUS)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATTIPUS)? ' uneditable-input' : ''}"  style=""  path="activitat.interessatTipus"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATTIPUS)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATTIPUS)? ' uneditable-input' : ''}"  style=""  path="activitat.interessatTipus"   />
 
            </td>
         </tr>
@@ -331,7 +331,7 @@
             </td>
           <td id="activitat_interessatIdentificacio_columnvalueid">
             <form:errors path="activitat.interessatIdentificacio" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATIDENTIFICACIO)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATIDENTIFICACIO)? ' uneditable-input' : ''}"  style="" maxlength="50" path="activitat.interessatIdentificacio"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATIDENTIFICACIO)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.INTERESSATIDENTIFICACIO)? ' uneditable-input' : ''}"  style="" maxlength="50" path="activitat.interessatIdentificacio"   />
 
            </td>
         </tr>
@@ -352,7 +352,7 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTNOM)? 'readonly' : ''}" path="activitat.representantNom"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTNOM)? 'true' : 'false'}" path="activitat.representantNom"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_representantNom" style="vertical-align:top;display:inline;position:relative;">
@@ -391,7 +391,7 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTLLINATGE1)? 'readonly' : ''}" path="activitat.representantLlinatge1"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTLLINATGE1)? 'true' : 'false'}" path="activitat.representantLlinatge1"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_representantLlinatge1" style="vertical-align:top;display:inline;position:relative;">
@@ -430,7 +430,7 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTLLINATGE2)? 'readonly' : ''}" path="activitat.representantLlinatge2"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTLLINATGE2)? 'true' : 'false'}" path="activitat.representantLlinatge2"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_representantLlinatge2" style="vertical-align:top;display:inline;position:relative;">
@@ -466,7 +466,7 @@
             </td>
           <td id="activitat_representantTipus_columnvalueid">
             <form:errors path="activitat.representantTipus" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTTIPUS)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTTIPUS)? ' uneditable-input' : ''}"  style=""  path="activitat.representantTipus"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTTIPUS)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTTIPUS)? ' uneditable-input' : ''}"  style=""  path="activitat.representantTipus"   />
 
            </td>
         </tr>
@@ -484,7 +484,7 @@
             </td>
           <td id="activitat_representantIdentificacio_columnvalueid">
             <form:errors path="activitat.representantIdentificacio" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTIDENTIFICACIO)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTIDENTIFICACIO)? ' uneditable-input' : ''}"  style="" maxlength="50" path="activitat.representantIdentificacio"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTIDENTIFICACIO)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.REPRESENTANTIDENTIFICACIO)? ' uneditable-input' : ''}"  style="" maxlength="50" path="activitat.representantIdentificacio"   />
 
            </td>
         </tr>
@@ -502,7 +502,7 @@
             </td>
           <td id="activitat_tramitVersio_columnvalueid">
             <form:errors path="activitat.tramitVersio" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.TRAMITVERSIO)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.TRAMITVERSIO)? ' uneditable-input' : ''}"  style=""  path="activitat.tramitVersio"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.TRAMITVERSIO)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.TRAMITVERSIO)? ' uneditable-input' : ''}"  style=""  path="activitat.tramitVersio"   />
 
            </td>
         </tr>
@@ -523,7 +523,7 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUDOCUMENTID)? 'readonly' : ''}" path="activitat.arxiuDocumentID"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUDOCUMENTID)? 'true' : 'false'}" path="activitat.arxiuDocumentID"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_arxiuDocumentID" style="vertical-align:top;display:inline;position:relative;">
@@ -562,7 +562,7 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUEXPEDIENTID)? 'readonly' : ''}" path="activitat.arxiuExpedientID"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUEXPEDIENTID)? 'true' : 'false'}" path="activitat.arxiuExpedientID"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_arxiuExpedientID" style="vertical-align:top;display:inline;position:relative;">
@@ -635,7 +635,7 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.URL)? 'readonly' : ''}" path="activitat.url"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.URL)? 'true' : 'false'}" path="activitat.url"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_url" style="vertical-align:top;display:inline;position:relative;">
@@ -673,14 +673,11 @@
     <form:errors path="activitat.dataActivitat" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="activitat_dataActivitatDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.DATAACTIVITAT)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#activitat_dataActivitatDiv" path="activitat.dataActivitat"   required="required"  aria-required="true"  />
+                      <form:input readonly="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.DATAACTIVITAT)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#activitat_dataActivitatDiv" path="activitat.dataActivitat"   required="required"  aria-required="true"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,ActivitatFields.DATAACTIVITAT)}" >
                     <div class="input-group-append"  data-target="#activitat_dataActivitatDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
-                    </c:if>
-                </div>
-            </div>
         <script>
             $(function () {
                 $('#activitat_dataActivitatDiv').datetimepicker({
@@ -692,6 +689,9 @@
                 });
             });
         </script>
+                    </c:if>
+                </div>
+            </div>
            </td>
         </tr>
         </c:if>
@@ -708,7 +708,7 @@
             </td>
           <td id="activitat_idActuacioTramit_columnvalueid">
             <form:errors path="activitat.idActuacioTramit" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.IDACTUACIOTRAMIT)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.IDACTUACIOTRAMIT)? ' uneditable-input' : ''}"  style="" maxlength="255" path="activitat.idActuacioTramit"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.IDACTUACIOTRAMIT)? 'true' : 'false'}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.IDACTUACIOTRAMIT)? ' uneditable-input' : ''}"  style="" maxlength="255" path="activitat.idActuacioTramit"   />
 
            </td>
         </tr>
@@ -726,7 +726,7 @@
             </td>
           <td id="activitat_procediment_columnvalueid">
             <form:errors path="activitat.procediment" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.PROCEDIMENT)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.PROCEDIMENT)? ' uneditable-input' : ''}"  style="" maxlength="150" path="activitat.procediment"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.PROCEDIMENT)? 'true' : 'false'}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.PROCEDIMENT)? ' uneditable-input' : ''}"  style="" maxlength="150" path="activitat.procediment"   />
 
            </td>
         </tr>
@@ -744,7 +744,7 @@
             </td>
           <td id="activitat_arxiuReintents_columnvalueid">
             <form:errors path="activitat.arxiuReintents" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUREINTENTS)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUREINTENTS)? ' uneditable-input' : ''}"  style=""  path="activitat.arxiuReintents"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUREINTENTS)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUREINTENTS)? ' uneditable-input' : ''}"  style=""  path="activitat.arxiuReintents"   />
 
            </td>
         </tr>
@@ -762,7 +762,7 @@
             </td>
           <td id="activitat_arxiuEstat_columnvalueid">
             <form:errors path="activitat.arxiuEstat" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUESTAT)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUESTAT)? ' uneditable-input' : ''}"  style=""  path="activitat.arxiuEstat"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUESTAT)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUESTAT)? ' uneditable-input' : ''}"  style=""  path="activitat.arxiuEstat"   />
 
            </td>
         </tr>
@@ -782,14 +782,11 @@
     <form:errors path="activitat.arxiuDarrerIntent" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="activitat_arxiuDarrerIntentDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUDARRERINTENT)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#activitat_arxiuDarrerIntentDiv" path="activitat.arxiuDarrerIntent"   />
+                      <form:input readonly="${gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUDARRERINTENT)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#activitat_arxiuDarrerIntentDiv" path="activitat.arxiuDarrerIntent"   />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,ActivitatFields.ARXIUDARRERINTENT)}" >
                     <div class="input-group-append"  data-target="#activitat_arxiuDarrerIntentDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
-                    </c:if>
-                </div>
-            </div>
         <script>
             $(function () {
                 $('#activitat_arxiuDarrerIntentDiv').datetimepicker({
@@ -801,6 +798,9 @@
                 });
             });
         </script>
+                    </c:if>
+                </div>
+            </div>
            </td>
         </tr>
         </c:if>

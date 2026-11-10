@@ -48,7 +48,7 @@
             </td>
           <td id="historicLloc_numeroCai_columnvalueid">
             <form:errors path="historicLloc.numeroCai" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,HistoricLlocFields.NUMEROCAI)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,HistoricLlocFields.NUMEROCAI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="historicLloc.numeroCai"  required="required"  aria-required="true"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,HistoricLlocFields.NUMEROCAI)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,HistoricLlocFields.NUMEROCAI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="historicLloc.numeroCai"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -69,7 +69,7 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,HistoricLlocFields.OBSERVACIONS)? 'readonly' : ''}" path="historicLloc.observacions"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${gen:contains(__theForm.readOnlyFields ,HistoricLlocFields.OBSERVACIONS)? 'true' : 'false'}" path="historicLloc.observacions"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_observacions" style="vertical-align:top;display:inline;position:relative;">
@@ -107,14 +107,11 @@
     <form:errors path="historicLloc.dataCreacio" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="historicLloc_dataCreacioDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,HistoricLlocFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#historicLloc_dataCreacioDiv" path="historicLloc.dataCreacio"   required="required"  aria-required="true"  />
+                      <form:input readonly="${gen:contains(__theForm.readOnlyFields ,HistoricLlocFields.DATACREACIO)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#historicLloc_dataCreacioDiv" path="historicLloc.dataCreacio"   required="required"  aria-required="true"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,HistoricLlocFields.DATACREACIO)}" >
                     <div class="input-group-append"  data-target="#historicLloc_dataCreacioDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
-                    </c:if>
-                </div>
-            </div>
         <script>
             $(function () {
                 $('#historicLloc_dataCreacioDiv').datetimepicker({
@@ -126,6 +123,9 @@
                 });
             });
         </script>
+                    </c:if>
+                </div>
+            </div>
            </td>
         </tr>
         </c:if>

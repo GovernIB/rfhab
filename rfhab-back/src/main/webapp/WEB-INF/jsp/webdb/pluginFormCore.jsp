@@ -14,7 +14,7 @@
             </td>
           <td id="plugin_nom_columnvalueid">
             <form:errors path="plugin.nom" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,PluginFields.NOM)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,PluginFields.NOM)? ' uneditable-input' : ''}"  style="" maxlength="255" path="plugin.nom"  required="required"  aria-required="true"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,PluginFields.NOM)? 'true' : 'false'}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,PluginFields.NOM)? ' uneditable-input' : ''}"  style="" maxlength="255" path="plugin.nom"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -35,7 +35,7 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,PluginFields.DESCRIPCIO)? 'readonly' : ''}" path="plugin.descripcio"  required="required"  aria-required="true"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${gen:contains(__theForm.readOnlyFields ,PluginFields.DESCRIPCIO)? 'true' : 'false'}" path="plugin.descripcio"  required="required"  aria-required="true"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_descripcio" style="vertical-align:top;display:inline;position:relative;">
@@ -71,7 +71,7 @@
             </td>
           <td id="plugin_classe_columnvalueid">
             <form:errors path="plugin.classe" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,PluginFields.CLASSE)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,PluginFields.CLASSE)? ' uneditable-input' : ''}"  style="" maxlength="255" path="plugin.classe"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,PluginFields.CLASSE)? 'true' : 'false'}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,PluginFields.CLASSE)? ' uneditable-input' : ''}"  style="" maxlength="255" path="plugin.classe"   />
 
            </td>
         </tr>
@@ -126,7 +126,7 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,PluginFields.PROPERTIES)? 'readonly' : ''}" path="plugin.properties"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${gen:contains(__theForm.readOnlyFields ,PluginFields.PROPERTIES)? 'true' : 'false'}" path="plugin.properties"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_properties" style="vertical-align:top;display:inline;position:relative;">
@@ -189,14 +189,11 @@
     <form:errors path="plugin.dataCreacio" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="plugin_dataCreacioDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,PluginFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#plugin_dataCreacioDiv" path="plugin.dataCreacio"   />
+                      <form:input readonly="${gen:contains(__theForm.readOnlyFields ,PluginFields.DATACREACIO)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#plugin_dataCreacioDiv" path="plugin.dataCreacio"   />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,PluginFields.DATACREACIO)}" >
                     <div class="input-group-append"  data-target="#plugin_dataCreacioDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
-                    </c:if>
-                </div>
-            </div>
         <script>
             $(function () {
                 $('#plugin_dataCreacioDiv').datetimepicker({
@@ -208,6 +205,9 @@
                 });
             });
         </script>
+                    </c:if>
+                </div>
+            </div>
            </td>
         </tr>
         </c:if>

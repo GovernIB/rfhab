@@ -14,7 +14,7 @@
             </td>
           <td id="unitat_codi_columnvalueid">
             <form:errors path="unitat.codi" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,UnitatFields.CODI)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,UnitatFields.CODI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="unitat.codi"  required="required"  aria-required="true"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,UnitatFields.CODI)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,UnitatFields.CODI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="unitat.codi"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -32,7 +32,7 @@
             </td>
           <td id="unitat_versio_columnvalueid">
             <form:errors path="unitat.versio" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,UnitatFields.VERSIO)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,UnitatFields.VERSIO)? ' uneditable-input' : ''}"  style=""  path="unitat.versio"  required="required"  aria-required="true"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,UnitatFields.VERSIO)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,UnitatFields.VERSIO)? ' uneditable-input' : ''}"  style=""  path="unitat.versio"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -53,7 +53,7 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,UnitatFields.DENOMINACIO)? 'readonly' : ''}" path="unitat.denominacio"  required="required"  aria-required="true"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${gen:contains(__theForm.readOnlyFields ,UnitatFields.DENOMINACIO)? 'true' : 'false'}" path="unitat.denominacio"  required="required"  aria-required="true"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_denominacio" style="vertical-align:top;display:inline;position:relative;">
@@ -92,7 +92,7 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,UnitatFields.COOFICIAL)? 'readonly' : ''}" path="unitat.cooficial"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${gen:contains(__theForm.readOnlyFields ,UnitatFields.COOFICIAL)? 'true' : 'false'}" path="unitat.cooficial"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_cooficial" style="vertical-align:top;display:inline;position:relative;">
@@ -128,7 +128,7 @@
             </td>
           <td id="unitat_arrel_columnvalueid">
             <form:errors path="unitat.arrel" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,UnitatFields.ARREL)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,UnitatFields.ARREL)? ' uneditable-input' : ''}"  style="" maxlength="50" path="unitat.arrel"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,UnitatFields.ARREL)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,UnitatFields.ARREL)? ' uneditable-input' : ''}"  style="" maxlength="50" path="unitat.arrel"   />
 
            </td>
         </tr>
@@ -146,7 +146,7 @@
             </td>
           <td id="unitat_arrelVersio_columnvalueid">
             <form:errors path="unitat.arrelVersio" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,UnitatFields.ARRELVERSIO)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,UnitatFields.ARRELVERSIO)? ' uneditable-input' : ''}"  style=""  path="unitat.arrelVersio"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,UnitatFields.ARRELVERSIO)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,UnitatFields.ARRELVERSIO)? ' uneditable-input' : ''}"  style=""  path="unitat.arrelVersio"   />
 
            </td>
         </tr>
@@ -164,7 +164,7 @@
             </td>
           <td id="unitat_superior_columnvalueid">
             <form:errors path="unitat.superior" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,UnitatFields.SUPERIOR)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,UnitatFields.SUPERIOR)? ' uneditable-input' : ''}"  style="" maxlength="50" path="unitat.superior"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,UnitatFields.SUPERIOR)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,UnitatFields.SUPERIOR)? ' uneditable-input' : ''}"  style="" maxlength="50" path="unitat.superior"   />
 
            </td>
         </tr>
@@ -182,7 +182,7 @@
             </td>
           <td id="unitat_superiorVersio_columnvalueid">
             <form:errors path="unitat.superiorVersio" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,UnitatFields.SUPERIORVERSIO)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,UnitatFields.SUPERIORVERSIO)? ' uneditable-input' : ''}"  style=""  path="unitat.superiorVersio"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,UnitatFields.SUPERIORVERSIO)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,UnitatFields.SUPERIORVERSIO)? ' uneditable-input' : ''}"  style=""  path="unitat.superiorVersio"   />
 
            </td>
         </tr>

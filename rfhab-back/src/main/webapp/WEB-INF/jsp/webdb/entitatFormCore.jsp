@@ -14,7 +14,7 @@
             </td>
           <td id="entitat_nom_columnvalueid">
             <form:errors path="entitat.nom" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,EntitatFields.NOM)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,EntitatFields.NOM)? ' uneditable-input' : ''}"  style="" maxlength="255" path="entitat.nom"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,EntitatFields.NOM)? 'true' : 'false'}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,EntitatFields.NOM)? ' uneditable-input' : ''}"  style="" maxlength="255" path="entitat.nom"   />
 
            </td>
         </tr>
@@ -104,14 +104,11 @@
     <form:errors path="entitat.dataBaixa" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="entitat_dataBaixaDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,EntitatFields.DATABAIXA)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#entitat_dataBaixaDiv" path="entitat.dataBaixa"   />
+                      <form:input readonly="${gen:contains(__theForm.readOnlyFields ,EntitatFields.DATABAIXA)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#entitat_dataBaixaDiv" path="entitat.dataBaixa"   />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,EntitatFields.DATABAIXA)}" >
                     <div class="input-group-append"  data-target="#entitat_dataBaixaDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
-                    </c:if>
-                </div>
-            </div>
         <script>
             $(function () {
                 $('#entitat_dataBaixaDiv').datetimepicker({
@@ -123,6 +120,9 @@
                 });
             });
         </script>
+                    </c:if>
+                </div>
+            </div>
            </td>
         </tr>
         </c:if>

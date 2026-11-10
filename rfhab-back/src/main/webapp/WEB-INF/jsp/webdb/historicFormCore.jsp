@@ -48,7 +48,7 @@
             </td>
           <td id="historic_numeroCai_columnvalueid">
             <form:errors path="historic.numeroCai" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,HistoricFields.NUMEROCAI)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,HistoricFields.NUMEROCAI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="historic.numeroCai"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,HistoricFields.NUMEROCAI)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,HistoricFields.NUMEROCAI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="historic.numeroCai"   />
 
            </td>
         </tr>
@@ -69,7 +69,7 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,HistoricFields.OBSERVACIONS)? 'readonly' : ''}" path="historic.observacions"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${gen:contains(__theForm.readOnlyFields ,HistoricFields.OBSERVACIONS)? 'true' : 'false'}" path="historic.observacions"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_observacions" style="vertical-align:top;display:inline;position:relative;">
@@ -107,14 +107,11 @@
     <form:errors path="historic.dataCreacio" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="historic_dataCreacioDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,HistoricFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#historic_dataCreacioDiv" path="historic.dataCreacio"   required="required"  aria-required="true"  />
+                      <form:input readonly="${gen:contains(__theForm.readOnlyFields ,HistoricFields.DATACREACIO)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#historic_dataCreacioDiv" path="historic.dataCreacio"   required="required"  aria-required="true"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,HistoricFields.DATACREACIO)}" >
                     <div class="input-group-append"  data-target="#historic_dataCreacioDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
-                    </c:if>
-                </div>
-            </div>
         <script>
             $(function () {
                 $('#historic_dataCreacioDiv').datetimepicker({
@@ -126,6 +123,9 @@
                 });
             });
         </script>
+                    </c:if>
+                </div>
+            </div>
            </td>
         </tr>
         </c:if>

@@ -89,14 +89,11 @@
     <form:errors path="funcionariLloc.dataInici" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="funcionariLloc_dataIniciDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,FuncionariLlocFields.DATAINICI)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#funcionariLloc_dataIniciDiv" path="funcionariLloc.dataInici"   />
+                      <form:input readonly="${gen:contains(__theForm.readOnlyFields ,FuncionariLlocFields.DATAINICI)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#funcionariLloc_dataIniciDiv" path="funcionariLloc.dataInici"   />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,FuncionariLlocFields.DATAINICI)}" >
                     <div class="input-group-append"  data-target="#funcionariLloc_dataIniciDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
-                    </c:if>
-                </div>
-            </div>
         <script>
             $(function () {
                 $('#funcionariLloc_dataIniciDiv').datetimepicker({
@@ -108,6 +105,9 @@
                 });
             });
         </script>
+                    </c:if>
+                </div>
+            </div>
            </td>
         </tr>
         </c:if>
@@ -126,14 +126,11 @@
     <form:errors path="funcionariLloc.dataFi" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="funcionariLloc_dataFiDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,FuncionariLlocFields.DATAFI)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#funcionariLloc_dataFiDiv" path="funcionariLloc.dataFi"   />
+                      <form:input readonly="${gen:contains(__theForm.readOnlyFields ,FuncionariLlocFields.DATAFI)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#funcionariLloc_dataFiDiv" path="funcionariLloc.dataFi"   />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,FuncionariLlocFields.DATAFI)}" >
                     <div class="input-group-append"  data-target="#funcionariLloc_dataFiDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
-                    </c:if>
-                </div>
-            </div>
         <script>
             $(function () {
                 $('#funcionariLloc_dataFiDiv').datetimepicker({
@@ -145,6 +142,9 @@
                 });
             });
         </script>
+                    </c:if>
+                </div>
+            </div>
            </td>
         </tr>
         </c:if>
@@ -163,14 +163,11 @@
     <form:errors path="funcionariLloc.dataCreacio" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="funcionariLloc_dataCreacioDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,FuncionariLlocFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#funcionariLloc_dataCreacioDiv" path="funcionariLloc.dataCreacio"   required="required"  aria-required="true"  />
+                      <form:input readonly="${gen:contains(__theForm.readOnlyFields ,FuncionariLlocFields.DATACREACIO)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#funcionariLloc_dataCreacioDiv" path="funcionariLloc.dataCreacio"   required="required"  aria-required="true"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,FuncionariLlocFields.DATACREACIO)}" >
                     <div class="input-group-append"  data-target="#funcionariLloc_dataCreacioDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
-                    </c:if>
-                </div>
-            </div>
         <script>
             $(function () {
                 $('#funcionariLloc_dataCreacioDiv').datetimepicker({
@@ -182,6 +179,9 @@
                 });
             });
         </script>
+                    </c:if>
+                </div>
+            </div>
            </td>
         </tr>
         </c:if>
@@ -243,7 +243,7 @@
             </td>
           <td id="funcionariLloc_numeroCai_columnvalueid">
             <form:errors path="funcionariLloc.numeroCai" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,FuncionariLlocFields.NUMEROCAI)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,FuncionariLlocFields.NUMEROCAI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="funcionariLloc.numeroCai"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,FuncionariLlocFields.NUMEROCAI)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,FuncionariLlocFields.NUMEROCAI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="funcionariLloc.numeroCai"   />
 
            </td>
         </tr>

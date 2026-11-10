@@ -14,7 +14,7 @@
             </td>
           <td id="funcionari_numero_columnvalueid">
             <form:errors path="funcionari.numero" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,FuncionariFields.NUMERO)? 'readonly' : ''}" cssClass="w-50 form-control  ${gen:contains(__theForm.readOnlyFields ,FuncionariFields.NUMERO)? ' uneditable-input' : ''}"  style="" maxlength="10" path="funcionari.numero"  required="required"  aria-required="true"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,FuncionariFields.NUMERO)? 'true' : 'false'}" cssClass="w-50 form-control  ${gen:contains(__theForm.readOnlyFields ,FuncionariFields.NUMERO)? ' uneditable-input' : ''}"  style="" maxlength="10" path="funcionari.numero"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -32,7 +32,7 @@
             </td>
           <td id="funcionari_nom_columnvalueid">
             <form:errors path="funcionari.nom" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,FuncionariFields.NOM)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,FuncionariFields.NOM)? ' uneditable-input' : ''}"  style="" maxlength="255" path="funcionari.nom"  required="required"  aria-required="true"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,FuncionariFields.NOM)? 'true' : 'false'}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,FuncionariFields.NOM)? ' uneditable-input' : ''}"  style="" maxlength="255" path="funcionari.nom"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -50,7 +50,7 @@
             </td>
           <td id="funcionari_llinatge1_columnvalueid">
             <form:errors path="funcionari.llinatge1" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,FuncionariFields.LLINATGE1)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,FuncionariFields.LLINATGE1)? ' uneditable-input' : ''}"  style="" maxlength="255" path="funcionari.llinatge1"  required="required"  aria-required="true"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,FuncionariFields.LLINATGE1)? 'true' : 'false'}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,FuncionariFields.LLINATGE1)? ' uneditable-input' : ''}"  style="" maxlength="255" path="funcionari.llinatge1"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -68,7 +68,7 @@
             </td>
           <td id="funcionari_llinatge2_columnvalueid">
             <form:errors path="funcionari.llinatge2" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,FuncionariFields.LLINATGE2)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,FuncionariFields.LLINATGE2)? ' uneditable-input' : ''}"  style="" maxlength="255" path="funcionari.llinatge2"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,FuncionariFields.LLINATGE2)? 'true' : 'false'}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,FuncionariFields.LLINATGE2)? ' uneditable-input' : ''}"  style="" maxlength="255" path="funcionari.llinatge2"   />
 
            </td>
         </tr>
@@ -120,7 +120,7 @@
             </td>
           <td id="funcionari_identificador_columnvalueid">
             <form:errors path="funcionari.identificador" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,FuncionariFields.IDENTIFICADOR)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,FuncionariFields.IDENTIFICADOR)? ' uneditable-input' : ''}"  style="" maxlength="50" path="funcionari.identificador"  required="required"  aria-required="true"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,FuncionariFields.IDENTIFICADOR)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,FuncionariFields.IDENTIFICADOR)? ' uneditable-input' : ''}"  style="" maxlength="50" path="funcionari.identificador"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -138,7 +138,7 @@
             </td>
           <td id="funcionari_usuari_columnvalueid">
             <form:errors path="funcionari.usuari" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,FuncionariFields.USUARI)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,FuncionariFields.USUARI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="funcionari.usuari"  required="required"  aria-required="true"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,FuncionariFields.USUARI)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,FuncionariFields.USUARI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="funcionari.usuari"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -156,7 +156,7 @@
             </td>
           <td id="funcionari_correu_columnvalueid">
             <form:errors path="funcionari.correu" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,FuncionariFields.CORREU)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,FuncionariFields.CORREU)? ' uneditable-input' : ''}"  style="" maxlength="255" path="funcionari.correu"  required="required"  aria-required="true"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,FuncionariFields.CORREU)? 'true' : 'false'}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,FuncionariFields.CORREU)? ' uneditable-input' : ''}"  style="" maxlength="255" path="funcionari.correu"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -176,14 +176,11 @@
     <form:errors path="funcionari.dataCreacio" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="funcionari_dataCreacioDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,FuncionariFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#funcionari_dataCreacioDiv" path="funcionari.dataCreacio"   required="required"  aria-required="true"  />
+                      <form:input readonly="${gen:contains(__theForm.readOnlyFields ,FuncionariFields.DATACREACIO)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#funcionari_dataCreacioDiv" path="funcionari.dataCreacio"   required="required"  aria-required="true"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,FuncionariFields.DATACREACIO)}" >
                     <div class="input-group-append"  data-target="#funcionari_dataCreacioDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
-                    </c:if>
-                </div>
-            </div>
         <script>
             $(function () {
                 $('#funcionari_dataCreacioDiv').datetimepicker({
@@ -195,6 +192,9 @@
                 });
             });
         </script>
+                    </c:if>
+                </div>
+            </div>
            </td>
         </tr>
         </c:if>
@@ -214,7 +214,7 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,FuncionariFields.OBSERVACIONS)? 'readonly' : ''}" path="funcionari.observacions"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${gen:contains(__theForm.readOnlyFields ,FuncionariFields.OBSERVACIONS)? 'true' : 'false'}" path="funcionari.observacions"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_observacions" style="vertical-align:top;display:inline;position:relative;">
@@ -252,14 +252,11 @@
     <form:errors path="funcionari.dataBaixa" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="funcionari_dataBaixaDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,FuncionariFields.DATABAIXA)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#funcionari_dataBaixaDiv" path="funcionari.dataBaixa"   />
+                      <form:input readonly="${gen:contains(__theForm.readOnlyFields ,FuncionariFields.DATABAIXA)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#funcionari_dataBaixaDiv" path="funcionari.dataBaixa"   />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,FuncionariFields.DATABAIXA)}" >
                     <div class="input-group-append"  data-target="#funcionari_dataBaixaDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
-                    </c:if>
-                </div>
-            </div>
         <script>
             $(function () {
                 $('#funcionari_dataBaixaDiv').datetimepicker({
@@ -271,6 +268,9 @@
                 });
             });
         </script>
+                    </c:if>
+                </div>
+            </div>
            </td>
         </tr>
         </c:if>
@@ -287,7 +287,7 @@
             </td>
           <td id="funcionari_entitatID_columnvalueid">
             <form:errors path="funcionari.entitatID" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,FuncionariFields.ENTITATID)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,FuncionariFields.ENTITATID)? ' uneditable-input' : ''}"  style=""  path="funcionari.entitatID"  required="required"  aria-required="true"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,FuncionariFields.ENTITATID)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,FuncionariFields.ENTITATID)? ' uneditable-input' : ''}"  style=""  path="funcionari.entitatID"  required="required"  aria-required="true"   />
 
            </td>
         </tr>

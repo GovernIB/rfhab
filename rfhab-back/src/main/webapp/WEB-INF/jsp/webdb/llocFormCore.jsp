@@ -14,7 +14,7 @@
             </td>
           <td id="lloc_codiLlocPropi_columnvalueid">
             <form:errors path="lloc.codiLlocPropi" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocFields.CODILLOCPROPI)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,LlocFields.CODILLOCPROPI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="lloc.codiLlocPropi"  required="required"  aria-required="true"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,LlocFields.CODILLOCPROPI)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,LlocFields.CODILLOCPROPI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="lloc.codiLlocPropi"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -32,7 +32,7 @@
             </td>
           <td id="lloc_codiLloc_columnvalueid">
             <form:errors path="lloc.codiLloc" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocFields.CODILLOC)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,LlocFields.CODILLOC)? ' uneditable-input' : ''}"  style="" maxlength="50" path="lloc.codiLloc"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,LlocFields.CODILLOC)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,LlocFields.CODILLOC)? ' uneditable-input' : ''}"  style="" maxlength="50" path="lloc.codiLloc"   />
 
            </td>
         </tr>
@@ -50,7 +50,7 @@
             </td>
           <td id="lloc_expansio_columnvalueid">
             <form:errors path="lloc.expansio" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocFields.EXPANSIO)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,LlocFields.EXPANSIO)? ' uneditable-input' : ''}"  style="" maxlength="50" path="lloc.expansio"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,LlocFields.EXPANSIO)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,LlocFields.EXPANSIO)? ' uneditable-input' : ''}"  style="" maxlength="50" path="lloc.expansio"   />
 
            </td>
         </tr>
@@ -68,7 +68,7 @@
             </td>
           <td id="lloc_nom_columnvalueid">
             <form:errors path="lloc.nom" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocFields.NOM)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,LlocFields.NOM)? ' uneditable-input' : ''}"  style="" maxlength="255" path="lloc.nom"  required="required"  aria-required="true"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,LlocFields.NOM)? 'true' : 'false'}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,LlocFields.NOM)? ' uneditable-input' : ''}"  style="" maxlength="255" path="lloc.nom"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -161,14 +161,11 @@
     <form:errors path="lloc.dataalta" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="lloc_dataaltaDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocFields.DATAALTA)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#lloc_dataaltaDiv" path="lloc.dataalta"   />
+                      <form:input readonly="${gen:contains(__theForm.readOnlyFields ,LlocFields.DATAALTA)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#lloc_dataaltaDiv" path="lloc.dataalta"   />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,LlocFields.DATAALTA)}" >
                     <div class="input-group-append"  data-target="#lloc_dataaltaDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
-                    </c:if>
-                </div>
-            </div>
         <script>
             $(function () {
                 $('#lloc_dataaltaDiv').datetimepicker({
@@ -180,6 +177,9 @@
                 });
             });
         </script>
+                    </c:if>
+                </div>
+            </div>
            </td>
         </tr>
         </c:if>
@@ -198,14 +198,11 @@
     <form:errors path="lloc.dataCreacio" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="lloc_dataCreacioDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#lloc_dataCreacioDiv" path="lloc.dataCreacio"   required="required"  aria-required="true"  />
+                      <form:input readonly="${gen:contains(__theForm.readOnlyFields ,LlocFields.DATACREACIO)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#lloc_dataCreacioDiv" path="lloc.dataCreacio"   required="required"  aria-required="true"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,LlocFields.DATACREACIO)}" >
                     <div class="input-group-append"  data-target="#lloc_dataCreacioDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
-                    </c:if>
-                </div>
-            </div>
         <script>
             $(function () {
                 $('#lloc_dataCreacioDiv').datetimepicker({
@@ -217,6 +214,9 @@
                 });
             });
         </script>
+                    </c:if>
+                </div>
+            </div>
            </td>
         </tr>
         </c:if>
@@ -235,14 +235,11 @@
     <form:errors path="lloc.dataBaixa" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="lloc_dataBaixaDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,LlocFields.DATABAIXA)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#lloc_dataBaixaDiv" path="lloc.dataBaixa"   />
+                      <form:input readonly="${gen:contains(__theForm.readOnlyFields ,LlocFields.DATABAIXA)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#lloc_dataBaixaDiv" path="lloc.dataBaixa"   />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,LlocFields.DATABAIXA)}" >
                     <div class="input-group-append"  data-target="#lloc_dataBaixaDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
-                    </c:if>
-                </div>
-            </div>
         <script>
             $(function () {
                 $('#lloc_dataBaixaDiv').datetimepicker({
@@ -254,6 +251,9 @@
                 });
             });
         </script>
+                    </c:if>
+                </div>
+            </div>
            </td>
         </tr>
         </c:if>
@@ -307,7 +307,7 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,LlocFields.OBSERVACIONS)? 'readonly' : ''}" path="lloc.observacions"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${gen:contains(__theForm.readOnlyFields ,LlocFields.OBSERVACIONS)? 'true' : 'false'}" path="lloc.observacions"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_observacions" style="vertical-align:top;display:inline;position:relative;">

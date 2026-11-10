@@ -14,7 +14,7 @@
             </td>
           <td id="scanWeb_transactionID_columnvalueid">
             <form:errors path="scanWeb.transactionID" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ScanWebFields.TRANSACTIONID)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ScanWebFields.TRANSACTIONID)? ' uneditable-input' : ''}"  style=""  path="scanWeb.transactionID"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,ScanWebFields.TRANSACTIONID)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ScanWebFields.TRANSACTIONID)? ' uneditable-input' : ''}"  style=""  path="scanWeb.transactionID"   />
 
            </td>
         </tr>
@@ -35,7 +35,7 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ScanWebFields.TRANSACTIONWEBID)? 'readonly' : ''}" path="scanWeb.transactionWebID"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${gen:contains(__theForm.readOnlyFields ,ScanWebFields.TRANSACTIONWEBID)? 'true' : 'false'}" path="scanWeb.transactionWebID"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_transactionWebID" style="vertical-align:top;display:inline;position:relative;">
@@ -71,7 +71,7 @@
             </td>
           <td id="scanWeb_status_columnvalueid">
             <form:errors path="scanWeb.status" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ScanWebFields.STATUS)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ScanWebFields.STATUS)? ' uneditable-input' : ''}"  style=""  path="scanWeb.status"  required="required"  aria-required="true"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,ScanWebFields.STATUS)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ScanWebFields.STATUS)? ' uneditable-input' : ''}"  style=""  path="scanWeb.status"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -149,7 +149,7 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ScanWebFields.FILEINFO)? 'readonly' : ''}" path="scanWeb.fileInfo"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${gen:contains(__theForm.readOnlyFields ,ScanWebFields.FILEINFO)? 'true' : 'false'}" path="scanWeb.fileInfo"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_fileInfo" style="vertical-align:top;display:inline;position:relative;">
@@ -188,7 +188,7 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ScanWebFields.SIGNEDFILEINFO)? 'readonly' : ''}" path="scanWeb.signedFileInfo"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${gen:contains(__theForm.readOnlyFields ,ScanWebFields.SIGNEDFILEINFO)? 'true' : 'false'}" path="scanWeb.signedFileInfo"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_signedFileInfo" style="vertical-align:top;display:inline;position:relative;">
@@ -227,7 +227,7 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ScanWebFields.METADADES)? 'readonly' : ''}" path="scanWeb.metadades"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${gen:contains(__theForm.readOnlyFields ,ScanWebFields.METADADES)? 'true' : 'false'}" path="scanWeb.metadades"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_metadades" style="vertical-align:top;display:inline;position:relative;">
@@ -266,7 +266,7 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,ScanWebFields.MISSATGE)? 'readonly' : ''}" path="scanWeb.missatge"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${gen:contains(__theForm.readOnlyFields ,ScanWebFields.MISSATGE)? 'true' : 'false'}" path="scanWeb.missatge"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_missatge" style="vertical-align:top;display:inline;position:relative;">
@@ -338,14 +338,11 @@
     <form:errors path="scanWeb.dataCreacio" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="scanWeb_dataCreacioDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ScanWebFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#scanWeb_dataCreacioDiv" path="scanWeb.dataCreacio"   />
+                      <form:input readonly="${gen:contains(__theForm.readOnlyFields ,ScanWebFields.DATACREACIO)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#scanWeb_dataCreacioDiv" path="scanWeb.dataCreacio"   />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,ScanWebFields.DATACREACIO)}" >
                     <div class="input-group-append"  data-target="#scanWeb_dataCreacioDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
-                    </c:if>
-                </div>
-            </div>
         <script>
             $(function () {
                 $('#scanWeb_dataCreacioDiv').datetimepicker({
@@ -357,6 +354,9 @@
                 });
             });
         </script>
+                    </c:if>
+                </div>
+            </div>
            </td>
         </tr>
         </c:if>
@@ -373,7 +373,7 @@
             </td>
           <td id="scanWeb_entitatID_columnvalueid">
             <form:errors path="scanWeb.entitatID" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,ScanWebFields.ENTITATID)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ScanWebFields.ENTITATID)? ' uneditable-input' : ''}"  style=""  path="scanWeb.entitatID"  required="required"  aria-required="true"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,ScanWebFields.ENTITATID)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,ScanWebFields.ENTITATID)? ' uneditable-input' : ''}"  style=""  path="scanWeb.entitatID"  required="required"  aria-required="true"   />
 
            </td>
         </tr>

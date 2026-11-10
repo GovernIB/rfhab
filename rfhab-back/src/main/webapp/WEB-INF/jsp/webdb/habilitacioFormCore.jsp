@@ -49,7 +49,7 @@
             </td>
           <td id="habilitacio_codi_columnvalueid">
             <form:errors path="habilitacio.codi" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,HabilitacioFields.CODI)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,HabilitacioFields.CODI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="habilitacio.codi"  required="required"  aria-required="true"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,HabilitacioFields.CODI)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,HabilitacioFields.CODI)? ' uneditable-input' : ''}"  style="" maxlength="50" path="habilitacio.codi"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -69,14 +69,11 @@
     <form:errors path="habilitacio.dataCreacio" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="habilitacio_dataCreacioDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,HabilitacioFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#habilitacio_dataCreacioDiv" path="habilitacio.dataCreacio"   />
+                      <form:input readonly="${gen:contains(__theForm.readOnlyFields ,HabilitacioFields.DATACREACIO)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#habilitacio_dataCreacioDiv" path="habilitacio.dataCreacio"   />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,HabilitacioFields.DATACREACIO)}" >
                     <div class="input-group-append"  data-target="#habilitacio_dataCreacioDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
-                    </c:if>
-                </div>
-            </div>
         <script>
             $(function () {
                 $('#habilitacio_dataCreacioDiv').datetimepicker({
@@ -88,6 +85,9 @@
                 });
             });
         </script>
+                    </c:if>
+                </div>
+            </div>
            </td>
         </tr>
         </c:if>
@@ -104,7 +104,7 @@
             </td>
           <td id="habilitacio_entitatID_columnvalueid">
             <form:errors path="habilitacio.entitatID" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,HabilitacioFields.ENTITATID)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,HabilitacioFields.ENTITATID)? ' uneditable-input' : ''}"  style=""  path="habilitacio.entitatID"  required="required"  aria-required="true"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,HabilitacioFields.ENTITATID)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,HabilitacioFields.ENTITATID)? ' uneditable-input' : ''}"  style=""  path="habilitacio.entitatID"  required="required"  aria-required="true"   />
 
            </td>
         </tr>

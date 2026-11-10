@@ -16,14 +16,11 @@
     <form:errors path="sincroUnitats.dataCreacio" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="sincroUnitats_dataCreacioDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#sincroUnitats_dataCreacioDiv" path="sincroUnitats.dataCreacio"   required="required"  aria-required="true"  />
+                      <form:input readonly="${gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.DATACREACIO)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#sincroUnitats_dataCreacioDiv" path="sincroUnitats.dataCreacio"   required="required"  aria-required="true"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.DATACREACIO)}" >
                     <div class="input-group-append"  data-target="#sincroUnitats_dataCreacioDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
-                    </c:if>
-                </div>
-            </div>
         <script>
             $(function () {
                 $('#sincroUnitats_dataCreacioDiv').datetimepicker({
@@ -35,6 +32,9 @@
                 });
             });
         </script>
+                    </c:if>
+                </div>
+            </div>
            </td>
         </tr>
         </c:if>
@@ -53,14 +53,11 @@
     <form:errors path="sincroUnitats.dataDarreraSincro" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="sincroUnitats_dataDarreraSincroDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.DATADARRERASINCRO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#sincroUnitats_dataDarreraSincroDiv" path="sincroUnitats.dataDarreraSincro"   />
+                      <form:input readonly="${gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.DATADARRERASINCRO)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#sincroUnitats_dataDarreraSincroDiv" path="sincroUnitats.dataDarreraSincro"   />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.DATADARRERASINCRO)}" >
                     <div class="input-group-append"  data-target="#sincroUnitats_dataDarreraSincroDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
-                    </c:if>
-                </div>
-            </div>
         <script>
             $(function () {
                 $('#sincroUnitats_dataDarreraSincroDiv').datetimepicker({
@@ -72,6 +69,9 @@
                 });
             });
         </script>
+                    </c:if>
+                </div>
+            </div>
            </td>
         </tr>
         </c:if>
@@ -90,14 +90,11 @@
     <form:errors path="sincroUnitats.dataPrimeraSincro" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="sincroUnitats_dataPrimeraSincroDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.DATAPRIMERASINCRO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#sincroUnitats_dataPrimeraSincroDiv" path="sincroUnitats.dataPrimeraSincro"   />
+                      <form:input readonly="${gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.DATAPRIMERASINCRO)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#sincroUnitats_dataPrimeraSincroDiv" path="sincroUnitats.dataPrimeraSincro"   />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.DATAPRIMERASINCRO)}" >
                     <div class="input-group-append"  data-target="#sincroUnitats_dataPrimeraSincroDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
-                    </c:if>
-                </div>
-            </div>
         <script>
             $(function () {
                 $('#sincroUnitats_dataPrimeraSincroDiv').datetimepicker({
@@ -109,6 +106,9 @@
                 });
             });
         </script>
+                    </c:if>
+                </div>
+            </div>
            </td>
         </tr>
         </c:if>
@@ -125,7 +125,7 @@
             </td>
           <td id="sincroUnitats_codiEntitat_columnvalueid">
             <form:errors path="sincroUnitats.codiEntitat" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.CODIENTITAT)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.CODIENTITAT)? ' uneditable-input' : ''}"  style="" maxlength="50" path="sincroUnitats.codiEntitat"  required="required"  aria-required="true"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.CODIENTITAT)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.CODIENTITAT)? ' uneditable-input' : ''}"  style="" maxlength="50" path="sincroUnitats.codiEntitat"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -146,7 +146,7 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.OBSERVACIONS)? 'readonly' : ''}" path="sincroUnitats.observacions"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${gen:contains(__theForm.readOnlyFields ,SincroUnitatsFields.OBSERVACIONS)? 'true' : 'false'}" path="sincroUnitats.observacions"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_observacions" style="vertical-align:top;display:inline;position:relative;">

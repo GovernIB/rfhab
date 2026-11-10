@@ -48,7 +48,7 @@
             </td>
           <td id="autoritzacio_codiSia_columnvalueid">
             <form:errors path="autoritzacio.codiSia" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.CODISIA)? 'readonly' : ''}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.CODISIA)? ' uneditable-input' : ''}"  style="" maxlength="50" path="autoritzacio.codiSia"  required="required"  aria-required="true"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.CODISIA)? 'true' : 'false'}" cssClass="w-75 form-control  ${gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.CODISIA)? ' uneditable-input' : ''}"  style="" maxlength="50" path="autoritzacio.codiSia"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -66,7 +66,7 @@
             </td>
           <td id="autoritzacio_procediment_columnvalueid">
             <form:errors path="autoritzacio.procediment" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.PROCEDIMENT)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.PROCEDIMENT)? ' uneditable-input' : ''}"  style="" maxlength="255" path="autoritzacio.procediment"  required="required"  aria-required="true"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.PROCEDIMENT)? 'true' : 'false'}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.PROCEDIMENT)? ' uneditable-input' : ''}"  style="" maxlength="255" path="autoritzacio.procediment"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -84,7 +84,7 @@
             </td>
           <td id="autoritzacio_cai_columnvalueid">
             <form:errors path="autoritzacio.cai" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.CAI)? 'readonly' : ''}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.CAI)? ' uneditable-input' : ''}"  style="" maxlength="255" path="autoritzacio.cai"  required="required"  aria-required="true"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.CAI)? 'true' : 'false'}" cssClass="w-100 form-control  ${gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.CAI)? ' uneditable-input' : ''}"  style="" maxlength="255" path="autoritzacio.cai"  required="required"  aria-required="true"   />
 
            </td>
         </tr>
@@ -104,14 +104,11 @@
     <form:errors path="autoritzacio.dataInici" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="autoritzacio_dataIniciDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.DATAINICI)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#autoritzacio_dataIniciDiv" path="autoritzacio.dataInici"   />
+                      <form:input readonly="${gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.DATAINICI)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#autoritzacio_dataIniciDiv" path="autoritzacio.dataInici"   />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.DATAINICI)}" >
                     <div class="input-group-append"  data-target="#autoritzacio_dataIniciDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
-                    </c:if>
-                </div>
-            </div>
         <script>
             $(function () {
                 $('#autoritzacio_dataIniciDiv').datetimepicker({
@@ -123,6 +120,9 @@
                 });
             });
         </script>
+                    </c:if>
+                </div>
+            </div>
            </td>
         </tr>
         </c:if>
@@ -141,14 +141,11 @@
     <form:errors path="autoritzacio.dataFi" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="autoritzacio_dataFiDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.DATAFI)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#autoritzacio_dataFiDiv" path="autoritzacio.dataFi"   />
+                      <form:input readonly="${gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.DATAFI)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#autoritzacio_dataFiDiv" path="autoritzacio.dataFi"   />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.DATAFI)}" >
                     <div class="input-group-append"  data-target="#autoritzacio_dataFiDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
-                    </c:if>
-                </div>
-            </div>
         <script>
             $(function () {
                 $('#autoritzacio_dataFiDiv').datetimepicker({
@@ -160,6 +157,9 @@
                 });
             });
         </script>
+                    </c:if>
+                </div>
+            </div>
            </td>
         </tr>
         </c:if>
@@ -178,14 +178,11 @@
     <form:errors path="autoritzacio.dataCreacio" cssClass="errorField alert alert-danger" />
             <div class="form-group"  style="margin-bottom: 0px;" >
                 <div class="input-group date" id="autoritzacio_dataCreacioDiv" data-target-input="nearest">
-                      <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.DATACREACIO)? 'readonly' : ''}" cssClass="form-control datetimepicker-input"  data-target="#autoritzacio_dataCreacioDiv" path="autoritzacio.dataCreacio"   required="required"  aria-required="true"  />
+                      <form:input readonly="${gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.DATACREACIO)? 'true' : 'false'}" cssClass="form-control datetimepicker-input"  data-target="#autoritzacio_dataCreacioDiv" path="autoritzacio.dataCreacio"   required="required"  aria-required="true"  />
                     <c:if test="${!gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.DATACREACIO)}" >
                     <div class="input-group-append"  data-target="#autoritzacio_dataCreacioDiv"  data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
-                    </c:if>
-                </div>
-            </div>
         <script>
             $(function () {
                 $('#autoritzacio_dataCreacioDiv').datetimepicker({
@@ -197,6 +194,9 @@
                 });
             });
         </script>
+                    </c:if>
+                </div>
+            </div>
            </td>
         </tr>
         </c:if>
@@ -216,7 +216,7 @@
   <table style="width:100%">
   <tr>
   <td>
-       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${ gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.OBSERVACIONS)? 'readonly' : ''}" path="autoritzacio.observacions"  />
+       <form:textarea rows="3" wrap="soft" style="overflow:auto;display: inline;resize:both;" cssClass="form-control col-md-9-optional" readonly="${gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.OBSERVACIONS)? 'true' : 'false'}" path="autoritzacio.observacions"  />
    </td>
    <td style="width:40px">
       <div id="dropdownMenuButton_observacions" style="vertical-align:top;display:inline;position:relative;">
@@ -252,7 +252,7 @@
             </td>
           <td id="autoritzacio_usuariID_columnvalueid">
             <form:errors path="autoritzacio.usuariID" cssClass="errorField alert alert-danger" />
-            <form:input readonly="${ gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.USUARIID)? 'readonly' : ''}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.USUARIID)? ' uneditable-input' : ''}"  style=""  path="autoritzacio.usuariID"   />
+            <form:input readonly="${gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.USUARIID)? 'true' : 'false'}" cssClass="w-25 form-control  ${gen:contains(__theForm.readOnlyFields ,AutoritzacioFields.USUARIID)? ' uneditable-input' : ''}"  style=""  path="autoritzacio.usuariID"   />
 
            </td>
         </tr>

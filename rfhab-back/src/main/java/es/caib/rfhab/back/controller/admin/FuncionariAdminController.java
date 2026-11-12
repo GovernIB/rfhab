@@ -252,6 +252,10 @@ public class FuncionariAdminController extends FuncionariController {
 		mav.addObject("CORREU_PLACEHOLDER", Constants.CORREU_PLACEHOLDER);
 		mav.addObject("FUNCIONARI_NUMERO_PLACEHOLDER", Constants.FUNCIONARI_NUMERO_PLACEHOLDER);
 
+		funcionariForm.addAdditionalButton(new AdditionalButton(" fas fa-long-arrow-alt-left", "tornar",
+				getContextWeb() + "/tornar", AdditionalButtonStyle.SECONDARY));
+		funcionariForm.setCancelButtonVisible(false);
+
 		funcionariForm.addReadOnlyField(FuncionariFields.DATACREACIO);
 		funcionariForm.addHiddenField(FuncionariFields.DATACREACIO);
 
@@ -396,6 +400,13 @@ public class FuncionariAdminController extends FuncionariController {
 		request.getSession().setAttribute(Constants.REFERER_SESSION_ATTRIBUTE, request.getHeader("referer"));
 
 		return funcionariFilterForm;
+	}
+
+	@RequestMapping(value = "/tornar", method = RequestMethod.GET)
+	public String tornar(HttpServletRequest request) {
+		return "redirect:" + getContextWeb() + "/list/1";
+		// return UrlUtils.getRefererRedirect(request, "redirect:" + getContextWeb() +
+		// "/list/1");
 	}
 
 	@Override

@@ -405,14 +405,15 @@
 							}
 						}
 
-						const correuLabel = document.getElementById("funcionari_correu_columnlabelid")?.querySelector("label");
-						const helpIcon = document.createElement("i");
-						helpIcon.className = "fas fa-question-circle";
-						helpIcon.title = "<fmt:message key='correu'/>";
-						helpIcon.style.marginLeft = "5px";
-						if(correuLabel){
-							correuLabel.appendChild(helpIcon);
-						}
+						// #182 "Al camp "A/e", llevar el cercle amb l’interrogant. Indicant el format en el camp ja es veu que és l’adreça electrònica."
+						// const correuLabel = document.getElementById("funcionari_correu_columnlabelid")?.querySelector("label");
+						// const helpIcon = document.createElement("i");
+						// helpIcon.className = "fas fa-question-circle";
+						// helpIcon.title = "<fmt:message key='correu'/>";
+						// helpIcon.style.marginLeft = "5px";
+						// if(correuLabel){
+						// 	correuLabel.appendChild(helpIcon);
+						// }
 
 						if ("true" != "${isView}") {
 

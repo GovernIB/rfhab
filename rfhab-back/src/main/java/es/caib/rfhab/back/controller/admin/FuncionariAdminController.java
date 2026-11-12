@@ -690,8 +690,10 @@ public class FuncionariAdminController extends FuncionariController {
 		__tmp.add(new StringKeyValue(TIPUS_IDENTIFICACIO_SELECCIONA, I18NUtils.tradueix("tipusidentificacio.0")));
 		__tmp.add(new StringKeyValue("1", I18NUtils.tradueix("tipusidentificacio.1")));
 		__tmp.add(new StringKeyValue("2", I18NUtils.tradueix("tipusidentificacio.2")));
-		// __tmp.add(new StringKeyValue("3", I18NUtils.tradueix("tipusidentificacio.3")));
-		__tmp.add(new StringKeyValue("4", I18NUtils.tradueix("tipusidentificacio.4")));
+		// __tmp.add(new StringKeyValue("3",
+		// I18NUtils.tradueix("tipusidentificacio.3")));
+		// __tmp.add(new StringKeyValue("4",
+		// I18NUtils.tradueix("tipusidentificacio.4")));
 		return __tmp;
 	}
 
@@ -810,6 +812,27 @@ public class FuncionariAdminController extends FuncionariController {
 			result.rejectValue(FuncionariFields.TIPUSIDENTIFICADOR.codeLabel, "error.required",
 					new Object[] { "Número" },
 					"El camp " + I18NUtils.tradueix(FuncionariFields.TIPUSIDENTIFICADOR.codeLabel) + " és obligatori");
+		} else {
+			// comprovació de funcionari.getIdentificador(). El camp ha de tenir 9 caràcters
+			// de longitud, però si hi ha més caràcters, i aquests són zeros a l'inici,
+			// també ha de ser vàlid
+			String identificador = funcionari.getIdentificador();
+			boolean identificadorValid = identificador != null && identificador.length() >= 9;
+			if (identificadorValid && identificador.length() > 9) {
+				int zerosInicials = identificador.length() - 9;
+				for (int i = 0; i < zerosInicials; i++) {
+					if (identificador.charAt(i) != '0') {
+						identificadorValid = false;
+						break;
+					}
+				}
+			}
+			if (!identificadorValid) {
+				result.rejectValue(FuncionariFields.IDENTIFICADOR.codeLabel, "error.required",
+						new Object[] { "Número" },
+						"El camp " + I18NUtils.tradueix(FuncionariFields.IDENTIFICADOR.codeLabel)
+								+ " ha de tenir 9 caràcters");
+			}
 		}
 	}
 

@@ -270,7 +270,7 @@ public class LlocAdminController extends LlocController {
 		String lang = LocaleContextHolder.getLocale().getLanguage();
 		cleanSessionObjectsForMav(request);
 
-		//TODO: demanar a tnadal si això encara és útil
+		// TODO: demanar a tnadal si això encara és útil
 		mav.addObject("isView", __isView);
 
 		setUnitatRefListSelects(lang);
@@ -283,7 +283,8 @@ public class LlocAdminController extends LlocController {
 		String jsOpenModalGuardar = "javascript:createDivModal('"
 				+ I18NUtils.tradueix("lloc.modificar.guardar.titol") + "', '"
 				+ I18NUtils.tradueix("lloc.modificar.guardar.missatge")
-				+ "', '', 'llocForm', 'lloc-save-modal-id', 'fa-save');\r\n" +
+				+ "', '', 'llocForm', 'lloc-save-modal-id', 'fa-save', '', null, '" + I18NUtils.tradueix("acceptar")
+				+ "');\r\n" +
 				"        $('#lloc-save-modal-id').modal('show');\r\n";
 		AdditionalButton guardarButton = new AdditionalButton("",
 				"genapp.save",
@@ -295,7 +296,7 @@ public class LlocAdminController extends LlocController {
 		if (llocForm.isNou()) {
 			llocForm.addAdditionalButton(guardarButton);
 
-			//TODO: demanar a tnadal si això encara és útil
+			// TODO: demanar a tnadal si això encara és útil
 			mav.addObject("isNew", llocForm.isNou());
 
 			mav.addObject("LLOC_CODILLOC_PLACEHOLDER", Constants.LLOC_CODILLOC_PLACEHOLDER);
@@ -424,8 +425,8 @@ public class LlocAdminController extends LlocController {
 				mav.addObject("historic", historicCanvis);
 			}
 
-			//llocForm.addReadOnlyField(LlocFields.CODILLOC);
-			//llocForm.addReadOnlyField(LlocFields.EXPANSIO);
+			// llocForm.addReadOnlyField(LlocFields.CODILLOC);
+			// llocForm.addReadOnlyField(LlocFields.EXPANSIO);
 		}
 
 		llocForm.addAdditionalButton(new AdditionalButton(" fas fa-long-arrow-alt-left", "tornar",
@@ -608,15 +609,15 @@ public class LlocAdminController extends LlocController {
 		lloc.setEntitatID(Long.parseLong(request.getParameter("lloc.entitatID")));
 
 		// if (llocForm.isNou()) {
-			// CODI LLOC PROPI DE RFHAB
-			String codiLloc = lloc.getCodiLloc();
-			String expansioLloc = lloc.getExpansio();
+		// CODI LLOC PROPI DE RFHAB
+		String codiLloc = lloc.getCodiLloc();
+		String expansioLloc = lloc.getExpansio();
 
-			// per passar la validació de genapp necessitam això (encara que la base de
-			// dades ho permeti)
-			if ((codiLloc == null || codiLloc.isEmpty()) && (expansioLloc == null || expansioLloc.isEmpty())) {
-				lloc.setCodiLloc(Constants.CODILLOC_FAKE_BUIT);
-			}
+		// per passar la validació de genapp necessitam això (encara que la base de
+		// dades ho permeti)
+		if ((codiLloc == null || codiLloc.isEmpty()) && (expansioLloc == null || expansioLloc.isEmpty())) {
+			lloc.setCodiLloc(Constants.CODILLOC_FAKE_BUIT);
+		}
 		// }
 
 		if (String.valueOf(lloc.getPersonalOamr()).equals(TIPUS_PERSONAL_OAMR)) {
@@ -1125,7 +1126,7 @@ public class LlocAdminController extends LlocController {
 			Map<Long, Timestamp> mapDarreraModificacio = new HashMap<>();
 			List<Long> idsAfegits = new ArrayList();
 			int rsize = resultat.size();
-			if(itemsPerPage == null){
+			if (itemsPerPage == null) {
 				itemsPerPage = rsize;
 			}
 			// TODO: ineficient total, això se carrega tota sa paginació i es recorr sempre

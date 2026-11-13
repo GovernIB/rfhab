@@ -47,10 +47,12 @@
 									<td>${lloc.lloc.nom}</td>
 									<td align="center">
 										<c:if test="${lloc.lloc.personalOamr > 1}">
-											<i class="fa fa-check" aria-hidden="true"></i>
+											<!-- <i class="fa fa-check" aria-hidden="true"></i> -->
+											Sí
 										</c:if> 
 										<c:if test="${lloc.lloc.personalOamr < 2}">
-											<i class="fa fa-times" aria-hidden="true"></i>
+											<!-- <i class="fa fa-times" aria-hidden="true"></i> -->
+											 No
 										</c:if>
 									</td>
 									<td><fmt:formatDate value="${lloc.dataInici}" /></td>
@@ -229,6 +231,7 @@
 
 				<div class="row" style="margin-left: 0px;">
 					<table
+						id="historiccanvis-table"
 						class="table table-sm table-bordered table-striped table-genapp table-genapp-list"
 						style="width: auto;">
 						<thead>
@@ -268,6 +271,14 @@
 						</tbody>
 					</table>
 				</div>
+
+				<div class="row" style="margin-left: 12px;">
+					<button class="btn btn-info" type="button" id="exportcsv-historiccanvis" title="<fmt:message key="descarregar" />"
+						onclick="downloadDataFromTable('#historiccanvis-table', 'historic_canvis_${__theForm.funcionari.numero}.csv')">
+						<i class="fas fa-file-csv"></i>
+					</button>
+				</div>
+
 			</c:if>
 
 			<c:if test="${empty historicItems}">

@@ -129,6 +129,7 @@
 			<c:if test="${ not isNew && not historic.isEmpty()}">
 				<div style="margin-top: 20px;">
 					<table
+						id="historic-canvis-lloc-table"
 						class="table table-sm table-bordered table-striped table-genapp table-genapp-list"
 						style="width: auto;">
 						<thead>
@@ -168,6 +169,12 @@
 						</tbody>
 					</table>
 				</div>
+				<div class="row" style="margin-left: 12px;">
+					<button class="btn btn-info" type="button" id="exportcsv-historiccanvislloc" title="<fmt:message key="descarregar" />"
+						onclick="downloadDataFromTable('#historic-canvis-lloc-table', 'historic_canvisallloc_${__theForm.lloc.codiLlocPropi}.csv')">
+						<i class="fas fa-file-csv"></i>
+					</button>
+				</div>
 			</c:if>
 
 		</div>
@@ -184,6 +191,7 @@
 			<c:if test="${not funcionarisHistoric.isEmpty()}">
 				<div class="row" style="margin-left: 0px;">
 					<table
+						id="historic-canvis-personal-table"
 						class="table table-sm table-bordered table-striped table-genapp table-genapp-list"
 						style="width: auto;">
 						<thead>
@@ -211,6 +219,12 @@
 							</c:forEach>
 						</tbody>
 					</table>
+				</div>
+				<div class="row" style="margin-left: 12px;">
+					<button class="btn btn-info" type="button" id="exportcsv-historiccanvispersonal" title="<fmt:message key="descarregar" />"
+						onclick="downloadDataFromTable('#historic-canvis-personal-table', 'historic_canvisdepersonal_${__theForm.lloc.codiLlocPropi}.csv')">
+						<i class="fas fa-file-csv"></i>
+					</button>
 				</div>
 			</c:if>
 		</div>	

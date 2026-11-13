@@ -44,6 +44,8 @@ public interface ActivitatLogicaService extends ActivitatService {
 
 	public Fitxer documentImprimible(String identificador) throws IOException, FileNotFoundException, ArxiuException;
 
+	public byte[] obtenirDocumentConsentiment(String idActuacioTramitFh) throws I18NException, ArxiuException;
+
 	public Activitat createIupdate(Activitat activitatAcrear, Activitat activitatAactualitzar) throws I18NException;
 
 	public Activitat registraNovaActivitat(String language, ActivitatValidator<Activitat> validator,

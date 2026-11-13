@@ -389,6 +389,27 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 		}
 	}
 
+	@Override
+	public byte[] obtenirDocumentConsentiment(String idActuacioTramitFh) throws I18NException, ArxiuException {
+		List<Activitat> activitats = select(Where.AND(
+				ActivitatFields.IDACTUACIOTRAMIT.equal(idActuacioTramitFh),
+				ActivitatFields.TIPUS.equal(RegistreActivitatTipus.TRAMIT.getValue()),
+				ActivitatFields.ESTAT.equal(ActivitatEstat.ACABAT.getValue())));
+
+		if (activitats == null) {
+			return null;
+		}
+
+		for (Activitat activitat : activitats) {
+			if (StringUtils.isNotEmpty(activitat.getArxiuDocumentID())) {
+				DocumentContingut document = pluginArxiu.documentImprimible(activitat.getArxiuDocumentID());
+				return document != null ? document.getContingut() : null;
+			}
+		}
+
+		return null;
+	}
+
 	private Fitxer guardaDocumentImprimible(File file, String fileMime) throws I18NException {
 		Fitxer fitxer = new FitxerJPA();
 		fitxer.setNom(file.getName());

@@ -23,11 +23,13 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.log4j.Logger;
@@ -283,5 +285,50 @@ public class RegistreActivitatFuncionariService extends RestUtils {
 			log.error(msg, th);
 			throw new RestException(msg, th, Status.INTERNAL_SERVER_ERROR);
 		}
+	}
+
+	@Path("/consentiment")
+	@GET
+	@RolesAllowed({ Constants.RFH_WS })
+	@SecurityRequirement(name = RegistreActivitatFuncionariService.SECURITY_NAME)
+	@Produces("application/pdf")
+	@Operation(tags = {
+			RegistreActivitatFuncionariService.TAG_NAME }, operationId = "obtenirDocumentConsentiment", summary = "Obté el document de consentiment d'un tràmit finalitzat")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Document de consentiment en format PDF.", content = {
+					@Content(mediaType = "application/pdf", schema = @Schema(type = "string", format = "binary")) }),
+			@ApiResponse(responseCode = "400", description = "Identificador de tràmit incorrecte"),
+			@ApiResponse(responseCode = "404", description = "No s'ha trobat el document de consentiment"),
+			@ApiResponse(responseCode = "401", description = "No Autenticat"),
+			@ApiResponse(responseCode = "403", description = "No Autoritzat"),
+			@ApiResponse(responseCode = "500", description = "Error no controlat") })
+	public Response obtenirDocumentConsentiment(
+			@Parameter(name = "language", description = "Idioma dels missatges d'error (ca o es)", in = ParameterIn.QUERY, required = false, schema = @Schema(defaultValue = "ca", implementation = String.class)) @QueryParam("language") String language,
+			@Parameter(description = "Identificador d'actuació del tràmit generat per RFHab", required = true, example = "123e4567-e89b-12d3-a456-426614174000") @QueryParam("idactuaciotramitfh") @NotNull String idActuacioTramitFh) {
+		if (idActuacioTramitFh == null || idActuacioTramitFh.trim().isEmpty()) {
+			return Response.status(Status.BAD_REQUEST).build();
+		}
+
+		if (language == null || language.isEmpty()) {
+			language = "ca";
+		}
+
+		byte[] document;
+		try {
+			document = activitatEjb.obtenirDocumentConsentiment(idActuacioTramitFh);
+		} catch (Exception e) {
+			String msg = I18NLogicUtilsApiInterna.tradueix(new Locale(language), "activitat.error.desconegut",
+					new String[] { e.getMessage() });
+			log.error(msg, e);
+			throw new RestException(msg, e, Status.INTERNAL_SERVER_ERROR);
+		}
+
+		if (document == null) {
+			return Response.status(Status.NOT_FOUND).build();
+		}
+
+		return Response.ok(document, "application/pdf")
+				.header("Content-Disposition", "inline; filename=\"consentiment.pdf\"")
+				.build();
 	}
 }

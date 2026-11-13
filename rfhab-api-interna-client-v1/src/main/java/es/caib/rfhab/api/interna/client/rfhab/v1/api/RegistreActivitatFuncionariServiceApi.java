@@ -7,6 +7,7 @@ import es.caib.rfhab.api.interna.client.rfhab.v1.services.Pair;
 
 import javax.ws.rs.core.GenericType;
 
+import java.io.File;
 import es.caib.rfhab.api.interna.client.rfhab.v1.model.RestExceptionInfo;
 
 import java.util.ArrayList;
@@ -34,6 +35,52 @@ public class RegistreActivitatFuncionariServiceApi {
     this.apiClient = apiClient;
   }
 
+  /**
+   * Obté el document de consentiment d&#39;un tràmit finalitzat
+   * 
+   * @param idactuaciotramitfh Identificador d&#39;actuació del tràmit generat per RFHab (required)
+   * @param language Idioma dels missatges d&#39;error (ca o es) (optional, default to ca)
+   * @return a {@code File}
+   * @throws ApiException if fails to make API call
+   */
+  public File obtenirDocumentConsentiment(String idactuaciotramitfh, String language) throws ApiException {
+    Object localVarPostBody = null;
+    
+    // verify the required parameter 'idactuaciotramitfh' is set
+    if (idactuaciotramitfh == null) {
+      throw new ApiException(400, "Missing the required parameter 'idactuaciotramitfh' when calling obtenirDocumentConsentiment");
+    }
+    
+    // create path and map variables
+    String localVarPath = "/secure/activitat/consentiment".replaceAll("\\{format\\}","json");
+
+    // query params
+    List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    Map<String, String> localVarCookieParams = new HashMap<String, String>();
+    Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "language", language));
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "idactuaciotramitfh", idactuaciotramitfh));
+
+    
+    
+    
+    final String[] localVarAccepts = {
+      "application/pdf"
+    };
+    final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+
+    final String[] localVarContentTypes = {
+      
+    };
+    final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+    String[] localVarAuthNames = new String[] { "BasicAuth" };
+
+    GenericType<File> localVarReturnType = new GenericType<File>() {};
+    return apiClient.invokeAPI(localVarPath, "GET", localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localVarReturnType);
+      }
   /**
    * Registra una activiat d&#39;un funcionari
    * 

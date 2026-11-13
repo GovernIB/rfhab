@@ -4,8 +4,86 @@ All URIs are relative to */rfhabapi/interna*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
+| [**obtenirDocumentConsentiment**](RegistreActivitatFuncionariServiceApi.md#obtenirDocumentConsentiment) | **GET** /secure/activitat/consentiment | Obté el document de consentiment d&#39;un tràmit finalitzat |
 | [**registreActivitat**](RegistreActivitatFuncionariServiceApi.md#registreActivitat) | **POST** /secure/activitat/registre | Registra una activiat d&#39;un funcionari |
 
+
+
+## obtenirDocumentConsentiment
+
+> File obtenirDocumentConsentiment(idactuaciotramitfh, language)
+
+Obté el document de consentiment d&#39;un tràmit finalitzat
+
+### Example
+
+```java
+// Import classes:
+import es.caib.rfhab.api.interna.client.rfhab.v1.services.ApiClient;
+import es.caib.rfhab.api.interna.client.rfhab.v1.services.ApiException;
+import es.caib.rfhab.api.interna.client.rfhab.v1.services.Configuration;
+import es.caib.rfhab.api.interna.client.rfhab.v1.services.auth.*;
+import es.caib.rfhab.api.interna.client.rfhab.v1.services.models.*;
+import es.caib.rfhab.api.interna.client.rfhab.v1.api.RegistreActivitatFuncionariServiceApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("/rfhabapi/interna");
+        
+        // Configure HTTP basic authorization: BasicAuth
+        HttpBasicAuth BasicAuth = (HttpBasicAuth) defaultClient.getAuthentication("BasicAuth");
+        BasicAuth.setUsername("YOUR USERNAME");
+        BasicAuth.setPassword("YOUR PASSWORD");
+
+        RegistreActivitatFuncionariServiceApi apiInstance = new RegistreActivitatFuncionariServiceApi(defaultClient);
+        String idactuaciotramitfh = "123e4567-e89b-12d3-a456-426614174000"; // String | Identificador d'actuació del tràmit generat per RFHab
+        String language = "ca"; // String | Idioma dels missatges d'error (ca o es)
+        try {
+            File result = apiInstance.obtenirDocumentConsentiment(idactuaciotramitfh, language);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling RegistreActivitatFuncionariServiceApi#obtenirDocumentConsentiment");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **idactuaciotramitfh** | **String**| Identificador d&#39;actuació del tràmit generat per RFHab | |
+| **language** | **String**| Idioma dels missatges d&#39;error (ca o es) | [optional] [default to ca] |
+
+### Return type
+
+[**File**](File.md)
+
+### Authorization
+
+[BasicAuth](../README.md#BasicAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/pdf
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Document de consentiment en format PDF. |  -  |
+| **400** | Identificador de tràmit incorrecte |  -  |
+| **404** | No s&#39;ha trobat el document de consentiment |  -  |
+| **401** | No Autenticat |  -  |
+| **403** | No Autoritzat |  -  |
+| **500** | Error no controlat |  -  |
 
 
 ## registreActivitat

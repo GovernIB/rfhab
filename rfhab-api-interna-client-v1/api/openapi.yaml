@@ -33,6 +33,53 @@ tags:
 - description: Registrar i edita un lloc nou
   name: LlocRestService
 paths:
+  /secure/activitat/consentiment:
+    get:
+      operationId: obtenirDocumentConsentiment
+      parameters:
+      - description: Idioma dels missatges d'error (ca o es)
+        explode: true
+        in: query
+        name: language
+        required: false
+        schema:
+          default: ca
+          type: string
+        style: form
+      - description: Identificador d'actuació del tràmit generat per RFHab
+        example: 123e4567-e89b-12d3-a456-426614174000
+        explode: true
+        in: query
+        name: idactuaciotramitfh
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/pdf:
+              schema:
+                format: binary
+                type: string
+          description: Document de consentiment en format PDF.
+        "400":
+          description: Identificador de tràmit incorrecte
+        "404":
+          description: No s'ha trobat el document de consentiment
+        "401":
+          description: No Autenticat
+        "403":
+          description: No Autoritzat
+        "500":
+          description: Error no controlat
+      security:
+      - BasicAuth: []
+      summary: Obté el document de consentiment d'un tràmit finalitzat
+      tags:
+      - RegistreActivitatFuncionariService
+      x-accepts:
+      - application/pdf
   /secure/activitat/registre:
     post:
       operationId: registreActivitat

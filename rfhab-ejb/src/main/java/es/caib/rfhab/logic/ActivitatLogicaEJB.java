@@ -392,9 +392,10 @@ public class ActivitatLogicaEJB extends ActivitatEJB implements ActivitatLogicaS
 	@Override
 	public byte[] obtenirDocumentConsentiment(String idActuacioTramitFh) throws I18NException, ArxiuException {
 		List<Activitat> activitats = select(Where.AND(
-				ActivitatFields.IDACTUACIOTRAMIT.equal(idActuacioTramitFh),
-				ActivitatFields.TIPUS.equal(RegistreActivitatTipus.TRAMIT.getValue()),
-				ActivitatFields.ESTAT.equal(ActivitatEstat.ACABAT.getValue())));
+				ActivitatFields.IDACTUACIOTRAMIT.equal(idActuacioTramitFh)
+			));//TODO: consulta 220
+				// ActivitatFields.TIPUS.equal(RegistreActivitatTipus.TRAMIT.getValue()),
+				// ActivitatFields.ESTAT.equal(ActivitatEstat.ACABAT.getValue())));
 
 		if (activitats == null) {
 			return null;

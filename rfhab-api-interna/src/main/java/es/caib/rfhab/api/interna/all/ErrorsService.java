@@ -26,7 +26,7 @@ public class ErrorsService extends RestUtils {
     @Path("/error401")
     @GET
     @POST
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces({ MediaType.APPLICATION_JSON, "*/*" })
     public Response error401(@Context
     HttpServletRequest request) {
 
@@ -46,13 +46,13 @@ public class ErrorsService extends RestUtils {
         RestExceptionInfo rei = new RestExceptionInfo();
         rei.setErrorMessage(msg);
         rei.setCode(Status.UNAUTHORIZED.getStatusCode());
-        return Response.status(Status.UNAUTHORIZED).entity(rei).build();
+        return Response.status(Status.UNAUTHORIZED).type(MediaType.APPLICATION_JSON).entity(rei).build();
     }
 
     @Path("/error403")
     @GET
     @POST
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces({ MediaType.APPLICATION_JSON, "*/*" })
     public Response error403(@Context
     HttpServletRequest request) {
 
@@ -72,7 +72,7 @@ public class ErrorsService extends RestUtils {
         RestExceptionInfo rei = new RestExceptionInfo();
         rei.setErrorMessage(msg);
         rei.setCode(Status.FORBIDDEN.getStatusCode());
-        return Response.status(Status.FORBIDDEN).entity(rei).build();
+        return Response.status(Status.FORBIDDEN).type(MediaType.APPLICATION_JSON).entity(rei).build();
     }
 
 }

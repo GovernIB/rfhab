@@ -116,7 +116,14 @@ public class ScanWebLogicaEJB extends ScanWebEJB implements ScanWebLogicaService
 			String escaneigFileInfo, String escaneigMetadades, String escaneigMissatge, long escaneigStatus,
 			String escaneigSignedFileInfo, long entitatId, long usuariId) throws I18NException {
 		Fitxer fitxer = new FitxerJPA();
-		fitxer.setNom(file.getName());
+		String nomFitxer = file.getName();
+		// String extensio = "";
+		// int punt = nomFitxer.lastIndexOf('.');
+		// if (punt >= 0) {
+		// 	extensio = nomFitxer.substring(punt);
+		// }
+		// fitxer.setNom("Consentiment" + extensio);
+		fitxer.setNom(nomFitxer);
 		fitxer.setDescripcio(null);
 		fitxer.setMime(fileMime);// això sempre hauria de ser un mime tipus "application/pdf"
 		fitxer.setTamany(file.length());

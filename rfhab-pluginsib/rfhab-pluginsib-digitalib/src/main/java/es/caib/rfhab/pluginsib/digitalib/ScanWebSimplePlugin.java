@@ -123,7 +123,7 @@ public class ScanWebSimplePlugin implements IScanWebSimplePlugin {
 				final int view = CONSTANTS.getMassiveScanWebSimpleGetTransactionIdRequestVIEWIFRAME();
 				// CONSTANTS.getMassiveScanWebSimpleGetTransactionIdRequestVIEWFULLSCREEN()
 
-				final String transactionName = "Transaccio " + System.currentTimeMillis();
+				final String transactionName = "Consentiment_" + System.currentTimeMillis();
 
 				MassiveScanWebSimpleGetTransactionIdRequest transacctionIdRequest;
 

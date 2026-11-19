@@ -1,4 +1,4 @@
-﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" import="es.caib.rfhab.commons.utils.Configuracio,es.caib.rfhab.commons.utils.Constants"%>
 <%@ include file="/WEB-INF/jsp/moduls/includes.jsp"%>
 
@@ -191,6 +191,10 @@ button[disabled][type="submit"] {
 						<div class="col-12 col-lg-10 col-xl-8">
 
 							<h2>1 <fmt:message key="usuari.tramit.dades.titol" /></h2>
+							<p class="text-muted">
+								<span class="text-danger" aria-hidden="true">*</span>
+								<fmt:message key="info.camp.obligatori" />
+							</p>
 
 							<div class="form-group">
 								<label for="pas1_nom"><fmt:message key="usuari.tramit.dades.nom" />*</label>
@@ -550,6 +554,10 @@ button[disabled][type="submit"] {
 						<div class="col-12 col-lg-10 col-xl-8">
 
 							<h2>3 <fmt:message key="usuari.tramit.documentacio.titol" /></h2>
+							<p class="alert alert-info">
+								<i class="fa fa-info-circle" aria-hidden="true"></i>
+								<fmt:message key="usuari.tramit.documentacio.informacio" />
+							</p>
 
 							<div class="form-group pdfVisor">
 								<div class="col-12 flex-childs-centered" style="display: none; min-height: 325px; max-height: 44.5vh;" id="spinner-carregant-iframepdf">

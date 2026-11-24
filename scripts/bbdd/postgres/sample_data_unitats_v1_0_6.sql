@@ -1,0 +1,4 @@
+-- noves subàrees que penjen de l'agència
+INSERT INTO RFH_UNITAT(unitatid, codi, versio, denominacio, cooficial, arrel, superior, estat, superiorversio, arrelversio) VALUES(850, 'A04055775', 1, 'Área de Servicios Funcionales y Soporte Institucional', 'Àrea de Serveis Funcionals i Suport Institucional', 'A04003003', 'A04027051', 'V', 4, 0);
+INSERT INTO RFH_UNITAT(unitatid, codi, versio, denominacio, cooficial, arrel, superior, estat, superiorversio, arrelversio) VALUES(851, 'A04055776', 2, 'Área de Inovación, Datos i Soluciones de Negocio', 'Àrea d''Innovació, Dades i Solucions de Negoci', 'A04003003', 'A04027051', 'V', 4, 0);
+INSERT INTO RFH_UNITAT(unitatid, codi, versio, denominacio, cooficial, arrel, superior, estat, superiorversio, arrelversio) VALUES(852, 'A04055777', 1, 'Área de Tecnología Transversal i Ciberseguridad', 'Àrea de Tecnologia Transversal i Ciberseguretat', 'A04003003', 'A04027051', 'V', 4, 0);

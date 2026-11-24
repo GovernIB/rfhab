@@ -179,7 +179,7 @@ public class FuncionariRestService extends RestUtils {
 			@Parameter(description = "Usuari del funcionari", required = true, example = "", array = @ArraySchema(schema = @Schema(type = "string"))) @QueryParam("usuari") String usuari,
 			@Parameter(description = "Habilitació", required = true, example = "COPIA", array = @ArraySchema(schema = @Schema(type = "string"))) @QueryParam("habilitacio") String habilitacio,
 			@Parameter(description = "Codi de la entitat", required = true, example = "", array = @ArraySchema(schema = @Schema(type = "string"))) @QueryParam("entitat") String entitat) {
-		return comprovarHabilitacioFuncionari(usuari, habilitacio, entitat);
+		return comprovarHabilitacioFuncionari(usuari, null, habilitacio, entitat);
 	}
 
 	@Path("/habilitat/copiaautentica")
@@ -203,7 +203,8 @@ public class FuncionariRestService extends RestUtils {
 					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = RestExceptionInfo.class)) }), })
 	public boolean esFuncionariHabilitatCopiaAutentica(
 
-			@Parameter(description = "Usuari del funcionari", required = true, example = "usuari", array = @ArraySchema(schema = @Schema(type = "string"))) @QueryParam("usuari") String usuari,
+			@Parameter(description = "Usuari del funcionari", required = false, example = "usuari", schema = @Schema(type = "string")) @QueryParam("usuari") String usuari,
+			@Parameter(description = "NIF o NIE del funcionari", required = false, example = "12345678A", schema = @Schema(type = "string")) @QueryParam("identificador") String identificador,
 			@Parameter(description = "Codi de la entitat", required = true, example = "A04003003", array = @ArraySchema(schema = @Schema(type = "string"))) @QueryParam("entitat") String entitat) {
 
 		String habilitacio;
@@ -218,12 +219,14 @@ public class FuncionariRestService extends RestUtils {
 			throw new RestException("No s'ha trobat el codi de l'habilitació COPIA AUTÈNTICA",
 					Status.INTERNAL_SERVER_ERROR);
 		}
-		return comprovarHabilitacioFuncionari(usuari, habilitacio, entitat);
+		return comprovarHabilitacioFuncionari(usuari, identificador, habilitacio, entitat);
 	}
 
-	private boolean comprovarHabilitacioFuncionari(String usuari, String habilitacio, String entitat) {
-		if (StringUtils.isEmpty(usuari)) {
-			throw new RestException("Cal indicar el nom del usuari del funcionari o funcionària", Status.BAD_REQUEST);
+	private boolean comprovarHabilitacioFuncionari(String usuari, String identificador, String habilitacio,
+			String entitat) {
+		if (StringUtils.isEmpty(usuari) && StringUtils.isEmpty(identificador)) {
+			throw new RestException("Cal indicar l'usuari o l'identificador del funcionari o funcionària",
+					Status.BAD_REQUEST);
 		}
 
 		if (StringUtils.isEmpty(habilitacio)) {
@@ -243,7 +246,9 @@ public class FuncionariRestService extends RestUtils {
 		}
 
 		try {
-			return funcionariEjb.isFuncionariHabilitat(usuari, habilitacio, entitatId);
+			return funcionariEjb.isFuncionariHabilitat(usuari, identificador, habilitacio, entitatId);
+		} catch (I18NException e) {
+			throw new RestException(e.getMessage(), e, Status.BAD_REQUEST);
 		} catch (Exception e) {
 			String msg = "Error consultant les habilitacions d'un funcionari";
 			log.error(msg, e);

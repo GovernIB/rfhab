@@ -171,7 +171,7 @@ public class Example {
 
 ## funcionariIsHabilitatCopiaAutentica
 
-> Boolean funcionariIsHabilitatCopiaAutentica(usuari, entitat)
+> Boolean funcionariIsHabilitatCopiaAutentica(entitat, usuari, identificador)
 
 Comprova si un/a funcionari/ària està habilitat/da per a fer còpies autèntiques
 
@@ -197,10 +197,11 @@ public class Example {
         BasicAuth.setPassword("YOUR PASSWORD");
 
         FuncionariRestServiceApi apiInstance = new FuncionariRestServiceApi(defaultClient);
-        List<String> usuari = Arrays.asList(); // List<String> | Usuari del funcionari
         List<String> entitat = Arrays.asList(); // List<String> | Codi de la entitat
+        String usuari = "usuari"; // String | Usuari del funcionari
+        String identificador = "12345678A"; // String | NIF o NIE del funcionari
         try {
-            Boolean result = apiInstance.funcionariIsHabilitatCopiaAutentica(usuari, entitat);
+            Boolean result = apiInstance.funcionariIsHabilitatCopiaAutentica(entitat, usuari, identificador);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling FuncionariRestServiceApi#funcionariIsHabilitatCopiaAutentica");
@@ -218,8 +219,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **usuari** | [**List&lt;String&gt;**](String.md)| Usuari del funcionari | |
 | **entitat** | [**List&lt;String&gt;**](String.md)| Codi de la entitat | |
+| **usuari** | **String**| Usuari del funcionari | [optional] |
+| **identificador** | **String**| NIF o NIE del funcionari | [optional] |
 
 ### Return type
 

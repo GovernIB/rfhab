@@ -65,7 +65,7 @@ public interface FuncionariLogicaService extends FuncionariService {
 	public boolean isFuncionariHabilitat(FuncionariJPA funcionari, List<String> codiHabilitacions, Long entitatId)
 			throws I18NException;
 
-	public boolean isFuncionariHabilitat(String usuari, String codiHabilitacio, Long entitatId)
+	public boolean isFuncionariHabilitat(String usuari, String identificador, String codiHabilitacio, Long entitatId)
 			throws I18NException;
 
 	public void checkIsFuncionariHabilitat(String language, Funcionari funcionari, List<String> codiHabilitacions,

@@ -178,8 +178,8 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 	public boolean isFuncionariHabilitat(FuncionariJPA funcionari, List<String> codiHabilitacions, Long entitatId)
 			throws I18NException {
 
-		//TODO ENTITATID
-		
+		// TODO ENTITATID
+
 		for (String codiHabilitacio : codiHabilitacions) {
 			Habilitacio habilitacioTrobada = habilitacioLogicaEjb.findByCodiIfuncionari(codiHabilitacio, funcionari);
 			if (habilitacioTrobada == null) {
@@ -192,28 +192,33 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 
 	@Override
 	@PermitAll
-	public boolean isFuncionariHabilitat(String usuari, String codiHabilitacio, Long entitatId)
+	public boolean isFuncionariHabilitat(String usuari, String identificador, String codiHabilitacio, Long entitatId)
 			throws I18NException {
-		if (usuari == null || usuari.isEmpty() || codiHabilitacio == null || codiHabilitacio.isEmpty()
+		boolean cercarPerUsuari = usuari != null && !usuari.isEmpty();
+		boolean cercarPerIdentificador = identificador != null && !identificador.isEmpty();
+		if ((!cercarPerUsuari && !cercarPerIdentificador) || codiHabilitacio == null || codiHabilitacio.isEmpty()
 				|| entitatId == null) {
 			return false;
 		}
 
-		Where condicioFuncionari = Where.AND(FuncionariFields.USUARI.equal(usuari),
-				FuncionariFields.ENTITATID.equal(entitatId));
-		List<Long> funcionariIds = executeQuery(FuncionariFields.FUNCIONARIID, condicioFuncionari);
-		if (funcionariIds == null || funcionariIds.isEmpty()) {
+		FuncionariJPA funcionariPerUsuari = cercarPerUsuari ? findByUsuari(usuari, entitatId) : null;
+		FuncionariJPA funcionariPerIdentificador = cercarPerIdentificador
+				? findByNif(identificador, entitatId)
+				: null;
+
+		if (cercarPerUsuari && cercarPerIdentificador
+				&& (funcionariPerUsuari == null || funcionariPerIdentificador == null
+						|| funcionariPerUsuari.getFuncionariID() != funcionariPerIdentificador
+								.getFuncionariID())) {
+			throw new I18NException("L'usuari i l'identificador no corresponen al mateix funcionari");
+		}
+
+		FuncionariJPA funcionari = cercarPerUsuari ? funcionariPerUsuari : funcionariPerIdentificador;
+		if (funcionari == null) {
 			return false;
 		}
 
-		for (Long funcionariId : funcionariIds) {
-			FuncionariJPA funcionari = findByPrimaryKey(funcionariId);
-			if (isFuncionariHabilitatActualment(funcionari, codiHabilitacio)) {
-				return true;
-			}
-		}
-
-		return false;
+		return isFuncionariHabilitatActualment(funcionari, codiHabilitacio);
 	}
 
 	private boolean isFuncionariHabilitatActualment(FuncionariJPA funcionari, String codiHabilitacio)
@@ -262,7 +267,8 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 			// IN Operator vs IN (SELECT). És a dir, SubQuery seria una SubQuery normal i
 			// corrent de SQL, molt més eficient en aquest cas.
 			SubQuery<FuncionariLloc, Long> subQuery;
-			subQuery = funcionariLlocLogicaEjb.getSubQuery(FuncionariLlocFields.FUNCIONARIID, funcionariLlocLogicaEjb.getWhereFuncionariIsCurrent(whereLloc));
+			subQuery = funcionariLlocLogicaEjb.getSubQuery(FuncionariLlocFields.FUNCIONARIID,
+					funcionariLlocLogicaEjb.getWhereFuncionariIsCurrent(whereLloc));
 			// List<Long> fFuncIds =
 			// funcionariLlocLogicaEjb.executeQuery(FuncionariLlocFields.FUNCIONARIID,
 			// whereLloc);
@@ -536,15 +542,48 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 		return FuncionariLogicaEJB.findByNif(this, nif);
 	}
 
+	private FuncionariJPA findByNif(String nif, Long entitatId) throws I18NException {
+		return FuncionariLogicaEJB.findByNif(this, nif, entitatId);
+	}
+
 	public static FuncionariJPA findByNif(IFuncionariManager fm, String nif) throws I18NException {
-		List<Funcionari> funcionaris = fm.select(Where.OR(FuncionariFields.IDENTIFICADOR.equal(nif),
+		return findByNif(fm, nif, null);
+	}
+
+	private static FuncionariJPA findByNif(IFuncionariManager fm, String nif, Long entitatId)
+			throws I18NException {
+		Where condicio = Where.OR(FuncionariFields.IDENTIFICADOR.equal(nif),
 				FuncionariFields.IDENTIFICADOR.equal(nif.toUpperCase()),
-				FuncionariFields.IDENTIFICADOR.equal(nif.toLowerCase())));
+				FuncionariFields.IDENTIFICADOR.equal(nif.toLowerCase()));
+		if (entitatId != null) {
+			condicio = Where.AND(condicio, FuncionariFields.ENTITATID.equal(entitatId));
+		}
+		return findByIdentificacio(fm, condicio, nif);
+	}
+
+	private FuncionariJPA findByUsuari(String usuari, Long entitatId) throws I18NException {
+		return FuncionariLogicaEJB.findByUsuari(this, usuari, entitatId);
+	}
+
+	private static FuncionariJPA findByUsuari(IFuncionariManager fm, String usuari, Long entitatId)
+			throws I18NException {
+		Where condicio = Where.OR(FuncionariFields.USUARI.equal(usuari),
+				FuncionariFields.USUARI.equal(usuari.toUpperCase()),
+				FuncionariFields.USUARI.equal(usuari.toLowerCase()));
+		if (entitatId != null) {
+			condicio = Where.AND(condicio, FuncionariFields.ENTITATID.equal(entitatId));
+		}
+		return findByIdentificacio(fm, condicio, usuari);
+	}
+
+	private static FuncionariJPA findByIdentificacio(IFuncionariManager fm, Where condicio, String valor)
+			throws I18NException {
+		List<Funcionari> funcionaris = fm.select(condicio);
 		if (funcionaris == null || funcionaris.size() == 0) {
 			return null;
 		}
 		if (funcionaris.size() > 1) {
-			throw new I18NException("funcionari.error.mesdun", nif);
+			throw new I18NException("funcionari.error.mesdun", valor);
 		}
 		return (FuncionariJPA) funcionaris.get(0);
 	}
@@ -552,16 +591,7 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 	@Override
 	@PermitAll
 	public FuncionariJPA findByUsuari(String usuari) throws I18NException {
-		List<Funcionari> funcionaris = select(Where.OR(FuncionariFields.USUARI.equal(usuari),
-				FuncionariFields.USUARI.equal(usuari.toUpperCase()),
-				FuncionariFields.USUARI.equal(usuari.toLowerCase())));
-		if (funcionaris == null || funcionaris.size() == 0) {
-			return null;
-		}
-		if (funcionaris.size() > 1) {
-			throw new I18NException("funcionari.error.mesdun", usuari);
-		}
-		return (FuncionariJPA) funcionaris.get(0);
+		return FuncionariLogicaEJB.findByUsuari(this, usuari, null);
 	}
 
 	@Override
@@ -638,7 +668,8 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 		if (!llocActiu) {
 			String errorLlocNoActiu = I18NCommonUtils.tradueix(new Locale(language),
 					"funcionari.error.llocnoactiu",
-					new String[] { identificadorPerError, llocsNoActiusOcupatsPerFuncionari.get(0).getCodiLlocPropi() });
+					new String[] { identificadorPerError,
+							llocsNoActiusOcupatsPerFuncionari.get(0).getCodiLlocPropi() });
 			log.error(errorLlocNoActiu);
 			throw new I18NException(errorLlocNoActiu);
 		}

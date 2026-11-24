@@ -333,11 +333,18 @@ paths:
         explode: true
         in: query
         name: usuari
-        required: true
+        required: false
         schema:
-          items:
-            type: string
-          type: array
+          type: string
+        style: form
+      - description: NIF o NIE del funcionari
+        example: 12345678A
+        explode: true
+        in: query
+        name: identificador
+        required: false
+        schema:
+          type: string
         style: form
       - description: Codi de la entitat
         example: A04003003

@@ -155,18 +155,14 @@ public class FuncionariRestServiceApi {
   /**
    * Comprova si un/a funcionari/ària està habilitat/da per a fer còpies autèntiques
    * 
-   * @param usuari Usuari del funcionari (required)
    * @param entitat Codi de la entitat (required)
+   * @param usuari Usuari del funcionari (optional)
+   * @param identificador NIF o NIE del funcionari (optional)
    * @return a {@code Boolean}
    * @throws ApiException if fails to make API call
    */
-  public Boolean funcionariIsHabilitatCopiaAutentica(List<String> usuari, List<String> entitat) throws ApiException {
+  public Boolean funcionariIsHabilitatCopiaAutentica(List<String> entitat, String usuari, String identificador) throws ApiException {
     Object localVarPostBody = null;
-    
-    // verify the required parameter 'usuari' is set
-    if (usuari == null) {
-      throw new ApiException(400, "Missing the required parameter 'usuari' when calling funcionariIsHabilitatCopiaAutentica");
-    }
     
     // verify the required parameter 'entitat' is set
     if (entitat == null) {
@@ -182,7 +178,8 @@ public class FuncionariRestServiceApi {
     Map<String, String> localVarCookieParams = new HashMap<String, String>();
     Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    localVarQueryParams.addAll(apiClient.parameterToPairs("multi", "usuari", usuari));
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "usuari", usuari));
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "identificador", identificador));
     localVarQueryParams.addAll(apiClient.parameterToPairs("multi", "entitat", entitat));
 
     

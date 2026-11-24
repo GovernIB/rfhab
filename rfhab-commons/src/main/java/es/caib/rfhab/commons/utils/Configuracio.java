@@ -121,7 +121,8 @@ public class Configuracio implements Constants {
     }
 
     public static boolean getAmagarAssistentTramits() {
-        return "true".equalsIgnoreCase(getAppProperties().getProperty(RFHAB_PROPERTY_BASE + "amagarAssistentTramits", "false"));
+        return "true".equalsIgnoreCase(
+                getAppProperties().getProperty(RFHAB_PROPERTY_BASE + "amagarAssistentTramits", "false"));
     }
 
     public static String getAppEmail() {
@@ -320,6 +321,10 @@ public class Configuracio implements Constants {
         return properties.getProperty(CARREGADORMASSIU_PROPERTY_BASE + "entitatcarregadorid");
     }
 
+    public static String getHabilitacioCopiaAutenticaCodi() {
+        return getAppProperties().getProperty(RFHAB_PROPERTY_BASE + "habilitacio.copiaautenticacodi");
+    }
+
     public static int getArxiuTancamentExpedientsSchedulerHora() {
         final int defaultValue = ARXIU_TANCAMENT_EXPEDIENTS_SCHEDULER_HORA_DEFECTE;
         int value = getIntAppSystemProperty(RFHAB_PROPERTY_BASE + "arxiu.tancarexpedient.scheduler.hora", defaultValue);
@@ -333,7 +338,8 @@ public class Configuracio implements Constants {
 
     public static int getArxiuTancamentExpedientsSchedulerNhores() {
         final int defaultValue = ARXIU_TANCAMENT_EXPEDIENTS_SCHEDULER_NHORES_DEFECTE;
-        int value = getIntAppSystemProperty(RFHAB_PROPERTY_BASE + "arxiu.tancarexpedient.scheduler.nhores", defaultValue);
+        int value = getIntAppSystemProperty(RFHAB_PROPERTY_BASE + "arxiu.tancarexpedient.scheduler.nhores",
+                defaultValue);
         if (value < 1 || value > 24) {
             LOG.warn("Nombre d'hores de scheduler fora de rang [1..24] (" + value + "), emprant valor per defecte "
                     + defaultValue);

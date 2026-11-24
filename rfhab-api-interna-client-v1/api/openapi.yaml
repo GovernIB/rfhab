@@ -251,6 +251,144 @@ paths:
       x-content-type: application/json
       x-accepts:
       - application/json
+  /secure/funcionari/habilitat:
+    get:
+      operationId: FuncionariIsHabilitat
+      parameters:
+      - description: Usuari del funcionari
+        explode: true
+        in: query
+        name: usuari
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Habilitació
+        example: COPIA
+        explode: true
+        in: query
+        name: habilitacio
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Codi de la entitat
+        explode: true
+        in: query
+        name: entitat
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: boolean
+          description: Operació realitzada correctament
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestExceptionInfo'
+          description: Paràmetres incorrectes
+        "401":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: No Autenticat
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: No Autoritzat
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestExceptionInfo'
+          description: Error no controlat
+      security:
+      - BasicAuth: []
+      summary: Consulta si un/a funcionari/ària te associades determinades habilitacions
+      tags:
+      - FuncionariRestService
+      x-accepts:
+      - application/json
+  /secure/funcionari/habilitat/copiaautentica:
+    get:
+      operationId: FuncionariIsHabilitatCopiaAutentica
+      parameters:
+      - description: Usuari del funcionari
+        example: usuari
+        explode: true
+        in: query
+        name: usuari
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - description: Codi de la entitat
+        example: A04003003
+        explode: true
+        in: query
+        name: entitat
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: boolean
+          description: Operació realitzada correctament
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestExceptionInfo'
+          description: Paràmetres incorrectes
+        "401":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: No Autenticat
+        "403":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: No Autoritzat
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestExceptionInfo'
+          description: Error no controlat
+      security:
+      - BasicAuth: []
+      summary: Comprova si un/a funcionari/ària està habilitat/da per a fer còpies
+        autèntiques
+      tags:
+      - FuncionariRestService
+      x-accepts:
+      - application/json
   /secure/funcionari/habilitacions:
     get:
       operationId: Habilitacions
@@ -403,79 +541,6 @@ paths:
       security:
       - BasicAuth: []
       summary: Comprobar si un funcionari té permís per realitzar un trámit
-      tags:
-      - FuncionariRestService
-      x-accepts:
-      - application/json
-  /secure/funcionari/habilitat:
-    get:
-      operationId: ObtenirHabilitacionsFuncionari
-      parameters:
-      - description: Usuari del funcionari
-        explode: true
-        in: query
-        name: usuari
-        required: true
-        schema:
-          items:
-            type: string
-          type: array
-        style: form
-      - description: Habilitació
-        example: COPIA
-        explode: true
-        in: query
-        name: habilitacio
-        required: true
-        schema:
-          items:
-            type: string
-          type: array
-        style: form
-      - description: Codi de la entitat
-        explode: true
-        in: query
-        name: entitat
-        required: true
-        schema:
-          items:
-            type: string
-          type: array
-        style: form
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                type: string
-          description: Operació realitzada correctament
-        "400":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RestExceptionInfo'
-          description: Paràmetres incorrectes
-        "401":
-          content:
-            application/json:
-              schema:
-                type: string
-          description: No Autenticat
-        "403":
-          content:
-            application/json:
-              schema:
-                type: string
-          description: No Autoritzat
-        "500":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RestExceptionInfo'
-          description: Error no controlat
-      security:
-      - BasicAuth: []
-      summary: Obtenir les habilitacions associades a un/a funcionari/ària
       tags:
       - FuncionariRestService
       x-accepts:

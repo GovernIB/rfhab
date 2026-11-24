@@ -178,16 +178,65 @@ public class FuncionariLogicaEJB extends FuncionariEJB implements FuncionariLogi
 	public boolean isFuncionariHabilitat(FuncionariJPA funcionari, List<String> codiHabilitacions, Long entitatId)
 			throws I18NException {
 
-		// TODO ENTITATID
-
-		for (String habilitacio : codiHabilitacions) {
-			Habilitacio habilitacioTrobada = habilitacioLogicaEjb.findByCodiIfuncionari(habilitacio, funcionari);
+		//TODO ENTITATID
+		
+		for (String codiHabilitacio : codiHabilitacions) {
+			Habilitacio habilitacioTrobada = habilitacioLogicaEjb.findByCodiIfuncionari(codiHabilitacio, funcionari);
 			if (habilitacioTrobada == null) {
 				return false;
 			}
 		}
 
 		return true;
+	}
+
+	@Override
+	@PermitAll
+	public boolean isFuncionariHabilitat(String usuari, String codiHabilitacio, Long entitatId)
+			throws I18NException {
+		if (usuari == null || usuari.isEmpty() || codiHabilitacio == null || codiHabilitacio.isEmpty()
+				|| entitatId == null) {
+			return false;
+		}
+
+		Where condicioFuncionari = Where.AND(FuncionariFields.USUARI.equal(usuari),
+				FuncionariFields.ENTITATID.equal(entitatId));
+		List<Long> funcionariIds = executeQuery(FuncionariFields.FUNCIONARIID, condicioFuncionari);
+		if (funcionariIds == null || funcionariIds.isEmpty()) {
+			return false;
+		}
+
+		for (Long funcionariId : funcionariIds) {
+			FuncionariJPA funcionari = findByPrimaryKey(funcionariId);
+			if (isFuncionariHabilitatActualment(funcionari, codiHabilitacio)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private boolean isFuncionariHabilitatActualment(FuncionariJPA funcionari, String codiHabilitacio)
+			throws I18NException {
+		if (funcionari == null) {
+			return false;
+		}
+
+		List<Lloc> llocs = llocLogicaEjb.getLlocByFuncionariID(funcionari.getFuncionariID(), true);
+		if (llocs == null || llocs.isEmpty()) {
+			return false;
+		}
+
+		for (Lloc lloc : llocs) {
+			List<Habilitacio> habilitacions = llocLogicaEjb.getHabilitacionsByLlocID(lloc.getLlocID());
+			for (Habilitacio habilitacio : habilitacions) {
+				if (codiHabilitacio.equalsIgnoreCase(habilitacio.getCodi())) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	@Override

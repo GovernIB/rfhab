@@ -123,8 +123,9 @@ Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *CarregaDadesServiceApi* | [**carregaInicialDades**](docs/CarregaDadesServiceApi.md#carregaInicialDades) | **POST** /secure/carregadades/carregainicial | Carrega inicial de dades
 *FuncionariRestServiceApi* | [**comprobarAutoritzaci**](docs/FuncionariRestServiceApi.md#comprobarAutoritzaci) | **GET** /secure/funcionari/autoritzat | Comprobar si un funcionari té permís per realitzar un trámit
+*FuncionariRestServiceApi* | [**funcionariIsHabilitat**](docs/FuncionariRestServiceApi.md#funcionariIsHabilitat) | **GET** /secure/funcionari/habilitat | Consulta si un/a funcionari/ària te associades determinades habilitacions
+*FuncionariRestServiceApi* | [**funcionariIsHabilitatCopiaAutentica**](docs/FuncionariRestServiceApi.md#funcionariIsHabilitatCopiaAutentica) | **GET** /secure/funcionari/habilitat/copiaautentica | Comprova si un/a funcionari/ària està habilitat/da per a fer còpies autèntiques
 *FuncionariRestServiceApi* | [**habilitacions**](docs/FuncionariRestServiceApi.md#habilitacions) | **GET** /secure/funcionari/habilitacions | Consulta les habilitacions d&#39;un funcionari habilitat
-*FuncionariRestServiceApi* | [**obtenirHabilitacionsFuncionari**](docs/FuncionariRestServiceApi.md#obtenirHabilitacionsFuncionari) | **GET** /secure/funcionari/habilitat | Obtenir les habilitacions associades a un/a funcionari/ària
 *RegistreActivitatFuncionariServiceApi* | [**obtenirDocumentConsentiment**](docs/RegistreActivitatFuncionariServiceApi.md#obtenirDocumentConsentiment) | **GET** /secure/activitat/consentiment | Obté el document de consentiment d&#39;un tràmit finalitzat
 *RegistreActivitatFuncionariServiceApi* | [**registreActivitat**](docs/RegistreActivitatFuncionariServiceApi.md#registreActivitat) | **POST** /secure/activitat/registre | Registra una activiat d&#39;un funcionari
 

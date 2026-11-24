@@ -1,6 +1,7 @@
 package es.caib.rfhab.api.interna.secure.funcionari;
 
 import es.caib.rfhab.api.interna.utils.I18NLogicUtilsApiInterna;
+import es.caib.rfhab.commons.utils.Configuracio;
 import es.caib.rfhab.commons.utils.Constants;
 import es.caib.rfhab.commons.utils.IdentificacioTipus;
 import es.caib.rfhab.commons.utils.IdentificacioTipusValues;
@@ -161,10 +162,10 @@ public class FuncionariRestService extends RestUtils {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Operation(tags = {
-			FuncionariRestService.TAG_NAME }, operationId = "ObtenirHabilitacionsFuncionari", summary = "Obtenir les habilitacions associades a un/a funcionari/ària")
+			FuncionariRestService.TAG_NAME }, operationId = "FuncionariIsHabilitat", summary = "Consulta si un/a funcionari/ària te associades determinades habilitacions")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Operació realitzada correctament", content = {
-					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = String.class)) }),
+					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Boolean.class)) }),
 			@ApiResponse(responseCode = "400", description = "Paràmetres incorrectes", content = {
 					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = RestExceptionInfo.class)) }),
 			@ApiResponse(responseCode = "401", description = "No Autenticat", content = {
@@ -173,87 +174,81 @@ public class FuncionariRestService extends RestUtils {
 					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = String.class)) }),
 			@ApiResponse(responseCode = "500", description = "Error no controlat", content = {
 					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = RestExceptionInfo.class)) }), })
-	public String obtenirHabilitacionsFuncionari(
+	public boolean esFuncionariHabilitat(
 
 			@Parameter(description = "Usuari del funcionari", required = true, example = "", array = @ArraySchema(schema = @Schema(type = "string"))) @QueryParam("usuari") String usuari,
 			@Parameter(description = "Habilitació", required = true, example = "COPIA", array = @ArraySchema(schema = @Schema(type = "string"))) @QueryParam("habilitacio") String habilitacio,
 			@Parameter(description = "Codi de la entitat", required = true, example = "", array = @ArraySchema(schema = @Schema(type = "string"))) @QueryParam("entitat") String entitat) {
+		return comprovarHabilitacioFuncionari(usuari, habilitacio, entitat);
+	}
 
+	@Path("/habilitat/copiaautentica")
+	@GET
+	@RolesAllowed({ Constants.RFH_WS })
+	@SecurityRequirement(name = FuncionariRestService.SECURITY_NAME)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Operation(tags = {
+			FuncionariRestService.TAG_NAME }, operationId = "FuncionariIsHabilitatCopiaAutentica", summary = "Comprova si un/a funcionari/ària està habilitat/da per a fer còpies autèntiques")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Operació realitzada correctament", content = {
+					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Boolean.class)) }),
+			@ApiResponse(responseCode = "400", description = "Paràmetres incorrectes", content = {
+					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = RestExceptionInfo.class)) }),
+			@ApiResponse(responseCode = "401", description = "No Autenticat", content = {
+					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = String.class)) }),
+			@ApiResponse(responseCode = "403", description = "No Autoritzat", content = {
+					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = String.class)) }),
+			@ApiResponse(responseCode = "500", description = "Error no controlat", content = {
+					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = RestExceptionInfo.class)) }), })
+	public boolean esFuncionariHabilitatCopiaAutentica(
+
+			@Parameter(description = "Usuari del funcionari", required = true, example = "usuari", array = @ArraySchema(schema = @Schema(type = "string"))) @QueryParam("usuari") String usuari,
+			@Parameter(description = "Codi de la entitat", required = true, example = "A04003003", array = @ArraySchema(schema = @Schema(type = "string"))) @QueryParam("entitat") String entitat) {
+
+		String habilitacio;
 		try {
+			habilitacio = Configuracio.getHabilitacioCopiaAutenticaCodi();
+		} catch (RuntimeException e) {
+			String msg = "Error obtenint el codi de l'habilitació COPIA AUTÈNTICA";
+			log.error(msg, e);
+			throw new RestException(msg, e, Status.INTERNAL_SERVER_ERROR);
+		}
+		if (StringUtils.isEmpty(habilitacio)) {
+			throw new RestException("No s'ha trobat el codi de l'habilitació COPIA AUTÈNTICA",
+					Status.INTERNAL_SERVER_ERROR);
+		}
+		return comprovarHabilitacioFuncionari(usuari, habilitacio, entitat);
+	}
 
-			if (StringUtils.isEmpty(usuari)) {
-				return "Error: cal indicar el nom del usuari del funcionari o funcionària";
-			}
-
-			if (StringUtils.isEmpty(entitat)) {
-				return "Error: cal indicar el codi de l'entitat a la que pertany el funcionari o funcionària";
-			}
-
-			log.info("FuncionariHabilitat amb usuari: " + usuari + " i entitat " + entitat);
-
-			// Obtenim el funcionari a partir del nom d'usuari del funcionari i la entitat
-			Where condicioFuncionari = Where.AND(FuncionariFields.USUARI.equal(usuari),
-					FuncionariFields.ENTITATID.equal(Long.parseLong(entitat)));
-			List<Long> funcionari = funcionariEjb.executeQuery(FuncionariFields.FUNCIONARIID, condicioFuncionari);
-
-			funcionari.forEach(f -> {
-				log.info("Funcionari identificats: " + String.valueOf(f));
-			});
-
-			// Amb el funcionariID, cercam a la taula de FuncionariLloc, el llocID assignat
-			// i actiu
-			Where w1 = Where.AND(FuncionariLlocFields.DATAINICI.lessThan(new Date(System.currentTimeMillis())),
-					FuncionariLlocFields.DATAFI.greaterThan(new Date(System.currentTimeMillis())));
-
-			Where w2 = Where.AND(FuncionariLlocFields.DATAINICI.lessThan(new Date(System.currentTimeMillis())),
-					FuncionariLlocFields.DATAFI.isNull());
-
-			Where w3 = Where.AND(FuncionariLlocFields.DATAINICI.isNull(), FuncionariLlocFields.DATAFI.isNull());
-
-			Where w4 = Where.AND(FuncionariLlocFields.DATAINICI.isNull(),
-					FuncionariLlocFields.DATAFI.greaterThan(new Date(System.currentTimeMillis())));
-
-			Where wV = Where.OR(w1, w2, w3, w4);
-
-			Where w = Where.AND(wV, FuncionariLlocFields.FUNCIONARIID.in(funcionari));
-
-			List<Long> llocsOcupats = funcionariLlocEjb.executeQuery(FuncionariLlocFields.LLOCID, w);
-
-			llocsOcupats.forEach(lloc -> {
-				log.info("Lloc ocupat: " + String.valueOf(lloc));
-			});
-
-			// Retornam la llista de Habilitacions assignats al Lloc actiu assignat al
-			// funcionari
-			List<Long> habilitacionsLloc = llocHabilitacioEjb.executeQuery(LlocHabilitacioFields.HABILITACIOID,
-					LlocHabilitacioFields.LLOCID.in(llocsOcupats));
-
-			habilitacionsLloc.forEach(habilitacioLlocItem -> {
-				log.info("HabilitacioLlocItem: " + habilitacioLlocItem);
-			});
-
-			List<Habilitacio> habilitacions = habilitacioLogicaEjb
-					.select(HabilitacioFields.HABILITACIOID.in(habilitacionsLloc));
-
-			Boolean habilitat = false;
-			for (Habilitacio habilitacioItem : habilitacions) {
-				if (habilitacio.equalsIgnoreCase(habilitacioItem.getCodi())) {
-					habilitat = true;
-					break;
-				}
-			}
-
-			if (habilitat) {
-				return mapper.writeValueAsString("SI");
-			}
-
-			return mapper.writeValueAsString("NO");
-
-		} catch (Exception e) {
-			log.error("Error consultant les habilitacions d'un funcionari: " + e.getMessage());
-			return "Error";
+	private boolean comprovarHabilitacioFuncionari(String usuari, String habilitacio, String entitat) {
+		if (StringUtils.isEmpty(usuari)) {
+			throw new RestException("Cal indicar el nom del usuari del funcionari o funcionària", Status.BAD_REQUEST);
 		}
 
+		if (StringUtils.isEmpty(habilitacio)) {
+			throw new RestException("Cal indicar el codi de l'habilitació", Status.BAD_REQUEST);
+		}
+
+		if (StringUtils.isEmpty(entitat)) {
+			throw new RestException("Cal indicar el codi de l'entitat a la que pertany el funcionari o funcionària",
+					Status.BAD_REQUEST);
+		}
+
+		Long entitatId;
+		try {
+			entitatId = Long.valueOf(entitat);
+		} catch (NumberFormatException e) {
+			throw new RestException("El codi de l'entitat no és vàlid", e, Status.BAD_REQUEST);
+		}
+
+		try {
+			return funcionariEjb.isFuncionariHabilitat(usuari, habilitacio, entitatId);
+		} catch (Exception e) {
+			String msg = "Error consultant les habilitacions d'un funcionari";
+			log.error(msg, e);
+			throw new RestException(msg, e, Status.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@Path("/autoritzat")
@@ -674,7 +669,8 @@ public class FuncionariRestService extends RestUtils {
 					@ExampleObject(name = "Castellano", value = "es") }, schema = @Schema(defaultValue = "ca", implementation = String.class)) @QueryParam("language") String language,
 			@Parameter(description = "Identificador de l'usuari que està realitzant el registre d'un nou FH", required = true, example = "9999", schema = @Schema(type = "int")) @NotNull @QueryParam("usuariid") Integer usuariId,
 			@Parameter(description = "Identificador (NIF o NIE)", required = true) @NotNull @QueryParam("identificador") String identificador,
-			// @Parameter(description = "Identificador (NIF, NIE o passaport)", required = true) @NotNull @QueryParam("identificador") String identificador,
+			// @Parameter(description = "Identificador (NIF, NIE o passaport)", required =
+			// true) @NotNull @QueryParam("identificador") String identificador,
 			@Parameter(description = "Número de CAI", required = false, schema = @Schema(defaultValue = Constants.NUMEROCAI_BUIT, implementation = String.class)) @QueryParam("numerocai") String numeroCai) {
 		try {
 			StringBuilder sb = new StringBuilder();
@@ -763,7 +759,8 @@ public class FuncionariRestService extends RestUtils {
 					@ExampleObject(name = "Castellano", value = "es") }, schema = @Schema(defaultValue = "ca", implementation = String.class)) @QueryParam("language") String language,
 			@Parameter(description = "Identificador de l'usuari que està realitzant el registre d'un nou FH", required = true, example = "9999", schema = @Schema(type = "int")) @NotNull @QueryParam("usuariid") Integer usuariId,
 			@Parameter(description = "Identificador (NIF o NIE)", required = true) @NotNull @QueryParam("identificador") String identificador,
-			// @Parameter(description = "Identificador (NIF, NIE o passaport)", required = true) @NotNull @QueryParam("identificador") String identificador,
+			// @Parameter(description = "Identificador (NIF, NIE o passaport)", required =
+			// true) @NotNull @QueryParam("identificador") String identificador,
 			@Parameter(description = "Número de CAI", required = false, schema = @Schema(defaultValue = Constants.NUMEROCAI_BUIT, implementation = String.class)) @QueryParam("numerocai") String numeroCai) {
 		try {
 			StringBuilder sb = new StringBuilder();
@@ -831,7 +828,8 @@ public class FuncionariRestService extends RestUtils {
 					@ExampleObject(name = "Català", value = "ca"),
 					@ExampleObject(name = "Castellano", value = "es") }, schema = @Schema(defaultValue = "ca", implementation = String.class)) @QueryParam("language") String language,
 			@Parameter(description = "Identificador (NIF o NIE)", required = true) @NotNull @QueryParam("identificador") String identificador) {
-			// @Parameter(description = "Identificador (NIF, NIE o passaport)", required = true) @NotNull @QueryParam("identificador") String identificador) {
+		// @Parameter(description = "Identificador (NIF, NIE o passaport)", required =
+		// true) @NotNull @QueryParam("identificador") String identificador) {
 		try {
 			if (language == null || language.isEmpty()) {
 				language = "ca";

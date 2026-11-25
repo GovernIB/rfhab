@@ -193,8 +193,8 @@ table th {
  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
 }
 small {
-	font-size:13px;
-	font-style:italic;
+  font-size: 13px;
+  font-style: italic;
 }
 .accordion-group { background-color:#eee;}
 .accordion-inner { border:none;}

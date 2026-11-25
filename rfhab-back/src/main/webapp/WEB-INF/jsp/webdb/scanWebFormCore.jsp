@@ -95,7 +95,7 @@
             <c:if test="${!gen:contains(__theForm.readOnlyFields ,ScanWebFields.FITXERID)}" >
               <div class="input-group col-md-9-optional" style="padding: 0px">
                 <div class="custom-file">
-                  <input id="scanWeb.fitxerID" name="fitxerID" class="custom-file-input form-control  ${gen:contains(__theForm.readOnlyFields ,ScanWebFields.FITXERID)? ' uneditable-input' : ''}"  type="file"  required aria-required="true"  />
+                  <input id="scanWeb.fitxerID" name="fitxerID" class="custom-file-input form-control  ${gen:contains(__theForm.readOnlyFields ,ScanWebFields.FITXERID)? ' uneditable-input' : ''}"  type="file"  />
                   <span id="fitxerID-custom-file-label2" class="custom-file-label" >
                     <c:if test="${ empty __theForm.scanWeb.fitxer}">
                     <fmt:message key="genapp.form.file.select"/>

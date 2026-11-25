@@ -409,16 +409,14 @@ paths:
             type: string
           type: array
         style: form
-      - description: Codi de la entitat
-        example: CAIB
+      - description: Codi DIR3 de l'entitat
+        example: A04003003
         explode: true
         in: query
         name: entitat
-        required: true
+        required: false
         schema:
-          items:
-            type: string
-          type: array
+          type: string
         style: form
       responses:
         "200":
@@ -501,16 +499,14 @@ paths:
             type: string
           type: array
         style: form
-      - description: Codi de la entitat
-        example: CAIB
+      - description: Codi DIR3 de l'entitat
+        example: A04003003
         explode: true
         in: query
         name: entitat
-        required: true
+        required: false
         schema:
-          items:
-            type: string
-          type: array
+          type: string
         style: form
       responses:
         "200":

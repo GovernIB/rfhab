@@ -13,7 +13,7 @@ All URIs are relative to */rfhabapi/interna*
 
 ## comprobarAutoritzaci
 
-> String comprobarAutoritzaci(usuari, codisia, entitat, language)
+> String comprobarAutoritzaci(usuari, codisia, language, entitat)
 
 Comprobar si un funcionari té permís per realitzar un trámit
 
@@ -41,10 +41,10 @@ public class Example {
         FuncionariRestServiceApi apiInstance = new FuncionariRestServiceApi(defaultClient);
         List<String> usuari = Arrays.asList(); // List<String> | Usuari del funcionari habilitat
         List<String> codisia = Arrays.asList(); // List<String> | Codi SIA
-        List<String> entitat = Arrays.asList(); // List<String> | Codi de la entitat
         String language = "ca"; // String | Idioma en que s'han de retornar les dades(Només suportat 'ca' o 'es')
+        String entitat = "A04003003"; // String | Codi DIR3 de l'entitat
         try {
-            String result = apiInstance.comprobarAutoritzaci(usuari, codisia, entitat, language);
+            String result = apiInstance.comprobarAutoritzaci(usuari, codisia, language, entitat);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling FuncionariRestServiceApi#comprobarAutoritzaci");
@@ -64,8 +64,8 @@ public class Example {
 |------------- | ------------- | ------------- | -------------|
 | **usuari** | [**List&lt;String&gt;**](String.md)| Usuari del funcionari habilitat | |
 | **codisia** | [**List&lt;String&gt;**](String.md)| Codi SIA | |
-| **entitat** | [**List&lt;String&gt;**](String.md)| Codi de la entitat | |
 | **language** | **String**| Idioma en que s&#39;han de retornar les dades(Només suportat &#39;ca&#39; o &#39;es&#39;) | [optional] [default to ca] |
+| **entitat** | **String**| Codi DIR3 de l&#39;entitat | [optional] |
 
 ### Return type
 
@@ -276,7 +276,7 @@ public class Example {
 
         FuncionariRestServiceApi apiInstance = new FuncionariRestServiceApi(defaultClient);
         List<String> usuari = Arrays.asList(); // List<String> | Nom d'usuari del funcionari
-        List<String> entitat = Arrays.asList(); // List<String> | Codi de la entitat
+        String entitat = "A04003003"; // String | Codi DIR3 de l'entitat
         try {
             String result = apiInstance.habilitacions(usuari, entitat);
             System.out.println(result);
@@ -297,7 +297,7 @@ public class Example {
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **usuari** | [**List&lt;String&gt;**](String.md)| Nom d&#39;usuari del funcionari | |
-| **entitat** | [**List&lt;String&gt;**](String.md)| Codi de la entitat | |
+| **entitat** | **String**| Codi DIR3 de l&#39;entitat | [optional] |
 
 ### Return type
 

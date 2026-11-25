@@ -39,12 +39,12 @@ public class FuncionariRestServiceApi {
    * 
    * @param usuari Usuari del funcionari habilitat (required)
    * @param codisia Codi SIA (required)
-   * @param entitat Codi de la entitat (required)
    * @param language Idioma en que s&#39;han de retornar les dades(Només suportat &#39;ca&#39; o &#39;es&#39;) (optional, default to ca)
+   * @param entitat Codi DIR3 de l&#39;entitat (optional)
    * @return a {@code String}
    * @throws ApiException if fails to make API call
    */
-  public String comprobarAutoritzaci(List<String> usuari, List<String> codisia, List<String> entitat, String language) throws ApiException {
+  public String comprobarAutoritzaci(List<String> usuari, List<String> codisia, String language, String entitat) throws ApiException {
     Object localVarPostBody = null;
     
     // verify the required parameter 'usuari' is set
@@ -55,11 +55,6 @@ public class FuncionariRestServiceApi {
     // verify the required parameter 'codisia' is set
     if (codisia == null) {
       throw new ApiException(400, "Missing the required parameter 'codisia' when calling comprobarAutoritzaci");
-    }
-    
-    // verify the required parameter 'entitat' is set
-    if (entitat == null) {
-      throw new ApiException(400, "Missing the required parameter 'entitat' when calling comprobarAutoritzaci");
     }
     
     // create path and map variables
@@ -74,7 +69,7 @@ public class FuncionariRestServiceApi {
     localVarQueryParams.addAll(apiClient.parameterToPairs("", "language", language));
     localVarQueryParams.addAll(apiClient.parameterToPairs("multi", "usuari", usuari));
     localVarQueryParams.addAll(apiClient.parameterToPairs("multi", "codisia", codisia));
-    localVarQueryParams.addAll(apiClient.parameterToPairs("multi", "entitat", entitat));
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "entitat", entitat));
 
     
     
@@ -194,21 +189,16 @@ public class FuncionariRestServiceApi {
    * Consulta les habilitacions d&#39;un funcionari habilitat
    * 
    * @param usuari Nom d&#39;usuari del funcionari (required)
-   * @param entitat Codi de la entitat (required)
+   * @param entitat Codi DIR3 de l&#39;entitat (optional)
    * @return a {@code String}
    * @throws ApiException if fails to make API call
    */
-  public String habilitacions(List<String> usuari, List<String> entitat) throws ApiException {
+  public String habilitacions(List<String> usuari, String entitat) throws ApiException {
     Object localVarPostBody = null;
     
     // verify the required parameter 'usuari' is set
     if (usuari == null) {
       throw new ApiException(400, "Missing the required parameter 'usuari' when calling habilitacions");
-    }
-    
-    // verify the required parameter 'entitat' is set
-    if (entitat == null) {
-      throw new ApiException(400, "Missing the required parameter 'entitat' when calling habilitacions");
     }
     
     // create path and map variables
@@ -221,7 +211,7 @@ public class FuncionariRestServiceApi {
     Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     localVarQueryParams.addAll(apiClient.parameterToPairs("multi", "usuari", usuari));
-    localVarQueryParams.addAll(apiClient.parameterToPairs("multi", "entitat", entitat));
+    localVarQueryParams.addAll(apiClient.parameterToPairs("", "entitat", entitat));
 
     
     

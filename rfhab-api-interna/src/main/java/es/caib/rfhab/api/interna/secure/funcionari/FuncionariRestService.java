@@ -317,7 +317,7 @@ public class FuncionariRestService extends RestUtils {
 
 			@Parameter(description = "Usuari del funcionari habilitat", required = true, example = "u12345", array = @ArraySchema(schema = @Schema(type = "string"))) @QueryParam("usuari") String usuari,
 			@Parameter(description = "Codi SIA", required = true, example = "132313", array = @ArraySchema(schema = @Schema(type = "string"))) @QueryParam("codisia") String codiSia,
-			@Parameter(description = "Codi de la entitat", required = true, example = "CAIB", array = @ArraySchema(schema = @Schema(type = "string"))) @QueryParam("entitat") String entitat
+			@Parameter(description = "Codi DIR3 de l'entitat", required = false, example = "A04003003", schema = @Schema(type = "string")) @QueryParam("entitat") String entitat
 
 	) {
 
@@ -331,13 +331,11 @@ public class FuncionariRestService extends RestUtils {
 				return "Error: cal indicar el codi SIA del tràmit";
 			}
 
-			if (entitat == null) {
-				return "Error: cal indicar el codi de l'entitat a la que pertany el funcionari o funcionària";
-			}
+			Long entitatId = obtenirEntitatIdPerCodiDir3(entitat);
 
 			// Cercam el funcionari per veure si existeix a la entitat indicada
 			Where condicioFuncionari = Where.AND(FuncionariFields.USUARI.equal(usuari),
-					FuncionariFields.ENTITATID.equal(Long.parseLong(entitat)));
+					FuncionariFields.ENTITATID.equal(entitatId));
 			List<Long> funcionari = funcionariEjb.executeQuery(FuncionariFields.FUNCIONARIID, condicioFuncionari);
 
 			funcionari.forEach(f -> {
@@ -409,6 +407,8 @@ public class FuncionariRestService extends RestUtils {
 
 			return mapper.writeValueAsString("NO");
 
+		} catch (RestException e) {
+			throw e;
 		} catch (Exception e) {
 			log.error("Error comprovant si un funcionari està autoritzat: " + e.getMessage());
 			return "Error";
@@ -436,7 +436,7 @@ public class FuncionariRestService extends RestUtils {
 					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = RestExceptionInfo.class)) }), })
 	public String funcionariHabilitat(
 			@Parameter(description = "Nom d'usuari del funcionari", required = true, example = "u12345", array = @ArraySchema(schema = @Schema(type = "string"))) @QueryParam("usuari") String usuari,
-			@Parameter(description = "Codi de la entitat", required = true, example = "CAIB", array = @ArraySchema(schema = @Schema(type = "string"))) @QueryParam("entitat") String entitat
+			@Parameter(description = "Codi DIR3 de l'entitat", required = false, example = "A04003003", schema = @Schema(type = "string")) @QueryParam("entitat") String entitat
 
 	) {
 
@@ -446,15 +446,13 @@ public class FuncionariRestService extends RestUtils {
 				return "Error: cal indicar el número o el nom del usuari del funcionari o funcionària";
 			}
 
-			if (StringUtils.isEmpty(entitat)) {
-				return "Error: cal indicar el codi de l'entitat";
-			}
+			Long entitatId = obtenirEntitatIdPerCodiDir3(entitat);
 
 			log.info("FuncionariHabilitat amb usuari: " + usuari + " i entitat " + entitat);
 
 			// Obtenim el funcionari a partir del nom d'usuari del funcionari i la entitat
 			Where condicioFuncionari = Where.AND(FuncionariFields.USUARI.equal(usuari),
-					FuncionariFields.ENTITATID.equal(Long.parseLong(entitat)));
+					FuncionariFields.ENTITATID.equal(entitatId));
 			List<Long> funcionari = funcionariEjb.executeQuery(FuncionariFields.FUNCIONARIID, condicioFuncionari);
 
 			funcionari.forEach(f -> {
@@ -504,6 +502,8 @@ public class FuncionariRestService extends RestUtils {
 
 			return mapper.writeValueAsString(resposta);
 
+		} catch (RestException e) {
+			throw e;
 		} catch (Exception e) {
 			log.error("Error comprovant si un funcionari està habilitat: " + e.getMessage());
 			return "Error";

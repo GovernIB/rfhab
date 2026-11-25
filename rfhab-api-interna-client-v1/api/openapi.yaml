@@ -276,15 +276,14 @@ paths:
             type: string
           type: array
         style: form
-      - description: Codi de la entitat
+      - description: Codi DIR3 de l'entitat
+        example: A04003003
         explode: true
         in: query
         name: entitat
-        required: true
+        required: false
         schema:
-          items:
-            type: string
-          type: array
+          type: string
         style: form
       responses:
         "200":
@@ -319,7 +318,8 @@ paths:
           description: Error no controlat
       security:
       - BasicAuth: []
-      summary: Consulta si un/a funcionari/ària te associades determinades habilitacions
+      summary: Consulta si un/a funcionari/ària te associada qualcuna de les habilitaciones
+        indicades
       tags:
       - FuncionariRestService
       x-accepts:
@@ -346,16 +346,14 @@ paths:
         schema:
           type: string
         style: form
-      - description: Codi de la entitat
+      - description: Codi DIR3 de l'entitat
         example: A04003003
         explode: true
         in: query
         name: entitat
-        required: true
+        required: false
         schema:
-          items:
-            type: string
-          type: array
+          type: string
         style: form
       responses:
         "200":

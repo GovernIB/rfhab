@@ -16,6 +16,7 @@ import java.util.Properties;
 public class Configuracio implements Constants {
 
     private static final Logger LOG = Logger.getLogger(Configuracio.class);
+    private static final String DEFAULT_ENTITAT_PROPERTY = RFHAB_PROPERTY_BASE + "defaultentitat";
 
     private static Properties appProperties;
 
@@ -163,7 +164,20 @@ public class Configuracio implements Constants {
     }
 
     public static String getDefaultEntitat() {
-        return getAppProperties().getProperty(RFHAB_PROPERTY_BASE + "defaultentitat", "1");
+        String defaultEntitat = getDefaultEntitatProperty();
+        return defaultEntitat == null ? "1" : defaultEntitat;
+    }
+
+    public static String getDefaultEntitatConfigurada() {
+        String defaultEntitat = getDefaultEntitatProperty();
+        if (defaultEntitat == null || defaultEntitat.trim().isEmpty()) {
+            throw new IllegalStateException("No s'ha definit la propietat '" + DEFAULT_ENTITAT_PROPERTY + "'");
+        }
+        return defaultEntitat;
+    }
+
+    private static String getDefaultEntitatProperty() {
+        return getAppProperties().getProperty(DEFAULT_ENTITAT_PROPERTY);
     }
 
     public static boolean isCreateNewUserRoleUserWithDefaultEntitatAndActiu() {

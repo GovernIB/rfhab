@@ -5,7 +5,7 @@ All URIs are relative to */rfhabapi/interna*
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
 | [**comprobarAutoritzaci**](FuncionariRestServiceApi.md#comprobarAutoritzaci) | **GET** /secure/funcionari/autoritzat | Comprobar si un funcionari té permís per realitzar un trámit |
-| [**funcionariIsHabilitat**](FuncionariRestServiceApi.md#funcionariIsHabilitat) | **GET** /secure/funcionari/habilitat | Consulta si un/a funcionari/ària te associades determinades habilitacions |
+| [**funcionariIsHabilitat**](FuncionariRestServiceApi.md#funcionariIsHabilitat) | **GET** /secure/funcionari/habilitat | Consulta si un/a funcionari/ària te associada qualcuna de les habilitaciones indicades |
 | [**funcionariIsHabilitatCopiaAutentica**](FuncionariRestServiceApi.md#funcionariIsHabilitatCopiaAutentica) | **GET** /secure/funcionari/habilitat/copiaautentica | Comprova si un/a funcionari/ària està habilitat/da per a fer còpies autèntiques |
 | [**habilitacions**](FuncionariRestServiceApi.md#habilitacions) | **GET** /secure/funcionari/habilitacions | Consulta les habilitacions d&#39;un funcionari habilitat |
 
@@ -95,7 +95,7 @@ public class Example {
 
 > Boolean funcionariIsHabilitat(usuari, habilitacio, entitat)
 
-Consulta si un/a funcionari/ària te associades determinades habilitacions
+Consulta si un/a funcionari/ària te associada qualcuna de les habilitaciones indicades
 
 ### Example
 
@@ -121,7 +121,7 @@ public class Example {
         FuncionariRestServiceApi apiInstance = new FuncionariRestServiceApi(defaultClient);
         List<String> usuari = Arrays.asList(); // List<String> | Usuari del funcionari
         List<String> habilitacio = Arrays.asList(); // List<String> | Habilitació
-        List<String> entitat = Arrays.asList(); // List<String> | Codi de la entitat
+        String entitat = "A04003003"; // String | Codi DIR3 de l'entitat
         try {
             Boolean result = apiInstance.funcionariIsHabilitat(usuari, habilitacio, entitat);
             System.out.println(result);
@@ -143,7 +143,7 @@ public class Example {
 |------------- | ------------- | ------------- | -------------|
 | **usuari** | [**List&lt;String&gt;**](String.md)| Usuari del funcionari | |
 | **habilitacio** | [**List&lt;String&gt;**](String.md)| Habilitació | |
-| **entitat** | [**List&lt;String&gt;**](String.md)| Codi de la entitat | |
+| **entitat** | **String**| Codi DIR3 de l&#39;entitat | [optional] |
 
 ### Return type
 
@@ -171,7 +171,7 @@ public class Example {
 
 ## funcionariIsHabilitatCopiaAutentica
 
-> Boolean funcionariIsHabilitatCopiaAutentica(entitat, usuari, identificador)
+> Boolean funcionariIsHabilitatCopiaAutentica(usuari, identificador, entitat)
 
 Comprova si un/a funcionari/ària està habilitat/da per a fer còpies autèntiques
 
@@ -197,11 +197,11 @@ public class Example {
         BasicAuth.setPassword("YOUR PASSWORD");
 
         FuncionariRestServiceApi apiInstance = new FuncionariRestServiceApi(defaultClient);
-        List<String> entitat = Arrays.asList(); // List<String> | Codi de la entitat
         String usuari = "usuari"; // String | Usuari del funcionari
         String identificador = "12345678A"; // String | NIF o NIE del funcionari
+        String entitat = "A04003003"; // String | Codi DIR3 de l'entitat
         try {
-            Boolean result = apiInstance.funcionariIsHabilitatCopiaAutentica(entitat, usuari, identificador);
+            Boolean result = apiInstance.funcionariIsHabilitatCopiaAutentica(usuari, identificador, entitat);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling FuncionariRestServiceApi#funcionariIsHabilitatCopiaAutentica");
@@ -219,9 +219,9 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **entitat** | [**List&lt;String&gt;**](String.md)| Codi de la entitat | |
 | **usuari** | **String**| Usuari del funcionari | [optional] |
 | **identificador** | **String**| NIF o NIE del funcionari | [optional] |
+| **entitat** | **String**| Codi DIR3 de l&#39;entitat | [optional] |
 
 ### Return type
 

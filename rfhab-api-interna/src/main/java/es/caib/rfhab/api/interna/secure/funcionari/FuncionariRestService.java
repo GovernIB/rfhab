@@ -14,6 +14,7 @@ import es.caib.rfhab.ejb.LlocService;
 import es.caib.rfhab.ejb.UnitatService;
 import es.caib.rfhab.logic.FuncionariLogicaService;
 import es.caib.rfhab.logic.HabilitacioLogicaService;
+import es.caib.rfhab.logic.EntitatLogicaService;
 import es.caib.rfhab.logic.RolsacLogicaService;
 import es.caib.rfhab.logic.UsuariLogicaService;
 import es.caib.rfhab.model.entity.Funcionari;
@@ -120,6 +121,9 @@ public class FuncionariRestService extends RestUtils {
 	@EJB(mappedName = EntitatService.JNDI_NAME)
 	protected EntitatService entitatEjb;
 
+	@EJB(mappedName = EntitatLogicaService.JNDI_NAME)
+	protected EntitatLogicaService entitatLogicaEjb;
+
 	@EJB(mappedName = UnitatService.JNDI_NAME)
 	protected UnitatService unitatEjb;
 
@@ -162,7 +166,7 @@ public class FuncionariRestService extends RestUtils {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Operation(tags = {
-			FuncionariRestService.TAG_NAME }, operationId = "FuncionariIsHabilitat", summary = "Consulta si un/a funcionari/ària te associades determinades habilitacions")
+			FuncionariRestService.TAG_NAME }, operationId = "FuncionariIsHabilitat", summary = "Consulta si un/a funcionari/ària te associada qualcuna de les habilitaciones indicades")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Operació realitzada correctament", content = {
 					@Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = Boolean.class)) }),
@@ -178,7 +182,7 @@ public class FuncionariRestService extends RestUtils {
 
 			@Parameter(description = "Usuari del funcionari", required = true, example = "", array = @ArraySchema(schema = @Schema(type = "string"))) @QueryParam("usuari") String usuari,
 			@Parameter(description = "Habilitació", required = true, example = "COPIA", array = @ArraySchema(schema = @Schema(type = "string"))) @QueryParam("habilitacio") String habilitacio,
-			@Parameter(description = "Codi de la entitat", required = true, example = "", array = @ArraySchema(schema = @Schema(type = "string"))) @QueryParam("entitat") String entitat) {
+			@Parameter(description = "Codi DIR3 de l'entitat", required = false, example = "A04003003", schema = @Schema(type = "string")) @QueryParam("entitat") String entitat) {
 		return comprovarHabilitacioFuncionari(usuari, null, habilitacio, entitat);
 	}
 
@@ -205,7 +209,7 @@ public class FuncionariRestService extends RestUtils {
 
 			@Parameter(description = "Usuari del funcionari", required = false, example = "usuari", schema = @Schema(type = "string")) @QueryParam("usuari") String usuari,
 			@Parameter(description = "NIF o NIE del funcionari", required = false, example = "12345678A", schema = @Schema(type = "string")) @QueryParam("identificador") String identificador,
-			@Parameter(description = "Codi de la entitat", required = true, example = "A04003003", array = @ArraySchema(schema = @Schema(type = "string"))) @QueryParam("entitat") String entitat) {
+			@Parameter(description = "Codi DIR3 de l'entitat", required = false, example = "A04003003", schema = @Schema(type = "string")) @QueryParam("entitat") String entitat) {
 
 		String habilitacio;
 		try {
@@ -233,17 +237,7 @@ public class FuncionariRestService extends RestUtils {
 			throw new RestException("Cal indicar el codi de l'habilitació", Status.BAD_REQUEST);
 		}
 
-		if (StringUtils.isEmpty(entitat)) {
-			throw new RestException("Cal indicar el codi de l'entitat a la que pertany el funcionari o funcionària",
-					Status.BAD_REQUEST);
-		}
-
-		Long entitatId;
-		try {
-			entitatId = Long.valueOf(entitat);
-		} catch (NumberFormatException e) {
-			throw new RestException("El codi de l'entitat no és vàlid", e, Status.BAD_REQUEST);
-		}
+		Long entitatId = obtenirEntitatIdPerCodiDir3(entitat);
 
 		try {
 			return funcionariEjb.isFuncionariHabilitat(usuari, identificador, habilitacio, entitatId);
@@ -254,6 +248,47 @@ public class FuncionariRestService extends RestUtils {
 			log.error(msg, e);
 			throw new RestException(msg, e, Status.INTERNAL_SERVER_ERROR);
 		}
+	}
+
+	private Long obtenirEntitatIdPerCodiDir3(String entitat) {
+		boolean emprarEntitatPerDefecte = StringUtils.isEmpty(entitat) || entitat.trim().isEmpty();
+		if (emprarEntitatPerDefecte) {
+			try {
+				entitat = Configuracio.getDefaultEntitatConfigurada();
+			} catch (RuntimeException e) {
+				String msg = "Error obtenint l'entitat per defecte de la configuració";
+				log.error(msg, e);
+				throw new RestException(msg, e, Status.INTERNAL_SERVER_ERROR);
+			}
+		}
+
+		if (StringUtils.isEmpty(entitat) || entitat.trim().isEmpty()) {
+			throw new RestException(
+					"No s'ha indicat l'entitat i no s'ha configurat '" + Constants.RFHAB_PROPERTY_BASE
+							+ "defaultentitat'",
+					emprarEntitatPerDefecte ? Status.INTERNAL_SERVER_ERROR : Status.BAD_REQUEST);
+		}
+
+		String entitatNormalitzada = entitat.trim();
+		try {
+			long entitatId = entitatLogicaEjb.findEntitatByDir3(entitatNormalitzada);
+			if (entitatId > 0) {
+				return entitatId;
+			}
+		} catch (I18NException e) {
+			String msg = "Error cercant l'entitat per codi DIR3: " + entitatNormalitzada;
+			log.error(msg, e);
+			throw new RestException(msg, e,
+					emprarEntitatPerDefecte ? Status.INTERNAL_SERVER_ERROR : Status.BAD_REQUEST);
+		} catch (RuntimeException e) {
+			String msg = "Error consultant l'entitat per codi DIR3: " + entitatNormalitzada;
+			log.error(msg, e);
+			throw new RestException(msg, e, Status.INTERNAL_SERVER_ERROR);
+		}
+
+		String msg = "No s'ha trobat l'entitat amb codi DIR3: " + entitatNormalitzada;
+		throw new RestException(msg,
+				emprarEntitatPerDefecte ? Status.INTERNAL_SERVER_ERROR : Status.BAD_REQUEST);
 	}
 
 	@Path("/autoritzat")
